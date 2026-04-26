@@ -1,0 +1,35 @@
+:root {
+  --bg: #ffffff; --bg2: #f5f5f5; --bg3: #ebebeb;
+  --text: #1a1a1a; --text2: #666666;
+  --border: rgba(0,0,0,0.12); --border2: rgba(0,0,0,0.22);
+  --radius: 10px; --radius-lg: 14px;
+  --green: #1D9E75; --green-bg: #E1F5EE; --green-text: #085041;
+  --red: #D85A30; --red-bg: #FAECE7; --red-text: #712B13;
+  --blue: #378ADD; --blue-bg: #E6F1FB; --blue-text: #0C447C;
+  --amber: #EF9F27;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1c1c1e; --bg2: #2c2c2e; --bg3: #3a3a3c;
+    --text: #f2f2f7; --text2: #8e8e93;
+    --border: rgba(255,255,255,0.1); --border2: rgba(255,255,255,0.2);
+    --green-bg: #04342C; --green-text: #9FE1CB;
+    --red-bg: #4A1B0C; --red-text: #F5C4B3;
+    --blue-bg: #042C53; --blue-text: #B5D4F4;
+  }
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; overflow: hidden; }
+body { font-family: -apple-system, 'Helvetica Neue', sans-serif; font-size: 15px; background: var(--bg); color: var(--text); }
+.nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg); border-top: 0.5px solid var(--border); display: flex; z-index: 100; padding-bottom: var(--safe-bottom); }
+.nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 10px 0 8px; cursor: pointer; color: var(--text2); font-size: 10px; gap: 3px; border: none; background: none; }
+.nav-item.active { color: var(--green); }
+.nav-item svg { width: 22px; height: 22px; }
+.page { display: none; height: 100%; overflow-y: auto; overscroll-behavior: none; padding: 0 0 var(--nav-clearance, 80px); }
+.page.active { display: block; }
+.page-header { padding: 56px 16px 12px; font-size: 24px; font-weight: 600; letter-spacing: -0.5px; }
+.content { padding: 0 16px; }
+.safe-top { padding-top: env(safe-area-inset-top, 0px); }
+.cal-page { display: none; height: 100%; overflow-y: auto; overscroll-behavior: none; flex-direction: column; padding: 0 0 var(--nav-clearance, 80px); }
+.cal-page.active { display: flex; }

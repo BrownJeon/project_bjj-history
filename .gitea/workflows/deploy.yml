@@ -1,0 +1,28 @@
+name: Deploy BJJ Training Log
+
+on:
+  push:
+    branches: [main, master]
+
+jobs:
+  deploy:
+    runs-on: linux
+    steps:
+      - name: Sync to runtime directory (NFS)
+        run: |
+          cd /home/brownjeon/NFS/homes/brownjeon/project/bjj-trainning
+          git fetch origin
+          git reset --hard origin/${{ github.ref_name }}
+          git clean -fdx -e .env -e node_modules
+
+      - name: Install dependencies
+        working-directory: /home/brownjeon/NFS/homes/brownjeon/project/bjj-trainning
+        run: npm ci --no-audit --no-fund --omit=dev
+
+      - name: Reload PM2
+        run: pm2 reload bjj --update-env
+
+      - name: Health check
+        run: |
+          sleep 3
+          curl -fsS http://127.0.0.1:3000/ -o /dev/null || (pm2 logs bjj --lines 30 --nostream && exit 1)

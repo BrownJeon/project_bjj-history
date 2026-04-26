@@ -1,0 +1,59 @@
+.metric-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+.metric { background: var(--bg2); border-radius: var(--radius); padding: 14px; text-align: center; }
+.metric-val { font-size: 26px; font-weight: 600; line-height: 1.2; }
+.metric-lbl { font-size: 11px; color: var(--text2); margin-top: 3px; }
+.card-clickable { cursor: pointer; transition: background 0.15s; }
+.card-clickable:active { background: var(--bg2); }
+.section-label-arrow { font-size: 13px; color: var(--text2); margin-left: 3px; }
+.bar-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.bar-label { font-size: 12px; color: var(--text2); min-width: 85px; text-align: right; }
+.bar-wrap { flex: 1; height: 16px; background: var(--bg3); border-radius: 4px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 4px; }
+.bar-val { font-size: 12px; color: var(--text2); min-width: 22px; }
+.history-list { }
+.history-item { border-bottom: 0.5px solid var(--border); padding: 12px 0; display: flex; gap: 10px; }
+.history-item:last-child { border-bottom: none; }
+.history-date { font-size: 11px; color: var(--text2); min-width: 86px; padding-top: 2px; }
+.history-body { flex: 1; }
+.history-title { font-weight: 600; font-size: 14px; margin-bottom: 3px; }
+.history-sub { font-size: 12px; color: var(--text2); line-height: 1.6; }
+.history-preview { }
+.tech-view-toggle { display: flex; gap: 6px; margin-bottom: 12px; }
+.tech-view-btn { flex: 1; padding: 7px 0; border-radius: var(--radius);
+  font-size: 13px; font-weight: 500; border: 0.5px solid var(--border2);
+  background: none; color: var(--text2); cursor: pointer; font-family: inherit; }
+.tech-view-btn.active { background: var(--text); color: var(--bg); border-color: transparent; }
+.tl-header { display: flex; align-items: center; margin-bottom: 4px; }
+.tl-label-col { font-size: 11px; color: var(--text2); flex-shrink: 0; }
+.tl-date-cols { display: flex; gap: 3px; flex: 1; overflow: hidden; }
+.tl-date-col-hdr { flex: 1; text-align: center; font-size: 9px; color: var(--text2);
+  white-space: nowrap; overflow: hidden; min-width: 0; }
+.tl-row { display: flex; align-items: center; margin-bottom: 4px; }
+.tl-name { font-size: 12px; color: var(--text); flex-shrink: 0;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tl-dots { display: flex; gap: 3px; flex: 1; overflow: hidden; }
+.tl-dot { flex: 1; aspect-ratio: 1; border-radius: 50%; min-width: 0;
+  max-width: 24px; display: flex; align-items: center; justify-content: center; }
+.tl-dot-drill { background: var(--green-bg); }
+.tl-dot-spar  { background: var(--blue-bg); }
+.tl-dot-both  { background: var(--green); }
+.tl-dot-none  { background: var(--bg3); }
+.tl-dot-inner { width: 40%; height: 40%; border-radius: 50%; }
+.tl-dot-drill .tl-dot-inner { background: var(--green); }
+.tl-dot-spar  .tl-dot-inner { background: var(--blue); }
+.tl-dot-both  .tl-dot-inner { background: #fff; }
+.tl-dot-none  .tl-dot-inner { display: none; }
+.tl-meta { font-size: 11px; color: var(--text2); margin-left: 6px;
+  white-space: nowrap; flex-shrink: 0; }
+.tl-legend { display: flex; gap: 12px; margin-top: 10px; flex-wrap: wrap; }
+.tl-legend-item { display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--text2); }
+.tl-legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.tech-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.tech-table th { text-align: left; padding: 4px 6px 8px;
+  color: var(--text2); font-weight: 500; border-bottom: 0.5px solid var(--border); }
+.tech-table td { padding: 7px 6px; border-bottom: 0.5px solid var(--border); vertical-align: middle; }
+.tech-table tr:last-child td { border-bottom: none; }
+.tech-table .num-col { text-align: right; color: var(--text2); }
+.gap-badge { display: inline-block; font-size: 11px; padding: 1px 6px;
+  border-radius: 100px; background: var(--bg3); color: var(--text2); white-space: nowrap; }
+.gap-badge.gap-recent { background: var(--green-bg); color: var(--green-text); }
