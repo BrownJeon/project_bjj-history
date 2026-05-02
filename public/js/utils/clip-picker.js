@@ -86,14 +86,14 @@ function runSearch(pickerId, query) {
     items = items.filter(c =>
       (c.title || '').toLowerCase().includes(q) ||
       (c.url   || '').toLowerCase().includes(q) ||
-      (c.tech_names || []).some(n => (n || '').toLowerCase().includes(q)) ||
+      (c.tech_name || '').toLowerCase().includes(q) ||
       (c.tags || []).some(t => (t || '').toLowerCase().includes(q))
     );
   }
   items = items.slice(0, 10);
 
   const rows = items.map(c => {
-    const techStr = (c.tech_names || []).slice(0, 2).join(', ');
+    const techStr = c.tech_name || '';
     return `<div class="tech-suggest-item" onmousedown="event.preventDefault()" onclick="__clipPickerSelect(${pickerId}, ${c.id})">
       ${platformIcon(c.platform)} ${escapeHtml(c.title || '')}
       ${techStr ? `<span style="font-size:11px;color:var(--text2);margin-left:6px">· ${escapeHtml(techStr)}</span>` : ''}

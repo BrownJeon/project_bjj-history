@@ -5,7 +5,6 @@ import { api, setLoading } from '../core/api.js';
 import { loadAll } from '../core/cache.js';
 import { toast, parseMaybeJson, buildPagination, expandableNote } from '../utils/utils.js';
 import { closeModal } from './navigation.js';
-import { createClipPicker } from '../utils/clip-picker.js';
 import {
   POS_STANDARD, POS_LIST,
   CATEGORY_STANDARD, CATEGORY_LIST,
@@ -15,7 +14,6 @@ import {
 /* ── 필터 상태 ── */
 let refFilter = 'all';
 let techFormTags = [], techFormStarred = false;
-let techFormClipPicker = null;
 let tdCurrentId = null;
 const REF_PAGE_SIZE = 12;
 let refPage = 1;
@@ -141,13 +139,6 @@ export function openTechModal(id){
     techFormTags=[]; techFormStarred=false;
   }
 
-  // 참고영상 picker (선택된 clip ids)
-  const initialClipIds = isEdit
-    ? ((CACHE.techniques.find(x=>x.id===id)?.clips || []).map(c => c.id))
-    : [];
-  const mount = document.getElementById('tech-clip-picker');
-  if (mount) techFormClipPicker = createClipPicker(mount, { selectedIds: initialClipIds });
-
   renderTechFormTags(); updateTechStarBtn();
   document.getElementById('modal-technique').classList.add('show');
 }
@@ -194,8 +185,7 @@ export async function saveTechnique(){
   const catSelect = document.getElementById('tech-category').value;
   const catCustom = document.getElementById('tech-category-custom').value.trim();
   const category = catSelect === '기타' ? (catCustom || '기타') : catSelect;
-  const clipIds = techFormClipPicker ? techFormClipPicker.getSelectedIds() : [];
-  const body={name, pos, category, tags:techFormTags, clip_ids:clipIds, note:document.getElementById('tech-note').value, starred:techFormStarred?1:0};
+  const body={name, pos, category, tags:techFormTags, note:document.getElementById('tech-note').value, starred:techFormStarred?1:0};
   setLoading(true);
   try {
     id ? await api('PUT',`/api/techniques/${id}`,body) : await api('POST','/api/techniques',body);

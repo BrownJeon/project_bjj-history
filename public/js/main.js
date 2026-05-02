@@ -91,7 +91,7 @@ import {
 import {
   renderClips, renderClipFilters, setClipFilter, setClipTechFilter, setClipSearch,
   openClipModal, saveClip, deleteClip, openClipDetail, toggleClipStar,
-  addClipTag, removeClipTag, onClipUrlInput, clipTechSearch, selectClipTech, clearClipTech,
+  addClipTag, removeClipTag, onClipUrlInput, clipTechSearch, selectClipTech,
   clipCdEdit, clipCdDelete,
   analyzeClipVideo,
   clipCurrentId, setClipsPage
@@ -160,7 +160,7 @@ Object.assign(window, {
   // clips
   renderClips, renderClipFilters, setClipFilter, setClipTechFilter, setClipSearch, setClipsPage,
   openClipModal, saveClip, deleteClip, openClipDetail, toggleClipStar,
-  addClipTag, removeClipTag, onClipUrlInput, clipTechSearch, selectClipTech, clearClipTech,
+  addClipTag, removeClipTag, onClipUrlInput, clipTechSearch, selectClipTech,
   clipCdEdit, clipCdDelete,
   analyzeClipVideo,
   // coach

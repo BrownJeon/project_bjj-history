@@ -370,8 +370,10 @@
       <div id="tech-tag-chips" class="chip-group"></div>
     </div>
     <div class="field">
-      <label>참고 영상 <span style="font-size:11px;color:var(--text2)">(참고영상 메뉴에서 선택·등록)</span></label>
-      <div id="tech-clip-picker"></div>
+      <label>참고 영상</label>
+      <div style="font-size:12px;color:var(--text2);padding:8px;background:var(--bg2);border-radius:var(--radius);border:0.5px solid var(--border2)">
+        참고영상 메뉴에서 <strong>이 기술명과 동일한 기술명</strong>으로 등록된 영상이 자동으로 연결됩니다.
+      </div>
     </div>
     <div class="field">
       <div class="field-label-row">
@@ -478,16 +480,16 @@
       <div id="clip-platform-preview" style="display:none;font-size:12px;color:var(--blue);margin-top:4px"></div>
     </div>
     <div class="field">
-      <label>관련 기술 *</label>
+      <label>기술명 *</label>
       <div style="position:relative">
-        <input type="text" id="clip-tech-search" placeholder="기술명 검색..."
+        <input type="text" id="clip-tech-name" placeholder="예: 클로즈드 가드 힙 범프 스윕"
                oninput="clipTechSearch(this.value)" autocomplete="off" style="width:100%">
         <div id="clip-tech-suggest" style="
           position:absolute;top:100%;left:0;right:0;background:var(--bg2);
           border:0.5px solid var(--border2);border-radius:var(--radius);
           max-height:180px;overflow-y:auto;z-index:200;display:none"></div>
       </div>
-      <div id="clip-tech-selected" style="margin-top:6px"></div>
+      <div style="font-size:11px;color:var(--text2);margin-top:4px">기술트리에 등록된 동일 기술명의 카드와 자동 연결됩니다</div>
     </div>
     <div class="field">
       <label>태그</label>

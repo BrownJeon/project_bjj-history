@@ -184,6 +184,24 @@ async function setupDB() {
     )
   `);
 
+  // video_clips.tech_name 컬럼 마이그레이션 (기술명 텍스트 직접 저장)
+  const [[clipTechNameCol]] = await pool.query(
+    `SELECT COLUMN_NAME FROM information_schema.COLUMNS
+     WHERE TABLE_SCHEMA=? AND TABLE_NAME='video_clips' AND COLUMN_NAME='tech_name'`,
+    [process.env.DB_NAME]
+  );
+  if (!clipTechNameCol) {
+    await pool.query("ALTER TABLE video_clips ADD COLUMN tech_name VARCHAR(150) DEFAULT ''");
+    await pool.query("CREATE INDEX idx_video_clips_tech_name ON video_clips(tech_name)");
+    // 기존 tech_id 데이터를 tech_name 으로 백필
+    await pool.query(`
+      UPDATE video_clips vc
+      JOIN techniques t ON vc.tech_id = t.id
+      SET vc.tech_name = t.name
+      WHERE (vc.tech_name IS NULL OR vc.tech_name = '') AND vc.tech_id IS NOT NULL
+    `);
+  }
+
   await pool.query(`
     CREATE TABLE IF NOT EXISTS coach_reports (
       id            INT AUTO_INCREMENT PRIMARY KEY,

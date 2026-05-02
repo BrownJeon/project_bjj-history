@@ -8,11 +8,10 @@ import { consumePendingAdd, refreshAllPickers } from '../utils/clip-picker.js';
 // ── module-level 상태 ──
 let clipSearch     = '';
 let clipFilter     = 'all';  // 'all' | 'star'
-let clipTechFilter = null;   // null | tech_id (number)
+let clipTechFilter = '';     // '' | tech_name (string)
 const CLIPS_PAGE_SIZE = 12;
 let clipsPage = 1;
 let clipFormTags    = [];
-let clipFormTechIds = [];
 export let clipCurrentId = null;
 
 // ── YouTube 유틸 ──
@@ -35,11 +34,6 @@ function getPlatformLabel(platform) {
   return '링크';
 }
 
-function techNameById(id) {
-  const t = (CACHE.techniques || []).find(x => x.id === id);
-  return t ? t.name : null;
-}
-
 // ── 필터 칩 ──
 export function renderClipFilters() {
   const wrap = document.getElementById('clip-filter-chips');
@@ -55,18 +49,13 @@ export function renderClipFilters() {
     chip('★ 즐겨찾기', clipFilter === 'star', "setClipFilter('star')"),
   ];
 
-  // 모든 클립에 연결된 기술 union (중복 제거)
-  const techMap = new Map();
-  (CACHE.clips || []).forEach(c => {
-    const ids   = c.tech_ids   || (c.tech_id ? [c.tech_id] : []);
-    const names = c.tech_names || (c.tech_name ? [c.tech_name] : []);
-    ids.forEach((id, i) => {
-      if (id && !techMap.has(id)) techMap.set(id, names[i] || techNameById(id) || `#${id}`);
-    });
-  });
+  // 영상에 등록된 기술명 union (중복 제거)
+  const names = [...new Set((CACHE.clips || [])
+    .map(c => (c.tech_name || '').trim())
+    .filter(Boolean))].sort();
 
-  const techChips = [...techMap.entries()].map(([id, name]) =>
-    chip(name, clipTechFilter === id, `setClipTechFilter(${id})`)
+  const techChips = names.map(name =>
+    chip(name, clipTechFilter === name, `setClipTechFilter('${name.replace(/'/g, "\\'")}')`)
   );
 
   wrap.innerHTML = [...staticChips, ...techChips].join('');
@@ -79,8 +68,8 @@ export function setClipFilter(f) {
   renderClips();
 }
 
-export function setClipTechFilter(techId) {
-  clipTechFilter = clipTechFilter === techId ? null : techId;
+export function setClipTechFilter(techName) {
+  clipTechFilter = clipTechFilter === techName ? '' : techName;
   clipsPage = 1;
   renderClipFilters();
   renderClips();
@@ -103,16 +92,13 @@ export function renderClips() {
 
   if (clipFilter === 'star') items = items.filter(c => c.starred);
   if (clipTechFilter) {
-    items = items.filter(c => {
-      const ids = c.tech_ids || (c.tech_id ? [c.tech_id] : []);
-      return ids.includes(clipTechFilter);
-    });
+    items = items.filter(c => (c.tech_name || '') === clipTechFilter);
   }
 
   if (clipSearch) {
     items = items.filter(c =>
       (c.title || '').toLowerCase().includes(clipSearch) ||
-      (c.tech_names || []).some(n => (n || '').toLowerCase().includes(clipSearch)) ||
+      (c.tech_name || '').toLowerCase().includes(clipSearch) ||
       (c.description || '').toLowerCase().includes(clipSearch) ||
       (c.tags || []).some(t => t.toLowerCase().includes(clipSearch))
     );
@@ -131,26 +117,23 @@ export function renderClips() {
 }
 
 function renderClipCard(c) {
-  const names = c.tech_names && c.tech_names.length ? c.tech_names
-              : (c.tech_name ? [c.tech_name] : []);
-  const visible = names.slice(0, 3);
-  const hidden  = names.length - visible.length;
-  const techBadges = visible.map(n =>
-    `<span class="tag" style="font-size:11px">⊙ ${n}</span>`
-  ).join(' ') + (hidden > 0 ? `<span class="tag" style="font-size:11px;color:var(--text2)">+${hidden}</span>` : '');
-
-  const starMark = c.starred ? `<span style="color:var(--amber)">★</span>` : '';
+  const techBadge = c.tech_name
+    ? `<span class="tag" style="font-size:11px">⊙ ${c.tech_name}</span>`
+    : '';
 
   return `<div class="card" onclick="openClipDetail(${c.id})" style="cursor:pointer">
     <div style="display:flex;align-items:flex-start;gap:8px">
       <div style="flex:1;min-width:0">
         <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:4px">
-          ${starMark}
           <span style="font-weight:600;font-size:15px">${c.title}</span>
           <span class="tag tag-detail" style="font-size:11px">${getPlatformLabel(c.platform)}</span>
         </div>
-        ${techBadges ? `<div style="display:flex;flex-wrap:wrap;gap:4px">${techBadges}</div>` : ''}
+        ${techBadge ? `<div style="display:flex;flex-wrap:wrap;gap:4px">${techBadge}</div>` : ''}
       </div>
+      <button onclick="event.stopPropagation();toggleClipStar(${c.id})"
+        style="background:none;border:none;cursor:pointer;font-size:22px;color:${c.starred?'var(--amber)':'var(--border2)'};padding:0;line-height:1;flex-shrink:0">
+        ${c.starred?'★':'☆'}
+      </button>
     </div>
   </div>`;
 }
@@ -175,8 +158,7 @@ export async function toggleClipStar(id) {
 
 // ── 추가/수정 모달 ──
 export function openClipModal(id, opts = {}) {
-  clipFormTags    = [];
-  clipFormTechIds = [];
+  clipFormTags = [];
 
   const modal = document.getElementById('modal-clip');
   if (!modal) return;
@@ -186,7 +168,7 @@ export function openClipModal(id, opts = {}) {
   document.getElementById('clip-url').value        = '';
   document.getElementById('clip-title').value      = opts.initialTitle || '';
   document.getElementById('clip-desc').value       = '';
-  document.getElementById('clip-tech-search').value = '';
+  document.getElementById('clip-tech-name').value  = opts.initialTechName || '';
   document.getElementById('clip-tag-input').value  = '';
   document.getElementById('clip-platform-preview').style.display = 'none';
   const starredEl = document.getElementById('clip-starred');
@@ -197,18 +179,17 @@ export function openClipModal(id, opts = {}) {
   if (id) {
     const c = CACHE.clips.find(x => x.id === id);
     if (c) {
-      document.getElementById('clip-url').value   = c.url || '';
-      document.getElementById('clip-title').value = c.title || '';
-      document.getElementById('clip-desc').value  = c.description || '';
+      document.getElementById('clip-url').value      = c.url || '';
+      document.getElementById('clip-title').value    = c.title || '';
+      document.getElementById('clip-desc').value     = c.description || '';
+      document.getElementById('clip-tech-name').value = c.tech_name || '';
       if (starredEl) starredEl.checked = !!c.starred;
-      clipFormTags    = [...(c.tags || [])];
-      clipFormTechIds = [...(c.tech_ids || (c.tech_id ? [c.tech_id] : []))];
+      clipFormTags = [...(c.tags || [])];
       onClipUrlInput(c.url || '');
     }
   }
 
   renderClipFormTags();
-  renderClipTechSelected();
   modal.classList.add('show');
 }
 
@@ -259,7 +240,7 @@ export function onClipUrlInput(v) {
   else                              { el.textContent = '🔗 외부 링크'; el.style.display = 'block'; }
 }
 
-// ── 기술 자동완성 (복수 선택) ──
+// ── 기술명 자동완성 (단일 텍스트, 등록된 기술명만 제안) ──
 export function clipTechSearch(v) {
   const suggest = document.getElementById('clip-tech-suggest');
   if (!suggest) return;
@@ -267,7 +248,6 @@ export function clipTechSearch(v) {
 
   const q = v.toLowerCase();
   const matched = (CACHE.techniques || [])
-    .filter(t => !clipFormTechIds.includes(t.id))
     .filter(t => t.name.toLowerCase().includes(q))
     .slice(0, 10);
   if (!matched.length) { suggest.innerHTML = ''; suggest.style.display = 'none'; return; }
@@ -275,34 +255,17 @@ export function clipTechSearch(v) {
   suggest.innerHTML = matched.map(t => {
     const pos = t.pos ? ` <span style="color:var(--text2);font-size:11px">${t.pos.split(' ')[0]}</span>` : '';
     return `<div class="tech-suggest-item"
-      onclick="selectClipTech(${t.id},'${t.name.replace(/'/g,"\\'")}')">
+      onclick="selectClipTech('${t.name.replace(/'/g,"\\'")}')">
       ${t.name}${pos}
     </div>`;
   }).join('');
   suggest.style.display = 'block';
 }
 
-export function selectClipTech(id, _name) {
-  if (!clipFormTechIds.includes(id)) clipFormTechIds.push(id);
-  document.getElementById('clip-tech-search').value = '';
+export function selectClipTech(name) {
+  document.getElementById('clip-tech-name').value = name;
   const suggest = document.getElementById('clip-tech-suggest');
   if (suggest) { suggest.innerHTML = ''; suggest.style.display = 'none'; }
-  renderClipTechSelected();
-}
-
-export function clearClipTech(techId) {
-  if (techId == null) { clipFormTechIds = []; }
-  else clipFormTechIds = clipFormTechIds.filter(x => x !== techId);
-  renderClipTechSelected();
-}
-
-function renderClipTechSelected() {
-  const el = document.getElementById('clip-tech-selected');
-  if (!el) return;
-  el.innerHTML = clipFormTechIds.map(id => {
-    const name = techNameById(id) || `#${id}`;
-    return `<span class="chip">⊙ ${name}<span class="chip-x" onclick="clearClipTech(${id})">×</span></span>`;
-  }).join('');
 }
 
 // ── 태그 ──
@@ -336,15 +299,16 @@ export async function saveClip() {
   const title = document.getElementById('clip-title').value.trim();
   const desc  = document.getElementById('clip-desc').value.trim();
 
-  if (!title)                   { toast('제목을 입력해주세요'); return; }
-  if (!url)                     { toast('URL을 입력해주세요'); return; }
-  if (!clipFormTechIds.length)  { toast('관련 기술을 1개 이상 선택해주세요'); return; }
+  const techName = document.getElementById('clip-tech-name').value.trim();
+
+  if (!title)    { toast('영상 제목을 입력해주세요'); return; }
+  if (!url)      { toast('URL을 입력해주세요'); return; }
+  if (!techName) { toast('기술명을 입력해주세요'); return; }
 
   const starredEl = document.getElementById('clip-starred');
   const starred = starredEl && starredEl.checked ? 1 : 0;
-  const body = { title, url, description: desc, tech_ids: clipFormTechIds, tags: clipFormTags, starred };
+  const body = { title, url, description: desc, tech_name: techName, tags: clipFormTags, starred };
   const platform = url.includes('youtu') ? 'youtube' : url.includes('instagram') ? 'instagram' : 'other';
-  const tech_names = clipFormTechIds.map(i => techNameById(i)).filter(Boolean);
 
   try {
     let savedId = id ? +id : null;
@@ -352,26 +316,17 @@ export async function saveClip() {
       await api('PUT', `/api/clips/${id}`, body);
       const idx = CACHE.clips.findIndex(c => c.id === +id);
       if (idx !== -1) {
-        CACHE.clips[idx] = {
-          ...CACHE.clips[idx], ...body, platform,
-          tech_ids: [...clipFormTechIds], tech_names, tech_name: tech_names[0] || null,
-          starred
-        };
+        CACHE.clips[idx] = { ...CACHE.clips[idx], ...body, platform, starred };
       }
     } else {
       const { id: newId } = await api('POST', '/api/clips', body);
       savedId = newId;
-      CACHE.clips.unshift({
-        id: newId, ...body, platform,
-        tech_ids: [...clipFormTechIds], tech_names, tech_name: tech_names[0] || null,
-        starred
-      });
+      CACHE.clips.unshift({ id: newId, ...body, platform, starred });
     }
     document.getElementById('modal-clip').classList.remove('show');
     renderClips();
     renderClipFilters();
     refreshAllPickers();
-    // picker 에서 "새 영상 등록"으로 연 경우 자동 선택
     if (savedId) consumePendingAdd(savedId);
   } catch(e) { toast('저장 실패: ' + e.message); }
 }
@@ -398,14 +353,11 @@ export function openClipDetail(id) {
   const starPrefix = c.starred ? '<span style="color:var(--amber);margin-right:6px">★</span>' : '';
   document.getElementById('cd-title').innerHTML = `${starPrefix}${(c.title || '').replace(/</g,'&lt;')}`;
 
-  // 연결 기술 (복수)
+  // 연결 기술명
   const techEl = document.getElementById('cd-tech');
-  const names = c.tech_names && c.tech_names.length ? c.tech_names
-              : (c.tech_name ? [c.tech_name] : []);
-  if (names.length) {
+  if (c.tech_name) {
     techEl.style.display = 'block';
-    const badges = names.map(n => `<span class="tag" style="font-size:12px;margin-right:4px;display:inline-block">⊙ ${n}</span>`).join('');
-    techEl.innerHTML = `<span style="font-size:13px;color:var(--text2)">연결 기술</span><br>${badges}`;
+    techEl.innerHTML = `<span style="font-size:13px;color:var(--text2)">기술명</span><br><span class="tag" style="font-size:12px;display:inline-block">⊙ ${c.tech_name}</span>`;
   } else {
     techEl.style.display = 'none';
   }
