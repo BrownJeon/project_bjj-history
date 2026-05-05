@@ -329,6 +329,9 @@ function buildCalDetailHTML(dateStr, data){
     const dayN = Math.floor((new Date(dateStr)-new Date(start))/(86400000))+1;
     const totalDays = Math.floor((new Date(end)-new Date(start))/(86400000))+1;
     html += `<div class="period-banner"><div class="period-banner-body"><div class="period-banner-clickable" onclick="openEditClass(${c.id})" title="클릭하여 상세/편집"><div class="period-banner-theme">${c.theme||'수업 기간'} <span style="color:var(--text2);font-size:11px">›</span></div><div class="period-banner-range">${fmt(start)} ~ ${fmt(end)} · ${dayN}/${totalDays}일</div></div></div><div style="display:flex;gap:6px"><button class="edit-btn" onclick="openEditClass(${c.id})">수정</button><button class="del-btn" onclick="deleteClass(${c.id})">삭제</button></div></div>`;
+  }
+  // 수련 체크 버튼 — 단일일자/기간 모두에서 표시
+  {
     const trainedStyle = trained ? 'background:var(--green);color:#fff;border-color:var(--green)' : '';
     const trainedLabel = trained ? '&#10003; 오늘 수련했어요' : '+ 오늘 수련 체크';
     html += `<button class="btn-primary" style="margin-bottom:14px;${trainedStyle}" onclick="toggleTrainedDate(${c.id},'${dateStr}')">${trainedLabel}</button>`;
