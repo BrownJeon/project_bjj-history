@@ -184,6 +184,16 @@ async function setupDB() {
     )
   `);
 
+  // video_clips.thumb_url 컬럼 마이그레이션 (썸네일 캐시 URL)
+  const [[clipThumbCol]] = await pool.query(
+    `SELECT COLUMN_NAME FROM information_schema.COLUMNS
+     WHERE TABLE_SCHEMA=? AND TABLE_NAME='video_clips' AND COLUMN_NAME='thumb_url'`,
+    [process.env.DB_NAME]
+  );
+  if (!clipThumbCol) {
+    await pool.query("ALTER TABLE video_clips ADD COLUMN thumb_url VARCHAR(500) DEFAULT ''");
+  }
+
   // video_clips.tech_name 컬럼 마이그레이션 (기술명 텍스트 직접 저장)
   const [[clipTechNameCol]] = await pool.query(
     `SELECT COLUMN_NAME FROM information_schema.COLUMNS

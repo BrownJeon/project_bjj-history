@@ -33,6 +33,16 @@ function getPlatformLabel(platform) {
   if (platform === 'instagram') return 'Instagram';
   return '링크';
 }
+function getPlatformIcon(platform) {
+  if (platform === 'youtube')   return '▶';
+  if (platform === 'instagram') return '📷';
+  return '🔗';
+}
+function getClipThumb(c) {
+  if (c.platform === 'youtube') return getYtThumb(c.url);
+  if (c.thumb_url) return c.thumb_url;
+  return null;
+}
 
 // ── 필터 칩 ──
 export function renderClipFilters() {
@@ -117,24 +127,28 @@ export function renderClips() {
 }
 
 function renderClipCard(c) {
+  const thumb = getClipThumb(c);
+  const icon  = getPlatformIcon(c.platform);
+  const safeIcon = icon.replace(/'/g, "\\'");
+  const thumbHtml = thumb
+    ? `<img class="clip-thumb" src="${thumb}" alt="" onerror="this.outerHTML='<div class=&quot;clip-thumb-placeholder&quot;>${safeIcon}</div>'">`
+    : `<div class="clip-thumb-placeholder">${icon}</div>`;
   const techBadge = c.tech_name
     ? `<span class="tag" style="font-size:11px">⊙ ${c.tech_name}</span>`
     : '';
 
-  return `<div class="card" onclick="openClipDetail(${c.id})" style="cursor:pointer">
-    <div style="display:flex;align-items:flex-start;gap:8px">
-      <div style="flex:1;min-width:0">
-        <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:4px">
-          <span style="font-weight:600;font-size:15px">${c.title}</span>
-          <span class="tag tag-detail" style="font-size:11px">${getPlatformLabel(c.platform)}</span>
-        </div>
-        ${techBadge ? `<div style="display:flex;flex-wrap:wrap;gap:4px">${techBadge}</div>` : ''}
+  return `<div class="clip-card" onclick="openClipDetail(${c.id})">
+    ${thumbHtml}
+    <div class="clip-info">
+      <div class="clip-title">${c.title}</div>
+      <div class="clip-meta">
+        ${techBadge}
+        <span class="clip-platform">${getPlatformLabel(c.platform)}</span>
       </div>
-      <button onclick="event.stopPropagation();toggleClipStar(${c.id})"
-        style="background:none;border:none;cursor:pointer;font-size:22px;color:${c.starred?'var(--amber)':'var(--border2)'};padding:0;line-height:1;flex-shrink:0">
-        ${c.starred?'★':'☆'}
-      </button>
     </div>
+    <button class="clip-star ${c.starred?'starred':''}" onclick="event.stopPropagation();toggleClipStar(${c.id})">
+      ${c.starred?'★':'☆'}
+    </button>
   </div>`;
 }
 
