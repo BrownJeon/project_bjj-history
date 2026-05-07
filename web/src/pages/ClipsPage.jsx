@@ -3,26 +3,14 @@ import { useCache } from '../contexts/CacheContext';
 import { useUI } from '../contexts/UIContext';
 import * as clipsApi from '../api/clips';
 import * as enhanceApi from '../api/enhanceMemo';
+import {
+  getYtThumb, getYtEmbed, getClipThumb,
+  getPlatformIcon, getPlatformLabel,
+} from '../utils/videoThumb';
 
-function getYtId(url) {
-  if (!url) return null;
-  const m = url.match(/(?:youtu\.be\/|[?&]v=|\/embed\/|\/shorts\/)([A-Za-z0-9_-]{11})/);
-  return m ? m[1] : null;
-}
-function getYtThumb(url) {
-  const id = getYtId(url);
-  return id ? `https://img.youtube.com/vi/${id}/mqdefault.jpg` : null;
-}
-function getYtEmbed(url) {
-  const id = getYtId(url);
-  return id ? `https://www.youtube.com/embed/${id}?rel=0` : null;
-}
-function getThumb(c) {
-  if (c.platform === 'youtube') return getYtThumb(c.url);
-  return c.thumb_url || null;
-}
-function platformIcon(p) { return p === 'youtube' ? '▶' : p === 'instagram' ? '📷' : '🔗'; }
-function platformLabel(p) { return p === 'youtube' ? 'YouTube' : p === 'instagram' ? 'Instagram' : '링크'; }
+const platformIcon  = getPlatformIcon;
+const platformLabel = getPlatformLabel;
+const getThumb      = getClipThumb;
 const detectPlatform = u => !u ? 'other' : u.includes('youtu') ? 'youtube' : u.includes('instagram') ? 'instagram' : 'other';
 
 export default function ClipsPage() {

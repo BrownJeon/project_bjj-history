@@ -2,6 +2,9 @@ import React, { useState, useMemo } from 'react';
 import { useCache } from '../contexts/CacheContext';
 import { useUI } from '../contexts/UIContext';
 import * as techApi from '../api/techniques';
+import {
+  getClipThumb, getYtEmbed, getPlatformIcon, getPlatformLabel,
+} from '../utils/videoThumb';
 
 export default function TechniquesPage() {
   const { techniques, reloadTechniques } = useCache();
@@ -73,24 +76,43 @@ export default function TechniquesPage() {
       </div>
       {list.length === 0 ? (
         <div style={{ textAlign: 'center', color: 'var(--text2)', padding: 40 }}>기술이 없습니다</div>
-      ) : list.map(t => (
-        <div key={t.id} className="card" onClick={() => setDetail(t)} style={{ cursor: 'pointer' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-            <div style={{ flex: 1 }}>
-              <div style={{ fontWeight: 600, fontSize: 15, marginBottom: 4 }}>
-                {t.starred && <span style={{ color: 'var(--amber)', marginRight: 6 }}>★</span>}
-                {t.name}
+      ) : list.map(t => {
+        const firstClip = (t.clips || [])[0];
+        const thumb = firstClip ? getClipThumb(firstClip) : null;
+        return (
+          <div key={t.id} className="card" onClick={() => setDetail(t)} style={{ cursor: 'pointer' }}>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+              {firstClip && (
+                thumb ? (
+                  <img src={thumb} alt=""
+                    style={{ width: 80, height: 45, borderRadius: 6, objectFit: 'cover',
+                             flexShrink: 0, background: 'var(--bg2)' }} />
+                ) : (
+                  <div style={{ width: 80, height: 45, borderRadius: 6, background: 'var(--bg2)',
+                                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                fontSize: 18, flexShrink: 0 }}>
+                    {getPlatformIcon(firstClip.platform)}
+                  </div>
+                )
+              )}
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontWeight: 600, fontSize: 15, marginBottom: 4 }}>
+                  {t.starred && <span style={{ color: 'var(--amber)', marginRight: 6 }}>★</span>}
+                  {t.name}
+                </div>
+                {t.pos && <div style={{ fontSize: 12, color: 'var(--text2)', marginBottom: 4 }}>{t.pos}</div>}
+                {(t.clips || []).length > 0 && (
+                  <div style={{ fontSize: 11, color: 'var(--blue)' }}>🎬 {t.clips.length}개 영상 자동 연결</div>
+                )}
               </div>
-              {t.pos && <div style={{ fontSize: 12, color: 'var(--text2)', marginBottom: 4 }}>{t.pos}</div>}
-              {(t.clips || []).length > 0 && <div style={{ fontSize: 11, color: 'var(--blue)' }}>🎬 {t.clips.length}개 영상 자동 연결</div>}
+              <button onClick={e => { e.stopPropagation(); handleStar(t.id); }}
+                style={{ background: 'none', border: 'none', fontSize: 22, color: t.starred ? 'var(--amber)' : 'var(--border2)', cursor: 'pointer' }}>
+                {t.starred ? '★' : '☆'}
+              </button>
             </div>
-            <button onClick={e => { e.stopPropagation(); handleStar(t.id); }}
-              style={{ background: 'none', border: 'none', fontSize: 22, color: t.starred ? 'var(--amber)' : 'var(--border2)', cursor: 'pointer' }}>
-              {t.starred ? '★' : '☆'}
-            </button>
           </div>
-        </div>
-      ))}
+        );
+      })}
       {editing && <TechEditor initial={editing === 'new' ? null : editing}
         onSave={handleSave} onCancel={() => setEditing(null)} />}
       {detail && <TechDetail t={detail}
@@ -144,6 +166,7 @@ function TechEditor({ initial, onSave, onCancel }) {
 }
 
 function TechDetail({ t, onClose, onEdit, onDelete }) {
+  const [activeClip, setActiveClip] = useState(null);
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal" onClick={e => e.stopPropagation()}>
@@ -153,21 +176,99 @@ function TechDetail({ t, onClose, onEdit, onDelete }) {
         </div>
         {t.pos && <div style={{ marginBottom: 8, color: 'var(--text2)' }}>{t.pos}</div>}
         {t.note && <div style={{ marginBottom: 12, whiteSpace: 'pre-wrap' }}>{t.note}</div>}
+
         {(t.clips || []).length > 0 && (
           <div style={{ marginBottom: 12 }}>
-            <div style={{ fontSize: 13, color: 'var(--text2)', marginBottom: 6 }}>참고 영상 ({t.clips.length})</div>
-            {t.clips.map(c => (
-              <a key={c.id} href={c.url} target="_blank" rel="noreferrer"
-                style={{ display: 'block', padding: 8, marginBottom: 6, background: 'var(--bg2)',
-                         borderRadius: 8, textDecoration: 'none', color: 'var(--text)' }}>
-                ▶ {c.title}
-              </a>
-            ))}
+            <div style={{ fontSize: 13, color: 'var(--text2)', marginBottom: 6 }}>
+              참고 영상 ({t.clips.length})
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: 8 }}>
+              {t.clips.map(c => {
+                const thumb = getClipThumb(c);
+                return (
+                  <button key={c.id} onClick={() => setActiveClip(c)}
+                    style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer',
+                             textAlign: 'left' }}>
+                    <div style={{ position: 'relative', width: '100%', aspectRatio: '16 / 9',
+                                  background: 'var(--bg2)', borderRadius: 6, overflow: 'hidden' }}>
+                      {thumb ? (
+                        <img src={thumb} alt={c.title}
+                          style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      ) : (
+                        <div style={{ width: '100%', height: '100%', display: 'flex',
+                                      alignItems: 'center', justifyContent: 'center', fontSize: 24 }}>
+                          {getPlatformIcon(c.platform)}
+                        </div>
+                      )}
+                      <div style={{ position: 'absolute', inset: 0, display: 'flex',
+                                    alignItems: 'center', justifyContent: 'center',
+                                    background: 'rgba(0,0,0,0.15)', color: '#fff', fontSize: 24,
+                                    textShadow: '0 1px 4px rgba(0,0,0,0.5)' }}>▶</div>
+                    </div>
+                    <div style={{ fontSize: 12, fontWeight: 500, marginTop: 4,
+                                  whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+                                  color: 'var(--text)' }}>
+                      {c.title}
+                    </div>
+                    <div style={{ fontSize: 10, color: 'var(--text2)' }}>
+                      {getPlatformLabel(c.platform)}
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
           </div>
         )}
+
         <div className="modal-actions">
           <button className="btn-outline" onClick={onDelete} style={{ color: 'var(--red)' }}>삭제</button>
           <button className="btn-outline" onClick={onEdit}>수정</button>
+          <button className="btn-primary" onClick={onClose}>닫기</button>
+        </div>
+      </div>
+      {activeClip && <TechClipPreview c={activeClip} onClose={() => setActiveClip(null)} />}
+    </div>
+  );
+}
+
+function TechClipPreview({ c, onClose }) {
+  const ytEmbed = c.platform === 'youtube' ? getYtEmbed(c.url) : null;
+  const thumb   = !ytEmbed ? getClipThumb(c) : null;
+  return (
+    <div className="modal-overlay" onClick={onClose} style={{ zIndex: 1100 }}>
+      <div className="modal" onClick={e => e.stopPropagation()}>
+        <div className="modal-title">{c.title}</div>
+        {ytEmbed ? (
+          <div style={{ position: 'relative', width: '100%', aspectRatio: '16 / 9',
+                        marginBottom: 12, borderRadius: 'var(--radius)', overflow: 'hidden',
+                        background: 'var(--bg2)' }}>
+            <iframe src={ytEmbed} title={c.title}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 'none' }} />
+          </div>
+        ) : thumb ? (
+          <a href={c.url} target="_blank" rel="noreferrer"
+            style={{ display: 'block', position: 'relative', width: '100%', aspectRatio: '16 / 9',
+                     marginBottom: 12, borderRadius: 'var(--radius)', overflow: 'hidden',
+                     background: 'var(--bg2)' }}>
+            <img src={thumb} alt={c.title}
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            <div style={{ position: 'absolute', inset: 0, display: 'flex',
+                          alignItems: 'center', justifyContent: 'center',
+                          background: 'rgba(0,0,0,0.25)', color: '#fff', fontSize: 36,
+                          textShadow: '0 1px 4px rgba(0,0,0,0.5)' }}>▶</div>
+          </a>
+        ) : null}
+        <div style={{ fontSize: 13, color: 'var(--text2)', marginBottom: 8 }}>{getPlatformLabel(c.platform)}</div>
+        {c.description && <div style={{ marginBottom: 12, whiteSpace: 'pre-wrap' }}>{c.description}</div>}
+        {c.url && (
+          <a href={c.url} target="_blank" rel="noreferrer"
+            style={{ color: 'var(--blue)', textDecoration: 'none', display: 'inline-block', marginBottom: 12 }}>
+            ▶ 원본 영상 열기 ↗
+          </a>
+        )}
+        <div className="modal-actions">
           <button className="btn-primary" onClick={onClose}>닫기</button>
         </div>
       </div>

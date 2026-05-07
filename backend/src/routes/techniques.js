@@ -9,7 +9,7 @@ async function loadClipsByNames(names) {
   if (!names.length) return new Map();
   const rows = await VideoClip.findAll({
     where: { tech_name: { [Op.in]: names } },
-    attributes: ['id', 'title', 'url', 'platform', 'description', 'starred', 'tech_name'],
+    attributes: ['id', 'title', 'url', 'platform', 'description', 'starred', 'tech_name', 'thumb_url'],
     order: [['starred', 'DESC'], ['id', 'DESC']],
     raw: true,
   });
