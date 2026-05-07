@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>BJJ 훈련 일지</title>
+
+    <!-- 사이트 정체성 -->
+    <meta name="description" content="주짓수(BJJ) 훈련을 체계적으로 기록·분석하는 개인 웹앱. 수업·드릴·스파링·기술 트리·게임플랜·참고영상을 한 곳에서 관리하고 AI 코치/분석으로 약점 진단·개선 제안을 받습니다." />
+    <meta name="keywords" content="주짓수, BJJ, 훈련일지, 스파링 기록, 기술 트리, 게임플랜, AI 코치, 클라이밍 자매 프로젝트" />
+    <meta name="author" content="미라클펭귄" />
+    <meta name="application-name" content="BJJ 훈련 일지" />
+    <meta name="theme-color" content="#1D9E75" />
+    <meta name="color-scheme" content="light dark" />
+
+    <!-- 모바일 앱 룩앤필 -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="BJJ" />
+    <meta name="format-detection" content="telephone=no" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="BJJ 훈련 일지" />
+    <meta property="og:title" content="BJJ 훈련 일지 — 주짓수 개인 훈련 기록·AI 코치" />
+    <meta property="og:description" content="수업·드릴·스파링·기술 트리·게임플랜·참고영상을 한 곳에서 기록하고 AI 코치/분석으로 약점 진단·개선 제안을 받는 주짓수 개인 훈련 웹앱." />
+    <meta property="og:url" content="https://bjj.미라클펭귄.com/" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:image" content="https://bjj.미라클펭귄.com/og-image.png" />
+    <meta property="og:image:alt" content="BJJ 훈련 일지 대시보드 — 캘린더, 기술 트리, 게임플랜, 코치 리포트" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="BJJ 훈련 일지 — 주짓수 개인 훈련 기록·AI 코치" />
+    <meta name="twitter:description" content="수업·드릴·스파링·기술 트리·게임플랜·참고영상을 한 곳에서 기록하고 AI 코치/분석으로 약점 진단·개선 제안을 받는 주짓수 훈련 웹앱." />
+    <meta name="twitter:image" content="https://bjj.미라클펭귄.com/og-image.png" />
+
+    <!-- 외부 폰트 (TheRoute와 동일 패턴) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+
+    <!-- PWA 매니페스트·아이콘 -->
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <!-- 정규 URL -->
+    <link rel="canonical" href="https://bjj.미라클펭귄.com/" />
+  </head>
+  <body>
+    <!--
+      React mount 전 정적 미리보기 — fetch 기반 AI 분석 도구·SEO 봇이 화면 구조를 파악할 수 있도록 마크업.
+      React가 createRoot(root).render() 호출 시 자동 교체되므로 실 사용자에게는 깜빡임 정도.
+    -->
+    <div id="root">
+      <div class="prerender-shell" style="font-family:-apple-system,'Helvetica Neue',sans-serif;color:#1a1a1a;background:#fff;min-height:100vh;display:flex;flex-direction:column">
+        <main style="flex:1;padding:48px 16px 100px;max-width:900px;margin:0 auto;width:100%">
+
+          <header style="margin-bottom:24px">
+            <h1 style="font-size:28px;font-weight:600;letter-spacing:-0.5px;margin:0 0 8px">BJJ 훈련 일지</h1>
+            <p style="margin:0;color:#666;font-size:15px;line-height:1.5">
+              주짓수(BJJ) 훈련을 체계적으로 기록·분석하는 개인 웹앱.
+              수업·드릴·스파링·기술 트리·게임플랜·참고영상을 한 곳에서 관리하고
+              AI 코치/분석으로 약점 진단·개선 제안을 받습니다.
+            </p>
+          </header>
+
+          <section aria-labelledby="features-heading" style="margin-bottom:32px">
+            <h2 id="features-heading" style="font-size:18px;font-weight:600;margin:0 0 12px">주요 화면</h2>
+            <ul style="list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px">
+              <li style="border:0.5px solid rgba(0,0,0,0.12);border-radius:10px;padding:14px;background:#fff">
+                <div style="font-weight:600;font-size:15px;margin-bottom:4px">📅 캘린더</div>
+                <div style="font-size:13px;color:#666">월별 수업·드릴·스파링 기록과 일자별 수련 체크</div>
+              </li>
+              <li style="border:0.5px solid rgba(0,0,0,0.12);border-radius:10px;padding:14px;background:#fff">
+                <div style="font-weight:600;font-size:15px;margin-bottom:4px">🥋 기술 트리</div>
+                <div style="font-size:13px;color:#666">포지션·기술·디테일 카드 관리, 기술명 기반 영상 자동 연결</div>
+              </li>
+              <li style="border:0.5px solid rgba(0,0,0,0.12);border-radius:10px;padding:14px;background:#fff">
+                <div style="font-weight:600;font-size:15px;margin-bottom:4px">🔗 기술 체인</div>
+                <div style="font-size:13px;color:#666">기술 간 전환 흐름과 단계 정의</div>
+              </li>
+              <li style="border:0.5px solid rgba(0,0,0,0.12);border-radius:10px;padding:14px;background:#fff">
+                <div style="font-weight:600;font-size:15px;margin-bottom:4px">🎯 게임플랜</div>
+                <div style="font-size:13px;color:#666">노드·엣지 기반 의사결정 플로우 설계</div>
+              </li>
+              <li style="border:0.5px solid rgba(0,0,0,0.12);border-radius:10px;padding:14px;background:#fff">
+                <div style="font-weight:600;font-size:15px;margin-bottom:4px">🎬 참고영상</div>
+                <div style="font-size:13px;color:#666">YouTube/Instagram 클립 라이브러리 + AI 영상 분석</div>
+              </li>
+              <li style="border:0.5px solid rgba(0,0,0,0.12);border-radius:10px;padding:14px;background:#fff">
+                <div style="font-weight:600;font-size:15px;margin-bottom:4px">🤖 AI 코치</div>
+                <div style="font-size:13px;color:#666">기간 진단 리포트와 다음 주 훈련 포커스 플랜 자동 생성</div>
+              </li>
+            </ul>
+          </section>
+
+          <section aria-labelledby="design-heading" style="margin-bottom:32px;padding:16px;background:#f5f5f5;border-radius:12px">
+            <h2 id="design-heading" style="font-size:16px;font-weight:600;margin:0 0 8px">디자인 / UX 특징</h2>
+            <ul style="margin:0;padding-left:20px;font-size:13px;color:#444;line-height:1.7">
+              <li>모바일 우선 — 갤럭시 S25+ Chrome 폭(~412px) 최적화, 데스크탑 다열 그리드</li>
+              <li>하단 5탭 고정 네비게이션 (캘린더 / 기술 / 체인 / 게임플랜 / 영상)</li>
+              <li>다크모드 자동 (`prefers-color-scheme`)</li>
+              <li>주요 색상 — primary <span style="display:inline-block;width:10px;height:10px;background:#1D9E75;border-radius:2px"></span> #1D9E75 (그린), accent <span style="display:inline-block;width:10px;height:10px;background:#EF9F27;border-radius:2px"></span> #EF9F27 (앰버 — 즐겨찾기)</li>
+              <li>모달 기반 편집 (수업/스파링/기술/영상/게임플랜)</li>
+            </ul>
+          </section>
+
+          <section aria-labelledby="loading-heading" style="text-align:center;padding:24px;color:#999">
+            <h2 id="loading-heading" style="font-size:14px;font-weight:500;margin:0 0 8px">앱 로딩 중…</h2>
+            <p style="margin:0;font-size:12px">JavaScript 활성화 시 자동으로 React 인터페이스가 표시됩니다.</p>
+          </section>
+
+        </main>
+
+        <nav aria-label="주 메뉴" style="position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:0.5px solid rgba(0,0,0,0.12);display:flex;z-index:100">
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;padding:10px 0 8px;color:#1D9E75;font-size:10px;gap:3px">
+            <span style="font-size:18px">📅</span><span>캘린더</span>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;padding:10px 0 8px;color:#666;font-size:10px;gap:3px">
+            <span style="font-size:18px">🥋</span><span>기술</span>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;padding:10px 0 8px;color:#666;font-size:10px;gap:3px">
+            <span style="font-size:18px">🔗</span><span>체인</span>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;padding:10px 0 8px;color:#666;font-size:10px;gap:3px">
+            <span style="font-size:18px">🎯</span><span>게임플랜</span>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;padding:10px 0 8px;color:#666;font-size:10px;gap:3px">
+            <span style="font-size:18px">🎬</span><span>영상</span>
+          </div>
+        </nav>
+      </div>
+    </div>
+
+    <noscript>
+      <div style="padding:24px;font-family:sans-serif;line-height:1.6">
+        <h1 style="margin:0 0 12px">BJJ 훈련 일지</h1>
+        <p>이 앱을 사용하려면 JavaScript를 활성화해 주세요.</p>
+      </div>
+    </noscript>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

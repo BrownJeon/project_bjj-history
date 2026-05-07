@@ -1,0 +1,13 @@
+{
+  "name": "BJJ 훈련 일지",
+  "short_name": "BJJ",
+  "description": "주짓수(BJJ) 훈련을 체계적으로 기록·분석하는 개인 웹앱",
+  "lang": "ko",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1D9E75",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

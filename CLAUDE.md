@@ -1,52 +1,130 @@
 # BJJ 훈련 일지 프로젝트
 
-**주짓수 훈련 기록을 체계적으로 관리하는 개인 웹앱**
+**주짓수 훈련 기록을 체계적으로 관리하는 개인 웹앱** (TheRoute 동일 스택으로 리팩토링)
 
 ## 기술 스택
 
 | 영역 | 기술 |
 |------|------|
-| 백엔드 | Node.js + Express |
-| 프론트엔드 | 바닐라 JS (SPA) |
-| 데이터베이스 | MySQL (192.168.219.154) |
+| 백엔드 | Node.js + Express 4 + **Sequelize 6** (MariaDB) |
+| 프론트엔드 | **React 18 + Vite 5 + react-router-dom v6** |
+| HTTP | axios + 응답 인터셉터 |
+| 상태 관리 | Context API (UIContext / CacheContext) |
+| AI | Claude CLI (`claude --print`) — `~/.claude` 구독 인증 |
+| 영상 | yt-dlp + ffmpeg + Whisper |
+| 프로세스 | pm2 (`bjj` 단일, 포트 3000 — backend가 `/api/*` + SPA 정적 서빙) |
 
-## 빠른 시작
-
-```bash
-cd /home/brownjeon/NFS/homes/brownjeon/project/bjj-trainning
-node server.js   # PORT=3000
-```
-
-- DB: `192.168.219.154`, DB명 `bjj`, 사용자 `bjj_user` (패스워드는 .env)
-- .env 없으면 .env.example 참고해서 생성 필요
-
-## 디렉토리 구조
+## 디렉토리 구조 (리팩토링 후)
 
 ```
 bjj-trainning/
-├── server.js          # Express 앱 진입점 + PORT=3000
-├── db.js              # MySQL pool, setupDB(자동 테이블 생성), fmtDate, safeParse
-├── routes/            # classes, techniques, chains, gameplans, clips, recommend, profile
-└── public/            # 프론트엔드 (SPA)
-    ├── index.html
-    ├── js/
-    │   ├── pages/     # analysis, calendar, chains, class-modal, clips, gameplan, navigation, profile, techniques
-    │   ├── core/      # api.js, cache.js, constants.js
-    │   ├── utils/utils.js
-    │   └── main.js
-    └── css/           # analysis, base, belt, calendar, clips, components, gameplan, techniques
+├── backend/                      # 신규 백엔드 (포트 3001)
+│   ├── package.json
+│   ├── .env
+│   └── src/
+│       ├── index.js              # 진입점
+│       ├── config/db.js          # Sequelize 인스턴스
+│       ├── models/               # 14개 Sequelize 모델
+│       ├── routes/               # 8개 도메인 라우터
+│       ├── services/             # claudeCli, videoAnalysis, thumbnailExtractor, coachAnalytics
+│       ├── middleware/           # errorHandler
+│       └── utils/respond.js      # {success,data,message} 헬퍼
+├── web/                          # 신규 프론트 (Vite + React)
+│   ├── package.json
+│   ├── vite.config.js            # /api → :3001 프록시
+│   ├── index.html
+│   └── src/
+│       ├── main.jsx              # 라우터 + Provider 진입
+│       ├── api/                  # axios 모듈 (clips, techniques, classes, ...)
+│       ├── components/Layout.jsx # 하단 5탭 네비
+│       ├── contexts/             # UIContext, CacheContext
+│       ├── pages/                # 8개 페이지 (Calendar, Techniques, Chains, Gameplan, Clips, Coach, Profile, NotFound)
+│       └── styles/               # tokens.css + app.css
+├── legacy/                       # 구버전 보존 (server.js, db.js, routes/, lib/, public/)
+└── ecosystem.config.js           # pm2 (`bjj` 단일 프로세스, 포트 3000)
 ```
 
-## DB 테이블 목록
+## 빠른 시작
 
-`classes`, `drills`, `spar_days`, `profile`, `belt_history`, `gameplans`, `gameplan_nodes`, `gameplan_edges`, `techniques`, `video_clips`
+운영은 **단일 프로세스** (`bjj`) — backend가 `/api/*` + `web/dist` SPA 동시 서빙, 포트 3000.
 
-- 테이블은 `db.js`의 `setupDB()`가 서버 시작 시 자동 생성/마이그레이션
+```bash
+pm2 restart bjj                # 재시작
+pm2 logs bjj                   # 로그
+```
+
+### 프론트 빌드 (NFS noexec 우회)
+
+**중요**: `web/node_modules`를 NFS에 두면 vite/esbuild/rollup 네이티브 바이너리 실행 차단됨.
+ext4 작업 디렉토리 (`/home/brownjeon/.node-local/bjj-web/work`)에서 빌드 후 `dist`만 NFS로 복사한다.
+
+```bash
+# 최초 1회: ext4에 작업 사본 만들기 (이미 존재)
+cp -r web /home/brownjeon/.node-local/bjj-web/work
+cd /home/brownjeon/.node-local/bjj-web/work
+npm install --no-audit --no-fund
+
+# 코드 변경 후 빌드
+cd /home/brownjeon/.node-local/bjj-web/work
+# (필요 시) src 동기화: rsync -av /home/brownjeon/NFS/homes/brownjeon/project/bjj-trainning/web/src/ ./src/
+npm run build
+cp -r dist /home/brownjeon/NFS/homes/brownjeon/project/bjj-trainning/web/
+pm2 restart bjj
+```
+
+### Dev 서버 (선택)
+
+```bash
+cd /home/brownjeon/.node-local/bjj-web/work
+npm run dev   # http://localhost:5174 (proxy → :3000)
+```
+
+## DB 매핑 (Sequelize)
+
+| 테이블 | 모델 |
+|--------|------|
+| classes / drills / spar_days / spar_sessions | Class / Drill / SparDay / SparSession |
+| techniques / technique_chains / chain_steps | Technique / TechniqueChain / ChainStep |
+| gameplans / gameplan_nodes / gameplan_edges | Gameplan / GameplanNode / GameplanEdge |
+| video_clips / profile / belt_history / coach_reports | VideoClip / Profile / BeltHistory / CoachReport |
+
+- 모든 모델은 `backend/src/models/` 에 정의, `models/index.js` 에서 관계 등록
+- 기존 테이블 그대로 매핑 (`tableName` 명시), 데이터 무손실
+
+## 응답 형식 표준 (신버전)
+
+```json
+{ "success": true,  "data": <result>, "message": "" }
+{ "success": false, "message": "error..." }
+```
+- 프론트 `web/src/api/client.js` 의 axios 인터셉터에서 자동 언래핑
+- 기존 라우트와 호환 위해 `data` 가 없는 응답도 처리
+
+## AI 호출
+
+모든 AI 질의는 `backend/src/services/claudeCli.js` 의 `runClaude(prompt, opts)` 경유.
+StockInvest와 동일한 17개 env 정제(`ANTHROPIC_API_KEY` 포함) → `~/.claude` 구독 fallback. 직렬화 큐 + 3회 재시도 + "Execution error" 자동 감지.
+
+## 알려진 인프라 이슈
+
+- **NFS noexec**: NFS 위에서는 vite/rollup/esbuild 네이티브 바이너리 실행 불가. **빌드는 항상 ext4 작업 디렉토리에서 한 뒤 `dist`만 NFS로 복사** (위 "프론트 빌드" 섹션 참조)
+- 작업 디렉토리: `/home/brownjeon/.node-local/bjj-web/work` (ext4)
+- NFS 위 `web/node_modules`는 두지 않음 (혼란 방지)
 
 ## 코딩 규칙
 
-- 민감 정보는 반드시 `.env`로 관리 (절대 하드코딩 금지)
-- DB 쿼리는 `db.js`의 pool 사용
-- API 에러는 try/catch + 적절한 HTTP 상태코드 반환
+- 민감 정보는 `.env` (절대 하드코딩 금지)
+- DB 쿼리는 Sequelize 모델 사용 (raw query는 `sequelize.query()` 만)
+- API 에러는 미들웨어 자동 처리 (`wrap(handler)` 헬퍼)
+- 프론트 페이지는 함수형 컴포넌트 + hooks
+- 새 AI 호출은 반드시 `services/claudeCli.js` 경유
 
-**현재 상태 및 다음 작업은 memory `project_bjj.md` 참조**
+## 현재 상태 / 다음 작업
+
+리팩토링 Phase 0~5 + 후속 보완 모두 완료 (2026-05-08).
+- 단일 `bjj` pm2 프로세스 (:3000) — backend가 SPA + API 동시 서빙
+- 8개 페이지 React 마이그레이션 완료 (Calendar/Techniques/Chains/Gameplan/Clips/Coach/Profile + Class·Spar·Gameplan 풀 편집기)
+- AI 보완 / 영상 분석 / 코칭 분석 모두 React UI에서 호출 가능
+- 구버전은 `legacy/`에 보존 (필요 시 git history에서 복원, 추후 삭제 결정)
+
+자세한 진행은 memory `project_bjj.md` 참조.

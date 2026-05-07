@@ -1,0 +1,130 @@
+const { spawn } = require('child_process');
+const fs = require('fs/promises');
+const { runClaude } = require('./claudeCli');
+
+function runProcess(cmd, args, timeoutMs = 180000) {
+  return new Promise((resolve, reject) => {
+    const proc = spawn(cmd, args, { timeout: timeoutMs });
+    let err = '', out = '';
+    proc.stdout.on('data', d => { out += d; });
+    proc.stderr.on('data', d => { err += d; });
+    proc.on('error', e => {
+      if (e.code === 'ENOENT') reject(new Error(`${cmd} 명령이 설치되어 있지 않습니다`));
+      else reject(e);
+    });
+    proc.on('close', code => {
+      if (code !== 0) return reject(new Error(err.trim() || `${cmd} 종료 코드: ${code}`));
+      resolve(out);
+    });
+  });
+}
+
+async function hasAudioTrack(videoPath) {
+  try {
+    const out = await runProcess('ffprobe', [
+      '-v', 'error', '-select_streams', 'a',
+      '-show_entries', 'stream=codec_type', '-of', 'csv=p=0',
+      videoPath,
+    ], 10000);
+    return out.trim() === 'audio';
+  } catch { return false; }
+}
+
+async function extractFrames(videoPath, framePrefix, count = 6) {
+  let duration = 30;
+  try {
+    const durOut = await runProcess('ffprobe', [
+      '-v', 'error', '-show_entries', 'format=duration',
+      '-of', 'default=noprint_wrappers=1:nokey=1',
+      videoPath,
+    ], 30000);
+    duration = parseFloat(durOut.trim()) || 30;
+  } catch {}
+  const interval = (duration * 0.9) / count;
+  const start    = duration * 0.05;
+  const frames   = [];
+  for (let i = 0; i < count; i++) {
+    const ts  = (start + interval * i).toFixed(2);
+    const out = `${framePrefix}-frame-${i + 1}.jpg`;
+    await runProcess('ffmpeg', ['-y', '-ss', ts, '-i', videoPath, '-frames:v', '1', '-q:v', '3', out], 30000);
+    frames.push(out);
+  }
+  return frames;
+}
+
+async function getWhisperTranscript(videoPath, audioPath, txtPath) {
+  try {
+    await runProcess('ffmpeg', ['-y', '-i', videoPath, '-vn', '-q:a', '5', audioPath], 60000);
+    await runProcess('whisper', [
+      audioPath, '--model', 'small',
+      '--output_format', 'txt', '--output_dir', '/tmp',
+      '--verbose', 'False',
+    ], 240000);
+    return (await fs.readFile(txtPath, 'utf-8').catch(() => '')).trim();
+  } catch (e) {
+    console.log('[analyze-video] Whisper 스킵:', e.message);
+    return '';
+  }
+}
+
+async function runCombinedAnalysis(videoPath, framePrefix, url, transcript) {
+  const frames = await extractFrames(videoPath, framePrefix, 6);
+  const frameList = frames.map((f, i) => `${i + 1}. ${f}`).join('\n');
+  const snippet = transcript
+    ? (transcript.length > 3500 ? transcript.slice(0, 3500) + '...' : transcript)
+    : '';
+  const transcriptBlock = snippet
+    ? `\n[음성 전사 (참고용, 보조 단서)]\n${snippet}\n`
+    : '\n[음성 전사]\n(없음 — 프레임 이미지 기반으로만 분석)\n';
+
+  const prompt = `당신은 주짓수(BJJ) 전문가입니다. 아래 이미지는 한 BJJ 영상에서 시간 순서대로 추출한 프레임이며, 음성 전사가 있을 수도 있습니다.
+두 정보를 종합해 영상이 다루는 핵심 내용을 2~4줄로 요약해주세요.
+
+[분석 방향]
+- **프레임 이미지(시각 정보)를 주축으로 분석**. 보이는 포지션·자세·기술·전환을 구체적으로 식별
+- 음성 전사는 보조 단서로만 사용. 숫자 카운팅·무의미한 발화는 무시하고, 기술명·포인트가 언급된 경우에만 활용
+- 음성이 없거나 무의미해도 프레임만으로 충분히 요약 가능해야 함
+- 시각과 음성이 상충하면 **시각 정보 우선**
+- BJJ 전문 용어 사용 (사이드 컨트롤, 마운트, 가드, 하프가드, 패스, 스윕, 서브미션 등)
+- 과장 없이 간결하게 (3~6문장)
+- 응답은 평문만 (JSON 래핑·마크다운 헤더 금지)
+
+[응답 형식]
+- 주제가 바뀌면 줄바꿈(빈 줄 1개)으로 구분
+- 항목 나열 시 각 항목을 새 줄에 배치
+
+[영상 URL]
+${url}
+
+[프레임 이미지 파일 경로 — Read 툴로 각 파일을 순서대로 읽어 시각 분석해주세요]
+${frameList}
+${transcriptBlock}`;
+
+  const out = (await runClaude(prompt, { tools: 'Read' })).trim();
+  return { description: out, frames };
+}
+
+async function analyzeVideo(url) {
+  const rand    = Math.random().toString(36).slice(2, 8);
+  const tmpBase = `/tmp/bjj-video-${Date.now()}-${rand}`;
+  const videoPath = `${tmpBase}.mp4`;
+  const audioPath = `${tmpBase}.mp3`;
+  const txtPath   = `${tmpBase}.txt`;
+  let createdFrames = [];
+  try {
+    await runProcess('yt-dlp', ['-f', 'mp4/best', '-o', videoPath, '--no-warnings', url], 120000);
+    const hasAudio = await hasAudioTrack(videoPath);
+    const transcript = hasAudio ? await getWhisperTranscript(videoPath, audioPath, txtPath) : '';
+    console.log('[analyze-video] hasAudio=', hasAudio, 'transcriptLen=', transcript.length, 'url=', url);
+    const { description, frames } = await runCombinedAnalysis(videoPath, tmpBase, url, transcript);
+    createdFrames = frames;
+    return { description, method: transcript ? 'vision+audio' : 'vision' };
+  } finally {
+    for (const ext of ['.mp4', '.mp3', '.txt', '.srt', '.vtt', '.tsv', '.json']) {
+      await fs.unlink(tmpBase + ext).catch(() => {});
+    }
+    for (const f of createdFrames) await fs.unlink(f).catch(() => {});
+  }
+}
+
+module.exports = { analyzeVideo };

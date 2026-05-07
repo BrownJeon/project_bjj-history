@@ -20,45 +20,44 @@
 
 ---
 
-## 기술 스택
+## 기술 스택 (TheRoute 동일 스택으로 리팩토링 완료)
 
 | 영역 | 기술 |
 |------|------|
-| 백엔드 | Node.js + Express |
-| 프론트엔드 | 바닐라 JS (SPA, ES Modules) |
-| 데이터베이스 | MariaDB / MySQL |
+| 백엔드 | Node.js + Express 4 + **Sequelize 6** (MariaDB) |
+| 프론트엔드 | **React 18 + Vite 5 + react-router-dom v6** |
+| HTTP | axios + 응답 인터셉터 |
+| 상태 | Context API (UIContext / CacheContext) |
 | AI | Claude CLI (`claude --print`, sonnet 모델) |
 | 영상 처리 | yt-dlp + ffmpeg + Whisper |
-| 프로세스 관리 | pm2 |
+| 프로세스 관리 | pm2 (`bjj` 구버전 :3000, `bjj-new` 신버전 :3001) |
 
 ---
 
-## 디렉토리 구조
+## 디렉토리 구조 (리팩토링 후)
 
 ```
 bjj-trainning/
-├── server.js          # Express 진입점, PORT=3000
-├── db.js              # MariaDB pool + 자동 테이블 생성/마이그레이션
-├── lib/
-│   └── claude-cli.js  # Claude CLI 공통 래퍼 (env 정제 + 직렬화 + 재시도)
-├── routes/
-│   ├── classes.js     # 수업/드릴/스파링 CRUD
-│   ├── techniques.js  # 기술 카드
-│   ├── chains.js      # 기술 체인
-│   ├── gameplans.js   # 게임플랜 노드/엣지
-│   ├── clips.js       # 참고영상 + 기술 태깅
-│   ├── profile.js     # 프로필/벨트 이력
-│   ├── recommend.js   # AI 기반 기술 추천
-│   ├── enhance-memo.js# AI 메모 보완 + 영상 분석
-│   └── coach.js       # 코치 진단/리포트/플랜
-└── public/
-    ├── index.html
-    ├── js/
-    │   ├── main.js
-    │   ├── core/      # api, cache, constants
-    │   ├── utils/     # utils, clip-picker
-    │   └── pages/     # 페이지별 SPA 모듈
-    └── css/
+├── backend/                      # 신규 백엔드 (Express + Sequelize)
+│   └── src/
+│       ├── index.js              # 진입점 (포트 3001)
+│       ├── config/db.js          # Sequelize 인스턴스
+│       ├── models/               # 14개 Sequelize 모델 + 관계
+│       ├── routes/               # 8개 도메인 라우터
+│       ├── services/             # claudeCli, videoAnalysis, thumbnailExtractor, coachAnalytics
+│       ├── middleware/           # errorHandler
+│       └── utils/respond.js      # 표준 응답 헬퍼
+├── web/                          # 신규 프론트 (Vite + React)
+│   ├── vite.config.js            # /api → :3001 프록시
+│   └── src/
+│       ├── main.jsx              # 라우터 + Provider 진입
+│       ├── api/                  # axios 모듈
+│       ├── components/Layout.jsx # 하단 5탭 네비
+│       ├── contexts/             # UIContext, CacheContext
+│       ├── pages/                # 8개 페이지
+│       └── styles/               # tokens.css + app.css
+├── ecosystem.config.js           # pm2 신구 병행 운영
+├── server.js / db.js / routes/ / public/  # (구버전, Phase 5 정리 예정)
 ```
 
 ---
@@ -88,15 +87,23 @@ PORT=3000
 ```
 
 ### 4. 실행
-```bash
-# 개발
-node server.js
 
-# 운영 (pm2)
-pm2 start server.js --name bjj
-pm2 save
+**신버전 (권장)**:
+```bash
+# 백엔드 (포트 3001)
+cd backend && npm install
+pm2 start ../ecosystem.config.js --only bjj-new
+
+# 프론트 (포트 5174)
+cd web && npm install --ignore-scripts
+npm run dev   # ⚠ NFS noexec 환경에서는 ext4 bind mount 후 실행
 ```
-DB 테이블은 `db.js`의 `setupDB()` 가 서버 시작 시 자동 생성/마이그레이션한다.
+
+**구버전 (병행 운영 중)**:
+```bash
+pm2 start ./server.js --name bjj   # 포트 3000
+```
+DB 테이블은 `db.js`의 `setupDB()` (구버전) 또는 Sequelize 모델 정의 (신버전)로 매핑.
 
 ---
 
