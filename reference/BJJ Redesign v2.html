@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>BJJ 일상기록 — 리디자인</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-font-smoothing:antialiased; }
+  html, body, #root { height:100%; width:100%; overflow:hidden; background:#08090D; }
+  body { font-family: 'Noto Sans KR', -apple-system, sans-serif; word-break: keep-all; overflow-wrap: break-word; }
+  input, textarea, button, select { font-family: inherit; }
+  ::-webkit-scrollbar { width:0; }
+  .anim-in { animation: slideIn 0.25s ease forwards; }
+  @keyframes slideIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" src="ios-frame.jsx"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="bjj-ui.jsx"></script>
+<script type="text/babel" src="bjj-screens-1.jsx"></script>
+<script type="text/babel" src="bjj-screens-2.jsx"></script>
+<script type="text/babel" src="bjj-screens-3.jsx"></script>
+
+<script type="text/babel">
+
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "accentHue": "green",
+  "beltColor": "white",
+  "beltStripes": 2
+}/*EDITMODE-END*/;
+
+function App() {
+  const [screen, setScreen] = React.useState('home');
+  const [classModal, setClassModal] = React.useState(null);
+  const [sparModal, setSparModal] = React.useState(false);
+  const [showMore, setShowMore] = React.useState(false);
+  const [animKey, setAnimKey] = React.useState(0);
+  const [tweaks, setTweak] = useTweaks(TWEAK_DEFAULTS);
+
+  const nav = (id) => {
+    setAnimKey(k => k + 1);
+    setScreen(id);
+  };
+
+  const renderScreen = () => {
+    switch (screen) {
+      case 'home': return <HomeScreen onNav={nav} onOpenClass={setClassModal} onOpenSpar={()=>setSparModal(true)} onOpenMore={()=>setShowMore(true)}/>;
+      case 'cal':  return <CalendarScreen onNav={nav} onOpenClass={setClassModal} onOpenSpar={()=>setSparModal(true)}/>;
+      case 'techplan': return <TechPlanScreen onNav={nav}/>;
+      case 'clips': return <ClipsScreen onNav={nav}/>;
+      case 'coach': return <CoachScreen onNav={nav}/>;
+      default:     return <HomeScreen onNav={nav} onOpenClass={setClassModal} onOpenSpar={()=>setSparModal(true)} onOpenMore={()=>setShowMore(true)}/>;
+    }
+  };
+
+  return (
+    <div style={{ width:'100%', height:'100%', display:'flex', alignItems:'center',
+      justifyContent:'center', background:'#08090D' }}>
+      <IOSDevice width={390} height={844} dark={true}>
+        <div key={animKey} className="anim-in" style={{ width:'100%', height:'100%', position:'relative' }}>
+          {renderScreen()}
+          {classModal && <ClassModal cls={classModal} onClose={()=>setClassModal(null)}/> }
+          {sparModal && <SparModal onClose={()=>setSparModal(false)}/> }
+          {showMore && (
+            <div style={{position:'absolute',inset:0,zIndex:150}}>
+              <MoreScreen onNav={(id)=>{setShowMore(false);nav(id);}} onClose={()=>setShowMore(false)}/>
+            </div>
+          )}
+        </div>
+      </IOSDevice>
+
+      <TweaksPanel title="커스터마이징">
+        <TweakSection label="프로필">
+          <TweakSelect label="벨트" value={tweaks.beltColor}
+            options={[
+              {value:'white',label:'화이트'},
+              {value:'blue',label:'블루'},
+              {value:'purple',label:'퍼플'},
+              {value:'brown',label:'브라운'},
+              {value:'black',label:'블랙'},
+            ]}
+            onChange={v => setTweak('beltColor', v)}/>
+          <TweakSlider label="줄 수" value={tweaks.beltStripes}
+            min={0} max={4} step={1}
+            onChange={v => setTweak('beltStripes', v)}/>
+        </TweakSection>
+        <TweakSection label="테마">
+          <TweakRadio label="포인트 컬러" value={tweaks.accentHue}
+            options={[
+              {value:'green',label:'그린'},
+              {value:'blue',label:'블루'},
+              {value:'purple',label:'퍼플'},
+            ]}
+            onChange={v => setTweak('accentHue', v)}/>
+        </TweakSection>
+      </TweaksPanel>
+    </div>
+  );
+}
+
+// Wait for all scripts to be ready
+function tryRender() {
+  if (window.IOSDevice && window.HomeScreen && window.TechPlanScreen && window.ClipsScreen && window.CoachScreen && window.TweaksPanel) {
+    ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+  } else {
+    setTimeout(tryRender, 80);
+  }
+}
+tryRender();
+
+</script>
+</body>
+</html>

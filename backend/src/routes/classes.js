@@ -18,7 +18,9 @@ router.get('/', wrap(async (_req, res) => {
       raw: true,
     });
     if (drill) {
-      drill.tech      = safeParse(drill.tech, []);
+      drill.tech      = safeParse(drill.tech, []).map(x =>
+        typeof x === 'string' ? x : (x.name || '')
+      );
       drill.detail    = safeParse(drill.detail, []);
       drill.chain_ids = safeParse(drill.chain_ids, []);
       drill.clips     = [];

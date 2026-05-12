@@ -7,7 +7,7 @@ const Drill = sequelize.define('Drill', {
   date:       { type: DataTypes.DATEONLY, allowNull: false },
   date_end:   { type: DataTypes.DATEONLY },
   pos:        { type: DataTypes.STRING(50) },
-  tech:       { type: DataTypes.STRING(100), allowNull: false },
+  tech:       { type: DataTypes.TEXT },
   detail:     { type: DataTypes.STRING(200) },
   stars:      { type: DataTypes.TINYINT, defaultValue: 0 },
   links:      { type: DataTypes.TEXT },

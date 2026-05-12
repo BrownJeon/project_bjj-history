@@ -1,12 +1,13 @@
 import React from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
+import Icon from './Icon';
 
 const tabs = [
-  { to: '/',          label: '캘린더', icon: '📅', end: true },
-  { to: '/techniques',label: '기술',   icon: '🥋' },
-  { to: '/chains',    label: '체인',   icon: '🔗' },
-  { to: '/gameplan',  label: '게임플랜', icon: '🎯' },
-  { to: '/clips',     label: '영상',   icon: '🎬' },
+  { to: '/',         label: '홈',       icon: 'home',     end: true },
+  { to: '/calendar', label: '캘린더',   icon: 'calendar' },
+  { to: '/techplan', label: '기술',     icon: 'book' },
+  { to: '/clips',    label: '영상',     icon: 'video' },
+  { to: '/coach',    label: '분석',     icon: 'brain' },
 ];
 
 export default function Layout() {
@@ -18,11 +19,22 @@ export default function Layout() {
       <nav className="nav">
         {tabs.map(t => (
           <NavLink
-            key={t.to} to={t.to} end={t.end}
+            key={t.to}
+            to={t.to}
+            end={t.end}
             className={({ isActive }) => `nav-item${isActive ? ' active' : ''}`}
           >
-            <span style={{ fontSize: 18 }}>{t.icon}</span>
-            <span>{t.label}</span>
+            {({ isActive }) => (
+              <>
+                <Icon
+                  name={t.icon}
+                  size={21}
+                  color={isActive ? 'var(--accent)' : 'var(--text3)'}
+                  filled={isActive}
+                />
+                <span>{t.label}</span>
+              </>
+            )}
           </NavLink>
         ))}
       </nav>

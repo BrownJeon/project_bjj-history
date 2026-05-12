@@ -9,10 +9,9 @@ import Layout from './components/Layout';
 import { UIProvider } from './contexts/UIContext';
 import { CacheProvider } from './contexts/CacheContext';
 
+import HomePage from './pages/HomePage';
 import CalendarPage from './pages/CalendarPage';
-import TechniquesPage from './pages/TechniquesPage';
-import ChainsPage from './pages/ChainsPage';
-import GameplanPage from './pages/GameplanPage';
+import TechPlanPage from './pages/TechPlanPage';
 import ClipsPage from './pages/ClipsPage';
 import CoachPage from './pages/CoachPage';
 import ProfilePage from './pages/ProfilePage';
@@ -25,14 +24,13 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <CacheProvider>
           <Routes>
             <Route element={<Layout />}>
-              <Route path="/"           element={<CalendarPage />} />
-              <Route path="/techniques" element={<TechniquesPage />} />
-              <Route path="/chains"     element={<ChainsPage />} />
-              <Route path="/gameplan"   element={<GameplanPage />} />
-              <Route path="/clips"      element={<ClipsPage />} />
-              <Route path="/coach"      element={<CoachPage />} />
-              <Route path="/me"         element={<ProfilePage />} />
-              <Route path="*"           element={<NotFoundPage />} />
+              <Route path="/"          element={<HomePage />} />
+              <Route path="/calendar"  element={<CalendarPage />} />
+              <Route path="/techplan"  element={<TechPlanPage />} />
+              <Route path="/clips"     element={<ClipsPage />} />
+              <Route path="/coach"     element={<CoachPage />} />
+              <Route path="/me"        element={<ProfilePage />} />
+              <Route path="*"          element={<NotFoundPage />} />
             </Route>
           </Routes>
         </CacheProvider>

@@ -10,6 +10,7 @@ const VideoClip = sequelize.define('VideoClip', {
   tech_id:     { type: DataTypes.INTEGER },
   tech_name:   { type: DataTypes.STRING(150), defaultValue: '' },
   thumb_url:   { type: DataTypes.STRING(500), defaultValue: '' },
+  frames:      { type: DataTypes.TEXT, defaultValue: '[]' },  // AI 분석 캡처 경로 배열
   tags:        { type: DataTypes.TEXT, defaultValue: '[]' },
   starred:     { type: DataTypes.TINYINT, defaultValue: 0 },
   created_at:  { type: DataTypes.DATE, defaultValue: DataTypes.NOW },

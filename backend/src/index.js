@@ -51,9 +51,21 @@ async function start() {
     await testConnection();
     console.log('[db] connected');
     app.listen(PORT, () => console.log(`[bjj-new] listening on :${PORT}`));
+    // video_clips.frames 컬럼 마이그레이션 (AI 분석 캡처 경로)
+    const { sequelize: sq } = require('./config/db');
+    await sq.query(
+      `ALTER TABLE video_clips ADD COLUMN IF NOT EXISTS frames TEXT DEFAULT '[]'`
+    ).catch(() => {});
+    // drills.tech 컬럼 TEXT로 확장 (성공여부 포함 JSON 객체 저장)
+    await sq.query(
+      `ALTER TABLE drills MODIFY COLUMN tech TEXT`
+    ).catch(() => {});
     // 영상 썸네일 백그라운드 백필 (서버 안정 후 5초 뒤 시작)
     const { backfillThumbs } = require('./services/thumbnailExtractor');
     setTimeout(backfillThumbs, 5000);
+    // 주간 코치 리포트·플랜 자동 생성 (매주 일요일 06:00)
+    const { scheduleWeeklyCron } = require('./services/coachCron');
+    scheduleWeeklyCron();
   } catch (e) {
     console.error('[startup] failed', e);
     process.exit(1);

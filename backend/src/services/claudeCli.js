@@ -66,8 +66,12 @@ async function runClaude(prompt, opts = {}) {
         return await runClaudeOnce(prompt, { tools, timeoutMs });
       } catch (e) {
         const msg = e instanceof Error ? e.message : String(e);
-        if (tries < 2 && msg.includes('Execution error')) {
-          await new Promise(r => setTimeout(r, 300 + tries * 500));
+        // Execution error, exit 1, 일시적 실패 → 재시도
+        const isRetryable = msg.includes('Execution error')
+          || msg.includes('종료 코드: 1')
+          || msg.includes('exit 1');
+        if (tries < 2 && isRetryable) {
+          await new Promise(r => setTimeout(r, 1000 + tries * 1000));
           continue;
         }
         throw e;

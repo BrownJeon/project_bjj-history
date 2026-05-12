@@ -4,6 +4,10 @@ import { useUI } from '../contexts/UIContext';
 import * as classesApi from '../api/classes';
 import ClassEditor from './ClassEditPage';
 import SparEditor from './SparEditPage';
+import Card from '../components/Card';
+import Tag from '../components/Tag';
+import Icon from '../components/Icon';
+import Button from '../components/Button';
 
 function pad(n) { return String(n).padStart(2, '0'); }
 function todayStr() {
@@ -11,14 +15,17 @@ function todayStr() {
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 }
 
+const TYPE_TONE = { gi: 'accent', nogi: 'blue', open: 'purple', comp: 'amber' };
+const TYPE_LABEL = { gi: 'Gi', nogi: 'No-Gi', open: '오픈매트', comp: '대회' };
+
 export default function CalendarPage() {
   const { classes, reloadClasses } = useCache();
   const { showToast, setLoading } = useUI();
   const [year, setYear]   = useState(new Date().getFullYear());
   const [month, setMonth] = useState(new Date().getMonth());
-  const [selected, setSelected] = useState(null);
-  const [editingClass, setEditingClass] = useState(null);   // 'new' | class object
-  const [editingSpar, setEditingSpar]   = useState(null);   // { classId, sparDay }
+  const [selected, setSelected] = useState(todayStr());
+  const [editingClass, setEditingClass] = useState(null);
+  const [editingSpar, setEditingSpar]   = useState(null);
 
   const dataByDate = useMemo(() => {
     const map = new Map();
@@ -50,6 +57,22 @@ export default function CalendarPage() {
     return result;
   }, [year, month, dataByDate]);
 
+  // 월 요약
+  const monthSummary = useMemo(() => {
+    const prefix = `${year}-${pad(month + 1)}`;
+    let cls = 0, trained = 0, spar = 0;
+    classes.forEach(c => {
+      const date = (c.date || '').toString().slice(0, 10);
+      if (date.startsWith(prefix)) cls++;
+      (c.trained_dates || []).forEach(d => { if ((d || '').toString().slice(0, 10).startsWith(prefix)) trained++; });
+      (c.spar_days || []).forEach(sd => {
+        const ds = (sd.date || '').toString().slice(0, 10);
+        if (ds.startsWith(prefix)) spar += (sd.sessions || []).length;
+      });
+    });
+    return { cls, trained, spar };
+  }, [classes, year, month]);
+
   function changeMonth(delta) {
     const m = month + delta;
     if (m < 0) { setYear(year - 1); setMonth(11); }
@@ -68,50 +91,173 @@ export default function CalendarPage() {
   }
 
   const td = todayStr();
+  const dayLabels = ['일', '월', '화', '수', '목', '금', '토'];
+  const selectedItems = selected ? (dataByDate.get(selected) || []) : [];
 
   return (
     <div>
-      <div className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <span>캘린더</span>
-        <button className="btn-sm" onClick={() => setEditingClass('new')}>+ 수업 추가</button>
+      {/* 헤더 */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+        <span style={{ fontSize: 22, fontWeight: 800, letterSpacing: '-0.5px' }}>캘린더</span>
+        <Button size="sm" variant="outline" onClick={() => setEditingClass('new')}>+ 수업 추가</Button>
       </div>
+
+      {/* 월 네비 */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
-        <button className="btn-sm" onClick={() => changeMonth(-1)}>‹</button>
-        <span style={{ fontWeight: 600 }}>{year}년 {month + 1}월</span>
-        <button className="btn-sm" onClick={() => changeMonth(+1)}>›</button>
+        <button
+          onClick={() => changeMonth(-1)}
+          style={{ background: 'var(--surface-up)', border: '1px solid var(--border)', borderRadius: 8, padding: 6, cursor: 'pointer', display: 'inline-flex' }}
+        >
+          <Icon name="chevL" size={16} color="var(--text)" />
+        </button>
+        <span style={{ fontSize: 16, fontWeight: 700 }}>{year}년 {month + 1}월</span>
+        <button
+          onClick={() => changeMonth(+1)}
+          style={{ background: 'var(--surface-up)', border: '1px solid var(--border)', borderRadius: 8, padding: 6, cursor: 'pointer', display: 'inline-flex' }}
+        >
+          <Icon name="chevR" size={16} color="var(--text)" />
+        </button>
       </div>
 
+      {/* 캘린더 그리드 */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 4, marginBottom: 16 }}>
-        {['일','월','화','수','목','금','토'].map(d => (
-          <div key={d} style={{ textAlign: 'center', fontSize: 11, color: 'var(--text2)', padding: 4 }}>{d}</div>
+        {dayLabels.map(d => (
+          <div key={d} style={{ textAlign: 'center', fontSize: 11, color: 'var(--text3)', padding: 4 }}>{d}</div>
         ))}
-        {cells.map((cell, i) => cell ? (
-          <button key={i} onClick={() => setSelected(cell.ds)}
-            style={{
-              aspectRatio: '1', display: 'flex', flexDirection: 'column',
-              alignItems: 'center', justifyContent: 'center',
-              background: cell.ds === td ? 'var(--green-bg)' : 'var(--bg)',
-              border: cell.hasClass ? '0.5px solid var(--green)' : '0.5px solid var(--border)',
-              borderRadius: 8, padding: 4, cursor: 'pointer',
-              color: 'var(--text)', fontSize: 13,
-            }}>
-            <div style={{ fontWeight: cell.hasClass ? 600 : 400 }}>{cell.day}</div>
-            {cell.trained && <span style={{ fontSize: 10, color: 'var(--green)' }}>✓</span>}
-          </button>
-        ) : <div key={i} />)}
+        {cells.map((cell, i) => {
+          if (!cell) return <div key={i} />;
+          const isToday = cell.ds === td;
+          const isSelected = cell.ds === selected;
+          let bg = 'transparent';
+          let color = 'var(--text)';
+          let border = '1px solid transparent';
+          if (isSelected) { bg = 'var(--accent)'; color = '#fff'; border = 'none'; }
+          else if (isToday) { bg = 'var(--accent-dim)'; }
+          else if (cell.trained) { bg = 'var(--surface-up)'; }
+          if (cell.hasClass && !isSelected) {
+            border = '1px solid rgba(29,158,117,0.5)';
+          }
+          return (
+            <button
+              key={i}
+              onClick={() => setSelected(cell.ds)}
+              style={{
+                aspectRatio: '1',
+                position: 'relative',
+                display: 'flex', flexDirection: 'column',
+                alignItems: 'center', justifyContent: 'center',
+                background: bg, color,
+                border, borderRadius: 10,
+                padding: 4, cursor: 'pointer',
+                fontSize: 13,
+                fontWeight: cell.hasClass ? 600 : 500,
+              }}
+            >
+              <div>{cell.day}</div>
+              {cell.trained && !isSelected && (
+                <div style={{
+                  position: 'absolute', bottom: 4, left: '50%', transform: 'translateX(-50%)',
+                  width: 4, height: 4, borderRadius: '50%', background: 'var(--accent)',
+                }} />
+              )}
+            </button>
+          );
+        })}
       </div>
 
+      {/* 월 요약 */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8, marginBottom: 16 }}>
+        <SummaryCell label="수업" value={monthSummary.cls} color="var(--accent)" />
+        <SummaryCell label="수련일" value={monthSummary.trained} color="var(--blue)" />
+        <SummaryCell label="스파링" value={monthSummary.spar} color="var(--red)" />
+      </div>
+
+      {/* 선택일 상세 */}
       {selected && (
-        <DateSheet
-          date={selected}
-          items={dataByDate.get(selected) || []}
-          onClose={() => setSelected(null)}
-          onToggleTrain={toggleTrain}
-          onEditClass={c => { setEditingClass(c); setSelected(null); }}
-          onAddSpar={c => { setEditingSpar({ classId: c.id, sparDay: { date: selected } }); setSelected(null); }}
-          onEditSpar={(c, sd) => { setEditingSpar({ classId: c.id, sparDay: sd }); setSelected(null); }}
-        />
+        <div>
+          <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 8 }}>
+            {(() => {
+              const d = new Date(selected + 'T00:00:00');
+              return `${d.getMonth() + 1}월 ${d.getDate()}일 (${dayLabels[d.getDay()]})`;
+            })()}
+          </div>
+          {selectedItems.length === 0 ? (
+            <Card style={{ textAlign: 'center', color: 'var(--text2)', padding: 24 }}>
+              이 날짜의 기록이 없습니다
+            </Card>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {selectedItems.map(c => {
+                const trained = (c.trained_dates || []).includes(selected);
+                const sparOnDay = (c.spar_days || []).find(sd => (sd.date || '').toString().slice(0, 10) === selected);
+                const tone = TYPE_TONE[c.type] || 'accent';
+                const label = TYPE_LABEL[c.type] || 'Gi';
+                return (
+                  <Card key={c.id}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8, flexWrap: 'wrap' }}>
+                      <Tag tone={tone}>{label}</Tag>
+                      <span style={{ flex: 1, fontSize: 14, fontWeight: 700 }}>{c.theme || '수업'}</span>
+                      <button
+                        onClick={() => setEditingClass(c)}
+                        style={{ background: 'transparent', border: '1px solid var(--border-med)', color: 'var(--text2)', borderRadius: 6, padding: '4px 8px', fontSize: 11, cursor: 'pointer' }}
+                      >
+                        수정
+                      </button>
+                    </div>
+                    {c.drill && (c.drill.pos || (c.drill.tech || []).length > 0) && (
+                      <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', marginBottom: 10 }}>
+                        {c.drill.pos && <Tag tone="blue">{c.drill.pos}</Tag>}
+                        {(c.drill.tech || []).map((t, i) => (
+                          <span key={i} style={{
+                            padding: '2px 8px', borderRadius: 6,
+                            background: 'var(--surface-hi)', color: 'var(--text2)',
+                            fontSize: 11, fontWeight: 500,
+                          }}>{typeof t === 'string' ? t : t.name}</span>
+                        ))}
+                      </div>
+                    )}
+                    <div style={{ display: 'flex', gap: 6 }}>
+                      <button
+                        onClick={() => toggleTrain(c, selected)}
+                        style={{
+                          flex: 1,
+                          padding: '8px 10px',
+                          border: trained ? 'none' : '1px solid var(--border-med)',
+                          background: trained ? 'var(--accent)' : 'transparent',
+                          color: trained ? '#fff' : 'var(--text)',
+                          borderRadius: 10,
+                          fontSize: 12, fontWeight: 600, cursor: 'pointer',
+                          display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 4,
+                        }}
+                      >
+                        <Icon name={trained ? 'check' : 'plus'} size={14} color={trained ? '#fff' : 'var(--text)'} />
+                        {trained ? '오늘 수련함' : '수련 체크'}
+                      </button>
+                      <button
+                        onClick={() => setEditingSpar({ classId: c.id, sparDay: sparOnDay || { date: selected } })}
+                        style={{
+                          flex: 1,
+                          padding: '8px 10px',
+                          border: '1px solid var(--border-med)',
+                          background: sparOnDay ? 'var(--red-dim)' : 'transparent',
+                          color: sparOnDay ? 'var(--red)' : 'var(--text)',
+                          borderRadius: 10,
+                          fontSize: 12, fontWeight: 600, cursor: 'pointer',
+                          display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 4,
+                        }}
+                      >
+                        <Icon name="sparring" size={14} color={sparOnDay ? 'var(--red)' : 'var(--text)'} />
+                        {sparOnDay ? `스파링 ${(sparOnDay.sessions || []).length}` : '스파링 추가'}
+                      </button>
+                    </div>
+                  </Card>
+                );
+              })}
+            </div>
+          )}
+        </div>
       )}
+
       {editingClass && (
         <ClassEditor
           initial={editingClass === 'new' ? null : editingClass}
@@ -131,51 +277,17 @@ export default function CalendarPage() {
   );
 }
 
-function DateSheet({ date, items, onClose, onToggleTrain, onEditClass, onAddSpar, onEditSpar }) {
-  const d = new Date(date + 'T00:00:00');
-  const days = ['일','월','화','수','목','금','토'];
+function SummaryCell({ label, value, color }) {
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal" onClick={e => e.stopPropagation()}>
-        <div className="modal-title">
-          {d.getMonth() + 1}월 {d.getDate()}일 ({days[d.getDay()]})
-        </div>
-        {items.length === 0 ? (
-          <div style={{ color: 'var(--text2)', textAlign: 'center', padding: 20 }}>이 날짜의 기록이 없습니다</div>
-        ) : items.map(c => {
-          const trained = (c.trained_dates || []).includes(date);
-          const sparOnDay = (c.spar_days || []).find(sd => (sd.date || '').toString().slice(0, 10) === date);
-          return (
-            <div key={c.id} className="card" style={{ marginBottom: 12 }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
-                <div style={{ fontWeight: 600 }}>{c.theme || '수업'}</div>
-                <button className="btn-sm" onClick={() => onEditClass(c)}>수정</button>
-              </div>
-              {c.drill && <div style={{ fontSize: 13, color: 'var(--text2)', marginBottom: 6 }}>
-                {c.drill.pos && <span>📍 {c.drill.pos} · </span>}
-                {(c.drill.tech || []).join(', ')}
-              </div>}
-              <button className={trained ? 'btn-primary' : 'btn-outline'}
-                onClick={() => onToggleTrain(c, date)}
-                style={{ width: '100%', marginBottom: 8 }}>
-                {trained ? '✓ 오늘 수련했어요' : '+ 오늘 수련 체크'}
-              </button>
-              {sparOnDay ? (
-                <button className="btn-outline" onClick={() => onEditSpar(c, sparOnDay)} style={{ width: '100%' }}>
-                  🥋 스파링 ({(sparOnDay.sessions || []).length}세션) 보기/수정
-                </button>
-              ) : (
-                <button className="btn-outline" onClick={() => onAddSpar(c)} style={{ width: '100%' }}>
-                  + 스파링 추가
-                </button>
-              )}
-            </div>
-          );
-        })}
-        <div className="modal-actions">
-          <button className="btn-primary" onClick={onClose}>닫기</button>
-        </div>
-      </div>
+    <div style={{
+      background: 'var(--surface)',
+      border: '1px solid var(--border)',
+      borderRadius: 12,
+      padding: 12,
+      textAlign: 'center',
+    }}>
+      <div style={{ fontSize: 18, fontWeight: 800, color }}>{value}</div>
+      <div style={{ fontSize: 11, color: 'var(--text2)', marginTop: 2 }}>{label}</div>
     </div>
   );
 }

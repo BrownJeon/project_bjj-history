@@ -1,21 +1,46 @@
 :root {
-  --bg: #ffffff; --bg2: #f5f5f5; --bg3: #ebebeb;
-  --text: #1a1a1a; --text2: #666666;
-  --border: rgba(0,0,0,0.12); --border2: rgba(0,0,0,0.22);
-  --radius: 10px; --radius-lg: 14px;
-  --green: #1D9E75; --green-bg: #E1F5EE; --green-text: #085041;
-  --red: #D85A30; --red-bg: #FAECE7; --red-text: #712B13;
-  --blue: #378ADD; --blue-bg: #E6F1FB; --blue-text: #0C447C;
-  --amber: #EF9F27;
-  --safe-bottom: env(safe-area-inset-bottom, 0px);
-}
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #1c1c1e; --bg2: #2c2c2e; --bg3: #3a3a3c;
-    --text: #f2f2f7; --text2: #8e8e93;
-    --border: rgba(255,255,255,0.1); --border2: rgba(255,255,255,0.2);
-    --green-bg: #04342C; --green-text: #9FE1CB;
-    --red-bg: #4A1B0C; --red-text: #F5C4B3;
-    --blue-bg: #042C53; --blue-text: #B5D4F4;
-  }
+  /* 배경 계층 */
+  --bg:           #0C0D12;
+  --surface:      #15171E;
+  --surface-up:   #1C1F28;
+  --surface-hi:   #242836;
+
+  /* 테두리 */
+  --border:       rgba(255,255,255,0.06);
+  --border-med:   rgba(255,255,255,0.10);
+
+  /* 텍스트 */
+  --text:         #EEEEF2;
+  --text2:        #7C8098;
+  --text3:        #4A4E64;
+
+  /* 포인트 컬러 (그린) */
+  --accent:       #1D9E75;
+  --accent-lt:    #25C490;
+  --accent-dim:   rgba(29,158,117,0.12);
+  --accent-glow:  rgba(29,158,117,0.25);
+
+  /* 시맨틱 */
+  --red:          #E05A47;
+  --red-dim:      rgba(224,90,71,0.12);
+  --blue:         #4B8FE2;
+  --blue-dim:     rgba(75,143,226,0.12);
+  --amber:        #F0A830;
+  --amber-dim:    rgba(240,168,48,0.12);
+  --purple:       #8B6CE7;
+  --purple-dim:   rgba(139,108,231,0.12);
+
+  /* 라운딩 */
+  --radius:       10px;
+  --radius-lg:    14px;
+  --radius-xl:    16px;
+
+  /* 벨트 */
+  --belt-white:   #E0E0E0;
+  --belt-blue:    #1565C0;
+  --belt-purple:  #7B1FA2;
+  --belt-brown:   #795548;
+  --belt-black:   #212121;
+
+  --safe-bottom:  env(safe-area-inset-bottom, 0px);
 }

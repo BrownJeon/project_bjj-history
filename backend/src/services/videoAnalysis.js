@@ -1,5 +1,7 @@
 const { spawn } = require('child_process');
-const fs = require('fs/promises');
+const fs   = require('fs/promises');
+const fsSync = require('fs');
+const path = require('path');
 const { runClaude } = require('./claudeCli');
 
 function runProcess(cmd, args, timeoutMs = 180000) {
@@ -30,7 +32,7 @@ async function hasAudioTrack(videoPath) {
   } catch { return false; }
 }
 
-async function extractFrames(videoPath, framePrefix, count = 6) {
+async function extractFrames(videoPath, framePrefix) {
   let duration = 30;
   try {
     const durOut = await runProcess('ffprobe', [
@@ -40,12 +42,14 @@ async function extractFrames(videoPath, framePrefix, count = 6) {
     ], 30000);
     duration = parseFloat(durOut.trim()) || 30;
   } catch {}
+  // 90초 미만 → 12장, 90초 이상 → 15장 (최대 15장)
+  const count    = duration >= 90 ? 15 : 12;
   const interval = (duration * 0.9) / count;
   const start    = duration * 0.05;
   const frames   = [];
   for (let i = 0; i < count; i++) {
     const ts  = (start + interval * i).toFixed(2);
-    const out = `${framePrefix}-frame-${i + 1}.jpg`;
+    const out = `${framePrefix}-${i + 1}.jpg`;
     await runProcess('ffmpeg', ['-y', '-ss', ts, '-i', videoPath, '-frames:v', '1', '-q:v', '3', out], 30000);
     frames.push(out);
   }
@@ -68,7 +72,7 @@ async function getWhisperTranscript(videoPath, audioPath, txtPath) {
 }
 
 async function runCombinedAnalysis(videoPath, framePrefix, url, transcript) {
-  const frames = await extractFrames(videoPath, framePrefix, 6);
+  const frames = await extractFrames(videoPath, framePrefix);
   const frameList = frames.map((f, i) => `${i + 1}. ${f}`).join('\n');
   const snippet = transcript
     ? (transcript.length > 3500 ? transcript.slice(0, 3500) + '...' : transcript)
@@ -104,26 +108,48 @@ ${transcriptBlock}`;
   return { description: out, frames };
 }
 
-async function analyzeVideo(url) {
+// clipId 있으면 프레임을 영구 저장, 없으면 임시 파일로 처리 후 삭제
+async function analyzeVideo(url, clipId = null) {
   const rand    = Math.random().toString(36).slice(2, 8);
   const tmpBase = `/tmp/bjj-video-${Date.now()}-${rand}`;
   const videoPath = `${tmpBase}.mp4`;
   const audioPath = `${tmpBase}.mp3`;
   const txtPath   = `${tmpBase}.txt`;
+
+  // clipId가 있으면 프레임 저장 디렉토리 준비
+  const persistDir = clipId
+    ? path.resolve(__dirname, '../../../public/uploads/clip-frames', String(clipId))
+    : null;
+  if (persistDir) fsSync.mkdirSync(persistDir, { recursive: true });
+
+  const framePrefix = persistDir
+    ? path.join(persistDir, 'frame')
+    : tmpBase;
+
   let createdFrames = [];
   try {
-    await runProcess('yt-dlp', ['-f', 'mp4/best', '-o', videoPath, '--no-warnings', url], 120000);
-    const hasAudio = await hasAudioTrack(videoPath);
+    await runProcess('yt-dlp', ['-f', 'mp4/best', '-o', videoPath, '--no-warnings', url], 300000); // 5분
+    const hasAudio   = await hasAudioTrack(videoPath);
     const transcript = hasAudio ? await getWhisperTranscript(videoPath, audioPath, txtPath) : '';
-    console.log('[analyze-video] hasAudio=', hasAudio, 'transcriptLen=', transcript.length, 'url=', url);
-    const { description, frames } = await runCombinedAnalysis(videoPath, tmpBase, url, transcript);
+    console.log('[analyze-video] hasAudio=', hasAudio, 'transcriptLen=', transcript.length, 'clipId=', clipId, 'url=', url);
+
+    const { description, frames } = await runCombinedAnalysis(videoPath, framePrefix, url, transcript);
     createdFrames = frames;
-    return { description, method: transcript ? 'vision+audio' : 'vision' };
+
+    // 영구 저장 경로 계산
+    const savedFrames = persistDir
+      ? frames.map(f => `/uploads/clip-frames/${clipId}/${path.basename(f)}`)
+      : [];
+
+    return { description, method: transcript ? 'vision+audio' : 'vision', savedFrames };
   } finally {
     for (const ext of ['.mp4', '.mp3', '.txt', '.srt', '.vtt', '.tsv', '.json']) {
       await fs.unlink(tmpBase + ext).catch(() => {});
     }
-    for (const f of createdFrames) await fs.unlink(f).catch(() => {});
+    // persistDir 없을 때만 프레임 삭제 (있으면 영구 보존)
+    if (!persistDir) {
+      for (const f of createdFrames) await fs.unlink(f).catch(() => {});
+    }
   }
 }
 

@@ -124,14 +124,87 @@ JSON 형식으로만 응답하세요:
   res.json({ videos });
 }));
 
+// ─────────────────────────────────────────────
+// 영상 분석 비동기 작업 큐 (nginx 504 회피)
+// 영상 분석은 yt-dlp + Whisper + Claude 비전으로 4~5분 소요됨.
+// 동기 응답 시 nginx proxy_read_timeout(60s)에서 504. 비동기로 jobId 반환 후 클라이언트 폴링.
+// ─────────────────────────────────────────────
+const crypto = require('crypto');
+const analyzeJobs = new Map(); // jobId → { status, startedAt, result?, error?, url, method? }
+const JOB_TTL_MS = 30 * 60 * 1000; // 30분 후 자동 삭제
+
+function cleanupOldJobs() {
+  const now = Date.now();
+  for (const [id, job] of analyzeJobs.entries()) {
+    if (job.status !== 'pending' && (now - (job.completedAt || job.startedAt)) > JOB_TTL_MS) {
+      analyzeJobs.delete(id);
+    }
+  }
+}
+setInterval(cleanupOldJobs, 5 * 60 * 1000);
+
 router.post('/analyze-video', wrap(async (req, res) => {
-  const { url } = req.body;
+  const { url, clipId } = req.body;
   if (!url?.trim()) return res.status(400).json({ error: 'URL을 입력해주세요' });
   if (!/(youtube\.com|youtu\.be|instagram\.com)/.test(url)) {
     return res.status(400).json({ error: 'YouTube 또는 Instagram URL만 지원됩니다' });
   }
-  const result = await analyzeVideo(url);
-  res.json(result);
+
+  const jobId = crypto.randomUUID();
+  analyzeJobs.set(jobId, { status: 'pending', startedAt: Date.now(), url });
+  res.json({ jobId, status: 'pending' });
+
+  // fire-and-forget — 응답 후 백그라운드 처리
+  analyzeVideo(url, clipId || null)
+    .then(async result => {
+      // clipId가 있으면 DB에 frames + description 저장
+      if (clipId) {
+        try {
+          const { VideoClip } = require('../models');
+          const updates = {};
+          if (result.savedFrames && result.savedFrames.length)
+            updates.frames = JSON.stringify(result.savedFrames);
+          if (result.description)
+            updates.description = result.description;
+          if (Object.keys(updates).length)
+            await VideoClip.update(updates, { where: { id: clipId } });
+        } catch (e) {
+          console.error('[analyze-video] DB 저장 실패:', e.message);
+        }
+      }
+      analyzeJobs.set(jobId, {
+        status: 'done',
+        startedAt: analyzeJobs.get(jobId)?.startedAt || Date.now(),
+        completedAt: Date.now(),
+        url,
+        result: result.description,
+        method: result.method,
+        frames: result.savedFrames || [],
+      });
+    })
+    .catch(err => {
+      analyzeJobs.set(jobId, {
+        status: 'error',
+        startedAt: analyzeJobs.get(jobId)?.startedAt || Date.now(),
+        completedAt: Date.now(),
+        url,
+        error: err.message || String(err),
+      });
+    });
+}));
+
+router.get('/analyze-video/:jobId', wrap(async (req, res) => {
+  const job = analyzeJobs.get(req.params.jobId);
+  if (!job) return res.status(404).json({ error: 'job not found' });
+  const elapsed = Math.floor((Date.now() - job.startedAt) / 1000);
+  res.json({
+    status: job.status,
+    elapsed,
+    description: job.result || null,
+    method: job.method || null,
+    frames: job.frames || [],
+    error: job.error || null,
+  });
 }));
 
 module.exports = router;
