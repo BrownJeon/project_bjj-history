@@ -60,6 +60,40 @@ async function start() {
     await sq.query(
       `ALTER TABLE drills MODIFY COLUMN tech TEXT`
     ).catch(() => {});
+    // video_clips.tech_name → TEXT (JSON 배열, 다중 기술 지원)
+    await sq.query(
+      `ALTER TABLE video_clips MODIFY COLUMN tech_name TEXT`
+    ).catch(() => {});
+    // techniques.pos → TEXT (JSON 배열, 다중 포지션 지원)
+    await sq.query(
+      `ALTER TABLE techniques MODIFY COLUMN pos TEXT`
+    ).catch(() => {});
+    await sq.query(
+      `UPDATE techniques SET pos = JSON_ARRAY(pos)
+       WHERE pos IS NOT NULL AND pos != '' AND pos NOT LIKE '[%'`
+    ).catch(() => {});
+    // 기존 단일 문자열 데이터를 JSON 배열로 변환
+    await sq.query(
+      `UPDATE video_clips SET tech_name = JSON_ARRAY(tech_name)
+       WHERE tech_name IS NOT NULL AND tech_name != '' AND tech_name NOT LIKE '[%'`
+    ).catch(() => {});
+    // voice_transcript 컬럼 (수업 음성 전사본)
+    await sq.query(
+      `ALTER TABLE classes ADD COLUMN IF NOT EXISTS voice_transcript MEDIUMTEXT`
+    ).catch(() => {});
+    // voice_jobs 테이블 (음성 분석 비동기 잡 — DB 영속)
+    await sq.query(`
+      CREATE TABLE IF NOT EXISTS voice_jobs (
+        id         VARCHAR(36) PRIMARY KEY,
+        class_id   INT NOT NULL,
+        status     VARCHAR(10) DEFAULT 'pending',
+        transcript MEDIUMTEXT,
+        result     TEXT,
+        error      TEXT,
+        created_at DATETIME DEFAULT NOW(),
+        updated_at DATETIME DEFAULT NOW() ON UPDATE NOW()
+      )
+    `).catch(() => {});
     // 영상 썸네일 백그라운드 백필 (서버 안정 후 5초 뒤 시작)
     const { backfillThumbs } = require('./services/thumbnailExtractor');
     setTimeout(backfillThumbs, 5000);

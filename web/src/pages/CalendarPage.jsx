@@ -1,7 +1,8 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useCache } from '../contexts/CacheContext';
 import { useUI } from '../contexts/UIContext';
 import * as classesApi from '../api/classes';
+import * as voiceApi from '../api/voice';
 import ClassEditor from './ClassEditPage';
 import SparEditor from './SparEditPage';
 import Card from '../components/Card';
@@ -26,6 +27,24 @@ export default function CalendarPage() {
   const [selected, setSelected] = useState(todayStr());
   const [editingClass, setEditingClass] = useState(null);
   const [editingSpar, setEditingSpar]   = useState(null);
+  const [pendingVoice, setPendingVoice] = useState(new Set()); // classId Set
+
+  // 음성 분석 잡 폴링 (30초 간격)
+  useEffect(() => {
+    async function checkJobs() {
+      try {
+        const jobs = await voiceApi.listJobs();
+        const pendingIds = new Set(
+          jobs.filter(j => j.status === 'pending').map(j => String(j.class_id))
+        );
+        setPendingVoice(pendingIds);
+        if (pendingIds.size > 0) reloadClasses();
+      } catch {}
+    }
+    checkJobs();
+    const timer = setInterval(checkJobs, 30000);
+    return () => clearInterval(timer);
+  }, []);
 
   const dataByDate = useMemo(() => {
     const map = new Map();
@@ -197,6 +216,12 @@ export default function CalendarPage() {
                     <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8, flexWrap: 'wrap' }}>
                       <Tag tone={tone}>{label}</Tag>
                       <span style={{ flex: 1, fontSize: 14, fontWeight: 700 }}>{c.theme || '수업'}</span>
+                      {pendingVoice.has(String(c.id)) && (
+                        <span style={{ fontSize: 11, color: 'var(--amber)', fontWeight: 600 }}>⏳ 분석 중</span>
+                      )}
+                      {c.voice_transcript && !pendingVoice.has(String(c.id)) && (
+                        <span style={{ fontSize: 11, color: 'var(--accent)', fontWeight: 600 }}>🎙</span>
+                      )}
                       <button
                         onClick={() => setEditingClass(c)}
                         style={{ background: 'transparent', border: '1px solid var(--border-med)', color: 'var(--text2)', borderRadius: 6, padding: '4px 8px', fontSize: 11, cursor: 'pointer' }}

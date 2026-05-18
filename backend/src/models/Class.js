@@ -8,8 +8,9 @@ const Class = sequelize.define('Class', {
   theme:         { type: DataTypes.STRING(200), defaultValue: '' },
   note:          { type: DataTypes.TEXT,  defaultValue: '' },
   feedback:      { type: DataTypes.TEXT },
-  trained_dates: { type: DataTypes.TEXT,  defaultValue: '[]' },
-  created_at:    { type: DataTypes.DATE,  defaultValue: DataTypes.NOW },
+  trained_dates:    { type: DataTypes.TEXT, defaultValue: '[]' },
+  voice_transcript: { type: DataTypes.TEXT },
+  created_at:       { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
 }, { tableName: 'classes' });
 
 module.exports = Class;

@@ -9,6 +9,7 @@ router.use('/gameplans',   require('./gameplans'));
 router.use('/clips',       require('./clips'));
 router.use('/recommend',   require('./recommend'));
 router.use('/enhance-memo',require('./enhance-memo'));
+router.use('/voice',       require('./voice'));
 router.use('/coach',       require('./coach'));
 router.use('/',            require('./profile'));
 

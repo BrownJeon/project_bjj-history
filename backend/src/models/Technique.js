@@ -4,7 +4,7 @@ const { sequelize } = require('../config/db');
 const Technique = sequelize.define('Technique', {
   id:         { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
   name:       { type: DataTypes.STRING(100), allowNull: false },
-  pos:        { type: DataTypes.STRING(50) },
+  pos:        { type: DataTypes.TEXT },
   category:   { type: DataTypes.STRING(50), defaultValue: '' },
   tags:       { type: DataTypes.TEXT },
   links:      { type: DataTypes.TEXT },

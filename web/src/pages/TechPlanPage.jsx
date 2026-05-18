@@ -89,7 +89,7 @@ function TechTab() {
       const q = search.toLowerCase();
       items = items.filter(t =>
         (t.name || '').toLowerCase().includes(q) ||
-        (t.pos || '').toLowerCase().includes(q) ||
+        (t.positions?.length ? t.positions : (t.pos ? [t.pos] : [])).some(p => p.toLowerCase().includes(q)) ||
         (t.tags || []).some(x => (x || '').toLowerCase().includes(q))
       );
     }
@@ -180,7 +180,9 @@ function TechTab() {
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 4 }}>{t.name}</div>
                     <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
-                      {t.pos && <Tag tone="blue">{t.pos}</Tag>}
+                      {(t.positions?.length ? t.positions : (t.pos ? [t.pos] : [])).map((p, i) => (
+                        <Tag key={i} tone="blue">{p}</Tag>
+                      ))}
                       {(t.clips || []).length > 0 && <Tag tone="purple">영상 {t.clips.length}</Tag>}
                     </div>
                   </div>
@@ -237,7 +239,9 @@ function TechDetailModal({ t, onClose, onEdit, onDelete }) {
   return (
     <Modal title={t.name} onClose={onClose}>
       <div style={{ display: 'flex', gap: 6, marginBottom: 12, flexWrap: 'wrap' }}>
-        {t.pos && <Tag tone="blue">{t.pos}</Tag>}
+        {(t.positions?.length ? t.positions : (t.pos ? [t.pos] : [])).map((p, i) => (
+          <Tag key={i} tone="blue">{p}</Tag>
+        ))}
         {t.starred ? <Tag tone="amber">즐겨찾기</Tag> : null}
         {(t.tags || []).map((x, i) => (
           <Tag key={i} tone="neutral">{x}</Tag>
@@ -299,7 +303,11 @@ function TechDetailModal({ t, onClose, onEdit, onDelete }) {
 function TechEditorModal({ initial, onSave, onCancel }) {
   const { techniques } = useCache();
   const [name, setName]   = useState(initial?.name || '');
-  const [pos, setPos]     = useState(initial?.pos ? [initial.pos] : []);
+  const [pos, setPos]     = useState(
+    initial?.positions?.length ? initial.positions
+    : initial?.pos ? [initial.pos]
+    : []
+  );
   const [tags, setTags]   = useState(initial?.tags || []);
   const [note, setNote]   = useState(initial?.note || '');
   const [starred, setStarred] = useState(!!initial?.starred);
@@ -314,6 +322,7 @@ function TechEditorModal({ initial, onSave, onCancel }) {
     if (!name.trim()) return alert('기술명을 입력해주세요');
     onSave({
       name: name.trim(),
+      positions: pos,
       pos: pos[0] || '',
       category: initial?.category || '',
       tags,
@@ -330,7 +339,7 @@ function TechEditorModal({ initial, onSave, onCancel }) {
       </div>
       <div className="field">
         <label>포지션</label>
-        <TagPicker value={pos} onChange={setPos} suggestions={posSuggestions} singleSelect />
+        <TagPicker value={pos} onChange={setPos} suggestions={posSuggestions} placeholder="포지션 검색·자유 입력 (여러 개 가능)" />
       </div>
       <div className="field">
         <label>태그</label>

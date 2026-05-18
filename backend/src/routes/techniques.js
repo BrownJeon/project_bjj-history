@@ -21,6 +21,25 @@ async function loadClipsByNames(names) {
   return m;
 }
 
+function parsePos(raw) {
+  if (!raw) return [];
+  try {
+    const p = JSON.parse(raw);
+    if (Array.isArray(p)) return p.filter(Boolean);
+    if (p) return [String(p)];
+  } catch {
+    return raw ? [raw] : [];
+  }
+  return [];
+}
+
+function posToJson(positions, pos) {
+  const arr = Array.isArray(positions)
+    ? positions.filter(Boolean)
+    : (pos ? [String(pos).trim()] : []);
+  return JSON.stringify(arr);
+}
+
 router.get('/', wrap(async (_req, res) => {
   const rows = await Technique.findAll({
     order: [['starred', 'DESC'], ['name', 'ASC']],
@@ -28,6 +47,8 @@ router.get('/', wrap(async (_req, res) => {
   });
   const clipsByName = await loadClipsByNames(rows.map(r => r.name));
   rows.forEach(r => {
+    r.positions = parsePos(r.pos);
+    r.pos       = r.positions[0] || '';
     r.tags  = safeParse(r.tags, []);
     r.clips = clipsByName.get(r.name) || [];
     r.links = r.clips.map(c => ({ url: c.url, desc: c.title }));
@@ -36,7 +57,7 @@ router.get('/', wrap(async (_req, res) => {
 }));
 
 router.post('/', wrap(async (req, res) => {
-  const { name, pos, category, tags, note, starred } = req.body;
+  const { name, pos, positions, category, tags, note, starred } = req.body;
   if (!name || !name.trim()) return res.status(400).json({ error: '기술명을 입력해주세요' });
   const dup = await Technique.findOne({
     where: require('sequelize').where(
@@ -47,7 +68,7 @@ router.post('/', wrap(async (req, res) => {
   if (dup) return res.json({ id: dup.id, existing: true });
   const r = await Technique.create({
     name: name.trim(),
-    pos: pos || '',
+    pos: posToJson(positions, pos),
     category: category || '',
     tags: JSON.stringify(tags || []),
     links: '[]',
@@ -58,12 +79,12 @@ router.post('/', wrap(async (req, res) => {
 }));
 
 router.put('/:id', wrap(async (req, res) => {
-  const { name, pos, category, tags, note, starred } = req.body;
+  const { name, pos, positions, category, tags, note, starred } = req.body;
   const old = await Technique.findByPk(req.params.id);
   await Technique.update(
     {
       name,
-      pos: pos || '',
+      pos: posToJson(positions, pos),
       category: category || '',
       tags: JSON.stringify(tags || []),
       note: note || '',

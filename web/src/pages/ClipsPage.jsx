@@ -13,6 +13,7 @@ import Icon from '../components/Icon';
 import Modal from '../components/Modal';
 import Button from '../components/Button';
 import Pagination from '../components/Pagination';
+import TagPicker from '../components/TagPicker';
 
 const PAGE_SIZE = 10;
 const detectPlatform = u => !u ? 'other' : u.includes('youtu') ? 'youtube' : u.includes('instagram') ? 'instagram' : 'other';
@@ -30,13 +31,15 @@ export default function ClipsPage() {
   const [detail, setDetail] = useState(null);
   const [page, setPage] = useState(1);
 
-  // 사용 빈도순 기술명 (영상이 가장 많은 기술이 앞에)
+  // 사용 빈도순 기술명 (다중 기술 지원)
   const techNames = useMemo(() => {
     const count = new Map();
     for (const c of clips) {
-      const n = (c.tech_name || '').trim();
-      if (!n) continue;
-      count.set(n, (count.get(n) || 0) + 1);
+      const names = c.tech_names?.length ? c.tech_names : (c.tech_name ? [c.tech_name] : []);
+      for (const n of names) {
+        const t = (n || '').trim();
+        if (t) count.set(t, (count.get(t) || 0) + 1);
+      }
     }
     return [...count.entries()].sort((a, b) => b[1] - a[1]).map(([n]) => n);
   }, [clips]);
@@ -45,7 +48,10 @@ export default function ClipsPage() {
     let items = [...clips];
     if (filter === 'star')   items = items.filter(c => c.starred);
     if (filter === 'recent') items.sort((a, b) => (b.id || 0) - (a.id || 0));
-    if (techFilter)          items = items.filter(c => (c.tech_name || '') === techFilter);
+    if (techFilter)          items = items.filter(c => {
+      const names = c.tech_names?.length ? c.tech_names : (c.tech_name ? [c.tech_name] : []);
+      return names.includes(techFilter);
+    });
     if (search) {
       const q = search.toLowerCase();
       items = items.filter(c =>
@@ -294,7 +300,9 @@ function ClipCard({ c, onClick, onStar }) {
           }}>
             {c.title}
           </div>
-          {c.tech_name && <Tag tone="accent">{c.tech_name}</Tag>}
+          {(c.tech_names?.length ? c.tech_names : (c.tech_name ? [c.tech_name] : [])).map((t, i) => (
+            <Tag key={i} tone="accent">{t}</Tag>
+          ))}
         </div>
         <span
           onClick={(e) => { e.stopPropagation(); onStar(); }}
@@ -310,15 +318,20 @@ function ClipCard({ c, onClick, onStar }) {
 function ClipEditor({ initial, techniques, onSave, onCancel }) {
   const [title, setTitle] = useState(initial?.title || '');
   const [url, setUrl]     = useState(initial?.url || '');
-  const [techName, setTechName] = useState(initial?.tech_name || '');
+  const [techNames, setTechNames] = useState(
+    initial?.tech_names?.length ? initial.tech_names
+    : initial?.tech_name ? [initial.tech_name]
+    : []
+  );
   const [desc, setDesc]   = useState(initial?.description || '');
   const [starred, setStarred] = useState(!!initial?.starred);
   const [analyzing, setAnalyzing] = useState(false);
   const [analyzeElapsed, setAnalyzeElapsed] = useState(0);
 
-  const matched = techName.trim()
-    ? techniques.filter(t => t.name.toLowerCase().includes(techName.toLowerCase())).slice(0, 8)
-    : [];
+  const techSuggestions = useMemo(
+    () => techniques.map(t => t.name),
+    [techniques]
+  );
 
   async function handleAiAnalyze() {
     if (!url.trim()) { alert('URL을 먼저 입력해주세요'); return; }
@@ -343,12 +356,14 @@ function ClipEditor({ initial, techniques, onSave, onCancel }) {
   }
 
   function submit() {
-    if (!title.trim())    return alert('영상 제목을 입력해주세요');
-    if (!url.trim())      return alert('URL을 입력해주세요');
-    if (!techName.trim()) return alert('기술명을 입력해주세요');
+    if (!title.trim())       return alert('영상 제목을 입력해주세요');
+    if (!url.trim())         return alert('URL을 입력해주세요');
+    if (!techNames.length)   return alert('기술명을 1개 이상 입력해주세요');
     onSave({
       title: title.trim(), url: url.trim(),
-      description: desc, tech_name: techName.trim(),
+      description: desc,
+      tech_names: techNames,
+      tech_name: techNames[0] || '',
       tags: [], starred: starred ? 1 : 0,
     });
   }
@@ -369,24 +384,14 @@ function ClipEditor({ initial, techniques, onSave, onCancel }) {
         <input value={url} onChange={e => setUrl(e.target.value)} placeholder="YouTube 또는 Instagram URL" />
         {url && <div style={{ fontSize: 12, color: 'var(--blue)', marginTop: 4 }}>{getPlatformLabel(detectPlatform(url))}</div>}
       </div>
-      <div className="field" style={{ position: 'relative' }}>
-        <label>기술명 *</label>
-        <input value={techName} onChange={e => setTechName(e.target.value)}
-          placeholder="예: 클로즈드 가드 힙 범프 스윕" autoComplete="off" />
-        {matched.length > 0 && (
-          <div style={{
-            position: 'absolute', top: '100%', left: 0, right: 0,
-            background: 'var(--surface-up)', border: '1px solid var(--border-med)',
-            borderRadius: 10, maxHeight: 180, overflowY: 'auto', zIndex: 10,
-          }}>
-            {matched.map(t => (
-              <div key={t.id} onClick={() => setTechName(t.name)}
-                style={{ padding: '8px 12px', cursor: 'pointer', borderBottom: '1px solid var(--border)', fontSize: 13 }}>
-                {t.name}{t.pos && <span style={{ color: 'var(--text2)', fontSize: 11, marginLeft: 6 }}>{t.pos}</span>}
-              </div>
-            ))}
-          </div>
-        )}
+      <div className="field">
+        <label>기술명 * (여러 개 가능)</label>
+        <TagPicker
+          value={techNames}
+          onChange={setTechNames}
+          suggestions={techSuggestions}
+          placeholder="기술명 검색·자유 입력"
+        />
       </div>
       <div className="field">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
@@ -557,7 +562,9 @@ function ClipDetail({ c, onClose, onEdit, onDelete, onRefresh }) {
       )}
 
       <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 10 }}>
-        {c.tech_name && <Tag tone="accent">{c.tech_name}</Tag>}
+        {(c.tech_names?.length ? c.tech_names : (c.tech_name ? [c.tech_name] : [])).map((t, i) => (
+          <Tag key={i} tone="accent">{t}</Tag>
+        ))}
         <Tag tone="purple">{getPlatformLabel(c.platform)}</Tag>
         {c.starred ? <Tag tone="amber">즐겨찾기</Tag> : null}
       </div>

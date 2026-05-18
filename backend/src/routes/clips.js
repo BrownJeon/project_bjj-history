@@ -14,7 +14,27 @@ function detectPlatform(url) {
 
 function normalize(row) {
   if (!row) return row;
-  return { ...row, tags: safeParse(row.tags, []), tech_name: row.tech_name || '' };
+  let techs = [];
+  try {
+    const p = JSON.parse(row.tech_name);
+    if (Array.isArray(p)) techs = p.filter(Boolean);
+    else if (p) techs = [String(p)];
+  } catch {
+    if (row.tech_name) techs = [row.tech_name];
+  }
+  return {
+    ...row,
+    tech_names: techs,
+    tech_name: techs[0] || '',
+    tags: safeParse(row.tags, []),
+  };
+}
+
+function techNamesToJson(tech_names, tech_name) {
+  const arr = Array.isArray(tech_names)
+    ? tech_names.filter(Boolean)
+    : (tech_name ? [String(tech_name).trim()] : []);
+  return JSON.stringify(arr);
 }
 
 router.get('/', wrap(async (_req, res) => {
@@ -48,13 +68,13 @@ router.get('/search', wrap(async (req, res) => {
 }));
 
 router.post('/', wrap(async (req, res) => {
-  const { title, url, description, tech_name, tags, starred } = req.body;
+  const { title, url, description, tech_name, tech_names, tags, starred } = req.body;
   const r = await VideoClip.create({
     title,
     url,
     platform: detectPlatform(url),
     description: description || '',
-    tech_name: (tech_name || '').trim(),
+    tech_name: techNamesToJson(tech_names, tech_name),
     tags: JSON.stringify(tags || []),
     starred: starred ? 1 : 0,
   });
@@ -63,7 +83,7 @@ router.post('/', wrap(async (req, res) => {
 }));
 
 router.put('/:id', wrap(async (req, res) => {
-  const { title, url, description, tech_name, tags, starred } = req.body;
+  const { title, url, description, tech_name, tech_names, tags, starred } = req.body;
   const old = await VideoClip.findByPk(req.params.id, { attributes: ['url'], raw: true });
   const urlChanged = old && old.url !== url;
   const data = {
@@ -71,7 +91,7 @@ router.put('/:id', wrap(async (req, res) => {
     url,
     platform: detectPlatform(url),
     description: description || '',
-    tech_name: (tech_name || '').trim(),
+    tech_name: techNamesToJson(tech_names, tech_name),
     tags: JSON.stringify(tags || []),
   };
   if (urlChanged) data.thumb_url = '';
