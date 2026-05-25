@@ -71,17 +71,19 @@ router.get('/', wrap(async (_req, res) => {
     c.spar_note   = sparDays.length > 0 ? (sparDays[0].day_note || '') : '';
     c.spar_day_id = sparDays.length > 0 ? sparDays[0].id : null;
     c.trained_dates = safeParse(c.trained_dates, []);
+    c.clip_ids      = safeParse(c.clip_ids, []);
   }
   res.json(classes);
 }));
 
 router.post('/', wrap(async (req, res) => {
-  const { date, dateEnd, theme, note, feedback, trainedDates, drill } = req.body;
+  const { date, dateEnd, theme, note, feedback, trainedDates, drill, clipIds } = req.body;
   const id = await sequelize.transaction(async (t) => {
     const cls = await Class.create({
       date, date_end: dateEnd || null,
       theme: theme || '', note: note || '', feedback: feedback || '',
       trained_dates: JSON.stringify(trainedDates || []),
+      clip_ids: JSON.stringify(clipIds || []),
     }, { transaction: t });
     if (drill) {
       await Drill.create({
@@ -103,12 +105,13 @@ router.post('/', wrap(async (req, res) => {
 
 router.put('/:id', wrap(async (req, res) => {
   const id = req.params.id;
-  const { date, dateEnd, theme, note, feedback, trainedDates, drill } = req.body;
+  const { date, dateEnd, theme, note, feedback, trainedDates, drill, clipIds } = req.body;
   await sequelize.transaction(async (t) => {
     await Class.update({
       date, date_end: dateEnd || null,
       theme: theme || '', note: note || '', feedback: feedback || '',
       trained_dates: JSON.stringify(trainedDates || []),
+      clip_ids: JSON.stringify(clipIds || []),
     }, { where: { id }, transaction: t });
 
     const existDrill = await Drill.findOne({ where: { class_id: id }, transaction: t });

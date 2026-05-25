@@ -22,7 +22,7 @@ export async function analyzeVideo(url, clipId, onProgress, timeoutMs = 660000) 
     await new Promise(r => setTimeout(r, 4000));
     const job = await getAnalyzeJob(jobId);
     onProgress?.(job.elapsed);
-    if (job.status === 'done')  return { description: job.description, method: job.method, frames: job.frames || [] };
+    if (job.status === 'done')  return { description: job.description, method: job.method, frames: job.frames || [], videoFile: job.videoFile || null };
     if (job.status === 'error') throw new Error(job.error || 'AI 분석 실패');
     if (Date.now() - start > timeoutMs) throw new Error('AI 분석 시간 초과 (8분)');
   }

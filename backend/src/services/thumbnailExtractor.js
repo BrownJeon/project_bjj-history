@@ -2,9 +2,12 @@ const { spawn } = require('child_process');
 const fs   = require('fs');
 const path = require('path');
 const { VideoClip } = require('../models');
+const { getThumbPath, thumbWebPath, ensureDir } = require('./storage');
 
-const THUMB_DIR = path.resolve(__dirname, '../../../public/uploads/clip-thumbs');
-if (!fs.existsSync(THUMB_DIR)) fs.mkdirSync(THUMB_DIR, { recursive: true });
+function getThumbDir() {
+  return path.dirname(getThumbPath('__placeholder__'));
+}
+ensureDir(getThumbDir());
 
 // yt-dlp 로 썸네일 URL 추출
 function extractThumbUrl(url) {
@@ -27,9 +30,10 @@ async function downloadToCache(remoteUrl, clipId) {
     if (!res.ok) return '';
     const buf = Buffer.from(await res.arrayBuffer());
     if (buf.length < 100) return '';
-    const filePath = path.join(THUMB_DIR, `${clipId}.jpg`);
+    const filePath = getThumbPath(clipId);
+    ensureDir(path.dirname(filePath));
     fs.writeFileSync(filePath, buf);
-    return `/uploads/clip-thumbs/${clipId}.jpg`;
+    return thumbWebPath(clipId);
   } catch (e) {
     console.error('[thumb/download]', clipId, e.message);
     return '';

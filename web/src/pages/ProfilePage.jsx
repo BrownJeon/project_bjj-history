@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as profileApi from '../api/profile';
+import * as settingsApi from '../api/settings';
 import { useUI } from '../contexts/UIContext';
 import { useCache } from '../contexts/CacheContext';
 import Card from '../components/Card';
@@ -9,6 +10,9 @@ import Modal from '../components/Modal';
 import Icon from '../components/Icon';
 import BeltBar from '../components/BeltBar';
 import { BELT_LEVELS, beltKey } from '../utils/baseOptions';
+
+const STORAGE_KEY = 'bjj_storage_mode'; // 'server' | 'device'
+export const getStorageMode = () => localStorage.getItem(STORAGE_KEY) || 'server';
 
 export default function ProfilePage() {
   const navigate = useNavigate();
@@ -19,15 +23,45 @@ export default function ProfilePage() {
   const [belts, setBelts] = useState([]);
   const [editingProfile, setEditingProfile] = useState(false);
   const [editingBelt, setEditingBelt] = useState(null); // 'new' | belt object | null
+  const [storageMode, setStorageMode] = useState(getStorageMode());
+  const [uploadPath, setUploadPath] = useState('');
+  const [effectivePath, setEffectivePath] = useState('');
+  const [pathEditing, setPathEditing] = useState(false);
+  const [pathInput, setPathInput] = useState('');
+
+  function toggleStorageMode(mode) {
+    localStorage.setItem(STORAGE_KEY, mode);
+    setStorageMode(mode);
+    showToast(mode === 'device' ? '기기에 저장 모드로 변경됩니다' : '서버에 저장 모드로 변경됩니다');
+  }
 
   useEffect(() => { loadAll(); }, []);
 
   async function loadAll() {
     try {
-      const [p, b] = await Promise.all([profileApi.getProfile(), profileApi.listBelts()]);
+      const [p, b, s] = await Promise.all([
+        profileApi.getProfile(),
+        profileApi.listBelts(),
+        settingsApi.getSettings().catch(() => ({ uploadPath: '', effectivePath: '' })),
+      ]);
       setProfile(p || {});
       setBelts(b || []);
+      setUploadPath(s.uploadPath || '');
+      setEffectivePath(s.effectivePath || '');
+      setPathInput(s.uploadPath || '');
     } catch (e) { showToast('오류: ' + e.message); }
+  }
+
+  async function saveUploadPath() {
+    setLoading(true);
+    try {
+      const res = await settingsApi.saveSettings({ uploadPath: pathInput.trim() });
+      setUploadPath(pathInput.trim());
+      setEffectivePath(res.effectivePath || '');
+      setPathEditing(false);
+      showToast('저장 경로 저장됨');
+    } catch (e) { showToast('저장 실패: ' + e.message); }
+    finally { setLoading(false); }
   }
 
   async function saveProfile(form) {
@@ -197,6 +231,87 @@ export default function ProfilePage() {
           </div>
         )}
 
+        {/* 파일 저장 위치 설정 */}
+        <div style={{ marginTop: 24 }}>
+          <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 10 }}>파일 저장 위치</div>
+          <div style={{
+            background: 'var(--surface)', border: '1px solid var(--border)',
+            borderRadius: 14, overflow: 'hidden',
+          }}>
+            {[
+              { key: 'server', label: '서버에 저장', desc: '캡처·썸네일을 서버에 보관하여 앱에서 바로 확인', icon: '🖥' },
+              { key: 'device', label: '기기에 저장', desc: '분석 완료 후 파일을 기기에 다운로드 (서버 미보관)', icon: '📱' },
+            ].map((opt, i) => (
+              <button
+                key={opt.key}
+                onClick={() => toggleStorageMode(opt.key)}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: 12,
+                  width: '100%', padding: '14px 16px',
+                  background: storageMode === opt.key ? 'var(--accent-dim)' : 'transparent',
+                  border: 'none',
+                  borderTop: i > 0 ? '1px solid var(--border)' : 'none',
+                  cursor: 'pointer', textAlign: 'left',
+                }}
+              >
+                <span style={{ fontSize: 22 }}>{opt.icon}</span>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: storageMode === opt.key ? 'var(--accent)' : 'var(--text)' }}>
+                    {opt.label}
+                  </div>
+                  <div style={{ fontSize: 11, color: 'var(--text2)', marginTop: 2 }}>{opt.desc}</div>
+                </div>
+                {storageMode === opt.key && (
+                  <span style={{ fontSize: 16, color: 'var(--accent)' }}>✓</span>
+                )}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* 서버 저장 경로 */}
+        <div style={{ marginTop: 16 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+            <span style={{ fontSize: 14, fontWeight: 700 }}>서버 저장 경로</span>
+            <button
+              onClick={() => { setPathEditing(o => !o); setPathInput(uploadPath); }}
+              style={{ background: 'transparent', border: '1px solid var(--border)', color: 'var(--text2)', borderRadius: 6, padding: '4px 10px', fontSize: 12, cursor: 'pointer' }}
+            >
+              {pathEditing ? '취소' : '변경'}
+            </button>
+          </div>
+          <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12, padding: '10px 14px', fontSize: 12 }}>
+            <div style={{ color: 'var(--text3)', marginBottom: 4 }}>현재 경로</div>
+            <div style={{ color: 'var(--text)', wordBreak: 'break-all', fontFamily: 'monospace', fontSize: 11 }}>
+              {effectivePath || '(기본: 프로젝트 내 public/uploads)'}
+            </div>
+            {pathEditing && (
+              <div style={{ marginTop: 10 }}>
+                <input
+                  value={pathInput}
+                  onChange={e => setPathInput(e.target.value)}
+                  placeholder="예: /mnt/storage/bjj-uploads (비워두면 기본값)"
+                  style={{
+                    width: '100%', padding: '8px 10px', boxSizing: 'border-box',
+                    background: 'var(--surface-up)', border: '1px solid var(--border)',
+                    borderRadius: 8, color: 'var(--text)', fontSize: 12, fontFamily: 'monospace',
+                  }}
+                />
+                <button
+                  onClick={saveUploadPath}
+                  style={{
+                    marginTop: 8, width: '100%', padding: '9px',
+                    background: 'var(--accent)', color: '#fff', border: 'none',
+                    borderRadius: 8, fontSize: 13, fontWeight: 700, cursor: 'pointer',
+                  }}
+                >
+                  저장
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+
         {editingProfile && (
           <ProfileEditor
             profile={profile}
@@ -264,9 +379,9 @@ function ProfileEditor({ profile, onCancel, onSave }) {
         <input value={form.weightClass} onChange={e => update('weightClass', e.target.value)} placeholder="예: -76kg" /></div>
       <div className="field"><label>소속</label>
         <input value={form.network} onChange={e => update('network', e.target.value)} /></div>
-      <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end', marginTop: 8 }}>
-        <Button variant="outline" size="sm" onClick={onCancel}>취소</Button>
+      <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
         <Button variant="primary" size="sm" onClick={() => onSave(form)}>저장</Button>
+        <Button variant="outline" size="sm" onClick={onCancel}>취소</Button>
       </div>
     </Modal>
   );
@@ -345,10 +460,10 @@ function BeltEditor({ initial, onCancel, onSave, onDelete }) {
       <div className="field"><label>메모</label>
         <textarea rows={2} value={note} onChange={e => setNote(e.target.value)} placeholder="달성 기념 메모" /></div>
 
-      <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end', marginTop: 8 }}>
-        {onDelete && <Button variant="danger" size="sm" onClick={onDelete} style={{ marginRight: 'auto' }}>삭제</Button>}
-        <Button variant="outline" size="sm" onClick={onCancel}>취소</Button>
+      <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
         <Button variant="primary" size="sm" onClick={submit}>저장</Button>
+        <Button variant="outline" size="sm" onClick={onCancel}>취소</Button>
+        {onDelete && <Button variant="danger" size="sm" onClick={onDelete} style={{ marginLeft: 'auto' }}>삭제</Button>}
       </div>
     </Modal>
   );

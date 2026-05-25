@@ -166,6 +166,8 @@ router.post('/analyze-video', wrap(async (req, res) => {
             updates.frames = JSON.stringify(result.savedFrames);
           if (result.description)
             updates.description = result.description;
+          if (result.savedVideo)
+            updates.video_file = result.savedVideo;
           if (Object.keys(updates).length)
             await VideoClip.update(updates, { where: { id: clipId } });
         } catch (e) {
@@ -180,6 +182,7 @@ router.post('/analyze-video', wrap(async (req, res) => {
         result: result.description,
         method: result.method,
         frames: result.savedFrames || [],
+        videoFile: result.savedVideo || null,
       });
     })
     .catch(err => {
@@ -203,6 +206,7 @@ router.get('/analyze-video/:jobId', wrap(async (req, res) => {
     description: job.result || null,
     method: job.method || null,
     frames: job.frames || [],
+    videoFile: job.videoFile || null,
     error: job.error || null,
   });
 }));

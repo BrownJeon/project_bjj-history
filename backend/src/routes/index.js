@@ -11,6 +11,7 @@ router.use('/recommend',   require('./recommend'));
 router.use('/enhance-memo',require('./enhance-memo'));
 router.use('/voice',       require('./voice'));
 router.use('/coach',       require('./coach'));
+router.use('/settings',    require('./settings'));
 router.use('/',            require('./profile'));
 
 module.exports = router;

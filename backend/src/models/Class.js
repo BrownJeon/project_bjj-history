@@ -10,6 +10,7 @@ const Class = sequelize.define('Class', {
   feedback:      { type: DataTypes.TEXT },
   trained_dates:    { type: DataTypes.TEXT, defaultValue: '[]' },
   voice_transcript: { type: DataTypes.TEXT },
+  clip_ids:         { type: DataTypes.TEXT, defaultValue: '[]' },
   created_at:       { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
 }, { tableName: 'classes' });
 

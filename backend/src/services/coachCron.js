@@ -129,8 +129,8 @@ JSON 형식으로만 응답하세요:
 
 function scheduleWeeklyCron() {
   const cron = require('node-cron');
-  // 매주 일요일 06:00 (서버 로컬 타임)
-  cron.schedule('0 6 * * 0', async () => {
+  // 매주 일요일 00:00 (서버 로컬 타임)
+  cron.schedule('0 0 * * 0', async () => {
     console.log('[cron] 주간 자동 생성 시작 —', new Date().toISOString());
     try {
       await generateWeeklyReport();

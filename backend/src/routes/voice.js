@@ -14,14 +14,14 @@ const upload = multer({
 
 // POST /api/voice/analyze — 음성 파일 업로드 + 분석 잡 시작
 router.post('/analyze', upload.single('audio'), wrap(async (req, res) => {
-  const { classId } = req.body;
+  const { classId, trainedDate } = req.body;
   if (!req.file)  return res.status(400).json({ error: '음성 파일이 없습니다' });
   if (!classId)   return res.status(400).json({ error: 'classId가 없습니다' });
 
   const jobId = crypto.randomUUID();
   await sequelize.query(
-    `INSERT INTO voice_jobs (id, class_id) VALUES (?, ?)`,
-    { replacements: [jobId, classId] }
+    `INSERT INTO voice_jobs (id, class_id, trained_date) VALUES (?, ?, ?)`,
+    { replacements: [jobId, classId, trainedDate || null] }
   );
   res.json({ jobId });
 
@@ -49,12 +49,15 @@ router.post('/analyze', upload.single('audio'), wrap(async (req, res) => {
 
       // 수업 테이블에 전사본 + 분석 결과 반영
       const { note, theme } = result;
+      const label = trainedDate
+        ? (() => { const d = new Date(trainedDate + 'T00:00:00'); return `${d.getMonth()+1}/${d.getDate()} 음성 분석`; })()
+        : '음성 분석';
       const updateFields = ['voice_transcript = ?'];
       const updateValues = [transcript];
       if (theme) { updateFields.push('theme = IF(theme=\'\' OR theme IS NULL, ?, theme)'); updateValues.push(theme); }
       if (note)  {
         updateFields.push('note = CASE WHEN note IS NULL OR note = \'\' THEN ? ELSE CONCAT(note, ?, ?) END');
-        updateValues.push(note, '\n\n[음성 분석]\n', note);
+        updateValues.push(note, `\n\n[${label}]\n`, note);
       }
       updateValues.push(classId);
       await sequelize.query(
@@ -75,11 +78,12 @@ router.post('/analyze', upload.single('audio'), wrap(async (req, res) => {
   })();
 }));
 
-// GET /api/voice/jobs — 최근 잡 목록 (pending 포함)
+// GET /api/voice/jobs — 최근 잡 목록 (pending 포함, 전사 진행 글자 수 포함)
 router.get('/jobs', wrap(async (_req, res) => {
   const [rows] = await sequelize.query(
-    `SELECT id, class_id, status, created_at FROM voice_jobs
-     ORDER BY created_at DESC LIMIT 30`
+    `SELECT id, class_id, trained_date, status, created_at,
+            CHAR_LENGTH(COALESCE(transcript, '')) AS transcript_len
+     FROM voice_jobs ORDER BY created_at DESC LIMIT 30`
   );
   res.json(rows);
 }));

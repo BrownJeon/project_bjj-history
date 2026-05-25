@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import * as classesApi from '../api/classes';
 import * as enhanceApi from '../api/enhanceMemo';
 import * as voiceApi from '../api/voice';
@@ -12,10 +12,11 @@ import {
   BASE_POSITIONS, BASE_TECHNIQUES, mergeUnique,
 } from '../utils/baseOptions';
 import { uniqueDrillPositions } from '../utils/suggestions';
+import { getClipThumb, getPlatformIcon } from '../utils/videoThumb';
 
 export default function ClassEditor({ initial, onClose, onSaved }) {
   const { showToast, setLoading } = useUI();
-  const { techniques, classes } = useCache();
+  const { techniques, classes, clips } = useCache();
   const isEdit = !!initial?.id;
 
   const drillPosSuggestions = useMemo(
@@ -27,10 +28,10 @@ export default function ClassEditor({ initial, onClose, onSaved }) {
     [techniques]
   );
 
-  const [date, setDate]       = useState(initial?.date?.slice(0, 10) || new Date().toISOString().slice(0, 10));
-  const [dateEnd, setDateEnd] = useState(initial?.date_end?.slice(0, 10) || '');
-  const [theme, setTheme]     = useState(initial?.theme || '');
-  const [note, setNote]       = useState(initial?.note || '');
+  const [date, setDate]         = useState(initial?.date?.slice(0, 10) || new Date().toISOString().slice(0, 10));
+  const [dateEnd, setDateEnd]   = useState(initial?.date_end?.slice(0, 10) || '');
+  const [theme, setTheme]       = useState(initial?.theme || '');
+  const [note, setNote]         = useState(initial?.note || '');
   const [feedback, setFeedback] = useState(initial?.feedback || '');
 
   const drill0 = initial?.drill || {};
@@ -40,12 +41,102 @@ export default function ClassEditor({ initial, onClose, onSaved }) {
   );
   const [drillStars, setDrillStars] = useState(drill0.stars || 0);
 
+  const [linkedClipIds, setLinkedClipIds] = useState(initial?.clip_ids || []);
+  const [clipSearch, setClipSearch] = useState('');
+  const [clipPickerOpen, setClipPickerOpen] = useState(false);
+
   const [aiBusy, setAiBusy] = useState(null);
-  const [voiceBusy, setVoiceBusy]         = useState(false);
-  const [voiceElapsed, setVoiceElapsed]   = useState(0);
-  const [voiceSuggestions, setVoiceSuggestions] = useState([]);
-  const fileInputRef = useRef(null);
-  const voiceTimerRef = useRef(null);
+
+  // trained_dates local 관리
+  const [trainedDates, setTrainedDates] = useState(() => {
+    try { return JSON.parse(initial?.trained_dates || '[]'); }
+    catch { return initial?.trained_dates || []; }
+  });
+  // 날짜별 첨부 음성 파일 { "2026-05-20": File } — 저장 시 백그라운드 업로드
+  const [dateVoiceFiles, setDateVoiceFiles] = useState({});
+
+  const fileInputRef     = useRef(null);
+  const fileInputDateRef = useRef(null);
+
+  // 날짜 범위 계산 (date ~ dateEnd, 최대 60일)
+  const displayDates = useMemo(() => {
+    if (!date) return [];
+    const start = new Date(date + 'T00:00:00');
+    const end   = dateEnd ? new Date(dateEnd + 'T00:00:00') : start;
+    const result = [];
+    const d = new Date(start);
+    while (d <= end && result.length < 60) {
+      result.push(
+        `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`
+      );
+      d.setDate(d.getDate() + 1);
+    }
+    return result;
+  }, [date, dateEnd]);
+
+  function fmtDate(ds) {
+    const d = new Date(ds + 'T00:00:00');
+    return `${d.getMonth()+1}/${d.getDate()}`;
+  }
+
+  function toggleDateCheck(ds) {
+    setTrainedDates(prev => {
+      if (prev.includes(ds)) {
+        setDateVoiceFiles(m => { const n = { ...m }; delete n[ds]; return n; });
+        return prev.filter(d => d !== ds);
+      }
+      return [...prev, ds].sort();
+    });
+  }
+
+  function handleVoiceBtnClick(ds) {
+    fileInputDateRef.current = ds;
+    fileInputRef.current?.click();
+  }
+
+  function handleVoiceFiles(e) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    e.target.value = '';
+    const targetDate = fileInputDateRef.current;
+    if (!targetDate) return;
+    setDateVoiceFiles(prev => ({ ...prev, [targetDate]: file }));
+  }
+
+  function removeVoiceFile(ds) {
+    setDateVoiceFiles(prev => { const n = { ...prev }; delete n[ds]; return n; });
+  }
+
+  // 저장 후 음성 파일 백그라운드 업로드
+  function startVoiceUploads(savedId) {
+    const entries = Object.entries(dateVoiceFiles);
+    if (!entries.length || !savedId) return;
+    entries.forEach(([ds, file]) => {
+      const form = new FormData();
+      form.append('audio', file);
+      form.append('classId', String(savedId));
+      form.append('trainedDate', ds);
+      voiceApi.startAnalyze(form).catch(err =>
+        console.error('[voice] upload failed', ds, err.message)
+      );
+    });
+  }
+
+
+  function buildBody() {
+    const hasDrill = drillPos.length || drillTech.length || drillStars;
+    return {
+      date, dateEnd: dateEnd || null, theme, note, feedback,
+      trainedDates,
+      clipIds: linkedClipIds,
+      drill: hasDrill ? {
+        pos: drillPos[0] || '', tech: drillTech,
+        detail: drill0.detail || [],
+        stars: parseInt(drillStars) || 0,
+        chainIds: drill0.chain_ids || [], clipIds: [],
+      } : null,
+    };
+  }
 
   async function aiEnhance(field) {
     const text = field === 'note' ? note : feedback;
@@ -61,146 +152,23 @@ export default function ClassEditor({ initial, onClose, onSaved }) {
     finally { setAiBusy(null); }
   }
 
-  async function handleVoiceFile(e) {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    e.target.value = '';
-
-    // 수업을 먼저 저장해 classId를 확보
-    if (!date) { alert('날짜를 먼저 입력해주세요'); return; }
+  async function save() {
+    if (!date) { alert('날짜를 입력해주세요'); return; }
     setLoading(true);
     let savedId = initial?.id;
     try {
-      const body = {
-        date, dateEnd: dateEnd || null, theme, note, feedback,
-        trainedDates: initial?.trained_dates || [],
-        drill: (drillPos.length || drillTech.length || drillStars) ? {
-          pos: drillPos[0] || '', tech: drillTech,
-          detail: drill0.detail || [], stars: parseInt(drillStars) || 0,
-          chainIds: drill0.chain_ids || [], clipIds: [],
-        } : null,
-      };
+      const body = buildBody();
       if (isEdit) {
         await classesApi.updateClass(initial.id, body);
       } else {
         const res = await classesApi.createClass(body);
         savedId = res?.id || res;
       }
-    } catch (err) {
-      showToast('저장 실패: ' + err.message);
-      setLoading(false);
-      return;
-    } finally { setLoading(false); }
-
-    if (!savedId) { showToast('classId를 확보할 수 없습니다'); return; }
-
-    // 음성 분석 잡 시작 (백그라운드)
-    setVoiceBusy(true);
-    setVoiceElapsed(0);
-    voiceTimerRef.current = setInterval(() => setVoiceElapsed(s => s + 1), 1000);
-    try {
-      const form = new FormData();
-      form.append('audio', file);
-      form.append('classId', savedId);
-      await voiceApi.startAnalyze(form);
-      showToast('🎙 음성 업로드 완료 — 백그라운드에서 분석을 시작합니다 (완료 시 수업 카드에 표시)');
-      onSaved?.();
-
-      // 폴링 — 완료될 때까지 30초마다 확인 (최대 2시간)
-      const maxTries = 240;
-      let tries = 0;
-      const poll = setInterval(async () => {
-        tries++;
-        try {
-          // 잡 목록에서 현재 classId 잡 찾기
-          const jobs = await voiceApi.listJobs();
-          const job = jobs.find(j => String(j.class_id) === String(savedId));
-          if (!job || job.status === 'error') {
-            clearInterval(poll);
-            clearInterval(voiceTimerRef.current);
-            setVoiceBusy(false);
-            if (job?.status === 'error') showToast('음성 분석 실패');
-            return;
-          }
-          if (job.status === 'done') {
-            clearInterval(poll);
-            clearInterval(voiceTimerRef.current);
-            const detail = await voiceApi.getJob(job.id);
-            const r = detail.result;
-            if (r) {
-              const newTheme = (r.theme && !theme) ? r.theme : theme;
-              if (r.theme && !theme) setTheme(r.theme);
-
-              // 기존 메모가 있으면 구분자 추가 후 append, 없으면 직접 설정
-              let mergedNote = note;
-              if (r.note) {
-                mergedNote = note.trim()
-                  ? `${note.trim()}\n\n[음성 분석]\n${r.note}`
-                  : r.note;
-                setNote(mergedNote);
-              }
-
-              const newDrillPos  = r.drillPos        ? [r.drillPos]      : drillPos;
-              const newDrillTech = r.techniques?.length ? r.techniques   : drillTech;
-              if (r.drillPos)             setDrillPos(newDrillPos);
-              if (r.techniques?.length)   setDrillTech(newDrillTech);
-              if (r.videoQueries?.length) setVoiceSuggestions(r.videoQueries.slice(0, 3));
-
-              // 분석 결과를 DB에 즉시 반영 (저장 버튼 누르지 않아도 보존)
-              const hasDrill = newDrillPos.length || newDrillTech.length || drillStars;
-              await classesApi.updateClass(savedId, {
-                date, dateEnd: dateEnd || null,
-                theme: newTheme, note: mergedNote, feedback,
-                trainedDates: initial?.trained_dates || [],
-                drill: hasDrill ? {
-                  pos: newDrillPos[0] || '', tech: newDrillTech,
-                  detail: drill0.detail || [], stars: parseInt(drillStars) || 0,
-                  chainIds: drill0.chain_ids || [], clipIds: [],
-                } : null,
-              }).catch(() => {});
-            }
-            setVoiceBusy(false);
-            showToast('🎙 음성 분석 완료! 전체 메모에 분석 내용이 저장되었습니다');
-            onSaved?.();
-          }
-        } catch {}
-        if (tries >= maxTries) {
-          clearInterval(poll);
-          clearInterval(voiceTimerRef.current);
-          setVoiceBusy(false);
-        }
-      }, 30000);
-    } catch (err) {
-      clearInterval(voiceTimerRef.current);
-      setVoiceBusy(false);
-      showToast('업로드 실패: ' + err.message);
-    }
-  }
-
-  async function save() {
-    if (!date) { alert('날짜를 입력해주세요'); return; }
-    setLoading(true);
-    try {
-      const hasDrill = drillPos.length || drillTech.length || drillStars;
-      const body = {
-        date,
-        dateEnd: dateEnd || null,
-        theme, note, feedback,
-        trainedDates: initial?.trained_dates || [],
-        drill: hasDrill ? {
-          pos: drillPos[0] || '',
-          tech: drillTech,
-          detail: drill0.detail || [],
-          stars: parseInt(drillStars) || 0,
-          chainIds: drill0.chain_ids || [],
-          clipIds: [],
-        } : null,
-      };
-      if (isEdit) await classesApi.updateClass(initial.id, body);
-      else await classesApi.createClass(body);
-      showToast(isEdit ? '수정되었습니다' : '추가되었습니다');
+      const hasVoice = Object.keys(dateVoiceFiles).length > 0;
+      showToast(hasVoice ? '저장됨 — 음성 분석 백그라운드 시작' : (isEdit ? '수정되었습니다' : '추가되었습니다'));
       onSaved && onSaved();
       onClose();
+      startVoiceUploads(savedId);
     } catch (e) { showToast('저장 실패: ' + e.message); }
     finally { setLoading(false); }
   }
@@ -220,59 +188,8 @@ export default function ClassEditor({ initial, onClose, onSaved }) {
 
   return (
     <Modal title={isEdit ? '수업 수정' : '수업 추가'} onClose={onClose}>
-      {/* 음성 기록 버튼 */}
-      <div style={{ marginBottom: 16 }}>
-        <input
-          ref={fileInputRef} type="file"
-          accept="audio/*,video/mp4,video/quicktime"
-          style={{ display: 'none' }}
-          onChange={handleVoiceFile}
-        />
-        <button
-          onClick={() => fileInputRef.current?.click()}
-          disabled={voiceBusy}
-          style={{
-            width: '100%', padding: '11px 0', borderRadius: 12,
-            background: voiceBusy ? 'var(--surface-up)' : 'var(--accent-dim)',
-            color: voiceBusy ? 'var(--text2)' : 'var(--accent)',
-            border: `1.5px solid ${voiceBusy ? 'var(--border)' : 'var(--accent)'}`,
-            fontSize: 14, fontWeight: 700,
-            cursor: voiceBusy ? 'default' : 'pointer',
-          }}
-        >
-          {voiceBusy
-            ? `🎙 분석 중… ${Math.floor(voiceElapsed / 60)}분 ${voiceElapsed % 60}초 경과`
-            : '🎙 음성 파일로 수업 기록'}
-        </button>
-        <p style={{ fontSize: 11, color: 'var(--text3)', margin: '4px 0 0', textAlign: 'center' }}>
-          MP3·M4A·WAV·MP4 지원 · 수업 전체 녹음 가능 · 업로드 후 백그라운드 처리
-        </p>
 
-        {/* 관련 영상 검색 제안 */}
-        {voiceSuggestions.length > 0 && (
-          <div style={{ marginTop: 10 }}>
-            <div style={{ fontSize: 12, color: 'var(--text2)', marginBottom: 6, fontWeight: 600 }}>
-              관련 참고 영상
-            </div>
-            {voiceSuggestions.map((v, i) => (
-              <a key={i}
-                href={`https://www.youtube.com/results?search_query=${encodeURIComponent(v.query)}`}
-                target="_blank" rel="noreferrer"
-                style={{
-                  display: 'block', padding: '7px 10px', marginBottom: 5,
-                  background: 'var(--surface)', border: '1px solid var(--border)',
-                  borderRadius: 8, fontSize: 12, color: 'var(--accent)',
-                  textDecoration: 'none',
-                }}
-              >
-                🔍 {v.query}
-                {v.reason && <span style={{ color: 'var(--text3)', marginLeft: 6 }}>— {v.reason}</span>}
-              </a>
-            ))}
-          </div>
-        )}
-      </div>
-
+      {/* 날짜 입력 */}
       <div style={{ display: 'flex', gap: 8 }}>
         <div className="field" style={{ flex: 1 }}>
           <label>시작일 *</label>
@@ -282,6 +199,70 @@ export default function ClassEditor({ initial, onClose, onSaved }) {
           <label>종료일</label>
           <input type="date" value={dateEnd} onChange={e => setDateEnd(e.target.value)} />
         </div>
+      </div>
+
+      {/* 수련 날짜별 음성 분석 */}
+      <div className="field">
+        <label style={{ marginBottom: 8, display: 'block' }}>수련 날짜 · 음성 기록</label>
+        <input
+          ref={fileInputRef} type="file"
+          accept="audio/*,video/mp4,video/quicktime"
+          style={{ display: 'none' }}
+          onChange={handleVoiceFiles}
+        />
+
+        {displayDates.length > 0 ? (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
+            {displayDates.map(ds => {
+              const isTrained  = trainedDates.includes(ds);
+              const voiceFile  = dateVoiceFiles[ds];
+              return (
+                <div key={ds} style={{
+                  display: 'flex', alignItems: 'center', gap: 8,
+                  padding: '8px 12px', background: 'var(--surface)',
+                  border: `1px solid ${voiceFile ? 'var(--accent)' : 'var(--border)'}`,
+                  borderRadius: 10,
+                }}>
+                  <input type="checkbox" checked={isTrained} onChange={() => toggleDateCheck(ds)}
+                    style={{ width: 16, height: 16, cursor: 'pointer', accentColor: 'var(--accent)', flexShrink: 0 }} />
+                  <span style={{ fontSize: 13, fontWeight: 600, flex: 1,
+                    color: isTrained ? 'var(--text1)' : 'var(--text3)' }}>
+                    {fmtDate(ds)}
+                  </span>
+                  {voiceFile && (
+                    <span style={{ fontSize: 11, color: 'var(--accent)', overflow: 'hidden',
+                      textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 120 }}>
+                      🎙 {voiceFile.name}
+                    </span>
+                  )}
+                  {voiceFile ? (
+                    <button onClick={() => removeVoiceFile(ds)} title="파일 제거"
+                      style={{ padding: '3px 8px', borderRadius: 6, fontSize: 11, fontWeight: 600,
+                        background: 'transparent', border: '1px solid var(--border)',
+                        color: 'var(--text3)', cursor: 'pointer', flexShrink: 0 }}>✕</button>
+                  ) : (
+                    <button onClick={() => handleVoiceBtnClick(ds)} disabled={!isTrained}
+                      title={isTrained ? `${fmtDate(ds)} 음성 파일 첨부` : '날짜를 먼저 체크하세요'}
+                      style={{ padding: '5px 10px', borderRadius: 8, fontSize: 13, fontWeight: 600,
+                        background: isTrained ? 'var(--accent-dim)' : 'var(--surface-up)',
+                        color: isTrained ? 'var(--accent)' : 'var(--text3)',
+                        border: `1px solid ${isTrained ? 'var(--accent)' : 'var(--border)'}`,
+                        cursor: isTrained ? 'pointer' : 'not-allowed', flexShrink: 0 }}>
+                      🎙
+                    </button>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <p style={{ fontSize: 12, color: 'var(--text3)', margin: 0 }}>
+            시작일을 입력하면 날짜별 수련 체크 및 음성 첨부가 가능합니다.
+          </p>
+        )}
+        <p style={{ fontSize: 11, color: 'var(--text3)', margin: '6px 0 0', textAlign: 'center' }}>
+          날짜 체크 → 🎙 버튼으로 파일 첨부 → 저장 시 백그라운드 분석 · 결과 자동 저장
+        </p>
       </div>
 
       <div className="field">
@@ -324,12 +305,165 @@ export default function ClassEditor({ initial, onClose, onSaved }) {
         <StarRating value={drillStars} onChange={setDrillStars} />
       </div>
 
-      <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end', marginTop: 12 }}>
-        {isEdit && (
-          <Button variant="danger" size="sm" onClick={remove} style={{ marginRight: 'auto' }}>삭제</Button>
+      {/* 관련 영상 연결 */}
+      <div className="field">
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+          <label style={{ margin: 0 }}>관련 영상</label>
+          <button onClick={() => setClipPickerOpen(o => !o)} style={{
+            border: 'none', background: 'var(--surface-up)', color: 'var(--accent)',
+            borderRadius: 6, padding: '3px 10px', fontSize: 12, fontWeight: 600, cursor: 'pointer',
+          }}>
+            {clipPickerOpen ? '닫기' : '+ 영상 선택'}
+          </button>
+        </div>
+
+        {/* 선택된 클립 목록 */}
+        {linkedClipIds.length > 0 && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginBottom: 8 }}>
+            {linkedClipIds.map(id => {
+              const clip = clips.find(c => c.id === id);
+              if (!clip) return null;
+              const thumb = getClipThumb(clip);
+              return (
+                <div key={id} style={{
+                  display: 'flex', alignItems: 'center', gap: 8,
+                  padding: '6px 10px',
+                  background: 'var(--surface-up)', border: '1px solid var(--border)', borderRadius: 10,
+                }}>
+                  <div style={{
+                    width: 48, height: 32, borderRadius: 6, overflow: 'hidden', flexShrink: 0,
+                    background: 'var(--surface-hi)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  }}>
+                    {thumb
+                      ? <img src={thumb} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      : <span style={{ fontSize: 14 }}>{getPlatformIcon(clip.platform)}</span>}
+                  </div>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontSize: 12, fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      {clip.title}
+                    </div>
+                    {(clip.tech_names?.[0] || clip.tech_name) && (
+                      <div style={{ fontSize: 11, color: 'var(--accent)', marginTop: 1 }}>
+                        {clip.tech_names?.[0] || clip.tech_name}
+                      </div>
+                    )}
+                  </div>
+                  <button onClick={() => setLinkedClipIds(ids => ids.filter(i => i !== id))} style={{
+                    border: 'none', background: 'transparent', color: 'var(--text3)',
+                    cursor: 'pointer', fontSize: 16, padding: 0, flexShrink: 0,
+                  }}>×</button>
+                </div>
+              );
+            })}
+          </div>
         )}
-        <Button variant="outline" size="sm" onClick={onClose}>취소</Button>
+
+        {/* 영상 검색 + 선택 패널 */}
+        {clipPickerOpen && (
+          <div style={{
+            border: '1px solid var(--border)', borderRadius: 12,
+            background: 'var(--surface)', overflow: 'hidden',
+          }}>
+            {drillTech.length > 0 && (() => {
+              const suggested = clips.filter(cl => {
+                try {
+                  const names = JSON.parse(cl.tech_name || '[]');
+                  return Array.isArray(names) && names.some(n => drillTech.includes(n)) && !linkedClipIds.includes(cl.id);
+                } catch { return false; }
+              });
+              if (!suggested.length) return null;
+              return (
+                <div style={{ padding: '8px 10px', borderBottom: '1px solid var(--border)', background: 'var(--accent-dim)' }}>
+                  <div style={{ fontSize: 11, color: 'var(--accent)', fontWeight: 700, marginBottom: 6 }}>
+                    추천 영상 (드릴 기술 일치)
+                  </div>
+                  {suggested.map(cl => (
+                    <button key={cl.id}
+                      onClick={() => setLinkedClipIds(ids => [...ids, cl.id])}
+                      style={{
+                        display: 'block', width: '100%', textAlign: 'left',
+                        padding: '6px 8px', marginBottom: 4,
+                        background: 'var(--surface)', border: '1px solid var(--accent)',
+                        borderRadius: 8, fontSize: 12, color: 'var(--text)', cursor: 'pointer',
+                      }}>
+                      + {cl.title}
+                    </button>
+                  ))}
+                </div>
+              );
+            })()}
+            <div style={{ padding: '8px 10px', borderBottom: '1px solid var(--border)' }}>
+              <input
+                autoFocus
+                value={clipSearch}
+                onChange={e => setClipSearch(e.target.value)}
+                placeholder="영상 제목·기술명 검색"
+                style={{
+                  width: '100%', border: 'none', outline: 'none',
+                  background: 'transparent', fontSize: 13, color: 'var(--text)',
+                }}
+              />
+            </div>
+            <div style={{ maxHeight: 220, overflowY: 'auto' }}>
+              {clips
+                .filter(c => {
+                  if (linkedClipIds.includes(c.id)) return false;
+                  if (!clipSearch.trim()) return true;
+                  const q = clipSearch.toLowerCase();
+                  return (c.title || '').toLowerCase().includes(q) ||
+                         (c.tech_names || []).some(t => t.toLowerCase().includes(q)) ||
+                         (c.tech_name || '').toLowerCase().includes(q);
+                })
+                .slice(0, 20)
+                .map(c => {
+                  const thumb = getClipThumb(c);
+                  return (
+                    <button key={c.id} onClick={() => {
+                      setLinkedClipIds(ids => [...ids, c.id]);
+                      setClipSearch('');
+                    }} style={{
+                      display: 'flex', alignItems: 'center', gap: 10,
+                      width: '100%', padding: '8px 12px',
+                      border: 'none', borderBottom: '1px solid var(--border)',
+                      background: 'transparent', cursor: 'pointer', textAlign: 'left',
+                    }}>
+                      <div style={{
+                        width: 52, height: 34, borderRadius: 6, overflow: 'hidden', flexShrink: 0,
+                        background: 'var(--surface-hi)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      }}>
+                        {thumb
+                          ? <img src={thumb} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                          : <span style={{ fontSize: 14 }}>{getPlatformIcon(c.platform)}</span>}
+                      </div>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                          {c.title}
+                        </div>
+                        {(c.tech_names?.[0] || c.tech_name) && (
+                          <div style={{ fontSize: 11, color: 'var(--accent)', marginTop: 1 }}>
+                            {c.tech_names?.[0] || c.tech_name}
+                          </div>
+                        )}
+                      </div>
+                    </button>
+                  );
+                })}
+              {clips.filter(c => !linkedClipIds.includes(c.id) && (!clipSearch.trim() || (c.title || '').toLowerCase().includes(clipSearch.toLowerCase()))).length === 0 && (
+                <div style={{ padding: '14px', textAlign: 'center', fontSize: 12, color: 'var(--text3)' }}>
+                  검색 결과 없음
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div style={{ display: 'flex', gap: 8, marginTop: 12 }}>
         <Button variant="primary" size="sm" onClick={save}>저장</Button>
+        <Button variant="outline" size="sm" onClick={onClose}>취소</Button>
+        {isEdit && (
+          <Button variant="danger" size="sm" onClick={remove} style={{ marginLeft: 'auto' }}>삭제</Button>
+        )}
       </div>
     </Modal>
   );

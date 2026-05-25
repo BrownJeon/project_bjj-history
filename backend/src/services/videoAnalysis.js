@@ -3,6 +3,7 @@ const fs   = require('fs/promises');
 const fsSync = require('fs');
 const path = require('path');
 const { runClaude } = require('./claudeCli');
+const { getFramesDir, getVideoDir, frameWebPath, videoWebPath, ensureDir } = require('./storage');
 
 function runProcess(cmd, args, timeoutMs = 180000) {
   return new Promise((resolve, reject) => {
@@ -109,18 +110,17 @@ ${transcriptBlock}`;
 }
 
 // clipId 있으면 프레임을 영구 저장, 없으면 임시 파일로 처리 후 삭제
-async function analyzeVideo(url, clipId = null) {
+// onProgress(percent 0-100, stage string) — 진행 단계 콜백 (선택)
+async function analyzeVideo(url, clipId = null, onProgress = null) {
   const rand    = Math.random().toString(36).slice(2, 8);
   const tmpBase = `/tmp/bjj-video-${Date.now()}-${rand}`;
   const videoPath = `${tmpBase}.mp4`;
   const audioPath = `${tmpBase}.mp3`;
   const txtPath   = `${tmpBase}.txt`;
 
-  // clipId가 있으면 프레임 저장 디렉토리 준비
-  const persistDir = clipId
-    ? path.resolve(__dirname, '../../../public/uploads/clip-frames', String(clipId))
-    : null;
-  if (persistDir) fsSync.mkdirSync(persistDir, { recursive: true });
+  // clipId가 있으면 프레임 저장 디렉토리 준비 (UPLOAD_PATH 환경변수 반영)
+  const persistDir = clipId ? getFramesDir(clipId) : null;
+  if (persistDir) ensureDir(persistDir);
 
   const framePrefix = persistDir
     ? path.join(persistDir, 'frame')
@@ -128,20 +128,44 @@ async function analyzeVideo(url, clipId = null) {
 
   let createdFrames = [];
   try {
+    onProgress?.(10, '영상 다운로드 중');
     await runProcess('yt-dlp', ['-f', 'mp4/best', '-o', videoPath, '--no-warnings', url], 300000); // 5분
-    const hasAudio   = await hasAudioTrack(videoPath);
-    const transcript = hasAudio ? await getWhisperTranscript(videoPath, audioPath, txtPath) : '';
+    onProgress?.(35, '오디오 확인 중');
+    const hasAudio = await hasAudioTrack(videoPath);
+    let transcript = '';
+    if (hasAudio) {
+      onProgress?.(40, '음성 변환 중');
+      transcript = await getWhisperTranscript(videoPath, audioPath, txtPath);
+    }
     console.log('[analyze-video] hasAudio=', hasAudio, 'transcriptLen=', transcript.length, 'clipId=', clipId, 'url=', url);
 
+    onProgress?.(65, 'AI 분석 중');
     const { description, frames } = await runCombinedAnalysis(videoPath, framePrefix, url, transcript);
     createdFrames = frames;
 
-    // 영구 저장 경로 계산
+    // 영구 저장 경로 계산 (웹 URL)
     const savedFrames = persistDir
-      ? frames.map(f => `/uploads/clip-frames/${clipId}/${path.basename(f)}`)
+      ? frames.map(f => frameWebPath(clipId, path.basename(f)))
       : [];
 
-    return { description, method: transcript ? 'vision+audio' : 'vision', savedFrames };
+    // 영상 파일 영구 저장 (clipId 있을 때만)
+    onProgress?.(90, '파일 저장 중');
+    let savedVideo = null;
+    if (clipId) {
+      try {
+        const videoDir  = getVideoDir(clipId);
+        const videoSave = path.join(videoDir, 'video.mp4');
+        ensureDir(videoDir);
+        await fs.copyFile(videoPath, videoSave);
+        savedVideo = videoWebPath(clipId);
+        console.log('[analyze-video] 영상 저장 완료:', videoSave);
+      } catch (e) {
+        console.error('[analyze-video] 영상 저장 실패:', e.message);
+      }
+    }
+
+    onProgress?.(98, '완료 중');
+    return { description, method: transcript ? 'vision+audio' : 'vision', savedFrames, savedVideo };
   } finally {
     for (const ext of ['.mp4', '.mp3', '.txt', '.srt', '.vtt', '.tsv', '.json']) {
       await fs.unlink(tmpBase + ext).catch(() => {});

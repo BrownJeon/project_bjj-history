@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { useCache } from '../contexts/CacheContext';
 import { useUI } from '../contexts/UIContext';
 import * as classesApi from '../api/classes';
@@ -9,6 +9,7 @@ import Card from '../components/Card';
 import Tag from '../components/Tag';
 import Icon from '../components/Icon';
 import Button from '../components/Button';
+import { getClipThumb, getPlatformIcon, getPlatformLabel } from '../utils/videoThumb';
 
 function pad(n) { return String(n).padStart(2, '0'); }
 function todayStr() {
@@ -20,30 +21,41 @@ const TYPE_TONE = { gi: 'accent', nogi: 'blue', open: 'purple', comp: 'amber' };
 const TYPE_LABEL = { gi: 'Gi', nogi: 'No-Gi', open: '오픈매트', comp: '대회' };
 
 export default function CalendarPage() {
-  const { classes, reloadClasses } = useCache();
+  const { classes, clips, reloadClasses } = useCache();
   const { showToast, setLoading } = useUI();
   const [year, setYear]   = useState(new Date().getFullYear());
   const [month, setMonth] = useState(new Date().getMonth());
   const [selected, setSelected] = useState(todayStr());
   const [editingClass, setEditingClass] = useState(null);
   const [editingSpar, setEditingSpar]   = useState(null);
-  const [pendingVoice, setPendingVoice] = useState(new Set()); // classId Set
+  const [pendingVoice, setPendingVoice] = useState(new Map()); // classId → {transcriptLen}
+  const [viewMode, setViewMode] = useState(() => localStorage.getItem('bjj_cal_view') || 'calendar');
+  const [listSearch, setListSearch] = useState('');
+  const prevPendingRef = useRef(new Map());
+  const pendingCountRef = useRef(0);
 
-  // 음성 분석 잡 폴링 (30초 간격)
+  useEffect(() => { localStorage.setItem('bjj_cal_view', viewMode); }, [viewMode]);
+
+  // 음성 분석 잡 폴링 — pending 있으면 10초, 없으면 30초 간격
   useEffect(() => {
+    let timer;
     async function checkJobs() {
       try {
         const jobs = await voiceApi.listJobs();
-        const pendingIds = new Set(
-          jobs.filter(j => j.status === 'pending').map(j => String(j.class_id))
-        );
-        setPendingVoice(pendingIds);
-        if (pendingIds.size > 0) reloadClasses();
+        const pendingMap = new Map();
+        jobs.filter(j => j.status === 'pending').forEach(j => {
+          pendingMap.set(String(j.class_id), { transcriptLen: Number(j.transcript_len) || 0 });
+        });
+        const justCompleted = [...prevPendingRef.current.keys()].some(id => !pendingMap.has(id));
+        if (pendingMap.size > 0 || justCompleted) reloadClasses();
+        setPendingVoice(pendingMap);
+        prevPendingRef.current = pendingMap;
+        pendingCountRef.current = pendingMap.size;
       } catch {}
+      timer = setTimeout(checkJobs, pendingCountRef.current > 0 ? 10000 : 30000);
     }
     checkJobs();
-    const timer = setInterval(checkJobs, 30000);
-    return () => clearInterval(timer);
+    return () => clearTimeout(timer);
   }, []);
 
   const dataByDate = useMemo(() => {
@@ -116,11 +128,29 @@ export default function CalendarPage() {
   return (
     <div>
       {/* 헤더 */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
         <span style={{ fontSize: 22, fontWeight: 800, letterSpacing: '-0.5px' }}>캘린더</span>
         <Button size="sm" variant="outline" onClick={() => setEditingClass('new')}>+ 수업 추가</Button>
       </div>
 
+      {/* 뷰 탭 */}
+      <div style={{
+        display: 'flex', gap: 4, marginBottom: 14,
+        background: 'var(--surface-up)', borderRadius: 10, padding: 3,
+        border: '1px solid var(--border)',
+      }}>
+        {[['calendar', '📅 캘린더'], ['list', '≡ 목록']].map(([mode, label]) => (
+          <button key={mode} onClick={() => setViewMode(mode)} style={{
+            flex: 1, padding: '7px 0', borderRadius: 8, border: 'none',
+            background: viewMode === mode ? 'var(--accent)' : 'transparent',
+            color: viewMode === mode ? '#fff' : 'var(--text2)',
+            fontSize: 13, fontWeight: 700, cursor: 'pointer',
+            transition: 'background 0.15s, color 0.15s',
+          }}>{label}</button>
+        ))}
+      </div>
+
+      {viewMode === 'calendar' && (<>
       {/* 월 네비 */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
         <button
@@ -217,7 +247,7 @@ export default function CalendarPage() {
                       <Tag tone={tone}>{label}</Tag>
                       <span style={{ flex: 1, fontSize: 14, fontWeight: 700 }}>{c.theme || '수업'}</span>
                       {pendingVoice.has(String(c.id)) && (
-                        <span style={{ fontSize: 11, color: 'var(--amber)', fontWeight: 600 }}>⏳ 분석 중</span>
+                        <span style={{ fontSize: 14 }}>⏳</span>
                       )}
                       {c.voice_transcript && !pendingVoice.has(String(c.id)) && (
                         <span style={{ fontSize: 11, color: 'var(--accent)', fontWeight: 600 }}>🎙</span>
@@ -229,6 +259,26 @@ export default function CalendarPage() {
                         수정
                       </button>
                     </div>
+                    {pendingVoice.has(String(c.id)) && (() => {
+                      const { transcriptLen } = pendingVoice.get(String(c.id));
+                      return (
+                        <div style={{ marginBottom: 10, padding: '7px 10px',
+                                      background: 'var(--surface-up)', border: '1px solid var(--border)',
+                                      borderRadius: 8 }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between',
+                                        alignItems: 'center', marginBottom: 5 }}>
+                            <span style={{ fontSize: 11, color: 'var(--amber)', fontWeight: 600 }}>음성 분석 중</span>
+                            {transcriptLen > 0 && (
+                              <span style={{ fontSize: 10, color: 'var(--text3)' }}>
+                                전사 {transcriptLen.toLocaleString()}자
+                              </span>
+                            )}
+                          </div>
+                          <div className="voice-progress-bar" />
+                        </div>
+                      );
+                    })()}
+
                     {c.drill && (c.drill.pos || (c.drill.tech || []).length > 0) && (
                       <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', marginBottom: 10 }}>
                         {c.drill.pos && <Tag tone="blue">{c.drill.pos}</Tag>}
@@ -241,6 +291,105 @@ export default function CalendarPage() {
                         ))}
                       </div>
                     )}
+
+                    {/* 연결된 영상 */}
+                    {(c.clip_ids || []).length > 0 && (() => {
+                      const linked = (c.clip_ids || [])
+                        .map(id => clips.find(cl => cl.id === id))
+                        .filter(Boolean);
+                      if (!linked.length) return null;
+                      return (
+                        <div style={{ marginBottom: 10 }}>
+                          <div style={{ fontSize: 11, color: 'var(--text2)', marginBottom: 6, fontWeight: 600 }}>
+                            관련 영상 ({linked.length})
+                          </div>
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                            {linked.map(clip => {
+                              const thumb = getClipThumb(clip);
+                              return (
+                                <a key={clip.id} href={clip.video_file || clip.url} target="_blank" rel="noreferrer"
+                                  style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none',
+                                           padding: '6px 8px', background: 'var(--surface-up)',
+                                           border: '1px solid var(--border)', borderRadius: 10 }}>
+                                  <div style={{
+                                    width: 56, height: 36, borderRadius: 6, overflow: 'hidden', flexShrink: 0,
+                                    background: 'var(--surface-hi)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                  }}>
+                                    {thumb
+                                      ? <img src={thumb} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                      : <span style={{ fontSize: 16 }}>{getPlatformIcon(clip.platform)}</span>}
+                                  </div>
+                                  <div style={{ flex: 1, minWidth: 0 }}>
+                                    <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text)',
+                                                  overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                      {clip.title}
+                                    </div>
+                                    {(clip.tech_names?.[0] || clip.tech_name) && (
+                                      <div style={{ fontSize: 11, color: 'var(--accent)', marginTop: 1 }}>
+                                        {clip.tech_names?.[0] || clip.tech_name}
+                                      </div>
+                                    )}
+                                  </div>
+                                  {clip.video_file && (
+                                    <span style={{ fontSize: 10, color: 'var(--accent)', flexShrink: 0 }}>📥</span>
+                                  )}
+                                </a>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      );
+                    })()}
+
+                    {/* 기술 관련 영상 (드릴 기술명 자동 매칭) */}
+                    {(() => {
+                      const techNames = (c.drill?.tech || [])
+                        .map(t => typeof t === 'string' ? t : (t.name || '')).filter(Boolean);
+                      if (!techNames.length) return null;
+                      const manualIds = new Set(c.clip_ids || []);
+                      const matched = clips.filter(cl => {
+                        try {
+                          const names = JSON.parse(cl.tech_name || '[]');
+                          return Array.isArray(names) && names.some(n => techNames.includes(n)) && !manualIds.has(cl.id);
+                        } catch { return false; }
+                      });
+                      if (!matched.length) return null;
+                      return (
+                        <div style={{ marginBottom: 10 }}>
+                          <div style={{ fontSize: 11, color: 'var(--text2)', marginBottom: 6, fontWeight: 600 }}>
+                            기술 관련 영상 ({matched.length})
+                          </div>
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                            {matched.map(clip => {
+                              const thumb = getClipThumb(clip);
+                              return (
+                                <a key={clip.id} href={clip.video_file || clip.url} target="_blank" rel="noreferrer"
+                                  style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none',
+                                           padding: '6px 8px', background: 'var(--surface-up)',
+                                           border: '1px solid var(--border)', borderRadius: 10 }}>
+                                  <div style={{
+                                    width: 56, height: 36, borderRadius: 6, overflow: 'hidden', flexShrink: 0,
+                                    background: 'var(--surface-hi)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                  }}>
+                                    {thumb
+                                      ? <img src={thumb} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                      : <span style={{ fontSize: 16 }}>{getPlatformIcon(clip.platform)}</span>}
+                                  </div>
+                                  <div style={{ flex: 1, minWidth: 0 }}>
+                                    <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text)',
+                                                  overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                      {clip.title}
+                                    </div>
+                                    {clip.video_file && <span style={{ fontSize: 10, color: 'var(--accent)' }}>📥 오프라인</span>}
+                                  </div>
+                                </a>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      );
+                    })()}
+
                     <div style={{ display: 'flex', gap: 6 }}>
                       <button
                         onClick={() => toggleTrain(c, selected)}
@@ -283,6 +432,41 @@ export default function CalendarPage() {
         </div>
       )}
 
+      </>)}
+
+      {/* 목록 뷰 */}
+      {viewMode === 'list' && (
+        <div>
+          <div style={{ marginBottom: 12 }}>
+            <input
+              value={listSearch}
+              onChange={e => setListSearch(e.target.value)}
+              placeholder="테마·노트 검색"
+              style={{
+                width: '100%', padding: '8px 12px', border: '1px solid var(--border)',
+                borderRadius: 10, background: 'var(--surface-up)', color: 'var(--text)',
+                fontSize: 13, outline: 'none', boxSizing: 'border-box',
+              }}
+            />
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {[...classes]
+              .sort((a, b) => (b.date || '').localeCompare(a.date || ''))
+              .filter(c => {
+                if (!listSearch.trim()) return true;
+                const q = listSearch.toLowerCase();
+                return (c.theme || '').toLowerCase().includes(q) ||
+                       (c.note || '').toLowerCase().includes(q);
+              })
+              .map(c => (
+                <ClassListCard key={c.id} c={c} clips={clips}
+                  onEdit={() => setEditingClass(c)}
+                  voiceProgress={pendingVoice.get(String(c.id))} />
+              ))}
+          </div>
+        </div>
+      )}
+
       {editingClass && (
         <ClassEditor
           initial={editingClass === 'new' ? null : editingClass}
@@ -299,6 +483,83 @@ export default function CalendarPage() {
         />
       )}
     </div>
+  );
+}
+
+function ClassListCard({ c, clips, onEdit, voiceProgress }) {
+  const tone = TYPE_TONE[c.type] || 'accent';
+  const label = TYPE_LABEL[c.type] || 'Gi';
+  const techNames = (c.drill?.tech || [])
+    .map(t => typeof t === 'string' ? t : (t.name || '')).filter(Boolean);
+  const linkedCount = (c.clip_ids || []).length;
+  const matchedCount = clips.filter(cl => {
+    try {
+      const names = JSON.parse(cl.tech_name || '[]');
+      return Array.isArray(names) && names.some(n => techNames.includes(n)) && !(c.clip_ids || []).includes(cl.id);
+    } catch { return false; }
+  }).length;
+  const sparCount = (c.spar_days || []).reduce((s, sd) => s + (sd.sessions || []).length, 0);
+  const dateStr = (c.date || '').toString().slice(0, 10);
+  return (
+    <Card>
+      <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8 }}>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ display: 'flex', gap: 6, alignItems: 'center', marginBottom: 6, flexWrap: 'wrap' }}>
+            <span style={{ fontSize: 11, color: 'var(--text3)', flexShrink: 0 }}>{dateStr}</span>
+            <Tag tone={tone}>{label}</Tag>
+            <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--text)' }}>{c.theme || '수업'}</span>
+          </div>
+          {c.drill && (c.drill.pos || techNames.length > 0) && (
+            <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', marginBottom: 6 }}>
+              {c.drill.pos && <Tag tone="blue">{c.drill.pos}</Tag>}
+              {techNames.map((t, i) => (
+                <span key={i} style={{ padding: '2px 7px', borderRadius: 6,
+                  background: 'var(--surface-hi)', color: 'var(--text2)', fontSize: 11 }}>{t}</span>
+              ))}
+            </div>
+          )}
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: c.note ? 6 : 0 }}>
+            {sparCount > 0 && <span style={{ fontSize: 11, color: 'var(--red)' }}>⚔ 스파링 {sparCount}</span>}
+            {(linkedCount + matchedCount) > 0 && (
+              <span style={{ fontSize: 11, color: 'var(--accent)' }}>
+                🎬 영상 {linkedCount}{matchedCount > 0 ? `+${matchedCount}` : ''}
+              </span>
+            )}
+            {(c.trained_dates || []).length > 0 && (
+              <span style={{ fontSize: 11, color: 'var(--text3)' }}>✓ 수련 {(c.trained_dates || []).length}회</span>
+            )}
+          </div>
+          {c.note && (
+            <div style={{ fontSize: 12, color: 'var(--text2)', lineHeight: 1.4,
+              overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2,
+              WebkitBoxOrient: 'vertical' }}>
+              {c.note}
+            </div>
+          )}
+          {voiceProgress && (
+            <div style={{ marginTop: 8, padding: '6px 10px',
+                          background: 'var(--surface-up)', border: '1px solid var(--border)',
+                          borderRadius: 8 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between',
+                            alignItems: 'center', marginBottom: 4 }}>
+                <span style={{ fontSize: 11, color: 'var(--amber)', fontWeight: 600 }}>⏳ 음성 분석 중</span>
+                {voiceProgress.transcriptLen > 0 && (
+                  <span style={{ fontSize: 10, color: 'var(--text3)' }}>
+                    전사 {voiceProgress.transcriptLen.toLocaleString()}자
+                  </span>
+                )}
+              </div>
+              <div className="voice-progress-bar" />
+            </div>
+          )}
+        </div>
+        <button onClick={onEdit} style={{
+          background: 'transparent', border: '1px solid var(--border-med)',
+          color: 'var(--text2)', borderRadius: 6, padding: '4px 8px',
+          fontSize: 11, cursor: 'pointer', flexShrink: 0,
+        }}>수정</button>
+      </div>
+    </Card>
   );
 }
 

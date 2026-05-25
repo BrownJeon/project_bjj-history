@@ -223,8 +223,8 @@ function ReportDetailModal({ detail, onClose, onDelete }) {
       {isReport ? <ReportBody c={c} /> : <PlanBody c={c} />}
 
       <div style={{ display: 'flex', gap: 8, marginTop: 16 }}>
-        <Button variant="danger" size="sm" onClick={onDelete}>삭제</Button>
         <Button variant="primary" size="sm" full onClick={onClose}>닫기</Button>
+        <Button variant="danger" size="sm" onClick={onDelete} style={{ marginLeft: 'auto' }}>삭제</Button>
       </div>
     </Modal>
   );

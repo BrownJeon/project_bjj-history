@@ -183,6 +183,28 @@ input, textarea, select { font-family: inherit; color: var(--text); }
 /* 페이지 fade */
 .page-fade { animation: fadeIn 0.18s ease-out; }
 
+/* 음성 분석 진행 바 */
+@keyframes voiceShimmer {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+.voice-progress-bar {
+  height: 3px;
+  background: var(--surface-hi);
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+.voice-progress-bar::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  height: 100%;
+  width: 50%;
+  background: linear-gradient(90deg, transparent, var(--amber), transparent);
+  animation: voiceShimmer 1.4s ease-in-out infinite;
+}
+
 /* Modal (legacy modal-overlay/modal — 일부 페이지가 아직 사용) */
 .modal-overlay {
   position: fixed; inset: 0;

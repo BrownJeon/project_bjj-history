@@ -20,11 +20,8 @@ app.get('/health', (_req, res) => res.json({ success: true, data: { status: 'ok'
 
 app.use('/api', apiRouter);
 
-// 업로드 (구버전과 공유)
-const uploadsDir = path.resolve(__dirname, '../../public/uploads');
-if (fs.existsSync(uploadsDir)) {
-  app.use('/uploads', express.static(uploadsDir));
-}
+const { getStaticRoot } = require('./services/storage');
+app.use('/uploads', express.static(getStaticRoot()));
 
 // React SPA 정적 서빙 (web/dist)
 const distDir = path.resolve(__dirname, '../../web/dist');
@@ -64,6 +61,14 @@ async function start() {
     await sq.query(
       `ALTER TABLE video_clips MODIFY COLUMN tech_name TEXT`
     ).catch(() => {});
+    // classes.clip_ids 컬럼 (수업 연관 영상 ID 배열)
+    await sq.query(
+      `ALTER TABLE classes ADD COLUMN IF NOT EXISTS clip_ids TEXT DEFAULT '[]'`
+    ).catch(() => {});
+    // video_clips.video_file 컬럼 (오프라인 저장 영상 경로)
+    await sq.query(
+      `ALTER TABLE video_clips ADD COLUMN IF NOT EXISTS video_file TEXT DEFAULT ''`
+    ).catch(() => {});
     // techniques.pos → TEXT (JSON 배열, 다중 포지션 지원)
     await sq.query(
       `ALTER TABLE techniques MODIFY COLUMN pos TEXT`
@@ -94,6 +99,10 @@ async function start() {
         updated_at DATETIME DEFAULT NOW() ON UPDATE NOW()
       )
     `).catch(() => {});
+    // voice_jobs.trained_date 컬럼 추가 (날짜별 음성 분석)
+    await sq.query(
+      `ALTER TABLE voice_jobs ADD COLUMN IF NOT EXISTS trained_date VARCHAR(10) DEFAULT NULL`
+    ).catch(() => {});
     // 영상 썸네일 백그라운드 백필 (서버 안정 후 5초 뒤 시작)
     const { backfillThumbs } = require('./services/thumbnailExtractor');
     setTimeout(backfillThumbs, 5000);

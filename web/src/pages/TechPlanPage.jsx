@@ -353,9 +353,9 @@ function TechEditorModal({ initial, onSave, onCancel }) {
         <input type="checkbox" id="t-star-tp" checked={starred} onChange={e => setStarred(e.target.checked)} />
         <label htmlFor="t-star-tp" style={{ margin: 0, cursor: 'pointer' }}>즐겨찾기</label>
       </div>
-      <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end', marginTop: 8 }}>
-        <Button variant="outline" size="sm" onClick={onCancel}>취소</Button>
+      <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
         <Button variant="primary" size="sm" onClick={submit}>저장</Button>
+        <Button variant="outline" size="sm" onClick={onCancel}>취소</Button>
       </div>
     </Modal>
   );

@@ -3,6 +3,7 @@ import { useCache } from '../contexts/CacheContext';
 import { useUI } from '../contexts/UIContext';
 import * as clipsApi from '../api/clips';
 import * as enhanceApi from '../api/enhanceMemo';
+import { getStorageMode } from './ProfilePage';
 import {
   getYtThumb, getYtEmbed, getClipThumb,
   getPlatformIcon, getPlatformLabel,
@@ -30,6 +31,34 @@ export default function ClipsPage() {
   const [editing, setEditing] = useState(null);
   const [detail, setDetail] = useState(null);
   const [page, setPage] = useState(1);
+  const [analyzeStatus, setAnalyzeStatus] = useState({}); // { [clipId]: { progress, stage } }
+  const pollRef = useRef(null);
+
+  function startPolling() {
+    if (pollRef.current) return;
+    pollRef.current = setInterval(async () => {
+      try {
+        const st = await clipsApi.getAnalyzeStatus();
+        setAnalyzeStatus(st);
+        if (Object.keys(st).length === 0) {
+          clearInterval(pollRef.current);
+          pollRef.current = null;
+          await reloadClips();
+        }
+      } catch { /* ignore */ }
+    }, 3000);
+  }
+
+  useEffect(() => {
+    // 마운트 시 진행 중인 분석 있으면 폴링 시작
+    clipsApi.getAnalyzeStatus().then(st => {
+      if (Object.keys(st).length > 0) {
+        setAnalyzeStatus(st);
+        startPolling();
+      }
+    }).catch(() => {});
+    return () => { if (pollRef.current) clearInterval(pollRef.current); };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // 사용 빈도순 기술명 (다중 기술 지원)
   const techNames = useMemo(() => {
@@ -99,6 +128,10 @@ export default function ClipsPage() {
       await reloadClips();
       setEditing(null);
       showToast('저장되었습니다');
+      // URL이 있으면 백그라운드 AI 분석이 시작될 수 있으므로 폴링 시작
+      if (form.url && /youtube\.com|youtu\.be|instagram\.com/.test(form.url)) {
+        setTimeout(() => startPolling(), 2000);
+      }
     } catch (e) { showToast('저장 실패: ' + e.message); }
     finally { setLoading(false); }
   }
@@ -209,7 +242,7 @@ export default function ClipsPage() {
       ) : (
         <>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            {paged.map(c => <ClipCard key={c.id} c={c} onClick={() => setDetail(c)} onStar={() => handleStar(c.id)} />)}
+            {paged.map(c => <ClipCard key={c.id} c={c} onClick={() => setDetail(c)} onStar={() => handleStar(c.id)} analyzeJob={analyzeStatus[String(c.id)]} />)}
           </div>
           <Pagination total={list.length} page={page} pageSize={PAGE_SIZE} onPageChange={setPage} />
         </>
@@ -221,6 +254,7 @@ export default function ClipsPage() {
           techniques={techniques}
           onSave={handleSave}
           onCancel={() => setEditing(null)}
+          analyzeJob={editing !== 'new' ? analyzeStatus[String(editing?.id)] : undefined}
         />
       )}
       {detail && (
@@ -229,9 +263,9 @@ export default function ClipsPage() {
           onClose={() => setDetail(null)}
           onEdit={() => { setEditing(detail); setDetail(null); }}
           onDelete={() => handleDelete(detail.id)}
+          analyzeJob={analyzeStatus[String(detail.id)]}
           onRefresh={async () => {
             await reloadClips();
-            // 상세 창의 clips 데이터를 최신으로 업데이트
             setDetail(prev => prev ? clips.find(c => c.id === prev.id) || prev : null);
           }}
         />
@@ -273,8 +307,9 @@ function FilterChip({ active, onClick, icon, children }) {
   );
 }
 
-function ClipCard({ c, onClick, onStar }) {
+function ClipCard({ c, onClick, onStar, analyzeJob }) {
   const thumb = getClipThumb(c);
+  const isAnalyzing = analyzeJob && analyzeJob.progress >= 0;
   return (
     <Card padding={12} onClick={onClick}>
       <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
@@ -291,6 +326,19 @@ function ClipCard({ c, onClick, onStar }) {
             <img src={thumb} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           ) : (
             <span style={{ fontSize: 18 }}>{getPlatformIcon(c.platform)}</span>
+          )}
+          {isAnalyzing && (
+            <div style={{
+              position: 'absolute', inset: 0,
+              background: 'rgba(0,0,0,0.65)',
+              display: 'flex', flexDirection: 'column',
+              alignItems: 'center', justifyContent: 'center', gap: 2,
+            }}>
+              <span style={{ fontSize: 10, color: '#fff', fontWeight: 700 }}>{analyzeJob.progress}%</span>
+              <div style={{ width: 48, height: 3, background: 'rgba(255,255,255,0.25)', borderRadius: 2 }}>
+                <div style={{ width: `${analyzeJob.progress}%`, height: '100%', background: 'var(--accent)', borderRadius: 2, transition: 'width 0.5s' }} />
+              </div>
+            </div>
           )}
         </div>
         <div style={{ flex: 1, minWidth: 0 }}>
@@ -315,7 +363,7 @@ function ClipCard({ c, onClick, onStar }) {
   );
 }
 
-function ClipEditor({ initial, techniques, onSave, onCancel }) {
+function ClipEditor({ initial, techniques, onSave, onCancel, analyzeJob }) {
   const [title, setTitle] = useState(initial?.title || '');
   const [url, setUrl]     = useState(initial?.url || '');
   const [techNames, setTechNames] = useState(
@@ -396,32 +444,42 @@ function ClipEditor({ initial, techniques, onSave, onCancel }) {
       <div className="field">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
           <label style={{ margin: 0 }}>설명</label>
-          <button onClick={handleAiAnalyze} disabled={analyzing}
-            style={{
-              background: 'var(--purple-dim)', color: 'var(--purple)',
-              border: 'none', padding: '4px 10px', borderRadius: 6,
-              fontSize: 11, cursor: analyzing ? 'wait' : 'pointer', fontWeight: 600,
-            }}>
-            {analyzing ? `분석 중 ${analyzeElapsed}s` : '✨ AI 분석'}
-          </button>
+          {(() => {
+            const bgRunning = analyzeJob && analyzeJob.progress >= 0;
+            const disabled  = analyzing || bgRunning;
+            return (
+              <button onClick={handleAiAnalyze} disabled={disabled}
+                style={{
+                  background: disabled ? 'var(--surface-up)' : 'var(--purple-dim)',
+                  color: disabled ? 'var(--text3)' : 'var(--purple)',
+                  border: 'none', padding: '4px 10px', borderRadius: 6,
+                  fontSize: 11, cursor: disabled ? 'not-allowed' : 'pointer', fontWeight: 600,
+                }}>
+                {bgRunning
+                  ? `🔄 ${analyzeJob.stage || '분석 중'} ${analyzeJob.progress}%`
+                  : analyzing ? `분석 중 ${analyzeElapsed}s` : '✨ AI 분석'}
+              </button>
+            );
+          })()}
         </div>
         <textarea rows={3} value={desc} onChange={e => setDesc(e.target.value)} placeholder="영상에 대한 설명" />
       </div>
-      <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end', marginTop: 8 }}>
-        <Button variant="outline" size="sm" onClick={onCancel}>취소</Button>
+      <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
         <Button variant="primary" size="sm" onClick={submit}>저장</Button>
+        <Button variant="outline" size="sm" onClick={onCancel}>취소</Button>
       </div>
     </Modal>
   );
 }
 
-function ClipDetail({ c, onClose, onEdit, onDelete, onRefresh }) {
+function ClipDetail({ c, onClose, onEdit, onDelete, onRefresh, analyzeJob }) {
   const [slideIdx, setSlideIdx]             = useState(0);
   const [analyzing, setAnalyzing]           = useState(false);
   const [analyzeElapsed, setAnalyzeElapsed] = useState(0);
 
-  // 로컬 상태로 description·frames 관리 — 분석 완료 즉시 반영
-  const [localDesc, setLocalDesc]     = useState(c.description || '');
+  // 로컬 상태로 description·frames·videoFile 관리 — 분석 완료 즉시 반영
+  const [localDesc, setLocalDesc]       = useState(c.description || '');
+  const [localVideoFile, setLocalVideoFile] = useState(c.video_file || '');
   const [localFrames, setLocalFrames] = useState(() => {
     const f = c.frames;
     if (!f) return [];
@@ -436,18 +494,47 @@ function ClipDetail({ c, onClose, onEdit, onDelete, onRefresh }) {
     }
     setAnalyzing(true);
     setAnalyzeElapsed(0);
+    const mode = getStorageMode();
     try {
-      const res = await enhanceApi.analyzeVideo(c.url, c.id, (sec) => setAnalyzeElapsed(sec));
-      // 즉시 화면에 반영
+      // 기기 저장 모드: clipId 전달 안 함 → 서버에 프레임 영구 저장 안 함
+      const clipId = mode === 'device' ? null : c.id;
+      const res = await enhanceApi.analyzeVideo(c.url, clipId, (sec) => setAnalyzeElapsed(sec));
       if (res.description) setLocalDesc(res.description);
-      if (res.frames?.length) { setLocalFrames(res.frames); setSlideIdx(0); }
-      // 목록도 갱신
+      if (res.videoFile)   setLocalVideoFile(res.videoFile);
+      if (res.frames?.length) {
+        setLocalFrames(res.frames);
+        setSlideIdx(0);
+        // 기기 저장 모드: 자동 다운로드 트리거
+        if (mode === 'device') downloadFrames(res.frames, c.title);
+      }
       await onRefresh?.();
     } catch (e) {
       alert('AI 분석 실패: ' + e.message);
     } finally {
       setAnalyzing(false);
     }
+  }
+
+  function downloadFrames(frames, title) {
+    frames.forEach((url, i) => {
+      setTimeout(() => {
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${(title || 'frame').replace(/[^가-힣a-zA-Z0-9]/g, '_')}-${i + 1}.jpg`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      }, i * 400); // 브라우저 다운로드 차단 방지: 간격 두기
+    });
+  }
+
+  function downloadSingleFrame(url, idx, title) {
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${(title || 'frame').replace(/[^가-힣a-zA-Z0-9]/g, '_')}-${idx + 1}.jpg`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
   }
 
   const frames = localFrames;
@@ -471,8 +558,30 @@ function ClipDetail({ c, onClose, onEdit, onDelete, onRefresh }) {
 
   return (
     <Modal title={c.title} onClose={onClose}>
-      {/* 영상 플레이어 (YouTube embed) — 16:9 고정 */}
-      {c.platform === 'youtube' && getYtEmbed(c.url) && (
+      {/* 로컬 저장 영상 플레이어 (오프라인 지원) — 우선 표시 */}
+      {localVideoFile && (
+        <div style={{ marginBottom: 10 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
+            <span style={{ fontSize: 11, color: 'var(--accent)', fontWeight: 600 }}>📥 저장된 영상 (오프라인 재생 가능)</span>
+            <a
+              href={localVideoFile}
+              download={`${c.title || 'video'}.mp4`}
+              style={{ fontSize: 11, color: 'var(--text2)', textDecoration: 'none' }}
+            >
+              ↓ 다운로드
+            </a>
+          </div>
+          <video
+            src={localVideoFile}
+            controls
+            playsInline
+            style={{ width: '100%', borderRadius: 10, display: 'block', background: '#000', maxHeight: 320 }}
+          />
+        </div>
+      )}
+
+      {/* YouTube embed (스트리밍) */}
+      {c.platform === 'youtube' && getYtEmbed(c.url) && !localVideoFile && (
         <div style={{ ...videoSizeStyle, marginBottom: 10 }}>
           <iframe
             src={getYtEmbed(c.url)}
@@ -529,6 +638,19 @@ function ClipDetail({ c, onClose, onEdit, onDelete, onRefresh }) {
             }}>
               {slideIdx + 1} / {frames.length}
             </div>
+            {/* 현재 프레임 다운로드 버튼 */}
+            <button
+              onClick={() => downloadSingleFrame(frames[slideIdx], slideIdx, c.title)}
+              style={{
+                position: 'absolute', top: 8, right: 8,
+                background: 'rgba(0,0,0,0.5)', color: '#fff',
+                border: 'none', borderRadius: 8,
+                padding: '4px 8px', fontSize: 12, cursor: 'pointer',
+              }}
+              title="이 프레임 다운로드"
+            >
+              ↓
+            </button>
           </div>
           {/* 썸네일 닷 인디케이터 */}
           {frames.length > 1 && (
@@ -590,25 +712,33 @@ function ClipDetail({ c, onClose, onEdit, onDelete, onRefresh }) {
         </a>
       )}
       {/* AI 분석 버튼 */}
-      <button
-        onClick={handleAiAnalyze}
-        disabled={analyzing}
-        style={{
-          width: '100%', marginTop: 12, marginBottom: 4,
-          padding: '10px 0',
-          background: analyzing ? 'var(--surface-up)' : 'var(--purple-dim)',
-          color: analyzing ? 'var(--text2)' : 'var(--purple)',
-          border: `1px solid ${analyzing ? 'var(--border)' : 'var(--purple)'}`,
-          borderRadius: 10, fontSize: 13, fontWeight: 700,
-          cursor: analyzing ? 'wait' : 'pointer',
-        }}
-      >
-        {analyzing ? `✨ AI 분석 중... ${analyzeElapsed}s` : '✨ AI 분석 (캡처 저장)'}
-      </button>
+      {(() => {
+        const bgRunning = analyzeJob && analyzeJob.progress >= 0;
+        const disabled  = analyzing || bgRunning;
+        return (
+          <button
+            onClick={handleAiAnalyze}
+            disabled={disabled}
+            style={{
+              width: '100%', marginTop: 12, marginBottom: 4,
+              padding: '10px 0',
+              background: disabled ? 'var(--surface-up)' : 'var(--purple-dim)',
+              color: disabled ? 'var(--text2)' : 'var(--purple)',
+              border: `1px solid ${disabled ? 'var(--border)' : 'var(--purple)'}`,
+              borderRadius: 10, fontSize: 13, fontWeight: 700,
+              cursor: disabled ? 'not-allowed' : 'pointer',
+            }}
+          >
+            {bgRunning
+              ? `🔄 ${analyzeJob.stage || 'AI 분석 중'} ${analyzeJob.progress}%`
+              : analyzing ? `✨ AI 분석 중... ${analyzeElapsed}s` : '✨ AI 분석 (캡처 저장)'}
+          </button>
+        );
+      })()}
 
-      <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end', marginTop: 8 }}>
-        <Button variant="danger" size="sm" onClick={onDelete}>삭제</Button>
+      <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
         <Button variant="outline" size="sm" onClick={onEdit}>수정</Button>
+        <Button variant="danger" size="sm" onClick={onDelete} style={{ marginLeft: 'auto' }}>삭제</Button>
       </div>
     </Modal>
   );

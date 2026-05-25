@@ -187,10 +187,10 @@ export default function SparEditor({ classId, sparDay, onClose, onSaved }) {
           placeholder="스파링 전체 메모 / AI 분석 결과" />
       </div>
 
-      <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end', marginTop: 12 }}>
-        {isEdit && <Button variant="danger" size="sm" onClick={remove} style={{ marginRight: 'auto' }}>삭제</Button>}
-        <Button variant="outline" size="sm" onClick={onClose}>취소</Button>
+      <div style={{ display: 'flex', gap: 8, marginTop: 12 }}>
         <Button variant="primary" size="sm" onClick={save}>저장</Button>
+        <Button variant="outline" size="sm" onClick={onClose}>취소</Button>
+        {isEdit && <Button variant="danger" size="sm" onClick={remove} style={{ marginLeft: 'auto' }}>삭제</Button>}
       </div>
     </Modal>
   );
