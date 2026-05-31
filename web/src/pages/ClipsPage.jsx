@@ -15,6 +15,7 @@ import Modal from '../components/Modal';
 import Button from '../components/Button';
 import Pagination from '../components/Pagination';
 import TagPicker from '../components/TagPicker';
+import ClipDetailModal from '../components/ClipDetailModal';
 
 const PAGE_SIZE = 10;
 const detectPlatform = u => !u ? 'other' : u.includes('youtu') ? 'youtube' : u.includes('instagram') ? 'instagram' : 'other';
@@ -258,7 +259,7 @@ export default function ClipsPage() {
         />
       )}
       {detail && (
-        <ClipDetail
+        <ClipDetailModal
           c={detail}
           onClose={() => setDetail(null)}
           onEdit={() => { setEditing(detail); setDetail(null); }}
@@ -472,7 +473,8 @@ function ClipEditor({ initial, techniques, onSave, onCancel, analyzeJob }) {
   );
 }
 
-function ClipDetail({ c, onClose, onEdit, onDelete, onRefresh, analyzeJob }) {
+// ClipDetail → components/ClipDetailModal.jsx 로 이동
+function _ClipDetail_REMOVED({ c, onClose, onEdit, onDelete, onRefresh, analyzeJob }) {
   const [slideIdx, setSlideIdx]             = useState(0);
   const [analyzing, setAnalyzing]           = useState(false);
   const [analyzeElapsed, setAnalyzeElapsed] = useState(0);

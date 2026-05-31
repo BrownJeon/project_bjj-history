@@ -35,7 +35,8 @@ router.post('/analyze', upload.single('audio'), wrap(async (req, res) => {
         await sequelize.query(
           `UPDATE voice_jobs SET transcript = ? WHERE id = ?`,
           { replacements: [partial, jobId] }
-        ).catch(() => {});
+        ).catch(e => console.error(`[voice] 청크 저장 실패: ${jobId}`, e.message));
+        console.log(`[voice] 청크 저장: ${jobId} (${partial.length}자)`);
       };
 
       const transcript = await transcribeLongAudio(audioPath, onChunkDone);

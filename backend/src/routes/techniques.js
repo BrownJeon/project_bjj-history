@@ -43,19 +43,21 @@ async function triggerAutoAnalysis(techName) {
   }
 }
 
-// 기술명(name)과 일치하는 video_clips 자동 연결
+// 기술명(name)과 일치하는 video_clips 자동 연결 — JSON_CONTAINS로 배열 검색
 async function loadClipsByNames(names) {
   if (!names.length) return new Map();
-  const rows = await VideoClip.findAll({
-    where: { tech_name: { [Op.in]: names } },
-    attributes: ['id', 'title', 'url', 'platform', 'description', 'starred', 'tech_name', 'thumb_url'],
-    order: [['starred', 'DESC'], ['id', 'DESC']],
-    raw: true,
-  });
+  const { sequelize } = require('../config/db');
   const m = new Map();
-  for (const r of rows) {
-    if (!m.has(r.tech_name)) m.set(r.tech_name, []);
-    m.get(r.tech_name).push(r);
+  for (const name of names) {
+    const [rows] = await sequelize.query(
+      `SELECT id, title, url, platform, description, starred,
+              tech_name, thumb_url, video_file, frames
+       FROM video_clips
+       WHERE JSON_CONTAINS(tech_name, JSON_QUOTE(?))
+       ORDER BY starred DESC, id DESC`,
+      { replacements: [name] }
+    );
+    if (rows.length) m.set(name, rows);
   }
   return m;
 }
@@ -89,7 +91,12 @@ router.get('/', wrap(async (_req, res) => {
     r.positions = parsePos(r.pos);
     r.pos       = r.positions[0] || '';
     r.tags  = safeParse(r.tags, []);
-    r.clips = clipsByName.get(r.name) || [];
+    r.clips = (clipsByName.get(r.name) || []).map(c => ({
+      ...c,
+      tech_names: safeParse(c.tech_name, []).map(x => typeof x === 'string' ? x : x.name || ''),
+      frames:     safeParse(c.frames, []),
+      video_file: c.video_file || '',
+    }));
     r.links = r.clips.map(c => ({ url: c.url, desc: c.title }));
   });
   res.json(rows);

@@ -14,8 +14,17 @@ function runProcess(cmd, args, timeoutMs = 180000) {
       if (e.code === 'ENOENT') reject(new Error(`${cmd} 명령이 설치되어 있지 않습니다`));
       else reject(e);
     });
-    proc.on('close', code => {
-      if (code !== 0) return reject(new Error(err.trim() || `${cmd} 종료 코드: ${code}`));
+    proc.on('close', (code, signal) => {
+      // signal이 있으면 timeout 등 강제 종료 — stderr 무시하고 명시적 에러
+      if (signal) return reject(new Error(`${cmd} 강제 종료 (signal: ${signal})`));
+      // exit code != 0 이면 실패 — stderr에서 Whisper progress/warning 제거 후 진짜 에러만 추출
+      if (code !== 0) {
+        const realErr = err.split('\n')
+          .filter(l => !l.includes('UserWarning') && !l.includes('warnings.warn') &&
+                       !l.includes('%|') && !l.includes('frames/s') && l.trim())
+          .join('\n').trim();
+        return reject(new Error(realErr || `${cmd} 종료 코드: ${code}`));
+      }
       resolve(out);
     });
   });
@@ -75,8 +84,8 @@ async function transcribeLongAudio(audioPath, onChunkDone) {
         '--output_format', 'txt',
         '--output_dir', chunkDir,
         '--language', 'ko',
-        '--verbose', 'False',
-      ], 720000); // 청크당 최대 12분
+        // '--verbose False' 는 argparse에서 문자열로 인식되어 verbose를 활성화시킴 — 제거
+      ], 1800000); // 청크당 최대 30분 (CPU 처리 속도 감안)
 
       const txtPath = path.join(chunkDir, `${chunkBase}.txt`);
       const chunkText = (await fs.readFile(txtPath, 'utf-8').catch(() => '')).trim();

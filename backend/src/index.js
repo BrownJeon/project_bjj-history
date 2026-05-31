@@ -106,6 +106,11 @@ async function start() {
     // 영상 썸네일 백그라운드 백필 (서버 안정 후 5초 뒤 시작)
     const { backfillThumbs } = require('./services/thumbnailExtractor');
     setTimeout(backfillThumbs, 5000);
+    // 서버 재시작 시 처리 중단된 pending 잡을 error로 정리
+    await sq.query(
+      `UPDATE voice_jobs SET status='error', error='서버 재시작으로 인해 처리 중단됨 (재업로드 필요)'
+       WHERE status='pending'`
+    ).catch(() => {});
     // 주간 코치 리포트·플랜 자동 생성 (매주 일요일 06:00)
     const { scheduleWeeklyCron } = require('./services/coachCron');
     scheduleWeeklyCron();

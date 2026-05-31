@@ -13,6 +13,8 @@ import TagPicker from '../components/TagPicker';
 import Pagination from '../components/Pagination';
 import ChainDetail from '../components/ChainDetail';
 import ChainEditor from '../components/ChainEditor';
+import { getClipThumb, getPlatformIcon } from '../utils/videoThumb';
+import ClipDetailModal from '../components/ClipDetailModal';
 import GameplanDetail from '../components/GameplanDetail';
 import GameplanEditor from '../components/GameplanEditor';
 import { BASE_POSITIONS, BASE_CATEGORIES, mergeUnique } from '../utils/baseOptions';
@@ -236,6 +238,17 @@ function FilterChip({ active, onClick, icon, children }) {
 }
 
 function TechDetailModal({ t, onClose, onEdit, onDelete }) {
+  const [detailClip, setDetailClip] = useState(null);
+
+  if (detailClip) {
+    return (
+      <ClipDetailModal
+        c={detailClip}
+        onClose={() => setDetailClip(null)}
+      />
+    );
+  }
+
   return (
     <Modal title={t.name} onClose={onClose}>
       <div style={{ display: 'flex', gap: 6, marginBottom: 12, flexWrap: 'wrap' }}>
@@ -263,31 +276,53 @@ function TechDetailModal({ t, onClose, onEdit, onDelete }) {
       )}
       {(t.clips || []).length > 0 && (
         <div style={{ marginBottom: 12 }}>
-          <div style={{ fontSize: 12, color: 'var(--text2)', marginBottom: 6 }}>참고 영상 ({t.clips.length})</div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-            {t.clips.map(c => (
-              <a
-                key={c.id}
-                href={c.url}
-                target="_blank"
-                rel="noreferrer"
-                style={{
-                  display: 'flex', gap: 8, alignItems: 'center',
-                  padding: 10,
-                  background: 'var(--surface)',
-                  border: '1px solid var(--border)',
-                  borderRadius: 10,
-                  textDecoration: 'none',
-                  color: 'var(--text)',
-                  fontSize: 13,
-                }}
-              >
-                <Icon name="link" size={14} color="var(--accent)" />
-                <span style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                  {c.title}
-                </span>
-              </a>
-            ))}
+          <div style={{ fontSize: 12, color: 'var(--text2)', marginBottom: 8, fontWeight: 600 }}>
+            관련 영상 ({t.clips.length})
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {t.clips.map(c => {
+              const thumb = getClipThumb(c);
+              const firstFrame = c.frames?.[0];
+              const previewImg = thumb || firstFrame || null;
+              return (
+                <button
+                  key={c.id}
+                  onClick={() => setDetailClip(c)}
+                  style={{
+                    display: 'block', width: '100%', textAlign: 'left',
+                    border: '1px solid var(--border)', borderRadius: 12,
+                    overflow: 'hidden', background: 'var(--surface)',
+                    cursor: 'pointer', padding: 0,
+                  }}
+                >
+                  {/* 썸네일 or 첫 프레임 */}
+                  {previewImg ? (
+                    <div style={{ width: '100%', aspectRatio: '16/9', background: '#000', overflow: 'hidden' }}>
+                      <img src={previewImg} alt=""
+                        style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+                    </div>
+                  ) : (
+                    <div style={{
+                      width: '100%', aspectRatio: '16/9', background: 'var(--surface-hi)',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    }}>
+                      <span style={{ fontSize: 32 }}>{getPlatformIcon(c.platform)}</span>
+                    </div>
+                  )}
+                  <div style={{ padding: '8px 10px' }}>
+                    <div style={{ fontSize: 13, fontWeight: 600,
+                                  overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+                                  color: 'var(--text)' }}>
+                      {c.title}
+                    </div>
+                    <div style={{ fontSize: 11, color: 'var(--text3)', marginTop: 3 }}>
+                      탭하여 상세 보기
+                      {c.video_file && <span style={{ color: 'var(--accent)', marginLeft: 6 }}>📥 저장됨</span>}
+                    </div>
+                  </div>
+                </button>
+              );
+            })}
           </div>
         </div>
       )}

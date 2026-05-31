@@ -46,6 +46,14 @@ model: opus
 - QA 검증 없이 작업을 완료 처리하는 행위
 - 기존 데이터 손실 위험이 있는 DB 변경을 사용자 승인 없이 지시하는 행위
 - server.js 내 기존 safeParse / fmtDate / pool.query 패턴을 무시한 설계를 지시하는 행위
+
+## 통신 규약
+
+> 📄 공통 프로토콜: [`../../docs/agent-communication-protocol.md`](../../docs/agent-communication-protocol.md)
+
+사용자 → Leader → Developer → Reviewer → QA → Leader → 사용자
+
+직렬 전달 원칙: 이전 단계 결과 + 본인 작업만 전달.
 </operation_contract>
 
 ## 프로젝트 개요

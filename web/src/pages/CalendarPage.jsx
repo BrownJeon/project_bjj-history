@@ -31,14 +31,16 @@ export default function CalendarPage() {
   const [pendingVoice, setPendingVoice] = useState(new Map()); // classId → {transcriptLen}
   const [viewMode, setViewMode] = useState(() => localStorage.getItem('bjj_cal_view') || 'calendar');
   const [listSearch, setListSearch] = useState('');
-  const prevPendingRef = useRef(new Map());
-  const pendingCountRef = useRef(0);
+  const prevPendingRef   = useRef(new Map());
+  const pendingCountRef  = useRef(0);
+  const pollTimerRef     = useRef(null);
+  const checkJobsRef     = useRef(null);
 
   useEffect(() => { localStorage.setItem('bjj_cal_view', viewMode); }, [viewMode]);
 
   // 음성 분석 잡 폴링 — pending 있으면 10초, 없으면 30초 간격
+  // checkJobsRef.current() 로 외부에서 즉시 재실행 가능
   useEffect(() => {
-    let timer;
     async function checkJobs() {
       try {
         const jobs = await voiceApi.listJobs();
@@ -52,10 +54,11 @@ export default function CalendarPage() {
         prevPendingRef.current = pendingMap;
         pendingCountRef.current = pendingMap.size;
       } catch {}
-      timer = setTimeout(checkJobs, pendingCountRef.current > 0 ? 10000 : 30000);
+      pollTimerRef.current = setTimeout(checkJobs, pendingCountRef.current > 0 ? 10000 : 30000);
     }
+    checkJobsRef.current = () => { clearTimeout(pollTimerRef.current); checkJobs(); };
     checkJobs();
-    return () => clearTimeout(timer);
+    return () => clearTimeout(pollTimerRef.current);
   }, []);
 
   const dataByDate = useMemo(() => {
@@ -471,7 +474,7 @@ export default function CalendarPage() {
         <ClassEditor
           initial={editingClass === 'new' ? null : editingClass}
           onClose={() => setEditingClass(null)}
-          onSaved={reloadClasses}
+          onSaved={() => { reloadClasses(); setTimeout(() => checkJobsRef.current?.(), 1500); }}
         />
       )}
       {editingSpar && (

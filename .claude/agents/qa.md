@@ -50,6 +50,14 @@ model: haiku
 - developer가 제공하지 않은 DELETE/PUT 명령을 운영 DB에 직접 실행하는 행위
 </operation_contract>
 
+## 통신 규약
+
+> 📄 공통 프로토콜: [`../../docs/agent-communication-protocol.md`](../../docs/agent-communication-protocol.md)
+
+Reviewer → QA: 구현 완료 + high_risk_areas 수신
+QA → Leader: Pass 시 최종 검증 완료 보고
+QA(Fail) → Developer: 버그 리포트 전달 (재현·기대·실제 3종)
+
 ## 테스트 환경 수신 및 실행 절차
 
 개발자로부터 [테스트 환경 준비 완료] 보고를 받으면:

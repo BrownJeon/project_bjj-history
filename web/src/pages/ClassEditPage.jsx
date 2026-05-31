@@ -108,17 +108,22 @@ export default function ClassEditor({ initial, onClose, onSaved }) {
   }
 
   // 저장 후 음성 파일 백그라운드 업로드
-  function startVoiceUploads(savedId) {
-    const entries = Object.entries(dateVoiceFiles);
-    if (!entries.length || !savedId) return;
+  // files 파라미터: onClose() 전에 캡처한 스냅샷을 받아 React state에 의존하지 않음
+  function startVoiceUploads(savedId, files) {
+    const entries = Object.entries(files || {});
+    if (!entries.length || !savedId) {
+      console.log('[voice] upload skip — entries:', entries.length, 'savedId:', savedId);
+      return;
+    }
+    console.log('[voice] uploading', entries.length, 'files for classId', savedId);
     entries.forEach(([ds, file]) => {
       const form = new FormData();
       form.append('audio', file);
       form.append('classId', String(savedId));
       form.append('trainedDate', ds);
-      voiceApi.startAnalyze(form).catch(err =>
-        console.error('[voice] upload failed', ds, err.message)
-      );
+      voiceApi.startAnalyze(form)
+        .then(() => console.log('[voice] upload ok', ds))
+        .catch(err => console.error('[voice] upload failed', ds, err.message));
     });
   }
 
@@ -164,11 +169,13 @@ export default function ClassEditor({ initial, onClose, onSaved }) {
         const res = await classesApi.createClass(body);
         savedId = res?.id || res;
       }
-      const hasVoice = Object.keys(dateVoiceFiles).length > 0;
+      // onClose() 전에 파일 스냅샷 캡처 (언마운트 후 React state 소멸 방지)
+      const voiceSnapshot = { ...dateVoiceFiles };
+      const hasVoice = Object.keys(voiceSnapshot).length > 0;
       showToast(hasVoice ? '저장됨 — 음성 분석 백그라운드 시작' : (isEdit ? '수정되었습니다' : '추가되었습니다'));
       onSaved && onSaved();
       onClose();
-      startVoiceUploads(savedId);
+      startVoiceUploads(savedId, voiceSnapshot);
     } catch (e) { showToast('저장 실패: ' + e.message); }
     finally { setLoading(false); }
   }
