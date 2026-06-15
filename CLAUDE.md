@@ -53,24 +53,23 @@ pm2 restart bjj                # 재시작
 pm2 logs bjj                   # 로그
 ```
 
-### 프론트 빌드 (NFS noexec 우회)
+### 프론트 빌드 (NFS noexec 우회 + dist 로컬 저장)
 
-**중요**: `web/node_modules`를 NFS에 두면 vite/esbuild/rollup 네이티브 바이너리 실행 차단됨.
-ext4 작업 디렉토리 (`/home/brownjeon/.node-local/bjj-web/work`)에서 빌드 후 `dist`만 NFS로 복사한다.
+**중요**: `web/node_modules`는 NFS 위에 두면 안 됨. 빌드는 ext4 작업 디렉토리에서 진행.
+**dist는 로컬 ext4에 저장** (`/home/brownjeon/.node-local/bjj-web/dist`) — NFS 장애와 무관하게 서비스 유지.
+backend `.env`의 `DIST_PATH=/home/brownjeon/.node-local/bjj-web/dist` 로 서빙 경로 고정.
 
 ```bash
-# 최초 1회: ext4에 작업 사본 만들기 (이미 존재)
-cp -r web /home/brownjeon/.node-local/bjj-web/work
+# 코드 변경 후 빌드 (NFS → ext4 src 동기화 → 빌드 → 로컬 dist 반영 → 재시작)
+rsync -av /home/brownjeon/NFS/homes/brownjeon/project/bjj-trainning/web/src/ \
+      /home/brownjeon/.node-local/bjj-web/work/src/ --quiet
 cd /home/brownjeon/.node-local/bjj-web/work
-npm install --no-audit --no-fund
-
-# 코드 변경 후 빌드
-cd /home/brownjeon/.node-local/bjj-web/work
-# (필요 시) src 동기화: rsync -av /home/brownjeon/NFS/homes/brownjeon/project/bjj-trainning/web/src/ ./src/
 npm run build
-cp -r dist /home/brownjeon/NFS/homes/brownjeon/project/bjj-trainning/web/
+rsync -av dist/ /home/brownjeon/.node-local/bjj-web/dist/ --delete --quiet
 pm2 restart bjj
 ```
+
+> NFS에는 dist를 복사하지 않음. `web/dist/`는 더 이상 사용하지 않음.
 
 ### Dev 서버 (선택)
 

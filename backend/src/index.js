@@ -23,20 +23,27 @@ app.use('/api', apiRouter);
 const { getStaticRoot } = require('./services/storage');
 app.use('/uploads', express.static(getStaticRoot()));
 
-// React SPA 정적 서빙 (web/dist)
-const distDir = path.resolve(__dirname, '../../web/dist');
-if (fs.existsSync(distDir)) {
-  app.use(express.static(distDir, {
-    setHeaders: (res, filePath) => {
-      if (/\.(js|css|html)$/.test(filePath)) res.setHeader('Cache-Control', 'no-store');
-    },
-  }));
-  // SPA fallback — /api 외 모든 경로는 index.html
-  app.get(/^(?!\/api\/).*/, (req, res, next) => {
-    if (req.method !== 'GET') return next();
-    res.sendFile(path.join(distDir, 'index.html'));
-  });
-}
+// React SPA 정적 서빙 — DIST_PATH(로컬 ext4) 우선, 없으면 NFS fallback
+const distDir = process.env.DIST_PATH
+  ? path.resolve(process.env.DIST_PATH)
+  : path.resolve(__dirname, '../../web/dist');
+
+console.log(`[static] dist 경로: ${distDir}`);
+
+if (!fs.existsSync(distDir)) fs.mkdirSync(distDir, { recursive: true });
+
+app.use(express.static(distDir, {
+  setHeaders: (res, filePath) => {
+    if (/\.(js|css|html)$/.test(filePath)) res.setHeader('Cache-Control', 'no-store');
+  },
+}));
+// SPA fallback — /api 외 모든 경로는 index.html
+app.get(/^(?!\/api\/).*/, (req, res, next) => {
+  if (req.method !== 'GET') return next();
+  const indexPath = path.join(distDir, 'index.html');
+  if (fs.existsSync(indexPath)) return res.sendFile(indexPath);
+  res.status(503).send('앱을 빌드 중입니다. 잠시 후 새로고침해주세요.');
+});
 
 app.use(notFound);
 app.use(errorHandler);
