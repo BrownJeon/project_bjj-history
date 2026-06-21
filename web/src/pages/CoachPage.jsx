@@ -7,7 +7,7 @@ import Button from '../components/Button';
 import Modal from '../components/Modal';
 import Pagination from '../components/Pagination';
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 7;
 
 export default function CoachPage() {
   const { showToast, setLoading } = useUI();
