@@ -5,6 +5,7 @@ import * as classesApi from '../api/classes';
 import * as voiceApi from '../api/voice';
 import ClassEditor from './ClassEditPage';
 import SparEditor from './SparEditPage';
+import ClassDetailModal from '../components/ClassDetailModal';
 import Card from '../components/Card';
 import Tag from '../components/Tag';
 import Icon from '../components/Icon';
@@ -28,6 +29,7 @@ export default function CalendarPage() {
   const [selected, setSelected] = useState(todayStr());
   const [editingClass, setEditingClass] = useState(null);
   const [editingSpar, setEditingSpar]   = useState(null);
+  const [detailClass, setDetailClass]   = useState(null);
   const [pendingVoice, setPendingVoice] = useState(new Map()); // classId → {transcriptLen}
   const [viewMode, setViewMode] = useState(() => localStorage.getItem('bjj_cal_view') || 'calendar');
   const [listSearch, setListSearch] = useState('');
@@ -245,7 +247,7 @@ export default function CalendarPage() {
                 const tone = TYPE_TONE[c.type] || 'accent';
                 const label = TYPE_LABEL[c.type] || 'Gi';
                 return (
-                  <Card key={c.id}>
+                  <Card key={c.id} onClick={() => setDetailClass(c)}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8, flexWrap: 'wrap' }}>
                       <Tag tone={tone}>{label}</Tag>
                       <span style={{ flex: 1, fontSize: 14, fontWeight: 700 }}>{c.theme || '수업'}</span>
@@ -256,7 +258,7 @@ export default function CalendarPage() {
                         <span style={{ fontSize: 11, color: 'var(--accent)', fontWeight: 600 }}>🎙</span>
                       )}
                       <button
-                        onClick={() => setEditingClass(c)}
+                        onClick={(e) => { e.stopPropagation(); setEditingClass(c); }}
                         style={{ background: 'transparent', border: '1px solid var(--border-med)', color: 'var(--text2)', borderRadius: 6, padding: '4px 8px', fontSize: 11, cursor: 'pointer' }}
                       >
                         수정
@@ -311,6 +313,7 @@ export default function CalendarPage() {
                               const thumb = getClipThumb(clip);
                               return (
                                 <a key={clip.id} href={clip.video_file || clip.url} target="_blank" rel="noreferrer"
+                                  onClick={e => e.stopPropagation()}
                                   style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none',
                                            padding: '6px 8px', background: 'var(--surface-up)',
                                            border: '1px solid var(--border)', borderRadius: 10 }}>
@@ -367,6 +370,7 @@ export default function CalendarPage() {
                               const thumb = getClipThumb(clip);
                               return (
                                 <a key={clip.id} href={clip.video_file || clip.url} target="_blank" rel="noreferrer"
+                                  onClick={e => e.stopPropagation()}
                                   style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none',
                                            padding: '6px 8px', background: 'var(--surface-up)',
                                            border: '1px solid var(--border)', borderRadius: 10 }}>
@@ -395,7 +399,7 @@ export default function CalendarPage() {
 
                     <div style={{ display: 'flex', gap: 6 }}>
                       <button
-                        onClick={() => toggleTrain(c, selected)}
+                        onClick={(e) => { e.stopPropagation(); toggleTrain(c, selected); }}
                         style={{
                           flex: 1,
                           padding: '8px 10px',
@@ -411,7 +415,7 @@ export default function CalendarPage() {
                         {trained ? '오늘 수련함' : '수련 체크'}
                       </button>
                       <button
-                        onClick={() => setEditingSpar({ classId: c.id, sparDay: sparOnDay || { date: selected } })}
+                        onClick={(e) => { e.stopPropagation(); setEditingSpar({ classId: c.id, sparDay: sparOnDay || { date: selected } }); }}
                         style={{
                           flex: 1,
                           padding: '8px 10px',
@@ -463,6 +467,7 @@ export default function CalendarPage() {
               })
               .map(c => (
                 <ClassListCard key={c.id} c={c} clips={clips}
+                  onOpen={() => setDetailClass(c)}
                   onEdit={() => setEditingClass(c)}
                   voiceProgress={pendingVoice.get(String(c.id))} />
               ))}
@@ -470,6 +475,13 @@ export default function CalendarPage() {
         </div>
       )}
 
+      {detailClass && (
+        <ClassDetailModal
+          initial={detailClass}
+          onClose={() => setDetailClass(null)}
+          onEdit={() => { setEditingClass(detailClass); setDetailClass(null); }}
+        />
+      )}
       {editingClass && (
         <ClassEditor
           initial={editingClass === 'new' ? null : editingClass}
@@ -489,7 +501,7 @@ export default function CalendarPage() {
   );
 }
 
-function ClassListCard({ c, clips, onEdit, voiceProgress }) {
+function ClassListCard({ c, clips, onEdit, onOpen, voiceProgress }) {
   const tone = TYPE_TONE[c.type] || 'accent';
   const label = TYPE_LABEL[c.type] || 'Gi';
   const techNames = (c.drill?.tech || [])
@@ -504,7 +516,7 @@ function ClassListCard({ c, clips, onEdit, voiceProgress }) {
   const sparCount = (c.spar_days || []).reduce((s, sd) => s + (sd.sessions || []).length, 0);
   const dateStr = (c.date || '').toString().slice(0, 10);
   return (
-    <Card>
+    <Card onClick={onOpen}>
       <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8 }}>
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ display: 'flex', gap: 6, alignItems: 'center', marginBottom: 6, flexWrap: 'wrap' }}>
@@ -556,7 +568,7 @@ function ClassListCard({ c, clips, onEdit, voiceProgress }) {
             </div>
           )}
         </div>
-        <button onClick={onEdit} style={{
+        <button onClick={(e) => { e.stopPropagation(); onEdit(); }} style={{
           background: 'transparent', border: '1px solid var(--border-med)',
           color: 'var(--text2)', borderRadius: 6, padding: '4px 8px',
           fontSize: 11, cursor: 'pointer', flexShrink: 0,
