@@ -187,4 +187,62 @@ async function analyzeVideo(url, clipId = null, onProgress = null) {
   }
 }
 
-module.exports = { analyzeVideo };
+// 업로드된 로컬 파일 분석 — yt-dlp 다운로드 없이 바로 분석
+// uploadedPath: multer 등이 저장한 임시 파일 경로 (분석 후 자동 삭제)
+async function analyzeLocalFile(uploadedPath, clipId = null, onProgress = null) {
+  const rand      = Math.random().toString(36).slice(2, 8);
+  const tmpBase   = `/tmp/bjj-local-${Date.now()}-${rand}`;
+  const audioPath = `${tmpBase}.mp3`;
+  const txtPath   = `${tmpBase}.txt`;
+
+  const persistDir = clipId ? getFramesDir(clipId) : null;
+  if (persistDir) ensureDir(persistDir);
+  const framePrefix = persistDir ? path.join(persistDir, 'frame') : tmpBase;
+
+  let createdFrames = [];
+  try {
+    onProgress?.(20, '오디오 확인 중');
+    const hasAudio = await hasAudioTrack(uploadedPath);
+    let transcript = '';
+    if (hasAudio) {
+      onProgress?.(30, '음성 변환 중');
+      transcript = await getWhisperTranscript(uploadedPath, audioPath, txtPath);
+    }
+    console.log('[analyze-local] hasAudio=', hasAudio, 'transcriptLen=', transcript.length, 'clipId=', clipId);
+
+    onProgress?.(65, 'AI 분석 중');
+    const { description, frames } = await runCombinedAnalysis(uploadedPath, framePrefix, '', transcript);
+    createdFrames = frames;
+
+    const savedFrames = persistDir
+      ? frames.map(f => frameWebPath(clipId, path.basename(f)))
+      : [];
+
+    onProgress?.(90, '파일 저장 중');
+    let savedVideo = null;
+    if (clipId) {
+      try {
+        const videoDir  = getVideoDir(clipId);
+        const videoSave = path.join(videoDir, 'video.mp4');
+        ensureDir(videoDir);
+        await fs.copyFile(uploadedPath, videoSave);
+        savedVideo = videoWebPath(clipId);
+        console.log('[analyze-local] 영상 저장 완료:', videoSave);
+      } catch (e) {
+        console.error('[analyze-local] 영상 저장 실패:', e.message);
+      }
+    }
+
+    onProgress?.(98, '완료 중');
+    return { description, method: transcript ? 'vision+audio' : 'vision', savedFrames, savedVideo };
+  } finally {
+    await fs.unlink(uploadedPath).catch(() => {});
+    await fs.unlink(audioPath).catch(() => {});
+    await fs.unlink(txtPath).catch(() => {});
+    if (!persistDir) {
+      for (const f of createdFrames) await fs.unlink(f).catch(() => {});
+    }
+  }
+}
+
+module.exports = { analyzeVideo, analyzeLocalFile };

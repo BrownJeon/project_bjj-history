@@ -8,3 +8,11 @@ export const deleteClip    = (id) => client.delete(`/clips/${id}`).then(r => r.d
 export const toggleStar    = (id) => client.patch(`/clips/${id}/star`).then(r => r.data);
 export const refreshThumb     = (id) => client.post(`/clips/${id}/refresh-thumb`).then(r => r.data);
 export const getAnalyzeStatus = ()   => client.get('/clips/analyze-status').then(r => r.data);
+export const uploadVideo = (id, file, onUploadProgress) => {
+  const fd = new FormData();
+  fd.append('video', file);
+  return client.post(`/clips/${id}/upload-video`, fd, {
+    timeout: 30 * 60 * 1000, // 30분
+    onUploadProgress,
+  }).then(r => r.data);
+};

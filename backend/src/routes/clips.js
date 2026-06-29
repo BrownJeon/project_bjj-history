@@ -6,7 +6,16 @@ const { VideoClip } = require('../models');
 const { wrap, safeParse } = require('../utils/respond');
 const { queueThumbUpdate } = require('../services/thumbnailExtractor');
 const { getFramesDir, getVideoDir } = require('../services/storage');
-const { analyzeVideo } = require('../services/videoAnalysis');
+const multer = require('multer');
+const { analyzeVideo, analyzeLocalFile } = require('../services/videoAnalysis');
+
+const videoUpload = multer({
+  dest: '/tmp/',
+  limits: { fileSize: 2 * 1024 * 1024 * 1024 }, // 2GB
+  fileFilter: (_req, file, cb) => {
+    cb(null, /^video\//.test(file.mimetype) || /\.(mp4|mov|avi|mkv|webm)$/i.test(file.originalname));
+  },
+});
 
 const AI_URL_RE    = /youtube\.com|youtu\.be|instagram\.com/;
 const YOUTUBE_RE   = /youtube\.com|youtu\.be/;
@@ -17,7 +26,7 @@ const INSTAGRAM_ERR = 'Instagram 영상은 로그인 인증이 필요하여 AI �
 const analyzeProgress = new Map();
 
 function autoAnalyzeClip(clipId, url) {
-  if (!url || !AI_URL_RE.test(url)) return;
+  if (!url || !YOUTUBE_RE.test(url)) return; // Instagram은 인증 필요 — 자동 분석 불가
   const id = String(clipId);
 
   analyzeProgress.set(id, { progress: 5, stage: '분석 준비 중' });
@@ -148,7 +157,9 @@ router.post('/:id/analyze', wrap(async (req, res) => {
   const clip = await VideoClip.findByPk(req.params.id, { attributes: ['id', 'url'], raw: true });
   if (!clip) return res.status(404).json({ error: 'not found' });
   if (!clip.url || !AI_URL_RE.test(clip.url))
-    return res.status(400).json({ error: 'YouTube/Instagram URL이 아닙니다' });
+    return res.status(400).json({ error: 'YouTube URL이 아닙니다' });
+  if (INSTAGRAM_RE.test(clip.url))
+    return res.status(400).json({ error: INSTAGRAM_ERR });
   res.json({ ok: true, message: '분석 시작됨 (백그라운드)' });
   autoAnalyzeClip(clip.id, clip.url);
 }));
@@ -157,6 +168,41 @@ router.get('/analyze-status', wrap(async (_req, res) => {
   const status = {};
   analyzeProgress.forEach((v, k) => { status[k] = v; });
   res.json(status);
+}));
+
+// 영상 파일 직접 업로드 → 분석 (Instagram 등 URL 다운로드 불가 영상용)
+router.post('/:id/upload-video', videoUpload.single('video'), wrap(async (req, res) => {
+  if (!req.file) return res.status(400).json({ error: '영상 파일이 없습니다' });
+  const clipId = req.params.id;
+  const clip   = await VideoClip.findByPk(clipId, { attributes: ['id'], raw: true });
+  if (!clip) {
+    await fs.unlink(req.file.path).catch(() => {});
+    return res.status(404).json({ error: '클립을 찾을 수 없습니다' });
+  }
+
+  const id = String(clipId);
+  analyzeProgress.set(id, { progress: 5, stage: '업로드 완료, 분석 준비 중' });
+  res.json({ ok: true, message: '업로드 완료, 분석 시작됨 (백그라운드)' });
+
+  // fire-and-forget
+  analyzeLocalFile(req.file.path, clipId, (progress, stage) => {
+    analyzeProgress.set(id, { progress, stage });
+  })
+    .then(async result => {
+      const updates = {};
+      if (result.savedFrames?.length) updates.frames      = JSON.stringify(result.savedFrames);
+      if (result.description)         updates.description = result.description;
+      if (result.savedVideo)          updates.video_file  = result.savedVideo;
+      if (Object.keys(updates).length)
+        await VideoClip.update(updates, { where: { id: clipId } });
+      console.log(`[upload-analyze] clip ${clipId} 분석 완료 (${result.method})`);
+      analyzeProgress.delete(id);
+    })
+    .catch(e => {
+      console.error(`[upload-analyze] clip ${clipId} 실패:`, e.message);
+      analyzeProgress.set(id, { progress: -1, stage: e.message });
+      setTimeout(() => analyzeProgress.delete(id), 60000);
+    });
 }));
 
 router.delete('/:id', wrap(async (req, res) => {

@@ -390,8 +390,12 @@ function ClipEditor({ initial, techniques, onSave, onCancel, analyzeJob }) {
 
   async function handleAiAnalyze() {
     if (!url.trim()) { alert('URL을 먼저 입력해주세요'); return; }
-    if (!/(youtube\.com|youtu\.be|instagram\.com)/.test(url)) {
-      alert('YouTube 또는 Instagram URL만 AI 분석 가능합니다');
+    if (/instagram\.com/.test(url)) {
+      alert('Instagram 영상은 로그인 인증이 필요하여 AI 분석이 불가합니다.\n영상 상세에서 "파일로 분석" 기능을 사용해 주세요.');
+      return;
+    }
+    if (!/(youtube\.com|youtu\.be)/.test(url)) {
+      alert('YouTube URL만 AI 분석 가능합니다');
       return;
     }
     setAnalyzing(true);
@@ -438,6 +442,11 @@ function ClipEditor({ initial, techniques, onSave, onCancel, analyzeJob }) {
       <div className="field"><label>URL *</label>
         <input value={url} onChange={e => setUrl(e.target.value)} placeholder="YouTube 또는 Instagram URL" />
         {url && <div style={{ fontSize: 12, color: 'var(--blue)', marginTop: 4 }}>{getPlatformLabel(detectPlatform(url))}</div>}
+        {/instagram\.com/.test(url) && (
+          <div style={{ fontSize: 11, color: 'var(--amber)', marginTop: 3 }}>
+            ⚠ Instagram은 AI 자동 분석 불가 — 저장 후 상세 화면에서 파일로 분석하세요
+          </div>
+        )}
       </div>
       <div className="field">
         <label>기술명 * (여러 개 가능)</label>
@@ -452,20 +461,23 @@ function ClipEditor({ initial, techniques, onSave, onCancel, analyzeJob }) {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
           <label style={{ margin: 0 }}>설명</label>
           {(() => {
-            const bgRunning = analyzeJob && analyzeJob.progress >= 0;
-            const disabled  = analyzing || bgRunning;
+            const bgRunning  = analyzeJob && analyzeJob.progress >= 0;
+            const isInstagram = /instagram\.com/.test(url);
+            const disabled   = analyzing || bgRunning || isInstagram;
+            const label      = bgRunning
+              ? `🔄 ${analyzeJob.stage || '분석 중'} ${analyzeJob.progress}%`
+              : analyzing ? `분석 중 ${analyzeElapsed}s`
+              : isInstagram ? '📁 파일로 분석 (상세에서)'
+              : '✨ AI 분석';
             return (
               <button onClick={handleAiAnalyze} disabled={disabled}
+                title={isInstagram ? 'Instagram은 저장 후 상세 화면에서 파일로 분석해 주세요' : undefined}
                 style={{
                   background: disabled ? 'var(--surface-up)' : 'var(--purple-dim)',
                   color: disabled ? 'var(--text3)' : 'var(--purple)',
                   border: 'none', padding: '4px 10px', borderRadius: 6,
                   fontSize: 11, cursor: disabled ? 'not-allowed' : 'pointer', fontWeight: 600,
-                }}>
-                {bgRunning
-                  ? `🔄 ${analyzeJob.stage || '분석 중'} ${analyzeJob.progress}%`
-                  : analyzing ? `분석 중 ${analyzeElapsed}s` : '✨ AI 분석'}
-              </button>
+                }}>{label}</button>
             );
           })()}
         </div>
