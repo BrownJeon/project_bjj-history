@@ -441,29 +441,31 @@ export default function ProfilePage() {
                 marginTop: 10, display: 'flex', flexDirection: 'column', gap: 10,
                 fontSize: 12, lineHeight: 1.7,
               }}>
-                {/* 방법 1: Firefox 자동 (추천) */}
+                {/* 방법 1: Android Firefox */}
                 <div style={{ padding: '12px 14px', background: 'rgba(59,130,246,0.06)', borderRadius: 10, border: '1px solid rgba(59,130,246,0.2)' }}>
                   <div style={{ fontWeight: 700, color: 'var(--blue)', marginBottom: 6 }}>
-                    방법 1 — Firefox 자동 인증 (만료 없음, 추천)
+                    방법 1 — Android Firefox (모바일 추출, 추천)
                   </div>
                   <ol style={{ margin: 0, paddingLeft: 18, color: 'var(--text2)', display: 'flex', flexDirection: 'column', gap: 4 }}>
-                    <li>서버에서 Firefox 실행: <code style={{ background: 'var(--surface)', padding: '1px 5px', borderRadius: 4 }}>firefox</code></li>
-                    <li><strong>instagram.com</strong>에 로그인</li>
-                    <li>Firefox 로그아웃만 하지 않으면 이후 자동 인증됨</li>
+                    <li>Play Store에서 <strong>Firefox</strong> 설치</li>
+                    <li>Firefox 주소창에서 <code style={{ background: 'var(--surface)', padding: '1px 5px', borderRadius: 4 }}>addons.mozilla.org</code> 접속</li>
+                    <li><strong style={{ color: 'var(--accent)' }}>"cookies.txt"</strong> 확장 검색 후 설치 <span style={{ color: 'var(--text3)' }}>(Lennon Hill 작)</span></li>
+                    <li><strong>instagram.com</strong> 로그인 후 확장 아이콘 → <strong>Export</strong></li>
+                    <li>다운로드된 <code style={{ background: 'var(--surface)', padding: '1px 5px', borderRadius: 4 }}>.txt</code> 파일을 위 업로드 버튼으로 업로드</li>
                   </ol>
                   <div style={{ marginTop: 8, color: 'var(--accent)', fontSize: 11 }}>
-                    ✓ yt-dlp가 Firefox 쿠키 DB를 직접 읽으므로 파일 갱신 불필요
+                    ✓ Android에서만 가능 — iOS는 쿠키 내보내기 확장 미지원
                   </div>
                 </div>
 
-                {/* 방법 2: 파일 업로드 */}
+                {/* 방법 2: PC Chrome/Edge */}
                 <div style={{ padding: '12px 14px', background: 'var(--surface-up)', borderRadius: 10, border: '1px solid var(--border)' }}>
                   <div style={{ fontWeight: 700, color: 'var(--text)', marginBottom: 6 }}>
-                    방법 2 — 쿠키 파일 업로드 (90일~1년 유효)
+                    방법 2 — PC Chrome / Edge (90일~1년 유효)
                   </div>
                   <ol style={{ margin: 0, paddingLeft: 18, color: 'var(--text2)', display: 'flex', flexDirection: 'column', gap: 4 }}>
                     <li>Chrome 웹스토어에서 <strong style={{ color: 'var(--accent)' }}>"Get cookies.txt LOCALLY"</strong> 설치</li>
-                    <li>instagram.com 로그인 후 확장 프로그램 → <strong>Export</strong></li>
+                    <li><strong>instagram.com</strong> 로그인 후 확장 아이콘 → <strong>Export</strong></li>
                     <li>저장된 <code style={{ background: 'var(--surface)', padding: '1px 5px', borderRadius: 4 }}>.txt</code> 파일을 위 업로드 버튼으로 업로드</li>
                   </ol>
                   <div style={{ marginTop: 8, color: 'var(--amber)', fontSize: 11 }}>
