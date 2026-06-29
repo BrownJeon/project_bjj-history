@@ -7,7 +7,7 @@ const { wrap, safeParse } = require('../utils/respond');
 const { queueThumbUpdate } = require('../services/thumbnailExtractor');
 const { getFramesDir, getVideoDir } = require('../services/storage');
 const multer = require('multer');
-const { analyzeVideo, analyzeLocalFile, hasCookieFile } = require('../services/videoAnalysis');
+const { analyzeVideo, analyzeLocalFile, hasInstagramAuth } = require('../services/videoAnalysis');
 
 const videoUpload = multer({
   dest: '/tmp/',
@@ -27,7 +27,7 @@ const analyzeProgress = new Map();
 
 function autoAnalyzeClip(clipId, url) {
   if (!url) return;
-  if (INSTAGRAM_RE.test(url) && !hasCookieFile()) return; // 쿠키 없으면 Instagram 스킵
+  if (INSTAGRAM_RE.test(url) && !hasInstagramAuth()) return; // 인증 수단 없으면 Instagram 스킵
   if (!YOUTUBE_RE.test(url) && !INSTAGRAM_RE.test(url)) return;
   const id = String(clipId);
 
@@ -160,7 +160,7 @@ router.post('/:id/analyze', wrap(async (req, res) => {
   if (!clip) return res.status(404).json({ error: 'not found' });
   if (!clip.url || !AI_URL_RE.test(clip.url))
     return res.status(400).json({ error: 'YouTube URL이 아닙니다' });
-  if (INSTAGRAM_RE.test(clip.url) && !hasCookieFile())
+  if (INSTAGRAM_RE.test(clip.url) && !hasInstagramAuth())
     return res.status(400).json({ error: INSTAGRAM_ERR });
   res.json({ ok: true, message: '분석 시작됨 (백그라운드)' });
   autoAnalyzeClip(clip.id, clip.url);

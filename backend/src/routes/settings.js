@@ -6,7 +6,7 @@ const path    = require('path');
 const multer  = require('multer');
 const { wrap } = require('../utils/respond');
 const { getUploadRoot } = require('../services/storage');
-const { INSTAGRAM_COOKIE_PATH, hasCookieFile } = require('../services/videoAnalysis');
+const { INSTAGRAM_COOKIE_PATH, hasCookieFile, hasChromeSession } = require('../services/videoAnalysis');
 
 const cookieUpload = multer({
   dest: '/tmp/',
@@ -21,14 +21,16 @@ router.get('/', wrap(async (_req, res) => {
   res.json({ uploadPath: getUploadRoot() });
 }));
 
-// Instagram 쿠키 상태 조회
+// Instagram 쿠키 상태 조회 (mode: 'file' | 'browser' | 'none')
 router.get('/instagram-cookie', wrap(async (_req, res) => {
-  try {
+  if (hasCookieFile()) {
     const stat = await fs.stat(INSTAGRAM_COOKIE_PATH);
-    res.json({ configured: true, updatedAt: stat.mtime });
-  } catch {
-    res.json({ configured: false, updatedAt: null });
+    return res.json({ configured: true, mode: 'file', updatedAt: stat.mtime });
   }
+  if (hasChromeSession()) {
+    return res.json({ configured: true, mode: 'browser', updatedAt: null });
+  }
+  res.json({ configured: false, mode: 'none', updatedAt: null });
 }));
 
 // Instagram 쿠키 파일 업로드

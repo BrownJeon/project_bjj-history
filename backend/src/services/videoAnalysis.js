@@ -6,9 +6,20 @@ const { runClaude } = require('./claudeCli');
 const { getFramesDir, getVideoDir, frameWebPath, videoWebPath, ensureDir } = require('./storage');
 
 const INSTAGRAM_COOKIE_PATH = '/home/brownjeon/.node-local/bjj-data/instagram-cookies.txt';
+const CHROME_COOKIES_DB     = '/home/brownjeon/.config/google-chrome/Default/Cookies';
 
-function hasCookieFile() {
-  return fsSync.existsSync(INSTAGRAM_COOKIE_PATH);
+function hasCookieFile()    { return fsSync.existsSync(INSTAGRAM_COOKIE_PATH); }
+function hasChromeSession() { return fsSync.existsSync(CHROME_COOKIES_DB); }
+
+// 파일 > Chrome 브라우저 순으로 인증 수단 확인
+function hasInstagramAuth() { return hasCookieFile() || hasChromeSession(); }
+
+// yt-dlp에 전달할 쿠키 인수 — Instagram 전용
+function getInstagramCookieArgs(url) {
+  if (!/instagram\.com/.test(url)) return [];
+  if (hasCookieFile())    return ['--cookies', INSTAGRAM_COOKIE_PATH];
+  if (hasChromeSession()) return ['--cookies-from-browser', 'chrome'];
+  return [];
 }
 
 function runProcess(cmd, args, timeoutMs = 180000) {
@@ -142,8 +153,7 @@ async function analyzeVideo(url, clipId = null, onProgress = null) {
     ? path.join(persistDir, 'frame')
     : tmpBase;
 
-  const isInstagram = /instagram\.com/.test(url);
-  const cookieArgs  = isInstagram && hasCookieFile() ? ['--cookies', INSTAGRAM_COOKIE_PATH] : [];
+  const cookieArgs = getInstagramCookieArgs(url);
 
   let createdFrames = [];
   try {
@@ -254,4 +264,8 @@ async function analyzeLocalFile(uploadedPath, clipId = null, onProgress = null) 
   }
 }
 
-module.exports = { analyzeVideo, analyzeLocalFile, INSTAGRAM_COOKIE_PATH, hasCookieFile };
+module.exports = {
+  analyzeVideo, analyzeLocalFile,
+  INSTAGRAM_COOKIE_PATH, CHROME_COOKIES_DB,
+  hasCookieFile, hasChromeSession, hasInstagramAuth,
+};

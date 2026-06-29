@@ -28,7 +28,7 @@ export default function ProfilePage() {
   const [effectivePath, setEffectivePath] = useState('');
   const [pathEditing, setPathEditing] = useState(false);
   const [pathInput, setPathInput] = useState('');
-  const [igCookie, setIgCookie] = useState({ configured: false, updatedAt: null });
+  const [igCookie, setIgCookie] = useState({ configured: false, mode: 'none', updatedAt: null });
   const [igGuideOpen, setIgGuideOpen] = useState(false);
   const cookieInputRef = React.useRef(null);
 
@@ -346,50 +346,81 @@ export default function ProfilePage() {
         <div style={{ marginTop: 24 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
             <span style={{ fontSize: 14, fontWeight: 700 }}>Instagram 쿠키 인증</span>
-            <span style={{
-              fontSize: 11, fontWeight: 700, padding: '3px 10px', borderRadius: 20,
-              background: igCookie.configured ? 'var(--accent-dim)' : 'var(--surface-up)',
-              color: igCookie.configured ? 'var(--accent)' : 'var(--text3)',
-              border: `1px solid ${igCookie.configured ? 'var(--accent)' : 'var(--border)'}`,
-            }}>
-              {igCookie.configured ? '✓ 설정됨' : '미설정'}
-            </span>
+            {igCookie.mode === 'browser' && (
+              <span style={{ fontSize: 11, fontWeight: 700, padding: '3px 10px', borderRadius: 20,
+                background: 'rgba(59,130,246,0.12)', color: 'var(--blue)',
+                border: '1px solid var(--blue)' }}>✓ Chrome 자동</span>
+            )}
+            {igCookie.mode === 'file' && (
+              <span style={{ fontSize: 11, fontWeight: 700, padding: '3px 10px', borderRadius: 20,
+                background: 'var(--accent-dim)', color: 'var(--accent)',
+                border: '1px solid var(--accent)' }}>✓ 파일 인증</span>
+            )}
+            {igCookie.mode === 'none' && (
+              <span style={{ fontSize: 11, fontWeight: 700, padding: '3px 10px', borderRadius: 20,
+                background: 'var(--surface-up)', color: 'var(--text3)',
+                border: '1px solid var(--border)' }}>미설정</span>
+            )}
           </div>
 
           <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 14, padding: '14px 16px' }}>
-            <p style={{ fontSize: 12, color: 'var(--text2)', margin: '0 0 12px', lineHeight: 1.6 }}>
-              Instagram은 로그인 쿠키가 있어야 yt-dlp로 영상을 다운로드할 수 있습니다.
-              브라우저에서 쿠키를 내보내 업로드하면 자동·수동 분석 모두 활성화됩니다.
-            </p>
 
-            {igCookie.configured && igCookie.updatedAt && (
-              <div style={{ fontSize: 11, color: 'var(--text3)', marginBottom: 12 }}>
-                마지막 업데이트: {new Date(igCookie.updatedAt).toLocaleString('ko-KR')}
+            {/* Chrome 자동 모드 안내 */}
+            {igCookie.mode === 'browser' && (
+              <div style={{
+                padding: '10px 12px', borderRadius: 10, marginBottom: 12,
+                background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.25)',
+              }}>
+                <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--blue)', marginBottom: 4 }}>
+                  Chrome 자동 인증 활성화됨
+                </div>
+                <div style={{ fontSize: 12, color: 'var(--text2)', lineHeight: 1.6 }}>
+                  서버의 Chrome이 Instagram에 로그인된 상태입니다.
+                  yt-dlp가 Chrome 쿠키 DB를 직접 읽어 분석할 때마다 최신 세션을 사용합니다.
+                  <strong style={{ color: 'var(--text)' }}>Chrome에서 Instagram 로그아웃만 하지 않으면 만료 없이 작동합니다.</strong>
+                </div>
               </div>
             )}
 
+            {/* 파일 모드 */}
+            {igCookie.mode === 'file' && igCookie.updatedAt && (
+              <div style={{ fontSize: 11, color: 'var(--text3)', marginBottom: 10 }}>
+                파일 업로드: {new Date(igCookie.updatedAt).toLocaleString('ko-KR')}
+                <span style={{ color: 'var(--amber)', marginLeft: 8 }}>
+                  — 로그아웃 시 만료될 수 있음
+                </span>
+              </div>
+            )}
+
+            {/* 미설정 안내 */}
+            {igCookie.mode === 'none' && (
+              <p style={{ fontSize: 12, color: 'var(--text2)', margin: '0 0 12px', lineHeight: 1.6 }}>
+                Instagram URL 분석을 위해 인증이 필요합니다.
+                아래 두 가지 방법 중 하나를 선택하세요.
+              </p>
+            )}
+
+            <input ref={cookieInputRef} type="file" accept=".txt,text/plain"
+              style={{ display: 'none' }} onChange={handleCookieUpload} />
+
             <div style={{ display: 'flex', gap: 8 }}>
-              <input ref={cookieInputRef} type="file" accept=".txt,text/plain"
-                style={{ display: 'none' }} onChange={handleCookieUpload} />
               <button
                 onClick={() => cookieInputRef.current?.click()}
                 style={{
                   flex: 1, padding: '9px 0',
-                  background: 'var(--accent-dim)', color: 'var(--accent)',
-                  border: '1px solid var(--accent)', borderRadius: 8,
-                  fontSize: 13, fontWeight: 700, cursor: 'pointer',
+                  background: igCookie.mode === 'file' ? 'var(--accent-dim)' : 'var(--surface-up)',
+                  color: igCookie.mode === 'file' ? 'var(--accent)' : 'var(--text2)',
+                  border: `1px solid ${igCookie.mode === 'file' ? 'var(--accent)' : 'var(--border)'}`,
+                  borderRadius: 8, fontSize: 13, fontWeight: 700, cursor: 'pointer',
                 }}>
-                {igCookie.configured ? '🔄 쿠키 갱신' : '📂 쿠키 파일 업로드'}
+                {igCookie.mode === 'file' ? '🔄 쿠키 파일 갱신' : '📂 쿠키 파일 업로드'}
               </button>
-              {igCookie.configured && (
-                <button
-                  onClick={handleCookieDelete}
-                  style={{
-                    padding: '9px 14px',
-                    background: 'transparent', color: 'var(--red)',
-                    border: '1px solid var(--red)', borderRadius: 8,
-                    fontSize: 13, fontWeight: 700, cursor: 'pointer',
-                  }}>삭제</button>
+              {igCookie.mode === 'file' && (
+                <button onClick={handleCookieDelete} style={{
+                  padding: '9px 14px', background: 'transparent', color: 'var(--red)',
+                  border: '1px solid var(--red)', borderRadius: 8,
+                  fontSize: 13, fontWeight: 700, cursor: 'pointer',
+                }}>삭제</button>
               )}
             </div>
 
@@ -402,25 +433,46 @@ export default function ProfilePage() {
                 border: '1px solid var(--border)', borderRadius: 8,
                 fontSize: 12, cursor: 'pointer',
               }}>
-              {igGuideOpen ? '▲ 가이드 숨기기' : '▼ 쿠키 내보내기 가이드'}
+              {igGuideOpen ? '▲ 가이드 숨기기' : '▼ 인증 방법 가이드'}
             </button>
 
             {igGuideOpen && (
               <div style={{
-                marginTop: 10, padding: '12px 14px',
-                background: 'var(--surface-up)', borderRadius: 10,
-                fontSize: 12, color: 'var(--text2)', lineHeight: 1.8,
+                marginTop: 10, display: 'flex', flexDirection: 'column', gap: 10,
+                fontSize: 12, lineHeight: 1.7,
               }}>
-                <div style={{ fontWeight: 700, color: 'var(--text)', marginBottom: 8 }}>Chrome / Edge 기준</div>
-                <ol style={{ margin: 0, paddingLeft: 18, display: 'flex', flexDirection: 'column', gap: 6 }}>
-                  <li>Chrome 웹스토어에서 <strong style={{ color: 'var(--accent)' }}>"Get cookies.txt LOCALLY"</strong> 확장 프로그램 설치</li>
-                  <li>Chrome에서 <strong>instagram.com</strong>에 로그인</li>
-                  <li>instagram.com 탭에서 확장 프로그램 클릭 → <strong>"Export"</strong> 클릭</li>
-                  <li>저장된 <code style={{ background: 'var(--surface)', padding: '1px 5px', borderRadius: 4 }}>instagram.com_cookies.txt</code> 파일을 위 업로드 버튼으로 업로드</li>
-                </ol>
-                <div style={{ marginTop: 10, padding: '8px 10px', background: 'rgba(255,180,0,0.08)', borderRadius: 8, border: '1px solid rgba(255,180,0,0.2)' }}>
-                  ⚠ 쿠키는 서버에만 저장되며, 외부 전송 없이 yt-dlp 로컬 실행에만 사용됩니다.
-                  Instagram 계정 로그아웃 시 쿠키가 만료되므로 재업로드가 필요합니다.
+                {/* 방법 1: Chrome 자동 (추천) */}
+                <div style={{ padding: '12px 14px', background: 'rgba(59,130,246,0.06)', borderRadius: 10, border: '1px solid rgba(59,130,246,0.2)' }}>
+                  <div style={{ fontWeight: 700, color: 'var(--blue)', marginBottom: 6 }}>
+                    방법 1 — Chrome 자동 인증 (만료 없음, 추천)
+                  </div>
+                  <ol style={{ margin: 0, paddingLeft: 18, color: 'var(--text2)', display: 'flex', flexDirection: 'column', gap: 4 }}>
+                    <li>서버에서 Chrome 실행: <code style={{ background: 'var(--surface)', padding: '1px 5px', borderRadius: 4 }}>google-chrome</code></li>
+                    <li><strong>instagram.com</strong>에 로그인</li>
+                    <li>Chrome 로그아웃만 하지 않으면 이후 자동 인증됨</li>
+                  </ol>
+                  <div style={{ marginTop: 8, color: 'var(--accent)', fontSize: 11 }}>
+                    ✓ yt-dlp가 Chrome 쿠키 DB를 직접 읽으므로 파일 갱신 불필요
+                  </div>
+                </div>
+
+                {/* 방법 2: 파일 업로드 */}
+                <div style={{ padding: '12px 14px', background: 'var(--surface-up)', borderRadius: 10, border: '1px solid var(--border)' }}>
+                  <div style={{ fontWeight: 700, color: 'var(--text)', marginBottom: 6 }}>
+                    방법 2 — 쿠키 파일 업로드 (90일~1년 유효)
+                  </div>
+                  <ol style={{ margin: 0, paddingLeft: 18, color: 'var(--text2)', display: 'flex', flexDirection: 'column', gap: 4 }}>
+                    <li>Chrome 웹스토어에서 <strong style={{ color: 'var(--accent)' }}>"Get cookies.txt LOCALLY"</strong> 설치</li>
+                    <li>instagram.com 로그인 후 확장 프로그램 → <strong>Export</strong></li>
+                    <li>저장된 <code style={{ background: 'var(--surface)', padding: '1px 5px', borderRadius: 4 }}>.txt</code> 파일을 위 업로드 버튼으로 업로드</li>
+                  </ol>
+                  <div style={{ marginTop: 8, color: 'var(--amber)', fontSize: 11 }}>
+                    ⚠ 로그아웃하거나 세션 만료 시 재업로드 필요
+                  </div>
+                </div>
+
+                <div style={{ padding: '8px 10px', background: 'rgba(255,180,0,0.06)', borderRadius: 8, border: '1px solid rgba(255,180,0,0.2)', fontSize: 11, color: 'var(--text2)' }}>
+                  쿠키는 서버에만 저장되며 yt-dlp 로컬 실행에만 사용됩니다.
                 </div>
               </div>
             )}
