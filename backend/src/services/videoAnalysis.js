@@ -5,6 +5,12 @@ const path = require('path');
 const { runClaude } = require('./claudeCli');
 const { getFramesDir, getVideoDir, frameWebPath, videoWebPath, ensureDir } = require('./storage');
 
+const INSTAGRAM_COOKIE_PATH = '/home/brownjeon/.node-local/bjj-data/instagram-cookies.txt';
+
+function hasCookieFile() {
+  return fsSync.existsSync(INSTAGRAM_COOKIE_PATH);
+}
+
 function runProcess(cmd, args, timeoutMs = 180000) {
   return new Promise((resolve, reject) => {
     const proc = spawn(cmd, args, { timeout: timeoutMs });
@@ -136,10 +142,13 @@ async function analyzeVideo(url, clipId = null, onProgress = null) {
     ? path.join(persistDir, 'frame')
     : tmpBase;
 
+  const isInstagram = /instagram\.com/.test(url);
+  const cookieArgs  = isInstagram && hasCookieFile() ? ['--cookies', INSTAGRAM_COOKIE_PATH] : [];
+
   let createdFrames = [];
   try {
     onProgress?.(10, '영상 다운로드 중');
-    await runProcess('yt-dlp', ['-f', 'mp4/best', '-o', videoPath, '--no-warnings', url], 300000); // 5분
+    await runProcess('yt-dlp', ['-f', 'mp4/best', '-o', videoPath, '--no-warnings', ...cookieArgs, url], 300000); // 5분
     onProgress?.(35, '오디오 확인 중');
     const hasAudio = await hasAudioTrack(videoPath);
     let transcript = '';
@@ -245,4 +254,4 @@ async function analyzeLocalFile(uploadedPath, clipId = null, onProgress = null) 
   }
 }
 
-module.exports = { analyzeVideo, analyzeLocalFile };
+module.exports = { analyzeVideo, analyzeLocalFile, INSTAGRAM_COOKIE_PATH, hasCookieFile };

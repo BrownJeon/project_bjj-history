@@ -4,6 +4,7 @@ import * as techniquesApi from '../api/techniques';
 import * as clipsApi from '../api/clips';
 import * as chainsApi from '../api/chains';
 import * as gameplansApi from '../api/gameplans';
+import * as settingsApi from '../api/settings';
 
 const CacheContext = createContext(null);
 
@@ -14,6 +15,12 @@ export function CacheProvider({ children }) {
   const [chains, setChains] = useState([]);
   const [gameplans, setGameplans] = useState([]);
   const [loaded, setLoaded] = useState(false);
+  const [igCookieConfigured, setIgCookieConfigured] = useState(false);
+
+  const reloadIgCookie = useCallback(async () => {
+    const s = await settingsApi.getInstagramCookieStatus().catch(() => ({ configured: false }));
+    setIgCookieConfigured(!!s.configured);
+  }, []);
 
   const loadAll = useCallback(async () => {
     const [cl, te, cp, ch, gp] = await Promise.all([
@@ -25,7 +32,8 @@ export function CacheProvider({ children }) {
     ]);
     setClasses(cl); setTechniques(te); setClips(cp); setChains(ch); setGameplans(gp);
     setLoaded(true);
-  }, []);
+    reloadIgCookie();
+  }, [reloadIgCookie]);
 
   useEffect(() => { loadAll(); }, [loadAll]);
 
@@ -38,6 +46,7 @@ export function CacheProvider({ children }) {
   return (
     <CacheContext.Provider value={{
       classes, techniques, clips, chains, gameplans, loaded,
+      igCookieConfigured, reloadIgCookie,
       loadAll, reloadClips, reloadTechniques, reloadClasses, reloadChains, reloadGameplans,
     }}>
       {children}

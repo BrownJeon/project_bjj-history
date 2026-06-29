@@ -1,6 +1,7 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import * as enhanceApi from '../api/enhanceMemo';
 import * as clipsApi from '../api/clips';
+import { useCache } from '../contexts/CacheContext';
 import { getStorageMode } from '../pages/ProfilePage';
 import { getYtEmbed, getClipThumb, getPlatformIcon, getPlatformLabel } from '../utils/videoThumb';
 import Modal from './Modal';
@@ -13,6 +14,7 @@ import Icon from './Icon';
  * onEdit / onDelete 를 넘기지 않으면 해당 버튼이 숨겨집니다 (읽기 전용 모드).
  */
 export default function ClipDetailModal({ c, onClose, onEdit, onDelete, onRefresh, analyzeJob }) {
+  const { igCookieConfigured } = useCache();
   const [slideIdx, setSlideIdx]             = useState(0);
   const [analyzing, setAnalyzing]           = useState(false);
   const [analyzeElapsed, setAnalyzeElapsed] = useState(0);
@@ -255,30 +257,50 @@ export default function ClipDetailModal({ c, onClose, onEdit, onDelete, onRefres
 
             {isInstagram ? (
               <>
-                <button
-                  onClick={() => !anyBusy && fileInputRef.current?.click()}
-                  disabled={anyBusy}
-                  style={{
+                {/* 쿠키 있으면 URL 분석 우선, 없으면 파일 업로드 우선 */}
+                {igCookieConfigured ? (
+                  <button onClick={handleAiAnalyze} disabled={anyBusy} style={{
                     width: '100%', padding: '10px 0',
-                    background: anyBusy ? 'var(--surface-up)' : 'var(--accent-dim)',
-                    color: anyBusy ? 'var(--text2)' : 'var(--accent)',
-                    border: `1px solid ${anyBusy ? 'var(--border)' : 'var(--accent)'}`,
+                    background: anyBusy ? 'var(--surface-up)' : 'var(--purple-dim)',
+                    color: anyBusy ? 'var(--text2)' : 'var(--purple)',
+                    border: `1px solid ${anyBusy ? 'var(--border)' : 'var(--purple)'}`,
                     borderRadius: 10, fontSize: 13, fontWeight: 700,
                     cursor: anyBusy ? 'not-allowed' : 'pointer',
                   }}>
-                  {uploading ? uploadBtnLabel : bgRunning
-                    ? `🔄 ${analyzeJob?.stage || '분석 중'} ${analyzeJob?.progress ?? ''}%`
-                    : '📁 파일로 AI 분석 (Instagram 권장)'}
-                </button>
-                {!anyBusy && (
-                  <button onClick={handleAiAnalyze} disabled style={{
-                    width: '100%', padding: '8px 0',
-                    background: 'var(--surface-up)', color: 'var(--text3)',
-                    border: '1px solid var(--border)', borderRadius: 10,
-                    fontSize: 12, cursor: 'not-allowed',
-                  }}>
-                    ✨ URL로 AI 분석 (Instagram 인증 필요)
+                    {bgRunning
+                      ? `🔄 ${analyzeJob?.stage || '분석 중'} ${analyzeJob?.progress ?? ''}%`
+                      : analyzing ? `✨ AI 분석 중... ${analyzeElapsed}s` : '✨ URL로 AI 분석 (쿠키 인증)'}
                   </button>
+                ) : (
+                  <button
+                    onClick={() => !anyBusy && fileInputRef.current?.click()}
+                    disabled={anyBusy}
+                    style={{
+                      width: '100%', padding: '10px 0',
+                      background: anyBusy ? 'var(--surface-up)' : 'var(--accent-dim)',
+                      color: anyBusy ? 'var(--text2)' : 'var(--accent)',
+                      border: `1px solid ${anyBusy ? 'var(--border)' : 'var(--accent)'}`,
+                      borderRadius: 10, fontSize: 13, fontWeight: 700,
+                      cursor: anyBusy ? 'not-allowed' : 'pointer',
+                    }}>
+                    {uploading ? uploadBtnLabel : bgRunning
+                      ? `🔄 ${analyzeJob?.stage || '분석 중'} ${analyzeJob?.progress ?? ''}%`
+                      : '📁 파일로 AI 분석 (Instagram 권장)'}
+                  </button>
+                )}
+                {!anyBusy && (
+                  igCookieConfigured ? (
+                    <button onClick={() => fileInputRef.current?.click()} style={{
+                      width: '100%', padding: '8px 0',
+                      background: 'var(--surface-up)', color: 'var(--text2)',
+                      border: '1px solid var(--border)', borderRadius: 10,
+                      fontSize: 12, fontWeight: 600, cursor: 'pointer',
+                    }}>📁 파일로 분석 (로컬 영상)</button>
+                  ) : (
+                    <div style={{ fontSize: 11, color: 'var(--text3)', textAlign: 'center', padding: '4px 0' }}>
+                      쿠키 인증 시 URL 분석 가능 — 프로필 &gt; Instagram 쿠키 설정
+                    </div>
+                  )
                 )}
               </>
             ) : (

@@ -371,6 +371,7 @@ function ClipCard({ c, onClick, onStar, analyzeJob }) {
 }
 
 function ClipEditor({ initial, techniques, onSave, onCancel, analyzeJob }) {
+  const { igCookieConfigured } = useCache();
   const [title, setTitle] = useState(initial?.title || '');
   const [url, setUrl]     = useState(initial?.url || '');
   const [techNames, setTechNames] = useState(
@@ -388,13 +389,15 @@ function ClipEditor({ initial, techniques, onSave, onCancel, analyzeJob }) {
     [techniques]
   );
 
+  const isInstagram = /instagram\.com/.test(url);
+
   async function handleAiAnalyze() {
     if (!url.trim()) { alert('URL을 먼저 입력해주세요'); return; }
-    if (/instagram\.com/.test(url)) {
-      alert('Instagram 영상은 로그인 인증이 필요하여 AI 분석이 불가합니다.\n영상 상세에서 "파일로 분석" 기능을 사용해 주세요.');
+    if (isInstagram && !igCookieConfigured) {
+      alert('Instagram 영상은 로그인 인증이 필요합니다.\n프로필 > Instagram 쿠키 설정 후 시도하거나\n영상 상세에서 "파일로 분석" 기능을 사용해 주세요.');
       return;
     }
-    if (!/(youtube\.com|youtu\.be)/.test(url)) {
+    if (!/(youtube\.com|youtu\.be|instagram\.com)/.test(url)) {
       alert('YouTube URL만 AI 분석 가능합니다');
       return;
     }
@@ -442,9 +445,14 @@ function ClipEditor({ initial, techniques, onSave, onCancel, analyzeJob }) {
       <div className="field"><label>URL *</label>
         <input value={url} onChange={e => setUrl(e.target.value)} placeholder="YouTube 또는 Instagram URL" />
         {url && <div style={{ fontSize: 12, color: 'var(--blue)', marginTop: 4 }}>{getPlatformLabel(detectPlatform(url))}</div>}
-        {/instagram\.com/.test(url) && (
+        {isInstagram && !igCookieConfigured && (
           <div style={{ fontSize: 11, color: 'var(--amber)', marginTop: 3 }}>
-            ⚠ Instagram은 AI 자동 분석 불가 — 저장 후 상세 화면에서 파일로 분석하세요
+            ⚠ Instagram은 AI 자동 분석 불가 — 저장 후 상세 화면에서 파일로 분석하거나 프로필에서 쿠키를 설정하세요
+          </div>
+        )}
+        {isInstagram && igCookieConfigured && (
+          <div style={{ fontSize: 11, color: 'var(--accent)', marginTop: 3 }}>
+            ✓ Instagram 쿠키 인증됨 — AI 분석 가능
           </div>
         )}
       </div>
@@ -461,17 +469,18 @@ function ClipEditor({ initial, techniques, onSave, onCancel, analyzeJob }) {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
           <label style={{ margin: 0 }}>설명</label>
           {(() => {
-            const bgRunning  = analyzeJob && analyzeJob.progress >= 0;
-            const isInstagram = /instagram\.com/.test(url);
-            const disabled   = analyzing || bgRunning || isInstagram;
-            const label      = bgRunning
+            const bgRunning = analyzeJob && analyzeJob.progress >= 0;
+            const igBlocked = isInstagram && !igCookieConfigured;
+            const disabled  = analyzing || bgRunning || igBlocked;
+            const label     = bgRunning
               ? `🔄 ${analyzeJob.stage || '분석 중'} ${analyzeJob.progress}%`
               : analyzing ? `분석 중 ${analyzeElapsed}s`
-              : isInstagram ? '📁 파일로 분석 (상세에서)'
+              : igBlocked ? '📁 파일로 분석 (상세에서)'
+              : isInstagram ? '✨ AI 분석 (쿠키 인증)'
               : '✨ AI 분석';
             return (
               <button onClick={handleAiAnalyze} disabled={disabled}
-                title={isInstagram ? 'Instagram은 저장 후 상세 화면에서 파일로 분석해 주세요' : undefined}
+                title={igBlocked ? '프로필 > Instagram 쿠키 설정 후 이용 가능합니다' : undefined}
                 style={{
                   background: disabled ? 'var(--surface-up)' : 'var(--purple-dim)',
                   color: disabled ? 'var(--text3)' : 'var(--purple)',
