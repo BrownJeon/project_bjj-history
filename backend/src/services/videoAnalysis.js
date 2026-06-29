@@ -5,20 +5,30 @@ const path = require('path');
 const { runClaude } = require('./claudeCli');
 const { getFramesDir, getVideoDir, frameWebPath, videoWebPath, ensureDir } = require('./storage');
 
-const INSTAGRAM_COOKIE_PATH = '/home/brownjeon/.node-local/bjj-data/instagram-cookies.txt';
-const CHROME_COOKIES_DB     = '/home/brownjeon/.config/google-chrome/Default/Cookies';
+const INSTAGRAM_COOKIE_PATH  = '/home/brownjeon/.node-local/bjj-data/instagram-cookies.txt';
+const FIREFOX_PROFILE_DIR    = '/home/brownjeon/.mozilla/firefox';
 
-function hasCookieFile()    { return fsSync.existsSync(INSTAGRAM_COOKIE_PATH); }
-function hasChromeSession() { return fsSync.existsSync(CHROME_COOKIES_DB); }
+function hasCookieFile() { return fsSync.existsSync(INSTAGRAM_COOKIE_PATH); }
 
-// 파일 > Chrome 브라우저 순으로 인증 수단 확인
-function hasInstagramAuth() { return hasCookieFile() || hasChromeSession(); }
+// Firefox 프로필에 cookies.sqlite 가 있으면 로그인 이력 있음
+function hasFirefoxSession() {
+  if (!fsSync.existsSync(FIREFOX_PROFILE_DIR)) return false;
+  // profiles.ini 에서 프로필 디렉토리를 찾거나, cookies.sqlite 를 재귀 탐색
+  const entries = fsSync.readdirSync(FIREFOX_PROFILE_DIR);
+  return entries.some(e => {
+    const cookiePath = path.join(FIREFOX_PROFILE_DIR, e, 'cookies.sqlite');
+    return fsSync.existsSync(cookiePath);
+  });
+}
+
+// 파일 > Firefox 브라우저 순으로 인증 수단 확인
+function hasInstagramAuth() { return hasCookieFile() || hasFirefoxSession(); }
 
 // yt-dlp에 전달할 쿠키 인수 — Instagram 전용
 function getInstagramCookieArgs(url) {
   if (!/instagram\.com/.test(url)) return [];
-  if (hasCookieFile())    return ['--cookies', INSTAGRAM_COOKIE_PATH];
-  if (hasChromeSession()) return ['--cookies-from-browser', 'chrome'];
+  if (hasCookieFile())      return ['--cookies', INSTAGRAM_COOKIE_PATH];
+  if (hasFirefoxSession())  return ['--cookies-from-browser', 'firefox'];
   return [];
 }
 
@@ -266,6 +276,6 @@ async function analyzeLocalFile(uploadedPath, clipId = null, onProgress = null) 
 
 module.exports = {
   analyzeVideo, analyzeLocalFile,
-  INSTAGRAM_COOKIE_PATH, CHROME_COOKIES_DB,
-  hasCookieFile, hasChromeSession, hasInstagramAuth,
+  INSTAGRAM_COOKIE_PATH,
+  hasCookieFile, hasFirefoxSession, hasInstagramAuth,
 };

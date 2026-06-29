@@ -6,7 +6,7 @@ const path    = require('path');
 const multer  = require('multer');
 const { wrap } = require('../utils/respond');
 const { getUploadRoot } = require('../services/storage');
-const { INSTAGRAM_COOKIE_PATH, hasCookieFile, hasChromeSession } = require('../services/videoAnalysis');
+const { INSTAGRAM_COOKIE_PATH, hasCookieFile, hasFirefoxSession } = require('../services/videoAnalysis');
 
 const cookieUpload = multer({
   dest: '/tmp/',
@@ -27,7 +27,7 @@ router.get('/instagram-cookie', wrap(async (_req, res) => {
     const stat = await fs.stat(INSTAGRAM_COOKIE_PATH);
     return res.json({ configured: true, mode: 'file', updatedAt: stat.mtime });
   }
-  if (hasChromeSession()) {
+  if (hasFirefoxSession()) {
     return res.json({ configured: true, mode: 'browser', updatedAt: null });
   }
   res.json({ configured: false, mode: 'none', updatedAt: null });

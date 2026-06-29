@@ -349,7 +349,7 @@ export default function ProfilePage() {
             {igCookie.mode === 'browser' && (
               <span style={{ fontSize: 11, fontWeight: 700, padding: '3px 10px', borderRadius: 20,
                 background: 'rgba(59,130,246,0.12)', color: 'var(--blue)',
-                border: '1px solid var(--blue)' }}>✓ Chrome 자동</span>
+                border: '1px solid var(--blue)' }}>✓ Firefox 자동</span>
             )}
             {igCookie.mode === 'file' && (
               <span style={{ fontSize: 11, fontWeight: 700, padding: '3px 10px', borderRadius: 20,
@@ -365,19 +365,19 @@ export default function ProfilePage() {
 
           <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 14, padding: '14px 16px' }}>
 
-            {/* Chrome 자동 모드 안내 */}
+            {/* Firefox 자동 모드 안내 */}
             {igCookie.mode === 'browser' && (
               <div style={{
                 padding: '10px 12px', borderRadius: 10, marginBottom: 12,
                 background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.25)',
               }}>
                 <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--blue)', marginBottom: 4 }}>
-                  Chrome 자동 인증 활성화됨
+                  Firefox 자동 인증 활성화됨
                 </div>
                 <div style={{ fontSize: 12, color: 'var(--text2)', lineHeight: 1.6 }}>
-                  서버의 Chrome이 Instagram에 로그인된 상태입니다.
-                  yt-dlp가 Chrome 쿠키 DB를 직접 읽어 분석할 때마다 최신 세션을 사용합니다.
-                  <strong style={{ color: 'var(--text)' }}>Chrome에서 Instagram 로그아웃만 하지 않으면 만료 없이 작동합니다.</strong>
+                  서버의 Firefox가 Instagram에 로그인된 상태입니다.
+                  yt-dlp가 Firefox 쿠키 DB를 직접 읽어 분석할 때마다 최신 세션을 사용합니다.
+                  <strong style={{ color: 'var(--text)' }}>Firefox에서 Instagram 로그아웃만 하지 않으면 만료 없이 작동합니다.</strong>
                 </div>
               </div>
             )}
@@ -441,18 +441,18 @@ export default function ProfilePage() {
                 marginTop: 10, display: 'flex', flexDirection: 'column', gap: 10,
                 fontSize: 12, lineHeight: 1.7,
               }}>
-                {/* 방법 1: Chrome 자동 (추천) */}
+                {/* 방법 1: Firefox 자동 (추천) */}
                 <div style={{ padding: '12px 14px', background: 'rgba(59,130,246,0.06)', borderRadius: 10, border: '1px solid rgba(59,130,246,0.2)' }}>
                   <div style={{ fontWeight: 700, color: 'var(--blue)', marginBottom: 6 }}>
-                    방법 1 — Chrome 자동 인증 (만료 없음, 추천)
+                    방법 1 — Firefox 자동 인증 (만료 없음, 추천)
                   </div>
                   <ol style={{ margin: 0, paddingLeft: 18, color: 'var(--text2)', display: 'flex', flexDirection: 'column', gap: 4 }}>
-                    <li>서버에서 Chrome 실행: <code style={{ background: 'var(--surface)', padding: '1px 5px', borderRadius: 4 }}>google-chrome</code></li>
+                    <li>서버에서 Firefox 실행: <code style={{ background: 'var(--surface)', padding: '1px 5px', borderRadius: 4 }}>firefox</code></li>
                     <li><strong>instagram.com</strong>에 로그인</li>
-                    <li>Chrome 로그아웃만 하지 않으면 이후 자동 인증됨</li>
+                    <li>Firefox 로그아웃만 하지 않으면 이후 자동 인증됨</li>
                   </ol>
                   <div style={{ marginTop: 8, color: 'var(--accent)', fontSize: 11 }}>
-                    ✓ yt-dlp가 Chrome 쿠키 DB를 직접 읽으므로 파일 갱신 불필요
+                    ✓ yt-dlp가 Firefox 쿠키 DB를 직접 읽으므로 파일 갱신 불필요
                   </div>
                 </div>
 
