@@ -134,7 +134,7 @@ export default function CalendarPage() {
     <div>
       {/* 헤더 */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-        <span style={{ fontSize: 22, fontWeight: 800, letterSpacing: '-0.5px' }}>캘린더</span>
+        <span style={{ fontSize: 22, fontWeight: 800, letterSpacing: '-0.5px' }}>수업</span>
         <Button size="sm" variant="outline" onClick={() => setEditingClass('new')}>+ 수업 추가</Button>
       </div>
 
@@ -144,7 +144,7 @@ export default function CalendarPage() {
         background: 'var(--surface-up)', borderRadius: 10, padding: 3,
         border: '1px solid var(--border)',
       }}>
-        {[['calendar', '📅 캘린더'], ['list', '≡ 목록']].map(([mode, label]) => (
+        {[['calendar', '📅 캘린더'], ['list', '≡ 수업목록']].map(([mode, label]) => (
           <button key={mode} onClick={() => setViewMode(mode)} style={{
             flex: 1, padding: '7px 0', borderRadius: 8, border: 'none',
             background: viewMode === mode ? 'var(--accent)' : 'transparent',

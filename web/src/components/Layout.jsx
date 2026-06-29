@@ -3,11 +3,10 @@ import { NavLink, Outlet } from 'react-router-dom';
 import Icon from './Icon';
 
 const tabs = [
-  { to: '/',         label: '홈',       icon: 'home',     end: true },
-  { to: '/calendar', label: '캘린더',   icon: 'calendar' },
-  { to: '/techplan', label: '기술',     icon: 'book' },
-  { to: '/clips',    label: '영상',     icon: 'video' },
-  { to: '/coach',    label: '분석',     icon: 'brain' },
+  { to: '/',         label: '홈',   icon: 'home',     end: true },
+  { to: '/calendar', label: '수업', icon: 'calendar' },
+  { to: '/techplan', label: '기술', icon: 'book' },
+  { to: '/coach',    label: '분석', icon: 'brain' },
 ];
 
 export default function Layout() {

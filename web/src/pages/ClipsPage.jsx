@@ -20,7 +20,7 @@ import ClipDetailModal from '../components/ClipDetailModal';
 const PAGE_SIZE = 10;
 const detectPlatform = u => !u ? 'other' : u.includes('youtu') ? 'youtube' : u.includes('instagram') ? 'instagram' : 'other';
 
-export default function ClipsPage() {
+export default function ClipsPage({ embedded = false }) {
   const { clips, techniques, reloadClips } = useCache();
   const { showToast, setLoading } = useUI();
   const [search, setSearch] = useState('');
@@ -150,11 +150,12 @@ export default function ClipsPage() {
 
   return (
     <div>
-      {/* 헤더 */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
-        <span style={{ fontSize: 22, fontWeight: 800, letterSpacing: '-0.5px' }}>참고영상</span>
-        <Button size="sm" variant="outline" onClick={() => setEditing('new')}>+ 추가</Button>
-      </div>
+      {!embedded && (
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
+          <span style={{ fontSize: 22, fontWeight: 800, letterSpacing: '-0.5px' }}>참고영상</span>
+          <Button size="sm" variant="outline" onClick={() => setEditing('new')}>+ 추가</Button>
+        </div>
+      )}
 
       {/* 검색바 */}
       <div style={{
@@ -179,6 +180,11 @@ export default function ClipsPage() {
         <FilterChip active={filter === 'all'}    onClick={() => setFilter('all')}>전체</FilterChip>
         <FilterChip active={filter === 'recent'} onClick={() => setFilter('recent')} icon="clock">최신순</FilterChip>
         <FilterChip active={filter === 'star'}   onClick={() => setFilter('star')}   icon="star">즐겨찾기</FilterChip>
+        {embedded && (
+          <div style={{ marginLeft: 'auto' }}>
+            <Button size="sm" variant="outline" onClick={() => setEditing('new')}>+ 추가</Button>
+          </div>
+        )}
       </div>
 
       {/* 기술명 필터 — 드롭다운 */}

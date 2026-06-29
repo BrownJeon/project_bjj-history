@@ -8,7 +8,10 @@ const { queueThumbUpdate } = require('../services/thumbnailExtractor');
 const { getFramesDir, getVideoDir } = require('../services/storage');
 const { analyzeVideo } = require('../services/videoAnalysis');
 
-const AI_URL_RE = /youtube\.com|youtu\.be|instagram\.com/;
+const AI_URL_RE    = /youtube\.com|youtu\.be|instagram\.com/;
+const YOUTUBE_RE   = /youtube\.com|youtu\.be/;
+const INSTAGRAM_RE = /instagram\.com/;
+const INSTAGRAM_ERR = 'Instagram 영상은 로그인 인증이 필요하여 AI 분석이 불가합니다. YouTube 영상을 등록해 주세요.';
 
 // 클립별 분석 진행 상태 (인메모리) — { progress: 0-100 | -1(오류), stage: string }
 const analyzeProgress = new Map();
@@ -16,6 +19,7 @@ const analyzeProgress = new Map();
 function autoAnalyzeClip(clipId, url) {
   if (!url || !AI_URL_RE.test(url)) return;
   const id = String(clipId);
+
   analyzeProgress.set(id, { progress: 5, stage: '분석 준비 중' });
 
   analyzeVideo(url, clipId, (progress, stage) => {

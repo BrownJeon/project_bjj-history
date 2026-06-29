@@ -19,11 +19,12 @@ import GameplanDetail from '../components/GameplanDetail';
 import GameplanEditor from '../components/GameplanEditor';
 import { BASE_POSITIONS, BASE_CATEGORIES, mergeUnique } from '../utils/baseOptions';
 import { uniqueTechPositions, uniqueAllTags } from '../utils/suggestions';
+import ClipsPage from './ClipsPage';
 
 const PAGE_SIZE = 10;
 
 export default function TechPlanPage() {
-  const [tab, setTab] = useState('tech'); // tech | plan
+  const [tab, setTab] = useState('tech'); // tech | clips | plan
 
   return (
     <div>
@@ -33,18 +34,21 @@ export default function TechPlanPage() {
 
       {/* 세그먼트 */}
       <div style={{
-        display: 'grid', gridTemplateColumns: '1fr 1fr',
+        display: 'grid', gridTemplateColumns: '1fr 1fr 1fr',
         background: 'var(--surface-up)',
         borderRadius: 10,
         padding: 3,
         marginBottom: 16,
         gap: 3,
       }}>
-        <SegBtn active={tab === 'tech'} onClick={() => setTab('tech')}>기술트리</SegBtn>
-        <SegBtn active={tab === 'plan'} onClick={() => setTab('plan')}>시뮬레이터</SegBtn>
+        <SegBtn active={tab === 'tech'}  onClick={() => setTab('tech')}>기술트리</SegBtn>
+        <SegBtn active={tab === 'clips'} onClick={() => setTab('clips')}>참고영상</SegBtn>
+        <SegBtn active={tab === 'plan'}  onClick={() => setTab('plan')}>시뮬레이터</SegBtn>
       </div>
 
-      {tab === 'tech' ? <TechTab /> : <PlanTab />}
+      {tab === 'tech'  && <TechTab />}
+      {tab === 'clips' && <ClipsPage embedded />}
+      {tab === 'plan'  && <PlanTab />}
     </div>
   );
 }
@@ -401,8 +405,11 @@ function TechEditorModal({ initial, onSave, onCancel }) {
 // ─────────────────────────────────────────────
 function PlanTab() {
   const [sub, setSub] = useState('chain'); // chain | gameplan
+  const [search, setSearch] = useState('');
   const { techniques, chains, gameplans, reloadChains, reloadGameplans } = useCache();
   const { showToast, setLoading } = useUI();
+
+  useEffect(() => { setSearch(''); }, [sub]);
 
   const [chainDetail, setChainDetail]   = useState(null);
   const [chainEditing, setChainEditing] = useState(null); // 'new' | chain
@@ -457,6 +464,25 @@ function PlanTab() {
 
   return (
     <div>
+      {/* 검색바 */}
+      <div style={{
+        display: 'flex', alignItems: 'center', gap: 8,
+        padding: '10px 12px',
+        background: 'var(--surface)',
+        border: '1px solid var(--border)',
+        borderRadius: 10,
+        marginBottom: 10,
+      }}>
+        <Icon name="search" size={16} color="var(--text3)" />
+        <input
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+          placeholder={sub === 'chain' ? '체인 검색' : '게임플랜 검색'}
+          style={{ flex: 1, background: 'transparent', border: 'none', color: 'var(--text)', fontSize: 14, outline: 'none' }}
+        />
+      </div>
+
+      {/* 서브탭 + 추가 */}
       <div style={{ display: 'flex', gap: 6, marginBottom: 12, alignItems: 'center' }}>
         <PillBtn active={sub === 'chain'} onClick={() => setSub('chain')}>기술체인</PillBtn>
         <PillBtn active={sub === 'gameplan'} onClick={() => setSub('gameplan')}>기술연계</PillBtn>
@@ -471,8 +497,8 @@ function PlanTab() {
         </div>
       </div>
       {sub === 'chain'
-        ? <ChainList onOpen={setChainDetail} />
-        : <GameplanList onOpen={setGpDetail} />}
+        ? <ChainList onOpen={setChainDetail} search={search} />
+        : <GameplanList onOpen={setGpDetail} search={search} />}
 
       {chainDetail && (
         <ChainDetail
@@ -532,10 +558,21 @@ function PillBtn({ active, onClick, children }) {
   );
 }
 
-function ChainList({ onOpen }) {
+function ChainList({ onOpen, search = '' }) {
   const { chains } = useCache();
   const [page, setPage] = useState(1);
-  useEffect(() => { setPage(1); }, [chains.length]);
+
+  const filtered = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    if (!q) return chains;
+    return chains.filter(c =>
+      (c.name || '').toLowerCase().includes(q) ||
+      (c.note || '').toLowerCase().includes(q) ||
+      (c.steps || []).some(s => (s.tech_name || '').toLowerCase().includes(q))
+    );
+  }, [chains, search]);
+
+  useEffect(() => { setPage(1); }, [filtered.length]);
 
   if (!chains.length) {
     return (
@@ -544,8 +581,15 @@ function ChainList({ onOpen }) {
       </Card>
     );
   }
+  if (!filtered.length) {
+    return (
+      <Card style={{ textAlign: 'center', color: 'var(--text2)', padding: 24 }}>
+        검색 결과가 없습니다
+      </Card>
+    );
+  }
 
-  const paged = chains.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const paged = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   return (
     <>
@@ -575,16 +619,27 @@ function ChainList({ onOpen }) {
         </Card>
       ))}
     </div>
-    <Pagination total={chains.length} page={page} pageSize={PAGE_SIZE} onPageChange={setPage} />
+    <Pagination total={filtered.length} page={page} pageSize={PAGE_SIZE} onPageChange={setPage} />
     </>
   );
 }
 
-function GameplanList({ onOpen }) {
+function GameplanList({ onOpen, search = '' }) {
   const { gameplans, reloadGameplans } = useCache();
   const { showToast } = useUI();
   const [page, setPage] = useState(1);
-  useEffect(() => { setPage(1); }, [gameplans.length]);
+
+  const filtered = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    if (!q) return gameplans;
+    return gameplans.filter(gp =>
+      (gp.name || '').toLowerCase().includes(q) ||
+      (gp.start_pos || '').toLowerCase().includes(q) ||
+      (gp.nodes || []).some(n => (n.tech_name || n.label || '').toLowerCase().includes(q))
+    );
+  }, [gameplans, search]);
+
+  useEffect(() => { setPage(1); }, [filtered.length]);
 
   async function handleStar(e, id) {
     e.stopPropagation();
@@ -599,8 +654,15 @@ function GameplanList({ onOpen }) {
       </Card>
     );
   }
+  if (!filtered.length) {
+    return (
+      <Card style={{ textAlign: 'center', color: 'var(--text2)', padding: 24 }}>
+        검색 결과가 없습니다
+      </Card>
+    );
+  }
 
-  const paged = gameplans.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const paged = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   return (
     <>
@@ -633,7 +695,7 @@ function GameplanList({ onOpen }) {
         </Card>
       ))}
     </div>
-    <Pagination total={gameplans.length} page={page} pageSize={PAGE_SIZE} onPageChange={setPage} />
+    <Pagination total={filtered.length} page={page} pageSize={PAGE_SIZE} onPageChange={setPage} />
     </>
   );
 }

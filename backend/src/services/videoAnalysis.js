@@ -15,8 +15,18 @@ function runProcess(cmd, args, timeoutMs = 180000) {
       if (e.code === 'ENOENT') reject(new Error(`${cmd} 명령이 설치되어 있지 않습니다`));
       else reject(e);
     });
-    proc.on('close', code => {
-      if (code !== 0) return reject(new Error(err.trim() || `${cmd} 종료 코드: ${code}`));
+    proc.on('close', (code, signal) => {
+      if (signal) return reject(new Error(`${cmd} 강제 종료 (signal: ${signal}, timeout: ${timeoutMs}ms)`));
+      if (code !== 0) {
+        // yt-dlp Instagram 인증 에러 감지
+        if (cmd === 'yt-dlp' && /instagram/i.test(args.join(' ')) &&
+            /empty media response|login required|authentication/i.test(err)) {
+          return reject(new Error('Instagram 영상은 로그인 인증이 필요하여 다운로드가 불가합니다'));
+        }
+        // claude 종료 코드 1: stdout에 실제 에러가 있을 수 있음
+        const detail = (err.trim() || out.trim() || `${cmd} 종료 코드: ${code}`).slice(0, 300);
+        return reject(new Error(detail));
+      }
       resolve(out);
     });
   });
