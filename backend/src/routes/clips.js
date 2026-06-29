@@ -41,6 +41,11 @@ function autoAnalyzeClip(clipId, url) {
       if (result.savedFrames?.length) updates.frames     = JSON.stringify(result.savedFrames);
       if (result.description)         updates.description = result.description;
       if (result.savedVideo)          updates.video_file  = result.savedVideo;
+      // 썸네일이 없으면 첫 번째 분석 프레임으로 대체
+      if (result.savedFrames?.length) {
+        const existing = await VideoClip.findByPk(clipId, { attributes: ['thumb_url'], raw: true });
+        if (!existing?.thumb_url) updates.thumb_url = result.savedFrames[0];
+      }
       if (Object.keys(updates).length)
         await VideoClip.update(updates, { where: { id: clipId } });
       console.log(`[auto-analyze] clip ${clipId} 분석 완료 (${result.method})`);
@@ -195,6 +200,11 @@ router.post('/:id/upload-video', videoUpload.single('video'), wrap(async (req, r
       if (result.savedFrames?.length) updates.frames      = JSON.stringify(result.savedFrames);
       if (result.description)         updates.description = result.description;
       if (result.savedVideo)          updates.video_file  = result.savedVideo;
+      // 썸네일이 없으면 첫 번째 분석 프레임으로 대체
+      if (result.savedFrames?.length) {
+        const existing = await VideoClip.findByPk(clipId, { attributes: ['thumb_url'], raw: true });
+        if (!existing?.thumb_url) updates.thumb_url = result.savedFrames[0];
+      }
       if (Object.keys(updates).length)
         await VideoClip.update(updates, { where: { id: clipId } });
       console.log(`[upload-analyze] clip ${clipId} 분석 완료 (${result.method})`);

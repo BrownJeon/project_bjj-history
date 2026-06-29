@@ -9,10 +9,21 @@ function getThumbDir() {
 }
 ensureDir(getThumbDir());
 
+function getInstagramCookieArgs(url) {
+  if (!/instagram\.com/.test(url)) return [];
+  try {
+    const { hasCookieFile, hasFirefoxSession, INSTAGRAM_COOKIE_PATH } = require('./videoAnalysis');
+    if (hasCookieFile())     return ['--cookies', INSTAGRAM_COOKIE_PATH];
+    if (hasFirefoxSession()) return ['--cookies-from-browser', 'firefox'];
+  } catch {}
+  return [];
+}
+
 // yt-dlp 로 썸네일 URL 추출
 function extractThumbUrl(url) {
   return new Promise(resolve => {
-    const proc = spawn('yt-dlp', ['--get-thumbnail', '--no-warnings', url], { timeout: 15000 });
+    const cookieArgs = getInstagramCookieArgs(url);
+    const proc = spawn('yt-dlp', ['--get-thumbnail', '--no-warnings', ...cookieArgs, url], { timeout: 15000 });
     let out = '';
     proc.stdout.on('data', d => { out += d.toString(); });
     proc.on('error', () => resolve(''));
