@@ -14,6 +14,7 @@ const VideoClip       = require('./VideoClip');
 const Profile         = require('./Profile');
 const BeltHistory     = require('./BeltHistory');
 const CoachReport     = require('./CoachReport');
+const PickHistory     = require('./PickHistory');
 
 // 관계 정의
 Class.hasMany(Drill,         { foreignKey: 'class_id', as: 'drills' });
@@ -41,4 +42,5 @@ module.exports = {
   Technique, TechniqueChain, ChainStep,
   Gameplan, GameplanNode, GameplanEdge,
   VideoClip, Profile, BeltHistory, CoachReport,
+  PickHistory,
 };

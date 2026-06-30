@@ -118,6 +118,40 @@ async function start() {
       `UPDATE voice_jobs SET status='error', error='서버 재시작으로 인해 처리 중단됨 (재업로드 필요)'
        WHERE status='pending'`
     ).catch(() => {});
+    // class_video_jobs 테이블 (수업 AI 영상 생성 비동기 잡)
+    await sq.query(`
+      CREATE TABLE IF NOT EXISTS class_video_jobs (
+        id          VARCHAR(36) PRIMARY KEY,
+        class_id    INT NOT NULL,
+        status      VARCHAR(10) DEFAULT 'pending',
+        progress    VARCHAR(500) DEFAULT '',
+        video_url   TEXT,
+        error       TEXT,
+        image_count INT DEFAULT 0,
+        clip_count  INT DEFAULT 0,
+        created_at  DATETIME DEFAULT NOW(),
+        updated_at  DATETIME DEFAULT NOW() ON UPDATE NOW()
+      )
+    `).catch(() => {});
+    await sq.query(
+      `UPDATE class_video_jobs SET status='error', error='서버 재시작으로 처리 중단 — 다시 시도해주세요'
+       WHERE status='pending'`
+    ).catch(() => {});
+    // pick_history 테이블 (픽미업 기능 — 날짜별 클립 픽 이력)
+    await sq.query(`
+      CREATE TABLE IF NOT EXISTS pick_history (
+        id         INT AUTO_INCREMENT PRIMARY KEY,
+        clip_id    INT NOT NULL,
+        pick_date  DATE NOT NULL,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        INDEX idx_pick_date (pick_date),
+        INDEX idx_clip_id (clip_id)
+      )
+    `).catch(() => {});
+    // video_clips.ai_recommendation 컬럼 추가 (AI 픽미업 추천 메시지)
+    await sq.query(
+      `ALTER TABLE video_clips ADD COLUMN IF NOT EXISTS ai_recommendation TEXT DEFAULT NULL`
+    ).catch(() => {});
     // 주간 코치 리포트·플랜 자동 생성 (매주 일요일 06:00)
     const { scheduleWeeklyCron } = require('./services/coachCron');
     scheduleWeeklyCron();
