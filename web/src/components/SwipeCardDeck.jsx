@@ -16,6 +16,8 @@ export default function SwipeCardDeck({ clips = [], onPick, onCardTap }) {
 
   // 드래그 시작 좌표 추적용 ref
   const startRef = useRef({ x: 0, y: 0 });
+  // stale closure 방지: drag.active를 ref로 동기 추적
+  const activeRef = useRef(false);
 
   if (!clips || clips.length === 0) {
     return (
@@ -36,7 +38,9 @@ export default function SwipeCardDeck({ clips = [], onPick, onCardTap }) {
   // ─── 드래그 시작 ───────────────────────────────────────────────────────────
 
   function dragStart(x, y) {
+    if (picking) return;
     startRef.current = { x, y };
+    activeRef.current = true;
     setDrag({ x: 0, y: 0, active: true });
   }
 
@@ -53,7 +57,7 @@ export default function SwipeCardDeck({ clips = [], onPick, onCardTap }) {
   // ─── 드래그 중 ─────────────────────────────────────────────────────────────
 
   function dragMove(x, y) {
-    if (!drag.active) return;
+    if (!activeRef.current) return;
     setDrag(prev => ({
       ...prev,
       x: x - startRef.current.x,
@@ -73,7 +77,8 @@ export default function SwipeCardDeck({ clips = [], onPick, onCardTap }) {
   // ─── 드래그 종료 ───────────────────────────────────────────────────────────
 
   function dragEnd(x, y) {
-    if (!drag.active) return;
+    if (!activeRef.current) return;
+    activeRef.current = false;
 
     const dx = x - startRef.current.x;
     const dy = y - startRef.current.y;
@@ -112,7 +117,7 @@ export default function SwipeCardDeck({ clips = [], onPick, onCardTap }) {
 
   function handleMouseLeave(e) {
     // 드래그 중 영역 이탈 시 종료
-    if (drag.active) {
+    if (activeRef.current) {
       dragEnd(e.clientX, e.clientY);
     }
   }
@@ -188,19 +193,20 @@ export default function SwipeCardDeck({ clips = [], onPick, onCardTap }) {
             <div
               key={clips[cardIdx].id}
               style={{
-                position:   'absolute',
-                width:      '100%',
-                maxWidth:   320,
+                position:     'absolute',
+                width:        '100%',
+                maxWidth:     320,
                 transform,
                 transition,
                 opacity,
-                zIndex:     stackPos,
+                zIndex:       stackPos,
+                pointerEvents: isTop ? undefined : 'none',
               }}
             >
               <TechCard
                 clip={clips[cardIdx]}
-                /* 최상단 카드 탭은 dragEnd에서 처리하므로 onClick 비활성 */
-                onClick={isTop ? undefined : undefined}
+                /* 탭은 dragEnd에서 처리 — onClick 비활성 */
+                onClick={undefined}
               />
             </div>
           );
