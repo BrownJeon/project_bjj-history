@@ -3,11 +3,12 @@ const router = express.Router();
 const { Op } = require('sequelize');
 const fs = require('fs/promises');
 const { VideoClip } = require('../models');
-const { wrap, safeParse } = require('../utils/respond');
+const { wrap, safeParse, ok, fail } = require('../utils/respond');
 const { queueThumbUpdate } = require('../services/thumbnailExtractor');
 const { getFramesDir, getVideoDir } = require('../services/storage');
 const multer = require('multer');
 const { analyzeVideo, analyzeLocalFile, hasInstagramAuth } = require('../services/videoAnalysis');
+const { runClaude } = require('../services/claudeCli');
 
 const videoUpload = multer({
   dest: '/tmp/',
@@ -241,6 +242,71 @@ router.post('/:id/refresh-thumb', wrap(async (req, res) => {
   if (!c) return res.status(404).json({ error: 'not found' });
   queueThumbUpdate(req.params.id, c.url);
   res.json({ ok: true, queued: true });
+}));
+
+// AI 연계기술 추천 — ai_recommendation 캐싱 포함
+router.post('/:id/recommend', wrap(async (req, res) => {
+  const clip = await VideoClip.findByPk(req.params.id, {
+    attributes: ['id', 'tech_name', 'description', 'ai_recommendation'],
+    raw: true,
+  });
+  if (!clip) return fail(res, 404, '클립을 찾을 수 없습니다');
+
+  // 캐시된 값이 있으면 즉시 반환
+  if (clip.ai_recommendation) {
+    const cached = safeParse(clip.ai_recommendation, null);
+    if (cached) return ok(res, cached);
+  }
+
+  // tech_names 파싱 (normalize 패턴)
+  let techNames = [];
+  try {
+    const p = JSON.parse(clip.tech_name);
+    if (Array.isArray(p)) techNames = p.filter(Boolean);
+    else if (p) techNames = [String(p)];
+  } catch {
+    if (clip.tech_name) techNames = [clip.tech_name];
+  }
+
+  const prompt = `당신은 BJJ(브라질리언 주짓수) 전문 코치입니다.
+아래 영상 기술을 분석하여 연계 가능한 기술과 콤비네이션을 추천해주세요.
+
+기술명: ${techNames.join(', ')}
+영상 분석 내용: ${clip.description || '(설명 없음)'}
+
+반드시 다음 JSON 형식으로만 답변하세요 (다른 텍스트 없이):
+{
+  "techniques": [
+    { "name": "기술명", "reason": "이 기술과 연계되는 이유" }
+  ],
+  "combos": [
+    { "title": "콤비네이션 제목", "steps": ["단계1", "단계2", "단계3"] }
+  ]
+}
+
+techniques는 3~5개, combos는 2~3개 추천.`;
+
+  const raw = await runClaude(prompt);
+
+  // JSON 블록 추출 및 파싱
+  let parsed;
+  try {
+    const cleaned = raw.replace(/```(?:json)?/g, '').replace(/```/g, '').trim();
+    const start = cleaned.indexOf('{');
+    const end   = cleaned.lastIndexOf('}');
+    if (start === -1 || end === -1) throw new Error('JSON 객체를 찾을 수 없습니다');
+    parsed = JSON.parse(cleaned.slice(start, end + 1));
+  } catch {
+    return fail(res, 500, 'AI 추천 파싱 실패');
+  }
+
+  // 캐시 저장
+  await VideoClip.update(
+    { ai_recommendation: JSON.stringify(parsed) },
+    { where: { id: req.params.id } }
+  );
+
+  return ok(res, parsed);
 }));
 
 module.exports = router;

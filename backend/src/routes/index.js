@@ -7,6 +7,7 @@ router.use('/techniques',  require('./techniques'));
 router.use('/chains',      require('./chains'));
 router.use('/gameplans',   require('./gameplans'));
 router.use('/clips',       require('./clips'));
+router.use('/picks',       require('./picks'));
 router.use('/recommend',   require('./recommend'));
 router.use('/enhance-memo',require('./enhance-memo'));
 router.use('/voice',       require('./voice'));
