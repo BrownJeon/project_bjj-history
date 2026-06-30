@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { getYtEmbed, getPlatformIcon } from '../utils/videoThumb';
 
 /**
@@ -26,6 +26,10 @@ export default function VideoPlayer({ clip }) {
 
   const [slideIdx, setSlideIdx] = useState(0);
   const touchStartX = useRef(null);
+
+  useEffect(() => {
+    setSlideIdx(0);
+  }, [frames?.length]);
 
   function prev(e) { e?.stopPropagation(); setSlideIdx(i => (i - 1 + frames.length) % frames.length); }
   function next(e) { e?.stopPropagation(); setSlideIdx(i => (i + 1) % frames.length); }
