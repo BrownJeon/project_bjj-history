@@ -3,11 +3,12 @@ import * as enhanceApi from '../api/enhanceMemo';
 import * as clipsApi from '../api/clips';
 import { useCache } from '../contexts/CacheContext';
 import { getStorageMode } from '../pages/ProfilePage';
-import { getYtEmbed, getClipThumb, getPlatformIcon, getPlatformLabel } from '../utils/videoThumb';
+import { getPlatformIcon, getPlatformLabel } from '../utils/videoThumb';
 import Modal from './Modal';
 import Button from './Button';
 import Tag from './Tag';
 import Icon from './Icon';
+import VideoPlayer from './VideoPlayer';
 
 /**
  * 영상 상세 모달
@@ -15,7 +16,6 @@ import Icon from './Icon';
  */
 export default function ClipDetailModal({ c, onClose, onEdit, onDelete, onRefresh, analyzeJob }) {
   const { igCookieConfigured } = useCache();
-  const [slideIdx, setSlideIdx]             = useState(0);
   const [analyzing, setAnalyzing]           = useState(false);
   const [analyzeElapsed, setAnalyzeElapsed] = useState(0);
   const [uploading, setUploading]           = useState(false);
@@ -31,7 +31,6 @@ export default function ClipDetailModal({ c, onClose, onEdit, onDelete, onRefres
     try { return JSON.parse(f); } catch { return []; }
   });
 
-  const touchStartX = useRef(null);
   const fileInputRef = useRef(null);
   const prevJobRef   = useRef(null);
 
@@ -46,26 +45,7 @@ export default function ClipDetailModal({ c, onClose, onEdit, onDelete, onRefres
     prevJobRef.current = analyzeJob || null;
   }, [analyzeJob]);
 
-  const frames = localFrames;
-
-  function prev(e) { e?.stopPropagation(); setSlideIdx(i => (i - 1 + frames.length) % frames.length); }
-  function next(e) { e?.stopPropagation(); setSlideIdx(i => (i + 1) % frames.length); }
-
-  function onTouchStart(e) { touchStartX.current = e.touches[0].clientX; }
-  function onTouchEnd(e) {
-    if (touchStartX.current === null || frames.length < 2) return;
-    const dx = e.changedTouches[0].clientX - touchStartX.current;
-    if (Math.abs(dx) > 40) dx < 0 ? next() : prev();
-    touchStartX.current = null;
-  }
-
-  function downloadSingleFrame(url, idx, title) {
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${(title || 'frame').replace(/[^가-힣a-zA-Z0-9]/g, '_')}-${idx + 1}.jpg`;
-    document.body.appendChild(a); a.click(); document.body.removeChild(a);
-  }
-
+  // localFrames를 다운로드하는 헬퍼 (device 모드용)
   function downloadFrames(frameList, title) {
     frameList.forEach((url, i) => {
       setTimeout(() => {
@@ -89,7 +69,7 @@ export default function ClipDetailModal({ c, onClose, onEdit, onDelete, onRefres
       if (res.description) setLocalDesc(res.description);
       if (res.videoFile)   setLocalVideoFile(res.videoFile);
       if (res.frames?.length) {
-        setLocalFrames(res.frames); setSlideIdx(0);
+        setLocalFrames(res.frames);
         if (mode === 'device') downloadFrames(res.frames, c.title);
       }
       await onRefresh?.();
@@ -117,93 +97,13 @@ export default function ClipDetailModal({ c, onClose, onEdit, onDelete, onRefres
     }
   }
 
-  const videoSizeStyle = { width: '100%', aspectRatio: '16/9', borderRadius: 10, overflow: 'hidden' };
-  const mediaSizeStyle = { width: '100%', borderRadius: 10, overflow: 'hidden' };
+  // AI 분석 결과(localVideoFile, localFrames)를 반영한 clip 객체를 VideoPlayer에 전달
+  const clipForPlayer = { ...c, video_file: localVideoFile, frames: localFrames };
 
   return (
     <Modal title={c.title} onClose={onClose}>
-      {/* 로컬 저장 영상 */}
-      {localVideoFile && (
-        <div style={{ marginBottom: 10 }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
-            <span style={{ fontSize: 11, color: 'var(--accent)', fontWeight: 600 }}>📥 저장된 영상 (오프라인 재생 가능)</span>
-            <a href={localVideoFile} download={`${c.title || 'video'}.mp4`}
-              style={{ fontSize: 11, color: 'var(--text2)', textDecoration: 'none' }}>↓ 다운로드</a>
-          </div>
-          <video src={localVideoFile} controls playsInline
-            style={{ width: '100%', borderRadius: 10, display: 'block', background: '#000', maxHeight: 320 }} />
-        </div>
-      )}
-
-      {/* YouTube embed */}
-      {c.platform === 'youtube' && getYtEmbed(c.url) && !localVideoFile && (
-        <div style={{ ...videoSizeStyle, marginBottom: 10 }}>
-          <iframe src={getYtEmbed(c.url)}
-            style={{ width: '100%', height: '100%', border: 'none', display: 'block' }}
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen />
-        </div>
-      )}
-
-      {/* 캡처 프레임 슬라이드쇼 */}
-      {frames.length > 0 ? (
-        <div style={{ position: 'relative', marginBottom: 12 }}>
-          <div onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}
-            style={{ ...mediaSizeStyle, background: 'var(--surface-hi)', position: 'relative', userSelect: 'none' }}>
-            <img src={frames[slideIdx]} alt={`frame ${slideIdx + 1}`}
-              style={{ width: '100%', height: 'auto', display: 'block' }} />
-            {frames.length > 1 && (
-              <>
-                <button onClick={prev} style={{
-                  position: 'absolute', left: 8, top: '50%', transform: 'translateY(-50%)',
-                  width: 32, height: 32, borderRadius: '50%',
-                  background: 'rgba(0,0,0,0.5)', color: '#fff', border: 'none', cursor: 'pointer', fontSize: 16,
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                }}>‹</button>
-                <button onClick={next} style={{
-                  position: 'absolute', right: 8, top: '50%', transform: 'translateY(-50%)',
-                  width: 32, height: 32, borderRadius: '50%',
-                  background: 'rgba(0,0,0,0.5)', color: '#fff', border: 'none', cursor: 'pointer', fontSize: 16,
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                }}>›</button>
-              </>
-            )}
-            <div style={{
-              position: 'absolute', bottom: 8, left: '50%', transform: 'translateX(-50%)',
-              background: 'rgba(0,0,0,0.55)', color: '#fff', borderRadius: 10, padding: '2px 10px',
-              fontSize: 11, fontWeight: 600,
-            }}>{slideIdx + 1} / {frames.length}</div>
-            <button onClick={() => downloadSingleFrame(frames[slideIdx], slideIdx, c.title)}
-              style={{
-                position: 'absolute', top: 8, right: 8,
-                background: 'rgba(0,0,0,0.5)', color: '#fff',
-                border: 'none', borderRadius: 8, padding: '4px 8px', fontSize: 12, cursor: 'pointer',
-              }}>↓</button>
-          </div>
-          {frames.length > 1 && (
-            <div style={{ display: 'flex', justifyContent: 'center', gap: 5, marginTop: 8 }}>
-              {frames.map((_, i) => (
-                <button key={i} onClick={() => setSlideIdx(i)} style={{
-                  width: i === slideIdx ? 18 : 6, height: 6, borderRadius: 3,
-                  border: 'none', cursor: 'pointer', padding: 0, transition: 'width 0.2s',
-                  background: i === slideIdx ? 'var(--accent)' : 'var(--border-med)',
-                }} />
-              ))}
-            </div>
-          )}
-          <div style={{ fontSize: 10, color: 'var(--text3)', textAlign: 'center', marginTop: 4 }}>✨ AI 분석 캡처</div>
-        </div>
-      ) : (
-        <div style={{
-          width: '100%', aspectRatio: '16/9', borderRadius: 10,
-          background: 'var(--surface)', border: '1px solid var(--border)',
-          display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-          marginBottom: 12, gap: 6,
-        }}>
-          <span style={{ fontSize: 32 }}>{getPlatformIcon(c.platform)}</span>
-          <span style={{ fontSize: 11, color: 'var(--text3)' }}>AI 분석 후 캡처가 표시됩니다</span>
-        </div>
-      )}
+      {/* 영상 플레이어 (VideoPlayer 컴포넌트) */}
+      <VideoPlayer clip={clipForPlayer} />
 
       {/* 태그 */}
       <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 10 }}>
@@ -237,13 +137,9 @@ export default function ClipDetailModal({ c, onClose, onEdit, onDelete, onRefres
 
       {/* AI 분석 버튼 영역 */}
       {(() => {
-        const bgRunning  = (analyzeJob && analyzeJob.progress >= 0) || uploadDone;
-        const anyBusy    = analyzing || uploading || bgRunning;
+        const bgRunning   = (analyzeJob && analyzeJob.progress >= 0) || uploadDone;
+        const anyBusy     = analyzing || uploading || bgRunning;
         const isInstagram = /instagram\.com/.test(c.url || '');
-
-        const urlBtnLabel = bgRunning
-          ? `🔄 ${analyzeJob?.stage || '분석 중'} ${analyzeJob?.progress ?? ''}%`
-          : analyzing ? `✨ AI 분석 중... ${analyzeElapsed}s` : '✨ URL로 AI 분석';
 
         const uploadBtnLabel = uploading
           ? `📤 업로드 중... ${uploadPct}%`
