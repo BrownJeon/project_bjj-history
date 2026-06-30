@@ -90,10 +90,10 @@ export default function PickMeUpPage() {
     const today = new Date().toISOString().slice(0, 10);
     try {
       await createPick({ clip_id: clip.id, pick_date: today });
+      setTodayPicks(prev => [...prev, clip]);
     } catch (e) {
       console.error('픽 저장 실패:', e);
     }
-    setTodayPicks(prev => [...prev, clip]);
   }
 
   // ─── 다시 생성 (재셔플) ──────────────────────────────────────────────────
@@ -137,11 +137,12 @@ export default function PickMeUpPage() {
       const todayGroup = allPicks.find(g => g.date === today);
       const target = todayGroup?.picks.find(p => p.clip_id === clipId);
       if (target) await deletePick(target.id);
+      setTodayPicks(prev => prev.filter(c => c.id !== clipId));
+      setDetailClip(null);
     } catch (e) {
       console.error('픽 취소 실패:', e);
+      setDetailClip(null);
     }
-    setTodayPicks(prev => prev.filter(c => c.id !== clipId));
-    setDetailClip(null);
   }
 
   // ─── 렌더링 ──────────────────────────────────────────────────────────────
