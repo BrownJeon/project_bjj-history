@@ -47,6 +47,7 @@ export default function PickMeUpPage() {
   const [detailClip, setDetailClip]     = useState(null);   // 상세보기 중인 clip
   const [detailMode, setDetailMode]     = useState('browse');
   const [shuffledClips, setShuffledClips] = useState([]);
+  const [confirming, setConfirming]       = useState(false);
 
   // ─── 이력 탭 상태 ────────────────────────────────────────────────────────
   const [history, setHistory]       = useState([]);
@@ -83,16 +84,25 @@ export default function PickMeUpPage() {
     setDeckState('swiping');
   }
 
-  // ─── 카드 픽 ─────────────────────────────────────────────────────────────
-  async function handlePick(clip) {
-    // 이미 오늘 픽한 클립이면 중복 방지
+  // ─── 카드 픽 (로컬만 — 확정 버튼 누를 때 DB 저장) ───────────────────────
+  function handlePick(clip) {
     if (todayPicks.find(p => p.id === clip.id)) return;
+    setTodayPicks(prev => [...prev, clip]);
+  }
+
+  // ─── 오늘픽 확정 → DB 일괄 저장 ─────────────────────────────────────────
+  async function handleConfirmPicks() {
+    if (todayPicks.length === 0 || confirming) return;
+    setConfirming(true);
     const today = new Date().toISOString().slice(0, 10);
     try {
-      await createPick({ clip_id: clip.id, pick_date: today });
-      setTodayPicks(prev => [...prev, clip]);
+      await Promise.all(todayPicks.map(clip => createPick({ clip_id: clip.id, pick_date: today })));
+      setTodayPicks([]);
     } catch (e) {
-      console.error('픽 저장 실패:', e);
+      console.error('픽 확정 실패:', e);
+      alert('저장 실패: ' + (e.message || e));
+    } finally {
+      setConfirming(false);
     }
   }
 
@@ -131,13 +141,17 @@ export default function PickMeUpPage() {
 
   // ─── PickDetailPanel onUnpick ─────────────────────────────────────────────
   async function handleUnpick(clipId) {
-    const today = new Date().toISOString().slice(0, 10);
+    // 확정 전 로컬 픽 → DB 호출 없이 목록에서만 제거
+    if (detailMode === 'picked') {
+      setTodayPicks(prev => prev.filter(c => c.id !== clipId));
+      setDetailClip(null);
+      return;
+    }
+    // 이력 탭 픽 → DB 삭제
     try {
       const allPicks = await listPicks();
-      const todayGroup = allPicks.find(g => g.date === today);
-      const target = todayGroup?.picks.find(p => p.clip_id === clipId);
+      const target = allPicks.flatMap(g => g.picks).find(p => p.clip_id === clipId);
       if (target) await deletePick(target.id);
-      setTodayPicks(prev => prev.filter(c => c.id !== clipId));
       setDetailClip(null);
     } catch (e) {
       console.error('픽 취소 실패:', e);
@@ -252,17 +266,29 @@ export default function PickMeUpPage() {
                 onCardTap={handleCardTap}
               />
 
-              {/* 오늘 픽한 카드 썸네일 row */}
+              {/* 오늘 픽한 카드 썸네일 row + 확정 버튼 */}
               {todayPicks.length > 0 && (
                 <div style={{ marginTop: 16 }}>
                   <div style={{
-                    fontSize: 11,
-                    color: 'var(--text3)',
-                    fontWeight: 600,
-                    marginBottom: 6,
-                    letterSpacing: '0.05em',
+                    display: 'flex', alignItems: 'center',
+                    justifyContent: 'space-between', marginBottom: 8,
                   }}>
-                    오늘의 픽 ({todayPicks.length})
+                    <div style={{ fontSize: 11, color: 'var(--text3)', fontWeight: 600, letterSpacing: '0.05em' }}>
+                      오늘의 픽 ({todayPicks.length})
+                    </div>
+                    <button
+                      onClick={handleConfirmPicks}
+                      disabled={confirming}
+                      style={{
+                        padding: '6px 14px',
+                        background: confirming ? 'var(--surface-up)' : 'var(--accent)',
+                        color: confirming ? 'var(--text2)' : '#fff',
+                        border: 'none', borderRadius: 20,
+                        fontSize: 12, fontWeight: 700,
+                        cursor: confirming ? 'not-allowed' : 'pointer',
+                      }}>
+                      {confirming ? '저장 중...' : '✓ 확정하기'}
+                    </button>
                   </div>
                   <div style={{ overflowX: 'auto', display: 'flex', gap: 8 }}>
                     {todayPicks.map(clip => (
@@ -271,13 +297,9 @@ export default function PickMeUpPage() {
                         src={clip.thumb_url || ''}
                         onClick={() => { setDetailClip(clip); setDetailMode('picked'); }}
                         style={{
-                          width: 60,
-                          height: 60,
-                          objectFit: 'cover',
-                          borderRadius: 8,
-                          cursor: 'pointer',
-                          border: '2px solid var(--accent)',
-                          flexShrink: 0,
+                          width: 60, height: 60, objectFit: 'cover',
+                          borderRadius: 8, cursor: 'pointer',
+                          border: '2px solid var(--accent)', flexShrink: 0,
                         }}
                         alt={clip.title}
                       />
@@ -380,16 +402,17 @@ export default function PickMeUpPage() {
                     <button
                       onClick={() => handleDeletePick(pick.id)}
                       style={{
-                        background: 'transparent',
-                        border: 'none',
-                        fontSize: 16,
-                        cursor: 'pointer',
-                        padding: 4,
-                        color: 'var(--text3)',
-                        flexShrink: 0,
+                        width: 28, height: 28,
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        background: 'var(--surface-up)',
+                        border: '1px solid var(--border-med)',
+                        borderRadius: 8,
+                        fontSize: 13, fontWeight: 600,
+                        color: 'var(--text2)',
+                        cursor: 'pointer', flexShrink: 0,
                       }}
                     >
-                      🗑
+                      ✕
                     </button>
                   </div>
                 ))}

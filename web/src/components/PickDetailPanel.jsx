@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import VideoPlayer from './VideoPlayer';
 import Tag from './Tag';
 import { getPlatformLabel } from '../utils/videoThumb';
@@ -27,6 +27,8 @@ export default function PickDetailPanel({ clip, mode = 'browse', onClose, onPick
 
   /* AI 추천 상태 */
   const [recLoading, setRecLoading] = useState(false);
+  const [recProgress, setRecProgress] = useState({ percent: 0, message: '' });
+  const timerIdsRef = useRef([]);
   const [recommendation, setRecommendation] = useState(() => {
     if (!c.ai_recommendation) return null;
     if (typeof c.ai_recommendation === 'string') {
@@ -48,13 +50,43 @@ export default function PickDetailPanel({ clip, mode = 'browse', onClose, onPick
     }
   }, [c.id]);
 
+  function clearProgressTimers() {
+    timerIdsRef.current.forEach(id => clearTimeout(id));
+    timerIdsRef.current = [];
+  }
+
+  /* 언마운트 시 타이머 정리 */
+  useEffect(() => () => clearProgressTimers(), []);
+
   async function handleRecommend() {
     if (!c.id) { alert('클립 ID가 없어 AI 추천을 실행할 수 없습니다.'); return; }
+    clearProgressTimers();
+    setRecommendation(null);
     setRecLoading(true);
+    setRecProgress({ percent: 5, message: 'AI 분석 준비 중...' });
+
+    const steps = [
+      [1000,  15, 'Claude AI 연결 중...'],
+      [2800,  32, 'BJJ 기술 패턴 분석 중...'],
+      [5500,  52, '연계 기술 탐색 중...'],
+      [8500,  68, '콤비네이션 설계 중...'],
+      [12500, 83, '결과 정리 중...'],
+      [18000, 92, '최종 검토 중...'],
+    ];
+    steps.forEach(([delay, percent, message]) => {
+      const id = setTimeout(() => setRecProgress({ percent, message }), delay);
+      timerIdsRef.current.push(id);
+    });
+
     try {
       const result = await recommendTechnique(c.id);
+      clearProgressTimers();
+      setRecProgress({ percent: 100, message: '✓ 분석 완료!' });
+      await new Promise(r => setTimeout(r, 500));
       setRecommendation(result);
     } catch (e) {
+      clearProgressTimers();
+      setRecProgress({ percent: 0, message: '' });
       alert('AI 추천 실패: ' + (e.message || e));
     } finally {
       setRecLoading(false);
@@ -127,31 +159,50 @@ export default function PickDetailPanel({ clip, mode = 'browse', onClose, onPick
 
   /* 하단 액션 버튼 */
   function renderActionButton() {
+    const closeBtn = (
+      <button
+        onClick={onClose}
+        style={{
+          flexShrink: 0, width: 48, padding: '14px 0',
+          background: 'var(--surface-up)', color: 'var(--text2)',
+          border: '1px solid var(--border-med)', borderRadius: 12,
+          fontSize: 20, lineHeight: 1, cursor: 'pointer',
+        }}>
+        ✕
+      </button>
+    );
+
     if (mode === 'browse') {
       return (
-        <button
-          onClick={() => onPick?.(c)}
-          style={{
-            width: '100%', padding: '14px 0',
-            background: 'var(--accent)', color: '#fff',
-            border: 'none', borderRadius: 12, fontSize: 15, fontWeight: 700,
-            cursor: 'pointer', letterSpacing: 0.3,
-          }}>
-          픽하기 ↑
-        </button>
+        <div style={{ display: 'flex', gap: 8 }}>
+          <button
+            onClick={() => onPick?.(c)}
+            style={{
+              flex: 1, padding: '14px 0',
+              background: 'var(--accent)', color: '#fff',
+              border: 'none', borderRadius: 12, fontSize: 15, fontWeight: 700,
+              cursor: 'pointer', letterSpacing: 0.3,
+            }}>
+            픽하기 ↑
+          </button>
+          {closeBtn}
+        </div>
       );
     }
     return (
-      <button
-        onClick={() => onUnpick?.(c.id)}
-        style={{
-          width: '100%', padding: '14px 0',
-          background: 'var(--red-dim)', color: 'var(--red)',
-          border: '1px solid var(--red)', borderRadius: 12, fontSize: 15, fontWeight: 700,
-          cursor: 'pointer', letterSpacing: 0.3,
-        }}>
-        픽 취소
-      </button>
+      <div style={{ display: 'flex', gap: 8 }}>
+        <button
+          onClick={() => onUnpick?.(c.id)}
+          style={{
+            flex: 1, padding: '14px 0',
+            background: 'var(--red-dim)', color: 'var(--red)',
+            border: '1px solid var(--red)', borderRadius: 12, fontSize: 15, fontWeight: 700,
+            cursor: 'pointer', letterSpacing: 0.3,
+          }}>
+          픽 취소
+        </button>
+        {closeBtn}
+      </div>
     );
   }
 
@@ -291,8 +342,27 @@ export default function PickDetailPanel({ clip, mode = 'browse', onClose, onPick
             )}
 
             {recLoading && !recommendation && (
-              <div style={{ fontSize: 12, color: 'var(--text3)', textAlign: 'center', padding: '8px 0' }}>
-                로딩 중...
+              <div style={{ padding: '4px 0 8px' }}>
+                <div style={{
+                  display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8,
+                }}>
+                  <span style={{ fontSize: 12, color: 'var(--text2)' }}>{recProgress.message}</span>
+                  <span style={{ fontSize: 12, color: 'var(--purple)', fontWeight: 700 }}>
+                    {recProgress.percent}%
+                  </span>
+                </div>
+                <div style={{
+                  height: 4, borderRadius: 2,
+                  background: 'var(--border)', overflow: 'hidden',
+                }}>
+                  <div style={{
+                    height: '100%',
+                    width: `${recProgress.percent}%`,
+                    background: 'var(--purple)',
+                    borderRadius: 2,
+                    transition: 'width 0.6s ease',
+                  }} />
+                </div>
               </div>
             )}
 

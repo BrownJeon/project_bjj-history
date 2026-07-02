@@ -151,11 +151,14 @@ router.post('/analyze-video', wrap(async (req, res) => {
   }
 
   const jobId = crypto.randomUUID();
-  analyzeJobs.set(jobId, { status: 'pending', startedAt: Date.now(), url });
+  analyzeJobs.set(jobId, { status: 'pending', startedAt: Date.now(), url, progress: 0, stage: '분석 준비 중' });
   res.json({ jobId, status: 'pending' });
 
   // fire-and-forget — 응답 후 백그라운드 처리
-  analyzeVideo(url, clipId || null)
+  analyzeVideo(url, clipId || null, (progress, stage) => {
+    const job = analyzeJobs.get(jobId);
+    if (job) analyzeJobs.set(jobId, { ...job, progress, stage });
+  })
     .then(async result => {
       // clipId가 있으면 DB에 frames + description 저장
       if (clipId) {
@@ -203,6 +206,8 @@ router.get('/analyze-video/:jobId', wrap(async (req, res) => {
   res.json({
     status: job.status,
     elapsed,
+    progress: job.progress ?? 0,
+    stage: job.stage ?? '',
     description: job.result || null,
     method: job.method || null,
     frames: job.frames || [],

@@ -3,6 +3,9 @@ const router = express.Router();
 const { Op } = require('sequelize');
 const { sequelize, Class, Drill, SparDay, SparSession } = require('../models');
 const { wrap, safeParse } = require('../utils/respond');
+const { generateClassVideo } = require('../services/classVideoService');
+const { getClassVideoDir, classVideoWebPath } = require('../services/storage');
+const fs = require('fs/promises');
 
 // 기존 drill_clips / spar_day_clips 조인은 더 이상 사용하지 않으므로 빈 배열로 반환
 router.get('/', wrap(async (_req, res) => {
@@ -216,6 +219,68 @@ router.delete('/:id/spar/:sparDayId', wrap(async (req, res) => {
     await SparSession.destroy({ where: { spar_day_id: sparDayId }, transaction: t });
     await SparDay.destroy({ where: { id: sparDayId }, transaction: t });
   });
+  res.json({ ok: true });
+}));
+
+// ─── 수업 AI 영상 생성 ───────────────────────────────────────────────────────
+
+router.post('/:id/generate-video', wrap(async (req, res) => {
+  const classId = req.params.id;
+  const cls = await Class.findByPk(classId);
+  if (!cls) return res.status(404).json({ error: 'class not found' });
+
+  // 이미 pending 잡이 있으면 그것 반환
+  const [[existing]] = await sequelize.query(
+    `SELECT id, status, progress FROM class_video_jobs WHERE class_id=? AND status='pending' LIMIT 1`,
+    { replacements: [classId] },
+  );
+  if (existing) return res.json({ jobId: existing.id, status: 'pending', progress: existing.progress });
+
+  const jobId = crypto.randomUUID();
+  await sequelize.query(
+    `INSERT INTO class_video_jobs (id, class_id, status, progress) VALUES (?, ?, 'pending', '영상 생성 준비 중...')`,
+    { replacements: [jobId, classId] },
+  );
+
+  // fire-and-forget
+  generateClassVideo(classId, jobId).catch(e =>
+    console.error('[classes] generateClassVideo unhandled:', e.message),
+  );
+
+  res.json({ jobId, status: 'pending', progress: '영상 생성 준비 중...' });
+}));
+
+router.get('/:id/video-status', wrap(async (req, res) => {
+  const classId = req.params.id;
+
+  // 최신 잡 조회
+  const [[job]] = await sequelize.query(
+    `SELECT id, status, progress, video_url, error, image_count, clip_count
+     FROM class_video_jobs WHERE class_id=? ORDER BY created_at DESC LIMIT 1`,
+    { replacements: [classId] },
+  );
+
+  if (!job) return res.json({ status: 'none' });
+
+  return res.json({
+    jobId: job.id,
+    status: job.status,
+    progress: job.progress || '',
+    videoUrl: job.video_url || null,
+    imageCount: job.image_count || 0,
+    clipCount: job.clip_count || 0,
+    error: job.error || null,
+  });
+}));
+
+router.delete('/:id/generated-video', wrap(async (req, res) => {
+  const classId = req.params.id;
+  const videoDir = getClassVideoDir(classId);
+  await fs.rm(videoDir, { recursive: true }).catch(() => {});
+  await sequelize.query(
+    `DELETE FROM class_video_jobs WHERE class_id=?`,
+    { replacements: [classId] },
+  );
   res.json({ ok: true });
 }));
 

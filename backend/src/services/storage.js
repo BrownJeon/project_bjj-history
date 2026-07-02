@@ -40,6 +40,14 @@ function videoWebPath(clipId, userId = DEFAULT_USER) {
   return `/uploads/users/${userId}/clip-videos/${clipId}/video.mp4`;
 }
 
+function getClassVideoDir(classId, userId = DEFAULT_USER) {
+  return path.join(getUserDir(userId), 'class-videos', String(classId));
+}
+
+function classVideoWebPath(classId, userId = DEFAULT_USER) {
+  return `/uploads/users/${userId}/class-videos/${classId}/video.mp4`;
+}
+
 function ensureDir(dirPath) {
   fs.mkdirSync(dirPath, { recursive: true });
 }
@@ -47,5 +55,6 @@ function ensureDir(dirPath) {
 module.exports = {
   getUploadRoot, getUserDir, getFramesDir, getThumbPath, getVideoDir,
   frameWebPath, thumbWebPath, videoWebPath, getStaticRoot, ensureDir,
+  getClassVideoDir, classVideoWebPath,
   DEFAULT_USER,
 };

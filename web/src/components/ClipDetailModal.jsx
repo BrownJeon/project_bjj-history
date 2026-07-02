@@ -16,8 +16,9 @@ import VideoPlayer from './VideoPlayer';
  */
 export default function ClipDetailModal({ c, onClose, onEdit, onDelete, onRefresh, analyzeJob }) {
   const { igCookieConfigured } = useCache();
-  const [analyzing, setAnalyzing]           = useState(false);
-  const [analyzeElapsed, setAnalyzeElapsed] = useState(0);
+  const [analyzing, setAnalyzing]             = useState(false);
+  const [analyzeProgress, setAnalyzeProgress] = useState(0);
+  const [analyzeStage, setAnalyzeStage]       = useState('');
   const [uploading, setUploading]           = useState(false);
   const [uploadPct, setUploadPct]           = useState(0);
   const [uploadDone, setUploadDone]         = useState(false); // 업로드 완료, 분석 대기 중
@@ -61,11 +62,11 @@ export default function ClipDetailModal({ c, onClose, onEdit, onDelete, onRefres
     if (!/(youtube\.com|youtu\.be|instagram\.com)/.test(c.url || '')) {
       alert('YouTube 또는 Instagram URL만 AI 분석 가능합니다'); return;
     }
-    setAnalyzing(true); setAnalyzeElapsed(0);
+    setAnalyzing(true); setAnalyzeProgress(0); setAnalyzeStage('');
     const mode = getStorageMode();
     try {
       const clipId = mode === 'device' ? null : c.id;
-      const res = await enhanceApi.analyzeVideo(c.url, clipId, sec => setAnalyzeElapsed(sec));
+      const res = await enhanceApi.analyzeVideo(c.url, clipId, (pct, stg) => { setAnalyzeProgress(pct); setAnalyzeStage(stg); });
       if (res.description) setLocalDesc(res.description);
       if (res.videoFile)   setLocalVideoFile(res.videoFile);
       if (res.frames?.length) {
@@ -165,7 +166,7 @@ export default function ClipDetailModal({ c, onClose, onEdit, onDelete, onRefres
                   }}>
                     {bgRunning
                       ? `🔄 ${analyzeJob?.stage || '분석 중'} ${analyzeJob?.progress ?? ''}%`
-                      : analyzing ? `✨ AI 분석 중... ${analyzeElapsed}s` : '✨ URL로 AI 분석 (쿠키 인증)'}
+                      : analyzing ? `✨ ${analyzeStage || 'AI 분석 중'} ${analyzeProgress}%` : '✨ URL로 AI 분석 (쿠키 인증)'}
                   </button>
                 ) : (
                   <button
@@ -211,7 +212,7 @@ export default function ClipDetailModal({ c, onClose, onEdit, onDelete, onRefres
                 }}>
                   {bgRunning
                     ? `🔄 ${analyzeJob?.stage || '분석 중'} ${analyzeJob?.progress ?? ''}%`
-                    : analyzing ? `✨ AI 분석 중... ${analyzeElapsed}s` : '✨ URL로 AI 분석 (캡처 저장)'}
+                    : analyzing ? `✨ ${analyzeStage || 'AI 분석 중'} ${analyzeProgress}%` : '✨ URL로 AI 분석 (캡처 저장)'}
                 </button>
                 {!anyBusy && (
                   <button onClick={() => fileInputRef.current?.click()} style={{
@@ -228,6 +229,37 @@ export default function ClipDetailModal({ c, onClose, onEdit, onDelete, onRefres
           </div>
         );
       })()}
+
+      {/* AI 분석 진행 상태 바 */}
+      {((analyzeJob && analyzeJob.progress >= 0) || uploadDone || analyzing) && (
+        <div style={{ marginTop: 6, padding: '8px 10px', background: 'var(--surface-up)', borderRadius: 8, border: '1px solid var(--border)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 5 }}>
+            <span style={{ fontSize: 11, color: 'var(--text2)' }}>
+              {(analyzeJob && analyzeJob.progress >= 0) || uploadDone
+                ? (analyzeJob?.stage || '분석 준비 중...')
+                : (analyzeStage || 'AI 분석 준비 중...')}
+            </span>
+            <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--accent)' }}>
+              {analyzeJob && analyzeJob.progress >= 0
+                ? `${analyzeJob.progress}%`
+                : analyzing
+                ? `${analyzeProgress}%`
+                : ''}
+            </span>
+          </div>
+          <div style={{ height: 4, borderRadius: 2, background: 'var(--border)', overflow: 'hidden' }}>
+            <div style={{
+              height: '100%',
+              width: analyzeJob && analyzeJob.progress >= 0
+                ? `${analyzeJob.progress}%`
+                : analyzing
+                ? `${analyzeProgress}%`
+                : '5%',
+              background: 'var(--accent)', borderRadius: 2, transition: 'width 0.6s ease',
+            }} />
+          </div>
+        </div>
+      )}
 
       {/* 수정/삭제 버튼 (onEdit/onDelete 없으면 숨김) */}
       {(onEdit || onDelete) && (

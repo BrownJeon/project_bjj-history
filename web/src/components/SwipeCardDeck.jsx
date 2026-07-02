@@ -144,90 +144,83 @@ export default function SwipeCardDeck({ clips = [], onPick, onCardTap }) {
         {Math.min(index + 1, clips.length)} / {clips.length}
       </div>
 
-      {/* 카드 스택 영역 */}
-      <div
-        style={{
-          position:  'relative',
-          height:    500,
-          display:   'flex',
-          alignItems:'center',
-          justifyContent: 'center',
-          touchAction: 'none',  /* 브라우저 기본 스크롤 방지 */
-        }}
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseLeave}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-      >
-        {[index + 2, index + 1, index].map((cardIdx, stackPos) => {
-          const isTop  = stackPos === 2;   // index가 배열 끝 → 최상단
-          const offset = 2 - stackPos;     // 0,1,2 → 2,1,0 (top=0)
+      {/* 카드 스택 영역 — 중앙 80%만 터치 영역으로 제한해 좌우에 페이지 스크롤 공간 확보 */}
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <div
+          style={{
+            position:    'relative',
+            width:       '80%',
+            maxWidth:    260,
+            height:      380,
+            touchAction: 'none',
+          }}
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          onMouseLeave={handleMouseLeave}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
+          {[index + 2, index + 1, index].map((cardIdx, stackPos) => {
+            const isTop  = stackPos === 2;
+            const offset = 2 - stackPos;
 
-          if (!clips[cardIdx]) return null;
+            if (!clips[cardIdx]) return null;
 
-          // 최상단 카드 transform
-          let transform;
-          if (isTop) {
-            if (picking) {
-              transform = 'translateX(0px) translateY(-120%) rotate(0deg)';
+            let transform;
+            if (isTop) {
+              if (picking) {
+                transform = 'translateX(0px) translateY(-120%) rotate(0deg)';
+              } else {
+                transform = `translateX(${drag.x}px) translateY(${drag.y}px) rotate(${drag.x * 0.05}deg)`;
+              }
             } else {
-              transform = `translateX(${drag.x}px) translateY(${drag.y}px) rotate(${drag.x * 0.05}deg)`;
+              transform = `scale(${1 - offset * 0.04}) translateY(${offset * 8}px)`;
             }
-          } else {
-            transform = `scale(${1 - offset * 0.04}) translateY(${offset * 8}px)`;
-          }
 
-          // 최상단 드래그 중에는 transition 없음 (즉각 반응)
-          const transition =
-            isTop && drag.active && !picking
-              ? 'none'
-              : 'transform 0.3s ease, opacity 0.3s ease';
+            const transition =
+              isTop && drag.active && !picking
+                ? 'none'
+                : 'transform 0.3s ease, opacity 0.3s ease';
 
-          // 픽 애니메이션 중 최상단 투명도
-          const opacity = isTop && picking ? 0 : 1;
+            const opacity = isTop && picking ? 0 : 1;
 
-          return (
-            <div
-              key={clips[cardIdx].id}
-              style={{
-                position:     'absolute',
-                width:        '100%',
-                maxWidth:     320,
-                transform,
-                transition,
-                opacity,
-                zIndex:       stackPos,
-                pointerEvents: isTop ? undefined : 'none',
-              }}
-            >
-              <TechCard
-                clip={clips[cardIdx]}
-                /* 탭은 dragEnd에서 처리 — onClick 비활성 */
-                onClick={undefined}
-              />
+            return (
+              <div
+                key={clips[cardIdx].id}
+                style={{
+                  position:     'absolute',
+                  width:        '100%',
+                  transform,
+                  transition,
+                  opacity,
+                  zIndex:       stackPos,
+                  pointerEvents: isTop ? undefined : 'none',
+                }}
+              >
+                <TechCard clip={clips[cardIdx]} onClick={undefined} />
+              </div>
+            );
+          })}
+
+          {/* 모든 카드 소진 시 메시지 */}
+          {index >= clips.length && (
+            <div style={{
+              position:       'absolute',
+              inset:          0,
+              display:        'flex',
+              flexDirection:  'column',
+              alignItems:     'center',
+              justifyContent: 'center',
+              gap:            12,
+              color:          'var(--text2)',
+            }}>
+              <div style={{ fontSize: 32 }}>✓</div>
+              <div style={{ fontSize: 14, fontWeight: 600 }}>모든 카드를 확인했습니다</div>
             </div>
-          );
-        })}
-
-        {/* 모든 카드 소진 시 메시지 */}
-        {index >= clips.length && (
-          <div style={{
-            position:       'absolute',
-            inset:          0,
-            display:        'flex',
-            flexDirection:  'column',
-            alignItems:     'center',
-            justifyContent: 'center',
-            gap:            12,
-            color:          'var(--text2)',
-          }}>
-            <div style={{ fontSize: 32 }}>✓</div>
-            <div style={{ fontSize: 14, fontWeight: 600 }}>모든 카드를 확인했습니다</div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
       {/* 제스처 힌트 */}

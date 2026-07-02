@@ -366,6 +366,19 @@ function ClipCard({ c, onClick, onStar, analyzeJob }) {
           <Icon name="star" size={18} color={c.starred ? 'var(--amber)' : 'var(--text3)'} filled={!!c.starred} />
         </span>
       </div>
+
+      {/* 분석 진행율 + 단계 메시지 */}
+      {isAnalyzing && (
+        <div style={{ marginTop: 8 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
+            <span style={{ fontSize: 11, color: 'var(--text2)' }}>{analyzeJob.stage || '분석 중...'}</span>
+            <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--accent)' }}>{analyzeJob.progress}%</span>
+          </div>
+          <div style={{ height: 3, borderRadius: 2, background: 'var(--border)', overflow: 'hidden' }}>
+            <div style={{ width: `${analyzeJob.progress}%`, height: '100%', background: 'var(--accent)', borderRadius: 2, transition: 'width 0.5s' }} />
+          </div>
+        </div>
+      )}
     </Card>
   );
 }
@@ -381,8 +394,9 @@ function ClipEditor({ initial, techniques, onSave, onCancel, analyzeJob }) {
   );
   const [desc, setDesc]   = useState(initial?.description || '');
   const [starred, setStarred] = useState(!!initial?.starred);
-  const [analyzing, setAnalyzing] = useState(false);
-  const [analyzeElapsed, setAnalyzeElapsed] = useState(0);
+  const [analyzing, setAnalyzing]             = useState(false);
+  const [analyzeProgress, setAnalyzeProgress] = useState(0);
+  const [analyzeStage, setAnalyzeStage]       = useState('');
 
   const techSuggestions = useMemo(
     () => techniques.map(t => t.name),
@@ -402,10 +416,10 @@ function ClipEditor({ initial, techniques, onSave, onCancel, analyzeJob }) {
       return;
     }
     setAnalyzing(true);
-    setAnalyzeElapsed(0);
+    setAnalyzeProgress(0); setAnalyzeStage('');
     try {
       // initial?.id 가 있으면 (수정 모달) clipId 전달 → 프레임 영구 저장
-      const res = await enhanceApi.analyzeVideo(url, initial?.id || null, (sec) => setAnalyzeElapsed(sec));
+      const res = await enhanceApi.analyzeVideo(url, initial?.id || null, (pct, stg) => { setAnalyzeProgress(pct); setAnalyzeStage(stg); });
       setDesc(res.description || '');
       // 프레임이 저장됐으면 클립 목록 새로고침
       if ((res.frames || []).length > 0) reloadClips();
@@ -474,7 +488,7 @@ function ClipEditor({ initial, techniques, onSave, onCancel, analyzeJob }) {
             const disabled  = analyzing || bgRunning || igBlocked;
             const label     = bgRunning
               ? `🔄 ${analyzeJob.stage || '분석 중'} ${analyzeJob.progress}%`
-              : analyzing ? `분석 중 ${analyzeElapsed}s`
+              : analyzing ? `🔄 ${analyzeStage || 'AI 분석 중'} ${analyzeProgress}%`
               : igBlocked ? '📁 파일로 분석 (상세에서)'
               : isInstagram ? '✨ AI 분석 (쿠키 인증)'
               : '✨ AI 분석';
@@ -491,6 +505,30 @@ function ClipEditor({ initial, techniques, onSave, onCancel, analyzeJob }) {
           })()}
         </div>
         <textarea rows={3} value={desc} onChange={e => setDesc(e.target.value)} placeholder="영상에 대한 설명" />
+        {(analyzing || (analyzeJob && analyzeJob.progress >= 0)) && (
+          <div style={{ marginTop: 6 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
+              <span style={{ fontSize: 11, color: 'var(--text2)' }}>
+                {analyzeJob?.progress >= 0
+                  ? (analyzeJob.stage || '분석 중...')
+                  : (analyzeStage || 'AI 분석 준비 중...')}
+              </span>
+              <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--accent)' }}>
+                {analyzeJob?.progress >= 0
+                  ? `${analyzeJob.progress}%`
+                  : `${analyzeProgress}%`}
+              </span>
+            </div>
+            <div style={{ height: 3, borderRadius: 2, background: 'var(--border)', overflow: 'hidden' }}>
+              <div style={{
+                width: analyzeJob?.progress >= 0
+                  ? `${analyzeJob.progress}%`
+                  : `${analyzeProgress}%`,
+                height: '100%', background: 'var(--accent)', borderRadius: 2, transition: 'width 0.6s ease',
+              }} />
+            </div>
+          </div>
+        )}
       </div>
       <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
         <Button variant="primary" size="sm" onClick={submit}>저장</Button>

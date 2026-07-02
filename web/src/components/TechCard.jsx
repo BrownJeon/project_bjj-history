@@ -30,7 +30,7 @@ export default function TechCard({ clip, picked = false, onClick }) {
         position:        'relative',
         width:           '100%',
         maxWidth:        320,
-        minHeight:       480,
+        minHeight:       350,
         background:      'var(--surface)',
         border:          '1px solid var(--border-med)',
         borderRadius:    'var(--radius-xl)',
@@ -66,7 +66,7 @@ export default function TechCard({ clip, picked = false, onClick }) {
       {/* ─── 썸네일 영역 (약 55%) ─── */}
       <div style={{
         width:      '100%',
-        height:     264,            /* 480 * 0.55 ≈ 264 */
+        height:     180,            /* 350 * 0.51 ≈ 180 */
         flexShrink: 0,
         overflow:   'hidden',
         background: hasThumbnail ? '#000' : 'var(--surface-up)',
