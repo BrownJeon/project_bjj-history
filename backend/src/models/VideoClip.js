@@ -13,6 +13,7 @@ const VideoClip = sequelize.define('VideoClip', {
   frames:      { type: DataTypes.TEXT, defaultValue: '[]' },  // AI 분석 캡처 경로 배열
   video_file:  { type: DataTypes.TEXT, defaultValue: '' },    // 오프라인 저장 영상 경로
   tags:        { type: DataTypes.TEXT, defaultValue: '[]' },
+  position:    { type: DataTypes.TEXT, defaultValue: '[]' },
   starred:     { type: DataTypes.TINYINT, defaultValue: 0 },
   created_at:  { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
 }, { tableName: 'video_clips' });

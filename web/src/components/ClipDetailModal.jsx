@@ -111,6 +111,9 @@ export default function ClipDetailModal({ c, onClose, onEdit, onDelete, onRefres
         {(c.tech_names?.length ? c.tech_names : (c.tech_name ? [c.tech_name] : [])).map((t, i) => (
           <Tag key={i} tone="accent">{t}</Tag>
         ))}
+        {(c.positions || []).map((p, i) => (
+          <Tag key={`pos-${i}`} tone="blue">{p}</Tag>
+        ))}
         <Tag tone="purple">{getPlatformLabel(c.platform)}</Tag>
         {c.starred ? <Tag tone="amber">즐겨찾기</Tag> : null}
       </div>

@@ -81,6 +81,7 @@ function normalize(row) {
     tech_names: techs,
     tech_name: techs[0] || '',
     tags: safeParse(row.tags, []),
+    positions: safeParse(row.position, []),
     video_file: row.video_file || '',
   };
 }
@@ -123,13 +124,14 @@ router.get('/search', wrap(async (req, res) => {
 }));
 
 router.post('/', wrap(async (req, res) => {
-  const { title, url, description, tech_name, tech_names, tags, starred } = req.body;
+  const { title, url, description, tech_name, tech_names, tags, starred, positions } = req.body;
   const r = await VideoClip.create({
     title,
     url,
     platform: detectPlatform(url),
     description: description || '',
     tech_name: techNamesToJson(tech_names, tech_name),
+    position: JSON.stringify(Array.isArray(positions) ? positions : []),
     tags: JSON.stringify(tags || []),
     starred: starred ? 1 : 0,
   });
@@ -139,7 +141,7 @@ router.post('/', wrap(async (req, res) => {
 }));
 
 router.put('/:id', wrap(async (req, res) => {
-  const { title, url, description, tech_name, tech_names, tags, starred } = req.body;
+  const { title, url, description, tech_name, tech_names, tags, starred, positions } = req.body;
   const old = await VideoClip.findByPk(req.params.id, { attributes: ['url'], raw: true });
   const urlChanged = old && old.url !== url;
   const data = {
@@ -148,6 +150,7 @@ router.put('/:id', wrap(async (req, res) => {
     platform: detectPlatform(url),
     description: description || '',
     tech_name: techNamesToJson(tech_names, tech_name),
+    position: JSON.stringify(Array.isArray(positions) ? positions : []),
     tags: JSON.stringify(tags || []),
   };
   if (urlChanged) data.thumb_url = '';

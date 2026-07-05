@@ -152,6 +152,10 @@ async function start() {
     await sq.query(
       `ALTER TABLE video_clips ADD COLUMN IF NOT EXISTS ai_recommendation TEXT DEFAULT NULL`
     ).catch(() => {});
+    // video_clips.position 컬럼 추가 (포지션 JSON 배열)
+    await sq.query(
+      `ALTER TABLE video_clips ADD COLUMN IF NOT EXISTS position TEXT DEFAULT '[]'`
+    ).catch(() => {});
     // 주간 코치 리포트·플랜 자동 생성 (매주 일요일 06:00)
     const { scheduleWeeklyCron } = require('./services/coachCron');
     scheduleWeeklyCron();

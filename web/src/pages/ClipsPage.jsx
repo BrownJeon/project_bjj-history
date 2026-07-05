@@ -383,8 +383,9 @@ function ClipCard({ c, onClick, onStar, analyzeJob }) {
   );
 }
 
+
 function ClipEditor({ initial, techniques, onSave, onCancel, analyzeJob }) {
-  const { igCookieConfigured } = useCache();
+  const { igCookieConfigured, clips: allClips } = useCache();
   const [title, setTitle] = useState(initial?.title || '');
   const [url, setUrl]     = useState(initial?.url || '');
   const [techNames, setTechNames] = useState(
@@ -392,16 +393,41 @@ function ClipEditor({ initial, techniques, onSave, onCancel, analyzeJob }) {
     : initial?.tech_name ? [initial.tech_name]
     : []
   );
+  const [positions, setPositions] = useState(
+    Array.isArray(initial?.positions) ? initial.positions : []
+  );
   const [desc, setDesc]   = useState(initial?.description || '');
   const [starred, setStarred] = useState(!!initial?.starred);
   const [analyzing, setAnalyzing]             = useState(false);
   const [analyzeProgress, setAnalyzeProgress] = useState(0);
   const [analyzeStage, setAnalyzeStage]       = useState('');
+  const [dupWarnVisible, setDupWarnVisible]   = useState(false);
+  const [reviewingClip, setReviewingClip]     = useState(null);
+  const pendingFormRef = useRef(null);
 
   const techSuggestions = useMemo(
     () => techniques.map(t => t.name),
     [techniques]
   );
+
+  const posSuggestions = useMemo(() => {
+    const fromTechs = techniques.flatMap(t =>
+      t.positions?.length ? t.positions : (t.pos ? [t.pos] : [])
+    );
+    return [...new Set(fromTechs)];
+  }, [techniques]);
+
+  const similarClips = useMemo(() => {
+    if (!techNames.length) return [];
+    const techSet = new Set(techNames);
+    return (allClips || []).filter(clip => {
+      if (initial && initial !== 'new' && clip.id === initial.id) return false;
+      const clipTechs = clip.tech_names?.length
+        ? clip.tech_names
+        : (clip.tech_name ? [clip.tech_name] : []);
+      return clipTechs.some(t => techSet.has(t));
+    });
+  }, [allClips, techNames, initial]);
 
   const isInstagram = /instagram\.com/.test(url);
 
@@ -435,13 +461,20 @@ function ClipEditor({ initial, techniques, onSave, onCancel, analyzeJob }) {
     if (!title.trim())       return alert('영상 제목을 입력해주세요');
     if (!url.trim())         return alert('URL을 입력해주세요');
     if (!techNames.length)   return alert('기술명을 1개 이상 입력해주세요');
-    onSave({
+    const form = {
       title: title.trim(), url: url.trim(),
       description: desc,
       tech_names: techNames,
       tech_name: techNames[0] || '',
+      positions,
       tags: [], starred: starred ? 1 : 0,
-    });
+    };
+    if (similarClips.length > 0) {
+      pendingFormRef.current = form;
+      setDupWarnVisible(true);
+      return;
+    }
+    onSave(form);
   }
 
   return (
@@ -476,9 +509,87 @@ function ClipEditor({ initial, techniques, onSave, onCancel, analyzeJob }) {
           value={techNames}
           onChange={setTechNames}
           suggestions={techSuggestions}
-          placeholder="기술명 검색·자유 입력"
+          placeholder="기술명 검색·선택"
+          restrictToSuggestions={true}
         />
       </div>
+      <div className="field">
+        <label>포지션 (여러 개 가능)</label>
+        <TagPicker
+          value={positions}
+          onChange={setPositions}
+          suggestions={posSuggestions}
+          placeholder="포지션 검색·자유 입력"
+        />
+      </div>
+
+      {/* 유사 영상 목록 — 기술명 선택 시 자동 표시, 각 카드 클릭으로 미리보기 */}
+      {similarClips.length > 0 && (
+        <div style={{
+          marginBottom: 8, padding: '8px 10px',
+          background: 'var(--amber-dim)', border: '1px solid var(--amber)', borderRadius: 8,
+        }}>
+          <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--amber)', marginBottom: 2 }}>
+            ⚠ 동일 기술로 등록된 영상 ({similarClips.length}개)
+          </div>
+          <div style={{ fontSize: 11, color: 'var(--text3)', marginBottom: 6 }}>
+            클릭하여 영상 내용을 확인하세요
+          </div>
+          {similarClips.map(clip => (
+            <div
+              key={clip.id}
+              onClick={() => setReviewingClip(clip)}
+              style={{
+                display: 'flex', alignItems: 'center', gap: 8, padding: '4px 0',
+                cursor: 'pointer', borderRadius: 6,
+              }}
+            >
+              {clip.thumb_url && (
+                <img src={clip.thumb_url} alt="" style={{ width: 48, height: 30, objectFit: 'cover', borderRadius: 4, flexShrink: 0 }} />
+              )}
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontSize: 12, fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {clip.title}
+                </div>
+                <div style={{ fontSize: 11, color: 'var(--text3)' }}>
+                  {(clip.tech_names?.length ? clip.tech_names : (clip.tech_name ? [clip.tech_name] : [])).join(', ')}
+                </div>
+              </div>
+              <span style={{ fontSize: 11, color: 'var(--amber)', flexShrink: 0 }}>확인 →</span>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* 유사 영상 미리보기 — 읽기 전용 (onEdit/onDelete 미전달) */}
+      {reviewingClip && (
+        <ClipDetailModal
+          c={reviewingClip}
+          onClose={() => setReviewingClip(null)}
+        />
+      )}
+
+      {/* 중복 등록 경고 */}
+      {dupWarnVisible && (
+        <div style={{
+          padding: '10px 12px', marginBottom: 8,
+          background: 'var(--red-dim)', border: '1px solid var(--red)', borderRadius: 8,
+        }}>
+          <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--red)', marginBottom: 8 }}>
+            이미 등록된 영상과 유사합니다. 계속 등록하시겠습니까?
+          </div>
+          <div style={{ display: 'flex', gap: 8 }}>
+            <Button variant="danger" size="sm"
+              onClick={() => { setDupWarnVisible(false); onSave(pendingFormRef.current); }}>
+              그래도 등록
+            </Button>
+            <Button variant="outline" size="sm" onClick={() => setDupWarnVisible(false)}>
+              취소
+            </Button>
+          </div>
+        </div>
+      )}
+
       <div className="field">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
           <label style={{ margin: 0 }}>설명</label>

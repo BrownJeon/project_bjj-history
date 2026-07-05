@@ -187,6 +187,37 @@ router.delete('/:id', wrap(async (req, res) => {
   }
 }));
 
+// 사용 중인 고유 포지션 목록 + 기술 수 반환
+router.get('/positions', wrap(async (_req, res) => {
+  const rows = await Technique.findAll({ attributes: ['pos'], raw: true });
+  const counter = new Map();
+  for (const row of rows) {
+    const positions = parsePos(row.pos);
+    for (const p of positions) {
+      counter.set(p, (counter.get(p) || 0) + 1);
+    }
+  }
+  const result = [...counter.entries()]
+    .map(([name, count]) => ({ name, count }))
+    .sort((a, b) => a.name.localeCompare(b.name, 'ko'));
+  res.json(result);
+}));
+
+// 특정 포지션 값을 모든 기술의 pos 배열에서 제거
+router.delete('/positions/:name', wrap(async (req, res) => {
+  const targetName = decodeURIComponent(req.params.name);
+  const rows = await Technique.findAll({ attributes: ['id', 'pos'], raw: true });
+  let updatedCount = 0;
+  for (const row of rows) {
+    const positions = parsePos(row.pos);
+    if (!positions.includes(targetName)) continue;
+    const next = positions.filter(p => p !== targetName);
+    await Technique.update({ pos: JSON.stringify(next) }, { where: { id: row.id } });
+    updatedCount++;
+  }
+  res.json({ ok: true, updatedCount });
+}));
+
 router.patch('/:id/star', wrap(async (req, res) => {
   const t = await Technique.findByPk(req.params.id);
   if (!t) return res.status(404).json({ error: 'not found' });

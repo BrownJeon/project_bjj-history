@@ -16,6 +16,7 @@ export default function TagPicker({
   suggestions = [],
   singleSelect = false,
   placeholder = '검색 또는 직접 입력 후 Enter',
+  restrictToSuggestions = false,
 }) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
@@ -56,7 +57,7 @@ export default function TagPicker({
   function onKey(e) {
     if (e.key === 'Enter') {
       e.preventDefault();
-      add(query);
+      if (!restrictToSuggestions) add(query);
     } else if (e.key === 'Escape') {
       setOpen(false);
     }
@@ -162,7 +163,7 @@ export default function TagPicker({
                 {s}
               </button>
             ))}
-            {query && !filtered.some(s => s.toLowerCase() === query.toLowerCase()) && (
+            {query && !filtered.some(s => s.toLowerCase() === query.toLowerCase()) && !restrictToSuggestions && (
               <button
                 type="button"
                 onClick={() => add(query)}

@@ -20,6 +20,7 @@ import GameplanEditor from '../components/GameplanEditor';
 import { BASE_POSITIONS, BASE_CATEGORIES, mergeUnique } from '../utils/baseOptions';
 import { uniqueTechPositions, uniqueAllTags } from '../utils/suggestions';
 import ClipsPage from './ClipsPage';
+import PositionManagerModal from '../components/PositionManagerModal';
 
 const PAGE_SIZE = 10;
 
@@ -86,6 +87,7 @@ function TechTab() {
   const [detail, setDetail] = useState(null);
   const [editing, setEditing] = useState(null);
   const [page, setPage] = useState(1);
+  const [posManaging, setPosManaging] = useState(false);
 
   const list = useMemo(() => {
     let items = [...techniques];
@@ -162,10 +164,18 @@ function TechTab() {
         <FilterChip active={filter === 'all'} onClick={() => setFilter('all')}>전체</FilterChip>
         <FilterChip active={filter === 'recent'} onClick={() => setFilter('recent')} icon="clock">최신순</FilterChip>
         <FilterChip active={filter === 'star'} onClick={() => setFilter('star')} icon="star">즐겨찾기</FilterChip>
-        <div style={{ marginLeft: 'auto' }}>
+        <div style={{ marginLeft: 'auto', display: 'flex', gap: 6 }}>
+          <Button size="sm" variant="ghost" onClick={() => setPosManaging(true)}>포지션 관리</Button>
           <Button size="sm" variant="outline" onClick={() => setEditing('new')}>+ 추가</Button>
         </div>
       </div>
+
+      {posManaging && (
+        <PositionManagerModal
+          onClose={() => setPosManaging(false)}
+          onChanged={reloadTechniques}
+        />
+      )}
 
       {list.length === 0 ? (
         <Card style={{ textAlign: 'center', color: 'var(--text2)', padding: 24 }}>
