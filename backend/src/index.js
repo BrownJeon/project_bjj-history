@@ -156,6 +156,18 @@ async function start() {
     await sq.query(
       `ALTER TABLE video_clips ADD COLUMN IF NOT EXISTS position TEXT DEFAULT '[]'`
     ).catch(() => {});
+    // 회원권 결제이력 테이블
+    await sq.query(`
+      CREATE TABLE IF NOT EXISTS membership_payments (
+        id           INT AUTO_INCREMENT PRIMARY KEY,
+        paid_date    DATE NOT NULL,
+        duration     VARCHAR(10) NOT NULL,
+        session_type VARCHAR(10) NOT NULL,
+        memo         TEXT DEFAULT '',
+        created_at   DATETIME DEFAULT CURRENT_TIMESTAMP,
+        INDEX idx_paid_date (paid_date)
+      )
+    `).catch(() => {});
     // 주간 코치 리포트·플랜 자동 생성 (매주 일요일 06:00)
     const { scheduleWeeklyCron } = require('./services/coachCron');
     scheduleWeeklyCron();

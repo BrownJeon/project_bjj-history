@@ -11,3 +11,7 @@ export const listBelts   = () => client.get('/belts').then(r => r.data);
 export const createBelt  = (data) => client.post('/belts', data).then(r => r.data);
 export const updateBelt  = (id, data) => client.put(`/belts/${id}`, data).then(r => r.data);
 export const deleteBelt  = (id) => client.delete(`/belts/${id}`).then(r => r.data);
+
+export const listMemberships   = () => client.get('/memberships').then(r => r.data);
+export const createMembership  = (data) => client.post('/memberships', data).then(r => r.data);
+export const deleteMembership  = (id) => client.delete(`/memberships/${id}`).then(r => r.data);

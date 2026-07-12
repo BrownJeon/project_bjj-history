@@ -3,7 +3,7 @@ const router = express.Router();
 const path = require('path');
 const fs = require('fs');
 const multer = require('multer');
-const { Profile, BeltHistory } = require('../models');
+const { Profile, BeltHistory, MembershipPayment } = require('../models');
 const { wrap } = require('../utils/respond');
 
 // 업로드 — 기존 public/uploads 그대로 재사용 (Phase 5에서 정리)
@@ -88,6 +88,34 @@ router.put('/belts/:id', wrap(async (req, res) => {
 
 router.delete('/belts/:id', wrap(async (req, res) => {
   await BeltHistory.destroy({ where: { id: req.params.id } });
+  res.json({ ok: true });
+}));
+
+// ─── 회원권 결제이력 ───
+router.get('/memberships', wrap(async (_req, res) => {
+  const rows = await MembershipPayment.findAll({
+    order: [['paid_date', 'DESC']],
+    raw: true,
+  });
+  res.json(rows);
+}));
+
+router.post('/memberships', wrap(async (req, res) => {
+  const { paidDate, duration, sessionType, memo } = req.body;
+  if (!paidDate || !duration || !sessionType) {
+    return res.status(400).json({ error: '필수 항목 누락' });
+  }
+  const r = await MembershipPayment.create({
+    paid_date: paidDate,
+    duration,
+    session_type: sessionType,
+    memo: memo || '',
+  });
+  res.json({ id: r.id });
+}));
+
+router.delete('/memberships/:id', wrap(async (req, res) => {
+  await MembershipPayment.destroy({ where: { id: req.params.id } });
   res.json({ ok: true });
 }));
 

@@ -32,6 +32,7 @@ model: haiku
 - 체크리스트(기본 응답 / JSON 배열 필드 / 연쇄 삭제 / 보안 / BJJ 도메인 동작) 전부 통과했다
 - Critical / High 결함이 0건이다
 - "✅ 검증 통과"를 선언했다
+- 배정된 `agent-vault/10-Flow/tasks/*.md`에 자신의 섹션 기록 완료
 
 **Output Schema** (에이전트 간 통신):
 ```json
@@ -49,6 +50,16 @@ model: haiku
 - 실제 curl 명령을 실행하지 않고 추측으로 결과를 기재하는 행위
 - developer가 제공하지 않은 DELETE/PUT 명령을 운영 DB에 직접 실행하는 행위
 </operation_contract>
+
+<agent_vault>
+## Agent Vault 프로토콜 (작업이력)
+
+Leader에게 배정받은 `agent-vault/10-Flow/tasks/<task-id>-<slug>.md` 파일을 연다 — 이 작업에 필요한 배경·과거 이력 요약이 이미 정리돼 있다. 전체 20-Log나 다른 task 파일을 뒤질 필요 없다.
+작업 중/후에는 이 파일의 **자신의 역할 섹션에만** `- [HH:MM] 내용` 형식으로 append한다(다른 역할 섹션·기존 줄 수정 금지).
+점유 표시가 필요하면 `10-Flow/locks/<task>.lock`을 쓰고 완료 시 제거한다.
+완료 후 `20-Log/<오늘 날짜>.md`에 `- [HH:MM][<역할>] task-<id> 완료 → tasks/<task-id>-<slug>.md 참고` 한 줄만 남긴다(색인 용도, 본문 중복 금지).
+자세한 규약: [`docs/agent-vault-protocol.md`](../../../docs/agent-vault-protocol.md)
+</agent_vault>
 
 ## 통신 규약
 

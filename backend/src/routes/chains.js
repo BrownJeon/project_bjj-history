@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { sequelize, TechniqueChain, ChainStep, Technique } = require('../models');
-const { wrap } = require('../utils/respond');
+const { sequelize, TechniqueChain, ChainStep, Technique, VideoClip } = require('../models');
+const { wrap, safeParse } = require('../utils/respond');
 
 router.get('/', wrap(async (_req, res) => {
   const chains = await TechniqueChain.findAll({ order: [['id', 'DESC']], raw: true });
@@ -67,6 +67,103 @@ router.delete('/:id', wrap(async (req, res) => {
     await TechniqueChain.destroy({ where: { id: req.params.id }, transaction: t });
   });
   res.json({ ok: true });
+}));
+
+// AI 체인 자동 생성 (미등록 기술 포함 가능)
+router.post('/ai-generate', wrap(async (req, res) => {
+  const { seedTechniqueIds, scenario, goal } = req.body;
+  const scenarioText = (scenario || goal || '').trim();
+  if (!scenarioText) {
+    return res.status(400).json({ error: '상황 또는 목표를 입력해주세요' });
+  }
+
+  // 등록된 기술 전체 로드
+  const allTechniques = await Technique.findAll({ raw: true });
+
+  // 씨드 기술 (선택 사항)
+  const seedTechs = Array.isArray(seedTechniqueIds) && seedTechniqueIds.length
+    ? allTechniques.filter(t => seedTechniqueIds.includes(t.id))
+    : [];
+
+  // 등록된 영상
+  const allClips = await VideoClip.findAll({
+    attributes: ['id', 'title', 'url', 'platform', 'tech_name', 'thumb_url'],
+    raw: true,
+  });
+
+  const registeredList = allTechniques.length
+    ? allTechniques.map(t => `  - "${t.name}"` + (t.pos ? ` [${t.pos}]` : '')).join('\n')
+    : '  (등록된 기술 없음)';
+
+  const seedSection = seedTechs.length
+    ? `\n포함 희망 기술 (가능하면 체인에 넣어주세요):\n${seedTechs.map(t => `  - "${t.name}"`).join('\n')}\n`
+    : '';
+
+  const prompt = `당신은 BJJ(브라질리언 주짓수) 전문 코치입니다. 아래 상황에 맞는 실전 기술 체인을 구성해주세요.
+
+상황/목표: ${scenarioText}
+${seedSection}
+훈련자의 등록 기술 목록 (이미 배운 기술):
+${registeredList}
+
+다음 JSON 형식으로만 응답하세요 (다른 텍스트 없이):
+{
+  "name": "체인 이름 (한국어, 15자 이내)",
+  "goal": "이 체인의 전술적 의도와 흐름 설명 (3~4문장)",
+  "steps": [
+    {
+      "techniqueName": "<기술명 (한국어)>",
+      "transitionNote": "이전 기술에서 이 기술로 전환하는 방법과 이유 (2~3문장, 첫 단계는 시작 포지션 설명)",
+      "keyPoints": "이 기술 실행 시 핵심 포인트 (2~3가지, 각 포인트는 세미콜론으로 구분)"
+    }
+  ]
+}
+
+규칙:
+- 상황에 최적인 3~6개 기술로 체인 구성
+- 등록 기술 목록에 없는 새로운 기술도 필요하다면 적극 포함할 것
+- 각 단계가 BJJ 흐름상 자연스럽게 연결되어야 함
+- 기술명은 한국어로 작성 (예: 암바, 삼각조르기, 킴우라 등)`;
+
+  const { runClaude } = require('../services/claudeCli');
+  const raw = await runClaude(prompt, { timeoutMs: 90000 });
+
+  let result;
+  try {
+    const m = raw.match(/\{[\s\S]*\}/);
+    result = JSON.parse(m ? m[0] : raw);
+  } catch {
+    return res.status(500).json({ error: 'AI 응답 파싱 실패', raw: raw.slice(0, 500) });
+  }
+
+  // 기술명 → DB 매칭
+  const techByName = new Map(allTechniques.map(t => [t.name.trim(), t]));
+
+  result.steps = (result.steps || []).map(s => {
+    const matched = techByName.get((s.techniqueName || '').trim());
+    const clips = matched
+      ? allClips.filter(c => {
+          try {
+            const names = JSON.parse(c.tech_name);
+            const arr = Array.isArray(names) ? names : [names];
+            return arr.some(n => n === matched.name);
+          } catch {
+            return c.tech_name === matched.name;
+          }
+        }).slice(0, 3).map(c => ({
+          id: c.id, title: c.title, url: c.url,
+          platform: c.platform, thumb_url: c.thumb_url,
+        }))
+      : [];
+    return {
+      ...s,
+      techniqueId: matched?.id || null,
+      isNew: !matched,
+      clips,
+    };
+  });
+
+  res.json(result);
 }));
 
 module.exports = router;

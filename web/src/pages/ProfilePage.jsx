@@ -1,6 +1,38 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as profileApi from '../api/profile';
+
+const DURATION_MONTHS = { '1개월': 1, '3개월': 3 };
+
+function addMonths(dateStr, months) {
+  const d = new Date(dateStr);
+  d.setMonth(d.getMonth() + months);
+  return d.toISOString().slice(0, 10);
+}
+
+function daysRemaining(endDateStr) {
+  const end = new Date(endDateStr);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  end.setHours(0, 0, 0, 0);
+  return Math.ceil((end - today) / 86400000);
+}
+
+// 결제 이력을 체이닝해서 실제 시작일·만료일 계산
+// - paid_date 오름차순으로 정렬 후 처리
+// - 이전 회원권이 아직 유효한 상태에서 결제 시 → 이전 만료일부터 시작
+function computeMemberships(memberships) {
+  const sorted = [...memberships].sort((a, b) => a.paid_date.localeCompare(b.paid_date));
+  let chainEnd = null; // 현재 체인의 마지막 만료일 (ISO 날짜 문자열)
+
+  return sorted.map(m => {
+    const months = DURATION_MONTHS[m.duration] || 1;
+    const effectiveStart = (chainEnd && m.paid_date <= chainEnd) ? chainEnd : m.paid_date;
+    const effectiveEnd   = addMonths(effectiveStart, months);
+    chainEnd = effectiveEnd;
+    return { ...m, effectiveStart, effectiveEnd };
+  });
+}
 import * as settingsApi from '../api/settings';
 import { useUI } from '../contexts/UIContext';
 import { useCache } from '../contexts/CacheContext';
@@ -21,8 +53,10 @@ export default function ProfilePage() {
 
   const [profile, setProfile] = useState({});
   const [belts, setBelts] = useState([]);
+  const [memberships, setMemberships] = useState([]);
   const [editingProfile, setEditingProfile] = useState(false);
   const [editingBelt, setEditingBelt] = useState(null); // 'new' | belt object | null
+  const [addingMembership, setAddingMembership] = useState(false);
   const [storageMode, setStorageMode] = useState(getStorageMode());
   const [uploadPath, setUploadPath] = useState('');
   const [effectivePath, setEffectivePath] = useState('');
@@ -42,14 +76,16 @@ export default function ProfilePage() {
 
   async function loadAll() {
     try {
-      const [p, b, s, ig] = await Promise.all([
+      const [p, b, s, ig, m] = await Promise.all([
         profileApi.getProfile(),
         profileApi.listBelts(),
         settingsApi.getSettings().catch(() => ({ uploadPath: '', effectivePath: '' })),
         settingsApi.getInstagramCookieStatus().catch(() => ({ configured: false, updatedAt: null })),
+        profileApi.listMemberships().catch(() => []),
       ]);
       setProfile(p || {});
       setBelts(b || []);
+      setMemberships(m || []);
       setUploadPath(s.uploadPath || '');
       setEffectivePath(s.effectivePath || '');
       setIgCookie(ig || { configured: false, updatedAt: null });
@@ -117,6 +153,29 @@ export default function ProfilePage() {
       setEditingBelt(null);
       showToast('저장됨');
     } catch (e) { showToast('저장 실패: ' + e.message); }
+    finally { setLoading(false); }
+  }
+
+  async function saveMembership(form) {
+    setLoading(true);
+    try {
+      await profileApi.createMembership(form);
+      const m = await profileApi.listMemberships();
+      setMemberships(m || []);
+      setAddingMembership(false);
+      showToast('회원권이 등록됐습니다');
+    } catch (e) { showToast('저장 실패: ' + e.message); }
+    finally { setLoading(false); }
+  }
+
+  async function deleteMembership(id) {
+    if (!confirm('이 결제 이력을 삭제하시겠습니까?')) return;
+    setLoading(true);
+    try {
+      await profileApi.deleteMembership(id);
+      setMemberships(prev => prev.filter(m => m.id !== id));
+      showToast('삭제됨');
+    } catch (e) { showToast('삭제 실패: ' + e.message); }
     finally { setLoading(false); }
   }
 
@@ -260,6 +319,80 @@ export default function ProfilePage() {
             ))}
           </div>
         )}
+
+        {/* 회원권 결제이력 */}
+        <div style={{ marginTop: 24 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+            <span style={{ fontSize: 14, fontWeight: 700 }}>회원권 결제이력</span>
+            <Button size="sm" variant="outline" onClick={() => setAddingMembership(true)}>+ 추가</Button>
+          </div>
+          {memberships.length === 0 ? (
+            <Card style={{ textAlign: 'center', color: 'var(--text2)', padding: 24 }}>
+              결제 이력이 없습니다
+            </Card>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {/* computeMemberships: paid_date ASC 체이닝 후 effectiveEnd DESC로 최신 먼저 표시 */}
+              {computeMemberships(memberships)
+                .slice()
+                .reverse()
+                .map(m => {
+                  const remaining = daysRemaining(m.effectiveEnd);
+                  const active    = remaining >= 0;
+                  const chained   = m.effectiveStart !== m.paid_date;
+                  return (
+                    <Card key={m.id}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                        <div style={{ flex: 1, minWidth: 0 }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
+                            <span style={{ fontSize: 13, fontWeight: 700 }}>{m.duration}</span>
+                            <span style={{
+                              fontSize: 11, fontWeight: 600, padding: '2px 7px', borderRadius: 10,
+                              background: 'var(--surface-up)', color: 'var(--text2)',
+                              border: '1px solid var(--border)',
+                            }}>{m.session_type}</span>
+                            {chained && (
+                              <span style={{
+                                fontSize: 10, fontWeight: 700, padding: '2px 6px', borderRadius: 8,
+                                background: 'rgba(139,92,246,0.1)', color: 'var(--purple)',
+                                border: '1px solid var(--purple)',
+                              }}>연장</span>
+                            )}
+                          </div>
+                          <div style={{ fontSize: 12, color: 'var(--text3)', lineHeight: 1.8 }}>
+                            <span>결제일 {m.paid_date}</span>
+                            {chained && (
+                              <span style={{ color: 'var(--purple)' }}> · 시작 {m.effectiveStart}</span>
+                            )}
+                            <br />
+                            <span>만료일 <strong style={{ color: active ? 'var(--text)' : 'var(--text3)' }}>{m.effectiveEnd}</strong></span>
+                            {m.memo && <span style={{ marginLeft: 8, color: 'var(--text3)' }}>· {m.memo}</span>}
+                          </div>
+                        </div>
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4 }}>
+                          <span style={{
+                            fontSize: 13, fontWeight: 800, padding: '4px 11px', borderRadius: 12,
+                            background: active ? 'rgba(29,158,117,0.12)' : 'var(--surface-up)',
+                            color: active ? 'var(--accent)' : 'var(--text3)',
+                            border: `1px solid ${active ? 'var(--accent)' : 'var(--border)'}`,
+                          }}>
+                            {active ? (remaining === 0 ? 'D-Day' : `D-${remaining}`) : '만료'}
+                          </span>
+                          <button
+                            onClick={() => deleteMembership(m.id)}
+                            style={{
+                              background: 'transparent', border: 'none',
+                              color: 'var(--text3)', fontSize: 11, cursor: 'pointer', padding: 0,
+                            }}
+                          >삭제</button>
+                        </div>
+                      </div>
+                    </Card>
+                  );
+                })}
+            </div>
+          )}
+        </div>
 
         {/* 파일 저장 위치 설정 */}
         <div style={{ marginTop: 24 }}>
@@ -481,6 +614,12 @@ export default function ProfilePage() {
           </div>
         </div>
 
+        {addingMembership && (
+          <MembershipEditor
+            onCancel={() => setAddingMembership(false)}
+            onSave={saveMembership}
+          />
+        )}
         {editingProfile && (
           <ProfileEditor
             profile={profile}
@@ -550,6 +689,112 @@ function ProfileEditor({ profile, onCancel, onSave }) {
         <input value={form.network} onChange={e => update('network', e.target.value)} /></div>
       <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
         <Button variant="primary" size="sm" onClick={() => onSave(form)}>저장</Button>
+        <Button variant="outline" size="sm" onClick={onCancel}>취소</Button>
+      </div>
+    </Modal>
+  );
+}
+
+function MembershipEditor({ onCancel, onSave }) {
+  const today = new Date().toISOString().slice(0, 10);
+  const [paidDate, setPaidDate]       = useState(today);
+  const [duration, setDuration]       = useState('1개월');
+  const [sessionType, setSessionType] = useState('매일권');
+  const [memo, setMemo]               = useState('신규등록');
+
+  const previewEnd = paidDate ? addMonths(paidDate, DURATION_MONTHS[duration] || 1) : null;
+  const previewRemaining = previewEnd ? daysRemaining(previewEnd) : null;
+
+  function submit() {
+    if (!paidDate) return alert('결제일을 입력해주세요');
+    onSave({ paidDate, duration, sessionType, memo });
+  }
+
+  return (
+    <Modal title="회원권 등록" onClose={onCancel}>
+      <div className="field">
+        <label>결제일</label>
+        <input type="date" value={paidDate} onChange={e => setPaidDate(e.target.value)} />
+      </div>
+
+      <div className="field">
+        <label>기간</label>
+        <div style={{ display: 'flex', gap: 8 }}>
+          {['1개월', '3개월'].map(d => (
+            <button
+              key={d}
+              onClick={() => setDuration(d)}
+              style={{
+                flex: 1, padding: '9px 0',
+                background: duration === d ? 'var(--accent-dim)' : 'var(--surface)',
+                color: duration === d ? 'var(--accent)' : 'var(--text)',
+                border: `1px solid ${duration === d ? 'var(--accent)' : 'var(--border-med)'}`,
+                borderRadius: 8, fontSize: 13, fontWeight: 700, cursor: 'pointer',
+              }}
+            >{d}</button>
+          ))}
+        </div>
+      </div>
+
+      <div className="field">
+        <label>수강권</label>
+        <div style={{ display: 'flex', gap: 8 }}>
+          {['매일권', '주 3회'].map(s => (
+            <button
+              key={s}
+              onClick={() => setSessionType(s)}
+              style={{
+                flex: 1, padding: '9px 0',
+                background: sessionType === s ? 'var(--accent-dim)' : 'var(--surface)',
+                color: sessionType === s ? 'var(--accent)' : 'var(--text)',
+                border: `1px solid ${sessionType === s ? 'var(--accent)' : 'var(--border-med)'}`,
+                borderRadius: 8, fontSize: 13, fontWeight: 700, cursor: 'pointer',
+              }}
+            >{s}</button>
+          ))}
+        </div>
+      </div>
+
+      <div className="field">
+        <label>구분</label>
+        <div style={{ display: 'flex', gap: 8 }}>
+          {['신규등록', '연장'].map(t => (
+            <button
+              key={t}
+              onClick={() => setMemo(t)}
+              style={{
+                flex: 1, padding: '9px 0',
+                background: memo === t ? 'var(--accent-dim)' : 'var(--surface)',
+                color: memo === t ? 'var(--accent)' : 'var(--text)',
+                border: `1px solid ${memo === t ? 'var(--accent)' : 'var(--border-med)'}`,
+                borderRadius: 8, fontSize: 13, fontWeight: 700, cursor: 'pointer',
+              }}
+            >{t}</button>
+          ))}
+        </div>
+      </div>
+
+      {previewEnd && (
+        <div style={{
+          padding: '10px 14px', borderRadius: 10, marginBottom: 8,
+          background: previewRemaining >= 0 ? 'rgba(29,158,117,0.08)' : 'var(--surface-up)',
+          border: `1px solid ${previewRemaining >= 0 ? 'var(--accent)' : 'var(--border)'}`,
+          fontSize: 12, color: 'var(--text2)', lineHeight: 1.8,
+        }}>
+          <div>만료일 <strong style={{ color: previewRemaining >= 0 ? 'var(--accent)' : 'var(--text3)' }}>{previewEnd}</strong></div>
+          <div style={{ color: previewRemaining >= 0 ? 'var(--accent)' : 'var(--text3)', fontWeight: 700 }}>
+            {previewRemaining > 0 && `D-${previewRemaining} (잔여 ${previewRemaining}일)`}
+            {previewRemaining === 0 && 'D-Day (오늘 만료)'}
+            {previewRemaining < 0 && `만료됨 (${Math.abs(previewRemaining)}일 경과)`}
+          </div>
+          <div style={{ fontSize: 11, color: 'var(--text3)', marginTop: 2 }}>
+            ※ 기존 회원권이 남아있으면 연장 적용됩니다
+          </div>
+        </div>
+      )}
+
+      <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
+        <Button variant="primary" size="sm" onClick={submit}>저장</Button>
         <Button variant="outline" size="sm" onClick={onCancel}>취소</Button>
       </div>
     </Modal>

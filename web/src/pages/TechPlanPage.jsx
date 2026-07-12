@@ -13,6 +13,7 @@ import TagPicker from '../components/TagPicker';
 import Pagination from '../components/Pagination';
 import ChainDetail from '../components/ChainDetail';
 import ChainEditor from '../components/ChainEditor';
+import AiChainGenerator from '../components/AiChainGenerator';
 import { getClipThumb, getPlatformIcon } from '../utils/videoThumb';
 import ClipDetailModal from '../components/ClipDetailModal';
 import GameplanDetail from '../components/GameplanDetail';
@@ -425,6 +426,7 @@ function PlanTab() {
   const [chainEditing, setChainEditing] = useState(null); // 'new' | chain
   const [gpDetail, setGpDetail]         = useState(null);
   const [gpEditing, setGpEditing]       = useState(null);
+  const [aiGenOpen, setAiGenOpen]       = useState(false);
 
   async function saveChain(form) {
     setLoading(true);
@@ -492,11 +494,16 @@ function PlanTab() {
         />
       </div>
 
-      {/* 서브탭 + 추가 */}
+      {/* 서브탭 + 버튼 */}
       <div style={{ display: 'flex', gap: 6, marginBottom: 12, alignItems: 'center' }}>
         <PillBtn active={sub === 'chain'} onClick={() => setSub('chain')}>기술체인</PillBtn>
         <PillBtn active={sub === 'gameplan'} onClick={() => setSub('gameplan')}>기술연계</PillBtn>
-        <div style={{ marginLeft: 'auto' }}>
+        <div style={{ marginLeft: 'auto', display: 'flex', gap: 6 }}>
+          {sub === 'chain' && (
+            <Button size="sm" variant="ghost" onClick={() => setAiGenOpen(true)}>
+              ✦ AI 생성
+            </Button>
+          )}
           <Button
             size="sm"
             variant="outline"
@@ -543,6 +550,13 @@ function PlanTab() {
           onSave={saveGp}
           onCancel={() => setGpEditing(null)}
           onDelete={gpEditing !== 'new' ? () => deleteGp(gpEditing.id) : null}
+        />
+      )}
+      {aiGenOpen && (
+        <AiChainGenerator
+          techniques={techniques}
+          onClose={() => setAiGenOpen(false)}
+          onSaved={async () => { await reloadChains(); showToast('AI 체인이 저장됐습니다'); }}
         />
       )}
     </div>

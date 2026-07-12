@@ -6,7 +6,7 @@ const ChainStep = sequelize.define('ChainStep', {
   chain_id:        { type: DataTypes.INTEGER, allowNull: false },
   technique_id:    { type: DataTypes.INTEGER, allowNull: false },
   step_order:      { type: DataTypes.INTEGER, allowNull: false },
-  transition_note: { type: DataTypes.STRING(200) },
+  transition_note: { type: DataTypes.TEXT },
 }, { tableName: 'chain_steps' });
 
 module.exports = ChainStep;

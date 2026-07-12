@@ -6,5 +6,19 @@
     "allow": [
       "Bash(curl -s -X PUT http://localhost:3000/api/gameplans/2 -H 'Content-Type: application/json' -d '{\"name\":\"수정된 게임플랜\",\"startPos\":\"마운트 \\(Mount\\)\",\"note\":\"수정 테스트\",\"nodes\":[{\"clientId\":\"n0\",\"label\":\"마운트 탑\",\"isFinish\":false},{\"clientId\":\"n1\",\"label\":\"암바 from 마운트\",\"isFinish\":true}],\"edges\":[{\"fromClientId\":\"n0\",\"toClientId\":\"n1\",\"condition\":\"팔 펼칠 때\"}]}')"
     ]
+  },
+  "hooks": {
+    "SessionStart": [
+      { "matcher": "", "hooks": [ { "type": "command", "command": "bash /home/brownjeon/NFS/homes/brownjeon/project/.claude/hooks/agent-vault/context-inject.sh" } ] }
+    ],
+    "SubagentStart": [
+      { "matcher": "", "hooks": [ { "type": "command", "command": "bash /home/brownjeon/NFS/homes/brownjeon/project/.claude/hooks/agent-vault/context-inject.sh" } ] }
+    ],
+    "SubagentStop": [
+      { "matcher": "", "hooks": [ { "type": "command", "command": "bash /home/brownjeon/NFS/homes/brownjeon/project/.claude/hooks/agent-vault/log-gate.sh" } ] }
+    ],
+    "TaskCompleted": [
+      { "hooks": [ { "type": "command", "command": "bash /home/brownjeon/NFS/homes/brownjeon/project/.claude/hooks/agent-vault/log-gate.sh" } ] }
+    ]
   }
 }
