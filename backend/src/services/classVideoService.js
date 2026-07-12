@@ -20,7 +20,7 @@ const { runClaude } = require('./claudeCli');
 const { getClassVideoDir, classVideoWebPath, ensureDir } = require('./storage');
 const { Class, Drill } = require('../models');
 
-const AI_API_BASE = process.env.AI_API_BASE || 'http://192.168.219.163:8000';
+const AI_API_BASE = process.env.AI_API_BASE || 'http://192.168.219.163:8001';
 const AI_API_KEY  = process.env.AI_API_KEY  || '';
 const FONT_FILE   = '/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc';
 const KEN_BURNS_EFFECTS = [
@@ -87,7 +87,7 @@ async function buildImagePlan(classData) {
   "id": 숫자(0부터),
   "type": "motion" 또는 "ken_burns",
   "duration": 초(3~6),
-  "imagePrompt": "영어 SD 프롬프트 (BJJ 동작/장면 묘사, photorealistic, cinematic)",
+  "imagePrompt": "영어 SD 프롬프트 (BJJ 동작/장면 묘사, anime-influenced digital art illustration 스타일)",
   "overlayText": "한국어 텍스트 (없으면 null)"
 }
 
@@ -96,7 +96,7 @@ async function buildImagePlan(classData) {
 - type "ken_burns": 기술 상세·포인트·배경 6~8장. overlayText로 핵심 내용.
 - 첫 번째(오프닝): motion, overlayText = "수업 주제\\n날짜" 형식
 - 마지막(엔딩): motion, overlayText = "수업 주제\\n${cls.date}" 형식
-- imagePrompt는 반드시 영어. 예: "BJJ athlete demonstrating half guard underhook sweep, gi uniform, tatami mat, photorealistic, cinematic lighting"
+- imagePrompt는 반드시 영어, 일러스트 스타일. 예: "BJJ martial arts illustration, two fighters demonstrating half guard underhook sweep, anime-influenced digital art, clean line art, dynamic pose, dojo background"
 - overlayText 최대 2줄. 첫 줄 큰 텍스트(주제), 두 번째 줄 작은 텍스트(상세).
 
 raw JSON 배열만 반환. 마크다운 코드블록 없이.`;
@@ -112,9 +112,9 @@ raw JSON 배열만 반환. 마크다운 코드블록 없이.`;
 
 async function generateImage(prompt, outPath) {
   const body = JSON.stringify({
-    prompt: `Brazilian jiu-jitsu, ${prompt}, high quality, professional photography, 8k, detailed`,
-    negative_prompt: 'text, watermark, blurry, cartoon, low quality, nsfw, deformed',
-    width: 768, height: 432, steps: 25,
+    prompt: `BJJ martial arts illustration, ${prompt}, anime-influenced digital art, clean line art, dynamic pose, detailed anatomy, high quality`,
+    negative_prompt: 'realistic photography, photo, ugly, deformed, blurry, text, watermark, nsfw, extra limbs, bad anatomy',
+    width: 768, height: 432, steps: 20,
   });
   const resp = await fetch(`${AI_API_BASE}/v1/image/generate`, {
     method: 'POST',
@@ -128,21 +128,14 @@ async function generateImage(prompt, outPath) {
 }
 
 async function generateFallbackImage(outPath, index) {
-  // M4 API 실패 시 Python Pillow로 그라데이션 배경 생성
-  const colors = ['#0a1628', '#0f2a1e', '#1a0a28', '#1a1400', '#001a28'];
+  // ffmpeg 단색 배경 이미지 생성 (PIL 불필요)
+  const colors = ['0a1628', '0f2a1e', '1a0a28', '1a1400', '001a28'];
   const color = colors[index % colors.length];
-  const script = `
-from PIL import Image, ImageDraw
-import sys
-w, h = 768, 432
-img = Image.new('RGB', (w, h), '${color}')
-draw = ImageDraw.Draw(img)
-for i in range(0, w, 60):
-    alpha = int(255 * 0.05)
-    draw.line([(i, 0), (i, h)], fill=(255, 255, 255, alpha), width=1)
-img.save(sys.argv[1])
-`;
-  await runProcess('python3', ['-c', script, outPath], 30000);
+  await runProcess('ffmpeg', [
+    '-y', '-f', 'lavfi',
+    '-i', `color=color=0x${color}:size=768x432:rate=1:duration=1`,
+    '-vframes', '1', '-f', 'image2', outPath,
+  ], 15000);
 }
 
 // ─── Step 4-A: SVD 모션 클립 ─────────────────────────────────────────────────
@@ -152,7 +145,7 @@ async function generateSvdClip(imagePath, outClipPath) {
   const resp = await fetch(`${AI_API_BASE}/v1/video/generate`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'X-API-Key': AI_API_KEY },
-    body: JSON.stringify({ image_b64: imgB64, fps: 7, steps: 25, motion_bucket_id: 100 }),
+    body: JSON.stringify({ image_b64: imgB64, fps: 7, steps: 20, motion_bucket_id: 60 }),
     signal: AbortSignal.timeout(600000), // SVD 최대 10분
   });
   if (!resp.ok) throw new Error(`SVD API 오류 ${resp.status}`);
@@ -195,13 +188,17 @@ async function generateKenBurnsClip(imagePath, outClipPath, durationSec, effectI
 
 async function addTextOverlay(inputClip, outputClip, text) {
   const lines = text.split('\n').filter(Boolean);
+  // textfile= 방식 — 한국어 특수문자 이스케이프 불필요
+  const tmpDir = `${outputClip}_txtfiles`;
+  fsSync.mkdirSync(tmpDir, { recursive: true });
   const filters = lines.map((line, i) => {
-    const safe = line.replace(/'/g, "’").replace(/:/g, '\\:').replace(/\[/g, '\\[').replace(/\]/g, '\\]');
+    const txtPath = path.join(tmpDir, `line${i}.txt`);
+    fsSync.writeFileSync(txtPath, line, 'utf8');
     const fontSize = i === 0 ? 38 : 24;
     const yPos = i === 0 ? `h*0.70` : `h*0.70+${38 + 10}`;
     return [
       `drawtext=fontfile=${FONT_FILE}`,
-      `text='${safe}'`,
+      `textfile=${txtPath}`,
       `fontcolor=white`,
       `fontsize=${fontSize}`,
       `x=(w-text_w)/2`,
@@ -216,6 +213,7 @@ async function addTextOverlay(inputClip, outputClip, text) {
     '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-preset', 'fast',
     outputClip,
   ], 60000);
+  fsSync.rmSync(tmpDir, { recursive: true, force: true });
 }
 
 // ─── Step 6: 클립 연결 ───────────────────────────────────────────────────────

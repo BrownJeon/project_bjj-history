@@ -160,6 +160,23 @@ async function start() {
     await sq.query(
       `ALTER TABLE technique_chains ADD COLUMN IF NOT EXISTS video_path VARCHAR(500) DEFAULT NULL`
     ).catch(() => {});
+    // chain_video_jobs 테이블 (기술체인 AI 영상 생성 비동기 잡)
+    await sq.query(`
+      CREATE TABLE IF NOT EXISTS chain_video_jobs (
+        id         VARCHAR(36) PRIMARY KEY,
+        chain_id   INT NOT NULL,
+        status     VARCHAR(10) DEFAULT 'pending',
+        progress   VARCHAR(500) DEFAULT '',
+        video_path TEXT,
+        error      TEXT,
+        created_at DATETIME DEFAULT NOW(),
+        updated_at DATETIME DEFAULT NOW() ON UPDATE NOW()
+      )
+    `).catch(() => {});
+    await sq.query(
+      `UPDATE chain_video_jobs SET status='error', error='서버 재시작으로 처리 중단 — 다시 시도해주세요'
+       WHERE status='pending' OR status='generating'`
+    ).catch(() => {});
     // 회원권 결제이력 테이블
     await sq.query(`
       CREATE TABLE IF NOT EXISTS membership_payments (

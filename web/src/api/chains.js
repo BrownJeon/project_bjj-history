@@ -5,4 +5,6 @@ export const updateChain     = (id, data) => client.put(`/chains/${id}`, data).t
 export const deleteChain     = (id) => client.delete(`/chains/${id}`).then(r => r.data);
 export const aiGenerateChain = (data) => client.post('/chains/ai-generate', data).then(r => r.data);
 export const generateChainVideo = (id) =>
-  client.post(`/chains/${id}/generate-video`, {}, { timeout: 300000 }).then(r => r.data);
+  client.post(`/chains/${id}/generate-video`, {}).then(r => r.data);
+export const getChainVideoJob = (jobId) =>
+  client.get(`/chains/video-jobs/${jobId}`).then(r => r.data);

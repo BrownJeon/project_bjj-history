@@ -112,7 +112,7 @@ router.get('/:id/video', wrap(async (req, res) => {
   }
 }));
 
-// 영상 생성 및 저장 (POST)
+// AI 영상 비동기 생성 (job 즉시 반환 → 백그라운드 처리)
 router.post('/:id/generate-video', wrap(async (req, res) => {
   const chain = await TechniqueChain.findByPk(req.params.id, { raw: true });
   if (!chain) return res.status(404).json({ error: '체인을 찾을 수 없습니다' });
@@ -129,42 +129,36 @@ router.post('/:id/generate-video', wrap(async (req, res) => {
     ? await Technique.findAll({ where: { id: techIds }, raw: true })
     : [];
   const techMap = new Map(techs.map(t => [t.id, t]));
-
   const stepsWithName = steps.map(s => ({
     ...s,
     tech_name: techMap.get(s.technique_id)?.name || null,
   }));
 
-  const allClips = await VideoClip.findAll({
-    attributes: ['id', 'thumb_url', 'tech_name'],
-    raw: true,
+  const jobId = require('crypto').randomUUID();
+  await sequelize.query(
+    `INSERT INTO chain_video_jobs (id, chain_id, status) VALUES (?, ?, 'pending')`,
+    { replacements: [jobId, chain.id] }
+  );
+
+  const { generateChainVideoAsync } = require('../services/chainAiVideoGenerator');
+  generateChainVideoAsync(chain, stepsWithName, jobId).catch(async (e) => {
+    await sequelize.query(
+      `UPDATE chain_video_jobs SET status='error', error=?, updated_at=NOW() WHERE id=?`,
+      { replacements: [(e.message || '').slice(0, 400), jobId] }
+    );
   });
-  const clipsByTechId = {};
-  for (const tech of techs) {
-    clipsByTechId[tech.id] = allClips.filter(c => {
-      if (!c.thumb_url) return false;
-      try {
-        const names = JSON.parse(c.tech_name);
-        return (Array.isArray(names) ? names : [names]).some(n => n === tech.name);
-      } catch {
-        return c.tech_name === tech.name;
-      }
-    });
-  }
 
-  const { generateChainVideo } = require('../services/chainVideoGenerator');
-  const { outputPath, cleanup } = await generateChainVideo(chain, stepsWithName, clipsByTechId);
+  res.json({ job_id: jobId });
+}));
 
-  // 영구 저장 경로에 복사
-  if (!fs.existsSync(VIDEO_DIR)) fs.mkdirSync(VIDEO_DIR, { recursive: true });
-  const destPath = path.join(VIDEO_DIR, `chain-${chain.id}.mp4`);
-  fs.copyFileSync(outputPath, destPath);
-  cleanup();
-
-  // DB 업데이트
-  await TechniqueChain.update({ video_path: destPath }, { where: { id: chain.id } });
-
-  res.json({ ok: true, video_path: destPath });
+// AI 영상 생성 잡 상태 폴링
+router.get('/video-jobs/:jobId', wrap(async (req, res) => {
+  const [rows] = await sequelize.query(
+    `SELECT * FROM chain_video_jobs WHERE id = ?`,
+    { replacements: [req.params.jobId] }
+  );
+  if (!rows.length) return res.status(404).json({ error: '작업 없음' });
+  res.json(rows[0]);
 }));
 
 // AI 체인 자동 생성 (미등록 기술 포함 가능)
