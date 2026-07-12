@@ -1,8 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const fs = require('fs');
+const path = require('path');
 const { sequelize, TechniqueChain, ChainStep, Technique, VideoClip } = require('../models');
 const { wrap, safeParse } = require('../utils/respond');
+
+const VIDEO_DIR = '/home/brownjeon/.node-local/bjj-chain-videos';
 
 router.get('/', wrap(async (_req, res) => {
   const chains = await TechniqueChain.findAll({ order: [['id', 'DESC']], raw: true });
@@ -67,11 +70,50 @@ router.delete('/:id', wrap(async (req, res) => {
     await ChainStep.destroy({ where: { chain_id: req.params.id }, transaction: t });
     await TechniqueChain.destroy({ where: { id: req.params.id }, transaction: t });
   });
+  // 생성된 영상 파일도 삭제
+  const videoPath = path.join(VIDEO_DIR, `chain-${req.params.id}.mp4`);
+  if (fs.existsSync(videoPath)) fs.unlinkSync(videoPath);
   res.json({ ok: true });
 }));
 
-// 체인 영상 생성
+// 영상 서빙 (HTTP Range 지원 — HTML5 <video> 시크 가능)
 router.get('/:id/video', wrap(async (req, res) => {
+  const chain = await TechniqueChain.findByPk(req.params.id, { raw: true });
+  if (!chain) return res.status(404).json({ error: '체인을 찾을 수 없습니다' });
+
+  const filePath = chain.video_path || path.join(VIDEO_DIR, `chain-${chain.id}.mp4`);
+  if (!fs.existsSync(filePath)) {
+    return res.status(404).json({ error: '영상이 아직 생성되지 않았습니다. 먼저 영상을 생성해주세요.' });
+  }
+
+  const stat = fs.statSync(filePath);
+  const fileSize = stat.size;
+  const range = req.headers.range;
+
+  if (range) {
+    const parts = range.replace(/bytes=/, '').split('-');
+    const start = parseInt(parts[0], 10);
+    const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
+    const chunkSize = end - start + 1;
+    res.writeHead(206, {
+      'Content-Range': `bytes ${start}-${end}/${fileSize}`,
+      'Accept-Ranges': 'bytes',
+      'Content-Length': chunkSize,
+      'Content-Type': 'video/mp4',
+    });
+    fs.createReadStream(filePath, { start, end }).pipe(res);
+  } else {
+    res.writeHead(200, {
+      'Content-Length': fileSize,
+      'Content-Type': 'video/mp4',
+      'Accept-Ranges': 'bytes',
+    });
+    fs.createReadStream(filePath).pipe(res);
+  }
+}));
+
+// 영상 생성 및 저장 (POST)
+router.post('/:id/generate-video', wrap(async (req, res) => {
   const chain = await TechniqueChain.findByPk(req.params.id, { raw: true });
   if (!chain) return res.status(404).json({ error: '체인을 찾을 수 없습니다' });
 
@@ -80,6 +122,7 @@ router.get('/:id/video', wrap(async (req, res) => {
     order: [['step_order', 'ASC']],
     raw: true,
   });
+  if (!steps.length) return res.status(400).json({ error: '체인에 단계가 없습니다' });
 
   const techIds = [...new Set(steps.map(s => s.technique_id).filter(Boolean))];
   const techs = techIds.length
@@ -92,7 +135,6 @@ router.get('/:id/video', wrap(async (req, res) => {
     tech_name: techMap.get(s.technique_id)?.name || null,
   }));
 
-  // 기술별 썸네일 클립 수집 (tech_name JSON 배열로 매칭)
   const allClips = await VideoClip.findAll({
     attributes: ['id', 'thumb_url', 'tech_name'],
     raw: true,
@@ -113,16 +155,16 @@ router.get('/:id/video', wrap(async (req, res) => {
   const { generateChainVideo } = require('../services/chainVideoGenerator');
   const { outputPath, cleanup } = await generateChainVideo(chain, stepsWithName, clipsByTechId);
 
-  const filename = `${chain.name.replace(/[^가-힣a-zA-Z0-9_\- ]/g, '').trim() || 'chain'}.mp4`;
+  // 영구 저장 경로에 복사
+  if (!fs.existsSync(VIDEO_DIR)) fs.mkdirSync(VIDEO_DIR, { recursive: true });
+  const destPath = path.join(VIDEO_DIR, `chain-${chain.id}.mp4`);
+  fs.copyFileSync(outputPath, destPath);
+  cleanup();
 
-  res.setHeader('Content-Type', 'video/mp4');
-  res.setHeader('Content-Disposition', `attachment; filename*=UTF-8''${encodeURIComponent(filename)}`);
-  res.setHeader('Content-Length', fs.statSync(outputPath).size);
+  // DB 업데이트
+  await TechniqueChain.update({ video_path: destPath }, { where: { id: chain.id } });
 
-  const stream = fs.createReadStream(outputPath);
-  stream.pipe(res);
-  stream.on('end', cleanup);
-  stream.on('error', cleanup);
+  res.json({ ok: true, video_path: destPath });
 }));
 
 // AI 체인 자동 생성 (미등록 기술 포함 가능)
@@ -133,15 +175,12 @@ router.post('/ai-generate', wrap(async (req, res) => {
     return res.status(400).json({ error: '상황 또는 목표를 입력해주세요' });
   }
 
-  // 등록된 기술 전체 로드
   const allTechniques = await Technique.findAll({ raw: true });
 
-  // 씨드 기술 (선택 사항)
   const seedTechs = Array.isArray(seedTechniqueIds) && seedTechniqueIds.length
     ? allTechniques.filter(t => seedTechniqueIds.includes(t.id))
     : [];
 
-  // 등록된 영상
   const allClips = await VideoClip.findAll({
     attributes: ['id', 'title', 'url', 'platform', 'tech_name', 'thumb_url'],
     raw: true,
@@ -192,7 +231,6 @@ ${registeredList}
     return res.status(500).json({ error: 'AI 응답 파싱 실패', raw: raw.slice(0, 500) });
   }
 
-  // 기술명 → DB 매칭
   const techByName = new Map(allTechniques.map(t => [t.name.trim(), t]));
 
   result.steps = (result.steps || []).map(s => {

@@ -156,6 +156,10 @@ async function start() {
     await sq.query(
       `ALTER TABLE video_clips ADD COLUMN IF NOT EXISTS position TEXT DEFAULT '[]'`
     ).catch(() => {});
+    // technique_chains.video_path 컬럼 추가 (기술체인 생성 영상 경로)
+    await sq.query(
+      `ALTER TABLE technique_chains ADD COLUMN IF NOT EXISTS video_path VARCHAR(500) DEFAULT NULL`
+    ).catch(() => {});
     // 회원권 결제이력 테이블
     await sq.query(`
       CREATE TABLE IF NOT EXISTS membership_payments (

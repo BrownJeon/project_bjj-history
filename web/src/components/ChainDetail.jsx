@@ -3,33 +3,30 @@ import Modal from './Modal';
 import Tag from './Tag';
 import Icon from './Icon';
 import Button from './Button';
-import { downloadChainVideo } from '../api/chains';
+import { generateChainVideo } from '../api/chains';
 
 // 체인 상세 (세로 타임라인) — 풀스크린 모달
 export default function ChainDetail({ chain, techniques, onClose, onEdit, onDelete }) {
-  const [videoState, setVideoState] = useState('idle'); // idle | generating | done | error
+  const [videoReady, setVideoReady] = useState(!!chain.video_path);
+  const [videoState, setVideoState] = useState('idle'); // idle | generating | error
   const [videoError, setVideoError] = useState('');
+  // 재생성 시 캐시 무효화를 위한 타임스탬프
+  const [videoTs, setVideoTs] = useState(Date.now());
 
   async function handleGenerateVideo() {
     setVideoState('generating');
     setVideoError('');
     try {
-      const blob = await downloadChainVideo(chain.id);
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `${chain.name}.mp4`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-      setVideoState('done');
-      setTimeout(() => setVideoState('idle'), 3000);
+      await generateChainVideo(chain.id);
+      setVideoTs(Date.now()); // force video element reload
+      setVideoReady(true);
+      setVideoState('idle');
     } catch (e) {
       setVideoError(e.message || '영상 생성 실패');
       setVideoState('error');
     }
   }
+
   const techMap = new Map(techniques.map(t => [t.id, t]));
   const steps = chain.steps || [];
 
@@ -61,7 +58,6 @@ export default function ChainDetail({ chain, techniques, onClose, onEdit, onDele
 
       {/* 세로 타임라인 */}
       <div style={{ position: 'relative', paddingLeft: 28, marginBottom: 14 }}>
-        {/* 좌측 수직 라인 */}
         {steps.length > 1 && (
           <div style={{
             position: 'absolute',
@@ -77,7 +73,6 @@ export default function ChainDetail({ chain, techniques, onClose, onEdit, onDele
           const t = stepTone(i);
           return (
             <div key={i} style={{ position: 'relative', marginBottom: 10 }}>
-              {/* 번호 뱃지 */}
               <div style={{
                 position: 'absolute',
                 left: -28, top: 6,
@@ -129,6 +124,25 @@ export default function ChainDetail({ chain, techniques, onClose, onEdit, onDele
         )}
       </div>
 
+      {/* 인앱 영상 플레이어 */}
+      {videoReady && (
+        <div style={{ marginBottom: 14 }}>
+          <video
+            key={videoTs}
+            controls
+            playsInline
+            style={{
+              width: '100%',
+              maxHeight: 420,
+              borderRadius: 10,
+              background: '#000',
+              display: 'block',
+            }}
+            src={`/api/chains/${chain.id}/video?t=${videoTs}`}
+          />
+        </div>
+      )}
+
       {/* 영상 생성 상태 */}
       {videoState === 'generating' && (
         <div style={{
@@ -151,15 +165,6 @@ export default function ChainDetail({ chain, techniques, onClose, onEdit, onDele
           </div>
         </div>
       )}
-      {videoState === 'done' && (
-        <div style={{
-          padding: '10px 14px', borderRadius: 10, marginBottom: 10,
-          background: 'var(--accent-dim)', border: '1px solid var(--accent)',
-          fontSize: 13, fontWeight: 700, color: 'var(--accent)',
-        }}>
-          ✓ 영상 다운로드 완료
-        </div>
-      )}
       {videoState === 'error' && (
         <div style={{
           padding: '10px 14px', borderRadius: 10, marginBottom: 10,
@@ -175,7 +180,7 @@ export default function ChainDetail({ chain, techniques, onClose, onEdit, onDele
           onClick={handleGenerateVideo}
           disabled={videoState === 'generating' || steps.length === 0}
         >
-          {videoState === 'generating' ? '생성 중...' : '영상 생성'}
+          {videoState === 'generating' ? '생성 중...' : videoReady ? '영상 재생성' : '영상 생성'}
         </Button>
         <Button variant="danger" size="sm" onClick={onDelete}>삭제</Button>
         <Button variant="outline" size="sm" onClick={onEdit}>수정</Button>
