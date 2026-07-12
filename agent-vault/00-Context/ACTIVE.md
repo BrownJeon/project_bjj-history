@@ -1,6 +1,8 @@
 ---
 project: bjj-trainning
 updated: 2026-07-12
+tags:
+  - type/context
 ---
 # 현재 상태
 

@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const fs = require('fs');
 const { sequelize, TechniqueChain, ChainStep, Technique, VideoClip } = require('../models');
 const { wrap, safeParse } = require('../utils/respond');
 
@@ -67,6 +68,61 @@ router.delete('/:id', wrap(async (req, res) => {
     await TechniqueChain.destroy({ where: { id: req.params.id }, transaction: t });
   });
   res.json({ ok: true });
+}));
+
+// 체인 영상 생성
+router.get('/:id/video', wrap(async (req, res) => {
+  const chain = await TechniqueChain.findByPk(req.params.id, { raw: true });
+  if (!chain) return res.status(404).json({ error: '체인을 찾을 수 없습니다' });
+
+  const steps = await ChainStep.findAll({
+    where: { chain_id: chain.id },
+    order: [['step_order', 'ASC']],
+    raw: true,
+  });
+
+  const techIds = [...new Set(steps.map(s => s.technique_id).filter(Boolean))];
+  const techs = techIds.length
+    ? await Technique.findAll({ where: { id: techIds }, raw: true })
+    : [];
+  const techMap = new Map(techs.map(t => [t.id, t]));
+
+  const stepsWithName = steps.map(s => ({
+    ...s,
+    tech_name: techMap.get(s.technique_id)?.name || null,
+  }));
+
+  // 기술별 썸네일 클립 수집 (tech_name JSON 배열로 매칭)
+  const allClips = await VideoClip.findAll({
+    attributes: ['id', 'thumb_url', 'tech_name'],
+    raw: true,
+  });
+  const clipsByTechId = {};
+  for (const tech of techs) {
+    clipsByTechId[tech.id] = allClips.filter(c => {
+      if (!c.thumb_url) return false;
+      try {
+        const names = JSON.parse(c.tech_name);
+        return (Array.isArray(names) ? names : [names]).some(n => n === tech.name);
+      } catch {
+        return c.tech_name === tech.name;
+      }
+    });
+  }
+
+  const { generateChainVideo } = require('../services/chainVideoGenerator');
+  const { outputPath, cleanup } = await generateChainVideo(chain, stepsWithName, clipsByTechId);
+
+  const filename = `${chain.name.replace(/[^가-힣a-zA-Z0-9_\- ]/g, '').trim() || 'chain'}.mp4`;
+
+  res.setHeader('Content-Type', 'video/mp4');
+  res.setHeader('Content-Disposition', `attachment; filename*=UTF-8''${encodeURIComponent(filename)}`);
+  res.setHeader('Content-Length', fs.statSync(outputPath).size);
+
+  const stream = fs.createReadStream(outputPath);
+  stream.pipe(res);
+  stream.on('end', cleanup);
+  stream.on('error', cleanup);
 }));
 
 // AI 체인 자동 생성 (미등록 기술 포함 가능)
