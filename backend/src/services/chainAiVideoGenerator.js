@@ -1,13 +1,14 @@
 /**
  * BJJ 체인 기술 AI 영상 생성 파이프라인
- * classVideoService.js 패턴 참고
  *
  * 흐름 (단계별):
- * 1. Claude → 일러스트 스타일 영어 프롬프트 생성
- * 2. M4 API /v1/image/generate → SD 이미지 (768×432)
- * 3. M4 API /v1/video/generate → SVD 25 프레임 (1024×576)
- * 4. ffmpeg: 프레임 → 720×1280 (9:16 크롭) → 9초 클립 → 기술명 오버레이
- *    SVD 실패 시: SD 이미지 → Ken Burns 폴백
+ * 1. Claude → 기술별 6개 포즈 시퀀스 생성
+ * 2. M4 API /v1/image/generate (txt2img) → 앵커 이미지 (포즈 0)
+ *    → Pollinations.ai 폴백
+ * 3. M4 API /v1/image/generate (img2img) → 포즈 1~5 (스타일 일관성 유지)
+ * 4. ffmpeg xfade: 6 키프레임 → 9초 포트레이트 클립 (부드러운 포즈 전환)
+ *    → 실패 시 Ken Burns 폴백 (zoompan 줌인)
+ *    → 이미지도 실패 시 색상 슬라이드 폴백
  * 5. 인트로 + 스텝 클립 + 아웃트로 → concat → chain-{id}.mp4
  */
 
@@ -31,6 +32,34 @@ const H        = 1280;
 const FPS      = 30;
 const STEP_DUR = 9;
 const FADE     = 0.5;
+
+// 플랫 일러스트 스타일 앵커 — 25토큰 이내 (CLIP 77토큰 한계 대비 pose desc 여유 확보)
+const STYLE_ANCHOR = 'flat vector BJJ illustration, white gi vs blue gi, ' +
+  'sky-blue background, faceless cartoon characters, 2D flat design';
+
+const STYLE_NEGATIVE = 'photorealistic, realistic, photo, gradient, shading, ' +
+  'detailed face, texture, 3D render, blurry, ugly, deformed, watermark, nsfw, ' +
+  'extra limbs, bad anatomy, realistic skin';
+
+// DB pos 필드값 → SD가 이해하는 리터럴 신체 위치 설명 (BJJ 용어 금지)
+const BJJ_POSITION_SD_MAP = {
+  '마운트':        "Person A sits upright on Person B's chest, Person B lies flat on back, A's knees on ground beside B's torso",
+  '풀마운트':      "Person A sits upright on Person B's chest, Person B lies flat on back, A's knees on ground beside B's torso",
+  '풀가드':        "Person B on back with legs wrapped around Person A's waist, A is between B's legs leaning forward",
+  '하프가드':      "Person B on back, one leg entangled around Person A's near leg, A beside B pressing chest down",
+  '사이드 컨트롤': "Person A lies perpendicular across Person B's chest, B on back with both arms pinned beside body",
+  '사이드컨트롤':  "Person A lies perpendicular across Person B's chest, B on back with both arms pinned beside body",
+  '백마운트':      "Person A behind Person B, both facing same direction, A's chest against B's back, A's legs hooked around B's hips",
+  '백':           "Person A behind Person B, both facing same direction, A's chest against B's back",
+  '니온더벨리':    "Person A kneels with one knee pressing on Person B's stomach, B lies flat on back looking up",
+  '니언더벨리':    "Person A kneels with one knee pressing on Person B's stomach, B lies flat on back looking up",
+  '스탠딩':       "Both persons standing upright facing each other, hands gripping each other's collars and sleeves",
+  '가드':         "Person B on back with legs wrapped around Person A, A kneeling between B's legs",
+  '클로즈드가드':  "Person B on back with legs locked crossed behind Person A's back, A kneeling between B's legs",
+  '오픈가드':     "Person B on back with legs open and feet on Person A's hips, A standing or kneeling in front",
+  '터틀':         "Person B on hands and knees facing down, Person A beside or behind B",
+  '스크램블':     "Both persons on their knees transitioning positions, neither in stable control",
+};
 
 // ── 유틸 ─────────────────────────────────────────────────────────────────────
 
@@ -81,8 +110,9 @@ async function callGenerateImageM4(sdPrompt) {
     headers: { 'Content-Type': 'application/json', 'X-API-Key': AI_API_KEY },
     body: JSON.stringify({
       prompt: sdPrompt,
-      negative_prompt: 'realistic photography, photo, ugly, deformed, blurry, text, watermark, nsfw, extra limbs, bad anatomy',
+      negative_prompt: STYLE_NEGATIVE,
       width: 768, height: 432, steps: 20,
+      seed: -1,
     }),
     signal: AbortSignal.timeout(180000),
   });
@@ -95,7 +125,7 @@ async function callGenerateImageM4(sdPrompt) {
 // Pollinations.ai 폴백 (Flux 모델, 무인증, 무료)
 async function callGenerateImagePollinations(sdPrompt) {
   const encoded = encodeURIComponent(
-    sdPrompt + ', anime illustration style, BJJ martial arts, clean line art, high quality'
+    sdPrompt + ', flat vector illustration, BJJ martial arts, anime style'
   );
   const url = 'https://image.pollinations.ai/prompt/' + encoded +
     '?width=768&height=432&nologo=true&model=flux&seed=' + Math.floor(Date.now() / 1000);
@@ -125,87 +155,231 @@ async function callGenerateImage(sdPrompt) {
   }
 }
 
-async function callGenerateVideo(imgB64) {
-  const resp = await fetch(AI_API_BASE + '/v1/video/generate', {
+// img2img: 이전 키프레임에서 스타일 유지하며 새 포즈 생성
+async function callGenerateImageWithInit(sdPrompt, initB64, strength, seed) {
+  const resp = await fetch(AI_API_BASE + '/v1/image/generate', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'X-API-Key': AI_API_KEY },
-    body: JSON.stringify({ image_b64: imgB64, fps: 7, steps: 20, motion_bucket_id: 60 }),
-    signal: AbortSignal.timeout(600000),
+    body: JSON.stringify({
+      prompt: sdPrompt,
+      negative_prompt: STYLE_NEGATIVE,
+      width: 768, height: 432, steps: 18,
+      seed: seed,
+      init_image_b64: initB64,
+      strength: strength,
+    }),
+    signal: AbortSignal.timeout(180000),
   });
-  if (!resp.ok) throw new Error('SVD API 오류 ' + resp.status);
+  if (!resp.ok) throw new Error('img2img API 오류 ' + resp.status);
   const data = await resp.json();
-  if (!data.frames_b64 || !data.frames_b64.length) throw new Error('SVD API 프레임 없음');
-  return data.frames_b64;
+  if (!data.image_b64) throw new Error('img2img API 응답 없음');
+  return data.image_b64;
 }
 
-// ── SD 프롬프트 생성 (Claude) ─────────────────────────────────────────────────
+// ── 포즈 시퀀스 생성 (Claude) ─────────────────────────────────────────────────
 
-async function generateStepPrompt(techName, note) {
-  const prompt = 'Write a single-line Stable Diffusion image generation prompt for a BJJ technique illustration.\n' +
-    'Style: anime-influenced digital art illustration, two martial arts fighters demonstrating the technique, clean line art, dynamic action pose, detailed anatomy, simple dojo background, high quality.\n' +
-    'Technique: ' + techName + '\n' +
-    'Context: ' + (note || 'BJJ grappling technique') + '\n' +
-    'Output ONLY the prompt text on one line. No quotes, no explanation.';
+async function generatePoseSequence(techName, note, techPos) {
+  // techPos: DB pos JSON 문자열 (예: '["마운트","가드"]') 또는 배열
+  var positions = [];
   try {
-    const result = await runClaude(prompt, { timeoutMs: 30000 });
-    const line = result.trim().split('\n')[0].trim();
-    return line || ('BJJ martial arts illustration, two fighters demonstrating ' + techName + ', anime art style, dynamic pose, clean line art, high quality');
-  } catch (e) {
-    return 'BJJ martial arts illustration, two fighters demonstrating ' + techName + ', anime art style, dynamic pose, clean line art, high quality';
+    positions = typeof techPos === 'string' ? JSON.parse(techPos || '[]') : (techPos || []);
+  } catch(e) {}
+  var posCtx = BJJ_POSITION_SD_MAP[positions[0]] || '';
+
+  const prompt =
+    'Describe 6 sequential body positions for a BJJ grappling technique as a JSON array.\n' +
+    'STRICT RULES:\n' +
+    '- ENGLISH ONLY\n' +
+    '- Each item: 15-20 words of LITERAL body geometry only\n' +
+    '- Use "Person A" (attacker/top) and "Person B" (defender/bottom)\n' +
+    '- Describe EXACTLY: who lies/sits/kneels, where each person\'s hips, legs, arms are\n' +
+    '- FORBIDDEN words: guard, mount, sweep, pass, base, frame, escape, submission (describe bodies instead)\n' +
+    (posCtx ? 'Starting body position: ' + posCtx + '\n' : '') +
+    'Technique name: ' + techName + '\n' +
+    (note ? 'Note: ' + note + '\n' : '') +
+    'Output ONLY a valid JSON array of 6 strings. No markdown, no explanation.';
+  try {
+    const raw = (await runClaude(prompt, { timeoutMs: 30000 })).trim();
+    const match = raw.match(/\[[\s\S]*\]/);
+    if (match) {
+      const arr = JSON.parse(match[0]);
+      if (Array.isArray(arr) && arr.length >= 4) {
+        return arr.slice(0, 6);
+      }
+    }
+  } catch(e) {
+    console.warn('[chain-ai] 포즈 시퀀스 파싱 실패:', e.message);
   }
+  // 폴백: 포지션 맵 기반 기본 포즈
+  var baseDesc = posCtx || 'two persons on the ground in grappling position';
+  return [
+    baseDesc + ', initial contact',
+    baseDesc + ', Person A establishing grip on B\'s collar and sleeve',
+    baseDesc + ', Person A shifting weight forward onto Person B',
+    baseDesc + ', Person B\'s hips pinned, arms pressed against sides',
+    baseDesc + ', Person A securing position, both persons on ground',
+    baseDesc + ', technique completed, Person A in control on top',
+  ];
+}
+
+// ── AnimateDiff (실제 모션) ────────────────────────────────────────────────────
+
+async function callAnimateDiff(sdPrompt) {
+  // 8프레임 6단계 ≈ 4.2분 (M4 CPU). 16프레임 20단계는 ~28분 → 6분 timeout 초과 폴백 발생
+  var resp = await fetch(AI_API_BASE + '/v1/video/animate', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'X-API-Key': AI_API_KEY },
+    body: JSON.stringify({
+      prompt: sdPrompt,
+      negative_prompt: STYLE_NEGATIVE,
+      num_frames: 8,
+      steps: 6,
+    }),
+    signal: AbortSignal.timeout(420000), // 7분 (4.2분 추정 + 여유)
+  });
+  if (!resp.ok) throw new Error('AnimateDiff API 오류 ' + resp.status);
+  var data = await resp.json();
+  if (!data.frames_b64 || !data.frames_b64.length) throw new Error('AnimateDiff 프레임 없음');
+  return data.frames_b64; // base64 PNG 배열
+}
+
+// AnimateDiff 8프레임 → 9초 portrait 클립 (xfade 전환)
+async function buildAnimateDiffClip(posePrompt, dir, sn, overlayLayers) {
+  var frames = await callAnimateDiff(posePrompt);
+  var N = frames.length;
+
+  var framePaths = frames.map(function(b64, i) {
+    var p = path.join(dir, sn + '_af' + String(i).padStart(3, '0') + '.png');
+    fs.writeFileSync(p, Buffer.from(b64, 'base64'));
+    return p;
+  });
+
+  // xfade: 각 프레임 POSE_DUR 노출 + 0.35s 전환
+  // N*POSE_DUR - (N-1)*0.35 = STEP_DUR(9)  →  POSE_DUR = (9 + (N-1)*0.35) / N
+  var XFADE_D = 0.35;
+  var POSE_DUR = (STEP_DUR + (N - 1) * XFADE_D) / N;
+
+  // 각 PNG를 POSE_DUR+XFADE_D+0.1초 정적 클립으로 입력
+  var inputs = [];
+  framePaths.forEach(function(p) {
+    inputs.push('-loop', '1', '-t', String((POSE_DUR + XFADE_D + 0.1).toFixed(3)), '-i', p);
+  });
+
+  var fc = '';
+  // 포트레이트 스케일/크롭
+  framePaths.forEach(function(_, i) {
+    fc += '[' + i + ':v]scale=' + W + ':' + H +
+          ':force_original_aspect_ratio=increase,crop=' + W + ':' + H + '[v' + i + '];';
+  });
+
+  // xfade 체인: [v0][v1]→[xf1], [xf1][v2]→[xf2], ..., 마지막→[xfinal]
+  var prev = 'v0';
+  for (var k = 1; k < N; k++) {
+    var offset = (k * (POSE_DUR - XFADE_D)).toFixed(3);
+    var label = (k === N - 1) ? 'xfinal' : ('xf' + k);
+    fc += '[' + prev + '][v' + k + ']xfade=transition=fade:duration=' +
+          XFADE_D.toFixed(2) + ':offset=' + offset + '[' + label + '];';
+    prev = label;
+  }
+
+  // 오버레이 + 페이드
+  var BOX_TOP = H - 230;
+  var postFilters = [
+    'drawbox=x=0:y=' + BOX_TOP + ':w=' + W + ':h=' + (H - BOX_TOP) + ':color=black@0.65:t=fill',
+    overlayLayers.filter(Boolean).join(','),
+    'fade=t=in:st=0:d=' + FADE + ',fade=t=out:st=' + (STEP_DUR - FADE) + ':d=' + FADE,
+  ].filter(Boolean).join(',');
+  fc += '[' + prev + ']' + postFilters + '[vout]';
+
+  var out = path.join(dir, sn + '.mp4');
+  await runFFmpeg([
+    '-y', ...inputs,
+    '-filter_complex', fc,
+    '-map', '[vout]',
+    '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-an', '-t', String(STEP_DUR), out,
+  ], 120000);
+
+  framePaths.forEach(function(p) { try { fs.unlinkSync(p); } catch(e) {} });
+  return out;
 }
 
 // ── 슬라이드 빌드 ──────────────────────────────────────────────────────────────
 
-// SVD 프레임 → 9:16 클립 (landscape raw → portrait final)
-async function buildClipFromFrames(frames, dir, slideName, overlayLayers) {
-  const frameDir = path.join(dir, slideName + '_frames');
-  fs.mkdirSync(frameDir, { recursive: true });
-  for (var i = 0; i < frames.length; i++) {
-    fs.writeFileSync(
-      path.join(frameDir, 'f' + String(i).padStart(3, '0') + '.png'),
-      Buffer.from(frames[i], 'base64')
-    );
+// 6 키프레임 이미지 → xfade 전환으로 9초 포즈 애니메이션 클립
+async function buildPoseAnimClip(poseDescs, anchorImgB64, dir, sn, overlayLayers) {
+  const POSE_DUR = 2.0;  // 각 포즈 지속 시간(초)
+  const XFADE_D  = 0.5;  // xfade 전환 시간(초)
+  const seed = Math.floor(Math.random() * 99999) + 1;
+
+  // 1) 키프레임 생성 (0: anchor txt2img, 1~5: img2img 체인)
+  const keyframes = [anchorImgB64];
+  for (var i = 1; i < poseDescs.length; i++) {
+    var fullPrompt = STYLE_ANCHOR + ', ' + poseDescs[i];
+    try {
+      var b64 = await callGenerateImageWithInit(fullPrompt, keyframes[i - 1], 0.60, seed);
+      keyframes.push(b64);
+      console.log('[chain-ai] 키프레임 ' + i + ' 생성 완료');
+    } catch(e) {
+      console.warn('[chain-ai] 키프레임 ' + i + ' 실패, 이전 프레임 재사용:', e.message);
+      keyframes.push(keyframes[i - 1]);
+    }
   }
 
-  // frames → 16:9 raw clip (1024×576, 3.57초)
-  const rawPath = path.join(dir, slideName + '_raw.mp4');
-  await runFFmpeg([
-    '-y', '-framerate', '7',
-    '-i', path.join(frameDir, 'f%03d.png'),
-    '-vf', 'scale=1024:576',
-    '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-preset', 'fast',
-    rawPath,
-  ], 60000);
-  fs.rmSync(frameDir, { recursive: true, force: true });
+  // 2) 디스크 저장
+  var framePaths = keyframes.map(function(b64, i) {
+    var p = path.join(dir, sn + '_kf' + i + '.png');
+    fs.writeFileSync(p, Buffer.from(b64, 'base64'));
+    return p;
+  });
 
-  // raw → 9초 루프 + portrait crop + overlay
-  const out = path.join(dir, slideName + '.mp4');
-  const fadeAll = 'fade=t=in:st=0:d=' + FADE + ',fade=t=out:st=' + (STEP_DUR - FADE) + ':d=' + FADE;
-  const BOX_TOP = H - 230;
-  const boxFilter = 'drawbox=x=0:y=' + BOX_TOP + ':w=' + W + ':h=' + (H - BOX_TOP) + ':color=black@0.65:t=fill';
-  const drawTexts = overlayLayers.filter(Boolean).join(',');
-  const vf = [
-    'scale=' + W + ':' + H + ':force_original_aspect_ratio=increase',
-    'crop=' + W + ':' + H,
-    boxFilter,
-    drawTexts,
-    fadeAll,
-  ].filter(Boolean).join(',');
+  // 3) FFmpeg xfade 필터 조립
+  // 총 재생시간 = N*POSE_DUR - (N-1)*XFADE_D = 6*2.0 - 5*0.5 = 9.5초 → -t 9 트림
+  var N = framePaths.length;
+  var inputs = [];
+  framePaths.forEach(function(p) {
+    inputs.push('-loop', '1', '-t', String(POSE_DUR + 0.1), '-i', p);
+  });
 
+  var fc = '';
+  // 각 입력을 포트레이트로 스케일/크롭
+  for (var j = 0; j < N; j++) {
+    fc += '[' + j + ':v]scale=' + W + ':' + H + ':force_original_aspect_ratio=increase' +
+          ',crop=' + W + ':' + H + '[v' + j + '];';
+  }
+  // xfade 체인
+  var prev = 'v0';
+  for (var k = 1; k < N; k++) {
+    var offset = k * (POSE_DUR - XFADE_D);  // 1.5, 3.0, 4.5, 6.0, 7.5
+    var label  = (k === N - 1) ? 'xfinal' : ('x' + k);
+    fc += '[' + prev + '][v' + k + ']xfade=transition=fade:duration=' + XFADE_D +
+          ':offset=' + offset.toFixed(1) + '[' + label + '];';
+    prev = label;
+  }
+
+  // 오버레이 + 페이드 인/아웃
+  var BOX_TOP   = H - 230;
+  var boxFilter = 'drawbox=x=0:y=' + BOX_TOP + ':w=' + W + ':h=' + (H - BOX_TOP) + ':color=black@0.65:t=fill';
+  var drawTexts = overlayLayers.filter(Boolean).join(',');
+  var fadeAll   = 'fade=t=in:st=0:d=' + FADE + ',fade=t=out:st=' + (STEP_DUR - FADE) + ':d=' + FADE;
+  var postFilters = [boxFilter, drawTexts, fadeAll].filter(Boolean).join(',');
+  fc += '[xfinal]' + postFilters + '[vout]';
+
+  var out = path.join(dir, sn + '.mp4');
   await runFFmpeg([
-    '-y', '-stream_loop', '-1', '-i', rawPath,
-    '-t', String(STEP_DUR),
-    '-vf', vf,
+    '-y',
+    ...inputs,
+    '-filter_complex', fc,
+    '-map', '[vout]',
     '-c:v', 'libx264', '-r', String(FPS), '-pix_fmt', 'yuv420p', '-an',
+    '-t', String(STEP_DUR),
     out,
-  ], 90000);
+  ], 180000);
 
-  try { fs.unlinkSync(rawPath); } catch(e) {}
+  framePaths.forEach(function(p) { try { fs.unlinkSync(p); } catch(e) {} });
   return out;
 }
 
-// SD 이미지 → Ken Burns (느린 줌인 + 페이드)
+// SD 이미지 → Ken Burns (느린 줌인 + 페이드) — 폴백용
 async function buildKenBurnsClip(imgPath, dir, slideName, overlayLayers) {
   const out = path.join(dir, slideName + '.mp4');
   const totalFrames = STEP_DUR * FPS; // 270
@@ -291,30 +465,39 @@ async function generateChainVideoAsync(chain, steps, jobId) {
         mkDt(sn, { text: techName,   font: FONT_BOLD, size: 52, x: '(w-text_w)/2', y: BOX_TOP + 48, color: 'white', alpha: 1 }),
       ];
 
-      // 1. Claude → SD 프롬프트
-      await updateJobDB(sequelize, jobId, { progress: '스텝 ' + (i+1) + '/' + steps.length + ' 프롬프트 생성 중...' });
-      var sdPrompt = await generateStepPrompt(step.tech_name, step.transition_note);
-      console.log('[chain-ai] step' + (i+1) + ':', sdPrompt.slice(0, 80));
+      // 1. Claude → 포즈 시퀀스 (6개)
+      await updateJobDB(sequelize, jobId, { progress: '스텝 ' + (i+1) + '/' + steps.length + ' 포즈 분석 중...' });
+      var poseDescs  = await generatePoseSequence(step.tech_name, step.transition_note, step.tech_pos);
+      var anchorPrompt = STYLE_ANCHOR + ', ' + poseDescs[0];
+      console.log('[chain-ai] step' + (i+1) + ' 포즈:', poseDescs[0].slice(0, 60));
 
-      // 2. 이미지 생성 (M4 SD → Pollinations 순서로 시도)
-      await updateJobDB(sequelize, jobId, { progress: '스텝 ' + (i+1) + '/' + steps.length + ' AI 이미지 생성 중...' });
-      var imgB64 = await callGenerateImage(sdPrompt);
+      // 2. 앵커 이미지 생성 (txt2img, 포즈 0)
+      await updateJobDB(sequelize, jobId, { progress: '스텝 ' + (i+1) + '/' + steps.length + ' 앵커 이미지 생성 중...' });
+      var imgB64 = await callGenerateImage(anchorPrompt);
 
       var imgPath = path.join(dir, sn + '_img.png');
       if (imgB64) {
         fs.writeFileSync(imgPath, Buffer.from(imgB64, 'base64'));
       }
 
-      // 3. SVD 영상 생성 (SVD 실패 → Ken Burns 폴백)
-      await updateJobDB(sequelize, jobId, { progress: '스텝 ' + (i+1) + '/' + steps.length + ' AI 영상 생성 중...' });
+      // 3. AnimateDiff (실제 모션) → img2img xfade 폴백 → Ken Burns 폴백
+      await updateJobDB(sequelize, jobId, { progress: '스텝 ' + (i+1) + '/' + steps.length + ' 모션 애니메이션 생성 중...' });
+      // AnimateDiff 프롬프트: 시작 포즈 + 끝 포즈 조합으로 기술 흐름 표현
+      var animPrompt = STYLE_ANCHOR + ', ' + poseDescs[0] + ', transitioning to ' + poseDescs[poseDescs.length - 1];
       var clip;
       if (imgB64) {
         try {
-          var frames = await callGenerateVideo(imgB64);
-          clip = await buildClipFromFrames(frames, dir, sn, overlayLayers);
-        } catch (e) {
-          console.error('[chain-ai] SVD 실패 step' + (i+1) + ', Ken Burns 폴백:', e.message);
-          clip = await buildKenBurnsClip(imgPath, dir, sn, overlayLayers);
+          clip = await buildAnimateDiffClip(animPrompt, dir, sn, overlayLayers);
+          console.log('[chain-ai] step' + (i+1) + ' AnimateDiff 모션 완료');
+        } catch (animErr) {
+          console.warn('[chain-ai] AnimateDiff 실패 step' + (i+1) + ', img2img xfade 폴백:', animErr.message);
+          try {
+            clip = await buildPoseAnimClip(poseDescs, imgB64, dir, sn, overlayLayers);
+            console.log('[chain-ai] step' + (i+1) + ' img2img xfade 완료');
+          } catch (e) {
+            console.error('[chain-ai] img2img 실패 step' + (i+1) + ', Ken Burns 폴백:', e.message);
+            clip = await buildKenBurnsClip(imgPath, dir, sn, overlayLayers);
+          }
         }
       } else {
         // 이미지 생성도 실패 → 색상 슬라이드
