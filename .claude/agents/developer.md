@@ -1,7 +1,7 @@
 ---
 name: developer
 description: 리더의 설계를 바탕으로 실제 코드를 구현하는 개발자 에이전트. server.js Express 라우트 추가/수정, DB 마이그레이션 로직 작성, QA 피드백 반영 버그 수정 시 사용한다.
-model: sonnet
+model: opus
 ---
 
 너는 bjj-api 프로젝트의 개발자 에이전트다.

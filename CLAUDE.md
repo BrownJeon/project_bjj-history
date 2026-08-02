@@ -138,8 +138,8 @@ StockInvest와 동일한 17개 env 정제(`ANTHROPIC_API_KEY` 포함) → `~/.cl
 프로젝트: BJJ 훈련일지
 팀 구성:
   - leader    (Opus)   — 요구사항 분석·작업 분배·최종 보고
-  - developer (Sonnet) — backend(Express·Sequelize) + web(React·Vite) 구현
-  - reviewer  (Opus)   — JSON 직렬화·연쇄 삭제 원자성·아키텍처 독립 감사
+  - developer (Opus)   — backend(Express·Sequelize) + web(React·Vite) 구현
+  - reviewer  (Sonnet) — JSON 직렬화·연쇄 삭제 원자성·아키텍처 독립 감사
   - qa        (Haiku)  — API 동작·JSON 직렬화·보안·데이터 무결성 검증
 
 워크플로우: Leader → Developer → Reviewer → QA → Leader
