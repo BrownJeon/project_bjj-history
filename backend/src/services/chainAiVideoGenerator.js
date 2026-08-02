@@ -222,106 +222,25 @@ async function generatePoseSequence(techName, note, techPos) {
   ];
 }
 
-// ── AnimateDiff (실제 모션) ────────────────────────────────────────────────────
-
-async function callAnimateDiff(sdPrompt) {
-  // 8프레임 6단계 ≈ 4.2분 (M4 CPU). 16프레임 20단계는 ~28분 → 6분 timeout 초과 폴백 발생
-  var resp = await fetch(AI_API_BASE + '/v1/video/animate', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'X-API-Key': AI_API_KEY },
-    body: JSON.stringify({
-      prompt: sdPrompt,
-      negative_prompt: STYLE_NEGATIVE,
-      num_frames: 8,
-      steps: 6,
-    }),
-    signal: AbortSignal.timeout(420000), // 7분 (4.2분 추정 + 여유)
-  });
-  if (!resp.ok) throw new Error('AnimateDiff API 오류 ' + resp.status);
-  var data = await resp.json();
-  if (!data.frames_b64 || !data.frames_b64.length) throw new Error('AnimateDiff 프레임 없음');
-  return data.frames_b64; // base64 PNG 배열
-}
-
-// AnimateDiff 8프레임 → 9초 portrait 클립 (xfade 전환)
-async function buildAnimateDiffClip(posePrompt, dir, sn, overlayLayers) {
-  var frames = await callAnimateDiff(posePrompt);
-  var N = frames.length;
-
-  var framePaths = frames.map(function(b64, i) {
-    var p = path.join(dir, sn + '_af' + String(i).padStart(3, '0') + '.png');
-    fs.writeFileSync(p, Buffer.from(b64, 'base64'));
-    return p;
-  });
-
-  // xfade: 각 프레임 POSE_DUR 노출 + 0.35s 전환
-  // N*POSE_DUR - (N-1)*0.35 = STEP_DUR(9)  →  POSE_DUR = (9 + (N-1)*0.35) / N
-  var XFADE_D = 0.35;
-  var POSE_DUR = (STEP_DUR + (N - 1) * XFADE_D) / N;
-
-  // 각 PNG를 POSE_DUR+XFADE_D+0.1초 정적 클립으로 입력
-  var inputs = [];
-  framePaths.forEach(function(p) {
-    inputs.push('-loop', '1', '-t', String((POSE_DUR + XFADE_D + 0.1).toFixed(3)), '-i', p);
-  });
-
-  var fc = '';
-  // 포트레이트 스케일/크롭
-  framePaths.forEach(function(_, i) {
-    fc += '[' + i + ':v]scale=' + W + ':' + H +
-          ':force_original_aspect_ratio=increase,crop=' + W + ':' + H + '[v' + i + '];';
-  });
-
-  // xfade 체인: [v0][v1]→[xf1], [xf1][v2]→[xf2], ..., 마지막→[xfinal]
-  var prev = 'v0';
-  for (var k = 1; k < N; k++) {
-    var offset = (k * (POSE_DUR - XFADE_D)).toFixed(3);
-    var label = (k === N - 1) ? 'xfinal' : ('xf' + k);
-    fc += '[' + prev + '][v' + k + ']xfade=transition=fade:duration=' +
-          XFADE_D.toFixed(2) + ':offset=' + offset + '[' + label + '];';
-    prev = label;
-  }
-
-  // 오버레이 + 페이드
-  var BOX_TOP = H - 230;
-  var postFilters = [
-    'drawbox=x=0:y=' + BOX_TOP + ':w=' + W + ':h=' + (H - BOX_TOP) + ':color=black@0.65:t=fill',
-    overlayLayers.filter(Boolean).join(','),
-    'fade=t=in:st=0:d=' + FADE + ',fade=t=out:st=' + (STEP_DUR - FADE) + ':d=' + FADE,
-  ].filter(Boolean).join(',');
-  fc += '[' + prev + ']' + postFilters + '[vout]';
-
-  var out = path.join(dir, sn + '.mp4');
-  await runFFmpeg([
-    '-y', ...inputs,
-    '-filter_complex', fc,
-    '-map', '[vout]',
-    '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-an', '-t', String(STEP_DUR), out,
-  ], 120000);
-
-  framePaths.forEach(function(p) { try { fs.unlinkSync(p); } catch(e) {} });
-  return out;
-}
-
 // ── 슬라이드 빌드 ──────────────────────────────────────────────────────────────
 
 // 6 키프레임 이미지 → xfade 전환으로 9초 포즈 애니메이션 클립
+// 각 포즈를 Pollinations로 직접 생성 (M4 img2img 의존 제거)
 async function buildPoseAnimClip(poseDescs, anchorImgB64, dir, sn, overlayLayers) {
   const POSE_DUR = 2.0;  // 각 포즈 지속 시간(초)
   const XFADE_D  = 0.5;  // xfade 전환 시간(초)
-  const seed = Math.floor(Math.random() * 99999) + 1;
 
-  // 1) 키프레임 생성 (0: anchor txt2img, 1~5: img2img 체인)
+  // 1) 키프레임 생성 (0: 앵커 이미지, 1~5: 각 포즈 Pollinations 호출)
   const keyframes = [anchorImgB64];
   for (var i = 1; i < poseDescs.length; i++) {
     var fullPrompt = STYLE_ANCHOR + ', ' + poseDescs[i];
     try {
-      var b64 = await callGenerateImageWithInit(fullPrompt, keyframes[i - 1], 0.60, seed);
+      var b64 = await callGenerateImagePollinations(fullPrompt);
       keyframes.push(b64);
       console.log('[chain-ai] 키프레임 ' + i + ' 생성 완료');
     } catch(e) {
       console.warn('[chain-ai] 키프레임 ' + i + ' 실패, 이전 프레임 재사용:', e.message);
-      keyframes.push(keyframes[i - 1]);
+      keyframes.push(keyframes[keyframes.length - 1]);
     }
   }
 
@@ -480,24 +399,17 @@ async function generateChainVideoAsync(chain, steps, jobId) {
         fs.writeFileSync(imgPath, Buffer.from(imgB64, 'base64'));
       }
 
-      // 3. AnimateDiff (실제 모션) → img2img xfade 폴백 → Ken Burns 폴백
-      await updateJobDB(sequelize, jobId, { progress: '스텝 ' + (i+1) + '/' + steps.length + ' 모션 애니메이션 생성 중...' });
-      // AnimateDiff 프롬프트: 시작 포즈 + 끝 포즈 조합으로 기술 흐름 표현
-      var animPrompt = STYLE_ANCHOR + ', ' + poseDescs[0] + ', transitioning to ' + poseDescs[poseDescs.length - 1];
+      // 3. Pollinations 6 keyframe xfade → Ken Burns 폴백 → 색상 슬라이드
+      // (AnimateDiff CPU는 steps<15에서 노이즈, steps>=15에서 14분/스텝으로 실용 불가)
+      await updateJobDB(sequelize, jobId, { progress: '스텝 ' + (i+1) + '/' + steps.length + ' 기술 영상 생성 중...' });
       var clip;
       if (imgB64) {
         try {
-          clip = await buildAnimateDiffClip(animPrompt, dir, sn, overlayLayers);
-          console.log('[chain-ai] step' + (i+1) + ' AnimateDiff 모션 완료');
-        } catch (animErr) {
-          console.warn('[chain-ai] AnimateDiff 실패 step' + (i+1) + ', img2img xfade 폴백:', animErr.message);
-          try {
-            clip = await buildPoseAnimClip(poseDescs, imgB64, dir, sn, overlayLayers);
-            console.log('[chain-ai] step' + (i+1) + ' img2img xfade 완료');
-          } catch (e) {
-            console.error('[chain-ai] img2img 실패 step' + (i+1) + ', Ken Burns 폴백:', e.message);
-            clip = await buildKenBurnsClip(imgPath, dir, sn, overlayLayers);
-          }
+          clip = await buildPoseAnimClip(poseDescs, imgB64, dir, sn, overlayLayers);
+          console.log('[chain-ai] step' + (i+1) + ' 포즈 애니메이션 완료');
+        } catch (e) {
+          console.error('[chain-ai] 포즈 애니메이션 실패 step' + (i+1) + ', Ken Burns 폴백:', e.message);
+          clip = await buildKenBurnsClip(imgPath, dir, sn, overlayLayers);
         }
       } else {
         // 이미지 생성도 실패 → 색상 슬라이드
