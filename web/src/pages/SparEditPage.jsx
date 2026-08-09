@@ -7,7 +7,7 @@ import Modal from '../components/Modal';
 import Button from '../components/Button';
 import Icon from '../components/Icon';
 import {
-  BELT_LEVELS, BASE_TECHNIQUES, BASE_WEAKNESSES, mergeUnique,
+  BELT_LEVELS, BASE_TECHNIQUES, BASE_WEAKNESSES, KEY_TECHNIQUES, mergeUnique,
 } from '../utils/baseOptions';
 import { uniqueOpponents } from '../utils/suggestions';
 import SparFeedbackCard from '../components/SparFeedbackCard';
@@ -32,7 +32,7 @@ export default function SparEditor({ classId, sparDay, onClose, onSaved }) {
 
   const [feedbackData, setFeedbackData] = useState(null);
 
-  // Frequency-sorted suggestions from past records
+  // Autocomplete candidates from past records (datalist용 — 칩으로 표시하지 않음)
   const weakFreqSuggestions = useMemo(() => {
     const freq = {};
     classes.forEach(c => {
@@ -133,13 +133,13 @@ export default function SparEditor({ classId, sparDay, onClose, onSaved }) {
     const text = sessions.map((s, i) => {
       const parts = [`라운드${i + 1}`];
       if (s.level) parts.push(`${s.level}벨트`);
-      if (s.opponent) parts.push(s.opponent);
+      if (s.outcome) parts.push(s.outcome === 'win' ? '이겼어' : '배웠어');
       let line = `[${parts.join(' · ')}]`;
       const good = s.successTried.filter(t => t.success);
       const tapTech = s.successTried.filter(t => !t.success);
-      if (good.length) line += `\n  잘됨: ${good.map(t => t.name).join(', ')}`;
-      if (tapTech.length) line += `\n  탭당함: ${tapTech.map(t => t.name).join(', ')}`;
-      if ((s.weak || []).length) line += `\n  약점: ${s.weak.join(', ')}`;
+      if (good.length) line += `\n  성공한 기술: ${good.map(t => t.name).join(', ')}`;
+      if (tapTech.length) line += `\n  탭 당한 기술: ${tapTech.map(t => t.name).join(', ')}`;
+      if ((s.weak || []).length) line += `\n  성장 포인트: ${s.weak.join(', ')}`;
       if (s.note) line += `\n  메모: ${s.note}`;
       return line;
     }).join('\n\n');
@@ -212,8 +212,8 @@ export default function SparEditor({ classId, sparDay, onClose, onSaved }) {
             key={i}
             idx={i}
             session={s}
-            weakSuggestions={weakFreqSuggestions}
-            successSuggestions={successFreqSuggestions}
+            weakAutocomplete={weakFreqSuggestions}
+            successAutocomplete={successFreqSuggestions}
             tapTechSuggestions={tapTechSuggestions}
             opponentSuggestions={opponentSuggestions}
             onRemove={() => removeSession(i)}
@@ -263,30 +263,116 @@ export default function SparEditor({ classId, sparDay, onClose, onSaved }) {
   );
 }
 
+// 3계층 칩 입력 컴포넌트: 태그 행 + 고정 BASE 칩 + datalist 텍스트 입력
+function ChipSection({ label, values, baseChips, autocompleteList, color, onToggle, onAdd, onRemove, inputId }) {
+  const [input, setInput] = useState('');
+  const isGold = color === 'gold';
+  const activeColor = isGold ? '#F5A623' : 'var(--accent)';
+  const activeDim   = isGold ? '#FEF3E2' : 'var(--accent-dim)';
+  const labelColor  = isGold ? '#B8860B' : 'var(--accent)';
+
+  function handleAdd() {
+    const val = input.trim();
+    if (val && !values.includes(val)) onAdd(val);
+    setInput('');
+  }
+
+  return (
+    <div>
+      <div style={{ fontSize: 12, fontWeight: 700, color: labelColor, marginBottom: 7 }}>
+        {label}
+      </div>
+
+      {/* Layer 1: 선택된 태그 행 */}
+      {values.length > 0 && (
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, marginBottom: 7 }}>
+          {values.map(v => (
+            <button key={v} onClick={() => onRemove(v)} style={{
+              padding: '4px 10px', borderRadius: 20,
+              background: activeColor, color: '#fff',
+              border: 'none', fontSize: 12, fontWeight: 700,
+              cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 4,
+            }}>
+              {v} <span style={{ fontSize: 13, opacity: 0.8 }}>×</span>
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* Layer 2: 고정 BASE 칩 — 선택됨이면 dim 처리 */}
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, marginBottom: 7 }}>
+        {baseChips.map(chip => {
+          const selected = values.includes(chip);
+          return (
+            <button key={chip} onClick={() => onToggle(chip)} style={{
+              padding: '5px 10px', borderRadius: 20,
+              background: selected ? activeDim : 'var(--surface)',
+              color: selected ? activeColor : 'var(--text3)',
+              border: selected ? `1px solid ${activeColor}` : '1px solid var(--border-med)',
+              fontSize: 12, fontWeight: selected ? 600 : 400,
+              cursor: 'pointer',
+            }}>{chip}</button>
+          );
+        })}
+      </div>
+
+      {/* Layer 3: 직접 입력 + datalist autocomplete */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+        <input
+          list={inputId}
+          value={input}
+          onChange={e => setInput(e.target.value)}
+          onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); handleAdd(); } }}
+          placeholder="직접 입력 또는 검색…"
+          style={{
+            flex: 1, padding: '6px 12px', borderRadius: 20,
+            border: '1px dashed var(--border-med)',
+            background: 'transparent', color: 'var(--text)',
+            fontSize: 12, outline: 'none',
+          }}
+        />
+        <datalist id={inputId}>
+          {autocompleteList.filter(o => !values.includes(o)).map(o => (
+            <option key={o} value={o} />
+          ))}
+        </datalist>
+        {input.trim() && (
+          <button onClick={handleAdd} style={{
+            width: 26, height: 26, borderRadius: 13,
+            border: 'none', background: activeColor,
+            color: '#fff', fontSize: 16, cursor: 'pointer',
+            display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+            flexShrink: 0,
+          }}>+</button>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function GrowthSessionCard({
-  idx, session, weakSuggestions, successSuggestions, tapTechSuggestions,
+  idx, session, weakAutocomplete, successAutocomplete, tapTechSuggestions,
   opponentSuggestions, onRemove, onUpdate,
 }) {
   const [expanded, setExpanded] = useState(false);
-  const [customWeak, setCustomWeak] = useState('');
-  const [customSuccess, setCustomSuccess] = useState('');
   const [customTapTech, setCustomTapTech] = useState('');
 
   const goodTechs = session.successTried.filter(t => t.success).map(t => t.name);
   const tapTechs  = session.successTried.filter(t => !t.success).map(t => t.name);
 
+  // 성장 포인트 handlers
   function toggleWeak(name) {
     if (session.weak.includes(name))
       onUpdate('weak', session.weak.filter(w => w !== name));
     else
       onUpdate('weak', [...session.weak, name]);
   }
-  function addCustomWeak() {
-    const val = customWeak.trim();
-    if (val && !session.weak.includes(val)) onUpdate('weak', [...session.weak, val]);
-    setCustomWeak('');
+  function removeWeak(name) { onUpdate('weak', session.weak.filter(w => w !== name)); }
+  function addWeak(name) {
+    if (!session.weak.includes(name)) onUpdate('weak', [...session.weak, name]);
   }
 
+  // 성공한 기술 handlers
   function toggleGoodTech(name) {
     if (goodTechs.includes(name)) {
       const i = session.successTried.findIndex(t => t.name === name && t.success);
@@ -295,13 +381,16 @@ function GrowthSessionCard({
       onUpdate('successTried', [...session.successTried, { name, success: true }]);
     }
   }
-  function addCustomSuccess() {
-    const val = customSuccess.trim();
-    if (val && !goodTechs.includes(val))
-      onUpdate('successTried', [...session.successTried, { name: val, success: true }]);
-    setCustomSuccess('');
+  function removeGoodTech(name) {
+    const i = session.successTried.findIndex(t => t.name === name && t.success);
+    if (i >= 0) onUpdate('successTried', session.successTried.filter((_, j) => j !== i));
+  }
+  function addGoodTech(name) {
+    if (!goodTechs.includes(name))
+      onUpdate('successTried', [...session.successTried, { name, success: true }]);
   }
 
+  // 탭 당한 기술 handlers
   function toggleTapTech(name) {
     if (tapTechs.includes(name)) {
       const i = session.successTried.findIndex(t => t.name === name && !t.success);
@@ -321,15 +410,6 @@ function GrowthSessionCard({
     onUpdate(key, Math.max(0, (parseInt(session[key]) || 0) + delta));
   }
 
-  // Selected first, then up to 8 unselected suggestions
-  const weakChips = [
-    ...session.weak,
-    ...weakSuggestions.filter(s => !session.weak.includes(s)).slice(0, 8),
-  ];
-  const successChips = [
-    ...goodTechs,
-    ...successSuggestions.filter(s => !goodTechs.includes(s)).slice(0, 8),
-  ];
   const tapTechChips = [
     ...tapTechs,
     ...tapTechSuggestions.filter(s => !tapTechs.includes(s)).slice(0, 8),
@@ -340,8 +420,8 @@ function GrowthSessionCard({
       padding: 14, background: 'var(--surface-up)',
       border: '1px solid var(--border)', borderRadius: 14, marginBottom: 8,
     }}>
-      {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+      {/* 헤더 */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
         <span style={{ fontSize: 13, fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: 6 }}>
           <span style={{
             display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
@@ -361,77 +441,39 @@ function GrowthSessionCard({
         </button>
       </div>
 
-      {/* 아쉬웠던 점 — PRIMARY */}
+      {/* 성공한 기술 */}
       <div style={{ marginBottom: 12 }}>
-        <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text2)', marginBottom: 7 }}>
-          아쉬웠던 점
-        </div>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-          {weakChips.map(chip => {
-            const sel = session.weak.includes(chip);
-            return (
-              <button key={chip} onClick={() => toggleWeak(chip)} style={{
-                padding: '5px 11px', borderRadius: 20,
-                background: sel ? 'var(--red)' : 'var(--surface)',
-                color: sel ? '#fff' : 'var(--text2)',
-                fontSize: 12, fontWeight: sel ? 700 : 500,
-                cursor: 'pointer',
-                border: sel ? 'none' : '1px solid var(--border-med)',
-              }}>{chip}</button>
-            );
-          })}
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
-            <input
-              value={customWeak}
-              onChange={e => setCustomWeak(e.target.value)}
-              onKeyDown={e => { if (e.key === 'Enter') addCustomWeak(); }}
-              placeholder="직접 입력"
-              style={customInputStyle}
-            />
-            {customWeak.trim() && (
-              <button onClick={addCustomWeak} style={addChipBtnStyle}>+</button>
-            )}
-          </div>
-        </div>
+        <ChipSection
+          label="성공한 기술"
+          values={goodTechs}
+          baseChips={KEY_TECHNIQUES}
+          autocompleteList={successAutocomplete}
+          color="gold"
+          onToggle={toggleGoodTech}
+          onAdd={addGoodTech}
+          onRemove={removeGoodTech}
+          inputId={`success-${idx}`}
+        />
       </div>
 
-      {/* 잘 된 기술 — PRIMARY */}
-      <div style={{ marginBottom: 12 }}>
-        <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text2)', marginBottom: 7 }}>
-          잘 된 기술
-        </div>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-          {successChips.map(chip => {
-            const sel = goodTechs.includes(chip);
-            return (
-              <button key={chip} onClick={() => toggleGoodTech(chip)} style={{
-                padding: '5px 11px', borderRadius: 20,
-                background: sel ? 'var(--accent)' : 'var(--surface)',
-                color: sel ? '#fff' : 'var(--text2)',
-                fontSize: 12, fontWeight: sel ? 700 : 500,
-                cursor: 'pointer',
-                border: sel ? 'none' : '1px solid var(--border-med)',
-              }}>{chip}</button>
-            );
-          })}
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
-            <input
-              value={customSuccess}
-              onChange={e => setCustomSuccess(e.target.value)}
-              onKeyDown={e => { if (e.key === 'Enter') addCustomSuccess(); }}
-              placeholder="직접 입력"
-              style={customInputStyle}
-            />
-            {customSuccess.trim() && (
-              <button onClick={addCustomSuccess} style={addChipBtnStyle}>+</button>
-            )}
-          </div>
-        </div>
+      {/* 성장 포인트 */}
+      <div style={{ marginBottom: 10 }}>
+        <ChipSection
+          label="성장 포인트"
+          values={session.weak}
+          baseChips={BASE_WEAKNESSES}
+          autocompleteList={weakAutocomplete}
+          color="blue"
+          onToggle={toggleWeak}
+          onAdd={addWeak}
+          onRemove={removeWeak}
+          inputId={`weak-${idx}`}
+        />
       </div>
 
       {/* 더 자세히 */}
       <button onClick={() => setExpanded(!expanded)} style={{
-        width: '100%', padding: '8px 0',
+        width: '100%', padding: '7px 0',
         background: 'var(--surface)', border: '1px solid var(--border)',
         borderRadius: 10, color: 'var(--text2)',
         fontSize: 12, fontWeight: 600, cursor: 'pointer',
@@ -440,7 +482,7 @@ function GrowthSessionCard({
       </button>
 
       {expanded && (
-        <div style={{ marginTop: 12, display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <div style={{ marginTop: 10, display: 'flex', flexDirection: 'column', gap: 12 }}>
           {/* 탭 당한 기술 */}
           <div>
             <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text2)', marginBottom: 7 }}>
@@ -466,16 +508,27 @@ function GrowthSessionCard({
                   onChange={e => setCustomTapTech(e.target.value)}
                   onKeyDown={e => { if (e.key === 'Enter') addCustomTapTech(); }}
                   placeholder="직접 입력"
-                  style={customInputStyle}
+                  style={{
+                    padding: '5px 9px', borderRadius: 20,
+                    border: '1px dashed var(--border-med)',
+                    background: 'transparent', color: 'var(--text)',
+                    fontSize: 12, outline: 'none', width: 70,
+                  }}
                 />
                 {customTapTech.trim() && (
-                  <button onClick={addCustomTapTech} style={addChipBtnStyle}>+</button>
+                  <button onClick={addCustomTapTech} style={{
+                    width: 24, height: 24, borderRadius: 12,
+                    border: 'none', background: 'var(--red)',
+                    color: '#fff', fontSize: 16, cursor: 'pointer',
+                    display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                    flexShrink: 0,
+                  }}>+</button>
                 )}
               </div>
             </div>
           </div>
 
-          {/* 상대 벨트 — pill buttons */}
+          {/* 상대 벨트 */}
           <div>
             <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text2)', marginBottom: 7 }}>
               상대 벨트
@@ -513,9 +566,9 @@ function GrowthSessionCard({
 
           {/* 시간 / 탭 스텝퍼 */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12 }}>
-            <StepperField label="시간(분)" value={parseInt(session.time) || 0} onStep={d => step('time', d)} />
-            <StepperField label="탭 받음" value={parseInt(session.tapGot) || 0} onStep={d => step('tapGot', d)} />
-            <StepperField label="탭 줌" value={parseInt(session.tapGave) || 0} onStep={d => step('tapGave', d)} />
+            <StepperField label="시간(분)" value={parseInt(session.time) || 0}   onStep={d => step('time', d)} />
+            <StepperField label="탭 받음"  value={parseInt(session.tapGot) || 0}  onStep={d => step('tapGot', d)} />
+            <StepperField label="탭 줌"    value={parseInt(session.tapGave) || 0} onStep={d => step('tapGave', d)} />
           </div>
 
           {/* 세션 메모 */}
@@ -547,21 +600,6 @@ const stepperBtnStyle = {
   border: '1px solid var(--border-med)',
   background: 'var(--surface)', color: 'var(--text)',
   fontSize: 18, lineHeight: 1, cursor: 'pointer',
-  display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-  flexShrink: 0,
-};
-
-const customInputStyle = {
-  padding: '5px 9px', borderRadius: 20,
-  border: '1px dashed var(--border-med)',
-  background: 'transparent', color: 'var(--text)',
-  fontSize: 12, outline: 'none', width: 70,
-};
-
-const addChipBtnStyle = {
-  width: 24, height: 24, borderRadius: 12,
-  border: 'none', background: 'var(--accent)',
-  color: '#fff', fontSize: 16, cursor: 'pointer',
   display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
   flexShrink: 0,
 };

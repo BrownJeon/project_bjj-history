@@ -14,6 +14,7 @@ const SparSession = sequelize.define('SparSession', {
   success:        { type: DataTypes.TEXT },
   weak:           { type: DataTypes.TEXT },
   note:           { type: DataTypes.TEXT },
+  outcome:        { type: DataTypes.STRING(10), defaultValue: null },
 }, { tableName: 'spar_sessions' });
 
 module.exports = SparSession;

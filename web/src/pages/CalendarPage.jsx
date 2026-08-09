@@ -277,8 +277,8 @@ export default function CalendarPage() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
             {weekSummary.topWeaks.length > 0 && (
               <div style={{ fontSize: 12, color: 'var(--text2)' }}>
-                약점&nbsp;
-                <span style={{ color: 'var(--red)', fontWeight: 600 }}>
+                반복 성장 포인트&nbsp;
+                <span style={{ color: 'var(--accent)', fontWeight: 600 }}>
                   {weekSummary.topWeaks.join('  ·  ')}
                 </span>
               </div>

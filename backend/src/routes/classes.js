@@ -191,6 +191,7 @@ async function insertSessions(sparDayId, sessions, transaction) {
       note: s.note || '',
       positions: JSON.stringify(s.positions || []),
       position_score: parseInt(s.positionScore) || 0,
+      outcome: s.outcome || null,
     }, { transaction });
   }
 }
