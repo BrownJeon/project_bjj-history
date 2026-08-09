@@ -8,6 +8,7 @@ const MembershipPayment = sequelize.define('MembershipPayment', {
   session_type: { type: DataTypes.STRING(10), allowNull: false }, // '주 3회' | '매일권'
   memo:         { type: DataTypes.TEXT, defaultValue: '' },
   created_at:   { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
+  user_id:      { type: DataTypes.INTEGER, allowNull: true },
 }, { tableName: 'membership_payments', timestamps: false });
 
 module.exports = MembershipPayment;

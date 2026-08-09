@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, uploadDir),
   filename: (req, file, cb) => {
     const ext = path.extname(file.originalname) || '.jpg';
-    cb(null, `avatar${ext}`);
+    cb(null, `avatar_${req.user?.id || 'anon'}${ext}`);
   },
 });
 const upload = multer({
@@ -26,35 +26,39 @@ const upload = multer({
 });
 
 // ─── 프로필 ───
-router.get('/profile', wrap(async (_req, res) => {
-  const row = await Profile.findOne({ raw: true });
+router.get('/profile', wrap(async (req, res) => {
+  const uid = req.user.id;
+  const row = await Profile.findOne({ where: { user_id: uid }, raw: true });
   res.json(row || {});
 }));
 
 router.put('/profile', wrap(async (req, res) => {
+  const uid = req.user.id;
   const { nickname, startDate, weightClass, network } = req.body;
-  const row = await Profile.findOne();
+  const row = await Profile.findOne({ where: { user_id: uid } });
   const data = {
     nickname:     nickname || '',
     start_date:   startDate || null,
     weight_class: weightClass || '',
     network:      network || '',
   };
-  if (row) await row.update(data); else await Profile.create(data);
+  if (row) await row.update(data); else await Profile.create({ ...data, user_id: uid });
   res.json({ ok: true });
 }));
 
 router.post('/profile/avatar', upload.single('avatar'), wrap(async (req, res) => {
   if (!req.file) return res.status(400).json({ error: '파일이 없습니다' });
+  const uid = req.user.id;
   const avatarPath = `/uploads/${req.file.filename}`;
-  const row = await Profile.findOne();
+  const row = await Profile.findOne({ where: { user_id: uid } });
   if (row) await row.update({ avatar: avatarPath });
-  else     await Profile.create({ avatar: avatarPath });
+  else     await Profile.create({ avatar: avatarPath, user_id: uid });
   res.json({ avatar: avatarPath });
 }));
 
-router.delete('/profile/avatar', wrap(async (_req, res) => {
-  const row = await Profile.findOne();
+router.delete('/profile/avatar', wrap(async (req, res) => {
+  const uid = req.user.id;
+  const row = await Profile.findOne({ where: { user_id: uid } });
   if (row && row.avatar) {
     const filePath = path.join(__dirname, '../../../public', row.avatar);
     if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
@@ -64,36 +68,42 @@ router.delete('/profile/avatar', wrap(async (_req, res) => {
 }));
 
 // ─── 벨트 히스토리 ───
-router.get('/belts', wrap(async (_req, res) => {
-  const rows = await BeltHistory.findAll({ order: [['achieved_date', 'DESC']], raw: true });
+router.get('/belts', wrap(async (req, res) => {
+  const uid = req.user.id;
+  const rows = await BeltHistory.findAll({ where: { user_id: uid }, order: [['achieved_date', 'DESC']], raw: true });
   res.json(rows);
 }));
 
 router.post('/belts', wrap(async (req, res) => {
+  const uid = req.user.id;
   const { belt, stripes, achievedDate, note } = req.body;
   const r = await BeltHistory.create({
-    belt, stripes: stripes || 0, achieved_date: achievedDate, note: note || '',
+    belt, stripes: stripes || 0, achieved_date: achievedDate, note: note || '', user_id: uid,
   });
   res.json({ id: r.id });
 }));
 
 router.put('/belts/:id', wrap(async (req, res) => {
+  const uid = req.user.id;
   const { belt, stripes, achievedDate, note } = req.body;
   await BeltHistory.update(
     { belt, stripes: stripes || 0, achieved_date: achievedDate, note: note || '' },
-    { where: { id: req.params.id } }
+    { where: { id: req.params.id, user_id: uid } }
   );
   res.json({ ok: true });
 }));
 
 router.delete('/belts/:id', wrap(async (req, res) => {
-  await BeltHistory.destroy({ where: { id: req.params.id } });
+  const uid = req.user.id;
+  await BeltHistory.destroy({ where: { id: req.params.id, user_id: uid } });
   res.json({ ok: true });
 }));
 
 // ─── 회원권 결제이력 ───
-router.get('/memberships', wrap(async (_req, res) => {
+router.get('/memberships', wrap(async (req, res) => {
+  const uid = req.user.id;
   const rows = await MembershipPayment.findAll({
+    where: { user_id: uid },
     order: [['paid_date', 'DESC']],
     raw: true,
   });
@@ -101,6 +111,7 @@ router.get('/memberships', wrap(async (_req, res) => {
 }));
 
 router.post('/memberships', wrap(async (req, res) => {
+  const uid = req.user.id;
   const { paidDate, duration, sessionType, memo } = req.body;
   if (!paidDate || !duration || !sessionType) {
     return res.status(400).json({ error: '필수 항목 누락' });
@@ -110,12 +121,14 @@ router.post('/memberships', wrap(async (req, res) => {
     duration,
     session_type: sessionType,
     memo: memo || '',
+    user_id: uid,
   });
   res.json({ id: r.id });
 }));
 
 router.delete('/memberships/:id', wrap(async (req, res) => {
-  await MembershipPayment.destroy({ where: { id: req.params.id } });
+  const uid = req.user.id;
+  await MembershipPayment.destroy({ where: { id: req.params.id, user_id: uid } });
   res.json({ ok: true });
 }));
 

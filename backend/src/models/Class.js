@@ -12,6 +12,7 @@ const Class = sequelize.define('Class', {
   voice_transcript: { type: DataTypes.TEXT },
   clip_ids:         { type: DataTypes.TEXT, defaultValue: '[]' },
   created_at:       { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
+  user_id:          { type: DataTypes.INTEGER, allowNull: true },
 }, { tableName: 'classes' });
 
 module.exports = Class;

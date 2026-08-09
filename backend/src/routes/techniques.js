@@ -8,16 +8,17 @@ const { analyzeVideo } = require('../services/videoAnalysis');
 const { getFramesDir, getVideoDir } = require('../services/storage');
 
 // 기술명과 매칭되는 미분석 클립을 백그라운드에서 자동 AI 분석
-async function triggerAutoAnalysis(techName) {
+async function triggerAutoAnalysis(techName, userId) {
   const { sequelize } = require('../config/db');
   // tech_name JSON 배열 안에 techName 포함된 미분석 클립 탐색
   const [clips] = await sequelize.query(
     `SELECT id, url FROM video_clips
      WHERE JSON_CONTAINS(tech_name, JSON_QUOTE(?))
+       AND user_id = ?
        AND (description IS NULL OR description = '')
        AND (frames IS NULL OR frames = '[]')
      LIMIT 10`,
-    { replacements: [techName] }
+    { replacements: [techName, userId] }
   );
 
   const targets = clips.filter(c =>
@@ -44,7 +45,7 @@ async function triggerAutoAnalysis(techName) {
 }
 
 // 기술명(name)과 일치하는 video_clips 자동 연결 — JSON_CONTAINS로 배열 검색
-async function loadClipsByNames(names) {
+async function loadClipsByNames(names, userId) {
   if (!names.length) return new Map();
   const { sequelize } = require('../config/db');
   const m = new Map();
@@ -54,8 +55,9 @@ async function loadClipsByNames(names) {
               tech_name, thumb_url, video_file, frames
        FROM video_clips
        WHERE JSON_CONTAINS(tech_name, JSON_QUOTE(?))
+         AND user_id = ?
        ORDER BY starred DESC, id DESC`,
-      { replacements: [name] }
+      { replacements: [name, userId] }
     );
     if (rows.length) m.set(name, rows);
   }
@@ -81,12 +83,14 @@ function posToJson(positions, pos) {
   return JSON.stringify(arr);
 }
 
-router.get('/', wrap(async (_req, res) => {
+router.get('/', wrap(async (req, res) => {
+  const uid = req.user.id;
   const rows = await Technique.findAll({
+    where: { user_id: uid },
     order: [['starred', 'DESC'], ['name', 'ASC']],
     raw: true,
   });
-  const clipsByName = await loadClipsByNames(rows.map(r => r.name));
+  const clipsByName = await loadClipsByNames(rows.map(r => r.name), uid);
   rows.forEach(r => {
     r.positions = parsePos(r.pos);
     r.pos       = r.positions[0] || '';
@@ -103,13 +107,18 @@ router.get('/', wrap(async (_req, res) => {
 }));
 
 router.post('/', wrap(async (req, res) => {
+  const uid = req.user.id;
   const { name, pos, positions, category, tags, note, starred } = req.body;
   if (!name || !name.trim()) return res.status(400).json({ error: '기술명을 입력해주세요' });
+  const { Op } = require('sequelize');
   const dup = await Technique.findOne({
-    where: require('sequelize').where(
-      require('sequelize').fn('LOWER', require('sequelize').col('name')),
-      name.trim().toLowerCase()
-    ),
+    where: {
+      user_id: uid,
+      name: require('sequelize').where(
+        require('sequelize').fn('LOWER', require('sequelize').col('name')),
+        name.trim().toLowerCase()
+      ),
+    },
   });
   if (dup) return res.json({ id: dup.id, existing: true });
   const r = await Technique.create({
@@ -120,15 +129,18 @@ router.post('/', wrap(async (req, res) => {
     links: '[]',
     note: note || '',
     starred: starred ? 1 : 0,
+    user_id: uid,
   });
   res.json({ id: r.id });
   // 응답 후 백그라운드 자동 분석
-  triggerAutoAnalysis(name.trim()).catch(() => {});
+  triggerAutoAnalysis(name.trim(), uid).catch(() => {});
 }));
 
 router.put('/:id', wrap(async (req, res) => {
+  const uid = req.user.id;
   const { name, pos, positions, category, tags, note, starred } = req.body;
-  const old = await Technique.findByPk(req.params.id);
+  const old = await Technique.findOne({ where: { id: req.params.id, user_id: uid } });
+  if (!old) return res.status(404).json({ error: 'not found' });
   await Technique.update(
     {
       name,
@@ -138,29 +150,30 @@ router.put('/:id', wrap(async (req, res) => {
       note: note || '',
       starred: starred ? 1 : 0,
     },
-    { where: { id: req.params.id } }
+    { where: { id: req.params.id, user_id: uid } }
   );
-  // 기술명 변경 시 video_clips.tech_name 동기화
-  if (old && old.name && name && old.name !== name) {
-    await VideoClip.update({ tech_name: name }, { where: { tech_name: old.name } });
+  // 기술명 변경 시 video_clips.tech_name 동기화 (해당 유저 클립만)
+  if (old.name && name && old.name !== name) {
+    await VideoClip.update({ tech_name: name }, { where: { tech_name: old.name, user_id: uid } });
   }
   res.json({ ok: true });
   // 응답 후 백그라운드 자동 분석 (기술명 기준)
-  triggerAutoAnalysis(name.trim()).catch(() => {});
+  triggerAutoAnalysis(name.trim(), uid).catch(() => {});
 }));
 
 router.delete('/:id', wrap(async (req, res) => {
-  const tech = await Technique.findByPk(req.params.id, { attributes: ['name'], raw: true });
-  await Technique.destroy({ where: { id: req.params.id } });
+  const uid = req.user.id;
+  const tech = await Technique.findOne({ where: { id: req.params.id, user_id: uid }, attributes: ['name'], raw: true });
+  if (!tech) return res.status(404).json({ error: 'not found' });
+  await Technique.destroy({ where: { id: req.params.id, user_id: uid } });
   res.json({ ok: true });
 
   // 이 기술에 연결된 클립 중 이 기술만 가진 클립은 파일+DB 삭제, 다중 기술 클립은 tech_name에서만 제거
-  if (!tech) return;
   try {
     const { sequelize } = require('../config/db');
     const [clips] = await sequelize.query(
-      `SELECT id, tech_name FROM video_clips WHERE JSON_CONTAINS(tech_name, JSON_QUOTE(?))`,
-      { replacements: [tech.name] }
+      `SELECT id, tech_name FROM video_clips WHERE JSON_CONTAINS(tech_name, JSON_QUOTE(?)) AND user_id = ?`,
+      { replacements: [tech.name, uid] }
     );
     for (const clip of clips) {
       let names = [];
@@ -188,8 +201,9 @@ router.delete('/:id', wrap(async (req, res) => {
 }));
 
 // 사용 중인 고유 포지션 목록 + 기술 수 반환
-router.get('/positions', wrap(async (_req, res) => {
-  const rows = await Technique.findAll({ attributes: ['pos'], raw: true });
+router.get('/positions', wrap(async (req, res) => {
+  const uid = req.user.id;
+  const rows = await Technique.findAll({ where: { user_id: uid }, attributes: ['pos'], raw: true });
   const counter = new Map();
   for (const row of rows) {
     const positions = parsePos(row.pos);
@@ -205,21 +219,22 @@ router.get('/positions', wrap(async (_req, res) => {
 
 // 특정 포지션 값을 모든 기술의 pos 배열에서 제거
 router.delete('/positions/:name', wrap(async (req, res) => {
+  const uid = req.user.id;
   const targetName = decodeURIComponent(req.params.name);
-  const rows = await Technique.findAll({ attributes: ['id', 'pos'], raw: true });
+  const rows = await Technique.findAll({ where: { user_id: uid }, attributes: ['id', 'pos'], raw: true });
   let updatedCount = 0;
   for (const row of rows) {
     const positions = parsePos(row.pos);
     if (!positions.includes(targetName)) continue;
     const next = positions.filter(p => p !== targetName);
-    await Technique.update({ pos: JSON.stringify(next) }, { where: { id: row.id } });
+    await Technique.update({ pos: JSON.stringify(next) }, { where: { id: row.id, user_id: uid } });
     updatedCount++;
   }
   res.json({ ok: true, updatedCount });
 }));
 
 router.patch('/:id/star', wrap(async (req, res) => {
-  const t = await Technique.findByPk(req.params.id);
+  const t = await Technique.findOne({ where: { id: req.params.id, user_id: req.user.id } });
   if (!t) return res.status(404).json({ error: 'not found' });
   const next = t.starred ? 0 : 1;
   await t.update({ starred: next });

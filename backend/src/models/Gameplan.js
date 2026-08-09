@@ -9,6 +9,7 @@ const Gameplan = sequelize.define('Gameplan', {
   note:       { type: DataTypes.TEXT, defaultValue: '' },
   starred:    { type: DataTypes.TINYINT, defaultValue: 0 },
   created_at: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
+  user_id:    { type: DataTypes.INTEGER, allowNull: true },
 }, { tableName: 'gameplans' });
 
 module.exports = Gameplan;

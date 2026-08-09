@@ -32,8 +32,12 @@ export default function ClipDetailModal({ c, onClose, onEdit, onDelete, onRefres
     try { return JSON.parse(f); } catch { return []; }
   });
 
-  const fileInputRef = useRef(null);
-  const prevJobRef   = useRef(null);
+  const fileInputRef  = useRef(null);
+  const prevJobRef    = useRef(null);
+  const abortRef      = useRef(null);
+
+  // 컴포넌트 언마운트(모달 닫기) 시 폴링 중단
+  useEffect(() => () => { abortRef.current?.abort(); }, []);
 
   // 분석 완료 감지 — analyzeJob이 진행 중이었다가 사라지면 refresh
   useEffect(() => {
@@ -62,11 +66,13 @@ export default function ClipDetailModal({ c, onClose, onEdit, onDelete, onRefres
     if (!/(youtube\.com|youtu\.be|instagram\.com)/.test(c.url || '')) {
       alert('YouTube 또는 Instagram URL만 AI 분석 가능합니다'); return;
     }
+    const ctrl = new AbortController();
+    abortRef.current = ctrl;
     setAnalyzing(true); setAnalyzeProgress(0); setAnalyzeStage('');
     const mode = getStorageMode();
     try {
       const clipId = mode === 'device' ? null : c.id;
-      const res = await enhanceApi.analyzeVideo(c.url, clipId, (pct, stg) => { setAnalyzeProgress(pct); setAnalyzeStage(stg); });
+      const res = await enhanceApi.analyzeVideo(c.url, clipId, (pct, stg) => { setAnalyzeProgress(pct); setAnalyzeStage(stg); }, 1200000, ctrl.signal);
       if (res.description) setLocalDesc(res.description);
       if (res.videoFile)   setLocalVideoFile(res.videoFile);
       if (res.frames?.length) {
@@ -75,6 +81,10 @@ export default function ClipDetailModal({ c, onClose, onEdit, onDelete, onRefres
       }
       await onRefresh?.();
     } catch (e) {
+      if (enhanceApi.isAbortError(e)) {
+        // 모달 닫기 또는 브라우저 닫기 — 백엔드 분석은 계속 진행됨
+        return;
+      }
       alert('AI 분석 실패: ' + e.message);
     } finally { setAnalyzing(false); }
   }

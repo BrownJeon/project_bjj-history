@@ -8,8 +8,10 @@ const { getClassVideoDir, classVideoWebPath } = require('../services/storage');
 const fs = require('fs/promises');
 
 // 기존 drill_clips / spar_day_clips 조인은 더 이상 사용하지 않으므로 빈 배열로 반환
-router.get('/', wrap(async (_req, res) => {
+router.get('/', wrap(async (req, res) => {
+  const uid = req.user.id;
   const classes = await Class.findAll({
+    where: { user_id: uid },
     order: [['date', 'DESC'], ['id', 'DESC']],
     raw: true,
   });
@@ -80,6 +82,7 @@ router.get('/', wrap(async (_req, res) => {
 }));
 
 router.post('/', wrap(async (req, res) => {
+  const uid = req.user.id;
   const { date, dateEnd, theme, note, feedback, trainedDates, drill, clipIds } = req.body;
   const id = await sequelize.transaction(async (t) => {
     const cls = await Class.create({
@@ -87,6 +90,7 @@ router.post('/', wrap(async (req, res) => {
       theme: theme || '', note: note || '', feedback: feedback || '',
       trained_dates: JSON.stringify(trainedDates || []),
       clip_ids: JSON.stringify(clipIds || []),
+      user_id: uid,
     }, { transaction: t });
     if (drill) {
       await Drill.create({
@@ -108,7 +112,10 @@ router.post('/', wrap(async (req, res) => {
 
 router.put('/:id', wrap(async (req, res) => {
   const id = req.params.id;
+  const uid = req.user.id;
   const { date, dateEnd, theme, note, feedback, trainedDates, drill, clipIds } = req.body;
+  const owned = await Class.findOne({ where: { id, user_id: uid }, attributes: ['id'] });
+  if (!owned) return res.status(404).json({ error: 'class not found' });
   await sequelize.transaction(async (t) => {
     await Class.update({
       date, date_end: dateEnd || null,
@@ -140,7 +147,8 @@ router.put('/:id', wrap(async (req, res) => {
 router.patch('/:id/toggle-date', wrap(async (req, res) => {
   const { date } = req.body;
   if (!date) return res.status(400).json({ error: 'date required' });
-  const c = await Class.findByPk(req.params.id);
+  const uid = req.user.id;
+  const c = await Class.findOne({ where: { id: req.params.id, user_id: uid } });
   if (!c) return res.status(404).json({ error: 'not found' });
   const dates = safeParse(c.trained_dates, []);
   const idx = dates.indexOf(date);
@@ -152,6 +160,9 @@ router.patch('/:id/toggle-date', wrap(async (req, res) => {
 
 router.delete('/:id', wrap(async (req, res) => {
   const id = req.params.id;
+  const uid = req.user.id;
+  const owned = await Class.findOne({ where: { id, user_id: uid }, attributes: ['id'] });
+  if (!owned) return res.status(404).json({ error: 'class not found' });
   await sequelize.transaction(async (t) => {
     const sparDays = await SparDay.findAll({ where: { class_id: id }, attributes: ['id'], raw: true, transaction: t });
     const sparDayIds = sparDays.map(s => s.id);
@@ -186,7 +197,7 @@ async function insertSessions(sparDayId, sessions, transaction) {
 
 router.post('/:id/spar', wrap(async (req, res) => {
   const classId = req.params.id;
-  const cls = await Class.findByPk(classId);
+  const cls = await Class.findOne({ where: { id: classId, user_id: req.user.id } });
   if (!cls) return res.status(404).json({ error: 'class not found' });
   const { date, dayNote, sessions } = req.body;
   if (!date) return res.status(400).json({ error: 'date required' });
@@ -226,7 +237,7 @@ router.delete('/:id/spar/:sparDayId', wrap(async (req, res) => {
 
 router.post('/:id/generate-video', wrap(async (req, res) => {
   const classId = req.params.id;
-  const cls = await Class.findByPk(classId);
+  const cls = await Class.findOne({ where: { id: classId, user_id: req.user.id } });
   if (!cls) return res.status(404).json({ error: 'class not found' });
 
   // 이미 pending 잡이 있으면 그것 반환

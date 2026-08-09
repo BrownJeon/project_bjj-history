@@ -25,14 +25,17 @@ function normalizeTechNames(techName) {
 }
 
 // GET /api/picks — 픽 이력 전체 조회 (날짜 DESC, 날짜별 그룹핑)
-router.get('/', wrap(async (_req, res) => {
+router.get('/', wrap(async (req, res) => {
+  const uid = req.user.id;
   const [rows] = await sequelize.query(
     `SELECT ph.id, ph.clip_id, ph.pick_date, ph.created_at,
             vc.title, vc.url, vc.platform, vc.description,
             vc.tech_name, vc.thumb_url, vc.frames, vc.video_file, vc.starred
      FROM pick_history ph
      LEFT JOIN video_clips vc ON ph.clip_id = vc.id
-     ORDER BY ph.pick_date DESC, ph.created_at DESC`
+     WHERE ph.user_id = ?
+     ORDER BY ph.pick_date DESC, ph.created_at DESC`,
+    { replacements: [uid] }
   );
 
   // 날짜별 그룹핑
@@ -73,20 +76,22 @@ router.get('/', wrap(async (_req, res) => {
 
 // POST /api/picks — 픽 저장
 router.post('/', wrap(async (req, res) => {
+  const uid = req.user.id;
   const { clip_id, pick_date } = req.body;
   if (!clip_id || !pick_date) {
     return fail(res, 400, 'clip_id와 pick_date는 필수입니다');
   }
-  const created = await PickHistory.create({ clip_id, pick_date });
+  const created = await PickHistory.create({ clip_id, pick_date, user_id: uid });
   return res.status(201).json({ success: true, data: created, message: '' });
 }));
 
 // DELETE /api/picks/:id — 픽 개별 삭제
 router.delete('/:id', wrap(async (req, res) => {
   const { id } = req.params;
-  const existing = await PickHistory.findByPk(id);
+  const uid = req.user.id;
+  const existing = await PickHistory.findOne({ where: { id, user_id: uid } });
   if (!existing) return fail(res, 404, '픽을 찾을 수 없습니다');
-  await PickHistory.destroy({ where: { id } });
+  await PickHistory.destroy({ where: { id, user_id: uid } });
   return ok(res, { id: Number(id) });
 }));
 

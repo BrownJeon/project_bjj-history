@@ -3,8 +3,10 @@ const router = express.Router();
 const { sequelize, Gameplan, GameplanNode, GameplanEdge, Technique } = require('../models');
 const { wrap } = require('../utils/respond');
 
-router.get('/', wrap(async (_req, res) => {
+router.get('/', wrap(async (req, res) => {
+  const uid = req.user.id;
   const plans = await Gameplan.findAll({
+    where: { user_id: uid },
     order: [['starred', 'DESC'], ['id', 'DESC']],
     raw: true,
   });
@@ -35,10 +37,11 @@ router.get('/', wrap(async (_req, res) => {
 }));
 
 router.post('/', wrap(async (req, res) => {
+  const uid = req.user.id;
   const { name, startPos, endPos, note, nodes, edges } = req.body;
   const id = await sequelize.transaction(async (t) => {
     const gp = await Gameplan.create(
-      { name, start_pos: startPos || '', end_pos: endPos || '', note: note || '' },
+      { name, start_pos: startPos || '', end_pos: endPos || '', note: note || '', user_id: uid },
       { transaction: t }
     );
     const nodeIdMap = {};
@@ -68,11 +71,14 @@ router.post('/', wrap(async (req, res) => {
 
 router.put('/:id', wrap(async (req, res) => {
   const id = req.params.id;
+  const uid = req.user.id;
   const { name, startPos, endPos, note, nodes, edges } = req.body;
+  const owned = await Gameplan.findOne({ where: { id, user_id: uid }, attributes: ['id'] });
+  if (!owned) return res.status(404).json({ error: 'gameplan not found' });
   await sequelize.transaction(async (t) => {
     await Gameplan.update(
       { name, start_pos: startPos || '', end_pos: endPos || '', note: note || '' },
-      { where: { id }, transaction: t }
+      { where: { id, user_id: uid }, transaction: t }
     );
     await GameplanEdge.destroy({ where: { gameplan_id: id }, transaction: t });
     await GameplanNode.destroy({ where: { gameplan_id: id }, transaction: t });
@@ -102,16 +108,19 @@ router.put('/:id', wrap(async (req, res) => {
 
 router.delete('/:id', wrap(async (req, res) => {
   const id = req.params.id;
+  const uid = req.user.id;
+  const owned = await Gameplan.findOne({ where: { id, user_id: uid }, attributes: ['id'] });
+  if (!owned) return res.status(404).json({ error: 'gameplan not found' });
   await sequelize.transaction(async (t) => {
     await GameplanEdge.destroy({ where: { gameplan_id: id }, transaction: t });
     await GameplanNode.destroy({ where: { gameplan_id: id }, transaction: t });
-    await Gameplan.destroy({ where: { id }, transaction: t });
+    await Gameplan.destroy({ where: { id, user_id: uid }, transaction: t });
   });
   res.json({ ok: true });
 }));
 
 router.patch('/:id/star', wrap(async (req, res) => {
-  const gp = await Gameplan.findByPk(req.params.id);
+  const gp = await Gameplan.findOne({ where: { id: req.params.id, user_id: req.user.id } });
   if (!gp) return res.status(404).json({ error: 'not found' });
   const next = gp.starred ? 0 : 1;
   await gp.update({ starred: next });

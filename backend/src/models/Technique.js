@@ -11,6 +11,7 @@ const Technique = sequelize.define('Technique', {
   note:       { type: DataTypes.TEXT },
   starred:    { type: DataTypes.BOOLEAN, defaultValue: false },
   created_at: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
+  user_id:    { type: DataTypes.INTEGER, allowNull: true },
 }, { tableName: 'techniques' });
 
 module.exports = Technique;

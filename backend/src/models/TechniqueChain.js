@@ -7,6 +7,7 @@ const TechniqueChain = sequelize.define('TechniqueChain', {
   note:       { type: DataTypes.TEXT },
   video_path: { type: DataTypes.STRING(500), defaultValue: null },
   created_at: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
+  user_id:    { type: DataTypes.INTEGER, allowNull: true },
 }, { tableName: 'technique_chains' });
 
 module.exports = TechniqueChain;

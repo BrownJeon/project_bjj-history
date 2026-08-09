@@ -122,17 +122,26 @@ export default function ClipsPage({ embedded = false }) {
     catch (e) { showToast('오류: ' + e.message); }
   }
   async function handleSave(form) {
+    const _localFile = form._localFile;
+    const cleanForm = { ...form };
+    delete cleanForm._localFile;
     setLoading(true);
     try {
-      if (editing && editing !== 'new') await clipsApi.updateClip(editing.id, form);
-      else await clipsApi.createClip(form);
+      if (editing && editing !== 'new') {
+        await clipsApi.updateClip(editing.id, cleanForm);
+      } else if (_localFile) {
+        const clip = await clipsApi.createClip(cleanForm);
+        await clipsApi.uploadVideo(clip.id, _localFile, () => {});
+        setTimeout(() => startPolling(), 1000);
+      } else {
+        await clipsApi.createClip(cleanForm);
+        if (cleanForm.url && /youtube\.com|youtu\.be|instagram\.com/.test(cleanForm.url)) {
+          setTimeout(() => startPolling(), 2000);
+        }
+      }
       await reloadClips();
       setEditing(null);
-      showToast('저장되었습니다');
-      // URL이 있으면 백그라운드 AI 분석이 시작될 수 있으므로 폴링 시작
-      if (form.url && /youtube\.com|youtu\.be|instagram\.com/.test(form.url)) {
-        setTimeout(() => startPolling(), 2000);
-      }
+      showToast(_localFile ? '업로드 완료, AI 분석 중...' : '저장되었습니다');
     } catch (e) { showToast('저장 실패: ' + e.message); }
     finally { setLoading(false); }
   }
@@ -403,7 +412,13 @@ function ClipEditor({ initial, techniques, onSave, onCancel, analyzeJob }) {
   const [analyzeStage, setAnalyzeStage]       = useState('');
   const [dupWarnVisible, setDupWarnVisible]   = useState(false);
   const [reviewingClip, setReviewingClip]     = useState(null);
+  const [inputMode, setInputMode]             = useState('url'); // 'url' | 'file'
+  const [localFile, setLocalFile]             = useState(null);
   const pendingFormRef = useRef(null);
+  const abortRef       = useRef(null);
+
+  // 에디터 닫힐 때 폴링 중단 (모달 unmount 시 AbortController 해제)
+  useEffect(() => () => { abortRef.current?.abort(); }, []);
 
   const techSuggestions = useMemo(
     () => techniques.map(t => t.name),
@@ -441,16 +456,17 @@ function ClipEditor({ initial, techniques, onSave, onCancel, analyzeJob }) {
       alert('YouTube URL만 AI 분석 가능합니다');
       return;
     }
+    const ctrl = new AbortController();
+    abortRef.current = ctrl;
     setAnalyzing(true);
     setAnalyzeProgress(0); setAnalyzeStage('');
     try {
-      // initial?.id 가 있으면 (수정 모달) clipId 전달 → 프레임 영구 저장
-      const res = await enhanceApi.analyzeVideo(url, initial?.id || null, (pct, stg) => { setAnalyzeProgress(pct); setAnalyzeStage(stg); });
+      const res = await enhanceApi.analyzeVideo(url, initial?.id || null, (pct, stg) => { setAnalyzeProgress(pct); setAnalyzeStage(stg); }, 1200000, ctrl.signal);
       setDesc(res.description || '');
-      // 프레임이 저장됐으면 클립 목록 새로고침
       if ((res.frames || []).length > 0) reloadClips();
       alert(`AI 설명이 생성되었습니다 (${res.method || 'vision'})`);
     } catch (e) {
+      if (enhanceApi.isAbortError(e)) return; // 모달 닫기 — 백엔드 분석 계속 진행됨
       alert('AI 분석 실패: ' + e.message);
     } finally {
       setAnalyzing(false);
@@ -458,17 +474,20 @@ function ClipEditor({ initial, techniques, onSave, onCancel, analyzeJob }) {
   }
 
   function submit() {
-    if (!title.trim())       return alert('영상 제목을 입력해주세요');
-    if (!url.trim())         return alert('URL을 입력해주세요');
-    if (!techNames.length)   return alert('기술명을 1개 이상 입력해주세요');
+    if (!title.trim())                          return alert('영상 제목을 입력해주세요');
+    if (inputMode === 'url' && !url.trim())     return alert('URL을 입력해주세요');
+    if (inputMode === 'file' && !localFile)     return alert('영상 파일을 선택해주세요');
+    if (!techNames.length)                      return alert('기술명을 1개 이상 입력해주세요');
     const form = {
-      title: title.trim(), url: url.trim(),
+      title: title.trim(),
+      url: inputMode === 'url' ? url.trim() : '',
       description: desc,
       tech_names: techNames,
       tech_name: techNames[0] || '',
       positions,
       tags: [], starred: starred ? 1 : 0,
     };
+    if (inputMode === 'file') form._localFile = localFile;
     if (similarClips.length > 0) {
       pendingFormRef.current = form;
       setDupWarnVisible(true);
@@ -489,18 +508,50 @@ function ClipEditor({ initial, techniques, onSave, onCancel, analyzeJob }) {
       </div>
       <div className="field"><label>제목 *</label>
         <input value={title} onChange={e => setTitle(e.target.value)} placeholder="영상 제목" /></div>
-      <div className="field"><label>URL *</label>
-        <input value={url} onChange={e => setUrl(e.target.value)} placeholder="YouTube 또는 Instagram URL" />
-        {url && <div style={{ fontSize: 12, color: 'var(--blue)', marginTop: 4 }}>{getPlatformLabel(detectPlatform(url))}</div>}
-        {isInstagram && !igCookieConfigured && (
-          <div style={{ fontSize: 11, color: 'var(--amber)', marginTop: 3 }}>
-            ⚠ Instagram은 AI 자동 분석 불가 — 저장 후 상세 화면에서 파일로 분석하거나 프로필에서 쿠키를 설정하세요
-          </div>
-        )}
-        {isInstagram && igCookieConfigured && (
-          <div style={{ fontSize: 11, color: 'var(--accent)', marginTop: 3 }}>
-            ✓ Instagram 쿠키 인증됨 — AI 분석 가능
-          </div>
+      <div className="field">
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+          <label style={{ margin: 0 }}>영상 등록 방식</label>
+          <button type="button" onClick={() => { setInputMode('url'); setLocalFile(null); }}
+            style={{ padding: '2px 10px', borderRadius: 6, fontSize: 12, cursor: 'pointer', border: 'none', fontWeight: 600,
+              background: inputMode === 'url' ? 'var(--accent)' : 'var(--surface-up)',
+              color: inputMode === 'url' ? 'white' : 'var(--text2)' }}>
+            URL
+          </button>
+          <button type="button" onClick={() => { setInputMode('file'); setUrl(''); }}
+            style={{ padding: '2px 10px', borderRadius: 6, fontSize: 12, cursor: 'pointer', border: 'none', fontWeight: 600,
+              background: inputMode === 'file' ? 'var(--accent)' : 'var(--surface-up)',
+              color: inputMode === 'file' ? 'white' : 'var(--text2)' }}>
+            파일 업로드
+          </button>
+        </div>
+        {inputMode === 'url' ? (
+          <>
+            <input value={url} onChange={e => setUrl(e.target.value)} placeholder="YouTube 또는 Instagram URL" />
+            {url && <div style={{ fontSize: 12, color: 'var(--blue)', marginTop: 4 }}>{getPlatformLabel(detectPlatform(url))}</div>}
+            {isInstagram && !igCookieConfigured && (
+              <div style={{ fontSize: 11, color: 'var(--amber)', marginTop: 3 }}>
+                ⚠ Instagram은 AI 자동 분석 불가 — 저장 후 상세 화면에서 파일로 분석하거나 프로필에서 쿠키를 설정하세요
+              </div>
+            )}
+            {isInstagram && igCookieConfigured && (
+              <div style={{ fontSize: 11, color: 'var(--accent)', marginTop: 3 }}>
+                ✓ Instagram 쿠키 인증됨 — AI 분석 가능
+              </div>
+            )}
+          </>
+        ) : (
+          <>
+            <input type="file" accept="video/*" onChange={e => setLocalFile(e.target.files[0] || null)}
+              style={{ fontSize: 13, padding: '4px 0' }} />
+            {localFile && (
+              <div style={{ fontSize: 12, color: 'var(--accent)', marginTop: 4 }}>
+                {localFile.name} ({(localFile.size / 1024 / 1024).toFixed(1)} MB)
+              </div>
+            )}
+            <div style={{ fontSize: 11, color: 'var(--text3)', marginTop: 4 }}>
+              업로드 후 AI가 자동으로 영상을 분석합니다
+            </div>
+          </>
         )}
       </div>
       <div className="field">
@@ -593,7 +644,7 @@ function ClipEditor({ initial, techniques, onSave, onCancel, analyzeJob }) {
       <div className="field">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
           <label style={{ margin: 0 }}>설명</label>
-          {(() => {
+          {inputMode === 'url' && (() => {
             const bgRunning = analyzeJob && analyzeJob.progress >= 0;
             const igBlocked = isInstagram && !igCookieConfigured;
             const disabled  = analyzing || bgRunning || igBlocked;

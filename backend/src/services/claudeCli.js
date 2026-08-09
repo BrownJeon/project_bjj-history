@@ -1,4 +1,6 @@
 const { spawn } = require('child_process');
+const fs = require('fs');
+const os = require('os');
 
 const REMOVE_ENV_KEYS = [
   'CLAUDECODE',
@@ -20,9 +22,17 @@ const REMOVE_ENV_KEYS = [
   'ANTHROPIC_API_KEY',
 ];
 
+// 사용자 로컬 npm global 경로 (~/.npm-global/bin)를 PATH 앞에 추가해
+// 시스템 claude(구버전)보다 최신 사용자 claude가 우선 사용되도록 한다.
+// 배경: /usr/bin/claude 2.1.142 에 tools.Read input_schema(oneOf) 버그가 있어
+//       API 400 오류("input_schema does not support oneOf/allOf/anyOf")가 발생함.
 function cleanEnv() {
   const env = { ...process.env };
   for (const k of REMOVE_ENV_KEYS) delete env[k];
+  const npmGlobalBin = `${os.homedir()}/.npm-global/bin`;
+  if (fs.existsSync(npmGlobalBin) && env.PATH && !env.PATH.startsWith(npmGlobalBin)) {
+    env.PATH = `${npmGlobalBin}:${env.PATH}`;
+  }
   return env;
 }
 

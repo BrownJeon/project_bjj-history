@@ -109,6 +109,39 @@ export default function CalendarPage() {
     return { cls, trained, spar };
   }, [classes, year, month]);
 
+  // 주간 스파링 스탯
+  const weekSummary = useMemo(() => {
+    const now = new Date();
+    const weekStart = new Date(now);
+    weekStart.setDate(now.getDate() - now.getDay());
+    weekStart.setHours(0, 0, 0, 0);
+    const weekStartStr = `${weekStart.getFullYear()}-${pad(weekStart.getMonth() + 1)}-${pad(weekStart.getDate())}`;
+    const weekEndStr = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+
+    let rounds = 0;
+    const weakFreq = {}, goodFreq = {}, beltCounts = {};
+    classes.forEach(c => {
+      (c.spar_days || []).forEach(sd => {
+        const date = (sd.date || '').toString().slice(0, 10);
+        if (date >= weekStartStr && date <= weekEndStr) {
+          (sd.sessions || []).forEach(s => {
+            rounds++;
+            if (s.level) beltCounts[s.level] = (beltCounts[s.level] || 0) + 1;
+            (s.weak || []).forEach(w => { if (w) weakFreq[w] = (weakFreq[w] || 0) + 1; });
+            (s.success || []).forEach(t => {
+              if (t?.success !== false && t?.name) goodFreq[t.name] = (goodFreq[t.name] || 0) + 1;
+            });
+          });
+        }
+      });
+    });
+
+    const topWeaks = Object.entries(weakFreq).sort((a, b) => b[1] - a[1]).slice(0, 2).map(([k]) => k);
+    const topGood  = Object.entries(goodFreq).sort((a, b) => b[1] - a[1]).slice(0, 2).map(([k]) => k);
+    const beltStr  = Object.entries(beltCounts).map(([b, c]) => `${b} ×${c}`).join(' · ');
+    return { rounds, topWeaks, topGood, beltStr };
+  }, [classes]);
+
   function changeMonth(delta) {
     const m = month + delta;
     if (m < 0) { setYear(year - 1); setMonth(11); }
@@ -220,11 +253,48 @@ export default function CalendarPage() {
       </div>
 
       {/* 월 요약 */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8, marginBottom: 16 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8, marginBottom: 8 }}>
         <SummaryCell label="수업" value={monthSummary.cls} color="var(--accent)" />
         <SummaryCell label="수련일" value={monthSummary.trained} color="var(--blue)" />
         <SummaryCell label="스파링" value={monthSummary.spar} color="var(--red)" />
       </div>
+
+      {/* 주간 스파링 스탯 */}
+      {weekSummary.rounds > 0 && (
+        <div style={{
+          background: 'var(--surface)', border: '1px solid var(--border)',
+          borderRadius: 12, padding: '10px 14px', marginBottom: 16,
+        }}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text3)', marginBottom: 5, textTransform: 'uppercase', letterSpacing: 0.4 }}>
+            이번 주 스파링
+          </div>
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginBottom: 4 }}>
+            <span style={{ fontSize: 16, fontWeight: 800, color: 'var(--text)' }}>{weekSummary.rounds} 라운드</span>
+            {weekSummary.beltStr && (
+              <span style={{ fontSize: 12, color: 'var(--text2)' }}>{weekSummary.beltStr}</span>
+            )}
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+            {weekSummary.topWeaks.length > 0 && (
+              <div style={{ fontSize: 12, color: 'var(--text2)' }}>
+                약점&nbsp;
+                <span style={{ color: 'var(--red)', fontWeight: 600 }}>
+                  {weekSummary.topWeaks.join('  ·  ')}
+                </span>
+              </div>
+            )}
+            {weekSummary.topGood.length > 0 && (
+              <div style={{ fontSize: 12, color: 'var(--text2)' }}>
+                잘 된 기술&nbsp;
+                <span style={{ color: 'var(--accent)', fontWeight: 600 }}>
+                  {weekSummary.topGood.join('  ·  ')}
+                </span>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+      {weekSummary.rounds === 0 && <div style={{ marginBottom: 8 }} />}
 
       {/* 선택일 상세 */}
       {selected && (

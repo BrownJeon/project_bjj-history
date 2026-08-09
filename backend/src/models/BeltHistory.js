@@ -8,6 +8,7 @@ const BeltHistory = sequelize.define('BeltHistory', {
   achieved_date:  { type: DataTypes.DATEONLY, allowNull: false },
   note:           { type: DataTypes.TEXT, defaultValue: '' },
   created_at:     { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
+  user_id:        { type: DataTypes.INTEGER, allowNull: true },
 }, { tableName: 'belt_history' });
 
 module.exports = BeltHistory;

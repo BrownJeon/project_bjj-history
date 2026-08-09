@@ -98,10 +98,10 @@ async function getWhisperTranscript(videoPath, audioPath, txtPath) {
   try {
     await runProcess('ffmpeg', ['-y', '-i', videoPath, '-vn', '-q:a', '5', audioPath], 60000);
     await runProcess('whisper', [
-      audioPath, '--model', 'small',
+      audioPath, '--model', 'tiny',
       '--output_format', 'txt', '--output_dir', '/tmp',
       '--verbose', 'False',
-    ], 240000);
+    ], 60000);
     return (await fs.readFile(txtPath, 'utf-8').catch(() => '')).trim();
   } catch (e) {
     console.log('[analyze-video] Whisper 스킵:', e.message);

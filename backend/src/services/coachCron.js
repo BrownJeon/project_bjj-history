@@ -6,6 +6,7 @@
  */
 
 const { CoachReport, Technique, TechniqueChain } = require('../models');
+const CRON_USER_ID = parseInt(process.env.CRON_USER_ID) || 1;
 const { runClaude } = require('./claudeCli');
 const {
   collectTrainingData,
@@ -31,7 +32,7 @@ async function generateWeeklyReport() {
   const periodEnd   = todayStr();
   const periodStart = daysAgo(6); // 지난 7일 (일요일~토요일)
 
-  const data = await collectTrainingData(periodStart, periodEnd);
+  const data = await collectTrainingData(periodStart, periodEnd, CRON_USER_ID);
   if (!data.length) {
     console.log('[cron/report] 훈련 데이터 없음, 스킵');
     return null;
@@ -59,7 +60,7 @@ JSON 형식으로만 응답하세요:
   const json = extractJSONObject(raw);
   const r = await CoachReport.create({
     type: 'report', period_start: periodStart, period_end: periodEnd,
-    content: JSON.stringify(json),
+    content: JSON.stringify(json), user_id: CRON_USER_ID,
   });
   console.log(`[cron/report] 생성 완료 id=${r.id} (${periodStart} ~ ${periodEnd})`);
   return r;
@@ -69,15 +70,15 @@ async function generateWeeklyPlan() {
   const periodEnd   = todayStr();
   const periodStart = daysAgo(6);
 
-  const data = await collectTrainingData(periodStart, periodEnd);
+  const data = await collectTrainingData(periodStart, periodEnd, CRON_USER_ID);
   if (!data.length) {
     console.log('[cron/plan] 훈련 데이터 없음, 스킵');
     return null;
   }
 
   const diag = computeDiagnosis(data, periodStart, periodEnd);
-  const techRows  = await Technique.findAll({ attributes: ['id', 'name'], order: [['name', 'ASC']], raw: true });
-  const chainRows = await TechniqueChain.findAll({ attributes: ['id', 'name'], order: [['name', 'ASC']], raw: true });
+  const techRows  = await Technique.findAll({ where: { user_id: CRON_USER_ID }, attributes: ['id', 'name'], order: [['name', 'ASC']], raw: true });
+  const chainRows = await TechniqueChain.findAll({ where: { user_id: CRON_USER_ID }, attributes: ['id', 'name'], order: [['name', 'ASC']], raw: true });
 
   const prompt = `당신은 주짓수 코치입니다. 아래 진단 데이터를 바탕으로 다음 주 훈련 포커스 3개를 제안해주세요.
 
@@ -121,7 +122,7 @@ JSON 형식으로만 응답하세요:
 
   const r = await CoachReport.create({
     type: 'plan', period_start: periodStart, period_end: periodEnd,
-    content: JSON.stringify({ focuses }),
+    content: JSON.stringify({ focuses }), user_id: CRON_USER_ID,
   });
   console.log(`[cron/plan] 생성 완료 id=${r.id} (${periodStart} ~ ${periodEnd})`);
   return r;

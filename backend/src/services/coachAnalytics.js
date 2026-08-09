@@ -9,14 +9,16 @@ function daysAgo(n) {
 }
 function todayStr() { return new Date().toISOString().slice(0, 10); }
 
-async function collectTrainingData(periodStart, periodEnd) {
+async function collectTrainingData(periodStart, periodEnd, userId) {
+  const where = {
+    [Op.or]: [
+      { date:     { [Op.between]: [periodStart, periodEnd] } },
+      { date_end: { [Op.between]: [periodStart, periodEnd] } },
+    ],
+  };
+  if (userId != null) where.user_id = userId;
   const classes = await Class.findAll({
-    where: {
-      [Op.or]: [
-        { date:     { [Op.between]: [periodStart, periodEnd] } },
-        { date_end: { [Op.between]: [periodStart, periodEnd] } },
-      ],
-    },
+    where,
     order: [['date', 'ASC']],
     raw: true,
   });

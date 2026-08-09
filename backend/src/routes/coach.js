@@ -21,22 +21,24 @@ function extractJSONObject(text) {
 }
 
 router.get('/diagnosis', wrap(async (req, res) => {
+  const uid   = req.user.id;
   const days  = parseInt(req.query.days) || 30;
   const end   = todayStr();
   const start = daysAgo(days - 1);
-  const data  = await collectTrainingData(start, end);
+  const data  = await collectTrainingData(start, end, uid);
   const diag  = computeDiagnosis(data, start, end);
   res.json({ period: { days, start, end }, ...diag });
 }));
 
 router.post('/report', wrap(async (req, res) => {
+  const uid = req.user.id;
   let { periodStart, periodEnd, days } = req.body;
   if (!periodStart || !periodEnd) {
     const n = parseInt(days) || 30;
     periodEnd   = todayStr();
     periodStart = daysAgo(n - 1);
   }
-  const data = await collectTrainingData(periodStart, periodEnd);
+  const data = await collectTrainingData(periodStart, periodEnd, uid);
   if (!data.length) return res.status(400).json({ error: '해당 기간에 훈련 기록이 없습니다' });
 
   const context = serializeForPrompt(data);
@@ -66,24 +68,25 @@ JSON 형식으로만 응답하세요:
   const json = extractJSONObject(raw);
   const r = await CoachReport.create({
     type: 'report', period_start: periodStart, period_end: periodEnd,
-    content: JSON.stringify(json),
+    content: JSON.stringify(json), user_id: uid,
   });
   res.json({ id: r.id, periodStart, periodEnd, content: json });
 }));
 
 router.post('/plan', wrap(async (req, res) => {
+  const uid = req.user.id;
   let { periodStart, periodEnd, days } = req.body;
   if (!periodStart || !periodEnd) {
     const n = parseInt(days) || 30;
     periodEnd   = todayStr();
     periodStart = daysAgo(n - 1);
   }
-  const data = await collectTrainingData(periodStart, periodEnd);
+  const data = await collectTrainingData(periodStart, periodEnd, uid);
   if (!data.length) return res.status(400).json({ error: '해당 기간에 훈련 기록이 없습니다' });
   const diag = computeDiagnosis(data, periodStart, periodEnd);
 
-  const techRows  = await Technique.findAll({ attributes: ['id', 'name'], order: [['name', 'ASC']], raw: true });
-  const chainRows = await TechniqueChain.findAll({ attributes: ['id', 'name'], order: [['name', 'ASC']], raw: true });
+  const techRows  = await Technique.findAll({ where: { user_id: uid }, attributes: ['id', 'name'], order: [['name', 'ASC']], raw: true });
+  const chainRows = await TechniqueChain.findAll({ where: { user_id: uid }, attributes: ['id', 'name'], order: [['name', 'ASC']], raw: true });
   const techNameList  = techRows.map(t => t.name).join(', ');
   const chainNameList = chainRows.map(c => c.name).join(', ');
 
@@ -129,23 +132,24 @@ JSON 형식으로만 응답하세요:
   const content = { focuses };
   const r = await CoachReport.create({
     type: 'plan', period_start: periodStart, period_end: periodEnd,
-    content: JSON.stringify(content),
+    content: JSON.stringify(content), user_id: uid,
   });
   res.json({ id: r.id, periodStart, periodEnd, content });
 }));
 
 router.post('/chat', wrap(async (req, res) => {
+  const uid = req.user.id;
   const { question } = req.body;
   if (!question?.trim()) return res.status(400).json({ error: '질문을 입력해주세요' });
   const days  = parseInt(req.body.days) || 30;
   const end   = todayStr();
   const start = daysAgo(days - 1);
-  const data  = await collectTrainingData(start, end);
+  const data  = await collectTrainingData(start, end, uid);
   const diag  = computeDiagnosis(data, start, end);
   const context = serializeForPrompt(data);
 
-  const prof = await Profile.findOne({ raw: true });
-  const beltRow = await BeltHistory.findOne({ order: [['achieved_date', 'DESC']], raw: true });
+  const prof = await Profile.findOne({ where: { user_id: uid }, raw: true });
+  const beltRow = await BeltHistory.findOne({ where: { user_id: uid }, order: [['achieved_date', 'DESC']], raw: true });
   const currentBelt = beltRow || { belt: '화이트', stripes: 0 };
 
   const prompt = `당신은 주짓수(BJJ) 전문 코치이자 훈련생의 개인 훈련 비서입니다.
@@ -181,14 +185,15 @@ ${question.trim()}
   const content = { answer, diagSummary: diag.summary };
   const r = await CoachReport.create({
     type: 'chat', period_start: start, period_end: end,
-    question: question.trim(), content: JSON.stringify(content),
+    question: question.trim(), content: JSON.stringify(content), user_id: uid,
   });
   res.json({ id: r.id, question: question.trim(), answer, created_at: new Date().toISOString() });
 }));
 
 router.patch('/reports/:id/focus-done', wrap(async (req, res) => {
+  const uid = req.user.id;
   const { focusIndex, done } = req.body;
-  const row = await CoachReport.findByPk(req.params.id);
+  const row = await CoachReport.findOne({ where: { id: req.params.id, user_id: uid } });
   if (!row) return res.status(404).json({ error: 'not found' });
   const content = safeParse(row.content, {});
   if (!Array.isArray(content.focuses) || !content.focuses[focusIndex]) {
@@ -200,10 +205,11 @@ router.patch('/reports/:id/focus-done', wrap(async (req, res) => {
 }));
 
 router.get('/reports', wrap(async (req, res) => {
+  const uid   = req.user.id;
   const type  = req.query.type  || 'report';
   const limit = Math.min(parseInt(req.query.limit) || 20, 50);
   const rows = await CoachReport.findAll({
-    where: { type },
+    where: { type, user_id: uid },
     order: [['created_at', 'DESC']],
     limit,
     raw: true,
@@ -213,7 +219,8 @@ router.get('/reports', wrap(async (req, res) => {
 }));
 
 router.delete('/reports/:id', wrap(async (req, res) => {
-  await CoachReport.destroy({ where: { id: req.params.id } });
+  const uid = req.user.id;
+  await CoachReport.destroy({ where: { id: req.params.id, user_id: uid } });
   res.json({ ok: true });
 }));
 

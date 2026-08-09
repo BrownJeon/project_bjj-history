@@ -9,6 +9,7 @@ tags:
 ## Todo
 
 ## Doing
+- [[task-002-email-auth-multiuser]] — 이메일 회원가입/로그인 + 계정별 데이터 격리 (2026-08-06~)
 
 ## Review
 

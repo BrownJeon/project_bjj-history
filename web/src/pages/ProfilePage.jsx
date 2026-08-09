@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as profileApi from '../api/profile';
+import { useAuth } from '../contexts/AuthContext';
 
 const DURATION_MONTHS = { '1개월': 1, '3개월': 3 };
 
@@ -48,6 +49,7 @@ export const getStorageMode = () => localStorage.getItem(STORAGE_KEY) || 'server
 
 export default function ProfilePage() {
   const navigate = useNavigate();
+  const { user, logout } = useAuth();
   const { showToast, setLoading } = useUI();
   const { classes, techniques } = useCache();
 
@@ -611,6 +613,20 @@ export default function ProfilePage() {
                 </div>
               </div>
             )}
+          </div>
+        </div>
+
+        {/* 계정 정보 */}
+        <div style={{ marginTop: 24 }}>
+          <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text2)', marginBottom: 8 }}>계정</div>
+          <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '12px 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span style={{ color: 'var(--text2)', fontSize: 14 }}>{user?.email}</span>
+            <button
+              onClick={logout}
+              style={{ background: 'var(--red-dim)', border: '1px solid var(--red)', borderRadius: 8, padding: '6px 14px', color: 'var(--red)', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}
+            >
+              로그아웃
+            </button>
           </div>
         </div>
 

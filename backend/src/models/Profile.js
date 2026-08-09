@@ -8,6 +8,7 @@ const Profile = sequelize.define('Profile', {
   weight_class: { type: DataTypes.STRING(20), defaultValue: '' },
   network:      { type: DataTypes.STRING(100), defaultValue: '' },
   avatar:       { type: DataTypes.STRING(255) },
+  user_id:      { type: DataTypes.INTEGER, allowNull: true },
 }, { tableName: 'profile' });
 
 module.exports = Profile;

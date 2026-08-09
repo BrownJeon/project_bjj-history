@@ -7,8 +7,9 @@ const { wrap, safeParse } = require('../utils/respond');
 
 const VIDEO_DIR = '/home/brownjeon/.node-local/bjj-chain-videos';
 
-router.get('/', wrap(async (_req, res) => {
-  const chains = await TechniqueChain.findAll({ order: [['id', 'DESC']], raw: true });
+router.get('/', wrap(async (req, res) => {
+  const uid = req.user.id;
+  const chains = await TechniqueChain.findAll({ where: { user_id: uid }, order: [['id', 'DESC']], raw: true });
   for (const c of chains) {
     const steps = await ChainStep.findAll({
       where: { chain_id: c.id },
@@ -30,9 +31,10 @@ router.get('/', wrap(async (_req, res) => {
 }));
 
 router.post('/', wrap(async (req, res) => {
+  const uid = req.user.id;
   const { name, note, steps } = req.body;
   const id = await sequelize.transaction(async (t) => {
-    const chain = await TechniqueChain.create({ name, note: note || '' }, { transaction: t });
+    const chain = await TechniqueChain.create({ name, note: note || '', user_id: uid }, { transaction: t });
     for (let i = 0; i < (steps || []).length; i++) {
       const s = steps[i];
       await ChainStep.create({
@@ -48,9 +50,12 @@ router.post('/', wrap(async (req, res) => {
 }));
 
 router.put('/:id', wrap(async (req, res) => {
+  const uid = req.user.id;
   const { name, note, steps } = req.body;
+  const owned = await TechniqueChain.findOne({ where: { id: req.params.id, user_id: uid }, attributes: ['id'] });
+  if (!owned) return res.status(404).json({ error: 'chain not found' });
   await sequelize.transaction(async (t) => {
-    await TechniqueChain.update({ name, note: note || '' }, { where: { id: req.params.id }, transaction: t });
+    await TechniqueChain.update({ name, note: note || '' }, { where: { id: req.params.id, user_id: uid }, transaction: t });
     await ChainStep.destroy({ where: { chain_id: req.params.id }, transaction: t });
     for (let i = 0; i < (steps || []).length; i++) {
       const s = steps[i];
@@ -66,9 +71,12 @@ router.put('/:id', wrap(async (req, res) => {
 }));
 
 router.delete('/:id', wrap(async (req, res) => {
+  const uid = req.user.id;
+  const owned = await TechniqueChain.findOne({ where: { id: req.params.id, user_id: uid }, attributes: ['id'] });
+  if (!owned) return res.status(404).json({ error: 'chain not found' });
   await sequelize.transaction(async (t) => {
     await ChainStep.destroy({ where: { chain_id: req.params.id }, transaction: t });
-    await TechniqueChain.destroy({ where: { id: req.params.id }, transaction: t });
+    await TechniqueChain.destroy({ where: { id: req.params.id, user_id: uid }, transaction: t });
   });
   // 생성된 영상 파일도 삭제
   const videoPath = path.join(VIDEO_DIR, `chain-${req.params.id}.mp4`);
@@ -78,7 +86,7 @@ router.delete('/:id', wrap(async (req, res) => {
 
 // 영상 서빙 (HTTP Range 지원 — HTML5 <video> 시크 가능)
 router.get('/:id/video', wrap(async (req, res) => {
-  const chain = await TechniqueChain.findByPk(req.params.id, { raw: true });
+  const chain = await TechniqueChain.findOne({ where: { id: req.params.id, user_id: req.user.id }, raw: true });
   if (!chain) return res.status(404).json({ error: '체인을 찾을 수 없습니다' });
 
   const filePath = chain.video_path || path.join(VIDEO_DIR, `chain-${chain.id}.mp4`);
@@ -114,7 +122,7 @@ router.get('/:id/video', wrap(async (req, res) => {
 
 // AI 영상 비동기 생성 (job 즉시 반환 → 백그라운드 처리)
 router.post('/:id/generate-video', wrap(async (req, res) => {
-  const chain = await TechniqueChain.findByPk(req.params.id, { raw: true });
+  const chain = await TechniqueChain.findOne({ where: { id: req.params.id, user_id: req.user.id }, raw: true });
   if (!chain) return res.status(404).json({ error: '체인을 찾을 수 없습니다' });
 
   const steps = await ChainStep.findAll({
@@ -163,19 +171,21 @@ router.get('/video-jobs/:jobId', wrap(async (req, res) => {
 
 // AI 체인 자동 생성 (미등록 기술 포함 가능)
 router.post('/ai-generate', wrap(async (req, res) => {
+  const uid = req.user.id;
   const { seedTechniqueIds, scenario, goal } = req.body;
   const scenarioText = (scenario || goal || '').trim();
   if (!scenarioText) {
     return res.status(400).json({ error: '상황 또는 목표를 입력해주세요' });
   }
 
-  const allTechniques = await Technique.findAll({ raw: true });
+  const allTechniques = await Technique.findAll({ where: { user_id: uid }, raw: true });
 
   const seedTechs = Array.isArray(seedTechniqueIds) && seedTechniqueIds.length
     ? allTechniques.filter(t => seedTechniqueIds.includes(t.id))
     : [];
 
   const allClips = await VideoClip.findAll({
+    where: { user_id: uid },
     attributes: ['id', 'title', 'url', 'platform', 'tech_name', 'thumb_url'],
     raw: true,
   });

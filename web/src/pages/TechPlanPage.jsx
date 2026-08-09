@@ -399,9 +399,10 @@ function TechEditorModal({ initial, onSave, onCancel }) {
         <label>핵심 포인트 / 메모</label>
         <textarea rows={4} value={note} onChange={e => setNote(e.target.value)} />
       </div>
-      <div className="field" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-        <input type="checkbox" id="t-star-tp" checked={starred} onChange={e => setStarred(e.target.checked)} />
-        <label htmlFor="t-star-tp" style={{ margin: 0, cursor: 'pointer' }}>즐겨찾기</label>
+      <div className="field" style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 8 }}>
+        <input type="checkbox" id="t-star-tp" checked={starred} onChange={e => setStarred(e.target.checked)}
+          style={{ width: 16, height: 16, cursor: 'pointer', accentColor: 'var(--amber)' }} />
+        <label htmlFor="t-star-tp" style={{ margin: 0, cursor: 'pointer', fontSize: 13, fontWeight: 600, color: starred ? 'var(--amber)' : 'var(--text2)' }}>⭐ 즐겨찾기</label>
       </div>
       <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
         <Button variant="primary" size="sm" onClick={submit}>저장</Button>

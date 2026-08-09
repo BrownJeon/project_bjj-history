@@ -93,8 +93,10 @@ function techNamesToJson(tech_names, tech_name) {
   return JSON.stringify(arr);
 }
 
-router.get('/', wrap(async (_req, res) => {
+router.get('/', wrap(async (req, res) => {
+  const uid = req.user.id;
   const rows = await VideoClip.findAll({
+    where: { user_id: uid },
     order: [['starred', 'DESC'], ['id', 'DESC']],
     raw: true,
   });
@@ -104,7 +106,7 @@ router.get('/', wrap(async (_req, res) => {
 router.get('/search', wrap(async (req, res) => {
   const q        = (req.query.q || '').trim();
   const techName = (req.query.tech_name || '').trim();
-  const where = {};
+  const where = { user_id: req.user.id };
   if (q) {
     where[Op.or] = [
       { title:     { [Op.like]: `%${q}%` } },
@@ -124,6 +126,7 @@ router.get('/search', wrap(async (req, res) => {
 }));
 
 router.post('/', wrap(async (req, res) => {
+  const uid = req.user.id;
   const { title, url, description, tech_name, tech_names, tags, starred, positions } = req.body;
   const r = await VideoClip.create({
     title,
@@ -134,6 +137,7 @@ router.post('/', wrap(async (req, res) => {
     position: JSON.stringify(Array.isArray(positions) ? positions : []),
     tags: JSON.stringify(tags || []),
     starred: starred ? 1 : 0,
+    user_id: uid,
   });
   res.json({ id: r.id });
   if (url) queueThumbUpdate(r.id, url);
@@ -141,9 +145,11 @@ router.post('/', wrap(async (req, res) => {
 }));
 
 router.put('/:id', wrap(async (req, res) => {
+  const uid = req.user.id;
   const { title, url, description, tech_name, tech_names, tags, starred, positions } = req.body;
-  const old = await VideoClip.findByPk(req.params.id, { attributes: ['url'], raw: true });
-  const urlChanged = old && old.url !== url;
+  const old = await VideoClip.findOne({ where: { id: req.params.id, user_id: uid }, attributes: ['url'], raw: true });
+  if (!old) return res.status(404).json({ error: 'not found' });
+  const urlChanged = old.url !== url;
   const data = {
     title,
     url,
@@ -155,7 +161,7 @@ router.put('/:id', wrap(async (req, res) => {
   };
   if (urlChanged) data.thumb_url = '';
   if (starred !== undefined) data.starred = starred ? 1 : 0;
-  await VideoClip.update(data, { where: { id: req.params.id } });
+  await VideoClip.update(data, { where: { id: req.params.id, user_id: uid } });
   res.json({ ok: true });
   if (urlChanged && url) {
     queueThumbUpdate(req.params.id, url);
@@ -165,7 +171,7 @@ router.put('/:id', wrap(async (req, res) => {
 
 // 수동 AI 분석 트리거 (기존 클립 재분석용)
 router.post('/:id/analyze', wrap(async (req, res) => {
-  const clip = await VideoClip.findByPk(req.params.id, { attributes: ['id', 'url'], raw: true });
+  const clip = await VideoClip.findOne({ where: { id: req.params.id, user_id: req.user.id }, attributes: ['id', 'url'], raw: true });
   if (!clip) return res.status(404).json({ error: 'not found' });
   if (!clip.url || !AI_URL_RE.test(clip.url))
     return res.status(400).json({ error: 'YouTube URL이 아닙니다' });
@@ -185,7 +191,7 @@ router.get('/analyze-status', wrap(async (_req, res) => {
 router.post('/:id/upload-video', videoUpload.single('video'), wrap(async (req, res) => {
   if (!req.file) return res.status(400).json({ error: '영상 파일이 없습니다' });
   const clipId = req.params.id;
-  const clip   = await VideoClip.findByPk(clipId, { attributes: ['id'], raw: true });
+  const clip   = await VideoClip.findOne({ where: { id: clipId, user_id: req.user.id }, attributes: ['id'], raw: true });
   if (!clip) {
     await fs.unlink(req.file.path).catch(() => {});
     return res.status(404).json({ error: '클립을 찾을 수 없습니다' });
@@ -223,7 +229,8 @@ router.post('/:id/upload-video', videoUpload.single('video'), wrap(async (req, r
 
 router.delete('/:id', wrap(async (req, res) => {
   const id = req.params.id;
-  await VideoClip.destroy({ where: { id } });
+  const uid = req.user.id;
+  await VideoClip.destroy({ where: { id, user_id: uid } });
   res.json({ ok: true });
   // 연관 파일 삭제 (캡처 프레임 + 저장 영상) — 백그라운드
   Promise.all([
@@ -233,7 +240,7 @@ router.delete('/:id', wrap(async (req, res) => {
 }));
 
 router.patch('/:id/star', wrap(async (req, res) => {
-  const c = await VideoClip.findByPk(req.params.id);
+  const c = await VideoClip.findOne({ where: { id: req.params.id, user_id: req.user.id } });
   if (!c) return res.status(404).json({ error: 'not found' });
   const next = c.starred ? 0 : 1;
   await c.update({ starred: next });
@@ -241,7 +248,7 @@ router.patch('/:id/star', wrap(async (req, res) => {
 }));
 
 router.post('/:id/refresh-thumb', wrap(async (req, res) => {
-  const c = await VideoClip.findByPk(req.params.id, { attributes: ['url'], raw: true });
+  const c = await VideoClip.findOne({ where: { id: req.params.id, user_id: req.user.id }, attributes: ['url'], raw: true });
   if (!c) return res.status(404).json({ error: 'not found' });
   queueThumbUpdate(req.params.id, c.url);
   res.json({ ok: true, queued: true });
@@ -249,7 +256,9 @@ router.post('/:id/refresh-thumb', wrap(async (req, res) => {
 
 // AI 연계기술 추천 — ai_recommendation 캐싱 포함
 router.post('/:id/recommend', wrap(async (req, res) => {
-  const clip = await VideoClip.findByPk(req.params.id, {
+  const uid = req.user.id;
+  const clip = await VideoClip.findOne({
+    where: { id: req.params.id, user_id: uid },
     attributes: ['id', 'tech_name', 'description', 'ai_recommendation'],
     raw: true,
   });
@@ -306,7 +315,7 @@ techniques는 3~5개, combos는 2~3개 추천.`;
   // 캐시 저장
   await VideoClip.update(
     { ai_recommendation: JSON.stringify(parsed) },
-    { where: { id: req.params.id } }
+    { where: { id: req.params.id, user_id: uid } }
   );
 
   return ok(res, parsed);

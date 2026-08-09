@@ -4,6 +4,7 @@ const multer  = require('multer');
 const crypto  = require('crypto');
 const fs      = require('fs/promises');
 const { sequelize } = require('../config/db');
+const { Class } = require('../models');
 const { wrap } = require('../utils/respond');
 const { transcribeLongAudio, structureClassContent } = require('../services/voiceAnalysis');
 
@@ -17,6 +18,12 @@ router.post('/analyze', upload.single('audio'), wrap(async (req, res) => {
   const { classId, trainedDate } = req.body;
   if (!req.file)  return res.status(400).json({ error: '음성 파일이 없습니다' });
   if (!classId)   return res.status(400).json({ error: 'classId가 없습니다' });
+
+  const owned = await Class.findOne({ where: { id: classId, user_id: req.user.id }, attributes: ['id'] });
+  if (!owned) {
+    await require('fs/promises').unlink(req.file.path).catch(() => {});
+    return res.status(404).json({ error: '수업을 찾을 수 없습니다' });
+  }
 
   const jobId = crypto.randomUUID();
   await sequelize.query(

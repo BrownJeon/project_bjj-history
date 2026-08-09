@@ -9,6 +9,7 @@ const CoachReport = sequelize.define('CoachReport', {
   question:     { type: DataTypes.TEXT },
   content:      { type: DataTypes.TEXT, allowNull: false },
   created_at:   { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
+  user_id:      { type: DataTypes.INTEGER, allowNull: true },
 }, { tableName: 'coach_reports' });
 
 module.exports = CoachReport;

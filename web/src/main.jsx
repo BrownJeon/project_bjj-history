@@ -6,9 +6,13 @@ import './styles/tokens.css';
 import './styles/app.css';
 
 import Layout from './components/Layout';
+import ProtectedRoute from './components/ProtectedRoute';
 import { UIProvider } from './contexts/UIContext';
-import { CacheProvider } from './contexts/CacheContext';
+import { AuthProvider } from './contexts/AuthContext';
 
+import LoginPage from './pages/LoginPage';
+import SignupPage from './pages/SignupPage';
+import OAuthCallbackPage from './pages/OAuthCallbackPage';
 import HomePage from './pages/HomePage';
 import CalendarPage from './pages/CalendarPage';
 import PickMeUpPage from './pages/PickMeUpPage';
@@ -21,22 +25,27 @@ import NotFoundPage from './pages/NotFoundPage';
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
-      <UIProvider>
-        <CacheProvider>
+      <AuthProvider>
+        <UIProvider>
           <Routes>
-            <Route element={<Layout />}>
-              <Route path="/"          element={<HomePage />} />
-              <Route path="/calendar"  element={<CalendarPage />} />
-              <Route path="/pickmeup" element={<PickMeUpPage />} />
-              <Route path="/techplan"  element={<TechPlanPage />} />
-              <Route path="/clips"     element={<ClipsPage />} />
-              <Route path="/coach"     element={<CoachPage />} />
-              <Route path="/me"        element={<ProfilePage />} />
-              <Route path="*"          element={<NotFoundPage />} />
+            <Route path="/login"          element={<LoginPage />} />
+            <Route path="/signup"         element={<SignupPage />} />
+            <Route path="/oauth/callback" element={<OAuthCallbackPage />} />
+            <Route element={<ProtectedRoute />}>
+              <Route element={<Layout />}>
+                <Route path="/"          element={<HomePage />} />
+                <Route path="/calendar"  element={<CalendarPage />} />
+                <Route path="/pickmeup"  element={<PickMeUpPage />} />
+                <Route path="/techplan"  element={<TechPlanPage />} />
+                <Route path="/clips"     element={<ClipsPage />} />
+                <Route path="/coach"     element={<CoachPage />} />
+                <Route path="/me"        element={<ProfilePage />} />
+                <Route path="*"          element={<NotFoundPage />} />
+              </Route>
             </Route>
           </Routes>
-        </CacheProvider>
-      </UIProvider>
+        </UIProvider>
+      </AuthProvider>
     </BrowserRouter>
   </React.StrictMode>
 );
