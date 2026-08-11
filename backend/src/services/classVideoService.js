@@ -1,327 +1,382 @@
 /**
- * 수업 내용 → AI 영상 생성 파이프라인
+ * 수업 내용 → AI 영상 생성 파이프라인 v2
  *
- * 흐름:
+ * @jiujitsu_suda 샘플 스타일:
  * 1. DB에서 Class + Drill 로딩
- * 2. Claude CLI → 10~12장 이미지 계획 (imagePrompt + type + overlayText)
- * 3. M4 API → SD 이미지 생성 (순차)
- * 4. type='motion': M4 API → SVD 25프레임 → FFmpeg mp4 클립
- *    type='ken_burns': FFmpeg zoompan 효과 클립
- * 5. overlayText 있는 클립: FFmpeg drawtext 텍스트 합성
- * 6. FFmpeg concat → 최종 mp4 → 영구 저장
+ * 2. Claude → 수업 내용 기반 10~12단계 포즈 시퀀스 ({step, ko, en, sdPrompt})
+ * 3. M4 SD / Pollinations → 포즈별 정적 이미지 (432×768 포트레이트)
+ * 4. 포즈별 단독 클립 (4초, 정지 이미지, 상단 한/영 텍스트 오버레이)
+ * 5. 인트로 + 포즈클립 + 아웃트로 → concat → video.mp4
+ *
+ * 원칙: 애니메이션·Ken Burns·SVD 없음 — 각 단계를 명확한 정적 이미지로 표현
  */
 
-const { spawn } = require('child_process');
-const fs = require('fs/promises');
-const fsSync = require('fs');
-const path = require('path');
-const crypto = require('crypto');
+const { execFile } = require('child_process');
+const fs    = require('fs');
+const path  = require('path');
+const { promisify } = require('util');
 const { runClaude } = require('./claudeCli');
 const { getClassVideoDir, classVideoWebPath, ensureDir } = require('./storage');
 const { Class, Drill } = require('../models');
 
+const execFileP = promisify(execFile);
+
 const AI_API_BASE = process.env.AI_API_BASE || 'http://192.168.219.163:8001';
 const AI_API_KEY  = process.env.AI_API_KEY  || '';
-const FONT_FILE   = '/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc';
-const KEN_BURNS_EFFECTS = [
-  (frames) => `zoompan=z='min(zoom+0.0010,1.4)':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=${frames}:s=768x432`,
-  (frames) => `zoompan=z='if(lte(zoom,1.0),1.4,max(1.0,zoom-0.0015))':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=${frames}:s=768x432`,
-  (frames) => `zoompan=z='1.3':x='min(max(on*2,0),iw-(iw/zoom))':y='ih/2-(ih/zoom/2)':d=${frames}:s=768x432`,
-  (frames) => `zoompan=z='1.3':x='max(iw-(iw/zoom)-on*2,0)':y='ih/2-(ih/zoom/2)':d=${frames}:s=768x432`,
-];
+const FONT        = '/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc';
+const FONT_BOLD   = '/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc';
 
-// ─── 유틸 ────────────────────────────────────────────────────────────────────
+// 영상 규격 (9:16 포트레이트 — 샘플영상 동일)
+const W        = 720;
+const H        = 1280;
+const FPS      = 30;
+const CLIP_DUR = 4;
+const FADE     = 0.4;
 
-function runProcess(cmd, args, timeoutMs = 300000) {
-  return new Promise((resolve, reject) => {
-    const proc = spawn(cmd, args, { timeout: timeoutMs });
-    let out = '', err = '';
-    proc.stdout.on('data', d => { out += d; });
-    proc.stderr.on('data', d => { err += d; });
-    proc.on('error', e => reject(e));
-    proc.on('close', (code, signal) => {
-      if (signal) return reject(new Error(`${cmd} 강제 종료 (signal: ${signal})`));
-      if (code !== 0) return reject(new Error((err.trim() || out.trim() || `${cmd} 종료 코드: ${code}`).slice(0, 400)));
-      resolve(out);
-    });
-  });
+// 이미지 생성 규격
+const M4_IMG_W  = 432;
+const M4_IMG_H  = 768;   // M4 height ≤ 768 제한
+const POL_IMG_W = 576;
+const POL_IMG_H = 1024;
+
+// 색상
+const ACCENT = '0xFFA500';
+const WHITE  = 'white';
+const GRAY   = '0x888888';
+
+// SD 스타일 앵커 (chainAiVideoGenerator와 동일)
+const STYLE_ANCHOR =
+  'two bjj practitioners, dark black gi kimono, bald head, pale skin, ' +
+  'black background, semi-realistic 3d anime illustration, clean flat shading, ' +
+  'athletic body, grappling martial arts scene';
+
+const STYLE_NEGATIVE =
+  'realistic photo, colorful background, bright background, text, watermark, logo, ' +
+  'blurry, low quality, extra limbs, deformed hands, bad anatomy, ' +
+  'mutated, distorted, realistic skin texture, hair, cartoon chibi, nsfw';
+
+// ── 유틸 ─────────────────────────────────────────────────────────────────────
+
+function runFFmpeg(args, timeoutMs) {
+  return execFileP('ffmpeg', args, { timeout: timeoutMs || 120000 });
 }
 
-async function updateJob(sequelize, jobId, fields) {
-  const sets = Object.keys(fields).map(k => `${k}=?`).join(', ');
-  await sequelize.query(
-    `UPDATE class_video_jobs SET ${sets}, updated_at=NOW() WHERE id=?`,
-    { replacements: [...Object.values(fields), jobId] },
+function dtFilter({ dir, sn, idx, text, font, size, x, y, color, alpha, borderw }) {
+  var p = path.join(dir, sn + '_t' + idx + '.txt');
+  fs.writeFileSync(p, String(text), 'utf8');
+  return (
+    'drawtext=fontfile=' + (font || FONT) +
+    ':textfile=' + p +
+    ':fontcolor=' + (color || 'white') + '@' + (alpha !== undefined ? alpha : 1) +
+    ':fontsize=' + size +
+    ':x=' + x + ':y=' + y +
+    ':line_spacing=6' +
+    ':borderw=' + (borderw || 2) +
+    ':bordercolor=black@0.9'
   );
 }
 
-// ─── Step 1: 수업 데이터 로딩 ─────────────────────────────────────────────────
+async function updateJob(sequelize, jobId, fields) {
+  const sets = Object.keys(fields).map(function(k) { return k + '=?'; }).join(', ');
+  await sequelize.query(
+    'UPDATE class_video_jobs SET ' + sets + ', updated_at=NOW() WHERE id=?',
+    { replacements: Object.values(fields).concat([jobId]) }
+  );
+}
+
+// ── 이미지 생성 ───────────────────────────────────────────────────────────────
+
+async function callGenerateImageM4(sdPrompt) {
+  const resp = await fetch(AI_API_BASE + '/v1/image/generate', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'X-API-Key': AI_API_KEY },
+    body: JSON.stringify({
+      prompt: sdPrompt,
+      negative_prompt: STYLE_NEGATIVE,
+      width: M4_IMG_W, height: M4_IMG_H, steps: 25,
+      seed: -1,
+    }),
+    signal: AbortSignal.timeout(20000),
+  });
+  if (!resp.ok) throw new Error('M4 이미지 API 오류 ' + resp.status);
+  const data = await resp.json();
+  if (!data.image_b64) throw new Error('M4 API 응답 없음');
+  return data.image_b64;
+}
+
+async function callGenerateImagePollinations(sdPrompt, attempt) {
+  attempt = attempt || 0;
+  const encoded = encodeURIComponent(sdPrompt);
+  const seed    = Math.floor(Math.random() * 999999);
+  const url     = 'https://image.pollinations.ai/prompt/' + encoded +
+    '?width=' + POL_IMG_W + '&height=' + POL_IMG_H + '&nologo=true&model=flux&seed=' + seed;
+  try {
+    const resp = await fetch(url, { signal: AbortSignal.timeout(60000) });
+    if (!resp.ok) throw new Error('Pollinations API 오류 ' + resp.status);
+    const buf = Buffer.from(await resp.arrayBuffer());
+    if (buf.length < 2000) throw new Error('Pollinations 응답 비정상 (' + buf.length + 'B)');
+    return buf.toString('base64');
+  } catch (e) {
+    if (attempt < 2) {
+      console.warn('[classVideo] Pollinations 재시도 ' + (attempt + 1) + ':', e.message);
+      return callGenerateImagePollinations(sdPrompt, attempt + 1);
+    }
+    throw e;
+  }
+}
+
+async function callGenerateImage(sdPrompt) {
+  try {
+    const b64 = await callGenerateImageM4(sdPrompt);
+    console.log('[classVideo] M4 SD 이미지 생성 성공');
+    return b64;
+  } catch (e) {
+    console.warn('[classVideo] M4 SD 실패, Pollinations 폴백:', e.message);
+  }
+  try {
+    const b64 = await callGenerateImagePollinations(sdPrompt);
+    console.log('[classVideo] Pollinations 이미지 생성 성공');
+    return b64;
+  } catch (e) {
+    console.error('[classVideo] Pollinations 도 실패:', e.message);
+    return null;
+  }
+}
+
+// ── 수업 데이터 로딩 ──────────────────────────────────────────────────────────
 
 async function loadClassData(classId) {
   const cls = await Class.findByPk(classId, { raw: true });
-  if (!cls) throw new Error(`수업 ID ${classId}를 찾을 수 없습니다`);
+  if (!cls) throw new Error('수업 ID ' + classId + '를 찾을 수 없습니다');
   const drill = await Drill.findOne({ where: { class_id: classId }, raw: true });
   return { cls, drill };
 }
 
-// ─── Step 2: Claude → 이미지 계획 ─────────────────────────────────────────────
+// ── Claude → 수업 기반 포즈 시퀀스 ──────────────────────────────────────────────
 
-async function buildImagePlan(classData) {
+// 수업 내용을 10~12 단계 포즈 시퀀스로 세분화
+// 반환: [{step, ko, en, sdPrompt}, ...]
+async function buildPoseSequence(classData) {
   const { cls, drill } = classData;
-  const techList = (() => {
-    try { return JSON.parse(drill?.tech || '[]').join(', '); } catch { return drill?.tech || ''; }
-  })();
-  const noteSummary = (cls.note || cls.voice_transcript || '').slice(0, 800);
+  var techList = '';
+  try { techList = JSON.parse(drill && drill.tech || '[]').join(', '); } catch(e) { techList = (drill && drill.tech) || ''; }
+  var noteSummary = ((cls.note || cls.voice_transcript || '')).slice(0, 600);
 
-  const prompt = `당신은 BJJ(브라질리언 주짓수) 수업 영상 제작 전문가입니다.
-아래 수업 데이터를 바탕으로 10~12장 이미지 계획을 JSON 배열로 만드세요.
+  const prompt =
+    'You are a BJJ (Brazilian Jiu-Jitsu) technique animator.\n' +
+    'Based on this training session, break down the main techniques into 10 clear sequential steps.\n' +
+    '\n' +
+    'Training session info:\n' +
+    '- Theme: ' + (cls.theme || '(없음)') + '\n' +
+    '- Date: ' + cls.date + '\n' +
+    '- Main position: ' + ((drill && drill.pos) || '(없음)') + '\n' +
+    '- Techniques practiced: ' + (techList || '(없음)') + '\n' +
+    '- Class notes: ' + (noteSummary || '(없음)') + '\n' +
+    '\n' +
+    'For each step output a JSON object with:\n' +
+    '- "step": integer (1-10)\n' +
+    '- "ko": Korean action description (8-15 characters, concise)\n' +
+    '- "en": English description (4-8 words, imperative)\n' +
+    '- "sdPrompt": Stable Diffusion image prompt (15-25 English words)\n' +
+    '\n' +
+    'Rules for sdPrompt:\n' +
+    '- Use BJJ terminology (mount, guard, sweep, pass, underhook, overhook, collar grip, sleeve grip, hip escape, bridge, shrimp, etc.)\n' +
+    '- Describe both "attacker" and "defender" body positions explicitly\n' +
+    '- Include body parts: hips, legs, arms, torso direction\n' +
+    '- Use present tense, active voice\n' +
+    '- Example: "attacker in half guard posting right hand on mat, defender bridging hips upward"\n' +
+    '\n' +
+    'Output ONLY a valid JSON array of exactly 10 objects. No markdown, no explanation.';
 
-수업 주제: ${cls.theme || '(없음)'}
-날짜: ${cls.date}
-주요 포지션: ${drill?.pos || '(없음)'}
-주요 기술: ${techList || '(없음)'}
-수업 메모: ${noteSummary || '(없음)'}
-
-각 항목 형식:
-{
-  "id": 숫자(0부터),
-  "type": "motion" 또는 "ken_burns",
-  "duration": 초(3~6),
-  "imagePrompt": "영어 SD 프롬프트 (BJJ 동작/장면 묘사, anime-influenced digital art illustration 스타일)",
-  "overlayText": "한국어 텍스트 (없으면 null)"
-}
-
-규칙:
-- type "motion": BJJ 핵심 동작 장면 3~4장. 움직임이 자연스러운 포지션.
-- type "ken_burns": 기술 상세·포인트·배경 6~8장. overlayText로 핵심 내용.
-- 첫 번째(오프닝): motion, overlayText = "수업 주제\\n날짜" 형식
-- 마지막(엔딩): motion, overlayText = "수업 주제\\n${cls.date}" 형식
-- imagePrompt는 반드시 영어, 일러스트 스타일. 예: "BJJ martial arts illustration, two fighters demonstrating half guard underhook sweep, anime-influenced digital art, clean line art, dynamic pose, dojo background"
-- overlayText 최대 2줄. 첫 줄 큰 텍스트(주제), 두 번째 줄 작은 텍스트(상세).
-
-raw JSON 배열만 반환. 마크다운 코드블록 없이.`;
-
-  const raw = await runClaude(prompt);
-  const jsonStr = raw.trim().replace(/^```[^\n]*\n?/, '').replace(/```$/, '').trim();
-  const plan = JSON.parse(jsonStr);
-  if (!Array.isArray(plan)) throw new Error('Claude가 유효한 JSON 배열을 반환하지 않았습니다');
-  return plan;
-}
-
-// ─── Step 3: SD 이미지 생성 ──────────────────────────────────────────────────
-
-async function generateImage(prompt, outPath) {
-  const body = JSON.stringify({
-    prompt: `BJJ martial arts illustration, ${prompt}, anime-influenced digital art, clean line art, dynamic pose, detailed anatomy, high quality`,
-    negative_prompt: 'realistic photography, photo, ugly, deformed, blurry, text, watermark, nsfw, extra limbs, bad anatomy',
-    width: 768, height: 432, steps: 20,
-  });
-  const resp = await fetch(`${AI_API_BASE}/v1/image/generate`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'X-API-Key': AI_API_KEY },
-    body,
-    signal: AbortSignal.timeout(180000),
-  });
-  if (!resp.ok) throw new Error(`이미지 API 오류 ${resp.status}`);
-  const { image_b64 } = await resp.json();
-  await fs.writeFile(outPath, Buffer.from(image_b64, 'base64'));
-}
-
-async function generateFallbackImage(outPath, index) {
-  // ffmpeg 단색 배경 이미지 생성 (PIL 불필요)
-  const colors = ['0a1628', '0f2a1e', '1a0a28', '1a1400', '001a28'];
-  const color = colors[index % colors.length];
-  await runProcess('ffmpeg', [
-    '-y', '-f', 'lavfi',
-    '-i', `color=color=0x${color}:size=768x432:rate=1:duration=1`,
-    '-vframes', '1', '-f', 'image2', outPath,
-  ], 15000);
-}
-
-// ─── Step 4-A: SVD 모션 클립 ─────────────────────────────────────────────────
-
-async function generateSvdClip(imagePath, outClipPath) {
-  const imgB64 = (await fs.readFile(imagePath)).toString('base64');
-  const resp = await fetch(`${AI_API_BASE}/v1/video/generate`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'X-API-Key': AI_API_KEY },
-    body: JSON.stringify({ image_b64: imgB64, fps: 7, steps: 20, motion_bucket_id: 60 }),
-    signal: AbortSignal.timeout(600000), // SVD 최대 10분
-  });
-  if (!resp.ok) throw new Error(`SVD API 오류 ${resp.status}`);
-  const { frames_b64 } = await resp.json();
-
-  const frameDir = `${outClipPath}_frames`;
-  await fs.mkdir(frameDir, { recursive: true });
-  for (let i = 0; i < frames_b64.length; i++) {
-    await fs.writeFile(
-      path.join(frameDir, `f${String(i).padStart(3, '0')}.png`),
-      Buffer.from(frames_b64[i], 'base64'),
-    );
+  try {
+    const raw = (await runClaude(prompt, { timeoutMs: 50000 })).trim();
+    const match = raw.match(/\[[\s\S]*\]/);
+    if (match) {
+      const arr = JSON.parse(match[0]);
+      if (Array.isArray(arr) && arr.length >= 6) {
+        const valid = arr.filter(function(item) {
+          return item && typeof item.ko === 'string' && typeof item.en === 'string' && typeof item.sdPrompt === 'string';
+        });
+        if (valid.length >= 6) {
+          return valid.slice(0, 12).map(function(item, i) {
+            return { step: item.step || (i + 1), ko: item.ko, en: item.en, sdPrompt: item.sdPrompt };
+          });
+        }
+      }
+    }
+  } catch(e) {
+    console.warn('[classVideo] 포즈 시퀀스 파싱 실패:', e.message);
   }
-  await runProcess('ffmpeg', [
-    '-y', '-framerate', '7',
-    '-i', path.join(frameDir, 'f%03d.png'),
-    '-vf', 'scale=768:432',
-    '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-preset', 'fast',
-    outClipPath,
-  ]);
-  await fs.rm(frameDir, { recursive: true }).catch(() => {});
+
+  // 폴백: 수업 주제 기반 기본 6단계
+  var theme = cls.theme || '기술 훈련';
+  return [
+    { step:1, ko:'시작 포지션',  en:'Starting position',     sdPrompt: 'two bjj practitioners standing, establishing grips on collar and sleeve' },
+    { step:2, ko:'포지션 진입',  en:'Enter position',         sdPrompt: 'bjj practitioner pulling opponent into guard position on the mat' },
+    { step:3, ko:'그립 확보',    en:'Establish grip',          sdPrompt: 'bjj practitioner in guard gripping collar and sleeve firmly' },
+    { step:4, ko:'기술 시도',    en:'Attempt technique',       sdPrompt: 'bjj practitioner initiating sweep from guard, hip movement starting' },
+    { step:5, ko:'전환 동작',    en:'Transition movement',     sdPrompt: 'bjj practitioners in mid-transition, one sweeping the other' },
+    { step:6, ko:'포지션 완성',  en:'Complete position',       sdPrompt: 'bjj practitioner completing sweep, establishing top control position' },
+  ];
 }
 
-// ─── Step 4-B: Ken Burns 클립 ────────────────────────────────────────────────
+// ── 클립 빌더 ─────────────────────────────────────────────────────────────────
 
-async function generateKenBurnsClip(imagePath, outClipPath, durationSec, effectIndex) {
-  const frames = Math.round(durationSec * 25);
-  const effect = KEN_BURNS_EFFECTS[effectIndex % KEN_BURNS_EFFECTS.length](frames);
-  await runProcess('ffmpeg', [
-    '-y', '-loop', '1', '-i', imagePath,
-    '-vf', effect,
-    '-t', String(durationSec),
+// 단일 포즈 클립 (4초, 정적 이미지): 상단 한/영 텍스트 오버레이
+// poseObj = {step, ko, en}
+// imgB64  = base64 PNG (null이면 검정 배경)
+async function buildStaticPoseClip(poseObj, imgB64, dir, sn) {
+  var out = path.join(dir, sn + '.mp4');
+  var ti  = 0;
+  function mkDt(opts) { return dtFilter(Object.assign({ dir: dir, sn: sn, idx: ti++ }, opts)); }
+
+  var koText = (poseObj.step ? poseObj.step + '. ' : '') + (poseObj.ko || '');
+  var enText = poseObj.en || '';
+
+  var topBox    = 'drawbox=x=0:y=0:w=' + W + ':h=' + Math.round(H * 0.29) + ':color=black@0.72:t=fill';
+  var koFilter  = mkDt({ text: koText, font: FONT_BOLD, size: 42,
+    x: '(w-text_w)/2', y: Math.round(H * 0.07),
+    color: WHITE, alpha: 1, borderw: 3 });
+  var enFilter  = mkDt({ text: enText, font: FONT, size: 27,
+    x: '(w-text_w)/2', y: Math.round(H * 0.18),
+    color: ACCENT, alpha: 1, borderw: 2 });
+  var markFilter = mkDt({ text: '@BJJ훈련일지', font: FONT, size: 18,
+    x: '(w-text_w)/2', y: Math.round(H * 0.92),
+    color: GRAY, alpha: 0.65, borderw: 1 });
+
+  var fadeAll  = 'fade=t=in:st=0:d=' + FADE + ',fade=t=out:st=' + (CLIP_DUR - FADE) + ':d=' + FADE;
+  var textPart = [topBox, koFilter, enFilter, markFilter, fadeAll].join(',');
+
+  if (imgB64) {
+    var imgPath = path.join(dir, sn + '_img.png');
+    fs.writeFileSync(imgPath, Buffer.from(imgB64, 'base64'));
+    var scaleVf = 'scale=' + W + ':' + H + ':force_original_aspect_ratio=increase,crop=' + W + ':' + H;
+    await runFFmpeg([
+      '-y', '-loop', '1', '-i', imgPath,
+      '-t', String(CLIP_DUR),
+      '-vf', scaleVf + ',' + textPart,
+      '-c:v', 'libx264', '-r', String(FPS), '-pix_fmt', 'yuv420p', '-an',
+      out,
+    ], 60000);
+    try { fs.unlinkSync(imgPath); } catch(e) {}
+  } else {
+    // 이미지 없음 → 검정 배경 + 텍스트
+    await runFFmpeg([
+      '-y', '-f', 'lavfi',
+      '-i', 'color=color=0x000000:size=' + W + 'x' + H + ':rate=' + FPS + ':duration=' + CLIP_DUR,
+      '-vf', 'format=yuv420p,' + textPart,
+      '-c:v', 'libx264', '-pix_fmt', 'yuv420p',
+      out,
+    ], 30000);
+  }
+
+  return out;
+}
+
+// 인트로/아웃트로 슬라이드 (검정 배경)
+async function buildColorSlide(dir, slideName, duration, layerFilters) {
+  var out    = path.join(dir, slideName + '.mp4');
+  var fadeAll = 'fade=t=in:st=0:d=' + FADE + ',fade=t=out:st=' + (duration - FADE) + ':d=' + FADE;
+  var draws  = layerFilters.filter(Boolean).join(',');
+  var vf     = 'format=yuv420p,' + fadeAll + (draws ? ',' + draws : '');
+
+  await runFFmpeg([
+    '-y', '-f', 'lavfi',
+    '-i', 'color=color=0x000000:size=' + W + 'x' + H + ':rate=' + FPS + ':duration=' + duration,
+    '-vf', vf,
     '-c:v', 'libx264', '-pix_fmt', 'yuv420p',
-    '-preset', 'fast', '-r', '25',
-    outClipPath,
-  ], 60000);
+    out,
+  ], 30000);
+  return out;
 }
 
-// ─── Step 5: 텍스트 오버레이 ──────────────────────────────────────────────────
-
-async function addTextOverlay(inputClip, outputClip, text) {
-  const lines = text.split('\n').filter(Boolean);
-  // textfile= 방식 — 한국어 특수문자 이스케이프 불필요
-  const tmpDir = `${outputClip}_txtfiles`;
-  fsSync.mkdirSync(tmpDir, { recursive: true });
-  const filters = lines.map((line, i) => {
-    const txtPath = path.join(tmpDir, `line${i}.txt`);
-    fsSync.writeFileSync(txtPath, line, 'utf8');
-    const fontSize = i === 0 ? 38 : 24;
-    const yPos = i === 0 ? `h*0.70` : `h*0.70+${38 + 10}`;
-    return [
-      `drawtext=fontfile=${FONT_FILE}`,
-      `textfile=${txtPath}`,
-      `fontcolor=white`,
-      `fontsize=${fontSize}`,
-      `x=(w-text_w)/2`,
-      `y=${yPos}`,
-      `shadowcolor=black@0.8:shadowx=2:shadowy=2`,
-      `box=1:boxcolor=black@0.55:boxborderw=10`,
-    ].join(':');
-  });
-  await runProcess('ffmpeg', [
-    '-y', '-i', inputClip,
-    '-vf', filters.join(','),
-    '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-preset', 'fast',
-    outputClip,
-  ], 60000);
-  fsSync.rmSync(tmpDir, { recursive: true, force: true });
-}
-
-// ─── Step 6: 클립 연결 ───────────────────────────────────────────────────────
-
-async function concatenateClips(clips, outPath) {
-  const concatFile = `${outPath}.concat.txt`;
-  await fs.writeFile(concatFile, clips.map(p => `file '${p}'`).join('\n'));
-  await runProcess('ffmpeg', [
-    '-y', '-f', 'concat', '-safe', '0', '-i', concatFile,
-    '-c:v', 'libx264', '-pix_fmt', 'yuv420p',
-    '-preset', 'fast', '-crf', '22',
-    outPath,
-  ], 120000);
-  await fs.unlink(concatFile).catch(() => {});
-}
-
-// ─── 메인 ────────────────────────────────────────────────────────────────────
+// ── 메인 파이프라인 ───────────────────────────────────────────────────────────
 
 async function generateClassVideo(classId, jobId) {
   const { sequelize } = require('../models');
-  const tmpDir = `/tmp/class-video-${classId}-${Date.now()}`;
-  const imagesDir = path.join(tmpDir, 'images');
-  const clipsDir  = path.join(tmpDir, 'clips');
-  const finalDir  = path.join(tmpDir, 'final');
+  const update = function(progress) { return updateJob(sequelize, jobId, { progress: progress }); };
 
-  const update = (progress) => updateJob(sequelize, jobId, { progress });
+  const dir = '/tmp/class-video-' + classId + '-' + Date.now();
+  fs.mkdirSync(dir, { recursive: true });
+
+  var ci = 0;
+  function mkDt(sn, opts) { return dtFilter(Object.assign({ dir: dir, sn: sn, idx: ci++ }, opts)); }
+
+  const slides = [];
+  const cy     = Math.round(H * 0.46);
 
   try {
-    await fs.mkdir(imagesDir, { recursive: true });
-    await fs.mkdir(clipsDir,  { recursive: true });
-    await fs.mkdir(finalDir,  { recursive: true });
-
     // 1. 수업 데이터 로딩
     await update('수업 데이터 로딩 중...');
     const classData = await loadClassData(classId);
+    const cls = classData.cls;
+    const dateStr = (cls.date || '').slice(0, 10);
 
-    // 2. Claude → 이미지 계획
-    await update('AI 영상 구성 계획 중...');
-    const plan = await buildImagePlan(classData);
-    await updateJob(sequelize, jobId, { progress: `이미지 계획 완료 (${plan.length}장)`, image_count: plan.length });
+    // 2. 인트로
+    await update('인트로 생성 중...');
+    slides.push(await buildColorSlide(dir, 'intro', 4, [
+      mkDt('intro', { text: 'BJJ 훈련일지', font: FONT, size: 22,
+        x: '(w-text_w)/2', y: cy - 95, color: ACCENT, alpha: 0.8 }),
+      mkDt('intro', { text: cls.theme || '수업 기록', font: FONT_BOLD, size: 46,
+        x: '(w-text_w)/2', y: cy - 25, color: WHITE, alpha: 1 }),
+      mkDt('intro', { text: dateStr, font: FONT, size: 22,
+        x: '(w-text_w)/2', y: cy + 50, color: WHITE, alpha: 0.55 }),
+    ]));
 
-    // 3. SD 이미지 생성 (순차)
-    for (let i = 0; i < plan.length; i++) {
-      await update(`이미지 ${i + 1}/${plan.length} 생성 중...`);
-      const imgPath = path.join(imagesDir, `img_${String(i).padStart(2, '0')}.png`);
-      try {
-        await generateImage(plan[i].imagePrompt, imgPath);
-      } catch (e) {
-        console.warn(`[classVideo] 이미지 ${i} 생성 실패, 폴백 사용:`, e.message);
-        await generateFallbackImage(imgPath, i);
-      }
-      plan[i]._imgPath = imgPath;
+    // 3. Claude → 수업 내용 기반 포즈 시퀀스 생성
+    await update('AI 기술 시퀀스 분석 중...');
+    const poseObjs = await buildPoseSequence(classData);
+    console.log('[classVideo] 포즈 시퀀스 ' + poseObjs.length + '개 생성');
+    await updateJob(sequelize, jobId, { progress: '포즈 시퀀스 완료 (' + poseObjs.length + '단계)', image_count: poseObjs.length });
+
+    // 4. 포즈별 이미지 + 정적 클립 생성
+    for (var i = 0; i < poseObjs.length; i++) {
+      var poseObj = poseObjs[i];
+      var sn      = 'pose' + i;
+      var prog    = '포즈 ' + (i + 1) + '/' + poseObjs.length;
+
+      await update(prog + ': 이미지 생성 중...');
+      var sdPrompt = STYLE_ANCHOR + ', ' + (poseObj.sdPrompt || poseObj.en || cls.theme || 'bjj grappling');
+      console.log('[classVideo] ' + sn + ':', sdPrompt.slice(0, 80));
+      var imgB64 = await callGenerateImage(sdPrompt);
+
+      await update(prog + ': 클립 렌더 중...');
+      var clip = await buildStaticPoseClip(poseObj, imgB64, dir, sn);
+      slides.push(clip);
     }
 
-    // 4. 클립 생성
-    let kbIndex = 0;
-    for (let i = 0; i < plan.length; i++) {
-      const item = plan[i];
-      const clipPath = path.join(clipsDir, `clip_${String(i).padStart(2, '0')}_raw.mp4`);
-      await update(`클립 ${i + 1}/${plan.length} 생성 중 (${item.type})...`);
+    // 5. 아웃트로
+    await update('아웃트로 생성 중...');
+    slides.push(await buildColorSlide(dir, 'outro', 3, [
+      mkDt('outro', { text: cls.theme || '수업 기록', font: FONT_BOLD, size: 36,
+        x: '(w-text_w)/2', y: cy - 30, color: WHITE, alpha: 0.6 }),
+      mkDt('outro', { text: dateStr, font: FONT, size: 20,
+        x: '(w-text_w)/2', y: cy + 28, color: ACCENT, alpha: 0.5 }),
+    ]));
 
-      if (item.type === 'motion') {
-        try {
-          await generateSvdClip(item._imgPath, clipPath);
-        } catch (e) {
-          console.warn(`[classVideo] SVD 클립 ${i} 실패, Ken Burns 폴백:`, e.message);
-          await generateKenBurnsClip(item._imgPath, clipPath, item.duration || 4, kbIndex++);
-        }
-      } else {
-        await generateKenBurnsClip(item._imgPath, clipPath, item.duration || 5, kbIndex++);
-      }
-      item._clipPath = clipPath;
-    }
+    // 6. Concat
+    await update('영상 합치는 중...');
+    var listPath = path.join(dir, 'list.txt');
+    fs.writeFileSync(listPath, slides.map(function(p) { return "file '" + p + "'"; }).join('\n'));
 
-    // 5. 텍스트 오버레이
-    await update('텍스트 합성 중...');
-    const finalClips = [];
-    for (let i = 0; i < plan.length; i++) {
-      const item = plan[i];
-      if (item.overlayText) {
-        const textClipPath = path.join(finalDir, `clip_${String(i).padStart(2, '0')}_text.mp4`);
-        await addTextOverlay(item._clipPath, textClipPath, item.overlayText);
-        finalClips.push(textClipPath);
-      } else {
-        finalClips.push(item._clipPath);
-      }
-    }
-    await updateJob(sequelize, jobId, { progress: '영상 합성 중...', clip_count: finalClips.length });
-
-    // 6. 클립 연결
-    const tmpVideoPath = path.join(tmpDir, 'output.mp4');
-    await concatenateClips(finalClips, tmpVideoPath);
-
-    // 7. 영구 저장
-    await update('영상 저장 중...');
-    const destDir = getClassVideoDir(classId);
+    var destDir  = getClassVideoDir(classId);
     ensureDir(destDir);
-    const destPath = path.join(destDir, 'video.mp4');
-    await fs.copyFile(tmpVideoPath, destPath);
+    var destPath = path.join(destDir, 'video.mp4');
 
-    const videoUrl = classVideoWebPath(classId);
+    await runFFmpeg([
+      '-y', '-f', 'concat', '-safe', '0', '-i', listPath,
+      '-c', 'copy', destPath,
+    ], 120000);
+
+    var videoUrl = classVideoWebPath(classId);
     await updateJob(sequelize, jobId, { status: 'done', progress: '완료', video_url: videoUrl });
-    console.log(`[classVideo] 클래스 ${classId} 영상 생성 완료: ${videoUrl}`);
+    console.log('[classVideo] 클래스 ' + classId + ' 완료: ' + videoUrl);
+
   } catch (e) {
-    console.error(`[classVideo] 클래스 ${classId} 실패:`, e.message);
+    console.error('[classVideo] 클래스 ' + classId + ' 실패:', e.message);
     await updateJob(sequelize, jobId, { status: 'error', error: e.message });
   } finally {
-    await fs.rm(tmpDir, { recursive: true }).catch(() => {});
+    try { fs.rmSync(dir, { recursive: true, force: true }); } catch(e) {}
   }
 }
 
