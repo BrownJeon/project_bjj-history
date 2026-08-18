@@ -204,6 +204,24 @@ export default function ProfilePage() {
     };
   }, [classes, techniques]);
 
+  // 소속 목록 — networks 배열 우선, 없으면 레거시 network 단일값 흡수
+  const networks = useMemo(() => {
+    if (Array.isArray(profile.networks)) return profile.networks.filter(Boolean);
+    return profile.network ? [profile.network] : [];
+  }, [profile]);
+
+  // 수련일수 — 시작일 당일을 1일째로 카운트
+  const trainingDays = useMemo(() => {
+    if (!profile.start_date) return null;
+    const start = new Date(profile.start_date);
+    if (isNaN(start.getTime())) return null;
+    start.setHours(0, 0, 0, 0);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const days = Math.floor((today - start) / 86400000) + 1;
+    return days > 0 ? days : null;
+  }, [profile.start_date]);
+
   // 현재 벨트(가장 최근)
   const currentBelt = useMemo(() => {
     if (!belts.length) return { color: 'white', stripes: 0 };
@@ -267,10 +285,12 @@ export default function ProfilePage() {
           <div style={{ fontSize: 18, fontWeight: 800 }}>{profile.nickname || '익명'}</div>
           <BeltBar color={currentBelt.color} stripes={currentBelt.stripes} width={120} height={18} />
           <div style={{ fontSize: 12, color: 'var(--text2)', textAlign: 'center' }}>
-            {profile.start_date && <span>시작 {profile.start_date}</span>}
-            {profile.start_date && profile.network && <span> · </span>}
-            {profile.network && <span>{profile.network}</span>}
-            {!profile.start_date && !profile.network && <span>시작일/소속을 등록해보세요</span>}
+            {profile.start_date && (
+              <span>시작 {profile.start_date}{trainingDays ? ` · ${trainingDays}일째` : ''}</span>
+            )}
+            {profile.start_date && networks.length > 0 && <span> · </span>}
+            {networks.length > 0 && <span>{networks.join(' · ')}</span>}
+            {!profile.start_date && networks.length === 0 && <span>시작일/소속을 등록해보세요</span>}
           </div>
         </div>
 
@@ -291,7 +311,7 @@ export default function ProfilePage() {
           <Row label="닉네임" value={profile.nickname || '-'} />
           <Row label="시작일" value={profile.start_date || '-'} />
           <Row label="체급"   value={profile.weight_class || '-'} />
-          <Row label="소속"   value={profile.network || '-'} last />
+          <Row label="소속"   value={networks.length ? networks.join(' · ') : '-'} last />
         </Card>
 
         {/* 벨트 이력 */}
@@ -690,9 +710,34 @@ function ProfileEditor({ profile, onCancel, onSave }) {
     nickname: profile.nickname || '',
     startDate: profile.start_date || '',
     weightClass: profile.weight_class || '',
-    network: profile.network || '',
+    networks: Array.isArray(profile.networks) && profile.networks.length
+      ? profile.networks.filter(Boolean)
+      : (profile.network ? [profile.network] : []),
   });
+  const [networkInput, setNetworkInput] = useState('');
   const update = (k, v) => setForm({ ...form, [k]: v });
+
+  // 빈 값·중복은 추가하지 않음
+  function addNetwork() {
+    const v = networkInput.trim();
+    setNetworkInput('');
+    if (!v || form.networks.includes(v)) return;
+    setForm({ ...form, networks: [...form.networks, v] });
+  }
+
+  function removeNetwork(name) {
+    setForm({ ...form, networks: form.networks.filter(n => n !== name) });
+  }
+
+  // 입력창에 남아있는 값도 저장 시 함께 반영
+  function submit() {
+    const pending = networkInput.trim();
+    const networks = pending && !form.networks.includes(pending)
+      ? [...form.networks, pending]
+      : form.networks;
+    onSave({ ...form, networks });
+  }
+
   return (
     <Modal title="기본 정보 수정" onClose={onCancel}>
       <div className="field"><label>닉네임</label>
@@ -701,10 +746,49 @@ function ProfileEditor({ profile, onCancel, onSave }) {
         <input type="date" value={form.startDate} onChange={e => update('startDate', e.target.value)} /></div>
       <div className="field"><label>체급</label>
         <input value={form.weightClass} onChange={e => update('weightClass', e.target.value)} placeholder="예: -76kg" /></div>
-      <div className="field"><label>소속</label>
-        <input value={form.network} onChange={e => update('network', e.target.value)} /></div>
+      <div className="field">
+        <label>소속 (여러 개 등록 가능)</label>
+        <div style={{ display: 'flex', gap: 6 }}>
+          <input
+            value={networkInput}
+            onChange={e => setNetworkInput(e.target.value)}
+            onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addNetwork(); } }}
+            placeholder="소속 입력 후 추가"
+            style={{ flex: 1, minWidth: 0 }}
+          />
+          <Button variant="outline" size="sm" onClick={addNetwork}>추가</Button>
+        </div>
+        {form.networks.length > 0 && (
+          <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: 8 }}>
+            {form.networks.map(n => (
+              <span
+                key={n}
+                style={{
+                  display: 'inline-flex', alignItems: 'center', gap: 6,
+                  padding: '6px 10px',
+                  background: 'var(--accent-dim)',
+                  color: 'var(--accent)',
+                  border: '1px solid var(--accent)',
+                  borderRadius: 8,
+                  fontSize: 12, fontWeight: 600,
+                }}
+              >
+                {n}
+                <button
+                  onClick={() => removeNetwork(n)}
+                  aria-label={`${n} 삭제`}
+                  style={{
+                    background: 'transparent', border: 'none', color: 'var(--accent)',
+                    fontSize: 14, lineHeight: 1, padding: 0, cursor: 'pointer',
+                  }}
+                >×</button>
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
       <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
-        <Button variant="primary" size="sm" onClick={() => onSave(form)}>저장</Button>
+        <Button variant="primary" size="sm" onClick={submit}>저장</Button>
         <Button variant="outline" size="sm" onClick={onCancel}>취소</Button>
       </div>
     </Modal>

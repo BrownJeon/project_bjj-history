@@ -25,22 +25,66 @@ const upload = multer({
   },
 });
 
+// ─── 소속(networks) JSON 헬퍼 — techniques.js의 parsePos/posToJson과 동일 패턴 ───
+// 공백 제거 + 빈 값 제거 + 중복 제거
+function cleanNetworks(list) {
+  const out = [];
+  for (const n of (Array.isArray(list) ? list : [])) {
+    const v = String(n ?? '').trim();
+    if (v && !out.includes(v)) out.push(v);
+  }
+  return out;
+}
+
+function parseNetworks(raw) {
+  if (!raw) return [];
+  try {
+    const p = JSON.parse(raw);
+    if (Array.isArray(p)) return cleanNetworks(p);
+    return p ? cleanNetworks([p]) : [];
+  } catch {
+    return cleanNetworks([raw]);   // 손상 JSON·레거시 단일 문자열 흡수
+  }
+}
+
+function networksToJson(networks, network) {
+  const list = Array.isArray(networks)
+    ? networks
+    : (networks ? [networks] : (network ? [network] : []));
+  return JSON.stringify(cleanNetworks(list));
+}
+
+// profile row에서 소속 배열 추출 — networks 우선, 없으면 레거시 network 흡수
+function rowNetworks(row) {
+  const list = parseNetworks(row?.networks);
+  if (list.length) return list;
+  return cleanNetworks([row?.network]);
+}
+
 // ─── 프로필 ───
 router.get('/profile', wrap(async (req, res) => {
   const uid = req.user.id;
   const row = await Profile.findOne({ where: { user_id: uid }, raw: true });
-  res.json(row || {});
+  if (!row) return res.json({});
+  row.networks = rowNetworks(row);
+  row.network  = row.networks[0] || '';   // 하위호환 — 첫 번째 소속
+  res.json(row);
 }));
 
 router.put('/profile', wrap(async (req, res) => {
   const uid = req.user.id;
-  const { nickname, startDate, weightClass, network } = req.body;
+  const { nickname, startDate, weightClass, network, networks } = req.body;
   const row = await Profile.findOne({ where: { user_id: uid } });
+  // networks/network 둘 다 안 온 경우엔 기존 소속 유지 (레거시 클라이언트 보호)
+  const nextNetworks = (networks !== undefined || network !== undefined)
+    ? parseNetworks(networksToJson(networks, network))
+    : rowNetworks(row);
   const data = {
     nickname:     nickname || '',
     start_date:   startDate || null,
     weight_class: weightClass || '',
-    network:      network || '',
+    networks:     JSON.stringify(nextNetworks),
+    network:      (nextNetworks[0] || '').slice(0, 100),   // 레거시 컬럼 동기화(STRING(100))
   };
   if (row) await row.update(data); else await Profile.create({ ...data, user_id: uid });
   res.json({ ok: true });
