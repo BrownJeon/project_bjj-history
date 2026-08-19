@@ -21,7 +21,7 @@ const { Class, Drill } = require('../models');
 
 const execFileP = promisify(execFile);
 
-const AI_API_BASE = process.env.AI_API_BASE || 'http://192.168.219.100:8001';
+const AI_API_BASE = process.env.AI_API_BASE || 'http://192.168.219.100:8000';
 const AI_API_KEY  = process.env.AI_API_KEY  || '';
 const FONT        = '/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc';
 const FONT_BOLD   = '/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc';
