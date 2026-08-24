@@ -50,6 +50,15 @@ function runProcess(cmd, args, timeoutMs = 180000) {
             /empty media response|login required|authentication/i.test(err)) {
           return reject(new Error('Instagram 영상은 로그인 인증이 필요하여 다운로드가 불가합니다'));
         }
+        // yt-dlp YouTube 다운로드 실패 감지 — 대부분 yt-dlp 버전 노후화로 추출 방식을 못 따라가서 발생
+        if (cmd === 'yt-dlp' && /youtube\.com|youtu\.be/i.test(args.join(' ')) &&
+            /403|Forbidden|unable to download video data|Requested format is not available|nsig extraction failed|Sign in to confirm|failed to extract any player response/i.test(err)) {
+          return reject(new Error(
+            'YouTube 영상 다운로드에 실패했습니다. yt-dlp 업데이트가 필요할 수 있습니다 ' +
+            '(pip install --user --upgrade yt-dlp). ' +
+            '문제가 계속되면 "파일로 분석"으로 영상을 직접 업로드해보세요.'
+          ));
+        }
         // claude 종료 코드 1: stdout에 실제 에러가 있을 수 있음
         const detail = (err.trim() || out.trim() || `${cmd} 종료 코드: ${code}`).slice(0, 300);
         return reject(new Error(detail));
