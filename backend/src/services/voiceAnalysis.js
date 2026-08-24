@@ -3,6 +3,7 @@ const fs     = require('fs/promises');
 const fsSync = require('fs');
 const path   = require('path');
 const { runClaude } = require('./claudeCli');
+const { extractJSONObject } = require('../utils/extractJson');
 
 function runProcess(cmd, args, timeoutMs = 180000) {
   return new Promise((resolve, reject) => {
@@ -28,18 +29,6 @@ function runProcess(cmd, args, timeoutMs = 180000) {
       resolve(out);
     });
   });
-}
-
-function extractJSONObject(text) {
-  const cleaned = text.replace(/```(?:json)?/g, '').replace(/```/g, '').trim();
-  const start = cleaned.indexOf('{');
-  const end   = cleaned.lastIndexOf('}');
-  if (start === -1 || end === -1) throw new Error('JSON 객체를 찾을 수 없습니다');
-  let jsonStr = cleaned.slice(start, end + 1);
-  jsonStr = jsonStr.replace(/"(?:[^"\\]|\\.)*"/g, m =>
-    m.replace(/\r\n/g, '\\n').replace(/\n/g, '\\n').replace(/\r/g, '\\n')
-  );
-  return JSON.parse(jsonStr);
 }
 
 // 오디오 파일 → 10분 청크 분할 → 순차 Whisper → 전문 반환

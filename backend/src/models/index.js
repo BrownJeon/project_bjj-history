@@ -17,6 +17,8 @@ const BeltHistory     = require('./BeltHistory');
 const CoachReport     = require('./CoachReport');
 const PickHistory          = require('./PickHistory');
 const MembershipPayment    = require('./MembershipPayment');
+const LongVideo            = require('./LongVideo');
+const LongVideoChapter     = require('./LongVideoChapter');
 
 // User 관계 정의 (1:N, 1:1)
 User.hasMany(Class,             { foreignKey: 'user_id', as: 'classes' });
@@ -29,6 +31,7 @@ User.hasMany(BeltHistory,       { foreignKey: 'user_id', as: 'belts' });
 User.hasMany(CoachReport,       { foreignKey: 'user_id', as: 'reports' });
 User.hasMany(MembershipPayment, { foreignKey: 'user_id', as: 'memberships' });
 User.hasMany(PickHistory,       { foreignKey: 'user_id', as: 'picks' });
+User.hasMany(LongVideo,         { foreignKey: 'user_id', as: 'longVideos' });
 
 // 관계 정의
 Class.hasMany(Drill,         { foreignKey: 'class_id', as: 'drills' });
@@ -50,6 +53,9 @@ GameplanNode.belongsTo(Gameplan, { foreignKey: 'gameplan_id' });
 GameplanNode.belongsTo(Technique, { foreignKey: 'technique_id' });
 GameplanEdge.belongsTo(Gameplan, { foreignKey: 'gameplan_id' });
 
+LongVideo.hasMany(LongVideoChapter, { foreignKey: 'long_video_id', as: 'chapters' });
+LongVideoChapter.belongsTo(LongVideo, { foreignKey: 'long_video_id' });
+
 module.exports = {
   sequelize,
   User,
@@ -58,4 +64,5 @@ module.exports = {
   Gameplan, GameplanNode, GameplanEdge,
   VideoClip, Profile, BeltHistory, CoachReport,
   PickHistory, MembershipPayment,
+  LongVideo, LongVideoChapter,
 };

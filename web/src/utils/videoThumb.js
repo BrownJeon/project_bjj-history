@@ -11,9 +11,17 @@ export function getYtThumb(url) {
   return id ? `https://img.youtube.com/vi/${id}/mqdefault.jpg` : null;
 }
 
-export function getYtEmbed(url) {
+// opts: { start: 초 단위 시작 지점, jsapi: postMessage 시점 이동을 위한 enablejsapi }
+// 기존 호출부(인자 1개)와 100% 동일한 결과를 유지한다 — task-007 StudyVideoDetailPage의
+// 챕터 클릭 시점 이동(postMessage seekTo)을 위해 옵션만 추가.
+export function getYtEmbed(url, opts = {}) {
   const id = getYtId(url);
-  return id ? `https://www.youtube.com/embed/${id}?rel=0` : null;
+  if (!id) return null;
+  const { start, jsapi } = opts;
+  const params = new URLSearchParams({ rel: '0' });
+  if (start) params.set('start', String(Math.max(0, Math.floor(start))));
+  if (jsapi) params.set('enablejsapi', '1');
+  return `https://www.youtube.com/embed/${id}?${params.toString()}`;
 }
 
 export function getClipThumb(c) {

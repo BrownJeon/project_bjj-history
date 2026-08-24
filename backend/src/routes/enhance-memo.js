@@ -3,18 +3,7 @@ const router = express.Router();
 const { runClaude } = require('../services/claudeCli');
 const { analyzeVideo } = require('../services/videoAnalysis');
 const { wrap } = require('../utils/respond');
-
-function extractJSONObject(text) {
-  const cleaned = text.replace(/```(?:json)?/g, '').replace(/```/g, '').trim();
-  const start = cleaned.indexOf('{');
-  const end   = cleaned.lastIndexOf('}');
-  if (start === -1 || end === -1) throw new Error('JSON 객체를 찾을 수 없습니다');
-  let jsonStr = cleaned.slice(start, end + 1);
-  jsonStr = jsonStr.replace(/"(?:[^"\\]|\\.)*"/g, m =>
-    m.replace(/\r\n/g, '\\n').replace(/\n/g, '\\n').replace(/\r/g, '\\n')
-  );
-  return JSON.parse(jsonStr);
-}
+const { extractJSONObject } = require('../utils/extractJson');
 
 router.post('/enhance', wrap(async (req, res) => {
   const { text, type, instruction } = req.body;

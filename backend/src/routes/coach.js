@@ -3,22 +3,11 @@ const router = express.Router();
 const { Technique, TechniqueChain, Profile, BeltHistory, CoachReport } = require('../models');
 const { runClaude } = require('../services/claudeCli');
 const { wrap, safeParse } = require('../utils/respond');
+const { extractJSONObject } = require('../utils/extractJson');
 const {
   collectTrainingData, computeDiagnosis, serializeForPrompt,
   daysAgo, todayStr,
 } = require('../services/coachAnalytics');
-
-function extractJSONObject(text) {
-  const cleaned = text.replace(/```(?:json)?/g, '').replace(/```/g, '').trim();
-  const start = cleaned.indexOf('{');
-  const end   = cleaned.lastIndexOf('}');
-  if (start === -1 || end === -1) throw new Error('JSON 객체를 찾을 수 없습니다');
-  let jsonStr = cleaned.slice(start, end + 1);
-  jsonStr = jsonStr.replace(/"(?:[^"\\]|\\.)*"/g, m =>
-    m.replace(/\r\n/g, '\\n').replace(/\n/g, '\\n').replace(/\r/g, '\\n')
-  );
-  return JSON.parse(jsonStr);
-}
 
 router.get('/diagnosis', wrap(async (req, res) => {
   const uid   = req.user.id;

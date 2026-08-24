@@ -18,6 +18,7 @@ router.use('/recommend',    require('./recommend'));
 router.use('/enhance-memo', require('./enhance-memo'));
 router.use('/voice',        require('./voice'));
 router.use('/coach',        require('./coach'));
+router.use('/long-videos',  require('./longVideos'));
 router.use('/settings',     require('./settings'));
 router.use('/',             require('./profile'));
 

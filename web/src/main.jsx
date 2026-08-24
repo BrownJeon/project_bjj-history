@@ -17,6 +17,8 @@ import HomePage from './pages/HomePage';
 import CalendarPage from './pages/CalendarPage';
 import PickMeUpPage from './pages/PickMeUpPage';
 import TechPlanPage from './pages/TechPlanPage';
+import StudyVideoPage from './pages/StudyVideoPage';
+import StudyVideoDetailPage from './pages/StudyVideoDetailPage';
 import ClipsPage from './pages/ClipsPage';
 import CoachPage from './pages/CoachPage';
 import ProfilePage from './pages/ProfilePage';
@@ -37,6 +39,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                 <Route path="/calendar"  element={<CalendarPage />} />
                 <Route path="/pickmeup"  element={<PickMeUpPage />} />
                 <Route path="/techplan"  element={<TechPlanPage />} />
+                <Route path="/study"     element={<StudyVideoPage />} />
+                <Route path="/study/:id" element={<StudyVideoDetailPage />} />
                 <Route path="/clips"     element={<ClipsPage />} />
                 <Route path="/coach"     element={<CoachPage />} />
                 <Route path="/me"        element={<ProfilePage />} />

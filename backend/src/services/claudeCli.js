@@ -36,19 +36,44 @@ function cleanEnv() {
   return env;
 }
 
-let cliQueue = Promise.resolve();
+// ── ARG_MAX 방어 (task-008, §3-C) ──────────────────────────────────────────
+// MAX_ARG_STRLEN(131,072바이트) 단일 argv 인자 한계를 실측했다(설계서 "설계 중 실측한 사실").
+// stdinPrompt:false(기존 5개 호출부 전부 이 기본값)일 때는 이 하드캡이 기존과 동일하게 적용되며,
+// 기존 5개 기능의 프롬프트는 전부 이 한계에 훨씬 못 미쳐(최대 수천 자) 실질적 동작 변화가 없다.
+const PROMPT_CHAR_CAP = 24000;
+const PROMPT_BYTE_CAP = 100000;
 
-function runClaudeOnce(prompt, { tools, timeoutMs }) {
+function assertPromptSize(prompt) {
+  if (typeof prompt !== 'string') return;
+  if (prompt.length > PROMPT_CHAR_CAP) {
+    throw new Error(`프롬프트가 너무 깁니다 (${prompt.length}자) — ${PROMPT_CHAR_CAP}자 이내로 줄여주세요`);
+  }
+  const bytes = Buffer.byteLength(prompt, 'utf8');
+  if (bytes >= PROMPT_BYTE_CAP) {
+    throw new Error(`프롬프트가 너무 깁니다 (${bytes}바이트) — ${PROMPT_BYTE_CAP}바이트 미만으로 줄여주세요`);
+  }
+}
+
+// stdinPrompt:false(기본값) → 기존과 100% 동일하게 프롬프트를 argv로 전달.
+// stdinPrompt:true          → argv에 프롬프트를 넣지 않고 stdin에 write(ARG_MAX 회피, `--print`가 공식 지원).
+function runClaudeOnce(prompt, { tools, timeoutMs, stdinPrompt }) {
   return new Promise((resolve, reject) => {
-    const args = ['--print', prompt, '--permission-mode', 'bypassPermissions', '--model', 'sonnet'];
+    const args = ['--print'];
+    if (!stdinPrompt) args.push(prompt);
+    args.push('--permission-mode', 'bypassPermissions', '--model', 'sonnet');
     if (tools) args.push('--tools', tools);
 
     const proc = spawn('claude', args, {
       timeout: timeoutMs,
       cwd: '/tmp',
       env: cleanEnv(),
-      stdio: ['ignore', 'pipe', 'pipe'],
+      stdio: stdinPrompt ? ['pipe', 'pipe', 'pipe'] : ['ignore', 'pipe', 'pipe'],
     });
+
+    if (stdinPrompt) {
+      proc.stdin.write(prompt);
+      proc.stdin.end();
+    }
 
     let out = '', err = '';
     proc.stdout.on('data', d => { out += d.toString(); });
@@ -68,31 +93,72 @@ function runClaudeOnce(prompt, { tools, timeoutMs }) {
   });
 }
 
+// ── 우선순위 2레인 스케줄러 (task-008, §3-A) ────────────────────────────────
+// 동시성은 계속 1로 유지(구독 rate limit·CPU 보호) — 바뀌는 건 스케줄링 "순서"뿐이다.
+// 호출이 끝날 때마다 interactive 큐를 먼저 비우고, 비었을 때만 batch 큐에서 하나를 집는다.
+// priority를 지정하지 않으면(기존 5개 호출부 전부 여기 해당) 'interactive'로 취급되어
+// 기존의 단일 FIFO 큐와 스케줄링 결과가 동일하다(레인이 하나뿐이면 batch 레인은 항상 비어있으므로).
+const interactiveQueue = [];
+const batchQueue = [];
+let workerBusy = false;
+
+function schedule(priority, task) {
+  return new Promise((resolve, reject) => {
+    const item = { task, resolve, reject };
+    if (priority === 'batch') batchQueue.push(item);
+    else interactiveQueue.push(item);
+    pump();
+  });
+}
+
+function pump() {
+  if (workerBusy) return;
+  const item = interactiveQueue.shift() || batchQueue.shift();
+  if (!item) return;
+  workerBusy = true;
+  item.task().then(
+    (result) => { workerBusy = false; item.resolve(result); pump(); },
+    (err)    => { workerBusy = false; item.reject(err);     pump(); }
+  );
+}
+
 async function runClaude(prompt, opts = {}) {
-  const { tools, timeoutMs = 180000 } = opts;
+  const {
+    tools,
+    timeoutMs = 180000,
+    priority = 'interactive',
+    stdinPrompt = false,
+  } = opts;
+  // maxRetries 기본값: interactive=3(기존과 동일한 총 시도 횟수), batch=1(배치가 인터랙티브를
+  // 오래 막지 않도록 재시도를 억제 — 개별 호출부가 필요하면 명시적으로 override 가능, 예: S8의 retry 1회 → maxRetries:2)
+  const defaultMaxRetries = priority === 'batch' ? 1 : 3;
+  const maxRetries = opts.maxRetries != null ? opts.maxRetries : defaultMaxRetries;
+
+  assertPromptSize(prompt);
+
   const attempt = async () => {
-    for (let tries = 0; tries < 3; tries++) {
+    let lastErr;
+    for (let tries = 0; tries < maxRetries; tries++) {
       try {
-        return await runClaudeOnce(prompt, { tools, timeoutMs });
+        return await runClaudeOnce(prompt, { tools, timeoutMs, stdinPrompt });
       } catch (e) {
+        lastErr = e;
         const msg = e instanceof Error ? e.message : String(e);
         // Execution error, exit 1, 일시적 실패 → 재시도
         const isRetryable = msg.includes('Execution error')
           || msg.includes('종료 코드: 1')
           || msg.includes('exit 1');
-        if (tries < 2 && isRetryable) {
+        if (tries < maxRetries - 1 && isRetryable) {
           await new Promise(r => setTimeout(r, 1000 + tries * 1000));
           continue;
         }
         throw e;
       }
     }
-    throw new Error('unreachable');
+    throw lastErr || new Error('unreachable');
   };
-  const prev = cliQueue;
-  const next = prev.then(() => attempt(), () => attempt());
-  cliQueue = next.catch(() => {});
-  return next;
+
+  return schedule(priority, attempt);
 }
 
 module.exports = { runClaude };
