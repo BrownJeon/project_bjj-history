@@ -13,6 +13,7 @@ tags:
 ## Review
 
 ## Done
+- [[task-010-study-ux-improvements]] — `/study` 화면 사용성 개선 (제목입력·검색필터·영상고정) (2026-08-24 완료)
 - [[task-009-long-video-study-phase3]] — 긴 영상 분석 `/study` Phase 3: 기술추출 연동+챕터편집 (2026-08-23 완료)
 - [[task-008-long-video-study-phase2]] — 긴 영상 분석 `/study` Phase 2: 구간 캡처+요약 (2026-08-23 완료)
 - [[task-007-long-video-study-phase1]] — 긴 영상 분석 신규 화면 `/study` Phase 1: 목차까지 (2026-08-23 완료)

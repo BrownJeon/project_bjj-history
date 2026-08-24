@@ -20,6 +20,7 @@ const LongVideo = sequelize.define('LongVideo', {
   transcript_path: { type: DataTypes.STRING(500) },
   video_path:      { type: DataTypes.STRING(500) },                        // Phase 1은 보관 안 함(Phase 3+ S11 전용)
   video_quality:   { type: DataTypes.STRING(10), defaultValue: '480p' },
+  title_locked:    { type: DataTypes.TINYINT, defaultValue: 0 },            // task-010: 사용자가 등록 시 직접 입력한 제목은 S1이 덮어쓰지 않음
   error:           { type: DataTypes.TEXT },
   created_at:      { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
   updated_at:      { type: DataTypes.DATE, defaultValue: DataTypes.NOW },

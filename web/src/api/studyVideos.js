@@ -8,8 +8,9 @@ export const getStatus = () => client.get('/long-videos/status').then(r => r.dat
 
 export const getVideo = (id) => client.get(`/long-videos/${id}`).then(r => r.data);
 
-export const registerVideo = (url, kind) =>
-  client.post('/long-videos', { url, kind }).then(r => r.data);
+// title: 선택 — 비워두면(빈 문자열/미지정) 기존처럼 유튜브 제목을 사용(task-010)
+export const registerVideo = (url, kind, title) =>
+  client.post('/long-videos', { url, kind, title }).then(r => r.data);
 
 export const updateChapters = (id, chapters) =>
   client.patch(`/long-videos/${id}/chapters`, { chapters }).then(r => r.data);

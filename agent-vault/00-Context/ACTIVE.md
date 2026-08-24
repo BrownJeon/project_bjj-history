@@ -1,6 +1,6 @@
 ---
 project: bjj-trainning
-updated: 2026-08-23
+updated: 2026-08-24
 tags:
   - type/context
 ---
@@ -8,7 +8,10 @@ tags:
 
 ## 지금 상태
 
-**운영 중** — pm2 `bjj`, 포트 3000 (backend가 `/api/*` + SPA 서빙)
+**운영 중** — pm2 `bjj`, 포트 3000 (backend가 `/api/*` + SPA 서빙). task-006~010 전체 `origin/main`에 커밋+푸시 완료(커밋 `fa1eaac`/`9ab7f59`, task-010은 아직 커밋 전 — 사용자 확인 대기).
+
+### 2026-08-24 완료
+- [[task-010-study-ux-improvements]] — `/study` 화면 사용성 개선: **제목 입력**(`title_locked` 컬럼, 재분석해도 회귀 없음 실측), **검색+기술/분류 필터+분류배지**(목록 API에 `techniqueNames` 조인 추가, `ClipsPage.jsx` 패턴 재사용), **영상 sticky 고정+활성 챕터 하이라이트**(구간 클릭 시 그 자리에서 재생 확인). 등록 폼은 참고영상 화면과 동일하게 Modal로 전환. **Developer가 브라우저 실행 검증 중 실제 버그 발견·수정**(일부 영상 제목이 한글 자모분리형(NFD)으로 저장돼 검색이 안 되던 문제 — NFC 정규화로 해결, Reviewer가 channel 필드까지 커버되는지 재확인). 파이프라인(S0~S10) 무수정. Developer→Reviewer→QA 전 단계 통과(Critical 0/High 0/Medium 0/Low 1 비차단) — 지금까지 진행한 task 중 가장 깔끔하게 끝남. 상세: [[task-010-study-ux-improvements]]
 
 ### 2026-08-23 완료
 - [[task-009-long-video-study-phase3]] — 긴 영상 분석 `/study` **Phase 3(기술추출 연동+챕터편집)**. 기술명 결정적 매칭(exact→별칭→유사도, AI 재호출 없음, S10) + `/apply` 승인형 연동(`VideoClip.create()` 직접 호출로 구 파이프라인 오발동 우회) + `ChapterEditor.jsx`. **핵심 안전장치 실측**: 전체 파이프라인을 두 번(등록+재분석) 완주해도 승인 전까지 기술트리(`techniques` 테이블) 행 수가 전혀 안 늘어남을 확인. Reviewer가 실사용 시나리오(챕터 1개만 편집) 재현 중 **HIGH 데이터손실 버그 발견**(편집 저장 시 안 건드린 챕터까지 전부 초기화) → Developer 수정 → Reviewer 2가지 시나리오로 독립 재검증 PASS. Developer→Reviewer→QA 전 단계 통과(Critical 0/High 0/Medium 1 비차단). 이걸로 설계서의 핵심 산출물 3가지(목차·구간요약·기술연동) 전부 완성 — Phase 4(운영보강)는 선택사항으로 남음. 상세: [[task-009-long-video-study-phase3]]
@@ -25,11 +28,12 @@ tags:
 
 ## 다음 할 일 — 긴 영상 분석 Phase 4 (선택사항, 급하지 않음)
 
-Phase 1~3 완료돼 `/study`에서 영상 등록 → 챕터 목차 → 챕터별 요약 → 기술트리 승인 연동 → 챕터 편집까지 전부 실사용 가능하다. 설계서가 정한 핵심 산출물 3가지가 모두 완성된 상태. **Phase 4**(화질 프로필 설정 UI, Whisper 폴백, `resume_from` 진짜 단계별 재개, 프레임 GC 크론)는 운영 보강용 선택 항목이라 사용자가 필요하다고 판단할 때만 착수하면 됨 — 설계서 §7 Phase 4 절 참고.
+Phase 1~3 + UX개선(task-010) 완료돼 `/study`에서 영상 등록(제목 지정 가능) → 검색/필터로 찾기 → 챕터 목차 → 챕터별 요약 → 기술트리 승인 연동 → 챕터 편집까지 전부 실사용 가능하다. **Phase 4**(화질 프로필 설정 UI, Whisper 폴백, `resume_from` 진짜 단계별 재개, 프레임 GC 크론)는 운영 보강용 선택 항목이라 사용자가 필요하다고 판단할 때만 착수하면 됨 — 설계서 §7 Phase 4 절 참고.
 
 ### 백로그
 - **챕터 편집 여러 번 + 재분석 시 제목 중복 표시 가능** (task-009 Reviewer 발견, Medium, 데이터 손실 아님) — `longVideoPipeline.js`의 `existingEdited.find()`가 새 챕터마다 독립적으로 첫 겹침만 채택하는 구조적 한계(task-007 Reviewer가 최초 예견했던 리스크). 최다-겹침 매칭으로 개선하면 해소 가능.
-- **`ChapterEditor` 저장 후 화면이 실제로 안 깨지는지 브라우저 시각 확인 미완료** — Phase 2·3 통틀어 3차례 시도했으나 매번 다른 환경 제약(chrome-profile 락, AuthContext 리다이렉트 타이밍)으로 실패. 데이터베이스 레벨 무결성은 충분히 검증됨(판정에 영향 없음). 브라우저가 안정적으로 쓸 수 있을 때 한 번 확인 권장.
+- **활성 챕터 하이라이트가 챕터 편집 후 조용히 사라짐** (task-010 Reviewer 발견, Low, 데이터 손실·오작동 없음) — `ChapterEditor`로 챕터 경계를 바꾸면 챕터 id가 바뀌어 `activeChapterId`가 더 이상 유효한 챕터를 안 가리키게 됨(잘못된 챕터를 가리키진 않고 그냥 강조가 사라짐). 재조회 시 `activeChapterId`를 null로 초기화하면 해소.
+- **한글 NFD(자모분리) 인코딩 이슈 — task-010에서 발견, 검색은 수정 완료, 다른 곳은 미점검** — yt-dlp가 일부 영상 제목을 자모분리형으로 반환하는 경우가 있음. `/study` 검색은 NFC 정규화로 수정됐으나, 이 앱의 다른 텍스트 검색/비교 로직(참고영상 검색 등)에도 같은 문제가 잠재할 수 있음 — 실사용 중 이상 느끼면 이것부터 의심할 것.
 - **`assertPromptSize`(24,000자 하드캡) 잠재 리스크** — Phase 2에서 `claudeCli.js`에 전 AI 기능 공통으로 추가된 프롬프트 길이 상한. 지금은 전부 여유 있으나 코치리포트(90일 훈련데이터 요약)처럼 컨텍스트가 큰 기능은 사용자가 훈련을 오래 쌓으면 나중에 이 캡에 걸릴 수 있음 — 코치리포트가 실패하면 이것부터 의심할 것.
 - **별건 버그**: `ai_recommendation`이 DB엔 있으나 `models/VideoClip.js:4-20`에 속성 선언이 없어 Sequelize `update()`가 조용히 무시 → `/clips/:id/recommend` 캐시가 영원히 안 걸려 매번 Claude 재호출. 한 줄 수정
 - AnalysisPage (월별 훈련량·승률·약점 통계) — 미착수

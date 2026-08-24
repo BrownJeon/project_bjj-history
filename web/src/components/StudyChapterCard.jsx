@@ -18,7 +18,9 @@ import { useUI } from '../contexts/UIContext';
 // 태그 렌더링에 쓰지 않는다 — S10 매칭 결과(long_video_techniques)가 tid·match_type·technique_id를
 // 갖고 있는 유일한 소스라 그것만 신뢰한다(파이프라인이 S10까지 끝나야 태그가 뜬다는 뜻이지만,
 // 이미 done인 챕터도 몇 초 안에 S10이 채워주므로 실사용상 체감 지연은 미미하다).
-export default function StudyChapterCard({ chapter, techniques = [], videoId, onSeek, onChanged }) {
+// active: task-010 A — 방금 클릭한(시간라벨 또는 프레임썸네일) 챕터인지, 부모(StudyVideoDetailPage)의
+// activeChapterId와 비교해 전달됨. 강조 테두리/배경으로 "지금 뭘 보고 있는지" 짚어준다.
+export default function StudyChapterCard({ chapter, techniques = [], videoId, onSeek, onChanged, active = false }) {
   const { showToast } = useUI();
   const badge = badgeFor(chapter);
   const details = chapter.details || {};
@@ -55,11 +57,15 @@ export default function StudyChapterCard({ chapter, techniques = [], videoId, on
   }
 
   return (
-    <Card className="bjj-card-tap" padding={12}>
+    <Card
+      className="bjj-card-tap"
+      padding={12}
+      style={active ? { borderColor: 'var(--accent)', borderWidth: 2, background: 'var(--accent-dim)' } : undefined}
+    >
       {/* 헤더: 시간 · 제목 · 출처 배지 */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
         <div
-          onClick={() => onSeek?.(chapter.start_sec)}
+          onClick={() => onSeek?.(chapter.start_sec, chapter.id)}
           style={{ fontSize: 12, fontWeight: 700, color: 'var(--accent)', flexShrink: 0, cursor: 'pointer' }}
         >
           {fmtMmSs(chapter.start_sec)}~{fmtMmSs(chapter.end_sec)}
@@ -107,7 +113,7 @@ export default function StudyChapterCard({ chapter, techniques = [], videoId, on
                   key={i}
                   src={f.path}
                   alt={`${fmtMmSs(f.t)} 프레임`}
-                  onClick={() => onSeek?.(f.t)}
+                  onClick={() => onSeek?.(f.t, chapter.id)}
                   style={{
                     width: 96, height: 54, objectFit: 'cover', borderRadius: 6,
                     flexShrink: 0, cursor: 'pointer', border: '1px solid var(--border)',

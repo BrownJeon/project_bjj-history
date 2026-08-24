@@ -23,16 +23,18 @@ function jobSummary(job) {
   };
 }
 
-// POST /api/long-videos — 등록 {url, kind} → {id, jobId}
+// POST /api/long-videos — 등록 {url, kind, title} → {id, jobId}
+// title: task-010 — 사용자가 직접 입력하면 등록 시 그 제목으로 저장되고 title_locked=1이 되어
+// S1의 유튜브 제목 동기화 대상에서 제외된다(pipeline.registerVideo가 실제 로직 처리).
 router.post('/', wrap(async (req, res) => {
   const uid = req.user.id;
-  const { url, kind } = req.body;
+  const { url, kind, title } = req.body;
   if (!url || typeof url !== 'string' || !url.trim()) return fail(res, 400, 'url이 필요합니다');
-  const result = await pipeline.registerVideo({ userId: uid, url: url.trim(), kind });
+  const result = await pipeline.registerVideo({ userId: uid, url: url.trim(), kind, title });
   return ok(res, result);
 }));
 
-// GET /api/long-videos — 목록 + 최신 잡 요약
+// GET /api/long-videos — 목록 + 최신 잡 요약 + 매칭된 기술명(task-010, 검색/필터용)
 router.get('/', wrap(async (req, res) => {
   const uid = req.user.id;
   const videos = await LongVideo.findAll({ where: { user_id: uid }, order: [['id', 'DESC']], raw: true });
@@ -50,7 +52,30 @@ router.get('/', wrap(async (req, res) => {
     { replacements: [...ids, uid, uid] }
   );
   const jobByVideo = new Map(jobs.map(j => [j.long_video_id, j]));
-  return ok(res, videos.map(v => ({ ...v, job: jobSummary(jobByVideo.get(v.id)) })));
+
+  // task-010: 목록 카드/필터에서 쓸 매칭된 기술명 — 승인 여부와 무관하게 매칭된(technique_id
+  // 있는) 것만 포함한다. INNER JOIN + technique_id IS NOT NULL로 미승인 AI 추측(match_type='none')
+  // 은 자동으로 제외된다(설계서 §2 그대로).
+  const [techRows] = await sequelize.query(
+    `SELECT DISTINCT lvt.long_video_id, t.name AS technique_name
+     FROM long_video_techniques lvt
+     INNER JOIN techniques t ON t.id = lvt.technique_id AND t.user_id = lvt.user_id
+     WHERE lvt.long_video_id IN (${ids.map(() => '?').join(',')})
+       AND lvt.user_id = ? AND lvt.technique_id IS NOT NULL
+     ORDER BY t.name ASC`,
+    { replacements: [...ids, uid] }
+  );
+  const techNamesByVideo = new Map();
+  for (const r of techRows) {
+    if (!techNamesByVideo.has(r.long_video_id)) techNamesByVideo.set(r.long_video_id, []);
+    techNamesByVideo.get(r.long_video_id).push(r.technique_name);
+  }
+
+  return ok(res, videos.map(v => ({
+    ...v,
+    job: jobSummary(jobByVideo.get(v.id)),
+    techniqueNames: techNamesByVideo.get(v.id) || [],
+  })));
 }));
 
 // GET /api/long-videos/status — 진행중 잡만

@@ -23,6 +23,7 @@ export default function StudyVideoDetailPage() {
   const [video, setVideo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [editorOpen, setEditorOpen] = useState(false);
+  const [activeChapterId, setActiveChapterId] = useState(null); // task-010 A: 방금 클릭한 챕터 하이라이트
   const iframeRef = useRef(null);
   const pollTimerRef = useRef(null);
 
@@ -67,8 +68,11 @@ export default function StudyVideoDetailPage() {
     };
   }, [load]);
 
-  // iframe postMessage 이벤트로 시점 이동 — 외부 API 스크립트 로드 불필요
-  function seekTo(sec) {
+  // iframe postMessage 이벤트로 시점 이동 — 외부 API 스크립트 로드 불필요.
+  // task-010 A: chapterId를 함께 받아 activeChapterId를 갱신 — 시간라벨/프레임썸네일 클릭
+  // 둘 다 같은 챕터 소속이므로 동일하게 하이라이트된다(StudyChapterCard.jsx가 두 지점 모두 전달).
+  function seekTo(sec, chapterId) {
+    if (chapterId != null) setActiveChapterId(chapterId);
     const iframe = iframeRef.current;
     if (!iframe?.contentWindow) return;
     try {
@@ -130,7 +134,10 @@ export default function StudyVideoDetailPage() {
       </div>
 
       {embed ? (
-        <div style={{ width: '100%', aspectRatio: '16/9', borderRadius: 10, overflow: 'hidden', marginBottom: 12 }}>
+        <div style={{
+          width: '100%', aspectRatio: '16/9', borderRadius: 10, overflow: 'hidden', marginBottom: 12,
+          position: 'sticky', top: 0, zIndex: 5, background: 'var(--bg)',
+        }}>
           <iframe
             ref={iframeRef}
             src={embed}
@@ -144,6 +151,7 @@ export default function StudyVideoDetailPage() {
           width: '100%', aspectRatio: '16/9', borderRadius: 10, background: 'var(--surface)',
           border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center',
           marginBottom: 12,
+          position: 'sticky', top: 0, zIndex: 5,
         }}>
           <span style={{ color: 'var(--text3)', fontSize: 12 }}>재생할 수 없는 URL입니다</span>
         </div>
@@ -203,6 +211,7 @@ export default function StudyVideoDetailPage() {
               videoId={id}
               onSeek={seekTo}
               onChanged={load}
+              active={c.id != null && c.id === activeChapterId}
             />
           ))}
         </div>

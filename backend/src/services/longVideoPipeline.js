@@ -124,14 +124,14 @@ async function saveChapters(videoId, userId, chapters, { preserveEdited = false 
 // ── S0: 등록 ────────────────────────────────────────────────────────────
 const KIND_VALUES = new Set(['lecture', 'seminar', 'sparring']);
 
-async function registerVideo({ userId, url, kind }) {
+async function registerVideo({ userId, url, kind, title }) {
   const videoId = ytdlp.extractYoutubeId(url);
   if (!videoId) {
     const err = new Error('YouTube 영상 URL만 지원합니다');
     err.status = 400;
     throw err;
   }
-  // 중복(user_id+video_id) → 기존 id 반환, 즉시 응답
+  // 중복(user_id+video_id) → 기존 id 반환, 즉시 응답 (기존 title/title_locked 상태는 그대로 보존)
   const existing = await LongVideo.findOne({ where: { user_id: userId, video_id: videoId } });
   if (existing) {
     const [[job]] = await sequelize.query(
@@ -141,10 +141,16 @@ async function registerVideo({ userId, url, kind }) {
     return { id: existing.id, jobId: job?.id || null, duplicate: true };
   }
 
+  // task-010: 사용자가 등록 시 제목을 직접 입력하면 title_locked=1로 저장하고, 그 제목은
+  // S1(runPipeline)의 유튜브 제목 동기화 조건에서 제외된다(아래 title_locked 조건 참고).
+  // 비워두면(트림 후 빈 문자열) title_locked=0으로 남아 기존과 완전히 동일하게 유튜브 제목을 쓴다.
+  const cleanTitle = String(title || '').trim().slice(0, 500);
   const video = await LongVideo.create({
     user_id: userId,
     url,
     video_id: videoId,
+    title: cleanTitle,
+    title_locked: cleanTitle ? 1 : 0,
     kind: KIND_VALUES.has(kind) ? kind : 'lecture',
     status: 'queued',
   });
@@ -369,8 +375,11 @@ async function runPipeline(job) {
       return;
     }
 
+    // task-010: title_locked=1(사용자가 등록 시 제목을 직접 입력)이면 이 실행(최초 등록이든
+    // 재분석이든)에서 유튜브 제목으로 절대 덮어쓰지 않는다. title_locked=0(기존과 동일한 경우 —
+    // 사용자가 제목을 안 넣고 등록)이면 지금까지와 완전히 동일하게 매번 유튜브 제목으로 재동기화한다.
     await LongVideo.update({
-      title: meta.title || video.title,
+      title: video.title_locked ? video.title : (meta.title || video.title),
       channel: meta.channel || video.channel,
       duration_sec: meta.durationSec,
       thumb_url: meta.thumbUrl || video.thumb_url,
