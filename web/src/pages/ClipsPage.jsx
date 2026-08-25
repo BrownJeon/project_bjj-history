@@ -14,8 +14,8 @@ import Icon from '../components/Icon';
 import Modal from '../components/Modal';
 import Button from '../components/Button';
 import Pagination from '../components/Pagination';
-import TagPicker from '../components/TagPicker';
 import ClipDetailModal from '../components/ClipDetailModal';
+import ClipEditor from '../components/ClipEditor';
 
 const PAGE_SIZE = 10;
 const detectPlatform = u => !u ? 'other' : u.includes('youtu') ? 'youtube' : u.includes('instagram') ? 'instagram' : 'other';
@@ -77,7 +77,8 @@ export default function ClipsPage({ embedded = false }) {
   const list = useMemo(() => {
     let items = [...clips];
     if (filter === 'star')   items = items.filter(c => c.starred);
-    if (filter === 'recent') items.sort((a, b) => (b.id || 0) - (a.id || 0));
+    if (filter === 'pinned') items = items.filter(c => c.pinned);
+    if (filter === 'recent') items.sort((a, b) => (b.pinned || 0) - (a.pinned || 0) || (b.id || 0) - (a.id || 0));
     if (techFilter)          items = items.filter(c => {
       const names = c.tech_names?.length ? c.tech_names : (c.tech_name ? [c.tech_name] : []);
       return names.includes(techFilter);
@@ -87,7 +88,8 @@ export default function ClipsPage({ embedded = false }) {
       items = items.filter(c =>
         (c.title || '').toLowerCase().includes(q) ||
         (c.tech_name || '').toLowerCase().includes(q) ||
-        (c.description || '').toLowerCase().includes(q)
+        (c.description || '').toLowerCase().includes(q) ||
+        (c.tags || []).some(x => (x || '').toLowerCase().includes(q))
       );
     }
     return items;
@@ -119,6 +121,10 @@ export default function ClipsPage({ embedded = false }) {
 
   async function handleStar(id) {
     try { await clipsApi.toggleStar(id); await reloadClips(); }
+    catch (e) { showToast('오류: ' + e.message); }
+  }
+  async function handlePin(id) {
+    try { await clipsApi.togglePin(id); await reloadClips(); }
     catch (e) { showToast('오류: ' + e.message); }
   }
   async function handleSave(form) {
@@ -189,6 +195,7 @@ export default function ClipsPage({ embedded = false }) {
         <FilterChip active={filter === 'all'}    onClick={() => setFilter('all')}>전체</FilterChip>
         <FilterChip active={filter === 'recent'} onClick={() => setFilter('recent')} icon="clock">최신순</FilterChip>
         <FilterChip active={filter === 'star'}   onClick={() => setFilter('star')}   icon="star">즐겨찾기</FilterChip>
+        <FilterChip active={filter === 'pinned'} onClick={() => setFilter('pinned')} icon="pin">고정</FilterChip>
         {embedded && (
           <div style={{ marginLeft: 'auto' }}>
             <Button size="sm" variant="outline" onClick={() => setEditing('new')}>+ 추가</Button>
@@ -258,7 +265,7 @@ export default function ClipsPage({ embedded = false }) {
       ) : (
         <>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            {paged.map(c => <ClipCard key={c.id} c={c} onClick={() => setDetail(c)} onStar={() => handleStar(c.id)} analyzeJob={analyzeStatus[String(c.id)]} />)}
+            {paged.map(c => <ClipCard key={c.id} c={c} onClick={() => setDetail(c)} onStar={() => handleStar(c.id)} onPin={() => handlePin(c.id)} analyzeJob={analyzeStatus[String(c.id)]} />)}
           </div>
           <Pagination total={list.length} page={page} pageSize={PAGE_SIZE} onPageChange={setPage} />
         </>
@@ -317,13 +324,13 @@ function FilterChip({ active, onClick, icon, children }) {
         flexShrink: 0,
       }}
     >
-      {icon && <Icon name={icon} size={12} color={active ? '#fff' : 'var(--text2)'} filled={icon === 'star' && active} />}
+      {icon && <Icon name={icon} size={12} color={active ? '#fff' : 'var(--text2)'} filled={(icon === 'star' || icon === 'pin') && active} />}
       {children}
     </button>
   );
 }
 
-function ClipCard({ c, onClick, onStar, analyzeJob }) {
+function ClipCard({ c, onClick, onStar, onPin, analyzeJob }) {
   const thumb = getClipThumb(c);
   const isAnalyzing = analyzeJob && analyzeJob.progress >= 0;
   return (
@@ -367,7 +374,16 @@ function ClipCard({ c, onClick, onStar, analyzeJob }) {
           {(c.tech_names?.length ? c.tech_names : (c.tech_name ? [c.tech_name] : [])).map((t, i) => (
             <Tag key={i} tone="accent">{t}</Tag>
           ))}
+          {(c.tags || []).map((t, i) => (
+            <Tag key={`tag-${i}`} tone="neutral">{t}</Tag>
+          ))}
         </div>
+        <span
+          onClick={(e) => { e.stopPropagation(); onPin(); }}
+          style={{ display: 'inline-flex', cursor: 'pointer', padding: 4 }}
+        >
+          <Icon name="pin" size={18} color={c.pinned ? 'var(--accent)' : 'var(--text3)'} filled={!!c.pinned} />
+        </span>
         <span
           onClick={(e) => { e.stopPropagation(); onStar(); }}
           style={{ display: 'inline-flex', cursor: 'pointer', padding: 4 }}
@@ -393,312 +409,7 @@ function ClipCard({ c, onClick, onStar, analyzeJob }) {
 }
 
 
-function ClipEditor({ initial, techniques, onSave, onCancel, analyzeJob }) {
-  const { igCookieConfigured, clips: allClips } = useCache();
-  const [title, setTitle] = useState(initial?.title || '');
-  const [url, setUrl]     = useState(initial?.url || '');
-  const [techNames, setTechNames] = useState(
-    initial?.tech_names?.length ? initial.tech_names
-    : initial?.tech_name ? [initial.tech_name]
-    : []
-  );
-  const [positions, setPositions] = useState(
-    Array.isArray(initial?.positions) ? initial.positions : []
-  );
-  const [desc, setDesc]   = useState(initial?.description || '');
-  const [starred, setStarred] = useState(!!initial?.starred);
-  const [analyzing, setAnalyzing]             = useState(false);
-  const [analyzeProgress, setAnalyzeProgress] = useState(0);
-  const [analyzeStage, setAnalyzeStage]       = useState('');
-  const [dupWarnVisible, setDupWarnVisible]   = useState(false);
-  const [reviewingClip, setReviewingClip]     = useState(null);
-  const [inputMode, setInputMode]             = useState('url'); // 'url' | 'file'
-  const [localFile, setLocalFile]             = useState(null);
-  const pendingFormRef = useRef(null);
-  const abortRef       = useRef(null);
-
-  // 에디터 닫힐 때 폴링 중단 (모달 unmount 시 AbortController 해제)
-  useEffect(() => () => { abortRef.current?.abort(); }, []);
-
-  const techSuggestions = useMemo(
-    () => techniques.map(t => t.name),
-    [techniques]
-  );
-
-  const posSuggestions = useMemo(() => {
-    const fromTechs = techniques.flatMap(t =>
-      t.positions?.length ? t.positions : (t.pos ? [t.pos] : [])
-    );
-    return [...new Set(fromTechs)];
-  }, [techniques]);
-
-  const similarClips = useMemo(() => {
-    if (!techNames.length) return [];
-    const techSet = new Set(techNames);
-    return (allClips || []).filter(clip => {
-      if (initial && initial !== 'new' && clip.id === initial.id) return false;
-      const clipTechs = clip.tech_names?.length
-        ? clip.tech_names
-        : (clip.tech_name ? [clip.tech_name] : []);
-      return clipTechs.some(t => techSet.has(t));
-    });
-  }, [allClips, techNames, initial]);
-
-  const isInstagram = /instagram\.com/.test(url);
-
-  async function handleAiAnalyze() {
-    if (!url.trim()) { alert('URL을 먼저 입력해주세요'); return; }
-    if (isInstagram && !igCookieConfigured) {
-      alert('Instagram 영상은 로그인 인증이 필요합니다.\n프로필 > Instagram 쿠키 설정 후 시도하거나\n영상 상세에서 "파일로 분석" 기능을 사용해 주세요.');
-      return;
-    }
-    if (!/(youtube\.com|youtu\.be|instagram\.com)/.test(url)) {
-      alert('YouTube URL만 AI 분석 가능합니다');
-      return;
-    }
-    const ctrl = new AbortController();
-    abortRef.current = ctrl;
-    setAnalyzing(true);
-    setAnalyzeProgress(0); setAnalyzeStage('');
-    try {
-      const res = await enhanceApi.analyzeVideo(url, initial?.id || null, (pct, stg) => { setAnalyzeProgress(pct); setAnalyzeStage(stg); }, 1200000, ctrl.signal);
-      setDesc(res.description || '');
-      if ((res.frames || []).length > 0) reloadClips();
-      alert(`AI 설명이 생성되었습니다 (${res.method || 'vision'})`);
-    } catch (e) {
-      if (enhanceApi.isAbortError(e)) return; // 모달 닫기 — 백엔드 분석 계속 진행됨
-      alert('AI 분석 실패: ' + e.message);
-    } finally {
-      setAnalyzing(false);
-    }
-  }
-
-  function submit() {
-    if (!title.trim())                          return alert('영상 제목을 입력해주세요');
-    if (inputMode === 'url' && !url.trim())     return alert('URL을 입력해주세요');
-    if (inputMode === 'file' && !localFile)     return alert('영상 파일을 선택해주세요');
-    if (!techNames.length)                      return alert('기술명을 1개 이상 입력해주세요');
-    const form = {
-      title: title.trim(),
-      url: inputMode === 'url' ? url.trim() : '',
-      description: desc,
-      tech_names: techNames,
-      tech_name: techNames[0] || '',
-      positions,
-      tags: [], starred: starred ? 1 : 0,
-    };
-    if (inputMode === 'file') form._localFile = localFile;
-    if (similarClips.length > 0) {
-      pendingFormRef.current = form;
-      setDupWarnVisible(true);
-      return;
-    }
-    onSave(form);
-  }
-
-  return (
-    <Modal title={initial ? '참고영상 수정' : '참고영상 추가'} onClose={onCancel}>
-      {/* 즐겨찾기 — 상단 왼쪽 배치 */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
-        <input type="checkbox" id="clip-star" checked={starred} onChange={e => setStarred(e.target.checked)}
-          style={{ width: 16, height: 16, cursor: 'pointer', accentColor: 'var(--amber)' }} />
-        <label htmlFor="clip-star" style={{ margin: 0, cursor: 'pointer', fontSize: 13, fontWeight: 600, color: starred ? 'var(--amber)' : 'var(--text2)' }}>
-          ⭐ 즐겨찾기
-        </label>
-      </div>
-      <div className="field"><label>제목 *</label>
-        <input value={title} onChange={e => setTitle(e.target.value)} placeholder="영상 제목" /></div>
-      <div className="field">
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-          <label style={{ margin: 0 }}>영상 등록 방식</label>
-          <button type="button" onClick={() => { setInputMode('url'); setLocalFile(null); }}
-            style={{ padding: '2px 10px', borderRadius: 6, fontSize: 12, cursor: 'pointer', border: 'none', fontWeight: 600,
-              background: inputMode === 'url' ? 'var(--accent)' : 'var(--surface-up)',
-              color: inputMode === 'url' ? 'white' : 'var(--text2)' }}>
-            URL
-          </button>
-          <button type="button" onClick={() => { setInputMode('file'); setUrl(''); }}
-            style={{ padding: '2px 10px', borderRadius: 6, fontSize: 12, cursor: 'pointer', border: 'none', fontWeight: 600,
-              background: inputMode === 'file' ? 'var(--accent)' : 'var(--surface-up)',
-              color: inputMode === 'file' ? 'white' : 'var(--text2)' }}>
-            파일 업로드
-          </button>
-        </div>
-        {inputMode === 'url' ? (
-          <>
-            <input value={url} onChange={e => setUrl(e.target.value)} placeholder="YouTube 또는 Instagram URL" />
-            {url && <div style={{ fontSize: 12, color: 'var(--blue)', marginTop: 4 }}>{getPlatformLabel(detectPlatform(url))}</div>}
-            {isInstagram && !igCookieConfigured && (
-              <div style={{ fontSize: 11, color: 'var(--amber)', marginTop: 3 }}>
-                ⚠ Instagram은 AI 자동 분석 불가 — 저장 후 상세 화면에서 파일로 분석하거나 프로필에서 쿠키를 설정하세요
-              </div>
-            )}
-            {isInstagram && igCookieConfigured && (
-              <div style={{ fontSize: 11, color: 'var(--accent)', marginTop: 3 }}>
-                ✓ Instagram 쿠키 인증됨 — AI 분석 가능
-              </div>
-            )}
-          </>
-        ) : (
-          <>
-            <input type="file" accept="video/*" onChange={e => setLocalFile(e.target.files[0] || null)}
-              style={{ fontSize: 13, padding: '4px 0' }} />
-            {localFile && (
-              <div style={{ fontSize: 12, color: 'var(--accent)', marginTop: 4 }}>
-                {localFile.name} ({(localFile.size / 1024 / 1024).toFixed(1)} MB)
-              </div>
-            )}
-            <div style={{ fontSize: 11, color: 'var(--text3)', marginTop: 4 }}>
-              업로드 후 AI가 자동으로 영상을 분석합니다
-            </div>
-          </>
-        )}
-      </div>
-      <div className="field">
-        <label>기술명 * (여러 개 가능)</label>
-        <TagPicker
-          value={techNames}
-          onChange={setTechNames}
-          suggestions={techSuggestions}
-          placeholder="기술명 검색·선택"
-          restrictToSuggestions={true}
-        />
-      </div>
-      <div className="field">
-        <label>포지션 (여러 개 가능)</label>
-        <TagPicker
-          value={positions}
-          onChange={setPositions}
-          suggestions={posSuggestions}
-          placeholder="포지션 검색·자유 입력"
-        />
-      </div>
-
-      {/* 유사 영상 목록 — 기술명 선택 시 자동 표시, 각 카드 클릭으로 미리보기 */}
-      {similarClips.length > 0 && (
-        <div style={{
-          marginBottom: 8, padding: '8px 10px',
-          background: 'var(--amber-dim)', border: '1px solid var(--amber)', borderRadius: 8,
-        }}>
-          <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--amber)', marginBottom: 2 }}>
-            ⚠ 동일 기술로 등록된 영상 ({similarClips.length}개)
-          </div>
-          <div style={{ fontSize: 11, color: 'var(--text3)', marginBottom: 6 }}>
-            클릭하여 영상 내용을 확인하세요
-          </div>
-          {similarClips.map(clip => (
-            <div
-              key={clip.id}
-              onClick={() => setReviewingClip(clip)}
-              style={{
-                display: 'flex', alignItems: 'center', gap: 8, padding: '4px 0',
-                cursor: 'pointer', borderRadius: 6,
-              }}
-            >
-              {clip.thumb_url && (
-                <img src={clip.thumb_url} alt="" style={{ width: 48, height: 30, objectFit: 'cover', borderRadius: 4, flexShrink: 0 }} />
-              )}
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontSize: 12, fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                  {clip.title}
-                </div>
-                <div style={{ fontSize: 11, color: 'var(--text3)' }}>
-                  {(clip.tech_names?.length ? clip.tech_names : (clip.tech_name ? [clip.tech_name] : [])).join(', ')}
-                </div>
-              </div>
-              <span style={{ fontSize: 11, color: 'var(--amber)', flexShrink: 0 }}>확인 →</span>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* 유사 영상 미리보기 — 읽기 전용 (onEdit/onDelete 미전달) */}
-      {reviewingClip && (
-        <ClipDetailModal
-          c={reviewingClip}
-          onClose={() => setReviewingClip(null)}
-        />
-      )}
-
-      {/* 중복 등록 경고 */}
-      {dupWarnVisible && (
-        <div style={{
-          padding: '10px 12px', marginBottom: 8,
-          background: 'var(--red-dim)', border: '1px solid var(--red)', borderRadius: 8,
-        }}>
-          <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--red)', marginBottom: 8 }}>
-            이미 등록된 영상과 유사합니다. 계속 등록하시겠습니까?
-          </div>
-          <div style={{ display: 'flex', gap: 8 }}>
-            <Button variant="danger" size="sm"
-              onClick={() => { setDupWarnVisible(false); onSave(pendingFormRef.current); }}>
-              그래도 등록
-            </Button>
-            <Button variant="outline" size="sm" onClick={() => setDupWarnVisible(false)}>
-              취소
-            </Button>
-          </div>
-        </div>
-      )}
-
-      <div className="field">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
-          <label style={{ margin: 0 }}>설명</label>
-          {inputMode === 'url' && (() => {
-            const bgRunning = analyzeJob && analyzeJob.progress >= 0;
-            const igBlocked = isInstagram && !igCookieConfigured;
-            const disabled  = analyzing || bgRunning || igBlocked;
-            const label     = bgRunning
-              ? `🔄 ${analyzeJob.stage || '분석 중'} ${analyzeJob.progress}%`
-              : analyzing ? `🔄 ${analyzeStage || 'AI 분석 중'} ${analyzeProgress}%`
-              : igBlocked ? '📁 파일로 분석 (상세에서)'
-              : isInstagram ? '✨ AI 분석 (쿠키 인증)'
-              : '✨ AI 분석';
-            return (
-              <button onClick={handleAiAnalyze} disabled={disabled}
-                title={igBlocked ? '프로필 > Instagram 쿠키 설정 후 이용 가능합니다' : undefined}
-                style={{
-                  background: disabled ? 'var(--surface-up)' : 'var(--purple-dim)',
-                  color: disabled ? 'var(--text3)' : 'var(--purple)',
-                  border: 'none', padding: '4px 10px', borderRadius: 6,
-                  fontSize: 11, cursor: disabled ? 'not-allowed' : 'pointer', fontWeight: 600,
-                }}>{label}</button>
-            );
-          })()}
-        </div>
-        <textarea rows={3} value={desc} onChange={e => setDesc(e.target.value)} placeholder="영상에 대한 설명" />
-        {(analyzing || (analyzeJob && analyzeJob.progress >= 0)) && (
-          <div style={{ marginTop: 6 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
-              <span style={{ fontSize: 11, color: 'var(--text2)' }}>
-                {analyzeJob?.progress >= 0
-                  ? (analyzeJob.stage || '분석 중...')
-                  : (analyzeStage || 'AI 분석 준비 중...')}
-              </span>
-              <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--accent)' }}>
-                {analyzeJob?.progress >= 0
-                  ? `${analyzeJob.progress}%`
-                  : `${analyzeProgress}%`}
-              </span>
-            </div>
-            <div style={{ height: 3, borderRadius: 2, background: 'var(--border)', overflow: 'hidden' }}>
-              <div style={{
-                width: analyzeJob?.progress >= 0
-                  ? `${analyzeJob.progress}%`
-                  : `${analyzeProgress}%`,
-                height: '100%', background: 'var(--accent)', borderRadius: 2, transition: 'width 0.6s ease',
-              }} />
-            </div>
-          </div>
-        )}
-      </div>
-      <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
-        <Button variant="primary" size="sm" onClick={submit}>저장</Button>
-        <Button variant="outline" size="sm" onClick={onCancel}>취소</Button>
-      </div>
-    </Modal>
-  );
-}
+// ClipEditor → components/ClipEditor.jsx 로 이동 (항목 2: TechPlanPage에서도 재사용)
 
 // ClipDetail → components/ClipDetailModal.jsx 로 이동
 function _ClipDetail_REMOVED({ c, onClose, onEdit, onDelete, onRefresh, analyzeJob }) {

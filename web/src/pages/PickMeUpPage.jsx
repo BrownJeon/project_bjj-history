@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useCache } from '../contexts/CacheContext';
+import { useUI } from '../contexts/UIContext';
 import SwipeCardDeck from '../components/SwipeCardDeck';
 import PickDetailPanel from '../components/PickDetailPanel';
 import { listPicks, createPick, deletePick } from '../api/picks';
@@ -36,6 +37,28 @@ function SegBtn({ active, onClick, children }) {
   );
 }
 
+// ─── 포지션 실시간 필터 칩 (ClipsPage FilterChip 스타일) ──────────────────
+function PositionChip({ active, onClick, children }) {
+  return (
+    <button
+      onClick={onClick}
+      style={{
+        padding: '6px 13px',
+        background: active ? 'var(--accent)' : 'var(--surface-up)',
+        color: active ? '#fff' : 'var(--text2)',
+        border: 'none',
+        borderRadius: 16,
+        fontSize: 12,
+        fontWeight: 600,
+        cursor: 'pointer',
+        whiteSpace: 'nowrap',
+      }}
+    >
+      {children}
+    </button>
+  );
+}
+
 // ─── 메인 페이지 ─────────────────────────────────────────────────────────────
 export default function PickMeUpPage() {
   const [tab, setTab] = useState('today'); // 'today' | 'history'
@@ -48,12 +71,30 @@ export default function PickMeUpPage() {
   const [detailMode, setDetailMode]     = useState('browse');
   const [shuffledClips, setShuffledClips] = useState([]);
   const [confirming, setConfirming]       = useState(false);
+  const [excludedPickIds, setExcludedPickIds] = useState(() => new Set()); // 현재 세션에서 제외할 clip_id (기본: 오늘 픽)
+  const [positionFilter, setPositionFilter] = useState('all'); // 'all' | 포지션명 — 카드 보기 중 실시간 전환
+  const [continuingDate, setContinuingDate] = useState(null); // 이력에서 "이어서 뽑기"로 이어가는 중인 과거 날짜 (null이면 평소처럼 오늘 세션)
+
+  // 현재 셔플된 풀에 실제로 존재하는 포지션만 필터 칩으로 노출
+  const availablePositions = useMemo(() => {
+    const set = new Set();
+    shuffledClips.forEach(c => (c.positions || []).forEach(p => { if (p) set.add(p); }));
+    return [...set];
+  }, [shuffledClips]);
+
+  // 포지션 필터는 재조회/재셔플 없이 이미 뽑힌 풀을 즉시 다시 거르기만 한다
+  const displayedClips = useMemo(() => {
+    if (positionFilter === 'all') return shuffledClips;
+    return shuffledClips.filter(c => (c.positions || []).includes(positionFilter));
+  }, [shuffledClips, positionFilter]);
 
   // ─── 이력 탭 상태 ────────────────────────────────────────────────────────
   const [history, setHistory]       = useState([]);
   const [histLoading, setHistLoading] = useState(false);
 
   const { clips } = useCache();
+  const { showToast } = useUI();
+  const todayDateStr = new Date().toISOString().slice(0, 10); // 이력 탭에서 "오늘" 날짜 그룹 구분용
 
   // ─── 이력 탭 진입 시 데이터 로드 ─────────────────────────────────────────
   useEffect(() => {
@@ -67,20 +108,43 @@ export default function PickMeUpPage() {
     return () => { cancelled = true; };
   }, [tab]);
 
+  // ─── 오늘 이미 확정된 픽 조회 (마운트 시) ───────────────────────────────
+  // 재진입 시 오늘 이미 뽑은 카드는 카드 풀에서 기본으로 제외해 "이어서 뽑기"가 되게 한다.
+  // 이력 탭에서 과거 날짜를 골라 "이어서 뽑기"를 누르면 이 제외 목록이 그 날짜의 픽으로 대체된다 (handleContinueFromDate).
+  useEffect(() => {
+    let cancelled = false;
+    const today = new Date().toISOString().slice(0, 10);
+    listPicks()
+      .then(data => {
+        if (cancelled) return;
+        const todayGroup = data.find(g => g.date === today);
+        const ids = new Set((todayGroup?.picks || []).map(p => p.clip_id));
+        setExcludedPickIds(ids);
+      })
+      .catch(() => { if (!cancelled) setExcludedPickIds(new Set()); });
+    return () => { cancelled = true; };
+  }, []);
+
   // ─── 오늘픽 시작 (카드 풀 선택) ──────────────────────────────────────────
   function handleStartDeck(pool) {
-    const source = pool === 'starred'
+    const base = pool === 'starred'
       ? clips.filter(c => c.starred === 1)
       : [...clips];
+    const source = base.filter(c => !excludedPickIds.has(c.id));
 
     if (source.length === 0) {
-      alert('등록된 영상이 없습니다');
+      alert(
+        base.length === 0
+          ? '등록된 영상이 없습니다'
+          : '오늘 뽑을 수 있는 카드가 없습니다 — 모두 뽑으셨어요! 🎉'
+      );
       return;
     }
 
     const shuffled = fisherYates([...source]);
     setCardPool(pool);
     setShuffledClips(shuffled);
+    setPositionFilter('all');
     setDeckState('swiping');
   }
 
@@ -91,13 +155,23 @@ export default function PickMeUpPage() {
   }
 
   // ─── 오늘픽 확정 → DB 일괄 저장 ─────────────────────────────────────────
+  // 이력에서 "이어서 뽑기"로 진입한 상태(continuingDate)면 오늘 날짜가 아니라
+  // 이어서 뽑던 그 날짜로 저장한다 (= 그 날짜 이력에 추가하는 것으로 처리).
   async function handleConfirmPicks() {
     if (todayPicks.length === 0 || confirming) return;
     setConfirming(true);
-    const today = new Date().toISOString().slice(0, 10);
+    const pickDate = continuingDate || todayDateStr;
+    const count = todayPicks.length;
     try {
-      await Promise.all(todayPicks.map(clip => createPick({ clip_id: clip.id, pick_date: today })));
+      await Promise.all(todayPicks.map(clip => createPick({ clip_id: clip.id, pick_date: pickDate })));
+      // 확정 직후 같은 세션에서 재섞기해도 방금 뽑은 카드가 다시 나오지 않도록 로컬 즉시 반영
+      setExcludedPickIds(prev => {
+        const next = new Set(prev);
+        todayPicks.forEach(clip => next.add(clip.id));
+        return next;
+      });
       setTodayPicks([]);
+      showToast(continuingDate ? `${pickDate}에 ${count}개 추가됐습니다` : '오늘의 픽이 저장되었습니다');
     } catch (e) {
       console.error('픽 확정 실패:', e);
       alert('저장 실패: ' + (e.message || e));
@@ -107,12 +181,22 @@ export default function PickMeUpPage() {
   }
 
   // ─── 다시 생성 (재셔플) ──────────────────────────────────────────────────
+  // 포지션 필터가 걸려 있으면 해당 포지션 카드끼리만 순서를 섞는다 (전체 풀은 그대로 유지)
   function handleReshuffle() {
-    const pool = cardPool === 'starred'
-      ? clips.filter(c => c.starred === 1)
-      : clips;
-    const shuffled = fisherYates([...pool]);
-    setShuffledClips(shuffled);
+    if (positionFilter === 'all') {
+      const base = cardPool === 'starred'
+        ? clips.filter(c => c.starred === 1)
+        : clips;
+      const pool = base.filter(c => !excludedPickIds.has(c.id));
+      setShuffledClips(fisherYates([...pool]));
+      return;
+    }
+    setShuffledClips(prev => {
+      const matches = c => (c.positions || []).includes(positionFilter);
+      const shuffledMatching = fisherYates(prev.filter(matches));
+      let mi = 0;
+      return prev.map(c => (matches(c) ? shuffledMatching[mi++] : c));
+    });
   }
 
   // ─── 카드 탭 → 상세보기 ──────────────────────────────────────────────────
@@ -125,6 +209,23 @@ export default function PickMeUpPage() {
   async function handleDeletePick(id) {
     try {
       await deletePick(id);
+      // 오늘 확정 픽(또는 "이어서 뽑기"로 합산된 과거 픽)을 이력에서 삭제한 경우,
+      // 같은 clip_id가 다른 날짜 이력에 더 남아있지 않을 때만 제외 목록에서 해제한다
+      // (여러 날짜에 걸쳐 중복 픽된 카드일 수 있으므로 무조건 해제하면 안 됨)
+      const deletedClipId = history
+        .flatMap(g => g.picks)
+        .find(p => p.id === id)?.clip_id;
+      if (deletedClipId != null) {
+        const stillExists = history.some(g => g.picks.some(p => p.id !== id && p.clip_id === deletedClipId));
+        if (!stillExists) {
+          setExcludedPickIds(prev => {
+            if (!prev.has(deletedClipId)) return prev;
+            const next = new Set(prev);
+            next.delete(deletedClipId);
+            return next;
+          });
+        }
+      }
       setHistory(prev =>
         prev
           .map(group => ({
@@ -152,11 +253,59 @@ export default function PickMeUpPage() {
       const allPicks = await listPicks();
       const target = allPicks.flatMap(g => g.picks).find(p => p.clip_id === clipId);
       if (target) await deletePick(target.id);
+      // 오늘 확정 픽을 취소한 경우, 같은 clip_id가 다른 날짜 이력에 더 없을 때만 제외 목록에서 해제
+      const stillExists = allPicks.some(g => g.picks.some(p => p.id !== target?.id && p.clip_id === clipId));
+      if (!stillExists) {
+        setExcludedPickIds(prev => {
+          if (!prev.has(clipId)) return prev;
+          const next = new Set(prev);
+          next.delete(clipId);
+          return next;
+        });
+      }
       setDetailClip(null);
     } catch (e) {
       console.error('픽 취소 실패:', e);
       setDetailClip(null);
     }
+  }
+
+  // ─── 이력에서 과거 날짜 골라 이어서 뽑기 ────────────────────────────────
+  // 선택한 날짜의 세션을 이어간다: 그 날짜에 이미 뽑은 카드만 제외 대상으로 삼고(다른 날짜와 섞지 않음),
+  // 이 상태에서 확정하면 오늘이 아니라 그 날짜로 저장된다 (handleConfirmPicks 참고).
+  function handleContinueFromDate(date) {
+    if (todayPicks.length > 0) {
+      const ok = confirm('확정하지 않은 픽이 있습니다. 세션을 전환하면 사라집니다. 계속할까요?');
+      if (!ok) return;
+      setTodayPicks([]);
+    }
+    const group = history.find(g => g.date === date);
+    if (!group) return;
+    const ids = new Set(group.picks.map(p => p.clip_id));
+    setContinuingDate(date);
+    setExcludedPickIds(ids);
+    setPositionFilter('all');
+    setDeckState('idle');
+    setTab('today');
+    showToast(`${date} 세션을 이어서 뽑습니다`);
+  }
+
+  // ─── 이어서 뽑기 모드 종료 → 오늘 세션으로 복귀 ─────────────────────────
+  function handleExitContinuing() {
+    if (todayPicks.length > 0) {
+      const ok = confirm('확정하지 않은 픽이 있습니다. 오늘로 돌아가면 사라집니다. 계속할까요?');
+      if (!ok) return;
+      setTodayPicks([]);
+    }
+    setContinuingDate(null);
+    setPositionFilter('all');
+    setDeckState('idle');
+    listPicks()
+      .then(data => {
+        const todayGroup = data.find(g => g.date === todayDateStr);
+        setExcludedPickIds(new Set((todayGroup?.picks || []).map(p => p.clip_id)));
+      })
+      .catch(() => setExcludedPickIds(new Set()));
   }
 
   // ─── 렌더링 ──────────────────────────────────────────────────────────────
@@ -184,6 +333,29 @@ export default function PickMeUpPage() {
       {/* ─── 오늘픽 탭 ─────────────────────────────────────────────────────── */}
       {tab === 'today' && (
         <div>
+          {continuingDate && (
+            <div style={{
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+              gap: 8, padding: '10px 14px', marginBottom: 14,
+              background: 'var(--accent-dim, rgba(0,0,0,0.05))',
+              border: '1px solid var(--accent)', borderRadius: 12,
+            }}>
+              <span style={{ fontSize: 12.5, fontWeight: 700, color: 'var(--accent)' }}>
+                📅 {continuingDate} 세션 이어서 뽑는 중 — 여기서 뽑으면 이 날짜에 추가됩니다
+              </span>
+              <button
+                onClick={handleExitContinuing}
+                style={{
+                  padding: '4px 10px', background: 'var(--surface)', color: 'var(--text2)',
+                  border: '1px solid var(--border-med)', borderRadius: 16,
+                  fontSize: 11, fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap', flexShrink: 0,
+                }}
+              >
+                오늘로 복귀
+              </button>
+            </div>
+          )}
+
           {deckState === 'idle' && (
             <div style={{
               display: 'flex',
@@ -202,6 +374,16 @@ export default function PickMeUpPage() {
               }}>
                 오늘 스파링에서 쓸 기술 카드를 뽑아보세요 🥋
               </div>
+
+              {excludedPickIds.size > 0 && (
+                <div style={{
+                  fontSize: 12, fontWeight: 600, color: 'var(--accent)',
+                  background: 'var(--accent-dim, rgba(0,0,0,0.05))',
+                  padding: '6px 14px', borderRadius: 20,
+                }}>
+                  이미 뽑은 카드 {excludedPickIds.size}개 제외 중
+                </div>
+              )}
 
               <div style={{ display: 'flex', gap: 12 }}>
                 <button
@@ -259,9 +441,24 @@ export default function PickMeUpPage() {
                 </button>
               </div>
 
-              {/* 스와이프 덱 */}
+              {/* 포지션 실시간 전환 — 뽑기 시작 방식은 그대로 두고, 보는 중에만 좁혀 본다 */}
+              {availablePositions.length > 0 && (
+                <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 12 }}>
+                  <PositionChip active={positionFilter === 'all'} onClick={() => setPositionFilter('all')}>
+                    전체
+                  </PositionChip>
+                  {availablePositions.map(p => (
+                    <PositionChip key={p} active={positionFilter === p} onClick={() => setPositionFilter(p)}>
+                      {p}
+                    </PositionChip>
+                  ))}
+                </div>
+              )}
+
+              {/* 스와이프 덱 — key로 포지션 전환 시 카드 인덱스를 처음으로 리셋 */}
               <SwipeCardDeck
-                clips={shuffledClips}
+                key={positionFilter}
+                clips={displayedClips}
                 onPick={handlePick}
                 onCardTap={handleCardTap}
               />
@@ -274,7 +471,7 @@ export default function PickMeUpPage() {
                     justifyContent: 'space-between', marginBottom: 8,
                   }}>
                     <div style={{ fontSize: 11, color: 'var(--text3)', fontWeight: 600, letterSpacing: '0.05em' }}>
-                      오늘의 픽 ({todayPicks.length})
+                      {continuingDate ? `${continuingDate}에 추가할 픽` : '오늘의 픽'} ({todayPicks.length})
                     </div>
                     <button
                       onClick={handleConfirmPicks}
@@ -342,15 +539,48 @@ export default function PickMeUpPage() {
 
           {!histLoading && history.map(({ date, picks }) => (
             <div key={date} style={{ marginBottom: 20 }}>
-              <h3 style={{
-                fontSize: 13,
-                fontWeight: 700,
-                color: 'var(--text2)',
-                marginBottom: 8,
-                letterSpacing: '0.02em',
+              <div style={{
+                display: 'flex', alignItems: 'center',
+                justifyContent: 'space-between', marginBottom: 8,
               }}>
-                {date}
-              </h3>
+                <h3 style={{
+                  fontSize: 13,
+                  fontWeight: 700,
+                  color: 'var(--text2)',
+                  margin: 0,
+                  letterSpacing: '0.02em',
+                }}>
+                  {date}
+                </h3>
+                {date !== todayDateStr && (
+                  date === continuingDate ? (
+                    <span style={{
+                      padding: '4px 12px',
+                      background: 'var(--accent)',
+                      color: '#fff',
+                      borderRadius: 20,
+                      fontSize: 11, fontWeight: 700,
+                      whiteSpace: 'nowrap',
+                    }}>
+                      ● 이어서 뽑는 중
+                    </span>
+                  ) : (
+                    <button
+                      onClick={() => handleContinueFromDate(date)}
+                      style={{
+                        padding: '4px 12px',
+                        background: 'var(--accent-dim, rgba(0,0,0,0.05))',
+                        color: 'var(--accent)',
+                        border: 'none', borderRadius: 20,
+                        fontSize: 11, fontWeight: 700,
+                        cursor: 'pointer', whiteSpace: 'nowrap',
+                      }}
+                    >
+                      ▶ 이어서 뽑기
+                    </button>
+                  )
+                )}
+              </div>
               <div style={{
                 background: 'var(--surface)',
                 borderRadius: 12,

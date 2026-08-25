@@ -21,6 +21,17 @@ export function uniqueAllTags(techniques = []) {
   return [...set];
 }
 
+export function uniqueClipTags(clips = []) {
+  const set = new Set();
+  for (const c of clips) {
+    for (const tag of (c.tags || [])) {
+      const s = norm(tag);
+      if (s) set.add(s);
+    }
+  }
+  return [...set];
+}
+
 export function uniqueClassThemes(classes = []) {
   return [...new Set(classes.map(c => norm(c.theme)).filter(Boolean))];
 }

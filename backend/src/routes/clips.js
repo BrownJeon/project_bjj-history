@@ -97,7 +97,7 @@ router.get('/', wrap(async (req, res) => {
   const uid = req.user.id;
   const rows = await VideoClip.findAll({
     where: { user_id: uid },
-    order: [['starred', 'DESC'], ['id', 'DESC']],
+    order: [['pinned', 'DESC'], ['starred', 'DESC'], ['id', 'DESC']],
     raw: true,
   });
   res.json(rows.map(normalize));
@@ -146,7 +146,7 @@ router.post('/', wrap(async (req, res) => {
 
 router.put('/:id', wrap(async (req, res) => {
   const uid = req.user.id;
-  const { title, url, description, tech_name, tech_names, tags, starred, positions } = req.body;
+  const { title, url, description, tech_name, tech_names, tags, starred, pinned, positions } = req.body;
   const old = await VideoClip.findOne({ where: { id: req.params.id, user_id: uid }, attributes: ['url'], raw: true });
   if (!old) return res.status(404).json({ error: 'not found' });
   const urlChanged = old.url !== url;
@@ -161,6 +161,7 @@ router.put('/:id', wrap(async (req, res) => {
   };
   if (urlChanged) data.thumb_url = '';
   if (starred !== undefined) data.starred = starred ? 1 : 0;
+  if (pinned !== undefined) data.pinned = pinned ? 1 : 0;
   await VideoClip.update(data, { where: { id: req.params.id, user_id: uid } });
   res.json({ ok: true });
   if (urlChanged && url) {
@@ -245,6 +246,14 @@ router.patch('/:id/star', wrap(async (req, res) => {
   const next = c.starred ? 0 : 1;
   await c.update({ starred: next });
   res.json({ starred: next });
+}));
+
+router.patch('/:id/pin', wrap(async (req, res) => {
+  const c = await VideoClip.findOne({ where: { id: req.params.id, user_id: req.user.id } });
+  if (!c) return res.status(404).json({ error: 'not found' });
+  const next = c.pinned ? 0 : 1;
+  await c.update({ pinned: next });
+  res.json({ pinned: next });
 }));
 
 router.post('/:id/refresh-thumb', wrap(async (req, res) => {

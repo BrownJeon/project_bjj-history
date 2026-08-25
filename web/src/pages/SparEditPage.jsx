@@ -11,6 +11,7 @@ import {
 } from '../utils/baseOptions';
 import { uniqueOpponents } from '../utils/suggestions';
 import SparFeedbackCard from '../components/SparFeedbackCard';
+import { listPicks } from '../api/picks';
 
 const EMPTY_SESSION = {
   level: '', opponent: '', tapGot: 0, tapGave: 0, time: '',
@@ -157,10 +158,24 @@ export default function SparEditor({ classId, sparDay, onClose, onSaved }) {
     setLoading(true);
     try {
       const payload = buildPayload();
-      if (isEdit) await classesApi.updateSpar(classId, sparDay.id, payload);
-      else await classesApi.createSpar(classId, payload);
+      let sparDayId;
+      if (isEdit) {
+        await classesApi.updateSpar(classId, sparDay.id, payload);
+        sparDayId = sparDay.id;
+      } else {
+        const res = await classesApi.createSpar(classId, payload);
+        sparDayId = res.id;
+      }
       onSaved && onSaved();
-      setFeedbackData({ sessions, classes });
+
+      // 그날 픽미업으로 뽑은 기술이 있으면 피드백 카드에서 사용 여부를 남길 수 있게 전달
+      let todayPicks = [];
+      try {
+        const groups = await listPicks();
+        todayPicks = groups.find(g => g.date === date)?.picks || [];
+      } catch { /* 픽 이력 조회 실패는 피드백 섹션만 비우고 진행 */ }
+
+      setFeedbackData({ sessions, classes, sparDayId, todayPicks });
     } catch (e) { showToast('저장 실패: ' + e.message); }
     finally { setLoading(false); }
   }
@@ -182,6 +197,8 @@ export default function SparEditor({ classId, sparDay, onClose, onSaved }) {
       <SparFeedbackCard
         sessions={feedbackData.sessions}
         classes={feedbackData.classes}
+        sparDayId={feedbackData.sparDayId}
+        todayPicks={feedbackData.todayPicks}
         onClose={onClose}
       />
     );

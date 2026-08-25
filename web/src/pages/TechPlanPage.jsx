@@ -16,6 +16,8 @@ import ChainEditor from '../components/ChainEditor';
 import AiChainGenerator from '../components/AiChainGenerator';
 import { getClipThumb, getPlatformIcon } from '../utils/videoThumb';
 import ClipDetailModal from '../components/ClipDetailModal';
+import ClipEditor from '../components/ClipEditor';
+import * as clipsApi from '../api/clips';
 import GameplanDetail from '../components/GameplanDetail';
 import GameplanEditor from '../components/GameplanEditor';
 import { BASE_POSITIONS, BASE_CATEGORIES, mergeUnique } from '../utils/baseOptions';
@@ -89,6 +91,14 @@ function TechTab() {
   const [editing, setEditing] = useState(null);
   const [page, setPage] = useState(1);
   const [posManaging, setPosManaging] = useState(false);
+
+  // 팝업(detail)이 열려 있는 동안 관련영상 수정/삭제로 techniques 캐시가 갱신되면
+  // 팝업 내 t.clips 목록도 최신 상태로 동기화 (ClipsPage.jsx의 onRefresh 패턴과 동일 목적)
+  useEffect(() => {
+    if (!detail) return;
+    const fresh = techniques.find(x => x.id === detail.id);
+    if (fresh && fresh !== detail) setDetail(fresh);
+  }, [techniques]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const list = useMemo(() => {
     let items = [...techniques];
@@ -253,13 +263,59 @@ function FilterChip({ active, onClick, icon, children }) {
 }
 
 function TechDetailModal({ t, onClose, onEdit, onDelete }) {
+  const { techniques, reloadClips, reloadTechniques } = useCache();
+  const { showToast, setLoading } = useUI();
   const [detailClip, setDetailClip] = useState(null);
+  const [editingClip, setEditingClip] = useState(null);
+
+  async function handleClipDelete(id) {
+    if (!confirm('삭제하시겠습니까?')) return;
+    setLoading(true);
+    try {
+      await clipsApi.deleteClip(id);
+      // t.clips는 서버에서 기술명으로 조인되어 내려오므로 techniques도 함께 갱신해야
+      // 팝업 내 관련영상 목록에 삭제 결과가 반영된다.
+      await reloadClips();
+      await reloadTechniques();
+      setDetailClip(null);
+      showToast('삭제되었습니다');
+    } catch (e) { showToast('삭제 실패: ' + e.message); }
+    finally { setLoading(false); }
+  }
+
+  async function handleClipSave(form) {
+    setLoading(true);
+    try {
+      await clipsApi.updateClip(editingClip.id, form);
+      await reloadClips();
+      await reloadTechniques();
+      // 저장 직후 팝업이 detailClip으로 되돌아가므로, 캐시 재조회 타이밍과 무관하게
+      // 방금 제출한 값으로 즉시 갱신해 화면에 옛 값이 잠깐이라도 보이지 않게 한다.
+      setDetailClip(prev => prev ? { ...prev, ...form } : prev);
+      setEditingClip(null);
+      showToast('저장되었습니다');
+    } catch (e) { showToast('저장 실패: ' + e.message); }
+    finally { setLoading(false); }
+  }
+
+  if (editingClip) {
+    return (
+      <ClipEditor
+        initial={editingClip}
+        techniques={techniques}
+        onSave={handleClipSave}
+        onCancel={() => setEditingClip(null)}
+      />
+    );
+  }
 
   if (detailClip) {
     return (
       <ClipDetailModal
         c={detailClip}
         onClose={() => setDetailClip(null)}
+        onEdit={() => setEditingClip(detailClip)}
+        onDelete={() => handleClipDelete(detailClip.id)}
       />
     );
   }

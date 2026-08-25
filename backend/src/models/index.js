@@ -43,6 +43,10 @@ SparDay.belongsTo(Class,     { foreignKey: 'class_id' });
 SparDay.hasMany(SparSession, { foreignKey: 'spar_day_id', as: 'sessions' });
 SparSession.belongsTo(SparDay,{ foreignKey: 'spar_day_id' });
 
+// 픽미업 → 스파링 사용 피드백 (날짜 단위로 안정적인 spar_day_id를 FK로 사용)
+SparDay.hasMany(PickHistory,   { foreignKey: 'spar_day_id', as: 'pickFeedbacks' });
+PickHistory.belongsTo(SparDay, { foreignKey: 'spar_day_id' });
+
 TechniqueChain.hasMany(ChainStep, { foreignKey: 'chain_id', as: 'steps' });
 ChainStep.belongsTo(TechniqueChain, { foreignKey: 'chain_id' });
 ChainStep.belongsTo(Technique,    { foreignKey: 'technique_id' });

@@ -15,6 +15,7 @@ const VideoClip = sequelize.define('VideoClip', {
   tags:        { type: DataTypes.TEXT, defaultValue: '[]' },
   position:    { type: DataTypes.TEXT, defaultValue: '[]' },
   starred:     { type: DataTypes.TINYINT, defaultValue: 0 },
+  pinned:      { type: DataTypes.TINYINT, defaultValue: 0 },
   created_at:  { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
   user_id:     { type: DataTypes.INTEGER, allowNull: true },
 }, { tableName: 'video_clips' });
