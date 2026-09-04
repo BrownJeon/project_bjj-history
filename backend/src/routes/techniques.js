@@ -256,10 +256,21 @@ router.get('/positions', wrap(async (req, res) => {
     }
   }
 
-  // 목록 자체는 기존과 동일하게 "기술에 실제로 쓰인 포지션"만 노출한다.
-  // 영상/드릴/스파링 카운트는 그 태그를 수정·삭제할 때 영향 범위를 보여주는 부가정보일 뿐,
-  // 기술에는 없고 다른 테이블에만 있는 이름까지 목록에 끌어오지 않는다.
-  const result = [...techCounter.keys()]
+  // task-016: 목록은 4개 저장소(기술·영상·드릴·스파링)에 쓰인 이름의 **합집합**이다.
+  //
+  // 예전에는 techCounter의 키만 내려줬다. 그래서 기술에는 없고 영상·드릴에만 쓰인 이름
+  // (운영 실측 8종: 오픈 가드, 클로즈드 가드, 패스 (Pass), 하프 가드, 스탠딩,
+  //  클로즈드 가드 (Closed Guard), 터틀, 오픈가드 탑, 하프가드 탑)이 관리 화면에 아예
+  // 뜨지 않아 **이름을 고칠 수도 지울 수도 없었다.** rename/삭제 API는 4곳을 다 훑는데
+  // 목록이 그 이름을 안 내려주니 프론트가 호출할 방법이 없었던 것 — 기능은 있는데 입구가 없었다.
+  // 특히 `클로즈드 가드`(영상)와 `클로즈드 가드 (Closed Guard)`(드릴)처럼 같은 개념이 갈라져
+  // 있어도 rename으로 합칠 수가 없었다.
+  // → 4개 카운터의 키를 합쳐 목록을 만든다. 각 카운터는 이미 위에서 NFC로 정규화된 키를
+  //   쓰므로 합집합에서도 "눈에 같은 이름"이 두 줄로 갈라지지 않는다.
+  const allNames = new Set([
+    ...techCounter.keys(), ...clipCounter.keys(), ...drillCounter.keys(), ...sparCounter.keys(),
+  ]);
+  const result = [...allNames]
     .map(name => ({
       name,
       count:      techCounter.get(name) || 0, // 기존 프론트 호환용 (기술 수)
@@ -431,22 +442,125 @@ router.put('/positions/:name', wrap(async (req, res) => {
   res.json({ ok: true, updatedCount });
 }));
 
-// 특정 포지션 값을 모든 기술의 pos 배열에서 제거
+// 특정 포지션을 기술·참고영상·수업드릴·스파링 기록 4곳 전부에서 제거 (task-016)
+//
+// 예전에는 techniques.pos에서만 지웠다. 목록도 기술 기준이었으니 지운 직후 화면에서는
+// 사라져 사용자는 "지워졌다"고 믿지만, 영상·드릴·스파링에는 그 이름이 그대로 남아 있었다.
+// (task-016 Developer 실측: 삭제 1회 후 영상 2·드릴 2·스파링 3행에 이름 잔존)
+// 목록이 합집합으로 넓어진 지금은 그 잔존 행 때문에 지운 포지션이 화면에 **다시 나타난다.**
+// → rename과 대칭이 되도록 4곳에서 모두 제거한다.
+//
+// [트랜잭션이 rename보다 더 중요한 이유]
+// rename은 중간에 실패해도 옛 이름이 어딘가 남아 있어 다시 시도할 근거가 된다. 삭제는
+// 아니다 — 4단계 중 2번째에서 터지면 기술·영상에서는 이미 이름이 사라졌고 드릴·스파링에만
+// 남는데, **되돌릴 원본이 없다.** 그래서 rename과 동일하게 전 단계를 한 트랜잭션으로 묶는다.
+//
+// [정규화 비교(posEq)를 쓰는 이유 — task-014]
+// 단순 === 로 비교하면 NFD로 저장된 행이 "대상 아님"으로 조용히 걸러져 안 지워진다.
+// 트랜잭션은 이걸 못 막는다(예외가 아니라 필터링이라 롤백 대상조차 되지 않는다).
+// 이 경우 삭제한 이름이 목록에 계속 남아 사용자가 몇 번을 지워도 안 지워지는 상태가 된다.
 router.delete('/positions/:name', wrap(async (req, res) => {
   const uid = req.user.id;
   const targetName = toNFC(decodeURIComponent(req.params.name));
-  const rows = await Technique.findAll({ where: { user_id: uid }, attributes: ['id', 'pos'], raw: true });
-  let updatedCount = 0;
-  for (const row of rows) {
-    const positions = parsePos(row.pos);
-    // task-014: rename과 같은 이유로 정규화 비교 — 안 하면 NFD로 저장된 포지션이 삭제 대상에서
-    // 조용히 빠져 "삭제했는데 목록에 그대로 남아 있는" 상태가 된다.
-    if (!positions.some(p => posEq(p, targetName))) continue;
-    const next = positions.filter(p => !posEq(p, targetName)).map(toNFC);
-    await Technique.update({ pos: JSON.stringify(next) }, { where: { id: row.id, user_id: uid } });
-    updatedCount++;
-  }
-  res.json({ ok: true, updatedCount });
+  const { sequelize } = require('../config/db');
+  const { SparSession, Drill } = require('../models');
+
+  const removed = await sequelize.transaction(async (t) => {
+    const n = { tech: 0, clip: 0, drill: 0, spar: 0 };
+
+    // 1) 기술(techniques.pos)
+    const techRows = await Technique.findAll({
+      where: { user_id: uid }, attributes: ['id', 'pos'], raw: true, transaction: t,
+    });
+    for (const row of techRows) {
+      const positions = parsePos(row.pos);
+      if (!positions.some(p => posEq(p, targetName))) continue;
+      // 살아남는 원소도 toNFC로 정본화 — rename과 동일한 이유(new Set 중복 제거가 실제로 먹히게).
+      const next = [...new Set(positions.filter(p => !posEq(p, targetName)).map(toNFC))];
+      await Technique.update(
+        { pos: JSON.stringify(next) },
+        { where: { id: row.id, user_id: uid }, transaction: t }
+      );
+      n.tech++;
+    }
+
+    // 2) 참고영상(video_clips.position)
+    const clipRows = await VideoClip.findAll({
+      where: { user_id: uid }, attributes: ['id', 'position'], raw: true, transaction: t,
+    });
+    for (const row of clipRows) {
+      const positions = parsePos(row.position);
+      if (!positions.some(p => posEq(p, targetName))) continue;
+      const next = [...new Set(positions.filter(p => !posEq(p, targetName)).map(toNFC))];
+      await VideoClip.update(
+        { position: JSON.stringify(next) },
+        { where: { id: row.id, user_id: uid }, transaction: t }
+      );
+      n.clip++;
+    }
+
+    // 3) 수업 드릴(drills.pos) — 스칼라 varchar(50). Drill은 user_id가 없어 classes로 스코프.
+    //
+    // SQL `d.pos = ?`로는 NFD/NFC 차이를 못 넘으므로(rename 3단계와 같은 이유) 후보를 읽어와
+    // JS 정규화 비교로 거른다.
+    // 드릴 행 자체를 지우지 않고 pos만 비운다 — 포지션 태그 하나를 지우자고 그 드릴의 기술·
+    // 메모·별점까지 날리는 건 사용자가 요청한 적 없는 파괴다. 빈 값은 classes.js의 쓰기 경로
+    // (`pos: drill.pos || ''`)와 같은 '' 로 맞춘다. 위 목록 집계 쿼리가 `pos != ''`로 거르므로
+    // 이 드릴은 카운트에서 자연히 빠진다.
+    const [drillCandidates] = await sequelize.query(
+      `SELECT d.id, d.pos FROM drills d JOIN classes c ON d.class_id = c.id WHERE c.user_id = ?`,
+      { replacements: [uid], transaction: t }
+    );
+    const drillIds = drillCandidates.filter(r => posEq(r.pos, targetName)).map(r => r.id);
+    if (drillIds.length) {
+      await Drill.update({ pos: '' }, { where: { id: drillIds }, transaction: t });
+      n.drill += drillIds.length;
+    }
+
+    // 4) 스파링 라운드(spar_sessions.positions, [{name, score}]) — spar_days→classes로 스코프
+    //
+    // [빈 배열이 되는 경우 — 의도된 정상 상태]
+    // 그 라운드에 기록된 포지션이 지우는 이름 하나뿐이면 결과가 []가 된다. 이걸 특별 취급하지
+    // 않고 그대로 저장한다. 근거 3가지:
+    //  · []는 이미 이 앱의 기본값이다 — 모델 defaultValue가 '[]'이고(models/SparSession.js),
+    //    SparEditPage가 새 라운드를 저장할 때 항상 `positions: []`로 쓴다
+    //    (web/src/pages/SparEditPage.jsx:126). 즉 운영 DB의 다수 라운드가 원래 []다.
+    //  · 소비 측이 모두 빈 배열 안전이다 — coachAnalytics는 `(s.positions || []).forEach(...)`로
+    //    집계하므로 아무것도 누적하지 않고(:100), AI 프롬프트는 `if ((s.positions||[]).length)`로
+    //    '점유 포지션' 줄 자체를 생략한다(:159). classes.js 조회도 safeParse로 []를 그대로 돌려준다.
+    //  · 대안이 더 나쁘다 — 라운드(행)를 지우면 탭 수·시간·시도 기술·메모까지 사라진다.
+    //    포지션 태그 하나 지웠다고 스파링 기록을 없애는 건 사용자 의도가 아니다.
+    // 결과적으로 그 라운드는 "포지션 기록이 없는 라운드"가 되고, 포지션 평균 집계에서만 빠진다.
+    const [sparRows] = await sequelize.query(
+      `SELECT ss.id, ss.positions FROM spar_sessions ss
+       JOIN spar_days sd ON ss.spar_day_id = sd.id
+       JOIN classes c ON sd.class_id = c.id
+       WHERE c.user_id = ?`,
+      { replacements: [uid], transaction: t }
+    );
+    for (const row of sparRows) {
+      let entries;
+      try { entries = JSON.parse(row.positions || '[]'); } catch { entries = []; }
+      if (!Array.isArray(entries) || !entries.some(e => e?.name && posEq(e.name, targetName))) continue;
+      const next = entries
+        .filter(e => !(e?.name && posEq(e.name, targetName)))
+        .map(e => (e?.name ? { ...e, name: toNFC(e.name) } : e));
+      await SparSession.update(
+        { positions: JSON.stringify(next) },
+        { where: { id: row.id }, transaction: t }
+      );
+      n.spar++;
+    }
+
+    return n;
+  });
+
+  // updatedCount는 기존 응답 필드 유지(4곳 합계). removed는 프론트 확인 문구용 상세 내역.
+  res.json({
+    ok: true,
+    updatedCount: removed.tech + removed.clip + removed.drill + removed.spar,
+    removed,
+  });
 }));
 
 router.patch('/:id/star', wrap(async (req, res) => {

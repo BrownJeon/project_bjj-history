@@ -33,8 +33,30 @@ export default function PositionManagerModal({ onClose, onChanged }) {
 
   useEffect(() => { load(); }, [load]);
 
-  async function handleDelete(name, techCount) {
-    if (!confirm(`'${name}' 포지션을 ${techCount}개 기술에서 제거합니다.\n계속하시겠습니까?`)) return;
+  // task-016: 삭제가 기술뿐 아니라 참고영상·드릴·스파링에서도 제거되도록 확장됐다.
+  // 예전 문구("N개 기술에서 제거합니다")는 이제 거짓이라 실제 지워지는 범위를 저장소별
+  // 실제 건수로 보여준다 — 사용자가 "기술만 지워지겠지"라고 오해한 채 확인을 누르면
+  // 되돌릴 수 없는 삭제가 영상·드릴·스파링까지 번진다.
+  async function handleDelete(p) {
+    const rows = [
+      ['기술',     p.techCount],
+      ['참고영상', p.clipCount],
+      ['드릴',     p.drillCount],
+      ['스파링',   p.sparCount],
+    ].filter(([, n]) => n > 0);
+
+    const detail = rows.length
+      ? rows.map(([label, n]) => `  · ${label} ${n}건`).join('\n')
+      : '  · 연결된 기록 없음';
+    const sparNote = p.sparCount
+      ? '\n\n※ 이 포지션만 기록된 스파링 라운드는 포지션 기록이 비게 됩니다\n   (라운드 자체는 남고, 포지션 평균 집계에서만 빠집니다)'
+      : '';
+
+    if (!confirm(
+      `'${p.name}' 포지션을 삭제합니다.\n\n다음 기록에서 제거됩니다:\n${detail}${sparNote}\n\n되돌릴 수 없습니다. 계속하시겠습니까?`
+    )) return;
+
+    const name = p.name;
     setDeleting(name);
     try {
       await deletePosition(name);
@@ -76,8 +98,8 @@ export default function PositionManagerModal({ onClose, onChanged }) {
   return (
     <Modal title="포지션 관리" onClose={onClose}>
       <div style={{ fontSize: 12, color: 'var(--text3)', marginBottom: 12 }}>
-        ⚠ 이름을 수정하면 기술·참고영상·드릴·스파링 기록에 남아있는 같은 포지션도 함께 바뀌고,
-        삭제하면 해당 포지션이 모든 기술에서 제거됩니다
+        ⚠ 수정·삭제 모두 기술·참고영상·드릴·스파링 기록 4곳에 함께 적용됩니다.
+        목록에는 4곳 중 어디든 쓰인 포지션이 모두 표시됩니다
       </div>
 
       {loading ? (
@@ -123,7 +145,7 @@ export default function PositionManagerModal({ onClose, onChanged }) {
                   <Button
                     variant="danger"
                     size="sm"
-                    onClick={() => handleDelete(p.name, p.techCount)}
+                    onClick={() => handleDelete(p)}
                     disabled={deleting === p.name}
                   >
                     {deleting === p.name ? '삭제 중...' : '삭제'}
