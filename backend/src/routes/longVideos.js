@@ -6,6 +6,7 @@ const express = require('express');
 const router  = express.Router();
 const fs = require('fs/promises');
 const { sequelize, LongVideo, LongVideoChapter, Technique, VideoClip } = require('../models');
+const { toNFC } = require('../utils/nfc');
 const { wrap, ok, fail, safeParse } = require('../utils/respond');
 const pipeline = require('../services/longVideoPipeline');
 const storage = require('../services/storage');
@@ -364,7 +365,10 @@ router.post('/:id/techniques/:tid/apply', wrap(async (req, res) => {
     // 이 라우트를 거치지 않고 모델을 직접 써야 그 자동 트리거 자체를 원천 우회할 수 있다
     // (설계서 §6-6이 명시적으로 경고한 지점).
     const clip = await VideoClip.create({
-      title: `${chapter.title || video.title || '긴 영상'} — ${targetTechnique.name}`.slice(0, 255),
+      // task-014: long_videos.title 에는 yt-dlp가 NFD로 내려준 제목이 이미 저장된 행이 있다
+      // (2026-09-04 실측: id=29). 그 제목을 그대로 이어붙이면 NFD가 video_clips.title 로
+      // 번져 참고영상 화면 검색이 조용히 실패한다 → 만들 때 NFC로 정규화해 전파를 끊는다.
+      title: toNFC(`${chapter.title || video.title || '긴 영상'} — ${targetTechnique.name}`).slice(0, 255),
       url: clipUrl,
       platform: 'youtube',
       description: chapter.summary || '',

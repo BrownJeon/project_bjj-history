@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const { sequelize, TechniqueChain, ChainStep, Technique, VideoClip } = require('../models');
 const { wrap, safeParse } = require('../utils/respond');
+const { toNFC } = require('../utils/nfc');
 
 const VIDEO_DIR = '/home/brownjeon/.node-local/bjj-chain-videos';
 
@@ -235,10 +236,15 @@ ${registeredList}
     return res.status(500).json({ error: 'AI 응답 파싱 실패', raw: raw.slice(0, 500) });
   }
 
-  const techByName = new Map(allTechniques.map(t => [t.name.trim(), t]));
+  // task-014: 양쪽 다 NFC로 맞춘 뒤 매칭한다. 왼쪽(t.name)은 DB에 저장된 기술명,
+  // 오른쪽(s.techniqueName)은 방금 Claude가 생성한 문자열이라 정규화 형태가 서로 다를 수
+  // 있다. 어긋나면 이미 등록된 기술이 isNew=true(신규)로 잘못 표시되고 참고영상도 안 붙는데,
+  // 에러가 없어 눈치채기 어렵다. NFC만 맞추고 공백은 건드리지 않는다 — techMatch.normalize()는
+  // 공백까지 제거하지만 그건 이 라우트의 기존 매칭 기준을 바꾸는 일이라 task-014 범위 밖이다.
+  const techByName = new Map(allTechniques.map(t => [toNFC(t.name.trim()), t]));
 
   result.steps = (result.steps || []).map(s => {
-    const matched = techByName.get((s.techniqueName || '').trim());
+    const matched = techByName.get(toNFC((s.techniqueName || '').trim()));
     const clips = matched
       ? allClips.filter(c => {
           try {

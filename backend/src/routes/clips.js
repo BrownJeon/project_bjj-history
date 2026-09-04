@@ -4,6 +4,7 @@ const { Op } = require('sequelize');
 const fs = require('fs/promises');
 const { VideoClip } = require('../models');
 const { wrap, safeParse, ok, fail } = require('../utils/respond');
+const { toNFC, arrToNFC } = require('../utils/nfc');
 const { queueThumbUpdate } = require('../services/thumbnailExtractor');
 const { getFramesDir, getVideoDir } = require('../services/storage');
 const multer = require('multer');
@@ -86,11 +87,14 @@ function normalize(row) {
   };
 }
 
+// task-014: tech_name/position/tags 는 기술트리 연결·포지션 rename·태그 필터에서 문자열
+// 동등비교의 키로 쓰인다. 저장 시점에 NFC로 통일해 두면(정본화) 그 비교들이 정규화 형태
+// 차이로 조용히 어긋나지 않는다. 이미 NFC인 값에는 아무 영향이 없다(멱등).
 function techNamesToJson(tech_names, tech_name) {
   const arr = Array.isArray(tech_names)
     ? tech_names.filter(Boolean)
     : (tech_name ? [String(tech_name).trim()] : []);
-  return JSON.stringify(arr);
+  return JSON.stringify(arrToNFC(arr));
 }
 
 router.get('/', wrap(async (req, res) => {
@@ -129,13 +133,15 @@ router.post('/', wrap(async (req, res) => {
   const uid = req.user.id;
   const { title, url, description, tech_name, tech_names, tags, starred, positions } = req.body;
   const r = await VideoClip.create({
-    title,
+    // task-014: title 은 이 앱에서 NFD가 실제로 발견된 유일한 필드 계열이다(long_videos.title,
+    // yt-dlp 유래). 사용자가 그런 제목을 복사·붙여넣기 할 수도 있으므로 저장 시 NFC로 통일한다.
+    title: toNFC(title),
     url,
     platform: detectPlatform(url),
     description: description || '',
     tech_name: techNamesToJson(tech_names, tech_name),
-    position: JSON.stringify(Array.isArray(positions) ? positions : []),
-    tags: JSON.stringify(tags || []),
+    position: JSON.stringify(arrToNFC(Array.isArray(positions) ? positions : [])),
+    tags: JSON.stringify(arrToNFC(tags || [])),
     starred: starred ? 1 : 0,
     user_id: uid,
   });
@@ -151,13 +157,13 @@ router.put('/:id', wrap(async (req, res) => {
   if (!old) return res.status(404).json({ error: 'not found' });
   const urlChanged = old.url !== url;
   const data = {
-    title,
+    title: toNFC(title), // task-014 — POST와 동일
     url,
     platform: detectPlatform(url),
     description: description || '',
     tech_name: techNamesToJson(tech_names, tech_name),
-    position: JSON.stringify(Array.isArray(positions) ? positions : []),
-    tags: JSON.stringify(tags || []),
+    position: JSON.stringify(arrToNFC(Array.isArray(positions) ? positions : [])),
+    tags: JSON.stringify(arrToNFC(tags || [])),
   };
   if (urlChanged) data.thumb_url = '';
   if (starred !== undefined) data.starred = starred ? 1 : 0;

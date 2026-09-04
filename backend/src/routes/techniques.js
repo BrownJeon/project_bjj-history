@@ -4,6 +4,7 @@ const { Op } = require('sequelize');
 const fs = require('fs/promises');
 const { Technique, VideoClip } = require('../models');
 const { wrap, safeParse } = require('../utils/respond');
+const { toNFC, arrToNFC, eqNFC } = require('../utils/nfc');
 const { analyzeVideo } = require('../services/videoAnalysis');
 const { getFramesDir, getVideoDir } = require('../services/storage');
 
@@ -76,11 +77,13 @@ function parsePos(raw) {
   return [];
 }
 
+// task-014: 포지션명은 rename/삭제/집계에서 문자열 동등비교의 키로 쓰이므로 저장 시점에
+// NFC로 통일한다(정본화). 이미 NFC인 값에는 영향이 없다.
 function posToJson(positions, pos) {
   const arr = Array.isArray(positions)
     ? positions.filter(Boolean)
     : (pos ? [String(pos).trim()] : []);
-  return JSON.stringify(arr);
+  return JSON.stringify(arrToNFC(arr));
 }
 
 router.get('/', wrap(async (req, res) => {
@@ -108,9 +111,13 @@ router.get('/', wrap(async (req, res) => {
 
 router.post('/', wrap(async (req, res) => {
   const uid = req.user.id;
-  const { name, pos, positions, category, tags, note, starred } = req.body;
-  if (!name || !name.trim()) return res.status(400).json({ error: '기술명을 입력해주세요' });
-  const { Op } = require('sequelize');
+  const { name: rawName, pos, positions, category, tags, note, starred } = req.body;
+  if (!rawName || !rawName.trim()) return res.status(400).json({ error: '기술명을 입력해주세요' });
+  // task-014: 기술명은 이 앱에서 가장 널리 쓰이는 매칭 키다(chains.js의 AI 기술명 매칭,
+  // techMatch.js, video_clips.tech_name JSON_CONTAINS 동기화, 프론트 검색·필터). 특히
+  // StudyChapterCard의 "새 기술로 추가"는 AI가 뽑은 raw_name을 그대로 프롬프트 기본값으로
+  // 넣어주므로 외부 유래 문자열이 기술명이 될 수 있다 → 저장 시점에 NFC로 정본화한다.
+  const name = toNFC(rawName);
   const dup = await Technique.findOne({
     where: {
       user_id: uid,
@@ -125,7 +132,7 @@ router.post('/', wrap(async (req, res) => {
     name: name.trim(),
     pos: posToJson(positions, pos),
     category: category || '',
-    tags: JSON.stringify(tags || []),
+    tags: JSON.stringify(arrToNFC(tags || [])),
     links: '[]',
     note: note || '',
     starred: starred ? 1 : 0,
@@ -138,7 +145,8 @@ router.post('/', wrap(async (req, res) => {
 
 router.put('/:id', wrap(async (req, res) => {
   const uid = req.user.id;
-  const { name, pos, positions, category, tags, note, starred } = req.body;
+  const { name: rawName, pos, positions, category, tags, note, starred } = req.body;
+  const name = toNFC(rawName); // task-014 — POST와 동일하게 매칭 키를 NFC로 정본화
   const old = await Technique.findOne({ where: { id: req.params.id, user_id: uid } });
   if (!old) return res.status(404).json({ error: 'not found' });
   await Technique.update(
@@ -146,7 +154,7 @@ router.put('/:id', wrap(async (req, res) => {
       name,
       pos: posToJson(positions, pos),
       category: category || '',
-      tags: JSON.stringify(tags || []),
+      tags: JSON.stringify(arrToNFC(tags || [])),
       note: note || '',
       starred: starred ? 1 : 0,
     },
@@ -205,16 +213,23 @@ router.get('/positions', wrap(async (req, res) => {
   const uid = req.user.id;
   const { sequelize } = require('../config/db');
 
+  // task-014: 4개 카운터의 키를 전부 NFC로 통일한다.
+  //   안 하면 techniques.pos에 NFD "클로즈가드", video_clips.position에 NFC "클로즈가드"가
+  //   있을 때 서로 다른 키가 되어 화면에 "참고영상 0건"으로 나온다 — 실제로는 1건인데.
+  //   사용자는 이 숫자를 보고 "이 포지션 지워도 영향 없겠네"라고 판단하므로 조용한 오답이 위험하다.
+  //   (task-014 Developer가 운영 API로 clipCount=0 재현 확인)
+  //   목록에 내려주는 name도 NFC가 되므로, 프론트가 그 이름으로 호출하는 rename/삭제 API가
+  //   NFD로 저장된 행까지 정규화 비교로 함께 잡아낸다.
   const techCounter = new Map();
   const techRows = await Technique.findAll({ where: { user_id: uid }, attributes: ['pos'], raw: true });
   for (const row of techRows) {
-    for (const p of parsePos(row.pos)) techCounter.set(p, (techCounter.get(p) || 0) + 1);
+    for (const p of parsePos(row.pos).map(toNFC)) techCounter.set(p, (techCounter.get(p) || 0) + 1);
   }
 
   const clipCounter = new Map();
   const clipRows = await VideoClip.findAll({ where: { user_id: uid }, attributes: ['position'], raw: true });
   for (const row of clipRows) {
-    for (const p of parsePos(row.position)) clipCounter.set(p, (clipCounter.get(p) || 0) + 1);
+    for (const p of parsePos(row.position).map(toNFC)) clipCounter.set(p, (clipCounter.get(p) || 0) + 1);
   }
 
   const drillCounter = new Map();
@@ -222,7 +237,7 @@ router.get('/positions', wrap(async (req, res) => {
     `SELECT d.pos FROM drills d JOIN classes c ON d.class_id = c.id WHERE c.user_id = ? AND d.pos IS NOT NULL AND d.pos != ''`,
     { replacements: [uid] }
   );
-  for (const row of drillRows) drillCounter.set(row.pos, (drillCounter.get(row.pos) || 0) + 1);
+  for (const row of drillRows) { const p = toNFC(row.pos); drillCounter.set(p, (drillCounter.get(p) || 0) + 1); }
 
   const sparCounter = new Map();
   const [sparRows] = await sequelize.query(
@@ -237,7 +252,7 @@ router.get('/positions', wrap(async (req, res) => {
     try { entries = JSON.parse(row.positions || '[]'); } catch { entries = []; }
     if (!Array.isArray(entries)) continue;
     for (const e of entries) {
-      if (e?.name) sparCounter.set(e.name, (sparCounter.get(e.name) || 0) + 1);
+      if (e?.name) { const p = toNFC(e.name); sparCounter.set(p, (sparCounter.get(p) || 0) + 1); }
     }
   }
 
@@ -284,10 +299,12 @@ function mergeSparPositions(entries) {
   for (const e of entries) {
     const name = (e && typeof e === 'object') ? e.name : null;
     if (!name) { merged.push(e); continue; }
-    let slot = slotByName.get(name);
+    // task-014: 병합 키도 NFC로 — 자모분리형/완성형이 섞이면 "눈에 같은 포지션"이 두 항목으로
+    // 남아 coachAnalytics의 포지션 평균이 왜곡된다(이 함수가 애초에 막으려던 그 왜곡).
+    let slot = slotByName.get(toNFC(name));
     if (!slot) {
       slot = { entry: { ...e }, scores: [] };
-      slotByName.set(name, slot);
+      slotByName.set(toNFC(name), slot);
       merged.push(slot.entry); // 참조를 먼저 넣고 아래에서 score만 확정한다(원래 순서 유지)
     }
     const score = parseInt(e.score) || 0;
@@ -302,10 +319,24 @@ function mergeSparPositions(entries) {
   return merged;
 }
 
+// task-014: 이름 비교는 반드시 NFC 정규화 후에 한다.
+//
+// 한글은 완성형(NFC)과 자모분리형(NFD) 두 가지로 저장될 수 있고 화면에는 똑같이 보인다.
+// techniques.pos에는 NFD "클로즈가드", drills.pos에는 NFC "클로즈가드"가 들어 있는 상황이
+// 얼마든지 생길 수 있는데(입력 시점·유입 경로가 다름), 원시 === / SQL = 로 비교하면 rename이
+// **기술만 새 이름으로 바꾸고 드릴·영상·스파링은 옛 이름 그대로 남긴다.**
+// task-012가 트랜잭션으로 막으려던 바로 그 split-brain인데, 트랜잭션은 이걸 못 막는다 —
+// 실패해서 롤백되는 게 아니라 애초에 그 행이 "대상 아님"으로 조용히 걸러지기 때문이다.
+// (task-014 Developer가 운영 API로 실제 재현: 기술 pos만 바뀌고 클립 position은 그대로 남음)
+//
+// 비용: 사용자 1명의 기술·영상·드릴·스파링 수십~수백 행에 대해 rename 1회당 한 번씩만 도는
+// 관리 작업이라 정규화 비용은 무시할 수 있다.
+const posEq = eqNFC;
+
 router.put('/positions/:name', wrap(async (req, res) => {
   const uid = req.user.id;
-  const oldName = decodeURIComponent(req.params.name);
-  const newName = (req.body?.newName || '').trim();
+  const oldName = toNFC(decodeURIComponent(req.params.name));
+  const newName = toNFC((req.body?.newName || '').trim());
   if (!newName) return res.status(400).json({ error: '새 포지션명을 입력해주세요' });
   if (newName.length > POSITION_NAME_MAX) {
     return res.status(400).json({
@@ -328,8 +359,10 @@ router.put('/positions/:name', wrap(async (req, res) => {
     });
     for (const row of techRows) {
       const positions = parsePos(row.pos);
-      if (!positions.includes(oldName)) continue;
-      const next = [...new Set(positions.map(p => (p === oldName ? newName : p)))];
+      if (!positions.some(p => posEq(p, oldName))) continue;
+      // 살아남는 원소도 toNFC로 통일해 둔다 — 어차피 이 행은 새로 쓰이고, 정본 형태로
+      // 맞춰야 new Set() 중복 제거가 "눈에 같은 이름"을 실제로 하나로 합친다.
+      const next = [...new Set(positions.map(p => (posEq(p, oldName) ? newName : toNFC(p))))];
       await Technique.update(
         { pos: JSON.stringify(next) },
         { where: { id: row.id, user_id: uid }, transaction: t }
@@ -343,8 +376,8 @@ router.put('/positions/:name', wrap(async (req, res) => {
     });
     for (const row of clipRows) {
       const positions = parsePos(row.position);
-      if (!positions.includes(oldName)) continue;
-      const next = [...new Set(positions.map(p => (p === oldName ? newName : p)))];
+      if (!positions.some(p => posEq(p, oldName))) continue;
+      const next = [...new Set(positions.map(p => (posEq(p, oldName) ? newName : toNFC(p))))];
       await VideoClip.update(
         { position: JSON.stringify(next) },
         { where: { id: row.id, user_id: uid }, transaction: t }
@@ -353,10 +386,16 @@ router.put('/positions/:name', wrap(async (req, res) => {
     }
 
     // 3) 수업 드릴(drills.pos) — Drill은 user_id가 없어 classes를 통해 스코프
-    const [drillRows] = await sequelize.query(
-      `SELECT d.id FROM drills d JOIN classes c ON d.class_id = c.id WHERE c.user_id = ? AND d.pos = ?`,
-      { replacements: [uid, oldName], transaction: t }
+    //
+    // SQL의 `d.pos = ?`로는 NFD/NFC 차이를 넘을 수 없다(MySQL utf8mb4 콜레이션은 자모분리형을
+    // 완성형과 같게 보지 않고, NFC 정규화 함수도 없다). 그래서 사용자 소유 드릴의 pos만 가져와
+    // JS에서 정규화 비교로 거른다 — 이 사용자의 드릴 행 수(운영 기준 수십 건)이고 rename은
+    // 어쩌다 한 번 하는 관리 작업이라 부담이 없다. 트랜잭션 t 안에서 읽으므로 원자성은 그대로다.
+    const [drillCandidates] = await sequelize.query(
+      `SELECT d.id, d.pos FROM drills d JOIN classes c ON d.class_id = c.id WHERE c.user_id = ?`,
+      { replacements: [uid], transaction: t }
     );
+    const drillRows = drillCandidates.filter(r => posEq(r.pos, oldName));
     if (drillRows.length) {
       await Drill.update({ pos: newName }, { where: { id: drillRows.map(r => r.id) }, transaction: t });
       count += drillRows.length;
@@ -373,8 +412,11 @@ router.put('/positions/:name', wrap(async (req, res) => {
     for (const row of sparRows) {
       let entries;
       try { entries = JSON.parse(row.positions || '[]'); } catch { entries = []; }
-      if (!Array.isArray(entries) || !entries.some(e => e?.name === oldName)) continue;
-      const renamed = entries.map(e => (e?.name === oldName ? { ...e, name: newName } : e));
+      if (!Array.isArray(entries) || !entries.some(e => e?.name && posEq(e.name, oldName))) continue;
+      const renamed = entries.map(e =>
+        (e?.name && posEq(e.name, oldName)) ? { ...e, name: newName }
+        : (e?.name ? { ...e, name: toNFC(e.name) } : e)
+      );
       const next = mergeSparPositions(renamed); // 병합으로 생긴 동일 name 중복 제거 + score 합산
       await SparSession.update(
         { positions: JSON.stringify(next) },
@@ -392,13 +434,15 @@ router.put('/positions/:name', wrap(async (req, res) => {
 // 특정 포지션 값을 모든 기술의 pos 배열에서 제거
 router.delete('/positions/:name', wrap(async (req, res) => {
   const uid = req.user.id;
-  const targetName = decodeURIComponent(req.params.name);
+  const targetName = toNFC(decodeURIComponent(req.params.name));
   const rows = await Technique.findAll({ where: { user_id: uid }, attributes: ['id', 'pos'], raw: true });
   let updatedCount = 0;
   for (const row of rows) {
     const positions = parsePos(row.pos);
-    if (!positions.includes(targetName)) continue;
-    const next = positions.filter(p => p !== targetName);
+    // task-014: rename과 같은 이유로 정규화 비교 — 안 하면 NFD로 저장된 포지션이 삭제 대상에서
+    // 조용히 빠져 "삭제했는데 목록에 그대로 남아 있는" 상태가 된다.
+    if (!positions.some(p => posEq(p, targetName))) continue;
+    const next = positions.filter(p => !posEq(p, targetName)).map(toNFC);
     await Technique.update({ pos: JSON.stringify(next) }, { where: { id: row.id, user_id: uid } });
     updatedCount++;
   }

@@ -7,6 +7,7 @@
 const { spawn } = require('child_process');
 const fs = require('fs/promises');
 const path = require('path');
+const { toNFC } = require('../utils/nfc');
 
 const MIN_FREE_BYTES_DEFAULT = 3 * 1024 * 1024 * 1024; // 3GB
 
@@ -106,14 +107,20 @@ async function fetchMeta(url) {
         .map(c => ({
           start_sec: Math.floor(c.start_time),
           end_sec:   Math.floor(c.end_time ?? c.start_time),
-          title:     (c.title || '').trim(),
+          title:     toNFC((c.title || '').trim()),
         }))
         .filter(c => c.end_sec > c.start_sec)
     : [];
+  // task-014: yt-dlp가 일부 영상의 한글 제목을 자모분리형(NFD)으로 반환한다 — 2026-09-04에
+  // long_videos.id=29("델라히바에서...", 이 URL로 재실행해도 여전히 NFD)로 실측 확인했다.
+  // 사용자가 검색창에 치는 글자는 항상 완성형(NFC)이라, NFD로 저장되면 육안상 같은 제목인데도
+  // 검색·필터·이름 비교가 전부 조용히 실패한다(에러 없이 "결과 없음"). 이 함수가 앱 전체에서
+  // yt-dlp 메타데이터가 들어오는 유일한 입구이므로, 여기서 NFC로 통일해 DB를 정본으로 유지한다.
+  // 이미 NFC인 문자열에는 아무 영향이 없다(멱등).
   return {
     videoId:     json.id || extractYoutubeId(url),
-    title:       json.title || '',
-    channel:     json.uploader || json.channel || '',
+    title:       toNFC(json.title || ''),
+    channel:     toNFC(json.uploader || json.channel || ''),
     durationSec: Math.floor(json.duration || 0),
     thumbUrl:    json.thumbnail || '',
     chapters,

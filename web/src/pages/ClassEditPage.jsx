@@ -416,10 +416,13 @@ export default function ClassEditor({ initial, onClose, onSaved }) {
                 .filter(c => {
                   if (linkedClipIds.includes(c.id)) return false;
                   if (!clipSearch.trim()) return true;
-                  const q = clipSearch.toLowerCase();
-                  return (c.title || '').toLowerCase().includes(q) ||
-                         (c.tech_names || []).some(t => t.toLowerCase().includes(q)) ||
-                         (c.tech_name || '').toLowerCase().includes(q);
+                  // .normalize('NFC') 필수 — task-014. 참고영상 제목에는 yt-dlp/AI 유래
+                  // 자모분리형(NFD)이 들어올 수 있는데 검색어는 항상 완성형(NFC)이라,
+                  // 정규화 없이는 눈에 보이는 영상이 조용히 검색에서 빠진다.
+                  const q = clipSearch.toLowerCase().normalize('NFC');
+                  return (c.title || '').toLowerCase().normalize('NFC').includes(q) ||
+                         (c.tech_names || []).some(t => t.toLowerCase().normalize('NFC').includes(q)) ||
+                         (c.tech_name || '').toLowerCase().normalize('NFC').includes(q);
                 })
                 .slice(0, 20)
                 .map(c => {
@@ -455,7 +458,7 @@ export default function ClassEditor({ initial, onClose, onSaved }) {
                     </button>
                   );
                 })}
-              {clips.filter(c => !linkedClipIds.includes(c.id) && (!clipSearch.trim() || (c.title || '').toLowerCase().includes(clipSearch.toLowerCase()))).length === 0 && (
+              {clips.filter(c => !linkedClipIds.includes(c.id) && (!clipSearch.trim() || (c.title || '').toLowerCase().normalize('NFC').includes(clipSearch.toLowerCase().normalize('NFC')))).length === 0 && (
                 <div style={{ padding: '14px', textAlign: 'center', fontSize: 12, color: 'var(--text3)' }}>
                   검색 결과 없음
                 </div>

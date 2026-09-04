@@ -84,12 +84,19 @@ export default function ClipsPage({ embedded = false }) {
       return names.includes(techFilter);
     });
     if (search) {
-      const q = search.toLowerCase();
+      // .normalize('NFC') 필수 — task-014. 한글은 완성형(NFC)과 자모분리형(NFD) 두 가지로
+      // 저장될 수 있고 화면에는 똑같이 보이지만 includes()는 다른 문자열로 판정한다.
+      // 이 목록의 title/description 은 사용자가 직접 친 것만이 아니라 긴 영상 분석의 기술
+      // 연동(POST /long-videos/:id/techniques/:tid/apply)이 yt-dlp 제목을 이어붙여 만들거나
+      // AI가 생성한 문자열이 들어온다 — 즉 외부 유래 NFD가 도달할 수 있는 자리다.
+      // 검색어(q)는 항상 키보드 입력이라 NFC이므로, 정규화가 없으면 눈에 보이는 영상이
+      // 에러 없이 "검색 결과 없음"이 된다(task-010에서 /study 검색이 실제로 이랬다).
+      const q = search.toLowerCase().normalize('NFC');
       items = items.filter(c =>
-        (c.title || '').toLowerCase().includes(q) ||
-        (c.tech_name || '').toLowerCase().includes(q) ||
-        (c.description || '').toLowerCase().includes(q) ||
-        (c.tags || []).some(x => (x || '').toLowerCase().includes(q))
+        (c.title || '').toLowerCase().normalize('NFC').includes(q) ||
+        (c.tech_name || '').toLowerCase().normalize('NFC').includes(q) ||
+        (c.description || '').toLowerCase().normalize('NFC').includes(q) ||
+        (c.tags || []).some(x => (x || '').toLowerCase().normalize('NFC').includes(q))
       );
     }
     return items;
