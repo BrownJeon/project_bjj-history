@@ -9,9 +9,96 @@ const {
   daysAgo, todayStr,
 } = require('../services/coachAnalytics');
 
+// ── 기간 상한·검증 (task-015 ④) ─────────────────────────────────────────────
+// UI(CoachPage.jsx)가 보내는 최대 기간은 90일이지만, 이 라우트는 body의 periodStart/periodEnd를
+// 검증 없이 그대로 받아 collectTrainingData에 넘겼다 — API를 직접 호출하면 전체 기간을 지정해
+// 프롬프트 캡(24,000자)을 건드릴 수 있었다.
+// 상한 180일 근거: Analyst 실측상 "역대 가장 빽빽한 90일"이 약 12,100자(캡의 50%)이므로
+// 그 2배인 180일이면 최악의 경우에도 캡 근처에서 멈춘다. UI 최대치(90일)의 2배라 정상 사용은 막지 않는다.
+const MAX_PERIOD_DAYS = Math.max(1, parseInt(process.env.COACH_MAX_PERIOD_DAYS) || 180);
+const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+
+// 정규식만으로는 '2026-13-99' 같은 형식은 맞지만 존재하지 않는 날짜가 통과한다.
+// Date로 왕복시켜 실제 달력상 존재하는 날짜인지까지 확인한다.
+function isValidDateStr(v) {
+  if (typeof v !== 'string' || !DATE_RE.test(v)) return false;
+  const d = new Date(`${v}T00:00:00Z`);
+  return !Number.isNaN(d.getTime()) && d.toISOString().slice(0, 10) === v;
+}
+
+function shiftDate(dateStr, deltaDays) {
+  const d = new Date(`${dateStr}T00:00:00Z`);
+  d.setUTCDate(d.getUTCDate() + deltaDays);
+  return d.toISOString().slice(0, 10);
+}
+
+// body의 periodStart/periodEnd/days를 실제로 사용할 기간으로 정규화한다.
+// - 둘 다 주어지면: 형식 검증 → (뒤집힘 교정 · 미래 종료일 절단 · 최대 길이 절단)
+// - 하나라도 비어 있으면: days 기반(기존 동작) — days도 1~MAX_PERIOD_DAYS로 클램프
+// 반환된 clamped=true 는 요청과 다른 기간이 적용됐다는 뜻이다(응답에 함께 실어 보낸다).
+function resolvePeriod(body = {}) {
+  const today = todayStr();
+  let { periodStart, periodEnd, days } = body;
+  let clamped = false;
+
+  if (periodStart && periodEnd) {
+    if (!isValidDateStr(periodStart) || !isValidDateStr(periodEnd)) {
+      const err = new Error('기간 형식이 올바르지 않습니다 (YYYY-MM-DD)');
+      err.status = 400;
+      throw err;
+    }
+    if (periodStart > periodEnd) {
+      [periodStart, periodEnd] = [periodEnd, periodStart];
+      clamped = true;
+    }
+    if (periodEnd > today) { periodEnd = today; clamped = true; }
+    if (periodStart > periodEnd) { periodStart = periodEnd; clamped = true; }
+    const earliest = shiftDate(periodEnd, -(MAX_PERIOD_DAYS - 1));
+    if (periodStart < earliest) { periodStart = earliest; clamped = true; }
+  } else {
+    let n = parseInt(days);
+    if (!Number.isFinite(n) || n < 1) n = 30;
+    if (n > MAX_PERIOD_DAYS) { n = MAX_PERIOD_DAYS; clamped = true; }
+    periodEnd   = today;
+    periodStart = daysAgo(n - 1);
+  }
+
+  if (clamped) {
+    console.warn(`[coach] 요청 기간을 서버 상한(${MAX_PERIOD_DAYS}일)에 맞춰 조정: ${periodStart} ~ ${periodEnd}`);
+  }
+  return { periodStart, periodEnd, clamped };
+}
+
+// GET /diagnosis, POST /chat 처럼 days만 받는 경로용
+function clampDays(raw, fallback = 30) {
+  let n = parseInt(raw);
+  if (!Number.isFinite(n) || n < 1) n = fallback;
+  return Math.min(n, MAX_PERIOD_DAYS);
+}
+
+// ── 프롬프트 캡 초과 안내를 사용자 언어로 (task-015 ③) ────────────────────────
+// claudeCli.assertPromptSize는 "프롬프트가 너무 깁니다 (25123자) — 24000자 이내로 줄여주세요"라는
+// 개발자 관점 메시지를 던지고, 이게 그대로 사용자 토스트에 노출됐다(CoachPage.jsx의 showToast).
+// 사용자는 "프롬프트"가 뭔지도, 뭘 해야 하는지도 모른다 — 실제 해결책인 "더 짧은 기간 선택"으로 바꿔 준다.
+// 원래 메시지는 서버 로그에만 남긴다. (캡 상수 자체는 건드리지 않는다 — task-015 제약)
+async function runCoachClaude(prompt, opts) {
+  try {
+    return await runClaude(prompt, opts);
+  } catch (e) {
+    const msg = (e && e.message) || '';
+    if (msg.includes('프롬프트가 너무 깁니다')) {
+      console.warn('[coach] 프롬프트 캡 초과 —', msg);
+      const err = new Error('선택한 기간의 훈련 기록이 너무 많아 한 번에 분석할 수 없습니다. 더 짧은 기간(7일 또는 30일)을 선택한 뒤 다시 시도해주세요.');
+      err.status = 400;
+      throw err;
+    }
+    throw e;
+  }
+}
+
 router.get('/diagnosis', wrap(async (req, res) => {
   const uid   = req.user.id;
-  const days  = parseInt(req.query.days) || 30;
+  const days  = clampDays(req.query.days);
   const end   = todayStr();
   const start = daysAgo(days - 1);
   const data  = await collectTrainingData(start, end, uid);
@@ -21,12 +108,7 @@ router.get('/diagnosis', wrap(async (req, res) => {
 
 router.post('/report', wrap(async (req, res) => {
   const uid = req.user.id;
-  let { periodStart, periodEnd, days } = req.body;
-  if (!periodStart || !periodEnd) {
-    const n = parseInt(days) || 30;
-    periodEnd   = todayStr();
-    periodStart = daysAgo(n - 1);
-  }
+  const { periodStart, periodEnd, clamped } = resolvePeriod(req.body);
   const data = await collectTrainingData(periodStart, periodEnd, uid);
   if (!data.length) return res.status(400).json({ error: '해당 기간에 훈련 기록이 없습니다' });
 
@@ -53,23 +135,18 @@ ${context}
 JSON 형식으로만 응답하세요:
 {"highlights":"하이라이트 서술","weaknesses":"반복 약점 분석","improvements":"개선된 점 서술","recommendations":"다음 기간 권장 사항"}`;
 
-  const raw = await runClaude(prompt);
+  const raw = await runCoachClaude(prompt);
   const json = extractJSONObject(raw);
   const r = await CoachReport.create({
     type: 'report', period_start: periodStart, period_end: periodEnd,
     content: JSON.stringify(json), user_id: uid,
   });
-  res.json({ id: r.id, periodStart, periodEnd, content: json });
+  res.json({ id: r.id, periodStart, periodEnd, content: json, ...(clamped ? { clamped: true } : {}) });
 }));
 
 router.post('/plan', wrap(async (req, res) => {
   const uid = req.user.id;
-  let { periodStart, periodEnd, days } = req.body;
-  if (!periodStart || !periodEnd) {
-    const n = parseInt(days) || 30;
-    periodEnd   = todayStr();
-    periodStart = daysAgo(n - 1);
-  }
+  const { periodStart, periodEnd, clamped } = resolvePeriod(req.body);
   const data = await collectTrainingData(periodStart, periodEnd, uid);
   if (!data.length) return res.status(400).json({ error: '해당 기간에 훈련 기록이 없습니다' });
   const diag = computeDiagnosis(data, periodStart, periodEnd);
@@ -102,7 +179,7 @@ ${JSON.stringify(diag, null, 2)}
 JSON 형식으로만 응답하세요:
 {"focuses":[{"title":"...","why":"근거 1\\n근거 2","techniqueNames":["..."],"chainNames":["..."],"videoQueries":["..."],"drillSuggestion":"드릴 설명\\n- 체크 포인트"}]}`;
 
-  const raw = await runClaude(prompt);
+  const raw = await runCoachClaude(prompt);
   const json = extractJSONObject(raw);
   const focuses = (json.focuses || []).map(f => ({
     title: f.title || '',
@@ -123,14 +200,14 @@ JSON 형식으로만 응답하세요:
     type: 'plan', period_start: periodStart, period_end: periodEnd,
     content: JSON.stringify(content), user_id: uid,
   });
-  res.json({ id: r.id, periodStart, periodEnd, content });
+  res.json({ id: r.id, periodStart, periodEnd, content, ...(clamped ? { clamped: true } : {}) });
 }));
 
 router.post('/chat', wrap(async (req, res) => {
   const uid = req.user.id;
   const { question } = req.body;
   if (!question?.trim()) return res.status(400).json({ error: '질문을 입력해주세요' });
-  const days  = parseInt(req.body.days) || 30;
+  const days  = clampDays(req.body.days);
   const end   = todayStr();
   const start = daysAgo(days - 1);
   const data  = await collectTrainingData(start, end, uid);
@@ -170,7 +247,7 @@ ${question.trim()}
 - 자연스러운 대화체 평문 (JSON 래핑 금지)
 - 문단 구분은 빈 줄, 강조는 줄바꿈, 항목은 한 줄에 하나`;
 
-  const answer = await runClaude(prompt);
+  const answer = await runCoachClaude(prompt);
   const content = { answer, diagSummary: diag.summary };
   const r = await CoachReport.create({
     type: 'chat', period_start: start, period_end: end,

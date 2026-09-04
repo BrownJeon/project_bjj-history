@@ -13,6 +13,8 @@ tags:
 ## Review
 
 ## Done
+- [[task-015-coach-cron-and-prompt-guard]] — 주간 코치 cron이 5주간 엉뚱한 계정을 보던 버그 + 기간/안내 보강 (2026-09-04 완료)
+- [[task-014-nfd-encoding-audit]] — 한글 자모분리(NFD) 인코딩 전수 점검·수정, split-brain 유입경로 차단 (2026-09-04 완료)
 - [[task-013-study-backlog-fixes]] — `/study` 백로그 버그 2건: 편집 제목 복제 · 활성 챕터 하이라이트 소실 (2026-09-04 완료)
 - [[task-012-position-rename-cascade]] — 포지션 이름 변경(rename) 캐스케이드 + 연결수 표시 (2026-08-28 타 세션 작성 → 2026-09-04 검증·수정·커밋 완료)
 - [[task-011-clip-tag-pin-pickmeup-spar-feedback]] — 참고영상 태그/핀·기술트리 편집·픽미업 포지션/이어뽑기·스파링 픽 피드백 (2026-08-25 커밋 `804aa24`, 이력서는 2026-09-04 사후 기록)
