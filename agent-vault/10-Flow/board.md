@@ -13,6 +13,7 @@ tags:
 ## Review
 
 ## Done
+- [[task-013-study-backlog-fixes]] — `/study` 백로그 버그 2건: 편집 제목 복제 · 활성 챕터 하이라이트 소실 (2026-09-04 완료)
 - [[task-012-position-rename-cascade]] — 포지션 이름 변경(rename) 캐스케이드 + 연결수 표시 (2026-08-28 타 세션 작성 → 2026-09-04 검증·수정·커밋 완료)
 - [[task-011-clip-tag-pin-pickmeup-spar-feedback]] — 참고영상 태그/핀·기술트리 편집·픽미업 포지션/이어뽑기·스파링 픽 피드백 (2026-08-25 커밋 `804aa24`, 이력서는 2026-09-04 사후 기록)
 - [[task-010-study-ux-improvements]] — `/study` 화면 사용성 개선 (제목입력·검색필터·영상고정) (2026-08-24 완료)

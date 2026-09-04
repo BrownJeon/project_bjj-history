@@ -165,12 +165,17 @@ router.patch('/:id/chapters', wrap(async (req, res) => {
   // chapter_id FK도 안 끊어짐). 경계가 실제로 바뀐(병합·분할·시간이동) 챕터만 기존 행을 지우고
   // 분석결과가 없는 새 행으로 만든다 — 그 행이 가리키던 기술 매칭도 함께 정리(고아 방지).
   //
-  // edited 플래그도 예전처럼 전체 일괄 1이 아니라 "실제로 바뀐 챕터"만 1로 찍는다. 부수 효과:
-  // task-007 Reviewer가 Low로 남기고 Phase 3에서 재검토가 필요하다고 명시했던 문제(재분석 시
-  // saveChapters의 preserveEdited가 경계가 넓어진 edited=1 챕터 하나를 겹치는 새 챕터 여럿에
-  // 중복 매칭시켜 같은 제목이 여러 챕터에 복제되는 현상)도 같이 해소된다 — 안 바뀐 챕터는 원래
-  // edited 값을 그대로 유지하므로(대개 0), "제목 하나만 고친" 저장이 나머지 챕터를 전부
+  // edited 플래그도 예전처럼 전체 일괄 1이 아니라 "실제로 바뀐 챕터"만 1로 찍는다 — 안 바뀐 챕터는
+  // 원래 edited 값을 그대로 유지하므로(대개 0), "제목 하나만 고친" 저장이 나머지 챕터를 전부
   // edited=1로 오염시키지 않는다.
+  //
+  // ※ 정정(task-013, 2026-09-04): 예전 이 자리의 주석은 위 변경으로 task-007 Reviewer가 Low로
+  // 남긴 문제(재분석 시 saveChapters의 preserveEdited가 edited=1 챕터 하나를 겹치는 새 챕터
+  // 여럿에 중복 매칭시켜 같은 제목이 복제되는 현상)까지 "같이 해소된다"고 적었으나 **사실이 아니었다**.
+  // 이 변경이 한 일은 edited=1 집합을 줄인 것뿐이고, 1:N 중복 매칭 자체는 saveChapters 안에 그대로
+  // 남아 있었다 — 편집본이 단 하나여도 재분석이 그 구간을 3개로 재분할하면 3개 전부에 같은 제목이
+  // 복제됐다(2026-09-04 이 라우트를 실제로 호출한 e2e로 재현 확인). 실제 수정은
+  // services/longVideoPipeline.js의 matchEditedChapters()에서 했다(최다 겹침 + 1회 소비 + 최소 겹침 기준).
   const existing = await LongVideoChapter.findAll({
     where: { long_video_id: video.id, user_id: uid },
     raw: true,

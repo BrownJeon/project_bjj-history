@@ -89,6 +89,64 @@ async function cancelCleanup(jobId, videoId) {
 }
 
 // ── 챕터 저장 (long_video_chapters — Sequelize 모델 경유, 설계서 관례) ────
+// task-013 버그 A 수정(2026-09-04). 예전 구현은 새 챕터마다 독립적으로
+// `existingEdited.find(첫 겹침)`을 골라서 (1) 최다 겹침이 아니라 배열에서 먼저 나온 것을 쓰고
+// (2) 같은 편집본을 몇 번이든 재사용했다. 그래서 편집본 1개(0~300)를 재분석이 0~100/100~250/250~300
+// 으로 재분할하면 **같은 제목이 3개 챕터에 복제**되고 셋 다 edited=1이 됐다(실측 재현 확인).
+// routes/longVideos.js의 task-009 수정은 edited=1 집합을 줄였을 뿐 이 1:N 매칭 자체는 그대로였다.
+//
+// 매칭 규칙(3가지):
+//  (1) 겹침이 큰 (편집본, 새 챕터) 쌍부터 그리디로 확정 — "먼저 나온 것"이 아니라 "가장 많이 겹치는 것"
+//  (2) 편집본 하나는 최대 하나의 새 챕터에만 물려준다(확정 즉시 양쪽 소비 — 복제 차단).
+//      routes/longVideos.js의 `existingByBounds.delete(key)`와 같은 발상
+//  (3) 최소 겹침 기준: 겹침이 "둘 중 짧은 구간의 50%" 이상일 때만 물려준다.
+//      1초만 스쳐도 제목을 물려받게 두면 경계가 밀린 남의 구간에 엉뚱한 제목 + edited=1이 박히고,
+//      그 오염이 이후 재분석마다 계속 전파된다(edited=1은 다음 재분석에서 또 보존 대상이 된다).
+//      분할(새 챕터가 편집본 안에 들어감)·병합(편집본이 새 챕터 안에 들어감)은 짧은 쪽 기준 100%라
+//      항상 통과하므로, 이 기준이 거르는 건 "경계가 스치기만 한" 사실상 다른 구간뿐이다.
+//      기준을 바꾸려면 아래 상수 하나만 조정하면 된다.
+const MIN_OVERLAP_RATIO = 0.5;
+
+// 편집본(edited=1) ↔ 새 챕터 매칭. 반환값: Map(새 챕터 배열 인덱스 → 편집본 레코드)
+function matchEditedChapters(chapters, existingEdited) {
+  const pairs = [];
+  for (let ci = 0; ci < chapters.length; ci++) {
+    const c = chapters[ci];
+    const cDur = c.end_sec - c.start_sec;
+    if (!(cDur > 0)) continue;
+    for (let ei = 0; ei < existingEdited.length; ei++) {
+      const e = existingEdited[ei];
+      const eDur = e.end_sec - e.start_sec;
+      if (!(eDur > 0)) continue;
+      const overlap = Math.min(e.end_sec, c.end_sec) - Math.max(e.start_sec, c.start_sec);
+      if (overlap <= 0) continue;
+      if (overlap < Math.min(cDur, eDur) * MIN_OVERLAP_RATIO) continue; // (3) 최소 겹침 기준
+      pairs.push({ ci, ei, overlap });
+    }
+  }
+  // (1) 겹침 내림차순. 동률일 때의 타이브레이크(task-013 LOW-2, Reviewer 지적 반영):
+  //   - 새 챕터 쪽은 배열 순서(a.ci)로 확정한다 — 이 배열은 호출자가 idx 순으로 만든 것이라 의미가 있다.
+  //   - 편집본 쪽은 **배열 순서를 쓰지 않는다**. saveChapters가 ORDER BY 없이 조회하므로 DB가 돌려주는
+  //     행 순서는 보장되지 않고, 실제로 배열을 뒤집으면 동률 승자가 뒤바뀌는 것이 재현됐다.
+  //     그래서 인덱스 대신 편집본 자신의 구간(start_sec, end_sec)과 제목으로 비교한다
+  //     → existingEdited가 어떤 순서로 들어와도 결과가 같다(호출자 정렬에 의존하지 않는 함수 계약).
+  pairs.sort((a, b) => {
+    if (b.overlap !== a.overlap) return b.overlap - a.overlap;
+    if (a.ci !== b.ci) return a.ci - b.ci;
+    const ea = existingEdited[a.ei], eb = existingEdited[b.ei];
+    const ta = String(ea.title ?? ''), tb = String(eb.title ?? '');
+    return (ea.start_sec - eb.start_sec) || (ea.end_sec - eb.end_sec) || (ta < tb ? -1 : ta > tb ? 1 : 0);
+  });
+  const matched = new Map();
+  const usedEdited = new Set();
+  for (const p of pairs) {
+    if (matched.has(p.ci) || usedEdited.has(p.ei)) continue; // (2) 양쪽 1회만 소비
+    matched.set(p.ci, existingEdited[p.ei]);
+    usedEdited.add(p.ei);
+  }
+  return matched;
+}
+
 // preserveEdited: 이전에 사용자가 직접 수정(edited=1)한 챕터와 시간대가 겹치면 제목을 보존한다
 // (재분석 시 사용자 제목 미덮어씀 — PATCH /:id/chapters 로 생성된 edited=1 레코드가 있다면 적용된다)
 async function saveChapters(videoId, userId, chapters, { preserveEdited = false } = {}) {
@@ -102,20 +160,21 @@ async function saveChapters(videoId, userId, chapters, { preserveEdited = false 
         transaction: t,
       });
     }
+    const matched = matchEditedChapters(chapters, existingEdited);
     await LongVideoChapter.destroy({ where: { long_video_id: videoId }, transaction: t });
-    for (const c of chapters) {
-      const overlap = existingEdited.find(e => e.start_sec < c.end_sec && e.end_sec > c.start_sec);
+    for (const [i, c] of chapters.entries()) {
+      const keep = matched.get(i) || null;
       await LongVideoChapter.create({
         long_video_id: videoId,
         user_id: userId,
         idx: c.idx,
         start_sec: c.start_sec,
         end_sec: c.end_sec,
-        title: overlap ? overlap.title : c.title,
+        title: keep ? keep.title : c.title,
         source: c.source,
         confidence: c.confidence,
         status: 'pending',
-        edited: overlap ? 1 : 0,
+        edited: keep ? 1 : 0,
       }, { transaction: t });
     }
   });
@@ -639,6 +698,7 @@ module.exports = {
   enqueueJob,
   runPipeline,
   saveChapters,
+  matchEditedChapters, // task-013: DB 없이 매칭 규칙만 단위 검증할 수 있도록 노출
   getJobById,
   isJobCanceled,
   matchChapterTechniques,

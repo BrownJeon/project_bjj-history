@@ -14,6 +14,20 @@ function isActiveJob(job) {
   return !!job && (job.status === 'queued' || job.status === 'running');
 }
 
+// task-013 버그 B: activeChapterId는 챕터 DB id인데, ChapterEditor로 경계를 바꾸면 그 행은 지워지고
+// 새 id로 다시 생기므로(longVideos.js의 keepId:null 경로) 재조회 후 유령 id가 남아 하이라이트가
+// 조용히 사라졌다. 단순 null 초기화는 상태 정합성만 맞추고 증상은 그대로라서, 마지막으로 이동한
+// 재생 지점(초)을 기준으로 "지금 그 지점을 담고 있는 챕터"로 하이라이트를 따라가게 한다.
+//   - 기존 id가 아직 살아 있으면 그대로 둔다(경계가 그대로일 때만 id가 유지되므로 지점도 그 안이다)
+//   - 없으면 seek 지점을 포함하는 챕터로 옮기고, 그런 챕터도 없으면 null (유령 id는 남기지 않는다)
+function resolveActiveChapterId(chapters, seekSec, prevId) {
+  const list = Array.isArray(chapters) ? chapters : [];
+  if (prevId != null && list.some(c => c.id === prevId)) return prevId;
+  if (seekSec == null) return null;
+  const hit = list.find(c => seekSec >= c.start_sec && seekSec < c.end_sec);
+  return hit?.id ?? null;
+}
+
 // 상세 페이지 — 플레이어 + 클릭 이동 목차. 적응형 폴링: 진행 중이면 5초 간격, 아니면 정지,
 // document.hidden이면 정지.
 export default function StudyVideoDetailPage() {
@@ -26,11 +40,15 @@ export default function StudyVideoDetailPage() {
   const [activeChapterId, setActiveChapterId] = useState(null); // task-010 A: 방금 클릭한 챕터 하이라이트
   const iframeRef = useRef(null);
   const pollTimerRef = useRef(null);
+  const lastSeekSecRef = useRef(null); // task-013 버그 B: 마지막으로 이동한 재생 지점(초)
 
   const load = useCallback(async () => {
     try {
       const v = await studyApi.getVideo(id);
       setVideo(v);
+      // task-013 버그 B: 챕터 편집/재분석으로 id가 새로 발급됐을 수 있으므로 재조회 때마다
+      // 하이라이트를 다시 해석한다(유령 id 방지 + 보던 지점으로 하이라이트 이동)
+      setActiveChapterId(prev => resolveActiveChapterId(v?.chapters, lastSeekSecRef.current, prev));
       return v;
     } catch (e) {
       console.error(e);
@@ -72,6 +90,7 @@ export default function StudyVideoDetailPage() {
   // task-010 A: chapterId를 함께 받아 activeChapterId를 갱신 — 시간라벨/프레임썸네일 클릭
   // 둘 다 같은 챕터 소속이므로 동일하게 하이라이트된다(StudyChapterCard.jsx가 두 지점 모두 전달).
   function seekTo(sec, chapterId) {
+    if (Number.isFinite(sec)) lastSeekSecRef.current = sec; // task-013 버그 B: 지점 기억
     if (chapterId != null) setActiveChapterId(chapterId);
     const iframe = iframeRef.current;
     if (!iframe?.contentWindow) return;
