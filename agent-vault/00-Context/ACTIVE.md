@@ -1,6 +1,6 @@
 ---
 project: bjj-trainning
-updated: 2026-08-24
+updated: 2026-09-04
 tags:
   - type/context
 ---
@@ -8,7 +8,12 @@ tags:
 
 ## 지금 상태
 
-**운영 중** — pm2 `bjj`, 포트 3000 (backend가 `/api/*` + SPA 서빙). task-006~010 전체 `origin/main`에 커밋+푸시 완료(커밋 `fa1eaac`/`9ab7f59`, task-010은 아직 커밋 전 — 사용자 확인 대기).
+**운영 중** — pm2 `bjj`, 포트 3000 (backend가 `/api/*` + SPA 서빙). 작업트리 clean, task-012까지 전부 커밋 완료.
+
+### 2026-09-04 완료 — 미커밋 변경분 정리
+- [[task-012-position-rename-cascade]] — **2026-08-28 다른 세션이 작성하다 커밋 없이 중단한 코드**(포지션 이름 일괄 변경)를 검증 순환에 태워 정리. Reviewer가 **커밋 차단 결함(CRITICAL)** 발견 — 4개 저장소를 트랜잭션 없이 순차 갱신해, `drills.pos`(varchar(50)+STRICT 모드)에서 실패하면 기술·영상만 새 이름으로 바뀐 채 **복구 불가능하게 갈라짐**. Developer가 트랜잭션+길이검증(400)+스파링 병합 중복제거로 수정, **일부러 실패시켜 롤백을 실측하고 수정 전 코드로 split-brain을 재현(네거티브 컨트롤)**. Reviewer 재검증 PASS(쿼리 8개 트랜잭션 전달 라인 대조 + 관련 테이블 InnoDB 확인), QA 7항목 검증. 실데이터 무손상 확인(기술47/영상132/스파링54/드릴24 작업 전후 동일).
+- [[task-011-clip-tag-pin-pickmeup-spar-feedback]] — 2026-08-25 커밋 `804aa24`가 vault 이력 없이 남아 있어 **사후 기록**으로 복원. 이 범위는 팀 검증을 거친 증거가 없으니 이상 발생 시 여기부터 의심할 것. DB 컬럼 반영은 실측 확인됨.
+- [[task-005-avatar-static-path-mismatch-fix]] — board·ACTIVE가 링크하는데 파일이 없던 **끊어진 위키링크**를 스텁으로 복구.
 
 ### 2026-08-24 완료
 - [[task-010-study-ux-improvements]] — `/study` 화면 사용성 개선: **제목 입력**(`title_locked` 컬럼, 재분석해도 회귀 없음 실측), **검색+기술/분류 필터+분류배지**(목록 API에 `techniqueNames` 조인 추가, `ClipsPage.jsx` 패턴 재사용), **영상 sticky 고정+활성 챕터 하이라이트**(구간 클릭 시 그 자리에서 재생 확인). 등록 폼은 참고영상 화면과 동일하게 Modal로 전환. **Developer가 브라우저 실행 검증 중 실제 버그 발견·수정**(일부 영상 제목이 한글 자모분리형(NFD)으로 저장돼 검색이 안 되던 문제 — NFC 정규화로 해결, Reviewer가 channel 필드까지 커버되는지 재확인). 파이프라인(S0~S10) 무수정. Developer→Reviewer→QA 전 단계 통과(Critical 0/High 0/Medium 0/Low 1 비차단) — 지금까지 진행한 task 중 가장 깔끔하게 끝남. 상세: [[task-010-study-ux-improvements]]
@@ -35,7 +40,10 @@ Phase 1~3 + UX개선(task-010) 완료돼 `/study`에서 영상 등록(제목 지
 - **활성 챕터 하이라이트가 챕터 편집 후 조용히 사라짐** (task-010 Reviewer 발견, Low, 데이터 손실·오작동 없음) — `ChapterEditor`로 챕터 경계를 바꾸면 챕터 id가 바뀌어 `activeChapterId`가 더 이상 유효한 챕터를 안 가리키게 됨(잘못된 챕터를 가리키진 않고 그냥 강조가 사라짐). 재조회 시 `activeChapterId`를 null로 초기화하면 해소.
 - **한글 NFD(자모분리) 인코딩 이슈 — task-010에서 발견, 검색은 수정 완료, 다른 곳은 미점검** — yt-dlp가 일부 영상 제목을 자모분리형으로 반환하는 경우가 있음. `/study` 검색은 NFC 정규화로 수정됐으나, 이 앱의 다른 텍스트 검색/비교 로직(참고영상 검색 등)에도 같은 문제가 잠재할 수 있음 — 실사용 중 이상 느끼면 이것부터 의심할 것.
 - **`assertPromptSize`(24,000자 하드캡) 잠재 리스크** — Phase 2에서 `claudeCli.js`에 전 AI 기능 공통으로 추가된 프롬프트 길이 상한. 지금은 전부 여유 있으나 코치리포트(90일 훈련데이터 요약)처럼 컨텍스트가 큰 기능은 사용자가 훈련을 오래 쌓으면 나중에 이 캡에 걸릴 수 있음 — 코치리포트가 실패하면 이것부터 의심할 것.
-- **별건 버그**: `ai_recommendation`이 DB엔 있으나 `models/VideoClip.js:4-20`에 속성 선언이 없어 Sequelize `update()`가 조용히 무시 → `/clips/:id/recommend` 캐시가 영원히 안 걸려 매번 Claude 재호출. 한 줄 수정
+- ~~**별건 버그**: `ai_recommendation` 모델 속성 누락~~ → **해소됨**. 커밋 `804aa24`의 `models/VideoClip.js +1`이 이미 고쳤고 DB 컬럼도 존재함을 2026-09-04 실측 확인.
+- **포지션 삭제는 전파되지 않음**(task-012 Reviewer LOW-1) — rename은 기술·영상·드릴·스파링 4곳에 퍼지는데 `DELETE /positions/:name`은 여전히 techniques에서만 제거한다. 모달 경고문이 이 동작을 정확히 고지하고 있어 비차단이나, 나중에 통일할지 결정 필요.
+- **`PickHistory.user_id`가 nullable**(task-011) — 다른 테이블은 계정별 격리(task-002)가 적용됐는데 이 컬럼만 모델·DB 모두 nullable. 격리 누수 여부 미점검.
+- **스파링 기록의 레거시 문자열 포지션 항목**(task-012 범위 밖) — `positions`에 객체가 아닌 문자열이 섞이면 rename 대상에서 빠진다. 현재 실데이터 18행은 전부 객체라 영향 없음.
 - AnalysisPage (월별 훈련량·승률·약점 통계) — 미착수
 - M4 API 서버(`192.168.219.163:8001`) launchd 영구 기동 — 현재 nohup 수동, 이미지 생성 미응답 상태라 Pollinations 폴백으로 운영 중
 

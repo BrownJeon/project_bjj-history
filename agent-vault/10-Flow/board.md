@@ -13,6 +13,8 @@ tags:
 ## Review
 
 ## Done
+- [[task-012-position-rename-cascade]] — 포지션 이름 변경(rename) 캐스케이드 + 연결수 표시 (2026-08-28 타 세션 작성 → 2026-09-04 검증·수정·커밋 완료)
+- [[task-011-clip-tag-pin-pickmeup-spar-feedback]] — 참고영상 태그/핀·기술트리 편집·픽미업 포지션/이어뽑기·스파링 픽 피드백 (2026-08-25 커밋 `804aa24`, 이력서는 2026-09-04 사후 기록)
 - [[task-010-study-ux-improvements]] — `/study` 화면 사용성 개선 (제목입력·검색필터·영상고정) (2026-08-24 완료)
 - [[task-009-long-video-study-phase3]] — 긴 영상 분석 `/study` Phase 3: 기술추출 연동+챕터편집 (2026-08-23 완료)
 - [[task-008-long-video-study-phase2]] — 긴 영상 분석 `/study` Phase 2: 구간 캡처+요약 (2026-08-23 완료)

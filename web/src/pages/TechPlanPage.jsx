@@ -83,7 +83,7 @@ function SegBtn({ active, onClick, children }) {
 // 기술트리 탭
 // ─────────────────────────────────────────────
 function TechTab() {
-  const { techniques, reloadTechniques } = useCache();
+  const { techniques, reloadTechniques, reloadClips, reloadClasses } = useCache();
   const { showToast, setLoading } = useUI();
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState('all'); // all | recent | star
@@ -184,7 +184,7 @@ function TechTab() {
       {posManaging && (
         <PositionManagerModal
           onClose={() => setPosManaging(false)}
-          onChanged={reloadTechniques}
+          onChanged={() => { reloadTechniques(); reloadClips(); reloadClasses(); }}
         />
       )}
 
