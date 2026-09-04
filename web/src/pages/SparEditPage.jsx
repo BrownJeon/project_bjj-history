@@ -13,10 +13,24 @@ import { uniqueOpponents } from '../utils/suggestions';
 import SparFeedbackCard from '../components/SparFeedbackCard';
 import { listPicks } from '../api/picks';
 
+// outcome — null = 아직 선택 안 함(통계 집계 제외) / 'win' = 이겼어 / 'learn' = 배웠어.
+//   기본값을 주지 않는 이유: 기본값이 있으면 "고르지 않음"과 "그 값을 고름"이 구별되지 않아
+//   나중에 승률 통계를 만들 때 데이터가 오염된다 (task-017).
+// positions / positionScore — 편집 UI가 없는 필드. 새 라운드는 빈 값이지만,
+//   기존 기록(18세션)이 저장 시 destroy+reinsert로 지워지지 않도록 그대로 되돌려 보낸다.
 const EMPTY_SESSION = {
   level: '', opponent: '', tapGot: 0, tapGave: 0, time: '',
-  successTried: [], weak: [], note: '', positionScore: 0,
+  successTried: [], weak: [], note: '', outcome: null,
+  positions: [], positionScore: 0,
 };
+
+// 실기록 분포(3분 15건 / 4분 29건 / 5분 8건)에 맞춘 원탭 프리셋
+const TIME_PRESETS = [3, 4, 5];
+
+const OUTCOME_OPTIONS = [
+  { value: 'win',   label: '이겼어', color: '#F5A623',      dim: '#FEF3E2' },
+  { value: 'learn', label: '배웠어', color: 'var(--accent)', dim: 'var(--accent-dim)' },
+];
 
 const BELT_PILL = {
   '화이트': { bg: '#e8e8e8', active: '#999',    text: '#666',    activeText: '#fff' },
@@ -83,6 +97,7 @@ export default function SparEditor({ classId, sparDay, onClose, onSaved }) {
     sparDay?.date?.toString().slice(0, 10) || new Date().toISOString().slice(0, 10)
   );
   const [dayNote, setDayNote] = useState(sparDay?.day_note || '');
+  const [noteOpen, setNoteOpen] = useState(!!sparDay?.day_note);
   const [sessions, setSessions] = useState(
     (sparDay?.sessions || []).map(s => ({
       level: s.level || '',
@@ -97,13 +112,23 @@ export default function SparEditor({ classId, sparDay, onClose, onSaved }) {
       ).filter(a => a.name),
       weak: Array.isArray(s.weak) ? s.weak : [],
       note: s.note || '',
+      outcome: s.outcome || null,
+      // 아래 둘은 편집 UI가 없다 — 읽어서 그대로 돌려보내야 저장 시 지워지지 않는다
+      positions: Array.isArray(s.positions) ? s.positions : [],
       positionScore: s.position_score || 0,
     }))
   );
   const [aiBusy, setAiBusy] = useState(false);
 
   function addSession() {
-    setSessions([...sessions, { ...EMPTY_SESSION, successTried: [], weak: [] }]);
+    // 직전 라운드의 시간·벨트를 이월 — 같은 날 라운드는 대개 동일하다(시간 96%·벨트 98% 채움)
+    const prev = sessions[sessions.length - 1];
+    setSessions([...sessions, {
+      ...EMPTY_SESSION,
+      successTried: [], weak: [], positions: [],
+      time:  prev ? prev.time  : '',
+      level: prev ? prev.level : '',
+    }]);
   }
   function removeSession(i) { setSessions(sessions.filter((_, idx) => idx !== i)); }
   function updateSession(i, key, val) {
@@ -119,11 +144,13 @@ export default function SparEditor({ classId, sparDay, onClose, onSaved }) {
         opponent: s.opponent,
         tapGot: parseInt(s.tapGot) || 0,
         tapGave: parseInt(s.tapGave) || 0,
-        time: parseInt(s.time) || 0,
+        // time_min 은 TINYINT — 직접 입력이 생겼으므로 상한을 막는다
+        time: Math.min(127, Math.max(0, parseInt(s.time) || 0)),
         positionScore: parseInt(s.positionScore) || 0,
         success: s.successTried || [],
         weak: s.weak || [],
-        positions: [],
+        outcome: s.outcome || null,
+        positions: s.positions || [],   // UI 없음 — 기존 값 그대로 재전송(유실 방지)
         note: s.note,
       })),
     };
@@ -148,6 +175,7 @@ export default function SparEditor({ classId, sparDay, onClose, onSaved }) {
     try {
       const res = await enhanceApi.enhanceMemo({ text, type: 'spar' });
       setDayNote((dayNote ? dayNote + '\n\n' : '') + (res.enhanced || ''));
+      setNoteOpen(true);
       showToast('AI 코칭 분석 완료');
     } catch (e) { showToast('AI 분석 실패: ' + e.message); }
     finally { setAiBusy(false); }
@@ -168,14 +196,20 @@ export default function SparEditor({ classId, sparDay, onClose, onSaved }) {
       }
       onSaved && onSaved();
 
-      // 그날 픽미업으로 뽑은 기술이 있으면 피드백 카드에서 사용 여부를 남길 수 있게 전달
+      // 그날 픽미업으로 뽑은 기술이 있을 때만 피드백 카드를 띄운다.
+      // 픽이 없으면 카드에 입력할 것이 없어 "확인" 1탭만 늘어나므로 바로 닫는다 (task-017).
       let todayPicks = [];
       try {
         const groups = await listPicks();
         todayPicks = groups.find(g => g.date === date)?.picks || [];
-      } catch { /* 픽 이력 조회 실패는 피드백 섹션만 비우고 진행 */ }
+      } catch { /* 픽 이력 조회 실패는 피드백을 건너뛰고 저장만 확정 */ }
 
-      setFeedbackData({ sessions, classes, sparDayId, todayPicks });
+      if (todayPicks.length > 0) {
+        setFeedbackData({ sessions, classes, sparDayId, todayPicks });
+      } else {
+        showToast(`저장되었습니다 · ${sessions.length}라운드`);
+        onClose();
+      }
     } catch (e) { showToast('저장 실패: ' + e.message); }
     finally { setLoading(false); }
   }
@@ -251,24 +285,36 @@ export default function SparEditor({ classId, sparDay, onClose, onSaved }) {
         </button>
       </div>
 
+      {/* 전체 메모 — 17일 중 1일만 채워진 필드라 접어 둔다. 값이 있거나 AI 분석을 돌리면 자동으로 펼쳐진다 */}
       <div className="field">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
-          <label style={{ margin: 0 }}>전체 메모 / AI 코칭 분석</label>
-          <button
-            onClick={aiEnhance}
-            disabled={aiBusy || !sessions.length}
-            style={{
-              background: 'var(--purple-dim)', color: 'var(--purple)',
-              border: 'none', padding: '4px 10px', borderRadius: 6,
-              fontSize: 11, fontWeight: 600,
-              cursor: aiBusy ? 'wait' : 'pointer',
-            }}
-          >
-            {aiBusy ? '분석 중…' : '✨ AI 코칭 분석'}
-          </button>
-        </div>
-        <textarea rows={4} value={dayNote} onChange={e => setDayNote(e.target.value)}
-          placeholder="스파링 전체 메모 / AI 분석 결과" />
+        <button onClick={() => setNoteOpen(!noteOpen)} style={{
+          width: '100%', padding: '8px 0',
+          background: 'var(--surface)', border: '1px solid var(--border)',
+          borderRadius: 10, color: 'var(--text2)',
+          fontSize: 12, fontWeight: 600, cursor: 'pointer',
+        }}>
+          {noteOpen ? '▲ 접기' : `▼ 전체 메모 · AI 코칭 분석${dayNote ? ' (작성됨)' : ''}`}
+        </button>
+        {noteOpen && (
+          <div style={{ marginTop: 8 }}>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 6 }}>
+              <button
+                onClick={aiEnhance}
+                disabled={aiBusy || !sessions.length}
+                style={{
+                  background: 'var(--purple-dim)', color: 'var(--purple)',
+                  border: 'none', padding: '4px 10px', borderRadius: 6,
+                  fontSize: 11, fontWeight: 600,
+                  cursor: aiBusy ? 'wait' : 'pointer',
+                }}
+              >
+                {aiBusy ? '분석 중…' : '✨ AI 코칭 분석'}
+              </button>
+            </div>
+            <textarea rows={4} value={dayNote} onChange={e => setDayNote(e.target.value)}
+              placeholder="스파링 전체 메모 / AI 분석 결과" />
+          </div>
+        )}
       </div>
 
       <div style={{ display: 'flex', gap: 8, marginTop: 12 }}>
@@ -458,6 +504,83 @@ function GrowthSessionCard({
         </button>
       </div>
 
+      {/* 결과 — 이 라운드의 유일한 판단. 미선택(null)을 그대로 남겨 통계 오염을 막는다 */}
+      <div style={{ display: 'flex', gap: 6, marginBottom: 12 }}>
+        {OUTCOME_OPTIONS.map(o => {
+          const active = session.outcome === o.value;
+          return (
+            <button key={o.value}
+              onClick={() => onUpdate('outcome', active ? null : o.value)}
+              style={{
+                flex: 1, padding: '10px 0', borderRadius: 10,
+                border: active ? `1px solid ${o.color}` : '1px solid var(--border-med)',
+                background: active ? o.dim : 'var(--surface)',
+                color: active ? o.color : 'var(--text3)',
+                fontSize: 13.5, fontWeight: active ? 800 : 600,
+                cursor: 'pointer',
+              }}>
+              {o.label}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* 상대 벨트 — 채움률 98%, 최상위 노출 */}
+      <div style={{ marginBottom: 12 }}>
+        <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text2)', marginBottom: 7 }}>
+          상대 벨트
+        </div>
+        <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+          {BELT_LEVELS.map(belt => {
+            const pill = BELT_PILL[belt] || BELT_PILL['화이트'];
+            const active = session.level === belt;
+            return (
+              <button key={belt} onClick={() => onUpdate('level', active ? '' : belt)} style={{
+                padding: '6px 13px', borderRadius: 20, border: 'none',
+                background: active ? pill.active : pill.bg,
+                color: active ? pill.activeText : pill.text,
+                fontSize: 12, fontWeight: active ? 700 : 500,
+                cursor: 'pointer',
+              }}>{belt}</button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* 시간 — 채움률 96%. ±1 스텝퍼(4분=4탭) 대신 3/4/5 원탭 프리셋 */}
+      <div style={{ marginBottom: 12 }}>
+        <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text2)', marginBottom: 7 }}>
+          시간(분)
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+          {TIME_PRESETS.map(m => {
+            const active = (parseInt(session.time) || 0) === m;
+            return (
+              <button key={m} onClick={() => onUpdate('time', active ? '' : m)} style={{
+                padding: '7px 15px', borderRadius: 20,
+                border: active ? '1px solid var(--accent)' : '1px solid var(--border-med)',
+                background: active ? 'var(--accent-dim)' : 'var(--surface)',
+                color: active ? 'var(--accent)' : 'var(--text2)',
+                fontSize: 13, fontWeight: active ? 700 : 500,
+                cursor: 'pointer',
+              }}>{m}분</button>
+            );
+          })}
+          <input
+            type="number" inputMode="numeric" min="0" max="127"
+            value={session.time === null || session.time === undefined ? '' : String(session.time)}
+            onChange={e => onUpdate('time', e.target.value)}
+            placeholder="직접"
+            style={{
+              width: 62, padding: '6px 10px', borderRadius: 20,
+              border: '1px dashed var(--border-med)',
+              background: 'transparent', color: 'var(--text)',
+              fontSize: 12, outline: 'none',
+            }}
+          />
+        </div>
+      </div>
+
       {/* 성공한 기술 */}
       <div style={{ marginBottom: 12 }}>
         <ChipSection
@@ -471,6 +594,51 @@ function GrowthSessionCard({
           onRemove={removeGoodTech}
           inputId={`success-${idx}`}
         />
+      </div>
+
+      {/* 탭 당한 기술 — 채움률 70%, 접힘에서 최상위로 승격 */}
+      <div style={{ marginBottom: 12 }}>
+        <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text2)', marginBottom: 7 }}>
+          탭 당한 기술
+        </div>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+          {tapTechChips.map(chip => {
+            const sel = tapTechs.includes(chip);
+            return (
+              <button key={chip} onClick={() => toggleTapTech(chip)} style={{
+                padding: '5px 11px', borderRadius: 20,
+                background: sel ? 'var(--red-dim, #fde8e8)' : 'var(--surface)',
+                color: sel ? 'var(--red)' : 'var(--text2)',
+                fontSize: 12, fontWeight: sel ? 700 : 500,
+                cursor: 'pointer',
+                border: sel ? '1px solid var(--red)' : '1px solid var(--border-med)',
+              }}>{chip}</button>
+            );
+          })}
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+            <input
+              value={customTapTech}
+              onChange={e => setCustomTapTech(e.target.value)}
+              onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addCustomTapTech(); } }}
+              placeholder="직접 입력"
+              style={{
+                padding: '5px 9px', borderRadius: 20,
+                border: '1px dashed var(--border-med)',
+                background: 'transparent', color: 'var(--text)',
+                fontSize: 12, outline: 'none', width: 70,
+              }}
+            />
+            {customTapTech.trim() && (
+              <button onClick={addCustomTapTech} style={{
+                width: 24, height: 24, borderRadius: 12,
+                border: 'none', background: 'var(--red)',
+                color: '#fff', fontSize: 16, cursor: 'pointer',
+                display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                flexShrink: 0,
+              }}>+</button>
+            )}
+          </div>
+        </div>
       </div>
 
       {/* 성장 포인트 */}
@@ -488,85 +656,18 @@ function GrowthSessionCard({
         />
       </div>
 
-      {/* 더 자세히 */}
+      {/* 더 자세히 — 자판이 필요하거나 채움률이 낮은 항목만 남긴다 */}
       <button onClick={() => setExpanded(!expanded)} style={{
         width: '100%', padding: '7px 0',
         background: 'var(--surface)', border: '1px solid var(--border)',
         borderRadius: 10, color: 'var(--text2)',
         fontSize: 12, fontWeight: 600, cursor: 'pointer',
       }}>
-        {expanded ? '▲ 접기' : '▼ 더 자세히 (벨트 · 탭 당한 기술 · 메모)'}
+        {expanded ? '▲ 접기' : '▼ 더 자세히 (상대 이름 · 탭 수 · 메모)'}
       </button>
 
       {expanded && (
         <div style={{ marginTop: 10, display: 'flex', flexDirection: 'column', gap: 12 }}>
-          {/* 탭 당한 기술 */}
-          <div>
-            <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text2)', marginBottom: 7 }}>
-              탭 당한 기술 (선택)
-            </div>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-              {tapTechChips.map(chip => {
-                const sel = tapTechs.includes(chip);
-                return (
-                  <button key={chip} onClick={() => toggleTapTech(chip)} style={{
-                    padding: '5px 11px', borderRadius: 20,
-                    background: sel ? 'var(--red-dim, #fde8e8)' : 'var(--surface)',
-                    color: sel ? 'var(--red)' : 'var(--text2)',
-                    fontSize: 12, fontWeight: sel ? 700 : 500,
-                    cursor: 'pointer',
-                    border: sel ? '1px solid var(--red)' : '1px solid var(--border-med)',
-                  }}>{chip}</button>
-                );
-              })}
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
-                <input
-                  value={customTapTech}
-                  onChange={e => setCustomTapTech(e.target.value)}
-                  onKeyDown={e => { if (e.key === 'Enter') addCustomTapTech(); }}
-                  placeholder="직접 입력"
-                  style={{
-                    padding: '5px 9px', borderRadius: 20,
-                    border: '1px dashed var(--border-med)',
-                    background: 'transparent', color: 'var(--text)',
-                    fontSize: 12, outline: 'none', width: 70,
-                  }}
-                />
-                {customTapTech.trim() && (
-                  <button onClick={addCustomTapTech} style={{
-                    width: 24, height: 24, borderRadius: 12,
-                    border: 'none', background: 'var(--red)',
-                    color: '#fff', fontSize: 16, cursor: 'pointer',
-                    display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                    flexShrink: 0,
-                  }}>+</button>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* 상대 벨트 */}
-          <div>
-            <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text2)', marginBottom: 7 }}>
-              상대 벨트
-            </div>
-            <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-              {BELT_LEVELS.map(belt => {
-                const pill = BELT_PILL[belt] || BELT_PILL['화이트'];
-                const active = session.level === belt;
-                return (
-                  <button key={belt} onClick={() => onUpdate('level', active ? '' : belt)} style={{
-                    padding: '6px 13px', borderRadius: 20, border: 'none',
-                    background: active ? pill.active : pill.bg,
-                    color: active ? pill.activeText : pill.text,
-                    fontSize: 12, fontWeight: active ? 700 : 500,
-                    cursor: 'pointer',
-                  }}>{belt}</button>
-                );
-              })}
-            </div>
-          </div>
-
           {/* 상대 이름 */}
           <div className="field" style={{ marginBottom: 0 }}>
             <label>상대 이름</label>
@@ -581,11 +682,10 @@ function GrowthSessionCard({
             </datalist>
           </div>
 
-          {/* 시간 / 탭 스텝퍼 */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12 }}>
-            <StepperField label="시간(분)" value={parseInt(session.time) || 0}   onStep={d => step('time', d)} />
-            <StepperField label="탭 받음"  value={parseInt(session.tapGot) || 0}  onStep={d => step('tapGot', d)} />
-            <StepperField label="탭 줌"    value={parseInt(session.tapGave) || 0} onStep={d => step('tapGave', d)} />
+          {/* 탭 수 */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+            <StepperField label="탭 받음" value={parseInt(session.tapGot) || 0}  onStep={d => step('tapGot', d)} />
+            <StepperField label="탭 줌"   value={parseInt(session.tapGave) || 0} onStep={d => step('tapGave', d)} />
           </div>
 
           {/* 세션 메모 */}

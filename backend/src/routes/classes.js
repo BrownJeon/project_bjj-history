@@ -68,7 +68,7 @@ router.get('/', wrap(async (req, res) => {
       });
       sd.sessions = sess;
       sd.clips    = [];
-      sd.links    = [];
+      delete sd.links;   // 17일 전부 '[]' + 프론트 소비처 0 — 응답에서 제외 (컬럼은 유지, task-017)
       allSessions.push(...sess);
     }
     c.spar_days   = sparDays;
@@ -203,7 +203,7 @@ router.post('/:id/spar', wrap(async (req, res) => {
   const { date, dayNote, sessions } = req.body;
   if (!date) return res.status(400).json({ error: 'date required' });
   const sparDayId = await sequelize.transaction(async (t) => {
-    const sd = await SparDay.create({ class_id: classId, date, day_note: dayNote || '', links: '[]' }, { transaction: t });
+    const sd = await SparDay.create({ class_id: classId, date, day_note: dayNote || '' }, { transaction: t });
     await insertSessions(sd.id, sessions, t);
     return sd.id;
   });

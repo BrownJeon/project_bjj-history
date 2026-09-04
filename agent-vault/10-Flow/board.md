@@ -13,6 +13,7 @@ tags:
 ## Review
 
 ## Done
+- [[task-017-spar-recording-friction]] — 스파링 기록 마찰 제거(12→8탭) + `outcome` 저장 경로 연결(미구현이었음) + positions 소실 차단 (2026-09-04 완료)
 - [[task-016-position-manager-full-scope]] — 포지션 관리 화면을 4개 저장소 전체로 확장(관리 가능 6종→25종), 삭제 전파 (2026-09-04 완료)
 - [[task-015-coach-cron-and-prompt-guard]] — 주간 코치 cron이 5주간 엉뚱한 계정을 보던 버그 + 기간/안내 보강 (2026-09-04 완료)
 - [[task-014-nfd-encoding-audit]] — 한글 자모분리(NFD) 인코딩 전수 점검·수정, split-brain 유입경로 차단 (2026-09-04 완료)
