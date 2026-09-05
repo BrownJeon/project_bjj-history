@@ -64,8 +64,11 @@ router.post('/analyze', upload.single('audio'), wrap(async (req, res) => {
       const updateValues = [transcript];
       if (theme) { updateFields.push('theme = IF(theme=\'\' OR theme IS NULL, ?, theme)'); updateValues.push(theme); }
       if (note)  {
-        updateFields.push('note = CASE WHEN note IS NULL OR note = \'\' THEN ? ELSE CONCAT(note, ?, ?) END');
-        updateValues.push(note, `\n\n[${label}]\n`, note);
+        // 전체 메모가 비어 있든(첫 분석) 이미 내용이 있든 항상 [날짜 음성 분석] 라벨을 붙인다.
+        // 예전에는 THEN 분기가 note만 넣어서 첫 분석에만 라벨·날짜가 빠졌고, 두 번째 분석부터
+        // 라벨이 생겨 "어느 날 음성인지" 알 수 없는 덩어리가 메모 맨 앞에 남았다.
+        updateFields.push('note = CASE WHEN note IS NULL OR note = \'\' THEN CONCAT(?, ?) ELSE CONCAT(note, ?, ?) END');
+        updateValues.push(`[${label}]\n`, note, `\n\n[${label}]\n`, note);
       }
       updateValues.push(classId);
       await sequelize.query(
