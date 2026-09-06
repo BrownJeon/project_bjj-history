@@ -213,6 +213,33 @@ ALTER TABLE spar_sessions ADD COLUMN reaction  TEXT DEFAULT '[]';   -- 실패 �
 - 적용 전 `information_schema`로 존재 확인 후 실행(기존 데이터 보호).
 - **`outcome` 컬럼과 기존 값은 유지한다. DROP 금지.** 화면에서만 제거한다.
 
+### 3.2 `recall_summaries` — AI 복기 카드 캐시 (task-025, 적용 완료)
+
+착수 전 `information_schema` 확인: `%recall%`·`%summar%`·`%cache%` 전부 0건 → 충돌 없음.
+추가만 하는 DDL 이라 기존 데이터 위험은 0 이다(ALTER 없음, 신규 테이블 1개).
+
+```sql
+CREATE TABLE recall_summaries (
+  id             INT AUTO_INCREMENT PRIMARY KEY,
+  user_id        INT NOT NULL,
+  query_norm     VARCHAR(200) NOT NULL,   -- 검색 조건 전체(q + pos + from + to)
+  class_ids_hash CHAR(64) NOT NULL,       -- sha256(정렬된 classId 목록)
+  content        MEDIUMTEXT,
+  prompt_chars   INT DEFAULT NULL,        -- QA 관측용
+  created_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY uq_recall (user_id, query_norm, class_ids_hash),
+  INDEX idx_rs_user (user_id)
+);
+```
+
+- `UNIQUE` 3열이 캐시 키다. `query_norm` 에 `pos`/`from`/`to` 가 들어가야 한다 —
+  `q` 만 쓰면 조건이 다른 검색이 같은 요약을 받는다.
+- `class_ids_hash` 가 **자동 무효화** 장치다. 수업이 추가되면 해시가 달라져 새로 만든다.
+- 🔴 `query_norm` 은 STRICT 모드의 `VARCHAR(200)` 이라 201자는 잘림이 아니라 **에러**다.
+  `buildQueryNorm()` 이 200자를 넘을 수 없게 만든다(초과 시 sha256 표기 65자로 대체).
+- 이 DB 는 전 테이블 **utf8mb3** 라 4바이트 문자(이모지)는 `Incorrect string value` 500 이 된다.
+  라우트에서 400 으로 먼저 거른다(task-022 `spar_causes` 와 같은 처리).
+
 ### 3.1 `cause_ids`/`reaction` 대응 구조 — Reviewer 확정 (2026-09-06)
 
 **확정: `success` 배열의 각 항목 객체 안에 `causes: [id...]` / `reaction: "..."`를 넣는다.** (Developer 권고안을 그대로 채택)
@@ -322,7 +349,57 @@ ALTER TABLE spar_sessions ADD COLUMN reaction  TEXT DEFAULT '[]';   -- 실패 �
   현재 벨트로 전 기간을 판정하면 20건→10건으로, 절반만 어긋나 그럴듯해 보인다.
 - 저장소: `technique_mastery` (2·3단계 전용). **행이 없는 것이 정상 상태**이고 시드하지 않는다.
 
-### 4.3 후속 배치 예정 (이번 범위 아님)
+### 4.3 복기 화면 API — 구현 완료 (task-025)
+
+| 메서드 | 경로 | 용도 |
+|---|---|---|
+| `GET` | `/api/recall/search?q&pos&from&to` | 수업기록 통합 검색 — `classes.note`·`theme`·`voice_transcript` + `drills.pos`·`tech` |
+| `GET` | `/api/recall/stale?limit` | "잊기 직전" — 마지막 배움일·등장일 기준 경과일 정렬. 구멍 기술은 **백엔드에서 제외** |
+| `POST` | `/api/recall/summarize` | AI 복기 카드 — `{q,pos?,from?,to?}` 또는 `{classIds}`. `recall_summaries` 캐시 |
+
+구현: `routes/recall.js` · `services/recallSearch.js`(전부 순수 함수) ·
+`services/labAnalytics.js`의 `computeStale()` · `models/RecallSummary.js`.
+
+구현하며 확정한 사항:
+
+- 🔴 **텍스트 매칭에 SQL `LIKE` 를 쓰지 않는다.** SQL 은 유니코드 정규화를 못 해서 NFD(자모분리)로
+  친 검색어가 **에러 없이 0건**이 된다(task-014 의 실패 방식). 실측으로 확인했다 —
+  같은 `가드` 로 `LIKE` 는 NFC 12건 / NFD **0건**, JS 매칭은 25건 / 25건.
+  SQL 은 `WHERE c.user_id = ?` 와 날짜 범위만 좁히고 매칭은 JS 에서 `toNFC()` 양쪽 적용 후 한다.
+  데이터가 작아(수업 29건 · 전사본 104KB) 전량 메모리 처리로 충분하다.
+- 🔴 **전사본 본문을 응답에 싣지 않는다.** 키워드 주변 ±80자 스니펫, 필드당 최대 3윈도우.
+  겹치는 윈도우는 병합하되 **윈도우 하나의 길이에 상한(2×radius+검색어)을 둔다** —
+  상한이 없으면 키워드가 촘촘한 텍스트에서 병합 윈도우가 계속 자라 전사본을 통째로 싣는다
+  (실측: 상한 없을 때 1,287자까지 자랐다. 규칙상 상한은 494자).
+  `theme` 만 예외로 통째로 싣는다(varchar(200) 이라 200자를 넘을 수 없다).
+- 🔴 **AI 프롬프트 예산 20,000자를 구조적으로 보장한다.** 초과를 예외로 잡는 게 아니라
+  블록을 넣기 전에 자리를 확인하고 없으면 안 넣는다. `claudeCli.js` 하드캡은 24,000자인데
+  이 계정 전사본 합계는 **104,283자 — 하드캡의 4.3배**다.
+  배분은 2단계다: ① 최근순으로 축약 블록 자리를 먼저 확보 → ② 남은 예산으로 최근순 승격.
+  한 번에 처리하면 **오래된 수업이 최근 수업보다 상세해지는 우선순위 역전**이 생긴다.
+  실측: 검색어 969가지 전수 스윕에서 최대 19,996자, 예산 초과 0건 · 버려진 수업 0건 · 역전 0건.
+- 🔴 **`buildRecallPrompt()` 는 순수 함수로 export 한다.** HTTP 만으로는 프롬프트 길이를 잴 수 없어
+  QA 가 "코드를 봤더니 넘칠 리 없더라"로 후퇴하게 되기 때문이다(`labAnalytics` 가 벨트맵을
+  주입 가능하게 만든 것과 같은 이유). 편의가 아니라 **설계 요건**이다.
+- **구멍 기술 제외는 프론트가 아니라 `/api/recall/stale` 이 한다.** QA 가 API 한 번으로 중복 없음을
+  판정할 수 있어야 하고, 두 곳에서 걸면 어긋났을 때 원인 추적이 불가능해진다.
+  제외한 사실은 `excludedHoleNames` · `excludedTechniqueIds` 로 **드러낸다**.
+- **`status` 는 `stale` / `no_record` 2값**, `no_record` 의 `daysSince` 는 0 이 아니라 `null` 이다.
+  정렬에서도 섞지 않는다(stale 먼저, no_record 뒤).
+- 오늘 날짜는 UTC 에 +9시간을 더해 **명시적으로** KST 를 만든다. `toISOString()` 도, 서버 TZ 설정도
+  믿지 않는다(`coachAnalytics` 의 UTC 버그가 후자로 생겼다).
+- 캐시 키는 `(user_id, query_norm, class_ids_hash)` 3개다. `query_norm` 에 `pos`/`from`/`to` 를
+  **포함해야 한다** — `q` 만 쓰면 조건이 다른 검색이 같은 요약을 받는다.
+  `class_ids_hash` 는 요약에 들어간 수업 id 목록의 sha256 이라 **수업이 추가되면 자동 무효화**된다
+  (별도 만료 정책이 필요 없는 이유). `UNIQUE` 가 동시 요청 경합을 DB 층에서 막고,
+  충돌 시 상대가 넣은 행을 읽어 돌려준다.
+- 🔴 `query_norm` 은 `VARCHAR(200)` + STRICT 라 201자는 잘림이 아니라 **에러**다.
+  라우트가 검색어를 200자에서 400 으로 막고, 그와 별개로 `buildQueryNorm()` 이 조합 키가
+  200자를 넘으면 sha256 표기(65자)로 대체해 **구조적으로** 보장한다.
+  이 DB 는 전 테이블 utf8mb3 라 이모지는 `Incorrect string value` 500 이 되므로
+  task-022 의 `spar_causes` 와 같은 방식으로 400 으로 거른다.
+
+### 4.4 후속 배치 예정 (이번 범위 아님)
 
 | 메서드 | 경로 | 용도 |
 |---|---|---|

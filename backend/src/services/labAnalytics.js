@@ -510,6 +510,126 @@ function computeMastery(data, techniqueId, opts = {}) {
   };
 }
 
+
+/**
+ * 오늘 날짜(KST) 'YYYY-MM-DD'.
+ * 🔴 toISOString() 금지 — UTC 로 변환되면서 KST 기준 하루가 밀린다. 서버 TZ 설정에 기대지도
+ *    않는다(coachAnalytics 의 UTC 버그가 그렇게 생겼다): UTC 에 +9시간을 더해 명시적으로 만든다.
+ */
+function todayKST(now = new Date()) {
+  const kst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
+  const p = (n) => String(n).padStart(2, '0');
+  return `${kst.getUTCFullYear()}-${p(kst.getUTCMonth() + 1)}-${p(kst.getUTCDate())}`;
+}
+
+/**
+ * 'YYYY-MM-DD' 두 개 사이의 일수. 🔴 문자열 → Date.UTC 로만 계산한다 —
+ * 로컬 Date 생성자를 쓰면 서머타임·TZ 가 개입해 경계에서 하루가 어긋난다.
+ */
+function daysBetween(fromDate, toDate) {
+  const parse = (s) => {
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(s || ''));
+    return m ? Date.UTC(+m[1], +m[2] - 1, +m[3]) : null;
+  };
+  const a = parse(fromDate), b = parse(toDate);
+  if (a == null || b == null) return null;
+  return Math.round((b - a) / 86400000);
+}
+
+/**
+ * GET /api/recall/stale — "잊기 직전" (task-025).
+ *
+ * 기술마다 **마지막 배움일**(매칭된 drills.date 최댓값)과 **마지막 스파링 등장일**
+ * (매칭된 spar 세션 date 최댓값, 성공/실패 무관 — "등장"이 기준이다)을 구하고,
+ * 둘 중 더 최근 날짜로부터 오늘까지의 경과일이 긴 순으로 정렬한다.
+ *
+ * 🔴 구멍 목록에 있는 기술은 **여기서**(백엔드에서) 제외한다. 프론트에서 걸러도 화면은 같지만,
+ *    그러면 QA 가 API 한 번으로 "중복 없음"을 판정할 수 없고 두 곳이 어긋났을 때 원인 추적이
+ *    불가능해진다. 제외한 사실은 excludedHoleNames / excludedTechniqueIds 로 **드러낸다** —
+ *    조용히 지우지 않는다.
+ *
+ * 🔴 status 는 'stale' 과 'no_record' 두 값이고 **다른 말**이다. 기록이 아예 없는 기술을
+ *    "경과 0일"로 쓰면 방금 한 것처럼 보인다. 정렬에서도 섞지 않는다 — stale 먼저, no_record 뒤로.
+ *
+ * @param {object} data          loadLabData() 결과
+ * @param {object} opts
+ *   holes  — computeHoles() 결과(또는 {holes:[...]}). 제외 목록의 근거. 주입 가능 = QA 가
+ *            빈 목록을 넣어 "제외가 실제로 동작하는지"를 역검증할 수 있다.
+ *   today  — 'YYYY-MM-DD'. 주입 가능 = 시간이 흘러도 QA 기대값이 고정된다.
+ *   limit  — 기본 10, 1~50 클램프.
+ */
+function computeStale(data, opts = {}) {
+  const today = opts.today || todayKST();
+  const match = opts.match || makeMatcher(data.techniques);
+
+  const parsedLimit = parseInt(opts.limit, 10);
+  const limit = Number.isNaN(parsedLimit) ? 10 : Math.min(50, Math.max(1, parsedLimit));
+
+  const holeList = Array.isArray(opts.holes) ? opts.holes : ((opts.holes && opts.holes.holes) || []);
+  const excludedHoleNames    = holeList.map((h) => h.name);
+  const excludedTechniqueIds = [...new Set(holeList.map((h) => h.techniqueId).filter((v) => v != null))];
+  const excludedSet = new Set(excludedTechniqueIds);
+
+  // 기술 id -> 마지막 배움일 / 마지막 등장일
+  const lastLearned = new Map();
+  const lastSeen    = new Map();
+  const bump = (map, tid, date) => {
+    if (!date) return;
+    const cur = map.get(tid);
+    if (!cur || date > cur) map.set(tid, date);
+  };
+
+  for (const d of data.drills) {
+    for (const nm of d.names) {
+      const m = match(nm);
+      if (m.technique_id) bump(lastLearned, m.technique_id, d.date);
+    }
+  }
+  for (const s of data.sessions) {
+    for (const it of s.items) {
+      const m = match(it.name);
+      if (m.technique_id) bump(lastSeen, m.technique_id, s.date);
+    }
+  }
+
+  const all = data.techniques
+    .filter((t) => !excludedSet.has(t.id))
+    .map((t) => {
+      const learned = lastLearned.get(t.id) || null;
+      const seen    = lastSeen.get(t.id)    || null;
+      // 마지막 접촉일 = 배움/등장 중 **더 최근**. 'YYYY-MM-DD' 는 사전순 = 시간순이라 문자열 비교로 충분하다.
+      const latest  = [learned, seen].filter(Boolean).sort().pop() || null;
+      return {
+        techniqueId: t.id,
+        name: t.name,
+        lastLearnedAt: learned,
+        lastSeenAt: seen,
+        // 🔴 표본 0건은 "경과 0일"이 아니라 no_record. daysSince 도 0 이 아니라 null 이다.
+        daysSince: latest ? daysBetween(latest, today) : null,
+        status: latest ? 'stale' : 'no_record',
+      };
+    });
+
+  // stale 먼저(경과일 내림차순), no_record 뒤로. 동률은 이름 오름차순 — 결정적 정렬.
+  const rank = (x) => (x.status === 'stale' ? 0 : 1);
+  const items = all.sort((x, y) =>
+    rank(x) - rank(y) ||
+    (y.daysSince ?? -1) - (x.daysSince ?? -1) ||
+    x.name.localeCompare(y.name)
+  );
+
+  return {
+    today,
+    limit,
+    total: items.length,
+    staleCount:    items.filter((i) => i.status === 'stale').length,
+    noRecordCount: items.filter((i) => i.status === 'no_record').length,
+    excludedHoleNames,
+    excludedTechniqueIds,
+    items: items.slice(0, limit),
+  };
+}
+
 module.exports = {
   DEFAULT_BELT_RANK,
   fmtDate,
@@ -522,4 +642,7 @@ module.exports = {
   computeUpperBeltItems,
   computeHoles,
   computeMastery,
+  todayKST,
+  daysBetween,
+  computeStale,
 };

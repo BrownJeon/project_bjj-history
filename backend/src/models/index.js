@@ -21,6 +21,7 @@ const MembershipPayment    = require('./MembershipPayment');
 const LongVideo            = require('./LongVideo');
 const LongVideoChapter     = require('./LongVideoChapter');
 const TechniqueMastery     = require('./TechniqueMastery');
+const RecallSummary        = require('./RecallSummary');
 
 // User 관계 정의 (1:N, 1:1)
 User.hasMany(Class,             { foreignKey: 'user_id', as: 'classes' });
@@ -38,6 +39,8 @@ User.hasMany(LongVideo,         { foreignKey: 'user_id', as: 'longVideos' });
 User.hasMany(SparCause,         { foreignKey: 'user_id', as: 'sparCauses' });
 // 사다리 2·3단계 수동 체크 (task-024) — 행이 없는 것이 정상 상태다(체크 전)
 User.hasMany(TechniqueMastery,  { foreignKey: 'user_id', as: 'masteries' });
+// AI 복기 카드 캐시 (task-025) — 행이 없는 것이 정상 상태다(아직 요약 안 함)
+User.hasMany(RecallSummary,     { foreignKey: 'user_id', as: 'recallSummaries' });
 
 // 관계 정의
 Class.hasMany(Drill,         { foreignKey: 'class_id', as: 'drills' });
@@ -71,6 +74,7 @@ module.exports = {
   User,
   Class, Drill, SparDay, SparSession, SparCause,
   Technique, TechniqueChain, ChainStep, TechniqueMastery,
+  RecallSummary,
   Gameplan, GameplanNode, GameplanEdge,
   VideoClip, Profile, BeltHistory, CoachReport,
   PickHistory, MembershipPayment,
