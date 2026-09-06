@@ -5,14 +5,21 @@ tags:
 # 칸반 보드
 
 ## Backlog
+- **포지션 어휘 병합 실행** — [[task-020-recall-lab-spec-and-name-audit]]이 목록만 제시. **사용자 승인 대기**
+- **기술 이름 정규화** — task-020이 안 맞는 목록만 보고. **사용자 승인 대기**
+- **`techMatch.js` fuzzy `tokenize()`/`normalize()` 공백 처리 비대칭 버그 수정** — Reviewer가 task-020 감사에서 코드+데이터로 직접 재현(2026-09-06). 증상: 같은 기술을 띄어쓰기만 다르게 적으면 매칭 결과가 갈린다 — `보우 앤 애로우 쵸크`는 fuzzy 매칭 성공(자카드 0.75)하는데 `보우앤애로우 쵸크`는 자카드 0으로 미매칭. 원인: `backend/src/utils/techMatch.js:10-15`의 `normalize()`(exact/alias 단계용)는 공백을 완전히 제거하는데, `backend/src/utils/techMatch.js:24-32`의 `tokenize()`(fuzzy 단계용)는 공백으로만 단어를 쪼갠다 — 두 단계가 서로 다른 공백 처리 기준을 쓴다. **이번 배치(task-020~022)에서 고치지 않는다** — 매칭 로직은 사다리 4·5단계·리액션 자동유입·구멍목록 등 여러 기능의 공통 기반이라 변경 영향 범위가 넓어 회귀 검증이 필요한 별도 task로 분리해야 한다. 수정 방향(§7.3 참고): `tokenize()` 전에 `normalize()`와 같은 기준으로 공백을 정리해 `보우앤애로우 쵸크`가 `보우 앤 애로우 쵸크`와 동일하게 취급되도록.
+- task-023~029 (복기·연구 2차 배치 이후) — 구멍 목록 · 사다리 5단계 · 노드 7종 · 리액션 자동 유입 · 스파링 음성 입력
 
 ## Todo
+- [[task-021-home-today-card-openmat-preset]] — 홈 "오늘 기록" 카드 + 오픈매트 프리셋 (스파링 진입 5탭 → 3탭 이내)
+- [[task-022-failure-first-spar-input-and-cause-tags]] — 실패 중심 스파링 입력 + `spar_causes` 태그(id 저장) + 리액션 한 줄
 
 ## Doing
 
 ## Review
 
 ## Done
+- [[task-020-recall-lab-spec-and-name-audit]] — 복기·연구 사양 확정 + 기술명 매칭률 실측 + 포지션 병합 목록. `docs/recall-lab-spec.md` 산출. **데이터 변경 0건**(6개 테이블 md5 착수 전후 동일). Reviewer·QA가 핵심 수치를 독립 재집계해 재현 확인, §5.3 벨트 수치 오기 1건(20→0 → 실제 20→10) 정정 (2026-09-07 완료)
 - [[task-019-profile-avatar-full-path-recovery]] — 프로필 사진 전체 경로 복구: 업로드 UI 신설 + 저장/서빙 경로 일치 + `/uploads` 위장 200 제거 + `avatar_url` 필드명 수정. 부수로 **업로드 실패가 기존 사진을 파괴하던 버그**와 **확장자 위조 저장형 XSS** 차단 (2026-09-06 완료)
 - [[task-018-voice-note-date-label]] — 첫 음성분석에만 날짜 라벨이 빠지던 버그 수정 (2026-09-05 완료)
 - [[task-017-spar-recording-friction]] — 스파링 기록 마찰 제거(12→8탭) + `outcome` 저장 경로 연결(미구현이었음) + positions 소실 차단 (2026-09-04 완료)
