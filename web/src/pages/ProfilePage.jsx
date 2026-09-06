@@ -67,6 +67,8 @@ export default function ProfilePage() {
   const [igCookie, setIgCookie] = useState({ configured: false, mode: 'none', updatedAt: null });
   const [igGuideOpen, setIgGuideOpen] = useState(false);
   const cookieInputRef = React.useRef(null);
+  // 아바타 캐시버스터 버전 (task-019)
+  const [avatarVer, setAvatarVer] = useState(0);
 
   function toggleStorageMode(mode) {
     localStorage.setItem(STORAGE_KEY, mode);
@@ -222,6 +224,22 @@ export default function ProfilePage() {
     return days > 0 ? days : null;
   }, [profile.start_date]);
 
+  // 아바타 이미지 URL (task-019)
+  // 🔴 캐시버스터 필수 — 재업로드해도 파일명이 avatar_<uid><ext> 로 같아서, 붙이지 않으면
+  //    브라우저가 옛 이미지를 그대로 보여준다("업로드했는데 안 바뀐다" = 원래 증상과 구분 불가).
+  //    초기값 0 은 페이지 로드마다 URL 이 바뀌지 않게 해 정상 캐시(max-age=0 + ETag 재검증)를 유지한다.
+  const avatarSrc = useMemo(() => {
+    if (!profile.avatar) return '';
+    return `${profile.avatar}${profile.avatar.includes('?') ? '&' : '?'}v=${avatarVer}`;
+  }, [profile.avatar, avatarVer]);
+
+  // 업로드·삭제 성공 시 부모 state 를 직접 갱신한다(loadAll 재호출보다 깜빡임이 없다).
+  // 모달을 닫으면 헤더 아바타에도 즉시 반영된다.
+  function handleAvatarChange(newPath) {
+    setProfile(p => ({ ...p, avatar: newPath || null }));
+    setAvatarVer(Date.now());
+  }
+
   // 현재 벨트(가장 최근)
   const currentBelt = useMemo(() => {
     if (!belts.length) return { color: 'white', stripes: 0 };
@@ -278,8 +296,8 @@ export default function ProfilePage() {
             color: 'var(--accent)', fontSize: 24, fontWeight: 800,
             overflow: 'hidden',
           }}>
-            {profile.avatar_url
-              ? <img src={profile.avatar_url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            {avatarSrc
+              ? <img src={avatarSrc} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               : (profile.nickname || '?').slice(0, 1)}
           </div>
           <div style={{ fontSize: 18, fontWeight: 800 }}>{profile.nickname || '익명'}</div>
@@ -659,6 +677,8 @@ export default function ProfilePage() {
         {editingProfile && (
           <ProfileEditor
             profile={profile}
+            avatarSrc={avatarSrc}
+            onAvatarChange={handleAvatarChange}
             onCancel={() => setEditingProfile(false)}
             onSave={saveProfile}
           />
@@ -705,7 +725,9 @@ function StatCell({ value, label, color }) {
   );
 }
 
-function ProfileEditor({ profile, onCancel, onSave }) {
+function ProfileEditor({ profile, avatarSrc, onAvatarChange, onCancel, onSave }) {
+  const { showToast, setLoading } = useUI();
+  const avatarInputRef = React.useRef(null);
   const [form, setForm] = useState({
     nickname: profile.nickname || '',
     startDate: profile.start_date || '',
@@ -738,8 +760,69 @@ function ProfileEditor({ profile, onCancel, onSave }) {
     onSave({ ...form, networks });
   }
 
+  // 사진은 별도 multipart 엔드포인트라 "저장" 버튼과 무관하게 선택 즉시 반영된다.
+  // handleCookieUpload(위 ProfilePage)와 동일한 형태 — 실패해도 finally 로 로딩이 반드시 풀린다.
+  async function handleAvatarUpload(e) {
+    const file = e.target.files?.[0];
+    if (avatarInputRef.current) avatarInputRef.current.value = '';
+    if (!file) return;
+    setLoading(true);
+    try {
+      const fd = new FormData();
+      fd.append('avatar', file);          // multer upload.single('avatar') 와 필드명 일치
+      const res = await profileApi.uploadAvatar(fd);
+      onAvatarChange(res?.avatar || null);
+      showToast('프로필 사진이 변경됐습니다');
+    } catch (err) { showToast('업로드 실패: ' + err.message); }
+    finally { setLoading(false); }
+  }
+
+  async function handleAvatarDelete() {
+    if (!confirm('프로필 사진을 삭제하시겠습니까?')) return;
+    setLoading(true);
+    try {
+      await profileApi.deleteAvatar();
+      onAvatarChange(null);
+      showToast('사진이 삭제되었습니다');
+    } catch (err) { showToast('삭제 실패: ' + err.message); }
+    finally { setLoading(false); }
+  }
+
   return (
     <Modal title="기본 정보 수정" onClose={onCancel}>
+      <div className="field">
+        <label>프로필 사진</label>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div style={{
+            width: 64, height: 64, borderRadius: 18,
+            background: 'var(--surface-hi)',
+            border: '2px solid var(--accent)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            color: 'var(--accent)', fontSize: 24, fontWeight: 800,
+            overflow: 'hidden', flexShrink: 0,
+          }}>
+            {avatarSrc
+              ? <img src={avatarSrc} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              : (form.nickname || profile.nickname || '?').slice(0, 1)}
+          </div>
+          <input
+            ref={avatarInputRef}
+            type="file"
+            accept="image/*"
+            style={{ display: 'none' }}
+            onChange={handleAvatarUpload}
+          />
+          <div style={{ display: 'flex', gap: 8 }}>
+            <Button variant="outline" size="sm" onClick={() => avatarInputRef.current?.click()}>사진 변경</Button>
+            {profile.avatar && (
+              <Button variant="danger" size="sm" onClick={handleAvatarDelete}>삭제</Button>
+            )}
+          </div>
+        </div>
+        <div style={{ fontSize: 11, color: 'var(--text3)', marginTop: 6 }}>
+          이미지 파일 · 5MB 이하 · 선택하면 바로 저장됩니다
+        </div>
+      </div>
       <div className="field"><label>닉네임</label>
         <input value={form.nickname} onChange={e => update('nickname', e.target.value)} /></div>
       <div className="field"><label>시작일</label>

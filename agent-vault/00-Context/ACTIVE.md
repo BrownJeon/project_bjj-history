@@ -1,6 +1,6 @@
 ---
 project: bjj-trainning
-updated: 2026-09-04
+updated: 2026-09-06
 tags:
   - type/context
 ---
@@ -9,6 +9,12 @@ tags:
 ## 지금 상태
 
 **운영 중** — pm2 `bjj`, 포트 3000 (backend가 `/api/*` + SPA 서빙). 작업트리 clean, task-012까지 전부 커밋 완료.
+
+### 2026-09-06 완료 — 프로필 사진 기능 전체 복구
+- [[task-019-profile-avatar-full-path-recovery]] — 프로필 사진을 **올리지도·보이지도·지우지도 못하던 상태**를 복구. 결함 4건: ① 업로드 UI 자체가 없었고(`uploadAvatar`/`deleteAvatar`가 호출처 0곳인 사문화 코드) ② multer 저장 경로(`public/uploads`)와 정적 서빙 루트가 달랐으며 ③ 없는 `/uploads/*`가 404가 아니라 SPA `index.html`을 200으로 반환했고 ④ 화면이 존재하지 않는 필드 `profile.avatar_url`을 읽고 있었다(**실사용자 사진이 8월 이후 한 번도 표시된 적 없음**). 저장 경로는 `storage.js`에 `getAvatarPath`/`avatarWebPath` 신설로 통일, **평면 배치 유지 → 파일 이동·DB UPDATE 0건**.
+- 🔴 **vault 기록 자체가 틀렸던 사례**: `board.md`·`ACTIVE.md`는 [[task-004-profile-avatar-upload]]·[[task-005-avatar-static-path-mismatch-fix]]를 2026-08-18 **완료**로 적고 있었으나 셋 다 실제로는 미수정이었다. task-005 이력서는 스스로 "스텁 — ACTIVE.md 기록만 옮겨 적음"이라 밝히고 있었다. ③의 위장 200이 당시 QA를 통과시킨 원인. **문서가 아니라 코드·실행 결과를 근거로 삼을 것.**
+- **곁들여 막은 것 2건**: (a) multer가 크기 제한 판정 전에 최종 경로로 write stream을 열어 **업로드 실패가 멀쩡한 기존 사진을 truncate·삭제**하던 문제 → 임시파일+rename으로 차단. **Leader 지시("최종 이름으로 바로 받아라")가 틀렸고 Developer 반박이 옳았음을 Reviewer가 multer 소스·독립 실험으로 확인**(task-017과 동일 패턴). (b) `fileFilter`(mimetype)와 확장자 판단(originalname)이 서로 다른 입력을 봐서 `avatar_1.html`을 `text/html`로 서빙시키는 **저장형 XSS** → Reviewer가 운영 서버에서 재현 후 `EXT_BY_MIME` 단일화 + `nosniff`로 차단.
+- 🔴 **1차 QA 반려**: 핵심 항목을 실제 실행 없이 "코드 검토"로 통과 판정 → Leader가 반려하고 2차 QA 지시. 2차에서 전 항목 실행 검증. **인증 토큰(`/api/auth/login` + `.env`의 ADMIN_*)이 없으면 QA가 코드 검토로 후퇴하니 다음부터 미리 알려줄 것.**
 
 ### 2026-09-05 완료 — 음성분석 날짜 라벨
 - [[task-018-voice-note-date-label]] — 사용자 보고: 음성파일 업로드 시 전체 메모에 **첫 분석만 날짜가 없고 두 번째부터 표기**됨. 원인은 `voice.js:66-69` CASE의 `THEN` 분기가 `[날짜 음성 분석]` 라벨 없이 note만 넣은 것(날짜는 프론트에서 항상 전달되고 있었음). `THEN CONCAT(?, ?)`로 수정. 네거티브 컨트롤로 구버전 버그 재현 후 확인. **기존 저장된 메모는 소급 수정 안 함.**

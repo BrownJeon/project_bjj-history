@@ -64,10 +64,26 @@ function longVideoFrameWebPath(userId, videoId, filename) {
   return `/uploads/users/${userId}/long-video-frames/${videoId}/${filename}`;
 }
 
+// 프로필 아바타 (task-019) — getThumbPath/thumbWebPath 쌍과 동일한 패턴.
+// ⚠️ 배치 스킴은 users/<id>/ 가 아니라 **정적 루트 평면 배치**다. 바꾸지 말 것 —
+//    기존 DB 값 `/uploads/avatar_3.png` 와 실제 파일 `<staticRoot>/avatar_3.png` 가
+//    이 규칙 기준으로 이미 정합하며, 스킴을 바꾸면 파일 이동 + DB UPDATE 마이그레이션이 발생한다.
+//    파일명 규칙 `avatar_<userId><ext>` 도 같은 이유로 고정이다.
+function getAvatarPath(userId, ext) {
+  if (userId == null) throw new Error('getAvatarPath: userId가 필요합니다');
+  return path.join(getStaticRoot(), `avatar_${userId}${ext}`);
+}
+
+function avatarWebPath(userId, ext) {
+  if (userId == null) throw new Error('avatarWebPath: userId가 필요합니다');
+  return `/uploads/avatar_${userId}${ext}`;
+}
+
 module.exports = {
   getUploadRoot, getUserDir, getFramesDir, getThumbPath, getVideoDir,
   frameWebPath, thumbWebPath, videoWebPath, getStaticRoot, ensureDir,
   getClassVideoDir, classVideoWebPath,
   getLongVideoFramesDir, longVideoFrameWebPath,
+  getAvatarPath, avatarWebPath,
   DEFAULT_USER,
 };
