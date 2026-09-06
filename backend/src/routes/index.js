@@ -21,6 +21,10 @@ router.use('/voice',        require('./voice'));
 router.use('/coach',        require('./coach'));
 router.use('/long-videos',  require('./longVideos'));
 router.use('/settings',     require('./settings'));
+// 아래 둘은 도메인 접두사 없이 `/` 에 마운트된다 — 경로가 최상위이기 때문이다.
+// lab: /holes · /mastery/:techId (task-024)  |  profile: /profile · /belts · /memberships
+// 경로 계열이 겹치지 않음을 확인했다. 접두사를 붙이면 프론트가 조용히 404 를 받는다.
+router.use('/',             require('./lab'));
 router.use('/',             require('./profile'));
 
 module.exports = router;

@@ -20,6 +20,7 @@ const PickHistory          = require('./PickHistory');
 const MembershipPayment    = require('./MembershipPayment');
 const LongVideo            = require('./LongVideo');
 const LongVideoChapter     = require('./LongVideoChapter');
+const TechniqueMastery     = require('./TechniqueMastery');
 
 // User 관계 정의 (1:N, 1:1)
 User.hasMany(Class,             { foreignKey: 'user_id', as: 'classes' });
@@ -35,6 +36,8 @@ User.hasMany(PickHistory,       { foreignKey: 'user_id', as: 'picks' });
 User.hasMany(LongVideo,         { foreignKey: 'user_id', as: 'longVideos' });
 // 실패 원인 태그는 계정별 어휘 사전이다 — 목록·수정·비활성 모두 user_id 로 격리된다 (task-022)
 User.hasMany(SparCause,         { foreignKey: 'user_id', as: 'sparCauses' });
+// 사다리 2·3단계 수동 체크 (task-024) — 행이 없는 것이 정상 상태다(체크 전)
+User.hasMany(TechniqueMastery,  { foreignKey: 'user_id', as: 'masteries' });
 
 // 관계 정의
 Class.hasMany(Drill,         { foreignKey: 'class_id', as: 'drills' });
@@ -67,7 +70,7 @@ module.exports = {
   sequelize,
   User,
   Class, Drill, SparDay, SparSession, SparCause,
-  Technique, TechniqueChain, ChainStep,
+  Technique, TechniqueChain, ChainStep, TechniqueMastery,
   Gameplan, GameplanNode, GameplanEdge,
   VideoClip, Profile, BeltHistory, CoachReport,
   PickHistory, MembershipPayment,
