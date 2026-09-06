@@ -3,9 +3,18 @@ const router = express.Router();
 const { Op } = require('sequelize');
 const { sequelize, Class, Drill, SparDay, SparSession } = require('../models');
 const { wrap, safeParse } = require('../utils/respond');
+const { SESSION_TYPE_PRESETS } = require('../utils/sessionTypes');
 const { generateClassVideo } = require('../services/classVideoService');
 const { getClassVideoDir, classVideoWebPath } = require('../services/storage');
 const fs = require('fs/promises');
+
+// 홈 카드의 수업 종류 3택. 목록의 정본은 utils/sessionTypes.js 한 곳뿐이고
+// 프론트는 여기서 받아 쓴다 — 프론트가 같은 문자열을 다시 하드코딩하면 voice.js 의
+// "프리셋은 덮어써도 된다" 판정과 조용히 어긋난다 (task-021).
+// `/:id` 형태의 GET 라우트가 없어 경로 충돌은 없지만, 명시적으로 목록 라우트 옆에 둔다.
+router.get('/session-types', wrap(async (_req, res) => {
+  res.json(SESSION_TYPE_PRESETS);
+}));
 
 // 기존 drill_clips / spar_day_clips 조인은 더 이상 사용하지 않으므로 빈 배열로 반환
 router.get('/', wrap(async (req, res) => {

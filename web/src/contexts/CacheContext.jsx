@@ -14,6 +14,8 @@ export function CacheProvider({ children }) {
   const [clips, setClips] = useState([]);
   const [chains, setChains] = useState([]);
   const [gameplans, setGameplans] = useState([]);
+  // 수업 종류 프리셋 — 정본은 backend/src/utils/sessionTypes.js 하나뿐이라 서버에서 받아 둔다 (task-021)
+  const [sessionTypes, setSessionTypes] = useState([]);
   const [loaded, setLoaded] = useState(false);
   const [igCookieConfigured, setIgCookieConfigured] = useState(false);
 
@@ -23,14 +25,16 @@ export function CacheProvider({ children }) {
   }, []);
 
   const loadAll = useCallback(async () => {
-    const [cl, te, cp, ch, gp] = await Promise.all([
+    const [cl, te, cp, ch, gp, st] = await Promise.all([
       classesApi.listClasses().catch(() => []),
       techniquesApi.listTechniques().catch(() => []),
       clipsApi.listClips().catch(() => []),
       chainsApi.listChains().catch(() => []),
       gameplansApi.listGameplans().catch(() => []),
+      classesApi.listSessionTypes().catch(() => []),
     ]);
     setClasses(cl); setTechniques(te); setClips(cp); setChains(ch); setGameplans(gp);
+    setSessionTypes(Array.isArray(st) ? st : []);
     setLoaded(true);
     reloadIgCookie();
   }, [reloadIgCookie]);
@@ -45,7 +49,7 @@ export function CacheProvider({ children }) {
 
   return (
     <CacheContext.Provider value={{
-      classes, techniques, clips, chains, gameplans, loaded,
+      classes, techniques, clips, chains, gameplans, sessionTypes, loaded,
       igCookieConfigured, reloadIgCookie,
       loadAll, reloadClips, reloadTechniques, reloadClasses, reloadChains, reloadGameplans,
     }}>

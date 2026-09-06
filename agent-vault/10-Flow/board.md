@@ -8,10 +8,10 @@ tags:
 - **포지션 어휘 병합 실행** — [[task-020-recall-lab-spec-and-name-audit]]이 목록만 제시. **사용자 승인 대기**
 - **기술 이름 정규화** — task-020이 안 맞는 목록만 보고. **사용자 승인 대기**
 - **`techMatch.js` fuzzy `tokenize()`/`normalize()` 공백 처리 비대칭 버그 수정** — Reviewer가 task-020 감사에서 코드+데이터로 직접 재현(2026-09-06). 증상: 같은 기술을 띄어쓰기만 다르게 적으면 매칭 결과가 갈린다 — `보우 앤 애로우 쵸크`는 fuzzy 매칭 성공(자카드 0.75)하는데 `보우앤애로우 쵸크`는 자카드 0으로 미매칭. 원인: `backend/src/utils/techMatch.js:10-15`의 `normalize()`(exact/alias 단계용)는 공백을 완전히 제거하는데, `backend/src/utils/techMatch.js:24-32`의 `tokenize()`(fuzzy 단계용)는 공백으로만 단어를 쪼갠다 — 두 단계가 서로 다른 공백 처리 기준을 쓴다. **이번 배치(task-020~022)에서 고치지 않는다** — 매칭 로직은 사다리 4·5단계·리액션 자동유입·구멍목록 등 여러 기능의 공통 기반이라 변경 영향 범위가 넓어 회귀 검증이 필요한 별도 task로 분리해야 한다. 수정 방향(§7.3 참고): `tokenize()` 전에 `normalize()`와 같은 기준으로 공백을 정리해 `보우앤애로우 쵸크`가 `보우 앤 애로우 쵸크`와 동일하게 취급되도록.
+- **`coachAnalytics` 날짜 계산이 UTC 기준** — `backend/src/services/coachAnalytics.js:5-10`의 `todayStr()`/`daysAgo()`가 `toISOString()`을 쓴다. KST 00:00~09:00에 만든 기록은 그 시간 동안 `GET /api/coach/diagnosis` 집계 창에 안 들어온다. task-021 검증 중 Leader가 실행으로 확인(01:11 KST에 오늘 기록이 `sessions=0`으로 나옴 → 날짜를 UTC 창에 맞추니 정상 집계). 코치 리포트·주간 플랜 전반에 영향이라 별도 task.
 - task-023~029 (복기·연구 2차 배치 이후) — 구멍 목록 · 사다리 5단계 · 노드 7종 · 리액션 자동 유입 · 스파링 음성 입력
 
 ## Todo
-- [[task-021-home-today-card-openmat-preset]] — 홈 "오늘 기록" 카드 + 오픈매트 프리셋 (스파링 진입 5탭 → 3탭 이내)
 - [[task-022-failure-first-spar-input-and-cause-tags]] — 실패 중심 스파링 입력 + `spar_causes` 태그(id 저장) + 리액션 한 줄
 
 ## Doing
@@ -19,6 +19,7 @@ tags:
 ## Review
 
 ## Done
+- [[task-021-home-today-card-openmat-preset]] — 홈 "오늘 기록" 카드 + 오픈매트 프리셋. 스파링 진입 5탭 → **3탭**(코드 경로 기준, 클릭 실측은 환경 제약으로 미실시). 곁들여 막은 것 2건: **프리셋 theme이 음성분석 서술형 테마를 영구 차단하던 회귀**, **빈 라운드가 코치 통계에 유령 세션을 만들던 오염**(기존 실사용자 빈 라운드 1건이 삭제되지 않도록 필터 범위를 신규 라운드로 좁힘). DDL 0건, 기존 데이터 무변경 (2026-09-07 완료)
 - [[task-020-recall-lab-spec-and-name-audit]] — 복기·연구 사양 확정 + 기술명 매칭률 실측 + 포지션 병합 목록. `docs/recall-lab-spec.md` 산출. **데이터 변경 0건**(6개 테이블 md5 착수 전후 동일). Reviewer·QA가 핵심 수치를 독립 재집계해 재현 확인, §5.3 벨트 수치 오기 1건(20→0 → 실제 20→10) 정정 (2026-09-07 완료)
 - [[task-019-profile-avatar-full-path-recovery]] — 프로필 사진 전체 경로 복구: 업로드 UI 신설 + 저장/서빙 경로 일치 + `/uploads` 위장 200 제거 + `avatar_url` 필드명 수정. 부수로 **업로드 실패가 기존 사진을 파괴하던 버그**와 **확장자 위조 저장형 XSS** 차단 (2026-09-06 완료)
 - [[task-018-voice-note-date-label]] — 첫 음성분석에만 날짜 라벨이 빠지던 버그 수정 (2026-09-05 완료)

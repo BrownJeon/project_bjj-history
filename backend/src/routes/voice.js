@@ -6,6 +6,7 @@ const fs      = require('fs/promises');
 const { sequelize } = require('../config/db');
 const { Class } = require('../models');
 const { wrap } = require('../utils/respond');
+const { isFillableTheme } = require('../utils/sessionTypes');
 const { transcribeLongAudio, structureClassContent } = require('../services/voiceAnalysis');
 
 const upload = multer({
@@ -62,7 +63,24 @@ router.post('/analyze', upload.single('audio'), wrap(async (req, res) => {
         : '음성 분석';
       const updateFields = ['voice_transcript = ?'];
       const updateValues = [transcript];
-      if (theme) { updateFields.push('theme = IF(theme=\'\' OR theme IS NULL, ?, theme)'); updateValues.push(theme); }
+      if (theme) {
+        // 사람이 적은 테마는 절대 덮어쓰지 않되, "아직 안 채워진 값"이면 서술형 테마로 채운다.
+        // 예전 SQL(`IF(theme='' OR theme IS NULL, ...)`)은 빈 값만 봤다. 홈 카드가 생기면서
+        // 모든 신규 수업이 프리셋('수업'·'오픈매트'·'자율운동')으로 시작하게 됐고, 그 결과
+        // 홈에서 만든 수업은 음성분석 테마가 영영 안 들어갔다 (task-021 Reviewer 판정 1).
+        //
+        // 판정을 SQL 이 아니라 JS 에서 하는 이유: SQL 의 = / IN 은 NFD 로 저장된 한글을
+        // 같은 글자로 보지 않는다(task-014). isFillableTheme 은 NFC 정규화 후 비교한다.
+        // 대신 "판정에 쓴 값"을 UPDATE 조건(`theme <=> ?`)에 그대로 실어 보내, 읽은 뒤
+        // 사용자가 테마를 고쳤다면 그 편집을 덮어쓰지 않는다(원자성 확보).
+        const [[cur]] = await sequelize.query(
+          `SELECT theme FROM classes WHERE id = ?`, { replacements: [classId] }
+        );
+        if (cur && isFillableTheme(cur.theme)) {
+          updateFields.push('theme = CASE WHEN theme <=> ? THEN ? ELSE theme END');
+          updateValues.push(cur.theme, theme);
+        }
+      }
       if (note)  {
         // 전체 메모가 비어 있든(첫 분석) 이미 내용이 있든 항상 [날짜 음성 분석] 라벨을 붙인다.
         // 예전에는 THEN 분기가 note만 넣어서 첫 분석에만 라벨·날짜가 빠졌고, 두 번째 분석부터

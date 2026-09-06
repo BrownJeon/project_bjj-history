@@ -24,6 +24,31 @@ const EMPTY_SESSION = {
   positions: [], positionScore: 0,
 };
 
+// _new — "이 화면에서 새로 만든, 서버에 아직 없는 라운드"라는 표시. buildPayload 에서 제거되므로
+//   서버로 나가지 않는다. 아래 빈 라운드 필터를 이 라운드들에만 적용하기 위한 표시다 (task-021).
+//   🔴 서버에서 불러온 라운드에는 절대 붙이지 않는다 — 이 앱의 스파링 저장은 destroy+reinsert 라
+//   페이로드에서 빠진 행은 DB 에서 삭제된다(task-017 에서 positions 가 정확히 그렇게 사라졌다).
+//   실측: 기존 54개 라운드 중 전 필드가 기본값인 행이 1건 있다(spar_sessions.id=104, spar_day_id=23).
+//   _new 로 좁히지 않으면 그 스파링을 열어 저장하는 순간 그 행이 조용히 지워진다.
+function isBlankSession(s) {
+  return !String(s.level    || '').trim()
+      && !String(s.opponent || '').trim()
+      && !String(s.note     || '').trim()
+      && (parseInt(s.tapGot)  || 0) === 0
+      && (parseInt(s.tapGave) || 0) === 0
+      && (parseInt(s.time)    || 0) === 0
+      && (parseInt(s.positionScore) || 0) === 0
+      && !s.outcome
+      && (s.successTried || []).length === 0
+      && (s.weak      || []).length === 0
+      && (s.positions || []).length === 0;
+}
+
+/** 저장할 라운드만 남긴다 — 이 화면에서 새로 만들어 놓고 한 글자도 안 채운 라운드는 버린다. */
+function keepSessions(sessions) {
+  return sessions.filter(s => !(s._new && isBlankSession(s)));
+}
+
 // 실기록 분포(3분 15건 / 4분 29건 / 5분 8건)에 맞춘 원탭 프리셋
 const TIME_PRESETS = [3, 4, 5];
 
@@ -40,7 +65,9 @@ const BELT_PILL = {
   '블랙':   { bg: '#ccc',    active: '#222',    text: '#555',    activeText: '#fff' },
 };
 
-export default function SparEditor({ classId, sparDay, onClose, onSaved }) {
+// initialRounds — 신규 스파링을 몇 라운드로 열지. 기본 0(캘린더 경로는 기존 그대로 빈 상태).
+//   홈의 "스파링까지" 진입만 1을 넘겨 "+ 라운드 추가" 1탭을 없앤다 (task-021).
+export default function SparEditor({ classId, sparDay, onClose, onSaved, initialRounds = 0 }) {
   const { showToast, setLoading } = useUI();
   const { techniques, classes } = useCache();
   const isEdit = !!sparDay?.id;
@@ -98,8 +125,8 @@ export default function SparEditor({ classId, sparDay, onClose, onSaved }) {
   );
   const [dayNote, setDayNote] = useState(sparDay?.day_note || '');
   const [noteOpen, setNoteOpen] = useState(!!sparDay?.day_note);
-  const [sessions, setSessions] = useState(
-    (sparDay?.sessions || []).map(s => ({
+  const [sessions, setSessions] = useState(() => {
+    const existing = (sparDay?.sessions || []).map(s => ({
       level: s.level || '',
       opponent: s.opponent || '',
       tapGot: s.tap_got || 0,
@@ -116,8 +143,14 @@ export default function SparEditor({ classId, sparDay, onClose, onSaved }) {
       // 아래 둘은 편집 UI가 없다 — 읽어서 그대로 돌려보내야 저장 시 지워지지 않는다
       positions: Array.isArray(s.positions) ? s.positions : [],
       positionScore: s.position_score || 0,
-    }))
-  );
+      _new: false,   // 서버에 이미 있는 행 — 비어 있어도 절대 필터하지 않는다
+    }));
+    if (existing.length) return existing;
+    // 배열 필드는 EMPTY_SESSION 과 참조를 공유하면 안 되므로 매번 새로 만든다
+    return Array.from({ length: Math.max(0, initialRounds) }, () => ({
+      ...EMPTY_SESSION, successTried: [], weak: [], positions: [], _new: true,
+    }));
+  });
   const [aiBusy, setAiBusy] = useState(false);
 
   function addSession() {
@@ -125,7 +158,7 @@ export default function SparEditor({ classId, sparDay, onClose, onSaved }) {
     const prev = sessions[sessions.length - 1];
     setSessions([...sessions, {
       ...EMPTY_SESSION,
-      successTried: [], weak: [], positions: [],
+      successTried: [], weak: [], positions: [], _new: true,
       time:  prev ? prev.time  : '',
       level: prev ? prev.level : '',
     }]);
@@ -135,11 +168,11 @@ export default function SparEditor({ classId, sparDay, onClose, onSaved }) {
     setSessions(sessions.map((s, idx) => idx === i ? { ...s, [key]: val } : s));
   }
 
-  function buildPayload() {
+  function buildPayload(kept) {
     return {
       date,
       dayNote,
-      sessions: sessions.map(s => ({
+      sessions: kept.map(s => ({
         level: s.level,
         opponent: s.opponent,
         tapGot: parseInt(s.tapGot) || 0,
@@ -157,8 +190,10 @@ export default function SparEditor({ classId, sparDay, onClose, onSaved }) {
   }
 
   async function aiEnhance() {
-    if (!sessions.length) { alert('세션이 비어있습니다'); return; }
-    const text = sessions.map((s, i) => {
+    // 저장과 같은 기준으로 빈 라운드를 뺀다 — 안 그러면 내용 없는 "[라운드N]" 줄이 AI 프롬프트에 섞인다
+    const kept = keepSessions(sessions);
+    if (!kept.length) { alert('세션이 비어있습니다'); return; }
+    const text = kept.map((s, i) => {
       const parts = [`라운드${i + 1}`];
       if (s.level) parts.push(`${s.level}벨트`);
       if (s.outcome) parts.push(s.outcome === 'win' ? '이겼어' : '배웠어');
@@ -185,7 +220,13 @@ export default function SparEditor({ classId, sparDay, onClose, onSaved }) {
     if (!date) { alert('날짜를 입력해주세요'); return; }
     setLoading(true);
     try {
-      const payload = buildPayload();
+      // 새로 만들어 놓고 한 글자도 안 채운 라운드는 저장하지 않는다.
+      // 이걸 안 걸러내면 홈에서 "스파링까지 → 저장"만 눌러도 전 필드가 빈 라운드가 저장돼
+      // coachAnalytics.computeDiagnosis 가 summary.sessions 를 부풀리고 byOpponentBelt 에
+      // '기타/tapGot0/tapGave0' 유령 버킷을 만든다 — 코치 리포트·AI 프롬프트에 그대로 들어간다
+      // (task-021 Reviewer 판정 2). outcome 에 기본값을 두지 않은 것과 같은 이유다(task-017).
+      const kept = keepSessions(sessions);
+      const payload = buildPayload(kept);
       let sparDayId;
       if (isEdit) {
         await classesApi.updateSpar(classId, sparDay.id, payload);
@@ -205,9 +246,14 @@ export default function SparEditor({ classId, sparDay, onClose, onSaved }) {
       } catch { /* 픽 이력 조회 실패는 피드백을 건너뛰고 저장만 확정 */ }
 
       if (todayPicks.length > 0) {
-        setFeedbackData({ sessions, classes, sparDayId, todayPicks });
+        setFeedbackData({ sessions: kept, classes, sparDayId, todayPicks });
       } else {
-        showToast(`저장되었습니다 · ${sessions.length}라운드`);
+        // 버린 라운드가 있으면 숨기지 않고 그대로 말해 준다 — "저장되었습니다 · 1라운드"라고 하고
+        // 실제로는 0라운드가 저장되는 조용한 거짓말을 만들지 않기 위해서다
+        const dropped = sessions.length - kept.length;
+        showToast(dropped > 0
+          ? `저장되었습니다 · ${kept.length}라운드 (빈 라운드 ${dropped}개는 저장하지 않음)`
+          : `저장되었습니다 · ${kept.length}라운드`);
         onClose();
       }
     } catch (e) { showToast('저장 실패: ' + e.message); }
