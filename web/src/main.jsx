@@ -15,6 +15,8 @@ import SignupPage from './pages/SignupPage';
 import OAuthCallbackPage from './pages/OAuthCallbackPage';
 import HomePage from './pages/HomePage';
 import CalendarPage from './pages/CalendarPage';
+import RecallPage from './pages/RecallPage';
+import ResearchPage from './pages/ResearchPage';
 import PickMeUpPage from './pages/PickMeUpPage';
 import TechPlanPage from './pages/TechPlanPage';
 import StudyVideoPage from './pages/StudyVideoPage';
@@ -37,6 +39,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
               <Route element={<Layout />}>
                 <Route path="/"          element={<HomePage />} />
                 <Route path="/calendar"  element={<CalendarPage />} />
+                <Route path="/recall"    element={<RecallPage />} />
+                <Route path="/research"  element={<ResearchPage />} />
                 <Route path="/pickmeup"  element={<PickMeUpPage />} />
                 <Route path="/techplan"  element={<TechPlanPage />} />
                 <Route path="/study"     element={<StudyVideoPage />} />
