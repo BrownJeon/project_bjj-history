@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const { Op } = require('sequelize');
-const { sequelize, Class, Drill, SparDay, SparSession } = require('../models');
+const { sequelize, Class, Drill, SparDay, SparSession, SparCause } = require('../models');
 const { wrap, safeParse } = require('../utils/respond');
+const { toNFC } = require('../utils/nfc');
 const { SESSION_TYPE_PRESETS } = require('../utils/sessionTypes');
 const { generateClassVideo } = require('../services/classVideoService');
 const { getClassVideoDir, classVideoWebPath } = require('../services/storage');
@@ -62,10 +63,23 @@ router.get('/', wrap(async (req, res) => {
         raw: true,
       });
       sess.forEach(s => {
-        s.success = safeParse(s.success, []).map(x =>
-          typeof x === 'string' ? { name: x, success: true } : x
-        );
+        // 실패 원인 태그·리액션은 항목 객체 안에 산다(docs/recall-lab-spec.md §3.1).
+        // 새 필드가 없는 기존 83개 항목은 여기서 기본값을 채워 내보낸다 — 저장된 데이터를
+        // 바꾸는 마이그레이션은 하지 않는다(읽는 쪽에서 채우는 방식).
+        s.success = safeParse(s.success, []).map(x => {
+          const it = typeof x === 'string' ? { name: x, success: true } : (x || {});
+          return {
+            ...it,
+            causes:   Array.isArray(it.causes) ? it.causes.map(n => parseInt(n)).filter(Number.isInteger) : [],
+            reaction: typeof it.reaction === 'string' ? it.reaction : '',
+          };
+        });
         s.weak     = safeParse(s.weak, []);
+        // cause_ids / reaction 컬럼은 정본이 아니다(모델 주석 참고) — 프론트가 실수로 읽어
+        // 항목 안의 진짜 값과 어긋나지 않도록 응답에서 뺀다. 컬럼 자체는 그대로 둔다.
+        // (같은 이유로 spar_days.links 를 빼고 있다 — 바로 아래 delete sd.links)
+        delete s.cause_ids;
+        delete s.reaction;
         s.opponent = s.opponent || '';
         const legacyScore = parseInt(s.position_score) || 0;
         s.positions = safeParse(s.positions, []).map(p =>
@@ -186,7 +200,41 @@ router.delete('/:id', wrap(async (req, res) => {
 }));
 
 // ─── 스파링 CRUD ───
-async function insertSessions(sparDayId, sessions, transaction) {
+
+// 리액션("상대가 어떻게 막았나요?") 한 줄의 상한. success 컬럼이 TEXT(64KB)라 한 라운드에
+// 항목이 여러 개면 합계가 커진다 — 한 줄 입력에 필요한 길이를 넉넉히 넘기는 선에서 자른다.
+const REACTION_MAX = 200;
+
+/**
+ * success 배열 항목 정규화 (task-022).
+ * 기존 `{name, success}` 는 **그대로 보존**하고 `causes`/`reaction` 두 필드만 덧붙인다.
+ *
+ * 🔴 `causes` 는 이 사용자가 실제로 가진 태그 id 만 남긴다. 남의 계정 태그 id 나 없는 id 를
+ *   본문에 실어 보내도 기록에 붙지 않는다 — 화면에서 이름을 못 찾아 끊긴 참조가 되는 것을 막는다.
+ *   비활성(active=0) 태그는 남긴다: 과거에 고른 원인을 나중에 비활성화했다고 지우면 기록이 바뀐다.
+ */
+function normalizeSuccessItems(list, validCauseIds) {
+  return (Array.isArray(list) ? list : []).map(x => {
+    const it = typeof x === 'string' ? { name: x, success: true } : (x || {});
+    const causes = [...new Set(
+      (Array.isArray(it.causes) ? it.causes : [])
+        .map(n => parseInt(n, 10))
+        .filter(n => Number.isInteger(n) && validCauseIds.has(n))
+    )];
+    const reaction = toNFC(String(it.reaction ?? '')).trim().slice(0, REACTION_MAX);
+    return { ...it, causes, reaction };
+  });
+}
+
+/** 이 사용자가 가진 태그 id 집합(비활성 포함). 저장 1회당 1쿼리. */
+async function ownedCauseIds(userId, transaction) {
+  const rows = await SparCause.findAll({
+    where: { user_id: userId }, attributes: ['id'], raw: true, transaction,
+  });
+  return new Set(rows.map(r => r.id));
+}
+
+async function insertSessions(sparDayId, sessions, transaction, validCauseIds = new Set()) {
   for (const s of sessions || []) {
     await SparSession.create({
       spar_day_id: sparDayId,
@@ -195,7 +243,7 @@ async function insertSessions(sparDayId, sessions, transaction) {
       tap_got: s.tapGot || 0,
       tap_gave: s.tapGave || 0,
       time_min: s.time || null,
-      success: JSON.stringify(s.success || []),
+      success: JSON.stringify(normalizeSuccessItems(s.success, validCauseIds)),
       weak: JSON.stringify(s.weak || []),
       note: s.note || '',
       positions: JSON.stringify(s.positions || []),
@@ -213,7 +261,7 @@ router.post('/:id/spar', wrap(async (req, res) => {
   if (!date) return res.status(400).json({ error: 'date required' });
   const sparDayId = await sequelize.transaction(async (t) => {
     const sd = await SparDay.create({ class_id: classId, date, day_note: dayNote || '' }, { transaction: t });
-    await insertSessions(sd.id, sessions, t);
+    await insertSessions(sd.id, sessions, t, await ownedCauseIds(req.user.id, t));
     return sd.id;
   });
   res.json({ id: sparDayId });
@@ -221,19 +269,25 @@ router.post('/:id/spar', wrap(async (req, res) => {
 
 router.put('/:id/spar/:sparDayId', wrap(async (req, res) => {
   const { id, sparDayId } = req.params;
+  // 소유권 확인 — 바로 위 POST /:id/spar 는 하고 있는데 여기와 아래 DELETE 만 빠져 있었다.
+  // 태그 id 검증에 req.user.id 가 필요해 이 줄들을 손대는 김에 POST 와 같은 기준으로 맞춘다.
+  const cls = await Class.findOne({ where: { id, user_id: req.user.id }, attributes: ['id'] });
+  if (!cls) return res.status(404).json({ error: 'class not found' });
   const sd = await SparDay.findOne({ where: { id: sparDayId, class_id: id } });
   if (!sd) return res.status(404).json({ error: 'spar_day not found' });
   const { date, dayNote, sessions } = req.body;
   await sequelize.transaction(async (t) => {
     await sd.update({ date, day_note: dayNote || '' }, { transaction: t });
     await SparSession.destroy({ where: { spar_day_id: sparDayId }, transaction: t });
-    await insertSessions(sparDayId, sessions, t);
+    await insertSessions(sparDayId, sessions, t, await ownedCauseIds(req.user.id, t));
   });
   res.json({ ok: true });
 }));
 
 router.delete('/:id/spar/:sparDayId', wrap(async (req, res) => {
   const { id, sparDayId } = req.params;
+  const cls = await Class.findOne({ where: { id, user_id: req.user.id }, attributes: ['id'] });
+  if (!cls) return res.status(404).json({ error: 'class not found' });
   const sd = await SparDay.findOne({ where: { id: sparDayId, class_id: id } });
   if (!sd) return res.status(404).json({ error: 'spar_day not found' });
   await sequelize.transaction(async (t) => {

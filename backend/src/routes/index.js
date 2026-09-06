@@ -9,6 +9,7 @@ router.use('/auth', require('./auth'));
 router.use(authMiddleware);
 
 router.use('/classes',      require('./classes'));
+router.use('/spar-causes',  require('./sparCauses'));
 router.use('/techniques',   require('./techniques'));
 router.use('/chains',       require('./chains'));
 router.use('/gameplans',    require('./gameplans'));

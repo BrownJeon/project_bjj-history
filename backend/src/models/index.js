@@ -5,6 +5,7 @@ const Class           = require('./Class');
 const Drill           = require('./Drill');
 const SparDay         = require('./SparDay');
 const SparSession     = require('./SparSession');
+const SparCause       = require('./SparCause');
 const Technique       = require('./Technique');
 const TechniqueChain  = require('./TechniqueChain');
 const ChainStep       = require('./ChainStep');
@@ -32,6 +33,8 @@ User.hasMany(CoachReport,       { foreignKey: 'user_id', as: 'reports' });
 User.hasMany(MembershipPayment, { foreignKey: 'user_id', as: 'memberships' });
 User.hasMany(PickHistory,       { foreignKey: 'user_id', as: 'picks' });
 User.hasMany(LongVideo,         { foreignKey: 'user_id', as: 'longVideos' });
+// 실패 원인 태그는 계정별 어휘 사전이다 — 목록·수정·비활성 모두 user_id 로 격리된다 (task-022)
+User.hasMany(SparCause,         { foreignKey: 'user_id', as: 'sparCauses' });
 
 // 관계 정의
 Class.hasMany(Drill,         { foreignKey: 'class_id', as: 'drills' });
@@ -63,7 +66,7 @@ LongVideoChapter.belongsTo(LongVideo, { foreignKey: 'long_video_id' });
 module.exports = {
   sequelize,
   User,
-  Class, Drill, SparDay, SparSession,
+  Class, Drill, SparDay, SparSession, SparCause,
   Technique, TechniqueChain, ChainStep,
   Gameplan, GameplanNode, GameplanEdge,
   VideoClip, Profile, BeltHistory, CoachReport,

@@ -1,5 +1,6 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import * as classesApi from '../api/classes';
+import * as causesApi from '../api/sparCauses';
 import * as enhanceApi from '../api/enhanceMemo';
 import { useUI } from '../contexts/UIContext';
 import { useCache } from '../contexts/CacheContext';
@@ -14,15 +15,29 @@ import SparFeedbackCard from '../components/SparFeedbackCard';
 import { listPicks } from '../api/picks';
 
 // outcome — null = 아직 선택 안 함(통계 집계 제외) / 'win' = 이겼어 / 'learn' = 배웠어.
-//   기본값을 주지 않는 이유: 기본값이 있으면 "고르지 않음"과 "그 값을 고름"이 구별되지 않아
-//   나중에 승률 통계를 만들 때 데이터가 오염된다 (task-017).
+//   🔴 task-022 에서 **화면(토글)만 제거했다.** 컬럼·기존 값·페이로드는 그대로 둔다.
+//   착수 시 실측: 54행 전부 NULL(값 있는 행 0건)이라 지금 당장 잃을 값은 없다. 그래도 계속
+//   보내는 이유는 이 앱의 스파링 저장이 destroy+reinsert 라 **페이로드에 없는 필드는 저장할
+//   때마다 사라지기** 때문이다 — 다른 경로로 값이 한 번이라도 들어오면 그 뒤 첫 저장에서
+//   조용히 지워진다(task-017 의 positions 가 정확히 그렇게 사라졌다). 화면에서 못 고를 뿐,
+//   불러온 값을 그대로 돌려보낸다.
 // positions / positionScore — 편집 UI가 없는 필드. 새 라운드는 빈 값이지만,
 //   기존 기록(18세션)이 저장 시 destroy+reinsert로 지워지지 않도록 그대로 되돌려 보낸다.
+//   (접힘 안에서 읽기 전용으로 보여만 준다 — 지우지 않는다.)
+// 실패 원인 태그·리액션은 세션이 아니라 **successTried 의 각 항목 안**에 산다
+//   (`{name, success, causes:[id], reaction:''}` — docs/recall-lab-spec.md §3.1).
+//   인덱스로 짝지은 별도 배열이 아니라 항목 내부라 항목을 지워도 짝이 밀리지 않는다.
+//   빈 항목의 정본은 아래 newSuccessItem() 하나뿐이다.
 const EMPTY_SESSION = {
   level: '', opponent: '', tapGot: 0, tapGave: 0, time: '',
   successTried: [], weak: [], note: '', outcome: null,
   positions: [], positionScore: 0,
 };
+
+/** successTried 항목의 빈 값 — 성공/실패 항목을 만드는 곳은 전부 여기를 거친다. */
+function newSuccessItem(name, success) {
+  return { name, success, causes: [], reaction: '' };
+}
 
 // _new — "이 화면에서 새로 만든, 서버에 아직 없는 라운드"라는 표시. buildPayload 에서 제거되므로
 //   서버로 나가지 않는다. 아래 빈 라운드 필터를 이 라운드들에만 적용하기 위한 표시다 (task-021).
@@ -52,10 +67,8 @@ function keepSessions(sessions) {
 // 실기록 분포(3분 15건 / 4분 29건 / 5분 8건)에 맞춘 원탭 프리셋
 const TIME_PRESETS = [3, 4, 5];
 
-const OUTCOME_OPTIONS = [
-  { value: 'win',   label: '이겼어', color: '#F5A623',      dim: '#FEF3E2' },
-  { value: 'learn', label: '배웠어', color: 'var(--accent)', dim: 'var(--accent-dim)' },
-];
+// OUTCOME_OPTIONS(이겼어/배웠어)는 task-022 에서 화면과 함께 제거했다.
+// 컬럼·기존 값·페이로드는 그대로 살아 있다(위 EMPTY_SESSION 주석 참고).
 
 const BELT_PILL = {
   '화이트': { bg: '#e8e8e8', active: '#999',    text: '#666',    activeText: '#fff' },
@@ -132,10 +145,19 @@ export default function SparEditor({ classId, sparDay, onClose, onSaved, initial
       tapGot: s.tap_got || 0,
       tapGave: s.tap_gave || 0,
       time: s.time_min || '',
+      // 🔴 연결 2/3 — 기존값 매핑. causes/reaction 을 여기서 안 읽으면 화면 state 에 없는 값이
+      //   되고, 저장 시 buildPayload 가 빈 값을 보내 destroy+reinsert 로 조용히 지워진다.
       successTried: (s.success || []).map(a =>
         typeof a === 'string'
-          ? { name: a, success: true }
-          : { name: a?.name || '', success: a?.success !== false }
+          ? newSuccessItem(a, true)
+          : {
+              name: a?.name || '',
+              success: a?.success !== false,
+              causes: Array.isArray(a?.causes)
+                ? a.causes.map(n => parseInt(n)).filter(Number.isInteger)
+                : [],
+              reaction: typeof a?.reaction === 'string' ? a.reaction : '',
+            }
       ).filter(a => a.name),
       weak: Array.isArray(s.weak) ? s.weak : [],
       note: s.note || '',
@@ -152,6 +174,29 @@ export default function SparEditor({ classId, sparDay, onClose, onSaved, initial
     }));
   });
   const [aiBusy, setAiBusy] = useState(false);
+
+  // 실패 원인 태그 — 이 화면에서만 쓰므로 CacheContext(전 페이지 공통 로딩)에 올리지 않고
+  // 여기서 직접 받는다. 서버가 이 사용자의 첫 조회 때 기본 4개를 넣어 준다.
+  // 비활성 태그까지 함께 받는다 — 과거 기록이 참조하는 이름을 보여 줘야 하기 때문.
+  const [causes, setCauses] = useState([]);
+  const reloadCauses = React.useCallback(async () => {
+    const list = await causesApi.listSparCauses().catch(() => []);
+    setCauses(Array.isArray(list) ? list : []);
+  }, []);
+  useEffect(() => { reloadCauses(); }, [reloadCauses]);
+
+  /** 태그 추가 — 화면을 벗어나지 않고(모달 중첩 없이) 카드 안에서 호출된다.
+   *  실패하면 이유를 토스트로 알리고 null 을 돌려준다 — 조용히 아무 일도 안 일어난 척하지 않는다. */
+  async function addCause(name) {
+    try {
+      const created = await causesApi.createSparCause(name);
+      await reloadCauses();
+      return created;          // 방금 만든 태그를 바로 선택할 수 있게 돌려준다
+    } catch (e) {
+      showToast('태그 추가 실패: ' + e.message);
+      return null;
+    }
+  }
 
   function addSession() {
     // 직전 라운드의 시간·벨트를 이월 — 같은 날 라운드는 대개 동일하다(시간 96%·벨트 98% 채움)
@@ -180,10 +225,19 @@ export default function SparEditor({ classId, sparDay, onClose, onSaved, initial
         // time_min 은 TINYINT — 직접 입력이 생겼으므로 상한을 막는다
         time: Math.min(127, Math.max(0, parseInt(s.time) || 0)),
         positionScore: parseInt(s.positionScore) || 0,
-        success: s.successTried || [],
+        // 🔴 연결 3/3 — 저장 페이로드. 필드를 스프레드하지 않고 하나씩 적는 이유는 화면 전용
+        //   플래그(_new 등)가 서버로 새어 나가지 않게 하기 위해서다. 그래서 새 필드는
+        //   여기에 반드시 명시해야 한다 — 빠지면 저장할 때마다 사라진다(task-017).
+        success: (s.successTried || []).map(t => ({
+          name: t.name,
+          success: !!t.success,
+          causes: Array.isArray(t.causes) ? t.causes : [],
+          reaction: t.reaction || '',
+        })),
         weak: s.weak || [],
+        // 화면에서 뺐지만 계속 보낸다 — 안 보내면 값이 있는 행이 저장 때 지워진다
         outcome: s.outcome || null,
-        positions: s.positions || [],   // UI 없음 — 기존 값 그대로 재전송(유실 방지)
+        positions: s.positions || [],   // 편집 UI 없음 — 기존 값 그대로 재전송(유실 방지)
         note: s.note,
       })),
     };
@@ -313,6 +367,8 @@ export default function SparEditor({ classId, sparDay, onClose, onSaved, initial
             successAutocomplete={successFreqSuggestions}
             tapTechSuggestions={tapTechSuggestions}
             opponentSuggestions={opponentSuggestions}
+            causes={causes}
+            onAddCause={addCause}
             onRemove={() => removeSession(i)}
             onUpdate={(k, v) => updateSession(i, k, v)}
           />
@@ -459,15 +515,152 @@ function ChipSection({ label, values, baseChips, autocompleteList, color, onTogg
   );
 }
 
+// 실패 항목 하나의 상세 — 원인 태그 다중선택 + "상대가 어떻게 막았나요?" 한 줄 (task-022).
+//
+// 🔴 태그 추가(+)는 **모달을 새로 띄우지 않는다.** 이 화면(SparEditor) 자체가 이미 Modal 안이라
+//   여기서 또 Modal 을 열면 모달 안 모달이 된다 — 배경 스크롤 잠금과 닫기(onClose)가 서로
+//   얽혀 바깥 모달이 같이 닫히기 쉽다. 그래서 카드 안에서 입력칸이 펼쳐지는 인라인 방식으로 둔다.
+function FailDetail({ item, causes, onToggleCause, onReaction, onAddCause }) {
+  const [adding, setAdding]   = useState(false);
+  const [newName, setNewName] = useState('');
+  const [busy, setBusy]       = useState(false);
+
+  const selected = Array.isArray(item.causes) ? item.causes : [];
+
+  // 고를 수 있는 칩 = 활성 태그 + 「비활성이지만 이 기록이 이미 고른」 태그.
+  // 비활성 태그를 빼 버리면 과거 기록에서 원인 칩이 통째로 사라져 기록이 깨져 보인다.
+  const chips = [
+    ...causes.filter(c => c.active),
+    ...causes.filter(c => !c.active && selected.includes(c.id)),
+  ];
+  // 목록에 아예 없는 id(다른 경로로 행이 지워진 경우). 조용히 버리지 않고 보여 줘서
+  // 사용자가 알아채고 해제할 수 있게 한다.
+  const orphanIds = selected.filter(id => !causes.some(c => c.id === id));
+
+  async function submitNew() {
+    const val = newName.trim();
+    if (!val || busy) return;
+    setBusy(true);
+    const created = await onAddCause(val);
+    setBusy(false);
+    if (created && created.id) {
+      if (!selected.includes(created.id)) onToggleCause(created.id);
+      setNewName('');
+      setAdding(false);
+    }
+  }
+
+  return (
+    <div style={{
+      marginTop: 6, marginBottom: 8, padding: '9px 10px',
+      background: 'var(--surface)', border: '1px solid var(--border)',
+      borderRadius: 10,
+    }}>
+      <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text3)', marginBottom: 6 }}>
+        {item.name} — 왜 안 됐나요?
+      </div>
+
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, marginBottom: 7 }}>
+        {chips.map(c => {
+          const sel = selected.includes(c.id);
+          return (
+            <button key={c.id} onClick={() => onToggleCause(c.id)} style={{
+              padding: '5px 11px', borderRadius: 20,
+              background: sel ? 'var(--accent)' : 'var(--surface-up)',
+              color: sel ? '#fff' : 'var(--text2)',
+              border: sel ? '1px solid var(--accent)' : '1px solid var(--border-med)',
+              fontSize: 12, fontWeight: sel ? 700 : 500,
+              opacity: c.active ? 1 : 0.6,
+              cursor: 'pointer',
+            }}>
+              {c.name}{c.active ? '' : ' (해제됨)'}
+            </button>
+          );
+        })}
+        {orphanIds.map(id => (
+          <button key={`orphan-${id}`} onClick={() => onToggleCause(id)} style={{
+            padding: '5px 11px', borderRadius: 20,
+            background: 'var(--surface-up)', color: 'var(--text3)',
+            border: '1px dashed var(--border-med)',
+            fontSize: 12, cursor: 'pointer',
+          }}>없는 태그 #{id} ×</button>
+        ))}
+        {!adding && (
+          <button onClick={() => setAdding(true)} style={{
+            width: 26, height: 26, borderRadius: 13,
+            border: '1px dashed var(--border-med)', background: 'transparent',
+            color: 'var(--accent)', fontSize: 15, cursor: 'pointer',
+            display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+            flexShrink: 0,
+          }} title="원인 태그 추가">+</button>
+        )}
+      </div>
+
+      {adding && (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 7 }}>
+          <input
+            value={newName}
+            autoFocus
+            maxLength={40}   /* spar_causes.name VARCHAR(40) — 서버도 같은 값으로 막는다 */
+            onChange={e => setNewName(e.target.value)}
+            onKeyDown={e => {
+              if (e.key === 'Enter') { e.preventDefault(); submitNew(); }
+              if (e.key === 'Escape') { setAdding(false); setNewName(''); }
+            }}
+            placeholder="새 원인 태그 (예: 무게중심)"
+            style={{
+              flex: 1, padding: '6px 12px', borderRadius: 20,
+              border: '1px dashed var(--border-med)',
+              background: 'transparent', color: 'var(--text)',
+              fontSize: 12, outline: 'none',
+            }}
+          />
+          <button onClick={submitNew} disabled={busy || !newName.trim()} style={{
+            padding: '5px 10px', borderRadius: 14, border: 'none',
+            background: newName.trim() ? 'var(--accent)' : 'var(--border-med)',
+            color: '#fff', fontSize: 12, fontWeight: 700,
+            cursor: busy ? 'wait' : 'pointer', flexShrink: 0,
+          }}>{busy ? '…' : '추가'}</button>
+          <button onClick={() => { setAdding(false); setNewName(''); }} style={{
+            padding: '5px 8px', borderRadius: 14,
+            border: '1px solid var(--border-med)', background: 'transparent',
+            color: 'var(--text3)', fontSize: 12, cursor: 'pointer', flexShrink: 0,
+          }}>취소</button>
+        </div>
+      )}
+
+      {/* 선택 입력 — 비워도 저장된다 */}
+      <input
+        value={item.reaction || ''}
+        onChange={e => onReaction(e.target.value)}
+        maxLength={200}
+        placeholder="상대가 어떻게 막았나요? (선택)"
+        style={{
+          width: '100%', padding: '6px 10px', borderRadius: 8,
+          border: '1px solid var(--border-med)',
+          background: 'transparent', color: 'var(--text)',
+          fontSize: 12, outline: 'none',
+        }}
+      />
+    </div>
+  );
+}
+
 function GrowthSessionCard({
   idx, session, weakAutocomplete, successAutocomplete, tapTechSuggestions,
-  opponentSuggestions, onRemove, onUpdate,
+  opponentSuggestions, causes, onAddCause, onRemove, onUpdate,
 }) {
   const [expanded, setExpanded] = useState(false);
   const [customTapTech, setCustomTapTech] = useState('');
 
   const goodTechs = session.successTried.filter(t => t.success).map(t => t.name);
   const tapTechs  = session.successTried.filter(t => !t.success).map(t => t.name);
+
+  // 실패 항목은 **배열 전체에서의 위치(i)** 를 들고 다닌다. 원인·리액션을 그 항목 객체에
+  // 직접 쓰기 위해서다 — 인덱스로 짝지은 별도 배열이 아니므로 항목을 지워도 짝이 밀리지 않는다.
+  const failEntries = session.successTried
+    .map((t, i) => ({ t, i }))
+    .filter(x => !x.t.success);
 
   // 성장 포인트 handlers
   function toggleWeak(name) {
@@ -487,7 +680,7 @@ function GrowthSessionCard({
       const i = session.successTried.findIndex(t => t.name === name && t.success);
       if (i >= 0) onUpdate('successTried', session.successTried.filter((_, j) => j !== i));
     } else {
-      onUpdate('successTried', [...session.successTried, { name, success: true }]);
+      onUpdate('successTried', [...session.successTried, newSuccessItem(name, true)]);
     }
   }
   function removeGoodTech(name) {
@@ -496,23 +689,34 @@ function GrowthSessionCard({
   }
   function addGoodTech(name) {
     if (!goodTechs.includes(name))
-      onUpdate('successTried', [...session.successTried, { name, success: true }]);
+      onUpdate('successTried', [...session.successTried, newSuccessItem(name, true)]);
   }
 
-  // 탭 당한 기술 handlers
+  // 안 된 기술 handlers — 선택을 해제하면 그 항목의 원인·리액션도 같이 사라진다(항목 내부에 있으므로)
   function toggleTapTech(name) {
     if (tapTechs.includes(name)) {
       const i = session.successTried.findIndex(t => t.name === name && !t.success);
       if (i >= 0) onUpdate('successTried', session.successTried.filter((_, j) => j !== i));
     } else {
-      onUpdate('successTried', [...session.successTried, { name, success: false }]);
+      onUpdate('successTried', [...session.successTried, newSuccessItem(name, false)]);
     }
   }
   function addCustomTapTech() {
     const val = customTapTech.trim();
     if (val && !tapTechs.includes(val))
-      onUpdate('successTried', [...session.successTried, { name: val, success: false }]);
+      onUpdate('successTried', [...session.successTried, newSuccessItem(val, false)]);
     setCustomTapTech('');
+  }
+
+  /** successTried[i] 에 부분 갱신 — 원인·리액션은 항목 객체 안에 저장된다 */
+  function patchItem(i, patch) {
+    onUpdate('successTried', session.successTried.map((t, j) => j === i ? { ...t, ...patch } : t));
+  }
+  function toggleCause(i, causeId) {
+    const cur = Array.isArray(session.successTried[i]?.causes) ? session.successTried[i].causes : [];
+    patchItem(i, {
+      causes: cur.includes(causeId) ? cur.filter(c => c !== causeId) : [...cur, causeId],
+    });
   }
 
   function step(key, delta) {
@@ -550,50 +754,111 @@ function GrowthSessionCard({
         </button>
       </div>
 
-      {/* 결과 — 이 라운드의 유일한 판단. 미선택(null)을 그대로 남겨 통계 오염을 막는다 */}
-      <div style={{ display: 'flex', gap: 6, marginBottom: 12 }}>
-        {OUTCOME_OPTIONS.map(o => {
-          const active = session.outcome === o.value;
-          return (
-            <button key={o.value}
-              onClick={() => onUpdate('outcome', active ? null : o.value)}
-              style={{
-                flex: 1, padding: '10px 0', borderRadius: 10,
-                border: active ? `1px solid ${o.color}` : '1px solid var(--border-med)',
-                background: active ? o.dim : 'var(--surface)',
-                color: active ? o.color : 'var(--text3)',
-                fontSize: 13.5, fontWeight: active ? 800 : 600,
-                cursor: 'pointer',
-              }}>
-              {o.label}
-            </button>
-          );
-        })}
-      </div>
-
-      {/* 상대 벨트 — 채움률 98%, 최상위 노출 */}
-      <div style={{ marginBottom: 12 }}>
-        <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text2)', marginBottom: 7 }}>
-          상대 벨트
+      {/* ① 뭐가 안 됐어요? — 복기·연구의 재료가 여기서 나온다. 그래서 맨 위다 (task-022) */}
+      <div style={{ marginBottom: 14 }}>
+        <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--red)', marginBottom: 8 }}>
+          뭐가 안 됐어요?
         </div>
-        <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-          {BELT_LEVELS.map(belt => {
-            const pill = BELT_PILL[belt] || BELT_PILL['화이트'];
-            const active = session.level === belt;
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+          {tapTechChips.map(chip => {
+            const sel = tapTechs.includes(chip);
             return (
-              <button key={belt} onClick={() => onUpdate('level', active ? '' : belt)} style={{
-                padding: '6px 13px', borderRadius: 20, border: 'none',
-                background: active ? pill.active : pill.bg,
-                color: active ? pill.activeText : pill.text,
-                fontSize: 12, fontWeight: active ? 700 : 500,
+              <button key={chip} onClick={() => toggleTapTech(chip)} style={{
+                padding: '5px 11px', borderRadius: 20,
+                background: sel ? 'var(--red-dim, #fde8e8)' : 'var(--surface)',
+                color: sel ? 'var(--red)' : 'var(--text2)',
+                fontSize: 12, fontWeight: sel ? 700 : 500,
                 cursor: 'pointer',
-              }}>{belt}</button>
+                border: sel ? '1px solid var(--red)' : '1px solid var(--border-med)',
+              }}>{chip}</button>
             );
           })}
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+            <input
+              list={`taptech-${idx}`}
+              value={customTapTech}
+              onChange={e => setCustomTapTech(e.target.value)}
+              onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addCustomTapTech(); } }}
+              placeholder="직접 입력"
+              style={{
+                padding: '5px 9px', borderRadius: 20,
+                border: '1px dashed var(--border-med)',
+                background: 'transparent', color: 'var(--text)',
+                fontSize: 12, outline: 'none', width: 90,
+              }}
+            />
+            {/* 기존 autocomplete 재사용 — 지금까지 적은 실패 기술 빈도순 */}
+            <datalist id={`taptech-${idx}`}>
+              {tapTechSuggestions.filter(o => !tapTechs.includes(o)).map(o => (
+                <option key={o} value={o} />
+              ))}
+            </datalist>
+            {customTapTech.trim() && (
+              <button onClick={addCustomTapTech} style={{
+                width: 24, height: 24, borderRadius: 12,
+                border: 'none', background: 'var(--red)',
+                color: '#fff', fontSize: 16, cursor: 'pointer',
+                display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                flexShrink: 0,
+              }}>+</button>
+            )}
+          </div>
+        </div>
+
+        {/* 고른 실패 기술마다 원인 태그 + 리액션 한 줄 */}
+        {failEntries.map(({ t, i }) => (
+          <FailDetail
+            key={`${i}-${t.name}`}
+            item={t}
+            causes={causes}
+            onToggleCause={(cid) => toggleCause(i, cid)}
+            onReaction={(v) => patchItem(i, { reaction: v })}
+            onAddCause={onAddCause}
+          />
+        ))}
+      </div>
+
+      {/* ② 뭐가 됐어요? — 성공한 기술 + 상대 벨트(채움률 98%) */}
+      <div style={{ marginBottom: 12 }}>
+        <div style={{ fontSize: 13, fontWeight: 800, color: '#B8860B', marginBottom: 8 }}>
+          뭐가 됐어요?
+        </div>
+        <ChipSection
+          label="성공한 기술"
+          values={goodTechs}
+          baseChips={KEY_TECHNIQUES}
+          autocompleteList={successAutocomplete}
+          color="gold"
+          onToggle={toggleGoodTech}
+          onAdd={addGoodTech}
+          onRemove={removeGoodTech}
+          inputId={`success-${idx}`}
+        />
+        <div style={{ marginTop: 12 }}>
+          <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text2)', marginBottom: 7 }}>
+            상대 벨트
+          </div>
+          <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+            {BELT_LEVELS.map(belt => {
+              const pill = BELT_PILL[belt] || BELT_PILL['화이트'];
+              const active = session.level === belt;
+              return (
+                <button key={belt} onClick={() => onUpdate('level', active ? '' : belt)} style={{
+                  padding: '6px 13px', borderRadius: 20, border: 'none',
+                  background: active ? pill.active : pill.bg,
+                  color: active ? pill.activeText : pill.text,
+                  fontSize: 12, fontWeight: active ? 700 : 500,
+                  cursor: 'pointer',
+                }}>{belt}</button>
+              );
+            })}
+          </div>
         </div>
       </div>
 
-      {/* 시간 — 채움률 96%. ±1 스텝퍼(4분=4탭) 대신 3/4/5 원탭 프리셋 */}
+      {/* 시간 — 채움률 96%. 접힘 안으로 넣으면 대부분의 라운드에서 「펼치기+선택」 2탭이 늘어난다.
+          task-017 이 1탭 프리셋으로 만들어 둔 자리를 그대로 지킨다. 접힘에는 채움률이 낮은
+          상대 이름·탭 수·포지션·메모만 남긴다. */}
       <div style={{ marginBottom: 12 }}>
         <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text2)', marginBottom: 7 }}>
           시간(분)
@@ -627,66 +892,6 @@ function GrowthSessionCard({
         </div>
       </div>
 
-      {/* 성공한 기술 */}
-      <div style={{ marginBottom: 12 }}>
-        <ChipSection
-          label="성공한 기술"
-          values={goodTechs}
-          baseChips={KEY_TECHNIQUES}
-          autocompleteList={successAutocomplete}
-          color="gold"
-          onToggle={toggleGoodTech}
-          onAdd={addGoodTech}
-          onRemove={removeGoodTech}
-          inputId={`success-${idx}`}
-        />
-      </div>
-
-      {/* 탭 당한 기술 — 채움률 70%, 접힘에서 최상위로 승격 */}
-      <div style={{ marginBottom: 12 }}>
-        <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text2)', marginBottom: 7 }}>
-          탭 당한 기술
-        </div>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-          {tapTechChips.map(chip => {
-            const sel = tapTechs.includes(chip);
-            return (
-              <button key={chip} onClick={() => toggleTapTech(chip)} style={{
-                padding: '5px 11px', borderRadius: 20,
-                background: sel ? 'var(--red-dim, #fde8e8)' : 'var(--surface)',
-                color: sel ? 'var(--red)' : 'var(--text2)',
-                fontSize: 12, fontWeight: sel ? 700 : 500,
-                cursor: 'pointer',
-                border: sel ? '1px solid var(--red)' : '1px solid var(--border-med)',
-              }}>{chip}</button>
-            );
-          })}
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
-            <input
-              value={customTapTech}
-              onChange={e => setCustomTapTech(e.target.value)}
-              onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addCustomTapTech(); } }}
-              placeholder="직접 입력"
-              style={{
-                padding: '5px 9px', borderRadius: 20,
-                border: '1px dashed var(--border-med)',
-                background: 'transparent', color: 'var(--text)',
-                fontSize: 12, outline: 'none', width: 70,
-              }}
-            />
-            {customTapTech.trim() && (
-              <button onClick={addCustomTapTech} style={{
-                width: 24, height: 24, borderRadius: 12,
-                border: 'none', background: 'var(--red)',
-                color: '#fff', fontSize: 16, cursor: 'pointer',
-                display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                flexShrink: 0,
-              }}>+</button>
-            )}
-          </div>
-        </div>
-      </div>
-
       {/* 성장 포인트 */}
       <div style={{ marginBottom: 10 }}>
         <ChipSection
@@ -702,14 +907,14 @@ function GrowthSessionCard({
         />
       </div>
 
-      {/* 더 자세히 — 자판이 필요하거나 채움률이 낮은 항목만 남긴다 */}
+      {/* 라운드별 상세 — 접어서 유지한다. 지우지 않는다 (task-022 확정 결정 5) */}
       <button onClick={() => setExpanded(!expanded)} style={{
         width: '100%', padding: '7px 0',
         background: 'var(--surface)', border: '1px solid var(--border)',
         borderRadius: 10, color: 'var(--text2)',
         fontSize: 12, fontWeight: 600, cursor: 'pointer',
       }}>
-        {expanded ? '▲ 접기' : '▼ 더 자세히 (상대 이름 · 탭 수 · 메모)'}
+        {expanded ? '▲ 접기' : '▼ 라운드 상세 (상대 이름 · 탭 수 · 포지션 · 메모)'}
       </button>
 
       {expanded && (
@@ -734,6 +939,28 @@ function GrowthSessionCard({
             <StepperField label="탭 줌"   value={parseInt(session.tapGave) || 0} onStep={d => step('tapGave', d)} />
           </div>
 
+          {/* 포지션 — 편집 UI는 원래부터 없다. 기존 값은 저장 때 그대로 되돌려 보내고(유실 방지)
+              여기서는 읽기 전용으로 보여만 준다. 값이 없으면 아무것도 그리지 않는다. */}
+          {(session.positions || []).length > 0 && (
+            <div>
+              <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text2)', marginBottom: 7 }}>
+                포지션 <span style={{ fontWeight: 500, color: 'var(--text3)' }}>(기록 보존 · 편집 불가)</span>
+              </div>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
+                {(session.positions || []).map((p, pi) => (
+                  <span key={pi} style={{
+                    padding: '4px 10px', borderRadius: 20,
+                    background: 'var(--surface)', color: 'var(--text2)',
+                    border: '1px solid var(--border-med)', fontSize: 12,
+                  }}>
+                    {typeof p === 'string' ? p : (p?.name || '')}
+                    {typeof p === 'object' && p?.score ? ` · ${p.score}` : ''}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* 세션 메모 */}
           <div className="field" style={{ marginBottom: 0 }}>
             <label>세션 메모</label>
@@ -744,6 +971,7 @@ function GrowthSessionCard({
     </div>
   );
 }
+
 
 function StepperField({ label, value, onStep }) {
   return (
