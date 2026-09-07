@@ -15,12 +15,13 @@ tags:
 - **남은 포지션 재오염 경로 2건** — [[task-020b-position-merge-and-name-fixes]] 지시 F로 `baseOptions.js`(살아있는 입구)는 막았으나, Developer가 전수 조사 중 추가 발견(2026-09-07). ① `backend/src/services/longVideoPipeline.js:313` — AI 프롬프트가 `"positions":["포지션명"]`을 **어휘 제약 없이** 요구하고 620줄에서 반환값을 그대로 `long_video_chapters.details`에 저장한다. 정본 검증·정규화가 없어 임의 포지션 이름이 계속 쌓인다. **이번 병합 4개 저장소와 다른 테이블이라 병합을 되돌리진 않지만**, "포지션 어휘를 정본으로 수렴시킨다"는 목표와는 어긋나는 열린 입구. ② `legacy/public/js/core/constants.js:8`(`POS_STANDARD`)·`legacy/public/index.html` 6곳 `<option>` — 옛 영문병기 보유. 현재 React dist만 서빙하므로 **실사용 위험 없음**, legacy 복원 시에만 문제.
 - **`baseOptions.js`의 `하프가드` — 다음 병합 때 같이 볼 것** — 정본은 `하프 가드`(띄어쓰기)인데 후보 목록에 붙여쓴 `하프가드`가 남아 있다. task-020b **병합 대상이 아니었으므로 의도적으로 건드리지 않았다**(범위 밖 삭제는 별개 회귀). 다만 B-2 탑/바텀 구분을 정할 때 함께 정리하지 않으면 같은 종류의 재오염 씨앗으로 남는다.
 - **`chainAiVideoGenerator.js`의 `BJJ_POSITION_SD_MAP` 키 불일치** — `backend/src/services/chainAiVideoGenerator.js:56-74`. 읽기 전용 조회 맵이라 DB를 오염시키진 않지만 키가 정본과 어긋난다(`니온더벨리` vs 정본 `니온벨리`, `패스` 키 없음). 조회 실패 시 **에러 없이** 일반 프롬프트로 조용히 떨어진다. 참고: task-020b 병합으로 `가드`·`백`·`마운트` 키는 오히려 **적중률이 올라갔다**(맵이 이미 짧은 정본형을 쓰고 있었음).
-- task-025~029 (복기·연구 3차 배치 이후) — 복기 화면(`/recall`) · 연구 화면(`/research`, 노드 7종) · 리액션 자동 유입 · 스파링 음성 입력
-- **사다리 2·3단계 UI 미연결** — task-024가 `technique_mastery` 저장소와 `PATCH /api/mastery/:techId`까지만 만든다. 사용자가 드릴·포지션 스파링을 체크할 **화면이 아직 없다** — task-026(연구 화면)에서 붙인다. 그때까지 2·3단계는 항상 `false`로 나온다(기능 부재이지 버그 아님).
+- task-027~029 — "+ 분기"(부모 버전 트리 복사) · 리액션 자동 유입(task-022의 `reaction` → 리액션 노드) · "이번 주 과제" · "검색해서 가져오기" 5곳·링크 열기 · 스파링 음성 입력
+- ~~**사다리 2·3단계 UI 미연결**~~ — 🔴 **이미 해소됨(Leader 정정, 2026-09-07).** [[task-025-recall-screen]]의 `web/src/components/RecallLadder.jsx`가 2·3단계 탭 체크를 구현해 `/recall`에서 살아 있다(`:63` onClick, `:120-129` `patchMastery`). `technique_mastery`가 0행인 이유는 화면이 없어서가 아니라 **아직 아무도 누르지 않아서**다. task-026은 이 컴포넌트를 **재사용**한다(새로 만들지 않는다).
 
 ## Todo
 
 ## Doing
+- [[task-026-research-screen]] — 연구 화면(`/research`) 데이터 + 트리. 신규 테이블 4개(`research_projects`·`research_versions`·`research_nodes`·`research_links`) + `/api/research/*` CRUD + 노드 7종 트리 UI. 두 Developer 병렬(dev-026a=`backend/src/**` · dev-026b=`web/src/**`). 🔴 **지시서 정정 2건을 Leader가 착수 전 실측으로 잡았다**: ① 경로에 `/lab` 접두사 없음(`/api/holes`·`/api/mastery/:techId`가 정본 — `routes/index.js:27`이 `/`에 마운트) ② 사다리 2·3단계 체크 화면이 "없다"고 적혀 있었으나 `RecallLadder.jsx`에 **이미 있다**. 착수 전 실측: `research_*` 4개 이름 충돌 0 · `technique_mastery` 0행 · 기존 FK **14건 존재**(`gameplan_nodes`가 같은 구조의 선례) · 포지션 18종 · 구멍 4종(5/3/3/2)·미연결 13종 라이브 재확인. 백업 `pre-task026-20260907-052129.sql`(md5 `37b5a0c0…`)
 
 ## Review
 

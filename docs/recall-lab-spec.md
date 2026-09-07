@@ -213,6 +213,19 @@ ALTER TABLE spar_sessions ADD COLUMN reaction  TEXT DEFAULT '[]';   -- 실패 �
 - 적용 전 `information_schema`로 존재 확인 후 실행(기존 데이터 보호).
 - **`outcome` 컬럼과 기존 값은 유지한다. DROP 금지.** 화면에서만 제거한다.
 
+### 3.3 `research_*` 4테이블 — 연구 트리 (task-026, 적용 완료)
+
+`research_projects` · `research_versions` · `research_nodes` · `research_links`.
+DDL 정본은 `backend/src/index.js` 의 `[mig][task-026]` 블록이다(부팅 시 `information_schema` 확인 후 생성).
+추가만 하는 DDL 이라 기존 데이터 위험 0 이다(ALTER 0건).
+
+- **ENGINE=InnoDB 를 명시**했다. MyISAM 이면 FK 가 **에러 없이 무시되고** 트랜잭션도 없어
+  연쇄 삭제가 중간에 끊긴다 — 조용한 실패의 전형이라 부팅 때마다 실제 엔진과 FK 4건을 검증해 로그에 남긴다.
+- FK 4건: `fk_rv_project`(CASCADE) · `fk_rn_version`(CASCADE) · `fk_rn_tech`(**SET NULL**, `video_clips.tech_id` 선례) ·
+  `fk_rl_node`(CASCADE). 🔴 `parent_node_id` 에는 **일부러 걸지 않았다** — §4.4.1 참고.
+- 길이: `title`/`label` 100 · `start_pos` 50 · `goal`/`memo` 200 · `note` 500 · `name` 50.
+  **STRICT + utf8mb3 라 초과는 잘림이 아니라 에러이고 이모지는 500 이다** — 라우트가 400 으로 먼저 거른다.
+
 ### 3.2 `recall_summaries` — AI 복기 카드 캐시 (task-025, 적용 완료)
 
 착수 전 `information_schema` 확인: `%recall%`·`%summar%`·`%cache%` 전부 0건 → 충돌 없음.
@@ -399,11 +412,88 @@ CREATE TABLE recall_summaries (
   이 DB 는 전 테이블 utf8mb3 라 이모지는 `Incorrect string value` 500 이 되므로
   task-022 의 `spar_causes` 와 같은 방식으로 400 으로 거른다.
 
-### 4.4 후속 배치 예정 (이번 범위 아님)
+### 4.4 연구 화면 API — 구현 완료 (task-026)
+
+경로는 `/api/research/*` 다. **§4.2 의 `/api/holes`·`/api/mastery` 와 달리 도메인 접두사가 있다** —
+저 둘은 경로가 최상위인 것이 사용자 지시의 정본이고, 이건 평범한 도메인 라우터다.
+구현: `backend/src/routes/research.js` · 순수 함수는 `backend/src/services/researchTree.js`.
 
 | 메서드 | 경로 | 용도 |
 |---|---|---|
-| `GET` | `/api/lab/nodes` · `POST`/`PUT`/`DELETE` | 연구 노드 CRUD (§6) |
+| `GET` | `/api/research/projects` | 목록 + 진척 2축 + 노드 수 + `warnOverload` |
+| `POST` | `/api/research/projects` | 생성. **v1 을 같은 트랜잭션에서 자동 생성**(`is_active=1`). 응답은 상세와 같은 형태 |
+| `GET` | `/api/research/projects/:id` | 상세 = 프로젝트 + `versions[]` + 활성 버전 트리 전체(평평한 배열) + 2축 |
+| `PATCH` | `/api/research/projects/:id` | 부분 수정 (`title`·`startPos`·`goal`) |
+| `DELETE` | `/api/research/projects/:id` | 연쇄 삭제 → `{deletedVersions, deletedNodes, deletedLinks}` |
+| `PATCH` | `/api/research/versions/:id` | `name` 수정 · `isActive:true` 전환(같은 프로젝트의 다른 버전은 0으로, 한 트랜잭션) |
+| `DELETE` | `/api/research/versions/:id` | 연쇄 삭제. **마지막 버전은 400**. 활성 버전을 지우면 최소 `version_no` 를 승격 |
+| `POST` | `/api/research/nodes` | `{versionId, parentNodeId?, kind, label, techniqueId?, note?}` |
+| `PATCH` | `/api/research/nodes/:id` | **부분 갱신**. 부모 변경은 여기서 받지 않는다(→ `/move`) |
+| `DELETE` | `/api/research/nodes/:id` | **자손 포함** 연쇄 삭제 → `{deletedNodes, deletedLinks}` |
+| `PATCH` | `/api/research/nodes/:id/move` | `{parentNodeId, sortOrder}` 이동·순서 변경 |
+| `POST` | `/api/research/nodes/:id/insert-parent` | 부모 삽입 → `{inserted, target}` |
+| `GET` | `/api/research/nodes/:id/links` · `POST` `/links` · `PATCH`/`DELETE` `/links/:id` | 근거 링크 CRUD |
+
+> `POST /api/research/versions`(분기 생성)는 **만들지 않았다** — "+ 분기"는 task-027 이다.
+> 버전 테이블·전환·삭제까지가 이번 범위다.
+
+#### 4.4.1 확정 사항 — 다음 사람이 되돌리기 쉬운 것들
+
+- 🔴 **`sort_order` · `version_no`** — `order` 는 MariaDB 예약어라 `CREATE TABLE t (order INT)` 가
+  문법 에러다. 짝을 맞추려고 버전 번호도 `version_no` 로 했다(기존 `chain_steps.step_order` 관례와 일치).
+  **DB 컬럼 · Sequelize 속성 · API JSON 필드가 전부 한 이름이다.** "정리"하려고 `order` 로 바꾸지 마라.
+- 🔴 **`research_nodes.parent_node_id` 에는 FK 가 없다**(자기참조 CASCADE 는 다루기 어렵다).
+  그래서 **노드 삭제 시 앱이 자손을 수집해 지운다** — `researchTree.collectSubtreeIds()`.
+  한 단계만 지우면 손자가 고아가 되고, FK CASCADE 는 그걸 못 잡는다. 나머지 FK 4건은 실재한다
+  (`fk_rv_project`·`fk_rn_version` CASCADE, `fk_rn_tech` SET NULL, `fk_rl_node` CASCADE — 전부 InnoDB 실측 확인).
+- 🔴 **`kind` 와 깊이 사이에 제약이 없다.** `포지션` 도 어느 깊이에나 온다(실제 수업 theme 이
+  `"싱글엑스 가드 -> 50대50"` 처럼 중간에 자리를 바꾼다). 루트 전용으로 만들지 마라.
+- 🔴 **사다리 상태를 노드에 저장하지 않는다.** 사다리는 기술 단위(`technique_mastery`)다(§5.1).
+  `research_nodes` 에 `drilled`/`position_spar` 류 컬럼을 추가하는 순간 같은 기술의 두 노드가
+  다른 사다리를 보게 된다.
+- **트리 무결성 3검사**(순환 금지 · 같은 버전 · 깊이 상한 12)는 `researchTree.validatePlacement()` 하나가
+  담당하고 위반은 400 이다. 🔴 깊이는 **서브트리 전체 높이**로 판정한다 — 옮기는 노드 하나만 보면
+  깊은 가지를 상한 너머로 밀어 넣을 수 있다.
+- **소유 판별은 `resolveOwned()` 하나**를 거치고, 그 SQL 은 예외 없이 `research_projects` 까지 조인한다.
+  하위 3테이블의 `user_id` 는 부모에서 유도해 채우는 **사본**이고 권한 판정에 쓰지 않는다 —
+  드리프트를 SQL 로 검출하기 위한 관측 장치다. 없는 것과 남의 것은 **둘 다 404** 다(§4.2 와 같은 규칙).
+- **날짜는 `DATE_FORMAT(..., '%Y-%m-%d')`** 로 만든 문자열이다. DB 세션 TZ 가 `SYSTEM`=KST 라
+  그대로 KST 날짜가 된다. `toISOString()` 은 쓰지 않는다(UTC 변환으로 하루가 밀린다).
+
+#### 4.4.2 진척 2축 정의 (정본)
+
+```
+① 대처 채움률
+   분모 = 활성 버전의 kind='리액션' 노드 수      ← 전체 노드 수도, 대처 노드 수도 아니다
+   분자 = 그중 직계 자식에 kind='대처'가 하나 이상 있는 노드 수
+   리액션 0개 → ratio: null   (화면은 "리액션 없음". 0/0 이 아니다)
+   응답에 uncoveredReactionNodeIds[] 를 함께 싣는다 — 프론트가 다시 판정하지 않게
+
+② 사다리 평균
+   분모 = 활성 버전 노드들이 참조하는 고유 technique_id 수 (NULL 제외)  ← 노드 수가 아니다
+   값   = 각 기술의 GET /api/mastery 의 reached,  평균은 소수 1자리
+   고유 기술 0개 → avgReached: null  (화면은 "기록 없음". 0.0/5 가 아니다)
+```
+
+🔴 **`loadLabData(userId)` 는 요청당 딱 한 번.** 목록 API 에서 프로젝트마다 부르면 N+1 이다.
+전 프로젝트의 고유 기술을 모아 한 번에 `reached` 맵을 만든 뒤 나눠 쓴다.
+
+#### 4.4.3 해석을 정한 지점 — `move` 의 `sortOrder`
+
+계약이 `{parentNodeId, sortOrder}` 까지만 정하고 형제 처리를 정하지 않았다.
+**`sortOrder` 를 목적지 형제들 사이의 index 로 해석하고, 이동 후 목적지 형제를 `0..n-1` 로 다시 매긴다.**
+INT 사이에 값을 끼워 넣을 수 없어서다 — `0,1,2,3` 에서 "1번 자리로"를 raw 값으로 표현할 방법이 없고,
+index 로 두면 한 번의 호출로 순서 변경이 끝난다. 부모가 바뀌면 원래 부모의 형제도 다시 매긴다.
+재번호는 **UPDATE 뿐**이다(행을 지우고 다시 넣지 않는다 — §4.4.1 의 PATCH 부분 갱신 원칙과 같은 이유).
+🔴 **`insert-parent` 는 형제를 재번호하지 않는다** — 계약 B-1 이 "A·B 의 sort_order 는 변하지 않는다"를
+명시했기 때문이다. 두 라우트의 형제 처리가 다른 것은 의도된 것이다.
+
+### 4.5 후속 배치 예정 (이번 범위 아님)
+
+| 메서드 | 경로 | 용도 |
+|---|---|---|
+| `POST` | `/api/research/versions` | **분기 생성**(부모 버전 트리 복사) — task-027. 화면의 "+ 분기"는 지금 비활성 |
+| — | 리액션 자동 유입 | task-022 의 `reaction` → 리액션 노드 (task-027) |
 | `POST` | `/api/lab/normalize-preview` | 이름 정규화 **미리보기**(실행 아님) — §2.1 미매칭 해소용 |
 
 ---

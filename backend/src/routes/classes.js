@@ -205,6 +205,17 @@ router.delete('/:id', wrap(async (req, res) => {
 // 항목이 여러 개면 합계가 커진다 — 한 줄 입력에 필요한 길이를 넉넉히 넘기는 선에서 자른다.
 const REACTION_MAX = 200;
 
+// 기술명 한 개의 상한. 100 은 임의의 숫자가 아니라 **기술명의 정본 컬럼에서 가져온 값**이다 —
+// `techniques.name` 이 varchar(100) 이므로, 여기 적히는 기술명이 그보다 길 이유가 없다.
+// 바꿔야 할 일이 생기면 이 숫자가 아니라 techniques.name 컬럼을 먼저 보라(둘은 같이 움직여야 한다).
+//
+// 왜 상한이 필요한가: success 는 항목 배열을 통째로 JSON 으로 넣는 TEXT(utf8mb3) 컬럼이라
+// **한 항목만 길어도 라운드 전체의 저장이 통째로 실패**한다(트랜잭션이 롤백돼 그날 기록을 잃는다).
+// reaction 은 task-022 때 이미 잘리고 있었는데 name 만 무제한이었다 — 그 비대칭을 없앤다.
+// (실측: 한글 21,827자 / ASCII 65,481자에서 `Data too long for column 'success'` 500.
+//  기존 54행 83항목의 name 최대 길이는 11자라 이 상한으로 잘리는 기존 데이터는 없다.)
+const NAME_MAX = 100;
+
 /**
  * success 배열 항목 정규화 (task-022).
  * 기존 `{name, success}` 는 **그대로 보존**하고 `causes`/`reaction` 두 필드만 덧붙인다.
@@ -222,7 +233,10 @@ function normalizeSuccessItems(list, validCauseIds) {
         .filter(n => Number.isInteger(n) && validCauseIds.has(n))
     )];
     const reaction = toNFC(String(it.reaction ?? '')).trim().slice(0, REACTION_MAX);
-    return { ...it, causes, reaction };
+    // reaction 과 정확히 같은 방식(NFC 정규화 → trim → 상한 절단). 스프레드 뒤에 와야
+    // 원본 it.name 을 덮어쓴다 — 순서를 바꾸면 상한이 조용히 무력해진다.
+    const name = toNFC(String(it.name ?? '')).trim().slice(0, NAME_MAX);
+    return { ...it, name, causes, reaction };
   });
 }
 
