@@ -26,8 +26,18 @@ const { normalize } = require('../utils/techMatch');
  */
 const KINDS = ['포지션', '그립', '세팅', '엔트리', '리액션', '대처', '피니시'];
 
-/** 링크 종류 4종 (계약 A-1 `research_links.link_type`). */
-const LINK_TYPES = ['clip', 'class', 'technique', 'url'];
+/**
+ * 링크 종류 (계약 A-1 `research_links.link_type`).
+ *
+ * 🔴 task-028 에서 4종 → 7종으로 **늘었다**(gameplan · chain · chapter). ENUM 이 아니라
+ *    varchar(20) + 앱 화이트리스트라 **DDL 변경 0건**으로 늘었다 — kind 를 ENUM 으로 만들지
+ *    않은 것과 같은 이유고, 그 판단이 여기서 값을 했다.
+ * 🔴 늘리기만 했다. 기존 4종의 문자열은 하나도 바꾸지 않았다 — 저장된 행이 조용히 미아가 된다.
+ * 🔴 여기 값을 추가하면 `routes/research.js` 의 `LINK_TARGETS` 에도 **반드시** 짝을 넣어야 한다.
+ *    거기 없으면 링크는 만들어지는데 조회에서 영원히 `broken: true` 로 나온다(조용한 실패).
+ *    그래서 부팅 시 두 목록의 짝을 맞춰 본다(routes/research.js 하단 자기점검).
+ */
+const LINK_TYPES = ['clip', 'class', 'technique', 'gameplan', 'chain', 'chapter', 'url'];
 
 /** 깊이 상한. 루트 노드가 깊이 1 이다. (계약 A-5-3) */
 const MAX_DEPTH = 12;
@@ -475,6 +485,62 @@ function computeReactionSuggestions(nodes, observations, opts = {}) {
 }
 
 /**
+ * 분기(버전 복제) **계획** — 순수 함수 (task-028 A).
+ *
+ * 서브트리를 통째로 복제하려면 **부모가 자식보다 먼저 INSERT** 되어야 한다(자식이 부모의
+ * 새 id 를 참조해야 하므로). 이 함수는 그 순서와 각 노드의 "원본 부모 id"를 만들어 준다.
+ * 🔴 **DB 를 모른다.** 그래서 QA 가 SELECT 결과를 그대로 먹여 순서·순환 처리를 HTTP 밖에서 잰다.
+ *
+ * 🔴 **아무 노드도 버리지 않는다.** 루트에서 닿지 않는 노드(= 이미 깨진 데이터의 순환 고리)는
+ *    조용히 사라지지 않고 **루트로 올려서** 복제하고 `detachedNodeIds` 로 드러낸다.
+ *    분기가 "노드가 몇 개 사라진 사본"을 만들면 사용자는 원본과 대조하기 전까지 알 수 없다 —
+ *    이 프로젝트에서 가장 비싼 실패 방식이다(task-017 `positions` 36행 소실).
+ *
+ * 🔴 순환에서도 **멈춘다**. `seen` 이 종료를 보장한다(indexNodes·collectDescendantIds 와 같은 규약).
+ *
+ * @returns {{ order: Array<{node, parentId:number|null, detached:boolean}>,
+ *             detachedNodeIds:number[], total:number, skippedNodeIds:number[] }}
+ *   order          — INSERT 순서. 각 원소의 `parentId` 는 **원본** 부모 id(호출부가 신규 id 로 치환).
+ *   detachedNodeIds— 순환 때문에 루트로 올려 붙인 노드(원본 id). 정상 데이터면 빈 배열.
+ *   skippedNodeIds — id 가 정수가 아니어서 복제할 수 없던 행. 정상 경로에선 절대 안 생긴다.
+ */
+function planBranchCopy(nodes, idx = indexNodes(nodes)) {
+  const list = Array.isArray(nodes) ? nodes : [];
+  const order = [];
+  const seen = new Set();
+
+  // 1) 루트에서 BFS — 형제 순서(sort_order, id)를 그대로 따라간다.
+  const queue = [...idx.roots];
+  while (queue.length) {
+    const n = queue.shift();
+    const id = Number(n.id);
+    if (seen.has(id)) continue;          // 순환 방어
+    seen.add(id);
+    const pRaw = n.parent_node_id;
+    const p = (pRaw === null || pRaw === undefined || pRaw === '') ? null : Number(pRaw);
+    order.push({ node: n, parentId: (p !== null && idx.byId.has(p)) ? p : null, detached: false });
+    for (const c of childrenOf(idx, id)) {
+      if (!seen.has(Number(c.id))) queue.push(c);
+    }
+  }
+
+  // 2) 루트에서 닿지 않은 것 — 순환 고리다. 버리지 않고 루트로 올려 복제한다.
+  const detachedNodeIds = [];
+  const skippedNodeIds  = [];
+  for (const n of list) {
+    const id = Number(n.id);
+    if (!Number.isInteger(id)) { skippedNodeIds.push(n.id); continue; }
+    if (seen.has(id)) continue;
+    seen.add(id);
+    detachedNodeIds.push(id);
+    order.push({ node: n, parentId: null, detached: true });
+  }
+  detachedNodeIds.sort((a, b) => a - b);
+
+  return { order, detachedNodeIds, skippedNodeIds, total: order.length };
+}
+
+/**
  * 평평한 배열을 트리로 조립 — **서버는 이걸 응답에 쓰지 않는다**(계약 B-3: nodes 는 평평한 배열).
  * 검증·디버깅·QA 용이다. 중첩 JSON 으로 응답하면 깊이 상한·순환 문제가 직렬화로 새어 나온다.
  */
@@ -510,5 +576,6 @@ module.exports = {
   wouldCycle, validatePlacement,
   computeCoverage, computeLadder, uniqueTechniqueIds,
   computeReactionSuggestions,
+  planBranchCopy,
   buildTree,
 };

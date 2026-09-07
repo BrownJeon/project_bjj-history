@@ -211,6 +211,11 @@ function NodeRow({
               {unlinked && <Tag tone="neutral">미연결</Tag>}
               {uncovered && <Tag tone="amber">대처 없음</Tag>}
               {n.linkCount > 0 && <Tag tone="blue">자료 {n.linkCount}</Tag>}
+              {/* 🔴 끊김을 노드를 **열어 보기 전에** 보여 준다(task-028 D). 서버가 트리 응답에
+                  `brokenLinkCount` 를 실어 주는 유일한 이유가 이것이다 — 프론트가 노드마다
+                  /links 를 부르면 N+1 이고, 안 부르면 끊김이 영영 안 보인다.
+                  🔴 색은 중립이다. 앰버는 "대처 없음" 전용이고(task-026), 끊김은 오류가 아니라 상태다. */}
+              {n.brokenLinkCount > 0 && <Tag tone="neutral">끊김 {n.brokenLinkCount}</Tag>}
             </div>
 
             {/* 🔴 이름은 절대 자르지 않는다. ellipsis 도 nowrap 도 쓰지 않는다. */}

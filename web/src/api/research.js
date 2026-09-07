@@ -68,11 +68,17 @@ export const moveNode = (id, body) =>
 export const insertParent = (id, body) =>
   client.post(`/research/nodes/${id}/insert-parent`, body).then(r => r.data);
 
-/** GET /api/research/nodes/:id/links */
+/**
+ * GET /api/research/nodes/:id/links
+ * 응답: {nodeId, links[], total, brokenCount}
+ * 🔴 링크 한 줄은 `{id, nodeId, linkType, refId, memo, broken, brokenReason, target}` 이다.
+ *    `broken` 이 **정본**이다 — 프론트가 title 유무 따위로 다시 판정하지 마라(task-028 D).
+ *    끊긴 링크도 목록에서 사라지지 않는다. 사라지면 사용자가 지울 수도 없다.
+ */
 export const listNodeLinks = (id) =>
   client.get(`/research/nodes/${id}/links`).then(r => r.data);
 
-/** POST /api/research/links — {nodeId, linkType, refId?, memo?} */
+/** POST /api/research/links — {nodeId, linkType, refId?, memo?} (기존 경로) */
 export const createLink = (body) =>
   client.post('/research/links', body).then(r => r.data);
 
@@ -81,6 +87,58 @@ export const patchLink = (id, body) =>
 
 export const deleteLink = (id) =>
   client.delete(`/research/links/${id}`).then(r => r.data);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// task-028 — 분기 · 가져오기 5곳 · 링크 열기
+//
+// 🔴 계약 정본은 `agent-vault/10-Flow/tasks/task-028-branch-import-links.md` 의
+//    `### dev-028a` 절이다. 여기 주석은 요약이지 정본이 아니다.
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * POST /api/research/versions/:id/branch — {name?}
+ * **`:id` 는 분기의 원본이 될 버전 id** 다(프로젝트 id 가 아니다).
+ *
+ * 🔴 응답의 새 버전은 **이미 활성**이다(서버가 한 트랜잭션에서 나머지를 0 으로 내린다).
+ *    프론트가 뒤이어 PATCH {isActive:true} 를 또 부르지 마라 — 같은 일을 두 번 하는 것이고,
+ *    그 사이에 실패하면 활성이 0개인 상태가 화면에 남는다.
+ * 🔴 응답: {branchedFrom, version, copied:{nodes, links, sourceNodes, sourceLinks, complete, …}, project}
+ *    `copied.complete` 가 false 면 **덜 복제된 것**이다. 조용히 넘기지 말고 화면이 말해야 한다.
+ */
+export const branchVersion = (versionId, body) =>
+  client.post(`/research/versions/${versionId}/branch`, body).then(r => r.data);
+
+/**
+ * GET /api/research/import-search?q=&source=&limit= — 5개 저장소(6갈래) 통합 검색.
+ *
+ * 🔴 `q` 가 비면 400 이 아니라 **둘러보기**다(`browse:true`) — 시트를 열자마자 빈 손이 되지 않게.
+ * 🔴 응답 항목의 `linkType`·`refId` 를 **그대로** POST 본문에 실으면 연결된다.
+ *    프론트가 source→linkType 표를 다시 만들지 마라(gameplan·chain 이 같은 라벨을 쓴다).
+ * 🔴 그룹마다 `total`(매치 수)과 `available`(그 저장소 전체 행 수)이 따로 온다.
+ *    `0/0`("기록 없음")과 `0/135`("검색어가 안 걸림")를 화면이 다르게 말해야 한다.
+ */
+export const importSearch = (q, opts = {}) =>
+  client.get('/research/import-search', {
+    params: {
+      q: q ?? '',
+      ...(opts.source ? { source: opts.source } : {}),
+      ...(opts.limit ? { limit: opts.limit } : {}),
+    },
+  }).then(r => r.data);
+
+/**
+ * POST /api/research/nodes/:id/links — {linkType, refId?, memo?}
+ * 노드 스코프 경로. 응답은 `attachLinkTargets` 를 거친 링크 1건이다(끊김 판정 포함).
+ */
+export const addNodeLink = (nodeId, body) =>
+  client.post(`/research/nodes/${nodeId}/links`, body).then(r => r.data);
+
+/**
+ * DELETE /api/research/nodes/:id/links/:linkId
+ * 🔴 노드 스코프로 지운다 — 서버가 "그 링크가 그 노드의 것인지"까지 확인한다.
+ */
+export const removeNodeLink = (nodeId, linkId) =>
+  client.delete(`/research/nodes/${nodeId}/links/${linkId}`).then(r => r.data);
 
 // ─────────────────────────────────────────────────────────────────────────────
 // task-027 — 리액션 자동 유입 + 이번 주 과제

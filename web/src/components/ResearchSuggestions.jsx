@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import Tag from './Tag';
 import Button from './Button';
-import { sourceText, dismissKey, fmtMD } from '../utils/weeklyTask';
+import Icon from './Icon';
+import { sourceText, dismissKey, fmtMD, suggestionEmpty } from '../utils/weeklyTask';
 
 // ═════════════════════════════════════════════════════════════════════════════
 // 리액션 자동 유입 — 스파링에서 막힌 리액션이 **제안**으로 올라온다 (task-027)
@@ -122,16 +123,62 @@ function SuggestRow({ s, unlinked, onAdopt, onDismiss, busy }) {
 }
 
 /**
+ * 🔴 **재료가 없어서 안 보이는 것임을 화면이 말한다** (task-028 A — task-027 지시 정정).
+ *
+ *  task-027 은 "제안 0 → 조용히 아무것도 안 그림"이었다. 그런데 실계정은
+ *  `failItemsWithReaction: 0` 이라 이 구역이 **영영** 뜨지 않는다 — 사용자가 실제로 겪는 화면은
+ *  "만들었는데 아무것도 안 뜬다" 하나뿐이고, 그건 기능이 없는 것과 구분되지 않는다.
+ *
+ *  🔴 그렇다고 "제안 0개" 같은 빈 블록을 그리는 것이 답이 아니다. 숫자 0은 아무것도 알려 주지
+ *     않는다. 이 안내는 **왜 비었는지 + 채우는 길**을 말할 때만 그린다(suggestionEmpty 가 판정).
+ *  🔴 색은 중립이다. 여기에 앰버를 쓰면 "대처 없는 리액션" 신호를 뺏는다(task-026 규약).
+ */
+function EmptyNotice({ info, onGo }) {
+  if (!info) return null;
+  return (
+    <div style={{ marginBottom: 10 }}>
+      <div style={{
+        padding: 11, borderRadius: 11,
+        background: 'var(--surface)', border: '1px dashed var(--border-med)',
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
+          <Icon name="sparring" size={13} color="var(--text2)" />
+          <span style={{
+            fontSize: 13, fontWeight: 800, color: 'var(--text)',
+            whiteSpace: 'normal', overflowWrap: 'anywhere',
+          }}>{info.title}</span>
+        </div>
+        <div style={{
+          fontSize: 11, color: 'var(--text2)', lineHeight: 1.6,
+          whiteSpace: 'normal', overflowWrap: 'anywhere',
+        }}>{info.body}</div>
+        {info.cta && info.ctaTo && (
+          <div style={{ marginTop: 10 }}>
+            <Button variant="outline" size="sm" onClick={() => onGo && onGo(info.ctaTo)}>
+              {info.cta}
+            </Button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/**
  * @param split  utils/weeklyTask.js 의 splitSuggestions() 결과
  * @param onAdopt(s)   채택 — 부모가 노드 시트를 미리 채워 연다(즉시 생성하지 않는다)
  * @param onDismiss(s) 무시 — 이 브라우저에만 남는다(서버 저장 엔드포인트가 계약에 없다)
  * @param onRestore()  무시 전부 되돌리기
+ * @param onGo(path)   빈 상태 안내의 길 — 스파링 기록으로 보낸다
  */
-export default function ResearchSuggestions({ split, res, onAdopt, onDismiss, onRestore, busy }) {
+export default function ResearchSuggestions({ split, res, onAdopt, onDismiss, onRestore, onGo, busy }) {
   const [showSkipped, setShowSkipped] = useState(false);
 
-  // 🔴 보여 줄 게 하나도 없으면 **아무것도 그리지 않는다.** 빈 블록 금지(지시 C).
-  if (!split || !split.visible) return null;
+  // 🔴 보여 줄 게 하나도 없을 때 — **왜** 비었는지 말할 수 있으면 말한다(task-028 A).
+  //    말할 근거가 없으면(응답 전·실패) 예전처럼 아무것도 그리지 않는다.
+  if (!split || !split.visible) {
+    return <EmptyNotice info={suggestionEmpty(res, split)} onGo={onGo} />;
+  }
 
   const s = res?.summary || {};
   const total = split.live.length + split.unlinked.length;

@@ -1,10 +1,14 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import Modal from './Modal';
 import Button from './Button';
 import Tag from './Tag';
 import RecallLadder from './RecallLadder';
+import ResearchLinkList from './ResearchLinkList';
+import ResearchImportSheet from './ResearchImportSheet';
 import { KINDS, KIND_TONE } from './ResearchTree';
 import { taskSummary } from '../utils/weeklyTask';
+import { normalizeLinks } from '../utils/researchLinks';
+import { listNodeLinks, addNodeLink, removeNodeLink } from '../api/research';
 
 // ═════════════════════════════════════════════════════════════════════════════
 // 노드 시트 — 종류 · 이름 · 기술 연결 · 사다리 · 메모
@@ -120,6 +124,8 @@ export default function ResearchNodeSheet({
   open, node, draft, techniques, onClose, onSave, onDelete, descendantCount = 0,
   // task-027 — 이번 주 과제 지정. 세 화면 중 **정하는 곳**이 여기다.
   task, taskErr, onSetTask, onClearTask, taskBusy,
+  // task-028 — 자료 링크. 여는 것은 페이지가 한다(모달·라우팅은 페이지 소관).
+  onOpenLink, onLinksChanged, showToast,
 }) {
   const isCreate = !node;
   // ① 초기값
@@ -130,12 +136,67 @@ export default function ResearchNodeSheet({
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState('');
 
+  // ── task-028 자료 링크 ────────────────────────────────────────────────────
+  // 🔴 링크는 **노드가 이미 있어야** 붙는다. 생성 시트에서는 그리지 않는다 —
+  //    아직 없는 노드에 자료를 붙일 수 없고, "저장하면 붙여 드릴게요"라고 약속하면
+  //    저장 실패 시 사용자가 고른 자료가 조용히 사라진다.
+  const [links, setLinks] = useState([]);
+  const [linksLoading, setLinksLoading] = useState(false);
+  const [linksErr, setLinksErr] = useState('');
+  const [linkBusy, setLinkBusy] = useState(false);
+  const [importOpen, setImportOpen] = useState(false);
+
+  const reloadLinks = useCallback(async (nodeId) => {
+    if (nodeId == null) { setLinks([]); return; }
+    setLinksLoading(true);
+    try {
+      const d = await listNodeLinks(nodeId);
+      setLinks(Array.isArray(d?.links) ? d.links : []);
+      setLinksErr('');
+    } catch (e) {
+      // 🔴 실패를 "자료 없음"으로 뭉개지 않는다 — 붙여 둔 자료가 있는데 없는 것처럼 보이면
+      //    사용자는 같은 것을 또 붙인다.
+      setLinks([]);
+      setLinksErr(e.message || '불러오지 못했습니다');
+    } finally {
+      setLinksLoading(false);
+    }
+  }, []);
+
   // ② node/draft 가 바뀌면 폼을 다시 채운다. 안 하면 이전 노드의 값이 남아 다음 노드에 저장된다.
   useEffect(() => {
     const f = node ? formFromNode(node) : emptyForm(draft);
     setForm(f); setOrig(f);
     setQ(''); setPick(false); setErr('');
-  }, [node, draft]);
+    // 🔴 링크도 함께 초기화한다. 안 하면 **이전 노드의 자료가 다음 노드에 붙어 보인다**
+    //    (그 상태에서 "연결 지우기"를 누르면 남의 노드 자료를 지운다).
+    setImportOpen(false); setLinksErr('');
+    setLinks([]);
+    if (node) reloadLinks(node.id);
+  }, [node, draft, reloadLinks]);
+
+  async function pickLink(body, item) {
+    setLinkBusy(true);
+    try {
+      await addNodeLink(node.id, body);
+      await reloadLinks(node.id);
+      onLinksChanged && onLinksChanged();
+      showToast && showToast(`가져왔습니다 — ${item?.title || ''}`.trim());
+    } catch (e) {
+      showToast && showToast(e.message || '가져오지 못했습니다');
+    } finally { setLinkBusy(false); }
+  }
+
+  async function dropLink(link) {
+    setLinkBusy(true);
+    try {
+      await removeNodeLink(node.id, link.id);
+      await reloadLinks(node.id);
+      onLinksChanged && onLinksChanged();
+    } catch (e) {
+      showToast && showToast(e.message || '지우지 못했습니다');
+    } finally { setLinkBusy(false); }
+  }
 
   const set = (k, v) => setForm(prev => ({ ...prev, [k]: v }));
 
@@ -149,6 +210,8 @@ export default function ResearchNodeSheet({
   const hits = useMemo(() => matchTechniques(techniques, q), [techniques, q]);
 
   const tSum = useMemo(() => taskSummary(task), [task]);
+  // 가져오기 시트가 "이미 붙어 있음"을 판정할 때 쓰는 목록 — 목록 컴포넌트와 **같은 정규화**를 쓴다.
+  const normLinks = useMemo(() => normalizeLinks(links), [links]);
   const dirty = useMemo(() => Object.keys(buildPatch(form, orig)).length > 0, [form, orig]);
   const tooLong = form.label.length > LIMIT.label || (form.note || '').length > LIMIT.note;
 
@@ -286,6 +349,22 @@ export default function ResearchNodeSheet({
         )}
       </div>
 
+      {/* ── 붙은 자료 (task-028 C·D) ──────────────────────────────────────────
+          🔴 생성 시트에는 그리지 않는다 — 아직 없는 노드에 자료를 붙일 수 없다.
+          🔴 "열기"는 여기서 하지 않는다. 모달·라우팅은 페이지 소관이라 콜백으로 올린다 —
+             이 컴포넌트가 react-router 를 알게 되면 QA 하네스가 시트만 따로 띄울 수 없다. */}
+      {!isCreate && (
+        <ResearchLinkList
+          links={links}
+          loading={linksLoading}
+          err={linksErr}
+          busy={linkBusy || busy}
+          onAdd={() => setImportOpen(true)}
+          onOpen={(l) => onOpenLink && onOpenLink(l)}
+          onDelete={dropLink}
+        />
+      )}
+
       {/* ── 이번 주 과제 (task-027) ────────────────────────────────────────────
           🔴 **앱 전체에 1개만.** 다른 노드가 이미 과제면 바꾸기 전에 무엇이 내려가는지 이름으로 말해 준다
              — "덮어씁니다" 같은 추상어로 넘기면 사용자가 무엇을 잃는지 모른 채 누른다.
@@ -383,6 +462,19 @@ export default function ResearchNodeSheet({
         <div style={{ fontSize: 11, color: 'var(--text3)', marginTop: 8 }}>
           바뀐 내용이 없습니다. 저장하면 바뀐 필드만 서버로 갑니다 — 건드리지 않은 값은 그대로 남습니다.
         </div>
+      )}
+
+      {/* 🔴 가져오기 시트는 이 시트 **위에** 뜬다. 노드 시트를 닫지 않는 이유는,
+          닫으면 부모가 상세를 다시 읽어(closeNodeSheet) 사용자가 있던 자리를 잃기 때문이다. */}
+      {!isCreate && importOpen && (
+        <ResearchImportSheet
+          open
+          nodeLabel={form.label || node?.label}
+          links={normLinks}
+          busy={linkBusy}
+          onClose={() => setImportOpen(false)}
+          onPick={pickLink}
+        />
       )}
     </Modal>
   );

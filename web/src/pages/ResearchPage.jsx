@@ -4,9 +4,11 @@ import { useCache } from '../contexts/CacheContext';
 import { useUI } from '../contexts/UIContext';
 import { getHoles } from '../api/lab';
 import { getPositions } from '../api/techniques';
+import { listClips } from '../api/clips';
+import { listClasses } from '../api/classes';
 import {
   listProjects, createProject, getProject, patchProject, deleteProject,
-  patchVersion, deleteVersion,
+  patchVersion, deleteVersion, branchVersion,
   createNode, patchNode, deleteNode, moveNode, insertParent,
   getReactionSuggestions, getTask, setTask as apiSetTask, clearTask as apiClearTask,
 } from '../api/research';
@@ -20,9 +22,13 @@ import ResearchNodeSheet from '../components/ResearchNodeSheet';
 import ResearchProjectForm from '../components/ResearchProjectForm';
 import ResearchEmptyState from '../components/ResearchEmptyState';
 import ResearchSuggestions from '../components/ResearchSuggestions';
+import ResearchBranchModal from '../components/ResearchBranchModal';
+import ClipDetailModal from '../components/ClipDetailModal';
+import ClassDetailModal from '../components/ClassDetailModal';
 import {
   splitSuggestions, dismissKey, readDismissed, writeDismissed, taskSummary,
 } from '../utils/weeklyTask';
+import { openTargetOf } from '../utils/researchLinks';
 
 // ═════════════════════════════════════════════════════════════════════════════
 // 연구 화면 — task-026
@@ -178,7 +184,7 @@ function ProjectCard({ p, onOpen }) {
   );
 }
 
-function VersionTabs({ versions, activeVersionId, onSwitch, onRename, onDelete, busy }) {
+function VersionTabs({ versions, activeVersionId, onSwitch, onRename, onDelete, onBranch, busy }) {
   const [manage, setManage] = useState(false);
   const list = Array.isArray(versions) ? versions : [];
 
@@ -204,9 +210,14 @@ function VersionTabs({ versions, activeVersionId, onSwitch, onRename, onDelete, 
           );
         })}
 
-        {/* 🔴 자리만 만든 버튼. 누르면 아무 일 없는 **활성** 버튼이 제일 나쁘므로 disabled 로 둔다. */}
-        <Button variant="outline" size="sm" disabled>＋ 분기</Button>
-        <span style={{ fontSize: 10, color: 'var(--text3)' }}>task-027에서 열립니다</span>
+        {/* task-028 B — 실제로 연결됐다. 🔴 **바로 만들지 않고 확인 모달을 연다.**
+            무엇이 복제되는지(노드 N · 자료 M)와 원본이 남는다는 사실을 먼저 말해야 하기 때문이다.
+            버전이 없으면(=열 수 없으면) 비활성 — 눌러도 아무 일 없는 활성 버튼을 만들지 않는다. */}
+        <Button
+          variant="outline" size="sm"
+          disabled={busy || activeVersionId == null}
+          onClick={onBranch}
+        >＋ 분기</Button>
 
         <span
           onClick={() => setManage(v => !v)}
@@ -250,7 +261,7 @@ function VersionTabs({ versions, activeVersionId, onSwitch, onRename, onDelete, 
 
 export default function ResearchPage() {
   const navigate = useNavigate();
-  const { techniques } = useCache();
+  const { techniques, clips, classes, reloadClips, reloadClasses } = useCache();
   const { showToast } = useUI();
 
   const [projects, setProjects] = useState([]);
@@ -277,6 +288,13 @@ export default function ResearchPage() {
   const [nodeSheet, setNodeSheet] = useState(null); // {node|null, draft|null}
   const [confirm, setConfirm] = useState(null);
   const [busy, setBusy] = useState(false);
+
+  // task-028 — 분기 · 링크 열기
+  const [branchOpen, setBranchOpen] = useState(false);
+  const [branchBusy, setBranchBusy] = useState(false);
+  const [branchErr, setBranchErr] = useState('');
+  const [openClip, setOpenClip] = useState(null);    // 참고영상 상세
+  const [openClass, setOpenClass] = useState(null);  // 수업 상세
 
   const fail = (k) => (e) => setErrs(prev => ({ ...prev, [k]: e.message || '불러오지 못했습니다' }));
 
@@ -468,6 +486,96 @@ export default function ResearchPage() {
       await patchVersion(v.id, { name });
       await reloadDetail(openId);
     } catch (e) { showToast(e.message || '이름을 저장하지 못했습니다'); }
+  }
+
+  /**
+   * 분기 (task-028 B) — `POST /research/versions/:activeVersionId/branch`.
+   *
+   * 🔴 **뒤이어 PATCH {isActive:true} 를 부르지 않는다.** 서버가 한 트랜잭션에서 새 버전을
+   *    활성으로 만든다(계약). 여기서 또 부르면 같은 일을 두 번 하는 것이고, 그 사이에 실패하면
+   *    활성 버전이 0개인 상태 — 화면이 표현할 수 없는 상태 — 가 남는다.
+   *
+   * 🔴 응답의 `copied.complete` 가 false 면 **덜 복제된 것**이다. 성공 토스트로 덮지 않는다.
+   *    원본이 남는 기능에서 "복제됐다고 믿었는데 일부가 없다"가 제일 나쁜 결말이다.
+   *
+   * 🔴 원본이 화면에서 사라지지 않는지는 `detail.versions` 로 확인된다 —
+   *    서버가 돌려준 `project` 상세를 그대로 그리므로 버전 탭에 원본이 그대로 남는다.
+   */
+  async function doBranch({ name }) {
+    if (activeVersionId == null) return;
+    setBranchBusy(true); setBranchErr('');
+    try {
+      const r = await branchVersion(activeVersionId, name ? { name } : {});
+      // 서버가 상세를 함께 준다 — 다시 GET 하지 않고 그대로 그린다(왕복 1회 절약, 그리고
+      // "방금 만든 것과 화면이 어긋날 창"이 없어진다).
+      if (r?.project) setDetail(r.project);
+      else await reloadDetail(openId);
+      await reloadList();
+      // 새 버전에는 아직 제안 계산 대상이 달라질 수 있다 — 함께 다시 읽는다.
+      reloadSuggest(openId);
+      setBranchOpen(false);
+
+      const c = r?.copied || {};
+      if (c.complete === false) {
+        showToast(`⚠️ 분기했지만 일부만 복제됐습니다 — 노드 ${c.nodes}/${c.sourceNodes} · 자료 ${c.links}/${c.sourceLinks}`);
+      } else {
+        showToast(`v${r?.version?.versionNo ?? ''} 로 분기 — 노드 ${c.nodes ?? 0} · 자료 ${c.links ?? 0} 복제 (원본은 그대로)`);
+      }
+    } catch (e) {
+      setBranchErr(e.message || '분기하지 못했습니다');
+    } finally { setBranchBusy(false); }
+  }
+
+  /**
+   * 링크 열기 (task-028 D).
+   *
+   * 🔴 무엇을 여는지는 `openTargetOf()` 순수 함수가 정한다 — 화면이 linkType 을 다시 훑지 않는다.
+   *    끊긴 링크는 `{kind:'none'}` 이라 **여기 도달해도 아무 일이 없다**(버튼도 이미 비활성이다).
+   *    이중 방어인 이유: 버튼 비활성만 믿으면 키보드·프로그램 클릭에서 뚫린다.
+   *
+   * 🔴 캐시에 없으면 **한 번 다시 읽고**, 그래도 없으면 열지 않고 그 사실을 말한다.
+   *    없는 대상으로 모달을 열면 흰 화면이 남고, 사용자는 앱이 깨진 것으로 읽는다.
+   */
+  async function openLink(link) {
+    const t = openTargetOf(link);
+    if (t.kind === 'none') {
+      if (t.reason === 'broken') showToast('연결 대상이 사라져 열 수 없습니다 — 연결 기록은 남아 있습니다');
+      else if (t.reason === 'no-video') showToast('어느 영상의 챕터인지 알 수 없어 열지 못합니다');
+      else showToast('열 수 있는 대상이 없습니다');
+      return;
+    }
+    if (t.kind === 'route') { navigate(t.route); return; }
+    if (t.kind === 'url') { window.open(t.route, '_blank', 'noopener,noreferrer'); return; }
+
+    // 🔴 캐시가 낡았을 때의 재조회는 **반환값을 직접 받아** 쓴다.
+    //    `reloadClips()` 는 컨텍스트 state 를 바꿀 뿐이고, 이 함수 안의 `clips` 는
+    //    이번 렌더에 닫힌 옛 배열이라 아무리 기다려도 갱신되지 않는다
+    //    (에러 없이 "항상 못 찾음"이 되는 종류의 함정이다).
+    if (t.kind === 'clip') {
+      let found = (clips || []).find(c => c.id === t.refId);
+      if (!found) {
+        try {
+          const fresh = await listClips();
+          found = (Array.isArray(fresh) ? fresh : []).find(c => c.id === t.refId);
+          reloadClips().catch(() => {});   // 캐시도 따라오게 한다(실패해도 이번 열기에는 영향 없다)
+        } catch { /* 아래에서 말한다 */ }
+      }
+      if (!found) { showToast('참고영상을 찾지 못했습니다 — 목록을 새로 고친 뒤 다시 시도해 주세요'); return; }
+      setOpenClip(found);
+      return;
+    }
+    if (t.kind === 'class') {
+      let found = (classes || []).find(c => c.id === t.refId);
+      if (!found) {
+        try {
+          const fresh = await listClasses();
+          found = (Array.isArray(fresh) ? fresh : []).find(c => c.id === t.refId);
+          reloadClasses().catch(() => {});
+        } catch { /* 아래에서 말한다 */ }
+      }
+      if (!found) { showToast('수업 기록을 찾지 못했습니다 — 목록을 새로 고친 뒤 다시 시도해 주세요'); return; }
+      setOpenClass(found);
+    }
   }
 
   function askDeleteVersion(v) {
@@ -692,6 +800,7 @@ export default function ResearchPage() {
             onSwitch={switchVersion}
             onRename={renameVersion}
             onDelete={askDeleteVersion}
+            onBranch={() => { setBranchErr(''); setBranchOpen(true); }}
             busy={busy}
           />
         </Card>
@@ -730,6 +839,8 @@ export default function ResearchPage() {
             onAdopt={adoptSuggestion}
             onDismiss={dismissSuggestion}
             onRestore={restoreDismissed}
+            // task-028 A — 재료가 없어서 비어 있을 때 **재료를 만드는 길**로 보낸다.
+            onGo={(to) => navigate(to)}
           />
         )}
 
@@ -764,6 +875,12 @@ export default function ResearchPage() {
             onSetTask={setNodeAsTask}
             onClearTask={clearCurrentTask}
             taskBusy={taskBusy}
+            // task-028 C·D — 자료 가져오기·열기
+            onOpenLink={openLink}
+            // 🔴 링크가 바뀌면 트리의 자료 개수(`nodeView.linkCount`·`brokenLinkCount`)도 바뀐다.
+            //    다시 읽지 않으면 시트를 닫는 순간 화면이 방금 한 일과 모순된 숫자를 보여 준다.
+            onLinksChanged={() => { reloadDetail(openId); reloadList(); }}
+            showToast={showToast}
           />
         )}
 
@@ -775,6 +892,26 @@ export default function ResearchPage() {
             onClose={() => setProjForm(null)}
             onSave={saveProject}
           />
+        )}
+
+        {/* task-028 B — 분기 확인. 🔴 무엇이 복제되는지·원본이 남는지를 먼저 말한다. */}
+        <ResearchBranchModal
+          open={branchOpen}
+          detail={detail}
+          busy={branchBusy}
+          err={branchErr}
+          onClose={() => { setBranchOpen(false); setBranchErr(''); }}
+          onConfirm={doBranch}
+        />
+
+        {/* task-028 D — 링크 열기. 기존 모달을 그대로 재사용한다(새 상세 화면을 만들지 않는다).
+            🔴 읽기 전용으로 연다 — onEdit/onDelete 를 넘기지 않는다. 연구 화면에서 남의 맥락으로
+               들어온 자료를 수정·삭제하게 하면, 사용자가 어디를 고치고 있는지 잃는다. */}
+        {openClip && (
+          <ClipDetailModal c={openClip} onClose={() => setOpenClip(null)} />
+        )}
+        {openClass && (
+          <ClassDetailModal initial={openClass} onClose={() => setOpenClass(null)} />
         )}
 
         <Confirm

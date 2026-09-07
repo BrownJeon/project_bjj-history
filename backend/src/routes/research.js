@@ -5,6 +5,7 @@ const { ok, fail, wrap } = require('../utils/respond');
 const { toNFC } = require('../utils/nfc');
 const lab  = require('../services/labAnalytics');
 const tree = require('../services/researchTree');
+const importSearch = require('../services/importSearch');
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 연구 화면 API — /api/research/* (task-026 · docs/recall-lab-spec.md §4.4)
@@ -161,16 +162,129 @@ async function techniqueNameMap(userId, t = null) {
   return new Map(rows.map((r) => [Number(r.id), r.name]));
 }
 
-/** 노드 id → 링크 개수. 한 버전 치를 한 번에. */
-async function linkCountMap(versionIds, t = null) {
+// ── 링크 대상 해석 ───────────────────────────────────────────────────────────
+//
+// 🔴 **`research_links.ref_id` 에는 FK 가 없다 — 일부러 없다.** 6개 서로 다른 테이블을 한 컬럼이
+//    가리키기 때문에 FK 를 걸 방법 자체가 없다(다형 참조). 그래서 대상이 지워지면 DB 는
+//    아무것도 해 주지 않고 **끊긴 링크가 남는다.**
+//
+// 🔴 그때 **500 을 내지 않는다.** 대상 삭제는 사용자가 정상적으로 하는 일이고, 그 결과가
+//    서버 에러면 노드 하나가 통째로 안 열린다. 조회할 때마다 대상 존재를 확인해
+//    `broken: true` 로 **상태로 실어 보낸다** — /api/holes 의 `linked:false`,
+//    nodeView 의 `linked` 와 같은 문법이다. 숨기지도, 터지지도 않는다.
+//
+// 🔴 `AND user_id = ?` 가 붙어 있는 것이 중요하다. 계정 이전·데이터 이동으로 남의 행을 가리키게
+//    된 링크는 "있다"가 아니라 **끊김**이다. 남의 클립 제목이 이 응답으로 새어 나갈 길이 없다.
+//
+// 🔴 `fields` 는 **화면이 그 링크를 열기 위해 꼭 필요한 값**을 추가로 싣는 자리다(모든 컬럼이 아니다).
+//    `chapter` 가 그 이유의 전부다: `long_video_chapters.id` 만으로는 **부모 영상 id 를 알 수 없어**
+//    프론트가 `/study/:longVideoId` 를 열 수 없다. 목록 API(`/api/long-videos`)에 챕터가 없어
+//    역추적도 N+1 없이는 불가능하다. `import-search` 는 붙이는 순간에만 알려주므로, 새로고침하면
+//    그 정보가 사라진다 — **조회 시점에 서버가 줘야** 링크가 계속 열린다(dev-028b 요청, 2026-09-07).
+const LINK_TARGETS = {
+  clip:      { table: 'video_clips',         title: 'title', extra: "'' AS subtitle" },
+  class:     { table: 'classes',             title: 'theme', extra: "DATE_FORMAT(`date`, '%Y-%m-%d') AS subtitle" },
+  technique: { table: 'techniques',          title: 'name',  extra: "COALESCE(category, '') AS subtitle" },
+  gameplan:  { table: 'gameplans',           title: 'name',  extra: "COALESCE(start_pos, '') AS subtitle" },
+  chain:     { table: 'technique_chains',    title: 'name',  extra: "'' AS subtitle" },
+  chapter:   {
+    table: 'long_video_chapters', title: 'title',
+    extra: "COALESCE(`summary`, '') AS subtitle, long_video_id, idx, start_sec",
+    fields: { long_video_id: 'longVideoId', idx: 'idx', start_sec: 'startSec' },
+  },
+};
+
+// 🔴 자기점검 — `researchTree.LINK_TYPES` 와 `LINK_TARGETS` 의 짝이 어긋나면 링크는 **만들어지는데**
+//    조회에서 영원히 `broken:true` 가 된다. 에러가 안 나는 종류의 실패라 부팅 때 크게 남긴다.
+{
+  const missing = tree.LINK_TYPES.filter((k) => k !== 'url' && !LINK_TARGETS[k]);
+  const extra   = Object.keys(LINK_TARGETS).filter((k) => !tree.LINK_TYPES.includes(k));
+  if (missing.length || extra.length) {
+    console.error(`[research] 🔴 LINK_TYPES ↔ LINK_TARGETS 불일치 — 대상표 없음: [${missing}] / 종류에 없음: [${extra}]`);
+  }
+}
+
+/**
+ * 링크 배열에 대상 정보를 붙인다 → `{...linkView, broken, brokenReason, target}`.
+ * 🔴 쿼리는 **등장하는 link_type 종류 수만큼**이다(최대 6). 링크 수와 무관 — N+1 이 아니다.
+ */
+async function attachLinkTargets(uid, links, t = null) {
+  const byType = new Map();
+  for (const l of links) {
+    const type = String(l.link_type ?? '');
+    const refId = (l.ref_id == null) ? null : Number(l.ref_id);
+    if (!LINK_TARGETS[type] || refId === null) continue;
+    if (!byType.has(type)) byType.set(type, new Set());
+    byType.get(type).add(refId);
+  }
+
+  const found = new Map();   // `${type}:${id}` -> { title, subtitle }
+  for (const [type, ids] of byType) {
+    const spec = LINK_TARGETS[type];
+    const [rows] = await sequelize.query(
+      `SELECT id, ${spec.title} AS title, ${spec.extra}
+         FROM ${spec.table} WHERE id IN (?) AND user_id = ?`,
+      { replacements: [[...ids], uid], transaction: t }
+    );
+    for (const r of rows) {
+      const t = {
+        title: toNFC(String(r.title ?? '')).trim(),
+        subtitle: toNFC(String(r.subtitle ?? '')).trim().slice(0, 120),
+      };
+      // 🔴 값이 없으면 **키를 지어내지 않고 null 을 준다.** 프론트가 "열 수 없음"과 "0번 챕터"를
+      //    구분할 수 있어야 한다(0 은 유효한 idx 다 — 실측 첫 챕터가 idx=0 이다).
+      for (const [col, key] of Object.entries(spec.fields || {})) {
+        t[key] = (r[col] == null || r[col] === '') ? null : Number(r[col]);
+      }
+      found.set(`${type}:${Number(r.id)}`, t);
+    }
+  }
+
+  return links.map((l) => {
+    const view = linkView(l);
+    const type = view.linkType;
+    // url 링크는 가리키는 행이 없다 — 끊길 수가 없다(주소는 memo 에 있다).
+    if (type === 'url') return { ...view, broken: false, brokenReason: null, target: null };
+    if (!LINK_TARGETS[type]) {
+      // 화이트리스트에 없는 종류가 저장돼 있다(옛 데이터·수동 삽입). 터뜨리지 않고 끊김으로 표시.
+      return { ...view, broken: true, brokenReason: 'unknown_type', target: null };
+    }
+    if (view.refId === null) {
+      return { ...view, broken: true, brokenReason: 'no_ref', target: null };
+    }
+    const hit = found.get(`${type}:${view.refId}`);
+    if (!hit) {
+      // 대상이 지워졌거나 더 이상 이 계정의 것이 아니다. **둘을 구분해 알려주지 않는다**
+      // (남의 id 존재 여부를 흘리지 않는 404 규칙과 같은 정신).
+      return { ...view, broken: true, brokenReason: 'missing', target: null };
+    }
+    return { ...view, broken: false, brokenReason: null, target: { ...hit, refId: view.refId, linkType: type } };
+  });
+}
+
+/**
+ * 노드 id → `{ total, broken }` 링크 통계. 한 버전 치를 한 번에.
+ * 🔴 끊김 수를 트리 응답에 실어야 화면이 노드를 열어 보기 **전에** 끊김을 표시할 수 있다.
+ *    프론트가 노드마다 /links 를 부르면 N+1 이고, 안 부르면 끊김이 영영 안 보인다.
+ */
+async function linkStatsMap(versionIds, uid, t = null) {
   if (!versionIds.length) return new Map();
   const [rows] = await sequelize.query(
-    `SELECT l.node_id, COUNT(*) AS c
-       FROM research_links l JOIN research_nodes n ON n.id = l.node_id
-      WHERE n.version_id IN (?) GROUP BY l.node_id`,
+    `SELECT l.* FROM research_links l JOIN research_nodes n ON n.id = l.node_id
+      WHERE n.version_id IN (?) ORDER BY l.id ASC`,
     { replacements: [versionIds], transaction: t }
   );
-  return new Map(rows.map((r) => [Number(r.node_id), Number(r.c)]));
+  if (!rows.length) return new Map();
+  const resolved = await attachLinkTargets(uid, rows, t);
+  const out = new Map();
+  for (const r of resolved) {
+    const k = Number(r.nodeId);
+    if (!out.has(k)) out.set(k, { total: 0, broken: 0 });
+    const s = out.get(k);
+    s.total++;
+    if (r.broken) s.broken++;
+  }
+  return out;
 }
 
 // ── 응답 뷰 ──────────────────────────────────────────────────────────────────
@@ -190,7 +304,7 @@ function versionView(v) {
  * 🔴 `linked` 는 **서버가** 계산해 준다. 프론트가 `techniqueId != null` 을 또 판정하면 두 곳이 갈린다.
  *    미연결은 결함이 아니라 상태다 — 숨기지 않고 상태로 실어 보낸다(/recall 의 `linked:false` 와 같은 문법).
  */
-function nodeView(n, { techName = null, linkCount = 0 } = {}) {
+function nodeView(n, { techName = null, linkCount = 0, brokenLinkCount = 0 } = {}) {
   const techniqueId = (n.technique_id == null) ? null : Number(n.technique_id);
   return {
     id: Number(n.id),
@@ -204,6 +318,9 @@ function nodeView(n, { techName = null, linkCount = 0 } = {}) {
     linked: techniqueId !== null,
     techniqueName: techniqueId !== null ? (techName ?? null) : null,
     linkCount: Number(linkCount) || 0,
+    // 🔴 대상이 지워진 링크 수. 0 이 아니면 화면이 노드를 열기 **전에** 끊김을 표시할 수 있다.
+    //    이 값이 없으면 프론트는 노드마다 /links 를 부르거나(N+1) 끊김을 영영 못 본다.
+    brokenLinkCount: Number(brokenLinkCount) || 0,
   };
 }
 
@@ -237,7 +354,7 @@ async function buildProjectDetail(userId, project) {
   const ladder   = tree.computeLadder(nodes, await buildReachedMap(userId, techIds));
 
   const nameMap  = techIds.length ? await techniqueNameMap(userId) : new Map();
-  const linkMap  = active ? await linkCountMap([active.id]) : new Map();
+  const linkMap  = active ? await linkStatsMap([active.id], userId) : new Map();
 
   return {
     id: Number(project.id),
@@ -253,7 +370,8 @@ async function buildProjectDetail(userId, project) {
     //    트리 조립은 프론트가 한다(계약 B-3).
     nodes: nodes.map((n) => nodeView(n, {
       techName: nameMap.get(Number(n.technique_id)) ?? null,
-      linkCount: linkMap.get(Number(n.id)) || 0,
+      linkCount: linkMap.get(Number(n.id))?.total || 0,
+      brokenLinkCount: linkMap.get(Number(n.id))?.broken || 0,
     })),
   };
 }
@@ -543,8 +661,156 @@ router.get('/projects/:id/reaction-suggestions', wrap(async (req, res) => {
 }));
 
 // ═══ 버전 ════════════════════════════════════════════════════════════════════
-// 🔴 `POST /api/research/versions`(분기 생성)는 **만들지 않는다.** "+ 분기"는 task-027 이고,
-//    화면의 버튼도 비활성이다. 이번 범위는 버전 전환·이름 수정·삭제까지다.
+
+/**
+ * POST /api/research/versions/:id/branch — **분기**. 이 버전의 트리를 통째로 복제해 새 버전을 만든다.
+ * 본문 `{ name? }`.
+ *
+ * 🔴 **원본은 노드·링크 한 바이트도 바뀌지 않는다.** 이 라우트가 원본 트리에 실행하는 문장은
+ *    `SELECT` 뿐이다 — 원본 `research_nodes`/`research_links` 에 대한 UPDATE·DELETE 가 **0건**이다.
+ *    분기는 "지금까지의 판을 남겨 두고 다른 길을 시험해 보는 것"이라, 원본이 조금이라도 달라지면
+ *    분기 자체의 존재 이유가 사라진다. 유일하게 바뀌는 원본 값은 `research_versions.is_active`
+ *    1→0 이고, 그건 아래 "활성은 정확히 1개" 규칙이 요구하는 것이다(노드·링크가 아니다).
+ *
+ * 🔴 **활성 버전은 언제나 정확히 1개다.** 새 버전을 활성으로 만들기 전에 같은 프로젝트의 전부를
+ *    0 으로 내린다 — **한 트랜잭션 안에서**. 두 문장 사이에서 끊기면 활성 0개(화면이 표현 못 함)
+ *    또는 2개(어느 것이 정본인지 모름)가 된다. PATCH /versions/:id 의 전환과 같은 순서다.
+ *
+ * 🔴 **부모-자식·sort_order·kind·technique_id·note·링크까지 전부 복제한다.** 링크는 `link_type` +
+ *    `ref_id` 로 **id 참조만** 하므로 원본이 가리키던 대상을 그대로 가리킨다(대상 테이블은 안 건드린다).
+ *
+ * 🔴 **`research_tasks`(이번 주 과제)는 복제하지 않는다.** 과제는 앱 전체에 1개이고
+ *    `UNIQUE(user_id, open_slot)` 이 걸려 있어 복제하면 500 이 난다. 그보다, 과제는 "지금 무엇을
+ *    파고 있나"라는 **상태**지 트리의 일부가 아니다. 복제하면 같은 과제가 두 버전에 생긴다.
+ *
+ * 🔴 깊이 상한·순환 방어는 `researchTree` 의 것을 그대로 쓴다(`planBranchCopy`·`maxDepthOf`).
+ *    구조를 그대로 베끼므로 깊이는 변하지 않지만, **이미 상한을 넘은 원본**을 복제해 퍼뜨리지
+ *    않도록 복제 전에 한 번 잰다.
+ */
+router.post('/versions/:id/branch', wrap(async (req, res) => {
+  const uid = req.user.id;
+  const src = await resolveOwned(uid, 'version', req.params.id);
+  if (!src) return fail(res, 404, '버전을 찾을 수 없습니다');
+
+  const body = req.body || {};
+  let name = has(body, 'name') ? clean(body.name) : '';
+  if (name) {
+    const err = textError('버전 이름', name, LIMITS.versionName);
+    if (err) return fail(res, 400, err);
+  }
+
+  const outcome = await sequelize.transaction(async (t) => {
+    // ── 1. 원본 읽기 (SELECT 뿐) ────────────────────────────────────────────
+    const nodes = await nodesOfVersion(src.id, t);
+    const idx   = tree.indexNodes(nodes);
+    // 🔴 새 행의 user_id 는 `research_projects.user_id`(= owner_id, **정본**)에서 유도한다.
+    //    원본 버전 행의 user_id 는 부모에서 유도해 채운 **사본**이라, 그게 드리프트해 있으면
+    //    분기가 드리프트를 그대로 퍼뜨린다. 사본이 아니라 정본을 베낀다(계약 A-2).
+    const ownerId = Number(src.owner_id);
+
+    const srcDepth = tree.maxDepthOf(nodes, idx);
+    if (srcDepth > tree.MAX_DEPTH) {
+      return { error: `원본 트리가 이미 깊이 상한(${tree.MAX_DEPTH})을 넘었습니다 — ${srcDepth}단계` };
+    }
+
+    const [linkRows] = await sequelize.query(
+      `SELECT l.* FROM research_links l JOIN research_nodes n ON n.id = l.node_id
+        WHERE n.version_id = ? ORDER BY l.id ASC`,
+      { replacements: [src.id], transaction: t }
+    );
+
+    // ── 2. 새 버전 행 ───────────────────────────────────────────────────────
+    // version_no 는 이 프로젝트의 최대값 + 1. UNIQUE(project_id, version_no) 가 바닥을 받친다.
+    const [maxRows] = await sequelize.query(
+      'SELECT COALESCE(MAX(version_no), 0) AS mx FROM research_versions WHERE project_id = ? FOR UPDATE',
+      { replacements: [src.project_id], transaction: t }
+    );
+    const nextNo = Number(maxRows[0]?.mx || 0) + 1;
+    if (!name) name = `v${src.version_no} 분기`;
+
+    const now = new Date();
+    const [vr] = await sequelize.query(
+      `INSERT INTO research_versions (user_id, project_id, version_no, name, is_active, parent_version_id, created_at)
+       VALUES (?, ?, ?, ?, 0, ?, ?)`,
+      // 🔴 user_id 는 본문이 아니라 **원본 버전 행에서 유도**한다(계약 A-2).
+      //    parent_version_id 가 "어디서 갈라졌는가"의 기록이다.
+      { replacements: [ownerId, src.project_id, nextNo, name, src.id, now], transaction: t }
+    );
+    const newVersionId = Number(vr?.insertId ?? vr);
+
+    // ── 3. 노드 복제 — 부모가 반드시 먼저 들어간다 ──────────────────────────
+    const plan = tree.planBranchCopy(nodes, idx);
+    const idMap = new Map();            // 원본 노드 id -> 새 노드 id
+    for (const step of plan.order) {
+      const n = step.node;
+      const newParent = (step.parentId === null) ? null : (idMap.get(step.parentId) ?? null);
+      const [nr] = await sequelize.query(
+        `INSERT INTO research_nodes
+           (user_id, version_id, parent_node_id, kind, label, technique_id, sort_order, note, created_at, updated_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        { replacements: [
+          ownerId, newVersionId, newParent,
+          n.kind, n.label ?? '', (n.technique_id == null ? null : Number(n.technique_id)),
+          Number(n.sort_order) || 0, n.note ?? null, now, now,
+        ], transaction: t }
+      );
+      idMap.set(Number(n.id), Number(nr?.insertId ?? nr));
+    }
+
+    // ── 4. 링크 복제 — link_type + ref_id 는 그대로. 대상 테이블은 건드리지 않는다. ──
+    let copiedLinks = 0;
+    for (const l of linkRows) {
+      const newNodeId = idMap.get(Number(l.node_id));
+      if (!newNodeId) continue;         // 위 3에서 복제 못 한 노드의 링크(정상 경로에선 0건)
+      await sequelize.query(
+        `INSERT INTO research_links (user_id, node_id, link_type, ref_id, memo, created_at)
+         VALUES (?, ?, ?, ?, ?, ?)`,
+        { replacements: [ownerId, newNodeId, l.link_type, l.ref_id, l.memo, now], transaction: t }
+      );
+      copiedLinks++;
+    }
+
+    // ── 5. 활성 전환 — 같은 트랜잭션. 활성은 언제나 정확히 1개다. ────────────
+    await sequelize.query('UPDATE research_versions SET is_active = 0 WHERE project_id = ?',
+      { replacements: [src.project_id], transaction: t });
+    await sequelize.query('UPDATE research_versions SET is_active = 1 WHERE id = ?',
+      { replacements: [newVersionId], transaction: t });
+
+    return {
+      newVersionId, nextNo, name,
+      sourceNodeCount: nodes.length,
+      copiedNodes: idMap.size,
+      sourceLinkCount: linkRows.length,
+      copiedLinks,
+      maxDepth: srcDepth,
+      // 🔴 정상 데이터면 둘 다 빈 배열이다. 비어 있지 않으면 원본이 이미 깨져 있었다는 뜻이고,
+      //    복제가 그걸 **조용히 고치거나 버리지 않았음**을 응답으로 알린다.
+      detachedNodeIds: plan.detachedNodeIds,
+      skippedNodeIds: plan.skippedNodeIds,
+    };
+  });
+
+  if (outcome.error) return fail(res, 400, outcome.error);
+
+  ok(res, {
+    branchedFrom: { versionId: Number(src.id), versionNo: Number(src.version_no) },
+    version: {
+      id: outcome.newVersionId, versionNo: outcome.nextNo, name: outcome.name,
+      isActive: true, parentVersionId: Number(src.id),
+    },
+    copied: {
+      nodes: outcome.copiedNodes, links: outcome.copiedLinks,
+      // 🔴 원본 개수를 나란히 싣는다. 하나라도 덜 복제되면 응답만 보고 알 수 있게.
+      sourceNodes: outcome.sourceNodeCount, sourceLinks: outcome.sourceLinkCount,
+      complete: outcome.copiedNodes === outcome.sourceNodeCount
+             && outcome.copiedLinks === outcome.sourceLinkCount,
+      maxDepth: outcome.maxDepth,
+      detachedNodeIds: outcome.detachedNodeIds,
+      skippedNodeIds: outcome.skippedNodeIds,
+    },
+    project: await detailById(uid, src.project_id),
+  });
+}));
 
 /**
  * PATCH /api/research/versions/:id — name 수정 · isActive 전환.
@@ -688,9 +954,14 @@ async function singleNodeView(uid, nodeId) {
     const t = await Technique.findOne({ where: { id: row.technique_id, user_id: uid }, raw: true });
     techName = t ? t.name : null;
   }
-  const [lc] = await sequelize.query(
-    'SELECT COUNT(*) AS c FROM research_links WHERE node_id = ?', { replacements: [row.id] });
-  return nodeView(row, { techName, linkCount: Number(lc[0]?.c || 0) });
+  const [lrows] = await sequelize.query(
+    'SELECT * FROM research_links WHERE node_id = ? ORDER BY id ASC', { replacements: [row.id] });
+  const resolved = await attachLinkTargets(uid, lrows);
+  return nodeView(row, {
+    techName,
+    linkCount: resolved.length,
+    brokenLinkCount: resolved.filter((l) => l.broken).length,
+  });
 }
 
 /**
@@ -988,11 +1259,54 @@ router.post('/nodes/:id/insert-parent', wrap(async (req, res) => {
   });
 }));
 
-// ═══ 링크 ════════════════════════════════════════════════════════════════════
-// 🔴 "검색해서 가져오기"·"링크 열기" UI 는 task-027/028 이다. 여기는 저장소만 연다.
+// ═══ 가져오기 검색 ════════════════════════════════════════════════════════════
 
-/** ref_id 소유 확인 — 남의 클립·수업·기술 id 를 매달아 두면 task-027 의 "열기"가 유출 경로가 된다. */
-const REF_TABLE = { clip: 'video_clips', class: 'classes', technique: 'techniques' };
+/**
+ * GET /api/research/import-search?q=&source=&limit= — 5개 저장소(6갈래) 통합 검색 (task-028 B).
+ *
+ * 노드에 매달 후보를 한 번에 찾는다. 응답 항목의 `linkType`·`refId` 를 그대로
+ * `POST /api/research/nodes/:id/links` 에 실으면 연결된다 — 화면이 매핑을 재조립하지 않는다.
+ *
+ * 🔴 **검색 로직은 `services/importSearch.js` → `services/recallSearch.js` 로 내려간다.**
+ *    수업기록 갈래는 task-025 의 `searchCorpus` 를 통째로 재사용하고, 나머지도 같은
+ *    `makeSnippets`/`normQuery` 를 쓴다. 여기에 새 매처가 없다(계약: 신규 검색 로직 금지).
+ * 🔴 NFC 정규화는 그 두 함수 안에 있다 — 자모분리(NFD)로 친 검색어도 걸린다(task-014).
+ * 🔴 `q` 가 비면 400 이 아니라 **둘러보기**다(`browse: true`). 화면을 열자마자 빈 손이 되지 않게.
+ */
+router.get('/import-search', wrap(async (req, res) => {
+  const uid = req.user.id;
+  const q = clean(req.query.q ?? '');
+  // 이 DB 는 utf8mb3 라 이모지는 저장 경로에서 500 이 된다. 검색은 저장하지 않으므로 막지 않되,
+  // 길이는 막는다 — 스니펫 윈도우가 검색어 길이에 비례해 커진다.
+  if (textLen(q) > 200) return fail(res, 400, '검색어는 200자 이내로 입력해주세요');
+
+  const rawSource = clean(req.query.source ?? '');
+  let sources = null;
+  if (rawSource) {
+    sources = rawSource.split(',').map((s) => s.trim()).filter(Boolean);
+    const bad = sources.filter((s) => !importSearch.SOURCE_KEYS.includes(s));
+    if (bad.length) {
+      return fail(res, 400, `출처는 ${importSearch.SOURCE_KEYS.join(' · ')} 중에서 골라주세요`);
+    }
+  }
+
+  const limit = has(req.query, 'limit') ? posInt(req.query.limit) : null;
+  if (has(req.query, 'limit') && limit === null) {
+    return fail(res, 400, 'limit 은 1 이상의 정수여야 합니다');
+  }
+
+  ok(res, await importSearch.importSearch(uid, {
+    q, sources, limit: limit ?? importSearch.DEFAULT_LIMIT,
+  }));
+}));
+
+// ═══ 링크 ════════════════════════════════════════════════════════════════════
+//
+// 🔴 **기존 테이블 스키마를 한 줄도 바꾸지 않는다.** `link_type` + `ref_id` 로 **id 참조만** 한다.
+//    6개 저장소를 한 컬럼이 가리키는 다형 참조라 FK 를 걸 수단이 없고, 그래서 **끊김이 실재한다.**
+//    끊긴 링크는 500 이 아니라 `broken: true` 다 — 위 `attachLinkTargets` 주석 참고.
+
+/** ref_id 소유 확인 — 남의 클립·수업·기술 id 를 매달아 두면 "열기"가 유출 경로가 된다. */
 async function refIdError(uid, linkType, rawRefId) {
   if (linkType === 'url') {
     // url 은 ref_id 없이 memo 에 주소를 담는다.
@@ -1001,10 +1315,15 @@ async function refIdError(uid, linkType, rawRefId) {
     }
     return { value: null };
   }
+  const spec = LINK_TARGETS[linkType];
+  // 화이트리스트(LINK_TYPES)는 통과했는데 대상표에 짝이 없다 = 위 자기점검이 잡아야 할 배선 실수다.
+  // 그래도 여기서 500 을 내지 않는다 — 만들어지면 영원히 broken 인 링크가 생기므로 아예 거절한다.
+  if (!spec) return { message: `${linkType} 링크는 아직 연결할 수 없습니다` };
+
   const refId = posInt(rawRefId);
   if (refId === null) return { message: `${linkType} 링크에는 refId 가 필요합니다` };
   const [rows] = await sequelize.query(
-    `SELECT id FROM ${REF_TABLE[linkType]} WHERE id = ? AND user_id = ? LIMIT 1`,
+    `SELECT id FROM ${spec.table} WHERE id = ? AND user_id = ? LIMIT 1`,
     { replacements: [refId, uid] }
   );
   // 🔴 남의 것이면 404 — 존재 여부를 흘리지 않는다(기술 id 규칙과 같다).
@@ -1012,22 +1331,28 @@ async function refIdError(uid, linkType, rawRefId) {
   return { value: refId };
 }
 
-/** GET /api/research/nodes/:id/links */
+/**
+ * GET /api/research/nodes/:id/links — 링크 목록 + **끊김 판정**.
+ * 🔴 대상이 지워진 링크는 목록에서 사라지지 않는다. `broken: true` 로 남는다 —
+ *    사라지면 사용자는 "내가 연결했던 게 뭐였지"를 영영 알 수 없고, 지울 수도 없다.
+ */
 router.get('/nodes/:id/links', wrap(async (req, res) => {
-  const n = await resolveOwned(req.user.id, 'node', req.params.id);
+  const uid = req.user.id;
+  const n = await resolveOwned(uid, 'node', req.params.id);
   if (!n) return fail(res, 404, '노드를 찾을 수 없습니다');
   const [rows] = await sequelize.query(
     'SELECT * FROM research_links WHERE node_id = ? ORDER BY id ASC', { replacements: [n.id] });
-  ok(res, { links: rows.map(linkView) });
+  const links = await attachLinkTargets(uid, rows);
+  ok(res, {
+    nodeId: Number(n.id),
+    links,
+    total: links.length,
+    brokenCount: links.filter((l) => l.broken).length,
+  });
 }));
 
-/** POST /api/research/links — {nodeId, linkType, refId?, memo?} */
-router.post('/links', wrap(async (req, res) => {
-  const uid  = req.user.id;
-  const body = req.body || {};
-  const n = await resolveOwned(uid, 'node', body.nodeId);
-  if (!n) return fail(res, 404, '노드를 찾을 수 없습니다');
-
+/** 링크 생성 본문 검증 + INSERT. `POST /links` 와 `POST /nodes/:id/links` 가 **한 벌**을 쓴다. */
+async function createLink(res, uid, node, body) {
   const linkType = clean(body.linkType);
   if (!tree.LINK_TYPES.includes(linkType)) {
     return fail(res, 400, `링크 종류는 ${tree.LINK_TYPES.join(' · ')} 중 하나여야 합니다`);
@@ -1042,12 +1367,50 @@ router.post('/links', wrap(async (req, res) => {
   const [r] = await sequelize.query(
     `INSERT INTO research_links (user_id, node_id, link_type, ref_id, memo, created_at)
      VALUES (?, ?, ?, ?, ?, ?)`,
-    // 🔴 user_id 는 본문이 아니라 **부모 노드 행에서 유도**한다(계약 A-2).
-    { replacements: [n.user_id, n.id, linkType, ref.value, memo || null, new Date()] }
+    // 🔴 user_id 는 본문이 아니라 **소유자(research_projects.user_id)**에서 유도한다(계약 A-2).
+    { replacements: [Number(node.owner_id), node.id, linkType, ref.value, memo || null, new Date()] }
   );
   const [rows] = await sequelize.query('SELECT * FROM research_links WHERE id = ?',
     { replacements: [Number(r?.insertId ?? r)] });
-  ok(res, linkView(rows[0]));
+  const [view] = await attachLinkTargets(uid, rows);
+  return ok(res, view);
+}
+
+/**
+ * POST /api/research/nodes/:id/links — {linkType, refId?, memo?} (task-028 C).
+ * 노드 스코프 경로. 가져오기 검색 결과의 `linkType`·`refId` 를 그대로 실으면 된다.
+ */
+router.post('/nodes/:id/links', wrap(async (req, res) => {
+  const uid = req.user.id;
+  const n = await resolveOwned(uid, 'node', req.params.id);
+  if (!n) return fail(res, 404, '노드를 찾을 수 없습니다');
+  return createLink(res, uid, n, req.body || {});
+}));
+
+/**
+ * DELETE /api/research/nodes/:id/links/:linkId (task-028 C).
+ * 🔴 링크가 **그 노드의 것**인지까지 확인한다. 노드만 소유 확인하고 linkId 를 그대로 지우면
+ *    자기 노드 id + 남의 링크 id 조합으로 남의 링크를 지울 수 있다.
+ */
+router.delete('/nodes/:id/links/:linkId', wrap(async (req, res) => {
+  const uid = req.user.id;
+  const n = await resolveOwned(uid, 'node', req.params.id);
+  if (!n) return fail(res, 404, '노드를 찾을 수 없습니다');
+  const l = await resolveOwned(uid, 'link', req.params.linkId);
+  if (!l || Number(l.node_id) !== Number(n.id)) return fail(res, 404, '링크를 찾을 수 없습니다');
+
+  await sequelize.query('DELETE FROM research_links WHERE id = ? AND node_id = ?',
+    { replacements: [l.id, n.id] });
+  ok(res, { deletedLinks: 1, nodeId: Number(n.id) });
+}));
+
+/** POST /api/research/links — {nodeId, linkType, refId?, memo?} (기존 경로 — 유지). */
+router.post('/links', wrap(async (req, res) => {
+  const uid  = req.user.id;
+  const body = req.body || {};
+  const n = await resolveOwned(uid, 'node', body.nodeId);
+  if (!n) return fail(res, 404, '노드를 찾을 수 없습니다');
+  return createLink(res, uid, n, body);
 }));
 
 /** PATCH /api/research/links/:id — memo·refId 부분 갱신 (link_type 은 바꾸지 않는다). */
@@ -1075,7 +1438,8 @@ router.patch('/links/:id', wrap(async (req, res) => {
     { replacements: [...vals, l.id] });
   const [rows] = await sequelize.query('SELECT * FROM research_links WHERE id = ?',
     { replacements: [l.id] });
-  ok(res, linkView(rows[0]));
+  const [view] = await attachLinkTargets(uid, rows);
+  ok(res, view);
 }));
 
 /** DELETE /api/research/links/:id */

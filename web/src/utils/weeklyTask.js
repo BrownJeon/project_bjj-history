@@ -191,3 +191,69 @@ export function splitSuggestions(res, dismissedMap) {
     visible: live.length > 0 || liveUnlinked.length > 0 || hiddenCount > 0 || skp.length > 0,
   };
 }
+
+/**
+ * 🔴 **task-028 A — 지시 정정.**
+ *
+ * task-027 은 "제안이 없으면 조용히 아무것도 안 그린다"였다. 그런데 실계정은
+ * `failItemsWithReaction: 0` 이라 리액션 제안이 **영영** 뜨지 않는다. 그 결과 사용자에게 남는
+ * 경험은 "만들었는데 아무것도 안 뜬다" 하나뿐이었다 — 기능이 없는 것과 구분되지 않는다.
+ *
+ * → **"비었다"와 "아직 재료가 없다"는 다른 말이다.** 재료가 없어서 안 보이는 것이면
+ *   화면이 그 사실과 **재료를 만드는 길**을 말해야 한다. 빈 블록을 그리지 말라는 원래 규칙은
+ *   "숫자 0을 장식으로 그리지 마라"는 뜻이었지, "이유를 숨겨라"가 아니었다.
+ *
+ * 이 함수는 **순수 함수**다(QA 하네스가 HTTP 없이 직접 부른다). 화면은 여기서 돌려준
+ * `kind` 로만 분기한다 — 화면마다 조건을 다시 쓰면 두 곳이 갈린다.
+ *
+ * @param res   GET .../reaction-suggestions 응답
+ * @param split splitSuggestions() 결과
+ * @returns {null | {kind, title, body, cta, ctaTo}}
+ *   kind: 'no-material' | 'no-anchor' | 'no-match'
+ *   null = 그릴 게 있거나(=구역이 정상 렌더) 아직 판단할 근거가 없다(조회 전/실패).
+ */
+export function suggestionEmpty(res, split) {
+  // 보여 줄 게 있으면 빈 상태가 아니다.
+  if (split && split.visible) return null;
+  // 응답이 없으면(로딩·실패) 여기서 말하지 않는다 — 실패는 실패로 따로 그린다.
+  if (!res || typeof res !== 'object') return null;
+
+  const s = res.summary || {};
+  const withReaction = Number(s.failItemsWithReaction);
+  const nodesWithTech = Number(s.nodesWithTechnique);
+
+  // ① 재료 자체가 없다 — 실계정이 지금 여기다.
+  if (res.empty === true || withReaction === 0) {
+    return {
+      kind: 'no-material',
+      title: '아직 올라올 리액션이 없습니다',
+      body: '스파링을 기록할 때 실패한 기술에 “상대가 어떻게 막았나요?”를 한 줄 적으면 '
+          + '그 문장이 여기로 올라옵니다. 지금은 적힌 것이 하나도 없어서 비어 있는 것이지, '
+          + '기능이 꺼진 것이 아닙니다.',
+      cta: '스파링 기록하러 가기',
+      ctaTo: '/calendar',
+    };
+  }
+
+  // ② 재료는 있는데 **붙일 자리**가 없다 — 트리에 기술을 연결한 노드가 하나도 없다.
+  if (Number.isFinite(nodesWithTech) && nodesWithTech === 0) {
+    return {
+      kind: 'no-anchor',
+      title: `적어 둔 리액션 ${withReaction}건이 붙을 자리가 없습니다`,
+      body: '리액션은 기술이 연결된 노드 아래에 붙습니다. 이 버전의 트리에는 기술을 연결한 '
+          + '노드가 아직 없어서 올라오지 못했습니다. 노드 하나에 기술을 연결하면 다음부터 여기 나타납니다.',
+      cta: null,
+      ctaTo: null,
+    };
+  }
+
+  // ③ 재료도 있고 붙일 자리도 있는데 **겹치는 기술이 없다.**
+  return {
+    kind: 'no-match',
+    title: `적어 둔 리액션 ${Number.isFinite(withReaction) ? withReaction : 0}건이 이 트리와 겹치지 않습니다`,
+    body: '매트에서 막힌 기술과 이 트리에 연결된 기술이 서로 다릅니다. '
+        + '이 프로젝트에서 실제로 막히는 기술을 노드에 연결하면 그때부터 올라옵니다.',
+    cta: null,
+    ctaTo: null,
+  };
+}
