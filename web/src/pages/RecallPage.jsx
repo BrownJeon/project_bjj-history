@@ -69,6 +69,36 @@ function fmtDay(v) {
 }
 
 /**
+ * 검색 기간 기본값 = 3개월 전 ~ 오늘 (task-029 A-3).
+ *
+ * 🔴 toISOString() 금지. UTC 로 밀려 KST(+9) 기준 하루가 어긋난다 — 위 3번 함정 그대로다.
+ *    로컬 게터(getFullYear/getMonth/getDate) + padStart 로만 'YYYY-MM-DD' 를 조립한다.
+ * 🔴 setMonth(getMonth() - 3) 은 말일에서 다음 달로 이월한다
+ *    (5/31 → 2/31 → 3/3, 7/31 → 4/31 → 5/1, 12/31 → 9/31 → 10/1).
+ *    그러면 "3개월 전"이 실제로는 89일 전이 되어 그 사이 기록이 기본 화면에서 조용히 빠진다.
+ *    → 달을 먼저 옮기고 일자를 **그 달 말일로 자른다**(5/31 → 2/28, 윤년이면 2/29).
+ */
+const pad2 = (n) => String(n).padStart(2, '0');
+
+function ymdLocal(d) {
+  return `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
+}
+
+function monthsBeforeLocal(base, months) {
+  const total = base.getFullYear() * 12 + base.getMonth() - months;
+  const y = Math.floor(total / 12);
+  const m = total - y * 12;                          // 0..11
+  const lastDay = new Date(y, m + 1, 0).getDate();   // 그 달의 말일 (로컬 생성자, UTC 왕복 없음)
+  return `${y}-${pad2(m + 1)}-${pad2(Math.min(base.getDate(), lastDay))}`;
+}
+
+/** 마운트 시 1회만 고정하는 기본 기간. */
+function defaultRange() {
+  const now = new Date();
+  return { from: monthsBeforeLocal(now, 3), to: ymdLocal(now) };
+}
+
+/**
  * 스니펫 안의 검색어를 강조. NFC 로 맞춘 뒤 찾고 **NFC 로 렌더**한다
  * (원문을 렌더하면서 정규화된 문자열로 인덱스를 재면 길이가 어긋나 엉뚱한 데가 잘린다).
  */
@@ -155,11 +185,11 @@ function HoleRow({ h, onLadder, unlinked }) {
             <span
               onClick={() => onLadder(h.techniqueId, h.matchedName || h.name)}
               style={{ marginLeft: 'auto', fontSize: 12, fontWeight: 700, color: 'var(--accent-lt)', cursor: 'pointer' }}
-            >사다리 보기 ›</span>
+            >숙련도 보기 ›</span>
           )
           : (
             // 미연결은 techniqueId 가 null 이라 /api/mastery/null 이 404 다. 열지 않는다.
-            <span style={{ marginLeft: 'auto', fontSize: 10, color: 'var(--text3)' }}>사다리 없음</span>
+            <span style={{ marginLeft: 'auto', fontSize: 10, color: 'var(--text3)' }}>숙련도 없음</span>
           )}
       </div>
     </div>
@@ -207,7 +237,7 @@ function HoleBlock({ data, onLadder, goCalendar }) {
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
             <Icon name="link" size={13} color="var(--amber)" />
             <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--amber)' }}>
-              기술트리에 연결되지 않은 이름 {unlinked.length}
+              미연결 기술 목록 {unlinked.length}
             </span>
           </div>
           <Hint>
@@ -266,7 +296,7 @@ function StaleCard({ data, onLadder }) {
               <span
                 onClick={() => onLadder(top.techniqueId, top.name)}
                 style={{ fontSize: 12, fontWeight: 700, color: 'var(--accent-lt)', cursor: 'pointer' }}
-              >사다리 보기 ›</span>
+              >숙련도 보기 ›</span>
             </div>
           )}
         </>
@@ -438,8 +468,12 @@ export default function RecallPage() {
   // 섞으면 "요약 보기"가 아직 검색하지 않은 조건으로 AI 를 호출한다.
   const [q, setQ] = useState('');
   const [pos, setPos] = useState('');
-  const [from, setFrom] = useState('');
-  const [to, setTo] = useState('');
+  // 기본 기간은 마운트 시 한 번만 정한다. 렌더마다 다시 계산하면 자정을 넘기는 순간
+  // 아래 "기본값과 다른가" 판정이 흔들려 초기화 버튼이 혼자 나타난다.
+  // 🔴 빈 값(전체 조회)을 기본값으로 되채우지 않는다 — 되채우면 전체 조회를 할 방법이 없어진다.
+  const [defaults] = useState(defaultRange);
+  const [from, setFrom] = useState(defaults.from);
+  const [to, setTo] = useState(defaults.to);
   const [applied, setApplied] = useState(null);
   const [res, setRes] = useState(null);
   const [searching, setSearching] = useState(false);
@@ -486,9 +520,24 @@ export default function RecallPage() {
   }, [q, pos, from, to]);
 
   // 포지션 칸을 누르면 그 자리에서 검색까지 간다 (격자는 검색의 진입로다).
+  //
+  // 🔴 격자 칸의 `기록 N`(PosCell)은 getPositions() 가 주는 **전체 기간** 집계다
+  //    (/api/techniques/positions 에는 날짜 파라미터가 없다). 검색 폼의 기본값은 3개월이라
+  //    그대로 두면 "기록 12" 칸을 눌렀는데 결과가 4건 나온다 — 에러 없이 숫자가 거짓말을 한다.
+  //    실측: user 3 수업 29건 중 기본 3개월 창 안은 15건, 14건(48%)이 빠졌다.
+  //    → 격자는 "전체 기간 진입로", 검색 폼은 "3개월 기본" 으로 역할을 나눈다.
+  // 🔴 setFrom/setTo 는 비동기라 바로 아래 runSearch 안의 from/to 는 아직 옛 값이다.
+  //    override 로 from:''/to:'' 를 **같이** 넘겨야 한다. 안 넘기면 첫 클릭만 옛 기간으로
+  //    나가는, 이 프로젝트가 반복해 온 "에러 없이 한 번만 어긋나는" 결함이 된다.
   const pickPos = useCallback((name) => {
     setPos(name);
-    runSearch({ pos: name });
+    // 🔴 pickPos 는 "선택"과 "해제"를 겸한다(격자 재클릭 · `{pos} ✕` 태그가 name='' 로 들어온다).
+    //    기간 초기화는 **선택에만** 딸린다 — 해제는 조건 하나를 빼는 것이지 기간까지 되돌리라는
+    //    뜻이 아니다. 구분하지 않으면 "격자 클릭 → 날짜 손으로 재지정 → ✕ 해제" 에서
+    //    사용자가 방금 지정한 날짜가 조용히 날아간다.
+    if (!name) { runSearch({ pos: '' }); return; }
+    setFrom(''); setTo('');
+    runSearch({ pos: name, from: '', to: '' });
   }, [runSearch]);
 
   const openClass = useCallback((classId) => {
@@ -519,6 +568,10 @@ export default function RecallPage() {
       .filter(t => String(t.name || '').normalize('NFC').toLowerCase().includes(needle))
       .slice(0, 6);
   }, [applied, techniques]);
+
+  // from/to 가 이제 항상 차 있으므로 `(q || pos || from || to)` 는 늘 참이다.
+  // 아무것도 안 건드렸는데 초기화가 떠 있지 않도록 **기본값과 다를 때**로 판정한다.
+  const condDirty = !!q || !!pos || from !== defaults.from || to !== defaults.to;
 
   // 빈 상태 ①: 구멍도 미연결도 0 → 1번 블록을 빈 카드로 남기지 않고 격자를 위로 올린다.
   const sparEmpty = !!holes && (holes.empty || holes.summary?.sparSessions === 0);
@@ -592,16 +645,31 @@ export default function RecallPage() {
             <span style={{ fontSize: 12, color: 'var(--text3)' }}>~</span>
             <input type="date" value={to} onChange={(e) => setTo(e.target.value)}
               style={dateInput} />
+
+            {/* 🔴 요구사항 원문은 "날짜를 선택하지 않으면 모든 날짜를 대상으로 조회해줘" 다.
+                기본값이 채워지면서 날짜를 비우는 유일한 방법이 date 입력 Backspace 가 됐다
+                (Chrome 데스크톱에는 지우기 버튼이 없다). 기능이 남아 있어도 입구가 없으면
+                구현되지 않은 것이다 — task-016 의 "기능은 있는데 입구가 없었다"와 같은 실패.
+                비어 있을 때는 링크가 아니라 **지금이 전체 기간이라는 표시**로 바꾼다. */}
+            {(from || to)
+              ? (
+                <span
+                  onClick={() => { setFrom(''); setTo(''); }}
+                  style={{ fontSize: 11, fontWeight: 700, color: 'var(--accent-lt)', cursor: 'pointer', padding: '0 2px' }}
+                >전체 기간</span>
+              )
+              : <Tag tone="accent">전체 기간</Tag>}
+
             {pos && (
               <Tag tone="accent" onClick={() => pickPos('')} style={{ cursor: 'pointer' }}>
                 {pos} ✕
               </Tag>
             )}
-            {(q || pos || from || to) && (
+            {condDirty && (
               <span
-                onClick={() => { setQ(''); setPos(''); setFrom(''); setTo(''); setRes(null); setApplied(null); setSummary(null); }}
+                onClick={() => { setQ(''); setPos(''); setFrom(defaults.from); setTo(defaults.to); setRes(null); setApplied(null); setSummary(null); }}
                 style={{ marginLeft: 'auto', fontSize: 11, color: 'var(--text3)', cursor: 'pointer' }}
-              >조건 지우기</span>
+              >조건 초기화</span>
             )}
           </div>
         </form>
@@ -611,7 +679,7 @@ export default function RecallPage() {
 
       {matchedTechs.length > 0 && (
         <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', margin: '0 2px 10px' }}>
-          <span style={{ fontSize: 11, color: 'var(--text3)', alignSelf: 'center' }}>사다리:</span>
+          <span style={{ fontSize: 11, color: 'var(--text3)', alignSelf: 'center' }}>숙련도:</span>
           {matchedTechs.map(t => (
             <Tag key={t.id} tone="accent" onClick={() => setLadder({ techId: t.id, name: t.name })}>
               {t.name} ›
@@ -628,6 +696,8 @@ export default function RecallPage() {
               {applied?.pos && ` · 포지션 ${applied.pos}`}
               {applied?.from && ` · ${fmtDay(applied.from)}부터`}
               {applied?.to && ` · ${fmtDay(applied.to)}까지`}
+              {/* 기간이 없을 때 아무 말도 안 하면 "3개월만 본 건지 전체를 본 건지"를 알 수 없다. */}
+              {!applied?.from && !applied?.to && ' · 전체 기간'}
             </div>
             {(res.results || []).map(r => (
               <ResultCard key={r.classId} r={r} q={applied?.q} onOpen={() => openClass(r.classId)} />
@@ -725,7 +795,7 @@ export default function RecallPage() {
 
       {/* ── 5. 사다리 카드 ──────────────────────────────────────────────────── */}
       {ladder && (
-        <Modal title="사다리" onClose={() => setLadder(null)}>
+        <Modal title="숙련도" onClose={() => setLadder(null)}>
           <RecallLadder techId={ladder.techId} name={ladder.name} onClose={() => setLadder(null)} />
         </Modal>
       )}

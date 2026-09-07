@@ -19,8 +19,8 @@ import Icon from './Icon';
 // ─────────────────────────────────────────────────────────────────────────────
 
 const TONE = {
-  done:      { color: 'var(--accent-lt)', bg: 'var(--accent-dim)', border: '1px solid var(--accent)',    glyph: '✓', word: '함' },
-  not_yet:   { color: 'var(--text2)',     bg: 'var(--surface-up)', border: '1px solid var(--border)',    glyph: '✗', word: '아직' },
+  done:      { color: 'var(--accent-lt)', bg: 'var(--accent-dim)', border: '1px solid var(--accent)',    glyph: '✓', word: '완료' },
+  not_yet:   { color: 'var(--text2)',     bg: 'var(--surface-up)', border: '1px solid var(--border)',    glyph: '✗', word: '미완료' },
   no_record: { color: 'var(--text3)',     bg: 'transparent',       border: '1px dashed var(--border-med)', glyph: '—', word: '기록 없음' },
 };
 
@@ -110,7 +110,7 @@ export default function RecallLadder({ techId, name, onClose }) {
     setM(null); setErr('');
     getMastery(techId)
       .then(d => { if (alive) setM(d); })
-      .catch(e => { if (alive) setErr(e.message || '사다리를 불러오지 못했습니다'); });
+      .catch(e => { if (alive) setErr(e.message || '숙련도를 불러오지 못했습니다'); });
     return () => { alive = false; };
   }, [techId]);
 

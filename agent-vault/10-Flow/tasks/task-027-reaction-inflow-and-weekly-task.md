@@ -12,7 +12,7 @@ related_tasks:
   - "[[task-025-recall-screen]]"
   - "[[task-026-research-screen]]"
   - "[[task-017-spar-recording-friction]]"
-status: doing
+status: done
 created: 2026-09-07
 updated: 2026-09-07
 ---

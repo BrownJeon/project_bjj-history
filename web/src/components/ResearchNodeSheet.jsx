@@ -323,7 +323,7 @@ export default function ResearchNodeSheet({
       </div>
 
       <div className="field">
-        <label>사다리</label>
+        <label>숙련도</label>
         {form.techniqueId != null ? (
           <div style={{
             padding: 12, borderRadius: 12,
@@ -333,8 +333,8 @@ export default function ResearchNodeSheet({
                 같은 기술을 쓰는 두 노드는 여기서 **같은 사다리**를 본다. */}
             <RecallLadder techId={form.techniqueId} name={techName} />
             <div style={{ fontSize: 11, color: 'var(--text3)', marginTop: 8, lineHeight: 1.5 }}>
-              사다리는 기술 단위입니다 — 같은 기술을 쓰는 다른 노드에서도 이 상태가 그대로 보입니다.
-              2·3단계를 체크하면 프로젝트의 사다리 평균이 바뀝니다.
+              숙련도는 기술 단위입니다 — 같은 기술을 쓰는 다른 노드에서도 이 상태가 그대로 보입니다.
+              2·3단계를 체크하면 숙련도 평균이 바뀝니다.
             </div>
           </div>
         ) : (
@@ -344,7 +344,7 @@ export default function ResearchNodeSheet({
             border: '1px dashed var(--border-med)',
             fontSize: 12, color: 'var(--text2)', lineHeight: 1.5,
           }}>
-            기술을 연결하면 사다리가 열립니다.
+            기술을 연결하면 숙련도가 열립니다.
           </div>
         )}
       </div>

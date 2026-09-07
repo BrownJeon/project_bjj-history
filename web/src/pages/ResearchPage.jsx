@@ -21,6 +21,8 @@ import ResearchTree, { buildTree } from '../components/ResearchTree';
 import ResearchNodeSheet from '../components/ResearchNodeSheet';
 import ResearchProjectForm from '../components/ResearchProjectForm';
 import ResearchEmptyState from '../components/ResearchEmptyState';
+import ResearchStarters, { STARTERS_TITLE, UNLINKED_TITLE } from '../components/ResearchStarters';
+import Pagination from '../components/Pagination';
 import ResearchSuggestions from '../components/ResearchSuggestions';
 import ResearchBranchModal from '../components/ResearchBranchModal';
 import ClipDetailModal from '../components/ClipDetailModal';
@@ -58,6 +60,15 @@ import { openTargetOf } from '../utils/researchLinks';
 // 이번 범위 밖(task-027): "+ 분기" 실제 구현 · 리액션 자동 유입 · 이번 주 과제 · 링크 열기.
 // 🔴 자리만 만든 버튼은 **비활성으로 그린다.** 눌러도 아무 일 없는 활성 버튼이 제일 나쁘다.
 // ═════════════════════════════════════════════════════════════════════════════
+
+/** 프로젝트 목록 페이지당 개수 (task-029 B-5). 공용 `Pagination` 을 그대로 쓴다. */
+const PAGE_SIZE = 4;
+
+/**
+ * 포커스 복귀 재조회의 최소 간격.
+ * 🔴 폴링이 아니다 — 이벤트가 왔을 때만 부르되, alt-tab 연타가 사실상 폴링이 되는 것을 막는 하한이다.
+ */
+const HOLES_MIN_INTERVAL_MS = 15000;
 
 /** 'YYYY-MM-DD' 표시용. 🔴 Date 를 거치지 않는다. */
 function fmtDay(v) {
@@ -128,7 +139,7 @@ function ProgressPair({ coverage, ladder }) {
         <div style={{ fontSize: 10, color: 'var(--text3)', marginTop: 3, lineHeight: 1.4 }}>{c.sub}</div>
       </div>
       <div style={box}>
-        <div style={{ fontSize: 11, color: 'var(--text2)', marginBottom: 3 }}>사다리 평균</div>
+        <div style={{ fontSize: 11, color: 'var(--text2)', marginBottom: 3 }}>숙련도 평균</div>
         <div style={{
           fontSize: l.empty ? 13 : 18, fontWeight: 800,
           color: l.empty ? 'var(--text3)' : 'var(--accent-lt)',
@@ -276,7 +287,14 @@ export default function ResearchPage() {
   const [positions, setPositions] = useState([]);
   const [holes, setHoles] = useState(null);
   const [holesLoading, setHolesLoading] = useState(false);
-  const holesStarted = useRef(false);
+  // 🔴 요청 세대. 마지막으로 시작한 요청만 응답을 커밋한다(task-029 B-3 경합 방지).
+  const holesSeq = useRef(0);
+  const holesAt = useRef(0);        // 마지막 조회 시각 — 포커스 재조회 최소 간격용
+  const [startersOpen, setStartersOpen] = useState(false);  // 🔴 기본 접힘 — 목록이 본업이다(B-2)
+
+  // task-029 — 목록 검색 · 페이징
+  const [q, setQ] = useState('');
+  const [page, setPage] = useState(1);
 
   // task-027 — 리액션 제안 · 이번 주 과제
   const [suggest, setSuggest] = useState(null);
@@ -369,21 +387,61 @@ export default function ResearchPage() {
     return () => { alive = false; };
   }, []);
 
-  // 빈 상태에서만 구멍 목록을 읽는다 — 프로젝트가 있으면 필요 없는 요청이다.
+  // 구멍 목록은 **프로젝트가 있어도** 읽는다(task-029 B-2 — 추천/미연결 상시 노출).
   //
-  // 🔴 "이미 시작했다" 플래그는 **ref** 여야 한다. state 로 두고 deps 에 넣으면
-  //    setHolesLoading(true) 가 곧바로 이 이펙트를 재실행시키고, 그 정리(cleanup)가
-  //    첫 요청의 응답을 버린다 → 요청은 200 인데 화면은 영원히 "불러오는 중…" 이다.
-  //    (실행 하네스가 실제로 잡은 결함. HTTP 로그만 보면 정상이라 코드 검토로는 안 보인다.)
-  useEffect(() => {
-    if (listLoading || projects.length > 0 || holesStarted.current) return;
-    holesStarted.current = true;
+  // 이전 설계(task-026)와 그 이유는 기록으로 남긴다:
+  //   > 빈 상태에서만 구멍 목록을 읽는다 — 프로젝트가 있으면 필요 없는 요청이다.
+  //   > 🔴 "이미 시작했다" 플래그는 **ref** 여야 한다. state 로 두고 deps 에 넣으면
+  //   >    setHolesLoading(true) 가 곧바로 이 이펙트를 재실행시키고, 그 정리(cleanup)가
+  //   >    첫 요청의 응답을 버린다 → 요청은 200 인데 화면은 영원히 "불러오는 중…" 이다.
+  //   >    (실행 하네스가 실제로 잡은 결함. HTTP 로그만 보면 정상이라 코드 검토로는 안 보인다.)
+  //
+  // 🔴 그 1회 가드(`holesStarted`)가 **우연히** 응답 덮어쓰기까지 막고 있었다. 재조회를 여는 순간
+  //    그 보호가 사라지므로, 대신 **요청 세대(sequence)** 로 막는다:
+  //    마지막으로 시작한 요청만 커밋한다 → 느린 옛 응답이 빠른 새 응답을 덮지 못한다.
+  //    (이펙트 cleanup 으로 취소하는 방식은 위 기록 그대로 "영원히 불러오는 중" 을 재현하므로 쓰지 않는다.)
+  // 🔴 폴링 금지 — 개인용 화면이고 /api/holes 는 스파링 전량 집계다. 이벤트에서만 부른다.
+  const reloadHoles = useCallback(async () => {
+    const seq = ++holesSeq.current;
+    holesAt.current = Date.now();
     setHolesLoading(true);
-    getHoles()
-      .then(setHoles)
-      .catch(fail('holes'))
-      .finally(() => setHolesLoading(false));
-  }, [listLoading, projects.length]);
+    try {
+      const d = await getHoles();
+      if (seq !== holesSeq.current) return;   // 더 늦게 시작한 요청이 있다 → 이 응답은 버린다
+      setHoles(d);
+      setErrs(prev => ({ ...prev, holes: undefined }));
+    } catch (e) {
+      if (seq !== holesSeq.current) return;
+      fail('holes')(e);
+    } finally {
+      if (seq === holesSeq.current) setHolesLoading(false);
+    }
+  }, []);
+
+  // 화면 진입 시 재조회 — 마운트(holesAt=0) 와 **상세에서 목록으로 돌아온 순간**을 같이 덮는다.
+  // 🔴 최소 간격을 걸어 상세를 여닫을 때마다 집계가 다시 도는 것을 막는다.
+  useEffect(() => {
+    if (openId != null) return;
+    if (holesAt.current && Date.now() - holesAt.current < HOLES_MIN_INTERVAL_MS) return;
+    reloadHoles();
+  }, [openId, reloadHoles]);
+
+  // 포커스 복귀 시 재조회 — 다른 탭에서 스파링을 고치고 돌아오는 경우.
+  // 🔴 포커스 이벤트는 alt-tab 마다 뜬다. 최소 간격을 두지 않으면 사실상 폴링이 된다.
+  useEffect(() => {
+    const onWake = () => {
+      if (openId != null) return;                 // 상세를 보는 중에는 목록 재료를 다시 읽지 않는다
+      if (document.visibilityState === 'hidden') return;
+      if (Date.now() - holesAt.current < HOLES_MIN_INTERVAL_MS) return;
+      reloadHoles();
+    };
+    window.addEventListener('focus', onWake);
+    document.addEventListener('visibilitychange', onWake);
+    return () => {
+      window.removeEventListener('focus', onWake);
+      document.removeEventListener('visibilitychange', onWake);
+    };
+  }, [openId, reloadHoles]);
 
   useEffect(() => {
     if (openId == null) { setDetail(null); setSuggest(null); return; }
@@ -402,6 +460,29 @@ export default function ResearchPage() {
 
   const activeVersionId = detail?.activeVersionId ?? null;
 
+  // ── 목록 검색 (task-029 B-4) ────────────────────────────────────────────────
+  // 🔴 `.normalize('NFC')` 를 **양쪽에** 건다. 한글은 완성형(NFC)과 자모분리형(NFD) 두 표현이 있고,
+  //    검색어는 항상 키보드 입력이라 NFC 인데 저장된 제목/목표에 NFD 가 섞여 들어올 수 있다.
+  //    정규화가 없으면 눈에 보이는 프로젝트가 검색으로 안 잡히고 **에러도 안 난다**(task-010·014 실측).
+  const filtered = useMemo(() => {
+    const needle = String(q || '').normalize('NFC').trim().toLowerCase();
+    if (!needle) return projects;
+    return projects.filter(p =>
+      [p.title, p.goal, p.startPos].some(v =>
+        String(v ?? '').normalize('NFC').toLowerCase().includes(needle)));
+  }, [projects, q]);
+
+  // ── 페이징 (task-029 B-5) ───────────────────────────────────────────────────
+  // 🔴 `page` 를 그대로 쓰지 않고 항상 clamp 한다. 검색·삭제로 목록이 줄면 현재 페이지가
+  //    범위 밖이 되는데, `Pagination` 은 totalPages <= 1 이면 null 을 반환하므로
+  //    되돌아갈 UI 조차 없이 빈 화면이 된다.
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const safePage = Math.min(page, totalPages);
+  const paged = useMemo(
+    () => filtered.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE),
+    [filtered, safePage]
+  );
+
   // ── 프로젝트 ────────────────────────────────────────────────────────────────
 
   async function saveProject(body, isCreate) {
@@ -409,6 +490,10 @@ export default function ResearchPage() {
       const created = await createProject(body);
       const id = created?.id ?? created?.project?.id ?? null;
       setProjForm(null);
+      // 🔴 여기서 reloadHoles() 를 부르지 않는다 — /api/holes 는 spar_sessions·drills·techniques·
+      //    belt_history·spar_causes 만 읽고 research_* 는 한 번도 참조하지 않는다(labAnalytics.js FROM 전수 확인).
+      //    프로젝트 CRUD 로는 구멍 집계가 바뀔 수 없다. 구멍이 바뀌는 계기는 **다른 화면**(수업·스파링·기술트리)의
+      //    데이터 변경이고, 그건 진입·포커스 복귀 재조회가 잡는다(task-029 — dev-029b 반박 수용, Leader 독립 확인).
       await reloadList();
       if (id != null) setOpenId(id);
       else showToast('만들었습니다 — 목록에서 열어 주세요');
@@ -967,12 +1052,101 @@ export default function ResearchPage() {
           onStart={startFromHole}
           onBlank={() => setProjForm({ project: null })}
           goCalendar={() => navigate('/calendar')}
+          onRefresh={reloadHoles}
         />
       ) : (
         <>
-          {projects.map(p => <ProjectCard key={p.id} p={p} onOpen={setOpenId} />)}
-          <Button variant="outline" size="sm" onClick={() => setProjForm({ project: null })}>＋ 새 프로젝트</Button>
+          {/* 검색 + ＋ (task-029 B-4). 🔴 `＋` 만 남기므로 aria-label·title 이 필수다 —
+              없으면 스크린리더에서 "버튼"으로만 읽혀 정체를 알 수 없다. */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
+            <div style={{
+              flex: 1, minWidth: 0,
+              display: 'flex', alignItems: 'center', gap: 8,
+              padding: '10px 12px',
+              background: 'var(--surface)',
+              border: '1px solid var(--border)',
+              borderRadius: 10,
+            }}>
+              <Icon name="search" size={16} color="var(--text3)" />
+              <input
+                value={q}
+                onChange={e => { setQ(e.target.value); setPage(1); }}
+                placeholder="제목·목표·시작 포지션 검색"
+                aria-label="프로젝트 검색"
+                style={{ flex: 1, minWidth: 0, background: 'transparent', border: 'none', color: 'var(--text)', fontSize: 14, outline: 'none' }}
+              />
+            </div>
+            <button
+              type="button"
+              onClick={() => setProjForm({ project: null })}
+              aria-label="새 프로젝트"
+              title="새 프로젝트"
+              style={{
+                flex: '0 0 auto', width: 40, height: 40,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                background: 'var(--surface)', color: 'var(--text)',
+                border: '1px solid var(--border)', borderRadius: 10,
+                fontSize: 18, fontWeight: 700, lineHeight: 1, cursor: 'pointer',
+              }}
+            >＋</button>
+          </div>
+
+          {filtered.length === 0 ? (
+            <Card><Hint>검색과 맞는 프로젝트가 없습니다 — 전체 {projects.length}개 중 0개</Hint></Card>
+          ) : (
+            <>
+              {paged.map(p => <ProjectCard key={p.id} p={p} onOpen={setOpenId} />)}
+              {/* 🔴 `page` 가 아니라 clamp 한 `safePage` 를 넘긴다 — 목록이 줄어 범위를 벗어난 뒤에도
+                  현재 페이지 표시와 실제로 그린 목록이 어긋나지 않게 한다. */}
+              <Pagination total={filtered.length} page={safePage} pageSize={PAGE_SIZE} onPageChange={setPage} />
+            </>
+          )}
         </>
+      )}
+
+      {/* 추천/미연결 상시 노출 (task-029 B-2).
+          🔴 **기본 접힘.** 이 화면의 본업은 프로젝트 목록이고, 추천이 목록을 밀어내면 안 된다.
+          🔴 프로젝트가 0개일 때는 빈 상태가 이미 같은 재료를 펼쳐 보여 준다 — 여기서 또 그리지 않는다. */}
+      {!listLoading && projects.length > 0 && (
+        <Card style={{ marginTop: 14 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <button
+              type="button"
+              onClick={() => setStartersOpen(v => !v)}
+              aria-expanded={startersOpen}
+              style={{
+                flex: 1, minWidth: 0, display: 'flex', alignItems: 'center', gap: 6,
+                background: 'transparent', border: 'none', padding: 0, cursor: 'pointer',
+                textAlign: 'left', color: 'var(--text)', fontSize: 13, fontWeight: 700,
+              }}
+            >
+              <span style={{ fontSize: 11, color: 'var(--text3)' }}>{startersOpen ? '▾' : '▸'}</span>
+              <span style={{ whiteSpace: 'normal', overflowWrap: 'anywhere' }}>
+                {holes
+                  ? `${STARTERS_TITLE} ${(holes.holes || []).length} · ${UNLINKED_TITLE} ${(holes.unlinked || []).length}`
+                  : errs.holes
+                    ? `${STARTERS_TITLE} · ${UNLINKED_TITLE} — 불러오지 못했습니다`
+                    : `${STARTERS_TITLE} · ${UNLINKED_TITLE} 불러오는 중…`}
+              </span>
+            </button>
+            {/* 🔴 폴링하지 않는다. 사용자가 누를 때만 다시 읽는다(B-3). */}
+            <Button variant="outline" size="sm" disabled={holesLoading} onClick={reloadHoles}>
+              {holesLoading ? '읽는 중…' : '새로고침'}
+            </Button>
+          </div>
+
+          {startersOpen && (
+            <div style={{ marginTop: 10 }}>
+              {errs.holes && !holes ? (
+                <Hint>추천을 불러오지 못했습니다 — {errs.holes}</Hint>
+              ) : !holes ? (
+                <Hint>불러오는 중…</Hint>
+              ) : (
+                <ResearchStarters holes={holes} busy={busy} onStart={startFromHole} />
+              )}
+            </div>
+          )}
+        </Card>
       )}
 
       <div style={{ height: 20 }} />

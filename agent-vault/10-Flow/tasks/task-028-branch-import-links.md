@@ -2,7 +2,7 @@
 project: bjj-trainning
 task: task-028
 title: 분기 · 가져오기 5곳 · 링크 열기 · 빈 상태 안내
-status: in-progress
+status: done
 created: 2026-09-07
 tags:
   - type/task
