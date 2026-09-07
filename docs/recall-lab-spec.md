@@ -226,6 +226,35 @@ DDL 정본은 `backend/src/index.js` 의 `[mig][task-026]` 블록이다(부팅 �
 - 길이: `title`/`label` 100 · `start_pos` 50 · `goal`/`memo` 200 · `note` 500 · `name` 50.
   **STRICT + utf8mb3 라 초과는 잘림이 아니라 에러이고 이모지는 500 이다** — 라우트가 400 으로 먼저 거른다.
 
+### 3.4 `research_tasks` — 이번 주 과제 (task-027, 적용 완료)
+
+DDL 정본은 `backend/src/index.js` 의 `[mig][task-027]` 블록이다. 추가만 하는 DDL(ALTER 0건, 신규 테이블 1개).
+착수 전 실측: `%task%` 로 잡히는 테이블 0건 — 충돌 없음.
+
+```sql
+CREATE TABLE research_tasks (
+  id         INT AUTO_INCREMENT PRIMARY KEY,
+  user_id    INT NOT NULL,
+  node_id    INT NOT NULL,
+  memo       VARCHAR(200) DEFAULT NULL,
+  created_at TIMESTAMP      DEFAULT CURRENT_TIMESTAMP,
+  closed_at  TIMESTAMP NULL DEFAULT NULL,
+  outcome    VARCHAR(20)    DEFAULT NULL,   -- not_tried | tried_failed | done (ASCII 키)
+  open_slot  TINYINT AS (IF(closed_at IS NULL, 1, NULL)) PERSISTENT,
+  UNIQUE KEY uq_rt_open (user_id, open_slot),   -- 🔴 "앱 전체에 1개" 의 DB 보증
+  INDEX idx_rt_user (user_id),
+  INDEX idx_rt_node (node_id),
+  CONSTRAINT fk_rt_node FOREIGN KEY (node_id) REFERENCES research_nodes(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+```
+
+- 🔴 `open_slot` 은 **열려 있을 때만 1, 마감되면 NULL** 이다. UNIQUE 는 NULL 을 서로 충돌로 보지 않으므로
+  **열린 과제는 계정당 1건**이면서 **마감 이력은 몇 건이든 남는다.** 이 한 줄이 §4.5.2 의 규칙 전부다.
+- `user_id` 는 여기서 **정본**이다(하위 research_* 3테이블의 "사본"과 다르다). 그래도 소유 판별은
+  `research_projects` 까지 조인한다 — user_id 만 보면 자기 id 를 달고 남의 노드를 심을 수 있다.
+- 🔴 부팅 때마다 ENGINE·`uq_rt_open`·`fk_rt_node` 를 재검증해 어긋나면 `console.error` 로 크게 남긴다.
+  MyISAM 폴백이면 FK 도 트랜잭션도 없고, UNIQUE 가 없으면 "앱 전체 1개"가 **에러 없이** 무너진다.
+
 ### 3.2 `recall_summaries` — AI 복기 카드 캐시 (task-025, 적용 완료)
 
 착수 전 `information_schema` 확인: `%recall%`·`%summar%`·`%cache%` 전부 0건 → 충돌 없음.
@@ -488,12 +517,78 @@ index 로 두면 한 번의 호출로 순서 변경이 끝난다. 부모가 바�
 🔴 **`insert-parent` 는 형제를 재번호하지 않는다** — 계약 B-1 이 "A·B 의 sort_order 는 변하지 않는다"를
 명시했기 때문이다. 두 라우트의 형제 처리가 다른 것은 의도된 것이다.
 
-### 4.5 후속 배치 예정 (이번 범위 아님)
+### 4.5 리액션 자동 유입 · 이번 주 과제 — 구현 완료 (task-027)
+
+구현: `backend/src/routes/research.js`(라우트) · `services/researchTree.js`(제안 계산, 순수 함수) ·
+`services/labAnalytics.js`(원천 추출, 순수 함수).
 
 | 메서드 | 경로 | 용도 |
 |---|---|---|
-| `POST` | `/api/research/versions` | **분기 생성**(부모 버전 트리 복사) — task-027. 화면의 "+ 분기"는 지금 비활성 |
-| — | 리액션 자동 유입 | task-022 의 `reaction` → 리액션 노드 (task-027) |
+| `GET` | `/api/research/projects/:id/reaction-suggestions` | 활성 버전 기준 **리액션 제안**(쓰기 0건) |
+| `GET` | `/api/research/task` | 열린 과제 1개 + 마감 이력 5건 + `outcomeOptions` |
+| `POST` | `/api/research/task` | `{nodeId, memo?}` 지정. 이미 열린 게 있으면 **409**(현재 과제 동봉) |
+| `PATCH` | `/api/research/task/:id` | `{memo}` 부분 갱신 |
+| `POST` | `/api/research/task/:id/close` | `{outcome}` 3택 마감 → `task` + `ladder` |
+| `DELETE` | `/api/research/task/:id` | 지정 취소. **마감된 과제는 400**(이력을 지우지 않는다) |
+
+#### 4.5.1 🔴 승인 전 자동 생성 금지 — 제안과 생성을 라우트로 갈랐다
+
+리액션 유입은 **조회 시 계산해 "제안"으로만** 돌려준다. DB 에 노드를 만들지 않는다
+(task-007~009 의 기술트리 오염 방지 원칙). 채택은 사용자가 기존
+`POST /api/research/nodes {versionId, parentNodeId, kind:'리액션', label}` 로 한다.
+
+- 제안 계산(`researchTree.computeReactionSuggestions`)은 **순수 함수**라 DB 를 건드릴 수단 자체가 없다 —
+  원칙이 주석이 아니라 **구조**로 지켜진다.
+- 🔴 응답에 **출처를 싣는다**: `count`(몇 회 막혔는지) · `firstFailedAt`/`lastFailedAt` ·
+  `sources[]`(최대 5건: 스파링 id·날짜·원본 항목명·매칭 방식·상대 벨트) · `sourceCount`.
+  근거 없이 나타난 제안은 사용자가 신뢰하지 않는다.
+- 🔴 **중복 제안 금지**: 그 노드의 **직계 자식** 중 `kind='리액션'` 인 것과 비교한다.
+  비교 키는 `techMatch.normalize()`(NFC + 소문자 + 공백·하이픈·중점 제거) — "팔 숨김" ≡ "팔숨김".
+  제외한 사실은 `skipped[]`(`existingNodeId` 포함)로 **드러낸다**. 조용히 지우지 않는다.
+- 🔴 **미매칭은 `unlinked[]` 로 전량 내보낸다**(`linked:false`). §2.1 의 미매칭 33.7% 가 그대로
+  유입 손실률이라(§6), 집계에서 빼면 사용자는 "리액션을 적었는데 아무 데도 안 나온다"만 겪는다.
+- 🔴 **성공 항목의 리액션은 대상이 아니다.** 리액션은 "막힌 이유"의 원천이다(§6 노드 5번).
+  빈 리액션도 버킷을 만들지 않는다.
+- 같은 기술을 참조하는 노드가 여러 개면 **각 노드마다** 제안한다. 어디에 붙일지는 사람이 정한다.
+- 표본 0의 두 표현은 **다른 말**이다: `empty:true`(적힌 리액션이 아예 없음) vs
+  `summary.nodesWithTechnique:0`(붙일 자리가 없음). 화면이 다르게 말해야 한다.
+
+> 🔴 **원천은 `success[i].reaction` 이지 `spar_sessions.reaction` 컬럼이 아니다**(§3.1).
+> 그리고 `labAnalytics.normalizeItem` 이 그 필드를 **살려서** 내보내야 한다 —
+> task-026 까지는 버리고 있었다. 여기가 빠지면 유입은 에러 없이 "제안 0건"으로만 나타난다.
+> 그래서 `normalizeItem` 을 export 해 QA 가 DB 없이 직접 찌를 수 있게 했다.
+
+#### 4.5.2 🔴 이번 주 과제는 앱 전체에 1개
+
+관장 합의 "하나만 파라". 프로젝트가 여러 개여도 과제는 하나다 — 그래서 경로가 `/task`(단수)이고
+`GET` 에 id 가 없다. 목록이 아니라 **상태**다. 강제는 **두 겹**이다:
+
+- DB: `research_tasks.open_slot`(열려 있을 때만 1, 마감되면 NULL 인 PERSISTENT 생성 컬럼) +
+  `UNIQUE(user_id, open_slot)`. UNIQUE 가 NULL 을 충돌로 보지 않으므로 **마감 이력은 몇 건이든 남는다.**
+- 앱: `POST /task` 가 트랜잭션 안에서 `SELECT ... FOR UPDATE` 로 확인하고 409 를 낸다.
+  UNIQUE 위반도 409 로 번역한다(사용자가 이유 모를 500 을 보지 않게).
+
+어느 한쪽만 믿지 않는다 — 앱만 믿으면 동시 요청·SQL 직접 삽입에서 두 개가 열리고,
+DB 만 믿으면 사용자가 이유를 모른다. §3.3 의 "FK 와 트랜잭션 삭제를 둘 다" 와 같은 원칙이다.
+
+- `outcome` 3택은 **ASCII 키**다: `not_tried` · `tried_failed` · `done`.
+  한글 라벨(`시도 못 함`·`해봤는데 안 됨`·`됐음`)은 서버가 응답에 붙이고, `outcomeOptions[]` 가 정본이다.
+  🔴 비교되는 값과 읽히는 값을 한 컬럼에 섞으면 표기가 바뀔 때 과거 행이 조용히 빠진다
+  (§5.3 의 `white`/`화이트` 가 20건을 6건으로 만든 그 실패 방식).
+- 🔴 **마감이 사다리를 덮어쓰지 않는다.** `done` 이어도 `technique_mastery` 에 한 줄도 쓰지 않는다.
+  4·5단계는 `spar_sessions.success` 자동 판정이 원칙이고(§5.1) 과제 결과는 **별도 기록**이다.
+  응답의 `ladder.applied` 는 **항상 false**, `ladder.candidateForStep4` 가 "4단계 후보"라는 권유일 뿐이다.
+- 🔴 **스파링 저장(`PUT /api/classes/:id/spar/:sparDayId`)을 건드리지 않았다.** 거긴 destroy+reinsert 라
+  (§3.1 주의) 새 필드를 실으면 프론트가 안 보낼 때마다 사라진다. 마감은 전용 라우트를 스파링 저장
+  직후에 한 번 더 부르는 방식이고, 그래서 그 함정이 **구조적으로 발생할 수 없다.**
+- `node_id` FK 는 CASCADE — 노드를 지우면 과제도 사라진다. 그래도 세 DELETE 라우트가
+  **명시적으로 지우고 `deletedTasks` 를 응답에 싣는다**(FK 만 믿으면 앱이 무엇을 지웠는지 모른다).
+
+### 4.6 후속 배치 예정 (이번 범위 아님)
+
+| 메서드 | 경로 | 용도 |
+|---|---|---|
+| `POST` | `/api/research/versions` | **분기 생성**(부모 버전 트리 복사). 화면의 "+ 분기"는 지금 비활성 |
 | `POST` | `/api/lab/normalize-preview` | 이름 정규화 **미리보기**(실행 아님) — §2.1 미매칭 해소용 |
 
 ---
@@ -595,7 +690,8 @@ const BELT_RANK = {
 
 설계 메모:
 
-- **5(리액션)는 자동 유입 대상이다.** task-022에서 실패 항목마다 받는 "막힌 상대 리액션" 한 줄이
+- **5(리액션)는 자동 유입 대상이다** — task-027 에서 구현됐다(§4.5). 🔴 다만 **제안까지만**이고
+  노드는 사용자가 채택할 때 만들어진다. task-022에서 실패 항목마다 받는 "막힌 상대 리액션" 한 줄이
   이 노드로 흘러든다. 유입은 `technique_id` 매칭에 의존하므로 **§2.1의 49.4% 미매칭이 그대로 유입 손실률이 된다.**
 - **1(포지션)과 7(피니시)의 분리는 §2.1 A유형(복합어)에 대한 "앞으로"의 해법이다.**
   `마운트 암바`를 하나의 기술명으로 만들지 말고, 포지션=`마운트` · 피니시=`암바`로 나눠 기록한다.

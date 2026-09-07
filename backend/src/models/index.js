@@ -26,6 +26,7 @@ const ResearchProject      = require('./ResearchProject');
 const ResearchVersion      = require('./ResearchVersion');
 const ResearchNode         = require('./ResearchNode');
 const ResearchLink         = require('./ResearchLink');
+const ResearchTask         = require('./ResearchTask');
 
 // User 관계 정의 (1:N, 1:1)
 User.hasMany(Class,             { foreignKey: 'user_id', as: 'classes' });
@@ -48,6 +49,9 @@ User.hasMany(RecallSummary,     { foreignKey: 'user_id', as: 'recallSummaries' }
 // 연구 프로젝트 (task-026) — 🔴 user_id 의 **정본은 research_projects 하나**다.
 // 하위 3테이블의 user_id 는 부모에서 유도해 채우는 사본이고 권한 판정에 쓰지 않는다(계약 A-2).
 User.hasMany(ResearchProject,   { foreignKey: 'user_id', as: 'researchProjects' });
+// 이번 주 과제 (task-027) — 🔴 **열린 과제는 계정당 1개**다(DB UNIQUE(user_id, open_slot) 이 강제).
+// 마감된 이력은 몇 건이든 남는다. 행이 없는 것이 정상 상태다(아직 과제를 정하지 않음).
+User.hasMany(ResearchTask,      { foreignKey: 'user_id', as: 'researchTasks' });
 
 // 관계 정의
 Class.hasMany(Drill,         { foreignKey: 'class_id', as: 'drills' });
@@ -91,13 +95,19 @@ ResearchNode.belongsTo(Technique,     { foreignKey: 'technique_id' });
 ResearchNode.hasMany(ResearchLink, { foreignKey: 'node_id', as: 'links' });
 ResearchLink.belongsTo(ResearchNode, { foreignKey: 'node_id' });
 
+// 이번 주 과제 → 노드 (task-027). DB FK 는 fk_rt_node ON DELETE CASCADE 다.
+// 🔴 그래도 라우트의 삭제 트랜잭션이 과제 행을 **명시적으로** 지우고 개수를 응답에 싣는다 —
+//    FK 만 믿으면 앱이 "무엇을 지웠는지" 모른다(task-026 A-4 와 같은 원칙).
+ResearchNode.hasMany(ResearchTask, { foreignKey: 'node_id', as: 'tasks' });
+ResearchTask.belongsTo(ResearchNode, { foreignKey: 'node_id' });
+
 module.exports = {
   sequelize,
   User,
   Class, Drill, SparDay, SparSession, SparCause,
   Technique, TechniqueChain, ChainStep, TechniqueMastery,
   RecallSummary,
-  ResearchProject, ResearchVersion, ResearchNode, ResearchLink,
+  ResearchProject, ResearchVersion, ResearchNode, ResearchLink, ResearchTask,
   Gameplan, GameplanNode, GameplanEdge,
   VideoClip, Profile, BeltHistory, CoachReport,
   PickHistory, MembershipPayment,

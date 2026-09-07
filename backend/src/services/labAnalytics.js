@@ -104,6 +104,12 @@ function normalizeItem(x) {
     // success 필드가 없는 과거 항목은 성공으로 본다(=== false 일 때만 실패).
     success: it.success !== false,
     causes:  Array.isArray(it.causes) ? it.causes.map((n) => parseInt(n, 10)).filter(Number.isInteger) : [],
+    // 🔴 막힌 리액션 한 줄 (task-022 → task-027 자동 유입의 **유일한 원천**).
+    //    task-026 까지 이 필터가 reaction 을 버리고 있었다. 필드를 안 실으면 유입은 에러 없이
+    //    "제안 0건"으로만 나타난다 — 이 프로젝트가 반복해서 당한 조용한 실패 방식 그대로다.
+    //    저장 경로(routes/classes.js:235)가 이미 NFC 정규화 + trim + 200자 절단을 했으므로
+    //    여기서는 문자열이 아닌 값만 ''로 떨군다.
+    reaction: typeof it.reaction === 'string' ? it.reaction.trim() : '',
   };
 }
 
@@ -415,6 +421,61 @@ function computeHoles(data, opts = {}) {
 }
 
 /**
+ * 리액션 자동 유입의 **원천 추출** (task-027).
+ *
+ * 스파링 실패 항목에 적힌 "막힌 리액션" 한 줄(`success[i].reaction`, task-022)을 전부 꺼내
+ * 그 항목의 기술명 매칭 결과와 함께 평평한 관찰 목록으로 돌려준다.
+ * 트리에 어떻게 붙일지는 이 함수가 모른다 — 그건 researchTree.computeReactionSuggestions() 다.
+ * (여기는 "스파링 기록이 무엇을 말하는가", 저기는 "그게 이 트리의 어디에 붙는가")
+ *
+ * 🔴 **미매칭을 집계에서 빼지 않는다.** `linked:false` 로 구분해 그대로 내보낸다
+ *    (/api/holes 의 `linked` / `isHole` 과 **같은 규약**). 실측 미매칭이 33.7% 라
+ *    빼버리면 유입 손실률이 통째로 안 보이게 된다 — 사라진 것과 없는 것을 구분할 수 없다.
+ * 🔴 **성공 항목은 대상이 아니다.** 리액션은 "막힌 이유"의 원천이다(사양서 §6 노드 5번).
+ * 🔴 표본 0은 0% 가 아니다 — 호출부가 `failItemsWithReaction === 0` 을 "기록 없음"으로 쓴다.
+ *
+ * @param {object} data loadLabData() 결과
+ * @param {object} opts match — 주입 가능(신규 매처를 만들지 않는다. QA 네거티브 컨트롤 진입점)
+ */
+function collectReactionItems(data, opts = {}) {
+  const match = opts.match || makeMatcher(data.techniques);
+
+  const observations = [];
+  let failItems = 0, failItemsWithReaction = 0;
+
+  for (const s of data.sessions) {
+    for (const it of s.items) {
+      if (it.success) continue;          // 실패 항목만
+      failItems++;
+      const reaction = String(it.reaction ?? '').trim();
+      if (!reaction) continue;           // 리액션을 안 적은 실패 항목은 유입 대상이 아니다
+      failItemsWithReaction++;
+      const m = match(it.name);
+      observations.push({
+        sparSessionId: s.id,
+        date: s.date,
+        level: s.level ?? null,
+        itemName: it.name,
+        reaction,
+        normReaction: normalize(reaction),   // 신규 매처 금지 — techMatch.normalize 재사용
+        techniqueId: m.technique_id,
+        matchedName: m.matched_name,
+        matchType:   m.match_type,
+        linked: !!m.technique_id,
+      });
+    }
+  }
+
+  return {
+    observations,
+    failItems,
+    failItemsWithReaction,
+    linkedReactionItems:   observations.filter((o) => o.linked).length,
+    unlinkedReactionItems: observations.filter((o) => !o.linked).length,
+  };
+}
+
+/**
  * GET /api/mastery/:techId — 사다리 5단계 판정.
  *
  * 🔴 reached 는 **done 인 단계 중 최댓값**이다. "연속으로 올라온 마지막 칸"이 아니다.
@@ -637,10 +698,16 @@ module.exports = {
   makeAsOfDateBelt,
   makeFixedBelt,
   makeMatcher,
+  // 🔴 normalizeItem 을 export 하는 것은 편의가 아니라 **검증 요건**이다(task-027).
+  //    `reaction` 이 여기서 떨어지면 리액션 자동 유입이 에러 없이 "제안 0건"으로만 나타난다 —
+  //    가장 조용한 실패 지점인데, loadLabData 안에 숨어 있으면 QA 가 DB 없이 찌를 수 없다.
+  //    (labAnalytics 가 벨트맵을 주입 가능하게 만든 것과 같은 이유다.)
+  normalizeItem,
   loadLabData,
   resolveBelts,
   computeUpperBeltItems,
   computeHoles,
+  collectReactionItems,
   computeMastery,
   todayKST,
   daysBetween,

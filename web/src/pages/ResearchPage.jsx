@@ -8,6 +8,7 @@ import {
   listProjects, createProject, getProject, patchProject, deleteProject,
   patchVersion, deleteVersion,
   createNode, patchNode, deleteNode, moveNode, insertParent,
+  getReactionSuggestions, getTask, setTask as apiSetTask, clearTask as apiClearTask,
 } from '../api/research';
 import Card from '../components/Card';
 import Tag from '../components/Tag';
@@ -18,6 +19,10 @@ import ResearchTree, { buildTree } from '../components/ResearchTree';
 import ResearchNodeSheet from '../components/ResearchNodeSheet';
 import ResearchProjectForm from '../components/ResearchProjectForm';
 import ResearchEmptyState from '../components/ResearchEmptyState';
+import ResearchSuggestions from '../components/ResearchSuggestions';
+import {
+  splitSuggestions, dismissKey, readDismissed, writeDismissed, taskSummary,
+} from '../utils/weeklyTask';
 
 // ═════════════════════════════════════════════════════════════════════════════
 // 연구 화면 — task-026
@@ -262,6 +267,12 @@ export default function ResearchPage() {
   const [holesLoading, setHolesLoading] = useState(false);
   const holesStarted = useRef(false);
 
+  // task-027 — 리액션 제안 · 이번 주 과제
+  const [suggest, setSuggest] = useState(null);
+  const [dismissed, setDismissed] = useState({});
+  const [task, setTaskState] = useState(null);
+  const [taskBusy, setTaskBusy] = useState(false);
+
   const [projForm, setProjForm] = useState(null);   // {project|null}
   const [nodeSheet, setNodeSheet] = useState(null); // {node|null, draft|null}
   const [confirm, setConfirm] = useState(null);
@@ -297,6 +308,39 @@ export default function ResearchPage() {
     }
   }, [openId]);
 
+  /**
+   * 리액션 제안 — 🔴 **조회만 한다.** 서버도 쓰기를 하지 않는다(계약 A).
+   *    실패해도 트리는 그대로 떠야 하므로 errs 에만 담고 화면을 막지 않는다.
+   */
+  const reloadSuggest = useCallback(async (id) => {
+    const target = id ?? openId;
+    if (target == null) return;
+    try {
+      const d = await getReactionSuggestions(target);
+      setSuggest(d);
+      setErrs(prev => ({ ...prev, suggest: undefined }));
+    } catch (e) {
+      setSuggest(null);
+      fail('suggest')(e);
+    }
+  }, [openId]);
+
+  /**
+   * 이번 주 과제 — 세 화면이 같은 값을 보게 하는 단 하나의 출처.
+   * 🔴 과제가 없으면 `{task:null}` 이고 **404 가 아니다**(계약 B). 없는 것을 오류로 그리지 마라.
+   */
+  const reloadTask = useCallback(async () => {
+    try {
+      const d = await getTask();
+      setTaskState(d?.task ?? null);
+      setErrs(prev => ({ ...prev, task: undefined }));
+    } catch (e) {
+      fail('task')(e);
+    }
+  }, []);
+
+  useEffect(() => { reloadTask(); }, [reloadTask]);
+
   useEffect(() => { reloadList(); }, [reloadList]);
 
   useEffect(() => {
@@ -324,9 +368,12 @@ export default function ResearchPage() {
   }, [listLoading, projects.length]);
 
   useEffect(() => {
-    if (openId == null) { setDetail(null); return; }
+    if (openId == null) { setDetail(null); setSuggest(null); return; }
     reloadDetail(openId);
-  }, [openId, reloadDetail]);
+    reloadSuggest(openId);
+    // 무시 목록은 프로젝트별로 다르다. 🔴 저장소가 막힌 브라우저에서도 죽지 않는다(util 안에서 try/catch).
+    setDismissed(readDismissed(openId));
+  }, [openId, reloadDetail, reloadSuggest]);
 
   const tree = useMemo(() => buildTree(detail?.nodes), [detail]);
   const rowById = useMemo(() => {
@@ -394,8 +441,12 @@ export default function ResearchPage() {
       run: async () => {
         const r = await deleteProject(detail.id);
         setOpenId(null);
-        await reloadList();
-        showToast(`삭제: 버전 ${r?.deletedVersions ?? 0} · 노드 ${r?.deletedNodes ?? 0} · 자료 ${r?.deletedLinks ?? 0}`);
+        // 🔴 노드가 사라지면 그 노드를 가리키던 이번 주 과제도 함께 사라진다
+        //    (`research_tasks.node_id` FK CASCADE — dev-027a 기록). 다시 읽지 않으면
+        //    홈 카드가 **이미 없는 과제**를 계속 보여 준다. 세 삭제 경로 전부에서 다시 읽는다.
+        await Promise.all([reloadList(), reloadTask()]);
+        showToast(`삭제: 버전 ${r?.deletedVersions ?? 0} · 노드 ${r?.deletedNodes ?? 0} · 자료 ${r?.deletedLinks ?? 0}`
+          + (r?.deletedTasks ? ` · 이번 주 과제 ${r.deletedTasks}` : ''));
       },
     });
   }
@@ -426,8 +477,9 @@ export default function ResearchPage() {
       danger: true,
       run: async () => {
         const r = await deleteVersion(v.id);
-        await Promise.all([reloadDetail(openId), reloadList()]);
-        showToast(`삭제: 노드 ${r?.deletedNodes ?? 0} · 자료 ${r?.deletedLinks ?? 0}`);
+        await Promise.all([reloadDetail(openId), reloadList(), reloadSuggest(openId), reloadTask()]);
+        showToast(`삭제: 노드 ${r?.deletedNodes ?? 0} · 자료 ${r?.deletedLinks ?? 0}`
+          + (r?.deletedTasks ? ` · 이번 주 과제 ${r.deletedTasks}` : ''));
       },
     });
   }
@@ -443,7 +495,81 @@ export default function ResearchPage() {
     setNodeSheet(null);
     reloadDetail(openId);
     reloadList();
-  }, [openId, reloadDetail, reloadList]);
+    // 🔴 제안도 함께 다시 읽는다 — 채택으로 노드가 생기면 그 제안은 `skipped`(이미 트리에 있음)로
+    //    옮겨간다. 안 읽으면 방금 채택한 항목이 화면에 "아직 트리에 없습니다"로 남는다.
+    reloadSuggest(openId);
+  }, [openId, reloadDetail, reloadList, reloadSuggest]);
+
+  // ── 리액션 제안 (task-027 A) ────────────────────────────────────────────────
+
+  /**
+   * 채택 — 🔴 **여기서 노드를 만들지 않는다.** 종류·이름·기술·부모가 미리 채워진 **시트를 연다.**
+   *   task-026 의 "대처 추가"와 같은 규칙이다. 즉시 만들면 사용자가 확인하기 전에 DB 가 바뀌고,
+   *   "제안은 채택 전에는 저장되지 않는다"는 이 기능의 약속이 클릭 한 번으로 깨진다.
+   *   실제 생성은 시트의 저장 → saveNode → createNode 경로 하나뿐이다.
+   */
+  function adoptSuggestion(sg) {
+    setNodeSheet({
+      node: null,
+      draft: {
+        versionId: activeVersionId,
+        parentNodeId: sg.parentNodeId ?? null,
+        kind: sg.kind || '리액션',
+        label: sg.label || '',
+        techniqueId: sg.techniqueId ?? null,
+      },
+    });
+  }
+
+  /** 무시 — 🔴 서버 저장 엔드포인트가 계약에 없다. 이 브라우저에만 남고 화면이 그 사실을 말한다. */
+  function dismissSuggestion(sg) {
+    setDismissed(writeDismissed(openId, dismissKey(sg), true));
+  }
+
+  function restoreDismissed() {
+    const st = typeof localStorage !== 'undefined' ? localStorage : null;
+    let next = readDismissed(openId, st);
+    for (const k of Object.keys(next)) next = writeDismissed(openId, k, false, st);
+    setDismissed(next);
+  }
+
+  // ── 이번 주 과제 (task-027 B) ───────────────────────────────────────────────
+
+  /**
+   * 🔴 앱 전체에 1개. 이미 열린 과제가 있으면 서버가 **409** 로 막는다.
+   *    이 앱의 axios 인터셉터는 비-2xx 의 본문을 버리므로 409 에 동봉된 현재 과제를 읽을 수 없다
+   *    (`api/client.js:26-31`). → **바꾸기 전에 먼저 해제**하고 새로 지정한다.
+   *    시트가 무엇이 내려가는지 이름으로 이미 경고한 뒤라 여기서 또 묻지 않는다.
+   */
+  async function setNodeAsTask(node) {
+    setTaskBusy(true);
+    try {
+      const cur = taskSummary(task);
+      if (cur.has && cur.open && cur.id != null && cur.nodeId !== node.id) {
+        await apiClearTask(cur.id);
+      }
+      await apiSetTask({ nodeId: node.id });
+      await reloadTask();
+      showToast('이번 주 과제로 정했습니다');
+    } catch (e) {
+      showToast(e.message || '과제를 정하지 못했습니다');
+      await reloadTask();   // 서버 상태가 정본이다 — 실패했을 때 화면이 낙관적으로 남지 않게 다시 읽는다
+    } finally { setTaskBusy(false); }
+  }
+
+  async function clearCurrentTask() {
+    const cur = taskSummary(task);
+    if (!cur.has || cur.id == null) return;
+    setTaskBusy(true);
+    try {
+      await apiClearTask(cur.id);
+      await reloadTask();
+      showToast('과제를 해제했습니다');
+    } catch (e) {
+      showToast(e.message || '해제하지 못했습니다');
+      await reloadTask();
+    } finally { setTaskBusy(false); }
+  }
 
   async function saveNode(body, ctx) {
     if (ctx.create) {
@@ -468,15 +594,20 @@ export default function ResearchPage() {
   function askDeleteNode(node, descendants) {
     setConfirm({
       title: '노드 삭제',
-      body: descendants > 0
+      body: (descendants > 0
         ? `"${node.label || '(이름 없음)'}" 과(와) 그 아래 자손 노드 ${descendants}개가 함께 사라집니다. 자손만 남기는 삭제는 없습니다. 되돌릴 수 없습니다.`
-        : `"${node.label || '(이름 없음)'}" 을(를) 지웁니다. 되돌릴 수 없습니다.`,
+        : `"${node.label || '(이름 없음)'}" 을(를) 지웁니다. 되돌릴 수 없습니다.`)
+        // 🔴 이 노드가 이번 주 과제면 과제와 그 마감 이력까지 함께 사라진다. 누르기 전에 말해 준다.
+        + (taskSummary(task).nodeId === node.id
+            ? ' 🔴 이 노드는 지금 이번 주 과제입니다 — 과제와 마감 이력도 함께 사라집니다.'
+            : ''),
       danger: true,
       run: async () => {
         const r = await deleteNode(node.id);
         setNodeSheet(null);
-        await Promise.all([reloadDetail(openId), reloadList()]);
-        showToast(`삭제: 노드 ${r?.deletedNodes ?? 1} · 자료 ${r?.deletedLinks ?? 0}`);
+        await Promise.all([reloadDetail(openId), reloadList(), reloadSuggest(openId), reloadTask()]);
+        showToast(`삭제: 노드 ${r?.deletedNodes ?? 1} · 자료 ${r?.deletedLinks ?? 0}`
+          + (r?.deletedTasks ? ` · 이번 주 과제 ${r.deletedTasks}` : ''));
       },
     });
   }
@@ -523,6 +654,8 @@ export default function ResearchPage() {
     }
 
     const uncovered = detail.coverage?.uncoveredReactionNodeIds || [];
+    // 🔴 순수 함수로 갈라 둔다 — QA 하네스가 HTTP 없이 이 분류를 직접 잴 수 있어야 한다.
+    const split = splitSuggestions(suggest, dismissed);
 
     return (
       <div>
@@ -579,6 +712,27 @@ export default function ResearchPage() {
           </div>
         )}
 
+        {/* 리액션 자동 유입 (task-027 A) — 🔴 보여 줄 게 없으면 컴포넌트가 **null 을 돌려준다.**
+            빈 블록("제안 0개")을 그리지 않는다. 여기서 조건을 또 쓰면 두 곳이 갈린다. */}
+        {errs.suggest ? (
+          <div style={{
+            margin: '0 0 10px', padding: 10, borderRadius: 10,
+            background: 'var(--surface)', border: '1px solid var(--border)',
+            fontSize: 11, color: 'var(--text2)', lineHeight: 1.55,
+          }}>
+            매트에서 올라온 리액션을 불러오지 못했습니다 — {errs.suggest}
+          </div>
+        ) : (
+          <ResearchSuggestions
+            split={split}
+            res={suggest}
+            busy={busy}
+            onAdopt={adoptSuggestion}
+            onDismiss={dismissSuggestion}
+            onRestore={restoreDismissed}
+          />
+        )}
+
         <Card>
           <ResearchTree
             nodes={detail.nodes}
@@ -605,6 +759,11 @@ export default function ResearchPage() {
             onClose={closeNodeSheet}
             onSave={saveNode}
             onDelete={askDeleteNode}
+            task={task}
+            taskErr={errs.task}
+            onSetTask={setNodeAsTask}
+            onClearTask={clearCurrentTask}
+            taskBusy={taskBusy}
           />
         )}
 

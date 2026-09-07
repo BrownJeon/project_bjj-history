@@ -4,6 +4,7 @@ import Button from './Button';
 import Tag from './Tag';
 import RecallLadder from './RecallLadder';
 import { KINDS, KIND_TONE } from './ResearchTree';
+import { taskSummary } from '../utils/weeklyTask';
 
 // ═════════════════════════════════════════════════════════════════════════════
 // 노드 시트 — 종류 · 이름 · 기술 연결 · 사다리 · 메모
@@ -28,8 +29,21 @@ const FIELDS = ['kind', 'label', 'techniqueId', 'note'];
 
 const LIMIT = { label: 100, note: 500 };
 
-function emptyForm(kind) {
-  return { kind: kind || '포지션', label: '', techniqueId: null, note: '' };
+/**
+ * ① 초기값. draft 는 "이 시트를 어떤 값으로 열어 달라"는 요청이다.
+ *
+ * 🔴 task-027 에서 **draft 가 label·techniqueId 까지 실어 온다**(리액션 제안 채택).
+ *    FIELDS 를 하나씩 명시적으로 읽는다 — draft 를 통째로 스프레드하면 versionId·parentNodeId 같은
+ *    컨텍스트 키가 폼에 섞여 들어가 buildPatch 의 비교 대상이 오염된다.
+ */
+function emptyForm(draft) {
+  const d = draft || {};
+  return {
+    kind: d.kind || '포지션',
+    label: typeof d.label === 'string' ? d.label : '',
+    techniqueId: d.techniqueId ?? null,
+    note: typeof d.note === 'string' ? d.note : '',
+  };
 }
 
 /** ② 기존 노드 → 폼. FIELDS 전부를 빠짐없이 옮긴다. */
@@ -104,11 +118,13 @@ function KindPicker({ value, onChange }) {
 
 export default function ResearchNodeSheet({
   open, node, draft, techniques, onClose, onSave, onDelete, descendantCount = 0,
+  // task-027 — 이번 주 과제 지정. 세 화면 중 **정하는 곳**이 여기다.
+  task, taskErr, onSetTask, onClearTask, taskBusy,
 }) {
   const isCreate = !node;
   // ① 초기값
-  const [form, setForm] = useState(() => (node ? formFromNode(node) : emptyForm(draft?.kind)));
-  const [orig, setOrig] = useState(() => (node ? formFromNode(node) : emptyForm(draft?.kind)));
+  const [form, setForm] = useState(() => (node ? formFromNode(node) : emptyForm(draft)));
+  const [orig, setOrig] = useState(() => (node ? formFromNode(node) : emptyForm(draft)));
   const [q, setQ] = useState('');
   const [pick, setPick] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -116,7 +132,7 @@ export default function ResearchNodeSheet({
 
   // ② node/draft 가 바뀌면 폼을 다시 채운다. 안 하면 이전 노드의 값이 남아 다음 노드에 저장된다.
   useEffect(() => {
-    const f = node ? formFromNode(node) : emptyForm(draft?.kind);
+    const f = node ? formFromNode(node) : emptyForm(draft);
     setForm(f); setOrig(f);
     setQ(''); setPick(false); setErr('');
   }, [node, draft]);
@@ -132,6 +148,7 @@ export default function ResearchNodeSheet({
 
   const hits = useMemo(() => matchTechniques(techniques, q), [techniques, q]);
 
+  const tSum = useMemo(() => taskSummary(task), [task]);
   const dirty = useMemo(() => Object.keys(buildPatch(form, orig)).length > 0, [form, orig]);
   const tooLong = form.label.length > LIMIT.label || (form.note || '').length > LIMIT.note;
 
@@ -268,6 +285,66 @@ export default function ResearchNodeSheet({
           </div>
         )}
       </div>
+
+      {/* ── 이번 주 과제 (task-027) ────────────────────────────────────────────
+          🔴 **앱 전체에 1개만.** 다른 노드가 이미 과제면 바꾸기 전에 무엇이 내려가는지 이름으로 말해 준다
+             — "덮어씁니다" 같은 추상어로 넘기면 사용자가 무엇을 잃는지 모른 채 누른다.
+          🔴 아직 만들지 않은 노드(생성 시트)에는 그리지 않는다. 존재하지 않는 노드를 과제로 삼을 수 없다.
+          🔴 세 화면이 같은 값을 보여야 하므로 여기서도 taskSummary() 하나만 쓴다. */}
+      {!isCreate && onSetTask && (
+        <div className="field">
+          <label>이번 주 과제</label>
+          {/* 🔴 조회 실패를 "과제 없음"으로 뭉개면, 이미 과제가 있는데도 지정 버튼이 그대로 보여
+              누르는 순간 서버가 409 로 막는다 — 사용자는 이유를 모른 채 실패만 본다. */}
+          {taskErr && (
+            <div style={{ fontSize: 11, color: 'var(--text2)', marginBottom: 8, lineHeight: 1.55 }}>
+              지금 과제를 불러오지 못했습니다 — {taskErr}. 이미 정해 둔 과제가 있으면 지정이 거부될 수 있습니다.
+            </div>
+          )}
+          {tSum.has && tSum.nodeId === node.id ? (
+            <div style={{
+              padding: 12, borderRadius: 12,
+              background: 'var(--accent-dim)', border: '1px solid var(--accent)',
+            }}>
+              <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-lt)' }}>
+                {tSum.open ? '이번 주 과제입니다' : `마감함 · ${tSum.outcomeLabel || tSum.outcome}`}
+              </div>
+              <div style={{ fontSize: 11, color: 'var(--text2)', marginTop: 4, lineHeight: 1.5 }}>
+                {tSum.open
+                  ? '홈에서도 보이고, 스파링을 저장할 때 3택으로 마감합니다.'
+                  : '이미 마감된 과제입니다 — 다시 정하려면 해제한 뒤 지정하세요.'}
+              </div>
+              {tSum.open && (
+                <div style={{ marginTop: 10 }}>
+                  <Button variant="outline" size="sm" disabled={taskBusy} onClick={onClearTask}>
+                    과제 해제
+                  </Button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div style={{
+              padding: 12, borderRadius: 12,
+              border: '1px dashed var(--border-med)',
+            }}>
+              <div style={{ fontSize: 12, color: 'var(--text2)', lineHeight: 1.55 }}>
+                이 노드를 이번 주에 팔 자리로 정합니다. 홈과 스파링 저장 화면에 함께 나타납니다.
+              </div>
+              {tSum.has && tSum.open && (
+                <div style={{ fontSize: 11, color: 'var(--text3)', marginTop: 6, lineHeight: 1.55 }}>
+                  🔴 지금 과제는 <b style={{ color: 'var(--text)' }}>{tSum.title}</b> 입니다 —
+                  과제는 앱 전체에 하나뿐이라 바꾸면 그 과제는 <b style={{ color: 'var(--text)' }}>마감되지 않은 채 내려갑니다.</b>
+                </div>
+              )}
+              <div style={{ marginTop: 10 }}>
+                <Button variant="primary" size="sm" disabled={taskBusy} onClick={() => onSetTask(node)}>
+                  {tSum.has && tSum.open ? '이 노드로 바꾸기' : '이 노드를 이번 주 과제로'}
+                </Button>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
 
       <div className="field">
         <label>메모 <span style={{ color: (form.note || '').length > LIMIT.note ? 'var(--red)' : 'var(--text3)' }}>

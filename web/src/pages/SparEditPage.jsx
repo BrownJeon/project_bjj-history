@@ -13,6 +13,9 @@ import {
 import { uniqueOpponents } from '../utils/suggestions';
 import SparFeedbackCard from '../components/SparFeedbackCard';
 import { listPicks } from '../api/picks';
+import { getTask, closeTask } from '../api/research';
+import WeeklyTaskCloseout from '../components/WeeklyTaskCloseout';
+import { normalizeOutcomeOptions, taskSummary } from '../utils/weeklyTask';
 
 // outcome — null = 아직 선택 안 함(통계 집계 제외) / 'win' = 이겼어 / 'learn' = 배웠어.
 //   🔴 task-022 에서 **화면(토글)만 제거했다.** 컬럼·기존 값·페이로드는 그대로 둔다.
@@ -28,6 +31,13 @@ import { listPicks } from '../api/picks';
 //   (`{name, success, causes:[id], reaction:''}` — docs/recall-lab-spec.md §3.1).
 //   인덱스로 짝지은 별도 배열이 아니라 항목 내부라 항목을 지워도 짝이 밀리지 않는다.
 //   빈 항목의 정본은 아래 newSuccessItem() 하나뿐이다.
+// 🔴 task-027 "이번 주 과제 마감"은 **여기 없다.** 일부러 없다.
+//   스파링 저장은 destroy+reinsert 라 페이로드에 없는 필드가 재저장마다 사라진다(task-017 의 positions).
+//   그래서 dev-027a 는 마감 값을 `spar_sessions` 가 아니라 `research_tasks` 에 두고
+//   전용 엔드포인트(`POST /api/research/task/:id/close`)로 저장하게 했다 — 함정을 **구조적으로** 피한 것이다.
+//   여기(초기값)·아래 기존값 매핑·buildPayload 세 곳에 마감 필드를 넣으면 백엔드 insertSessions() 가
+//   읽지 않아 **저장되지 않으면서 "저장된다"는 거짓 신호**만 남는다. 넣지 마라.
+//   재저장으로 마감이 지워지지 않는다는 것은 QA 하네스가 실제 재저장으로 확인한다.
 const EMPTY_SESSION = {
   level: '', opponent: '', tapGot: 0, tapGave: 0, time: '',
   successTried: [], weak: [], note: '', outcome: null,
@@ -175,6 +185,31 @@ export default function SparEditor({ classId, sparDay, onClose, onSaved, initial
   });
   const [aiBusy, setAiBusy] = useState(false);
 
+  // ── 이번 주 과제 마감 (task-027 B) ─────────────────────────────────────────
+  // 🔴 세 화면(`/research` 시트 · 홈 · 여기)이 **같은 엔드포인트**를 읽는다.
+  //    여기서만 다른 출처를 쓰면 같은 과제가 화면마다 다르게 보인다.
+  // 🔴 기본값은 `null`("아직 안 고름")이다. `not_tried` 를 기본값으로 두면 아무것도 안 한 저장이
+  //    "시도 못 함"이라는 기록을 만든다 — outcome 에 기본값을 두지 않은 task-017 과 같은 이유.
+  const [weeklyTask, setWeeklyTask] = useState(null);
+  const [taskOptions, setTaskOptions] = useState({ options: [], fromServer: true });
+  const [taskOutcome, setTaskOutcome] = useState(null);
+  // 🔴 과제 조회 실패를 **조용히 삼키지 않는다.** 삼키면 3택이 안 뜨는 것과 "과제가 없는 것"이
+  //    화면에서 똑같이 보여서, 열린 과제가 있는 사람이 그날 마감을 못 하고도 이유를 모른다.
+  //    저장 자체는 막지 않는다 — 스파링 기록이 과제 때문에 인질이 되면 안 된다.
+  const [taskErr, setTaskErr] = useState('');
+  useEffect(() => {
+    let alive = true;
+    getTask()
+      .then(d => {
+        if (!alive) return;
+        setWeeklyTask(d?.task ?? null);
+        setTaskOptions(normalizeOutcomeOptions(d?.outcomeOptions));
+        setTaskErr('');
+      })
+      .catch(e => { if (alive) setTaskErr(e.message || '불러오지 못했습니다'); });
+    return () => { alive = false; };
+  }, []);
+
   // 실패 원인 태그 — 이 화면에서만 쓰므로 CacheContext(전 페이지 공통 로딩)에 올리지 않고
   // 여기서 직접 받는다. 서버가 이 사용자의 첫 조회 때 기본 4개를 넣어 준다.
   // 비활성 태그까지 함께 받는다 — 과거 기록이 참조하는 이름을 보여 줘야 하기 때문.
@@ -289,7 +324,22 @@ export default function SparEditor({ classId, sparDay, onClose, onSaved, initial
         const res = await classesApi.createSpar(classId, payload);
         sparDayId = res.id;
       }
+      // 🔴 순서가 중요하다. **스파링 저장이 성공한 뒤에만** 과제를 마감한다.
+      //    먼저 마감하면 스파링 저장이 실패했을 때 "과제는 닫혔는데 그날 기록은 없는" 상태가 남는다.
+      //    반대로 마감이 실패하면 과제는 그냥 열린 채로 남는다 — 잃는 값이 없고 다음에 다시 닫으면 된다.
+      //    🔴 실패를 조용히 삼키지 않는다. 스파링은 저장됐다는 사실과 무엇이 안 됐는지를 함께 말한다.
+      const wt = taskSummary(weeklyTask);
+      let closeFailed = '';
+      if (taskOutcome && wt.has && wt.open && wt.id != null) {
+        try {
+          await closeTask(wt.id, { outcome: taskOutcome });
+        } catch (e) {
+          closeFailed = e.message || '알 수 없는 오류';
+        }
+      }
+      // onSaved 는 마감까지 끝난 뒤 한 번만 부른다 — 홈 카드가 "마감됨"을 바로 읽게 하기 위해서다.
       onSaved && onSaved();
+      if (closeFailed) showToast(`스파링은 저장되었습니다 · 과제 마감 실패: ${closeFailed}`);
 
       // 그날 픽미업으로 뽑은 기술이 있을 때만 피드백 카드를 띄운다.
       // 픽이 없으면 카드에 입력할 것이 없어 "확인" 1탭만 늘어나므로 바로 닫는다 (task-017).
@@ -418,6 +468,17 @@ export default function SparEditor({ classId, sparDay, onClose, onSaved, initial
           </div>
         )}
       </div>
+
+      {/* 이번 주 과제 마감 3택 (task-027 B) — 열린 과제가 없으면 컴포넌트가 null 을 돌려준다.
+          🔴 3택 라벨은 서버(`outcomeOptions[]`)가 정본이다. 여기에 한글을 적지 마라. */}
+      <WeeklyTaskCloseout
+        task={weeklyTask}
+        options={taskOptions.options}
+        fromServer={taskOptions.fromServer}
+        value={taskOutcome}
+        onChange={setTaskOutcome}
+        err={taskErr}
+      />
 
       <div style={{ display: 'flex', gap: 8, marginTop: 12 }}>
         <Button variant="primary" size="sm" onClick={save}>저장</Button>

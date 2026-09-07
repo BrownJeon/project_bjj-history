@@ -446,7 +446,19 @@ router.delete('/projects/:id', wrap(async (req, res) => {
         WHERE v.project_id = ?`);
     const deletedVersions = await one(
       'SELECT COUNT(*) AS c FROM research_versions WHERE project_id = ?');
+    // 이번 주 과제 (task-027). FK fk_rt_node 가 CASCADE 로 바닥을 받치지만, **개수를 세어 응답에
+    // 싣기 위해** 여기서도 명시적으로 지운다 — FK 만 믿으면 앱이 무엇을 지웠는지 모른다(A-4 원칙).
+    const deletedTasks = await one(
+      `SELECT COUNT(*) AS c FROM research_tasks rt
+         JOIN research_nodes    n ON n.id = rt.node_id
+         JOIN research_versions v ON v.id = n.version_id
+        WHERE v.project_id = ?`);
 
+    await sequelize.query(
+      `DELETE rt FROM research_tasks rt
+         JOIN research_nodes    n ON n.id = rt.node_id
+         JOIN research_versions v ON v.id = n.version_id
+        WHERE v.project_id = ?`, { replacements: [p.id], transaction: t });
     await sequelize.query(
       `DELETE l FROM research_links l
          JOIN research_nodes    n ON n.id = l.node_id
@@ -462,10 +474,72 @@ router.delete('/projects/:id', wrap(async (req, res) => {
       'DELETE FROM research_projects WHERE id = ? AND user_id = ?',
       { replacements: [p.id, uid], transaction: t });
 
-    return { deletedVersions, deletedNodes, deletedLinks };
+    return { deletedVersions, deletedNodes, deletedLinks, deletedTasks };
   });
 
   ok(res, counts);
+}));
+
+/**
+ * GET /api/research/projects/:id/reaction-suggestions — 리액션 자동 유입 (task-027 A).
+ *
+ * 스파링에서 막힌 리액션(`spar_sessions.success[i].reaction`, task-022)이 이 프로젝트의
+ * 활성 버전 트리에 **미처리 리액션 제안**으로 올라온다. 사람이 복기에서 손으로 옮기는 단계를 없앤다.
+ *
+ * 🔴 **이 라우트는 아무것도 만들지 않는다. GET 이고, INSERT 가 한 줄도 없다.**
+ *    "승인 전 자동 생성 금지"가 이 프로젝트의 원칙이다(task-007~009 — 기술트리 오염 방지).
+ *    채택은 사용자가 `POST /api/research/nodes` 로 한다. 제안과 생성을 **다른 라우트로 갈라 둔 것**이
+ *    그 원칙의 구조적 표현이다 — 조회가 실수로 쓰는 일이 일어날 수 없다.
+ *
+ * 🔴 **출처를 응답에 싣는다** — 어느 스파링에서 며칠에 몇 회 막혔는지(count·lastFailedAt·sources).
+ *    근거 없이 나타난 제안은 사용자가 신뢰하지 않는다.
+ *
+ * 🔴 **미매칭을 집계에서 빼지 않는다** — `unlinked` 로 구분해 전량 내보낸다(/api/holes 와 같은 규약).
+ *    실측 기술명 미매칭 33.7% 가 그대로 유입 손실률이라(사양서 §6), 조용히 지우면 사용자는
+ *    "리액션을 적었는데 아무 데도 안 나온다"만 겪는다.
+ *
+ * 🔴 표본 0은 `0/0` 이 아니다 — `empty:true`(적힌 리액션이 아예 없음)와 `nodesWithTechnique:0`
+ *    (붙일 자리가 없음)은 **다른 말**이고, 화면이 다르게 말해야 한다.
+ */
+router.get('/projects/:id/reaction-suggestions', wrap(async (req, res) => {
+  const uid = req.user.id;
+  const p = await resolveOwned(uid, 'project', req.params.id);
+  if (!p) return fail(res, 404, '연구 프로젝트를 찾을 수 없습니다');
+
+  const [versions] = await sequelize.query(
+    'SELECT * FROM research_versions WHERE project_id = ? ORDER BY version_no ASC, id ASC',
+    { replacements: [p.id] }
+  );
+  const active = pickActive(versions);
+  const nodes  = active ? await nodesOfVersion(active.id) : [];
+
+  // 🔴 loadLabData 는 요청당 한 번. 노드마다·기술마다 부르면 N+1 이다(task-026 B-2 와 같은 규칙).
+  const data = await lab.loadLabData(uid);
+  const src  = lab.collectReactionItems(data);
+  const out  = tree.computeReactionSuggestions(nodes, src.observations);
+
+  ok(res, {
+    projectId: Number(p.id),
+    versionId: active ? Number(active.id) : null,
+    // "리액션을 적은 실패 기록이 하나도 없다" — 0% 가 아니라 기록 없음.
+    empty: src.failItemsWithReaction === 0,
+    summary: {
+      sparSessions: data.sessions.length,
+      failItems: src.failItems,
+      failItemsWithReaction: src.failItemsWithReaction,
+      reactionTexts: out.reactionTexts,
+      linkedReactionItems: src.linkedReactionItems,
+      unlinkedReactionItems: src.unlinkedReactionItems,
+      nodesWithTechnique: out.nodesWithTechnique,
+      suggested: out.suggestions.length,
+      alreadyInTree: out.skipped.length,
+      parseFailures: data.parseFailures,
+    },
+    suggestions: out.suggestions,
+    unlinked: out.unlinked,
+    // 이미 트리에 있어 제외한 것 — 조용히 지우지 않고 왜 안 보이는지 드러낸다.
+    skipped: out.skipped,
+  });
 }));
 
 // ═══ 버전 ════════════════════════════════════════════════════════════════════
@@ -547,7 +621,13 @@ router.delete('/versions/:id', wrap(async (req, res) => {
       `SELECT COUNT(*) AS c FROM research_links l
          JOIN research_nodes n ON n.id = l.node_id WHERE n.version_id = ?`);
     const deletedNodes = await one('SELECT COUNT(*) AS c FROM research_nodes WHERE version_id = ?');
+    const deletedTasks = await one(
+      `SELECT COUNT(*) AS c FROM research_tasks rt
+         JOIN research_nodes n ON n.id = rt.node_id WHERE n.version_id = ?`);
 
+    await sequelize.query(
+      `DELETE rt FROM research_tasks rt JOIN research_nodes n ON n.id = rt.node_id WHERE n.version_id = ?`,
+      { replacements: [v.id], transaction: t });
     await sequelize.query(
       `DELETE l FROM research_links l JOIN research_nodes n ON n.id = l.node_id WHERE n.version_id = ?`,
       { replacements: [v.id], transaction: t });
@@ -562,7 +642,7 @@ router.delete('/versions/:id', wrap(async (req, res) => {
           WHERE project_id = ? ORDER BY version_no ASC, id ASC LIMIT 1`,
         { replacements: [v.project_id], transaction: t });
     }
-    return { deletedVersions: 1, deletedNodes, deletedLinks };
+    return { deletedVersions: 1, deletedNodes, deletedLinks, deletedTasks };
   });
 
   ok(res, { ...counts, project: await detailById(uid, v.project_id) });
@@ -740,19 +820,28 @@ router.delete('/nodes/:id', wrap(async (req, res) => {
   const counts = await sequelize.transaction(async (t) => {
     const nodes = await nodesOfVersion(n.version_id, t);
     const ids = tree.collectSubtreeIds(nodes, n.id);          // 자기 자신 + 자손 전부
-    if (!ids.length) return { deletedNodes: 0, deletedLinks: 0 };
+    if (!ids.length) return { deletedNodes: 0, deletedLinks: 0, deletedTasks: 0 };
 
     const [lr] = await sequelize.query(
       'SELECT COUNT(*) AS c FROM research_links WHERE node_id IN (?)',
       { replacements: [ids], transaction: t });
     const deletedLinks = Number(lr[0]?.c || 0);
+    // 🔴 이번 주 과제가 이 서브트리를 가리키고 있으면 함께 사라진다(task-027).
+    //    가리키는 노드가 없는 과제는 무엇에 대한 기록인지 화면이 말할 수 없다.
+    //    FK CASCADE 도 같은 일을 하지만, 개수를 세어 응답에 실으려면 앱이 직접 지워야 한다.
+    const [tr] = await sequelize.query(
+      'SELECT COUNT(*) AS c FROM research_tasks WHERE node_id IN (?)',
+      { replacements: [ids], transaction: t });
+    const deletedTasks = Number(tr[0]?.c || 0);
 
+    await sequelize.query('DELETE FROM research_tasks WHERE node_id IN (?)',
+      { replacements: [ids], transaction: t });
     await sequelize.query('DELETE FROM research_links WHERE node_id IN (?)',
       { replacements: [ids], transaction: t });
     await sequelize.query('DELETE FROM research_nodes WHERE id IN (?)',
       { replacements: [ids], transaction: t });
 
-    return { deletedNodes: ids.length, deletedLinks };
+    return { deletedNodes: ids.length, deletedLinks, deletedTasks };
   });
 
   ok(res, counts);
@@ -995,6 +1084,275 @@ router.delete('/links/:id', wrap(async (req, res) => {
   if (!l) return fail(res, 404, '링크를 찾을 수 없습니다');
   await sequelize.query('DELETE FROM research_links WHERE id = ?', { replacements: [l.id] });
   ok(res, { deletedLinks: 1 });
+}));
+
+// ═══ 이번 주 과제 ════════════════════════════════════════════════════════════
+//
+// 🔴 **앱 전체에 열린 과제는 1개다** — 관장 합의 "하나만 파라". 프로젝트가 여러 개여도 과제는 하나다.
+//    그래서 경로가 `/task`(단수)이고 `GET` 에 id 가 없다. 목록이 아니라 **상태**이기 때문이다.
+//    강제는 두 겹이다: DB 의 UNIQUE(user_id, open_slot) + 아래 트랜잭션의 앱 검사.
+//    어느 한쪽만 믿지 않는다 — 앱만 믿으면 동시 요청·SQL 직접 삽입에서 두 개가 열리고,
+//    DB 만 믿으면 사용자가 이유를 모르는 500 을 본다. task-026 이 FK 와 트랜잭션 삭제를
+//    둘 다 한 것과 같은 이유다.
+//
+// 🔴 **스파링 저장(PUT /api/classes/:id/spar/:sparDayId)을 건드리지 않았다.**
+//    거긴 destroy + reinsert 라(task-017) 새 필드를 실으면 프론트가 안 보낼 때마다 사라진다
+//    — `positions` 가 실제로 그렇게 54행 중 36행이 빈 [] 가 됐다. 마감은 아래 전용 라우트를
+//    스파링 저장 직후에 한 번 더 부르는 방식이고, 그래서 그 함정이 **구조적으로 발생할 수 없다.**
+//
+// 🔴 **마감이 사다리를 쓰지 않는다.** 4·5단계는 spar_sessions.success 자동 판정이 원칙이라
+//    (사양서 §5.1) 과제 마감이 그 판정을 덮어쓰면 안 된다. `done` 이어도 technique_mastery 에
+//    한 줄도 쓰지 않고, 응답의 ladder.applied 는 **항상 false** 다. 과제 결과는 별도 기록이다.
+
+/** 3택 정본. 🔴 값은 ASCII 키, 라벨은 서버가 함께 준다 — 프론트가 라벨을 따로 쓰면 두 곳이 갈린다. */
+const TASK_OUTCOMES = [
+  { value: 'not_tried',    label: '시도 못 함' },
+  { value: 'tried_failed', label: '해봤는데 안 됨' },
+  { value: 'done',         label: '됐음' },
+];
+const OUTCOME_LABEL = new Map(TASK_OUTCOMES.map((o) => [o.value, o.label]));
+
+// 🔴 소유 판별 SQL 은 예외 없이 research_projects 까지 조인한다(계약 A-2).
+//    research_tasks.user_id 만 보고 통과시키면 자기 user_id 를 단 **남의 노드 id** 를 심을 수 있다.
+//    `WHERE p.user_id = ?` 가 정본이고 t.user_id 는 드리프트 관측용 사본이다.
+const TASK_SELECT = `
+  SELECT t.id, t.user_id, t.node_id, t.memo, t.outcome, t.closed_at,
+         DATE_FORMAT(t.created_at, '%Y-%m-%d') AS created_ymd,
+         DATE_FORMAT(t.closed_at,  '%Y-%m-%d') AS closed_ymd,
+         n.kind, n.label, n.technique_id, n.version_id,
+         v.version_no, v.name AS version_name, v.project_id,
+         p.title AS project_title, p.user_id AS owner_id,
+         tech.name AS technique_name
+    FROM research_tasks    t
+    JOIN research_nodes    n ON n.id = t.node_id
+    JOIN research_versions v ON v.id = n.version_id
+    JOIN research_projects p ON p.id = v.project_id
+    LEFT JOIN techniques tech ON tech.id = n.technique_id AND tech.user_id = p.user_id
+`;
+
+/**
+ * 과제 1건을 뷰로. 🔴 날짜는 SQL 의 DATE_FORMAT 이 만든 'YYYY-MM-DD' 문자열이고,
+ * 경과일은 labAnalytics.daysBetween + todayKST 로 잰다 — toISOString() 은 KST 기준 하루를 민다.
+ */
+function taskView(r) {
+  const open = r.closed_at == null;
+  const techniqueId = (r.technique_id == null) ? null : Number(r.technique_id);
+  return {
+    id: Number(r.id),
+    nodeId: Number(r.node_id),
+    memo: r.memo ?? '',
+    createdAt: r.created_ymd ?? null,
+    closedAt: r.closed_ymd ?? null,
+    open,
+    outcome: r.outcome ?? null,
+    outcomeLabel: r.outcome ? (OUTCOME_LABEL.get(r.outcome) ?? null) : null,
+    // 열린 과제는 오늘까지, 마감된 과제는 마감일까지. 0일도 정상값이다(오늘 정한 과제).
+    daysOpen: lab.daysBetween(r.created_ymd, open ? lab.todayKST() : r.closed_ymd),
+    node: {
+      id: Number(r.node_id),
+      kind: r.kind,
+      label: r.label ?? '',
+      techniqueId,
+      techniqueName: techniqueId !== null ? (r.technique_name ?? null) : null,
+      linked: techniqueId !== null,
+    },
+    project: {
+      id: Number(r.project_id),
+      title: r.project_title,
+      versionId: Number(r.version_id),
+      versionNo: Number(r.version_no),
+      versionName: r.version_name ?? null,
+    },
+  };
+}
+
+/** 열린 과제 1건(없으면 null). 🔴 소유 판별은 p.user_id — t.user_id 사본을 권한에 쓰지 않는다. */
+async function openTaskOf(uid, t = null) {
+  const [rows] = await sequelize.query(
+    `${TASK_SELECT} WHERE p.user_id = ? AND t.closed_at IS NULL ORDER BY t.id DESC LIMIT 1`,
+    { replacements: [uid], transaction: t }
+  );
+  return rows[0] ? taskView(rows[0]) : null;
+}
+
+/** 소유가 확인된 과제 행(뷰 아님). 없거나 남의 것이면 null → 호출부가 404 로 끝낸다. */
+async function ownedTaskRow(uid, rawId, t = null) {
+  const id = posInt(rawId);
+  if (id === null) return null;
+  const [rows] = await sequelize.query(`${TASK_SELECT} WHERE t.id = ? AND p.user_id = ? LIMIT 1`,
+    { replacements: [id, uid], transaction: t });
+  return rows[0] || null;
+}
+
+/** 마감 이력 최근 5건. "지금 뭘 하고 있나" 옆에 "뭘 해봤나"가 있어야 과제가 흐름으로 읽힌다. */
+async function recentClosed(uid, limit = 5) {
+  const [rows] = await sequelize.query(
+    `${TASK_SELECT} WHERE p.user_id = ? AND t.closed_at IS NOT NULL
+      ORDER BY t.closed_at DESC, t.id DESC LIMIT ${Number(limit) || 5}`,
+    { replacements: [uid] }
+  );
+  return rows.map(taskView);
+}
+
+/**
+ * 마감 결과가 사다리에 무엇을 의미하는지 — **읽기 전용 안내**.
+ * 🔴 여기서 technique_mastery 를 쓰지 않는다. 4·5단계는 spar_sessions.success 자동 판정이 원칙이고
+ *    (사양서 §5.1) 과제 마감이 그걸 덮어쓰면 같은 기술의 사다리가 두 곳에서 갈린다.
+ *    `done` 은 "4단계 후보"라는 **권유**일 뿐이고, applied 는 언제나 false 다.
+ */
+async function ladderNoteFor(uid, techniqueId, outcome) {
+  if (techniqueId == null) {
+    return {
+      techniqueId: null, reached: null, step4Status: null,
+      applied: false, candidateForStep4: false,
+      reason: '기술이 연결되지 않아 사다리가 없습니다',
+    };
+  }
+  const data = await lab.loadLabData(uid);
+  const mastery = await TechniqueMastery.findOne({
+    where: { user_id: uid, technique_id: techniqueId }, raw: true,
+  });
+  const m = lab.computeMastery(data, techniqueId, { mastery });
+  const step4 = m ? (m.steps.find((s) => s.step === 4) || null) : null;
+  return {
+    techniqueId: Number(techniqueId),
+    reached: m ? m.reached : null,
+    step4Status: step4 ? step4.status : null,
+    applied: false,
+    candidateForStep4: outcome === 'done',
+    reason: '사다리 4·5단계는 spar_sessions.success 에서 자동 판정합니다 — 과제 결과는 별도 기록입니다',
+  };
+}
+
+/**
+ * GET /api/research/task — 지금 열린 과제 1개 + 마감 이력.
+ * 🔴 과제가 없으면 404 가 아니라 `{task: null}` 이다. "아직 정하지 않았다"는 **정상 상태**다.
+ */
+router.get('/task', wrap(async (req, res) => {
+  const uid = req.user.id;
+  ok(res, {
+    task: await openTaskOf(uid),
+    recent: await recentClosed(uid),
+    outcomeOptions: TASK_OUTCOMES,
+  });
+}));
+
+/**
+ * POST /api/research/task — {nodeId, memo?} 로 과제 지정.
+ * 🔴 이미 열린 과제가 있으면 **409** 이고, 응답에 현재 과제를 동봉한다 — 화면이 "바꾸시겠습니까"를
+ *    물을 수 있어야 한다. 그냥 400 만 주면 사용자는 무엇이 막고 있는지 모른다.
+ */
+router.post('/task', wrap(async (req, res) => {
+  const uid  = req.user.id;
+  const body = req.body || {};
+
+  const node = await resolveOwned(uid, 'node', body.nodeId);
+  if (!node) return fail(res, 404, '노드를 찾을 수 없습니다');
+
+  const memo = has(body, 'memo') ? clean(body.memo) : '';
+  const mErr = textError('메모', memo, LIMITS.memo);
+  if (mErr) return fail(res, 400, mErr);
+
+  const existing = await openTaskOf(uid);
+  if (existing) {
+    return fail(res, 409, '이미 진행 중인 과제가 있습니다 — 하나만 파는 것이 규칙입니다', { task: existing });
+  }
+
+  try {
+    await sequelize.transaction(async (t) => {
+      // 🔴 트랜잭션 안에서 한 번 더 본다(위 검사와 INSERT 사이에 다른 요청이 끼어들 수 있다).
+      //    FOR UPDATE 로 같은 계정의 열린 행을 잠근다. 최종 방어선은 UNIQUE(user_id, open_slot) 이다.
+      const [locked] = await sequelize.query(
+        'SELECT id FROM research_tasks WHERE user_id = ? AND closed_at IS NULL FOR UPDATE',
+        { replacements: [uid], transaction: t }
+      );
+      if (locked.length) throw Object.assign(new Error('duplicate_open_task'), { __dup: true });
+
+      await sequelize.query(
+        'INSERT INTO research_tasks (user_id, node_id, memo, created_at) VALUES (?, ?, ?, ?)',
+        // 🔴 user_id 는 요청 본문이 아니라 **노드의 소유자**에서 유도한다(계약 A-2 와 같은 규칙).
+        { replacements: [node.owner_id, node.id, memo || null, new Date()], transaction: t }
+      );
+    });
+  } catch (e) {
+    // UNIQUE(user_id, open_slot) 위반도 같은 뜻이다 — 조용히 삼키지 않고 409 로 번역한다.
+    if (e.__dup || String(e.name || '').includes('Unique') || /uq_rt_open/.test(String(e.message || ''))) {
+      return fail(res, 409, '이미 진행 중인 과제가 있습니다 — 하나만 파는 것이 규칙입니다',
+        { task: await openTaskOf(uid) });
+    }
+    throw e;
+  }
+
+  ok(res, { task: await openTaskOf(uid), recent: await recentClosed(uid), outcomeOptions: TASK_OUTCOMES });
+}));
+
+/**
+ * PATCH /api/research/task/:id — {memo} **부분 갱신**.
+ * 🔴 nodeId 변경은 받지 않는다(취소 후 재지정이 정본 흐름이다) — 과제가 도중에 다른 것을 가리키면
+ *    "무엇을 며칠 팠는가"가 기록에서 사라진다. outcome 변경도 여기가 아니라 /close 다.
+ */
+router.patch('/task/:id', wrap(async (req, res) => {
+  const uid = req.user.id;
+  const row = await ownedTaskRow(uid, req.params.id);
+  if (!row) return fail(res, 404, '과제를 찾을 수 없습니다');
+  const body = req.body || {};
+
+  if (has(body, 'nodeId'))  return fail(res, 400, '과제 대상 변경은 취소 후 다시 지정해주세요');
+  if (has(body, 'outcome')) return fail(res, 400, '마감은 POST /api/research/task/:id/close 를 사용하세요');
+  if (!has(body, 'memo'))   return fail(res, 400, 'memo 를 보내주세요');
+
+  const memo = clean(body.memo);
+  const mErr = textError('메모', memo, LIMITS.memo);
+  if (mErr) return fail(res, 400, mErr);
+
+  await sequelize.query('UPDATE research_tasks SET memo = ? WHERE id = ?',
+    { replacements: [memo || null, row.id] });
+
+  const fresh = await ownedTaskRow(uid, row.id);
+  ok(res, { task: taskView(fresh), outcomeOptions: TASK_OUTCOMES });
+}));
+
+/**
+ * POST /api/research/task/:id/close — 3택 마감.
+ * 🔴 `done` 이어도 technique_mastery 에 한 줄도 쓰지 않는다(위 섹션 주석 참고).
+ */
+router.post('/task/:id/close', wrap(async (req, res) => {
+  const uid = req.user.id;
+  const row = await ownedTaskRow(uid, req.params.id);
+  if (!row) return fail(res, 404, '과제를 찾을 수 없습니다');
+  if (row.closed_at != null) return fail(res, 400, '이미 마감된 과제입니다');
+
+  const outcome = clean((req.body || {}).outcome);
+  if (!OUTCOME_LABEL.has(outcome)) {
+    return fail(res, 400, `결과는 ${TASK_OUTCOMES.map((o) => `${o.value}(${o.label})`).join(' · ')} 중 하나여야 합니다`);
+  }
+
+  await sequelize.query('UPDATE research_tasks SET closed_at = ?, outcome = ? WHERE id = ? AND closed_at IS NULL',
+    { replacements: [new Date(), outcome, row.id] });
+
+  const fresh = await ownedTaskRow(uid, row.id);
+  ok(res, {
+    task: taskView(fresh),
+    ladder: await ladderNoteFor(uid, fresh.technique_id, outcome),
+    recent: await recentClosed(uid),
+    outcomeOptions: TASK_OUTCOMES,
+  });
+}));
+
+/**
+ * DELETE /api/research/task/:id — 지정 취소(잘못 고른 경우).
+ * 🔴 **마감된 과제는 지우지 않는다(400).** 마감 이력은 "무엇을 해봤나"의 기록이고,
+ *    지울 수 있게 하면 사다리 4단계 후보의 근거가 조용히 사라진다.
+ */
+router.delete('/task/:id', wrap(async (req, res) => {
+  const uid = req.user.id;
+  const row = await ownedTaskRow(uid, req.params.id);
+  if (!row) return fail(res, 404, '과제를 찾을 수 없습니다');
+  if (row.closed_at != null) return fail(res, 400, '마감된 과제는 취소할 수 없습니다');
+
+  await sequelize.query('DELETE FROM research_tasks WHERE id = ? AND closed_at IS NULL',
+    { replacements: [row.id] });
+  ok(res, { deletedTasks: 1, task: await openTaskOf(uid), outcomeOptions: TASK_OUTCOMES });
 }));
 
 module.exports = router;

@@ -81,3 +81,56 @@ export const patchLink = (id, body) =>
 
 export const deleteLink = (id) =>
   client.delete(`/research/links/${id}`).then(r => r.data);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// task-027 — 리액션 자동 유입 + 이번 주 과제
+//
+// 🔴 계약은 `agent-vault/10-Flow/tasks/task-027-reaction-inflow-and-weekly-task.md` 의
+//    "백엔드 계약" 절이 정본이다(dev-027a 확정). 여기 주석은 그 요약이지 정본이 아니다.
+//
+// 🔴 제안 조회는 **쓰기를 하지 않는다.** 채택은 기존 createNode() 를 그대로 쓴다 —
+//    "제안"과 "생성"이 코드 수준에서 갈라져 있어야 "채택 전에는 DB 에 안 생긴다"가
+//    주석의 약속이 아니라 구조로 보장된다. 여기에 자동 생성 편의 함수를 만들지 마라.
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * GET /api/research/projects/:id/reaction-suggestions
+ * 활성 버전 기준 제안 계산(쓰기 0건).
+ * 응답: {projectId, versionId, empty, summary, suggestions[], unlinked[], skipped[]}
+ * 🔴 `unlinked`(기술명 미매칭)를 화면에서 버리지 마라 — 집계에서 빼는 것과 표시하지 않는 것은 다르다.
+ */
+export const getReactionSuggestions = (projectId) =>
+  client.get(`/research/projects/${projectId}/reaction-suggestions`).then(r => r.data);
+
+/**
+ * GET /api/research/task — 열린 과제 1개 + 최근 마감 5건 + **3택 정본 목록**.
+ * 🔴 과제가 없으면 `{task:null, ...}` 이고 **404 가 아니다.** "아직 정하지 않았다"는 정상 상태다.
+ * 🔴 3택 라벨을 프론트에 하드코딩하지 마라 — 정본은 응답의 `outcomeOptions[]` 다.
+ */
+export const getTask = () =>
+  client.get('/research/task').then(r => r.data);
+
+/**
+ * POST /api/research/task — {nodeId, memo?}
+ * 🔴 이미 열린 과제가 있으면 **409**. 이 앱의 axios 인터셉터는 비-2xx 의 본문을 버리고
+ *    Error(message) 만 남기므로 **409 본문에 동봉된 현재 과제는 읽을 수 없다.**
+ *    → 호출자는 바꾸기 전에 getTask() 로 현재 과제를 먼저 확인하고 물어야 한다.
+ */
+export const setTask = (body) =>
+  client.post('/research/task', body).then(r => r.data);
+
+/** PATCH /api/research/task/:id — {memo} 부분 갱신 */
+export const patchTask = (id, body) =>
+  client.patch(`/research/task/${id}`, body).then(r => r.data);
+
+/**
+ * POST /api/research/task/:id/close — {outcome} 3택 마감.
+ * 🔴 `outcome` 은 ASCII 키(`not_tried`·`tried_failed`·`done`)다. 한글 라벨을 보내지 마라.
+ * 응답의 `ladder.applied` 는 **항상 false** — 사다리 4·5단계는 스파링 기록 자동 판정이 정본이다.
+ */
+export const closeTask = (id, body) =>
+  client.post(`/research/task/${id}/close`, body).then(r => r.data);
+
+/** DELETE /api/research/task/:id — 지정 취소(열린 과제만) */
+export const clearTask = (id) =>
+  client.delete(`/research/task/${id}`).then(r => r.data);

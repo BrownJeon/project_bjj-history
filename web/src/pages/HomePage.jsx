@@ -10,6 +10,8 @@ import ClassEditor from './ClassEditPage';
 import SparEditor from './SparEditPage';
 import * as classesApi from '../api/classes';
 import * as coachApi from '../api/coach';
+import { getTask } from '../api/research';
+import WeeklyTaskCard from '../components/WeeklyTaskCard';
 
 function pad(n) { return String(n).padStart(2, '0'); }
 function ymd(d) { return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`; }
@@ -37,10 +39,27 @@ export default function HomePage() {
   const [latestReport, setLatestReport] = useState(null);
   const [latestPlan,   setLatestPlan]   = useState(null);
 
+  // 이번 주 과제 (task-027) — 🔴 세 화면이 **같은 엔드포인트**를 읽는다.
+  //   여기서 다른 곳(캐시·요약 필드)을 읽으면 홈만 낡은 값을 보여 준다.
+  //   🔴 과제가 없으면 `{task:null}` 이고 404 가 아니다(계약 B). 없는 것을 오류로 그리지 않는다.
+  const [weeklyTask, setWeeklyTask]       = useState(null);
+  const [taskLoading, setTaskLoading]     = useState(true);
+  const [taskErr, setTaskErr]             = useState('');
+
   useEffect(() => {
     coachApi.listReports('report', 1).then(r => setLatestReport(r[0] || null)).catch(() => {});
     coachApi.listReports('plan',   1).then(r => setLatestPlan(r[0]   || null)).catch(() => {});
   }, []);
+
+  // 스파링을 저장하고 돌아오면 과제가 마감돼 있을 수 있다 — 저장 후 콜백에서도 다시 읽는다.
+  const reloadWeeklyTask = React.useCallback(() => {
+    setTaskLoading(true);
+    return getTask()
+      .then(d => { setWeeklyTask(d?.task ?? null); setTaskErr(''); })
+      .catch(e => setTaskErr(e.message || '불러오지 못했습니다'))
+      .finally(() => setTaskLoading(false));
+  }, []);
+  useEffect(() => { reloadWeeklyTask(); }, [reloadWeeklyTask]);
 
   // 목록이 도착하면 첫 항목을 기본 선택. 서버가 목록을 못 주는 상황(= 사실상 수업 생성도 실패하는 상황)에도
   // 버튼은 그대로 동작하고 theme 만 빈 값이 된다 — 빈 theme 는 음성분석이 나중에 채워 준다.
@@ -250,6 +269,16 @@ export default function HomePage() {
         )}
       </Card>
 
+      {/* 이번 주 과제 (task-027) — 오늘 기록 바로 아래.
+          🔴 매트에 나가기 전에 눈에 들어와야 하므로 접히지 않고, 없을 때도 숨기지 않는다.
+             (없으면 /research 로 보낸다 — 기능이 있다는 사실 자체가 보여야 한다.) */}
+      <WeeklyTaskCard
+        task={weeklyTask}
+        loading={taskLoading}
+        err={taskErr}
+        onGo={() => navigate('/research')}
+      />
+
       {/* 주간 스트립 */}
       <Card style={{ borderRadius: 16, marginBottom: 12 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
@@ -422,7 +451,9 @@ export default function HomePage() {
           sparDay={sparTarget.sparDay}
           initialRounds={1}   /* 홈 진입은 "지금 스파링했다"가 전제 — 라운드 추가 1탭을 없앤다 */
           onClose={() => setSparTarget(null)}
-          onSaved={reloadClasses}
+          /* 🔴 스파링을 저장하면 과제가 마감됐을 수 있다 — 홈 카드를 다시 읽지 않으면
+             방금 마감한 과제가 열린 채로 남아 세 화면의 값이 갈린다. */
+          onSaved={() => { reloadClasses(); reloadWeeklyTask(); }}
         />
       )}
     </div>

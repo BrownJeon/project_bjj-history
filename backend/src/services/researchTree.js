@@ -12,6 +12,11 @@
 //
 // [불변식] 모든 순회 함수는 **이미 깨진 데이터(순환 포함)에서도 멈춘다.**
 //   방어 검사가 있는데 정작 검사 함수가 무한 루프에 빠지면 아무것도 지키지 못한다.
+//
+// [task-027] 리액션 자동 유입의 제안 계산이 여기 들어왔다(computeReactionSuggestions).
+//   🔴 **제안만 만들고 아무것도 생성하지 않는다** — 순수 함수라 DB 를 건드릴 수단이 없다.
+//   이름 정규화는 신규 매처를 만들지 않고 utils/techMatch 의 normalize 를 그대로 쓴다.
+const { normalize } = require('../utils/techMatch');
 
 /**
  * 노드 종류 7종 — 도장 용어(계약 A-3).
@@ -294,6 +299,182 @@ function uniqueTechniqueIds(nodes) {
 }
 
 /**
+ * 리액션 자동 유입 — **제안 계산** (task-027 A).
+ *
+ * 스파링에서 막힌 리액션(labAnalytics.collectReactionItems 의 observations)을 받아
+ * "이 트리의 어느 노드 밑에 어떤 리액션이 빠져 있는가"를 계산한다.
+ *
+ * 🔴 **이 함수는 아무것도 만들지 않는다. 만들 것을 *제안*할 뿐이다.**
+ *    "승인 전 자동 생성 금지"가 이 프로젝트의 원칙이다(task-007~009, 기술트리 오염 방지).
+ *    노드는 사용자가 채택할 때 `POST /api/research/nodes` 로 만들어진다. 순수 함수라 DB 를
+ *    건드릴 수단 자체가 없다 — 그 원칙이 주석이 아니라 **구조**로 지켜진다.
+ *
+ * 🔴 **출처를 반드시 싣는다**(count · firstFailedAt · lastFailedAt · sources).
+ *    근거 없이 나타난 제안은 사용자가 신뢰하지 않고, 신뢰하지 않는 제안은 안 쓰느니만 못하다.
+ *
+ * 🔴 **미매칭을 버리지 않는다.** 붙일 노드를 정할 수 없을 뿐이라 `unlinked` 로 따로 내보낸다
+ *    (/api/holes 의 `linked:false` 와 같은 규약). 실측 미매칭 33.7% 를 조용히 지우면
+ *    사용자는 "리액션을 적었는데 아무 데도 안 나온다"만 겪는다.
+ *
+ * 🔴 **이미 트리에 있는 리액션은 중복 제안하지 않는다.** 비교 키는 `techMatch.normalize()`
+ *    (NFC + 소문자 + 공백·하이픈·중점 제거) — "팔 숨김" 과 "팔숨김" 은 같은 것이다.
+ *    다만 조용히 지우지 않고 `skipped` 로 드러낸다(왜 안 보이는지 추적 가능하게).
+ *
+ * 🔴 **같은 기술을 참조하는 노드가 여러 개면 각 노드마다 제안한다.** 어디에 붙일지는 사람이 정한다.
+ *    한 곳으로 임의로 몰면 사용자가 의도한 자리가 아닌 곳에 붙고, 그건 되돌리기 어렵다.
+ *
+ * @param nodes        활성 버전의 노드 전체 (DB 행 그대로)
+ * @param observations labAnalytics.collectReactionItems(data).observations
+ * @param opts.norm    정규화 함수 주입구(기본 techMatch.normalize). QA 네거티브 컨트롤용.
+ */
+function computeReactionSuggestions(nodes, observations, opts = {}) {
+  const norm = opts.norm || normalize;
+  const idx  = opts.idx || indexNodes(nodes);
+  const list = Array.isArray(nodes) ? nodes : [];
+  const obs  = Array.isArray(observations) ? observations : [];
+
+  // ── 1. 리액션 문구를 (기술 × 정규화 문구) 로 묶는다 ──────────────────────
+  //    🔴 묶는 키는 **정규화한 문구**다. 원본 표기는 최빈값을 골라 label 로 쓴다
+  //       (/api/holes 의 displayName 과 같은 규칙 — 표기 흔들림 때문에 같은 리액션이 둘로 갈리지 않게).
+  const bucketOf = (map, key) => {
+    if (!map.has(key)) {
+      map.set(key, { texts: new Map(), count: 0, first: null, last: null, sources: [] });
+    }
+    return map.get(key);
+  };
+  const addObs = (b, o) => {
+    b.texts.set(o.reaction, (b.texts.get(o.reaction) || 0) + 1);
+    b.count++;
+    if (o.date) {
+      if (!b.first || o.date < b.first) b.first = o.date;
+      if (!b.last  || o.date > b.last)  b.last  = o.date;
+    }
+    b.sources.push({
+      sparSessionId: o.sparSessionId,
+      date: o.date,
+      itemName: o.itemName,
+      matchType: o.matchType,
+      matchedName: o.matchedName ?? null,
+      level: o.level ?? null,
+    });
+  };
+  /** 최빈 원본 표기. 동률이면 첫 등장(Map 삽입순 + 안정 정렬). */
+  const topText = (texts) => [...texts.entries()].sort((a, b) => b[1] - a[1])[0][0];
+  /** 최근 5건만 — 응답 비대 방지. 전체 수는 sourceCount 로 알린다. */
+  const topSources = (sources) => sources
+    .slice()
+    .sort((a, b) => String(b.date ?? '').localeCompare(String(a.date ?? '')) || (b.sparSessionId - a.sparSessionId))
+    .slice(0, 5);
+
+  const byTech     = new Map();   // techniqueId -> Map(normReaction -> bucket)
+  const unlinkedMap = new Map();  // "이름+구분자+리액션" 한 문자열 키 은 쓰지 않는다 — 중첩 Map 으로.
+  const techNames  = new Map();   // techniqueId -> matchedName (표시용)
+
+  for (const o of obs) {
+    if (o.linked && o.techniqueId != null) {
+      const tid = Number(o.techniqueId);
+      if (!byTech.has(tid)) byTech.set(tid, new Map());
+      addObs(bucketOf(byTech.get(tid), o.normReaction), o);
+      if (o.matchedName && !techNames.has(tid)) techNames.set(tid, o.matchedName);
+    } else {
+      // ⚠️ 구분자 문자열 키로 합치지 않는다 — 구분자가 값에 들어오면 조용히 깨진다
+      //    (labAnalytics.resolveBelts 가 같은 이유로 중첩 Map 을 쓴다).
+      const itemKey = norm(o.itemName);
+      if (!unlinkedMap.has(itemKey)) unlinkedMap.set(itemKey, new Map());
+      const b = bucketOf(unlinkedMap.get(itemKey), o.normReaction);
+      if (!b.itemNames) b.itemNames = new Map();
+      b.itemNames.set(o.itemName, (b.itemNames.get(o.itemName) || 0) + 1);
+      addObs(b, o);
+    }
+  }
+
+  // ── 2. 기술을 참조하는 노드마다 "빠진 리액션"을 고른다 ────────────────────
+  const suggestions = [];
+  const skipped     = [];
+  const techNodes = list.filter((n) => n.technique_id != null && n.technique_id !== '');
+
+  for (const node of techNodes) {
+    const tid = Number(node.technique_id);
+    const buckets = byTech.get(tid);
+    if (!buckets || !buckets.size) continue;
+
+    // 🔴 중복 판정은 **그 노드의 직계 자식 리액션**만 본다. 트리 전체를 보면 다른 가지에 있는
+    //    같은 이름 때문에 정작 여기가 비어 있는데도 제안이 사라진다.
+    const existing = new Map();   // normLabel -> nodeId
+    for (const c of childrenOf(idx, Number(node.id))) {
+      if (c.kind !== REACTION) continue;
+      const key = norm(c.label ?? '');
+      if (key && !existing.has(key)) existing.set(key, Number(c.id));
+    }
+
+    for (const [normReaction, b] of buckets) {
+      const label = topText(b.texts);
+      const common = {
+        parentNodeId: Number(node.id),
+        parentLabel: node.label ?? '',
+        techniqueId: tid,
+        techniqueName: techNames.get(tid) ?? null,
+        label,
+        normLabel: normReaction,
+        count: b.count,
+      };
+      if (existing.has(normReaction)) {
+        skipped.push({ ...common, existingNodeId: existing.get(normReaction), reason: 'already_in_tree' });
+        continue;
+      }
+      suggestions.push({
+        ...common,
+        kind: REACTION,
+        firstFailedAt: b.first,
+        lastFailedAt: b.last,
+        sources: topSources(b.sources),
+        sourceCount: b.sources.length,
+      });
+    }
+  }
+
+  // ── 3. 미매칭 — 붙일 자리를 정할 수 없을 뿐, 없는 것이 아니다 ─────────────
+  const unlinked = [];
+  for (const buckets of unlinkedMap.values()) {
+    for (const [normReaction, b] of buckets) {
+      unlinked.push({
+        itemName: topText(b.itemNames),
+        label: topText(b.texts),
+        normLabel: normReaction,
+        count: b.count,
+        firstFailedAt: b.first,
+        lastFailedAt: b.last,
+        linked: false,
+        sources: topSources(b.sources),
+        sourceCount: b.sources.length,
+      });
+    }
+  }
+
+  // 결정적 정렬: 막힌 횟수 ↓ → 최근 ↓ → 이름 ↑ → 부모 노드 id ↑
+  const byRank = (x, y) =>
+    y.count - x.count ||
+    String(y.lastFailedAt ?? '').localeCompare(String(x.lastFailedAt ?? '')) ||
+    String(x.label).localeCompare(String(y.label)) ||
+    ((x.parentNodeId ?? 0) - (y.parentNodeId ?? 0));
+
+  suggestions.sort(byRank);
+  unlinked.sort(byRank);
+  skipped.sort((x, y) => y.count - x.count || String(x.label).localeCompare(String(y.label)) || x.parentNodeId - y.parentNodeId);
+
+  // 고유 리액션 문구 수 — 기술 연결 여부와 무관하게 센다(표본 크기의 정직한 표현).
+  const allNorms = new Set(obs.map((o) => o.normReaction).filter(Boolean));
+
+  return {
+    suggestions,
+    unlinked,
+    skipped,
+    nodesWithTechnique: techNodes.length,
+    reactionTexts: allNorms.size,
+  };
+}
+
+/**
  * 평평한 배열을 트리로 조립 — **서버는 이걸 응답에 쓰지 않는다**(계약 B-3: nodes 는 평평한 배열).
  * 검증·디버깅·QA 용이다. 중첩 JSON 으로 응답하면 깊이 상한·순환 문제가 직렬화로 새어 나온다.
  */
@@ -328,5 +509,6 @@ module.exports = {
   depthOf, subtreeHeight, maxDepthOf,
   wouldCycle, validatePlacement,
   computeCoverage, computeLadder, uniqueTechniqueIds,
+  computeReactionSuggestions,
   buildTree,
 };
