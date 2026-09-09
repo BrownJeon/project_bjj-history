@@ -63,6 +63,10 @@ backend `.env`의 `DIST_PATH=/home/brownjeon/.node-local/bjj-web/dist` 로 서�
 # 코드 변경 후 빌드 (NFS → ext4 src 동기화 → 빌드 → 로컬 dist 반영 → 재시작)
 rsync -av /home/brownjeon/NFS/homes/brownjeon/project/bjj-trainning/web/src/ \
       /home/brownjeon/.node-local/bjj-web/work/src/ --quiet
+# 🔴 index.html 은 web/src 밖이라 위 rsync 에 안 딸려온다 — 고쳤다면 반드시 같이 복사할 것.
+#    빠뜨리면 소스만 바뀌고 서빙되는 dist/index.html 은 옛 내용 그대로다(2026-09-09 D-8).
+cp /home/brownjeon/NFS/homes/brownjeon/project/bjj-trainning/web/index.html \
+   /home/brownjeon/.node-local/bjj-web/work/index.html
 cd /home/brownjeon/.node-local/bjj-web/work
 npm run build
 rsync -av dist/ /home/brownjeon/.node-local/bjj-web/dist/ --delete --quiet
@@ -70,6 +74,7 @@ pm2 restart bjj
 ```
 
 > NFS에는 dist를 복사하지 않음. `web/dist/`는 더 이상 사용하지 않음.
+> `index.html`(정적 파일)만 바꿨다면 `pm2 restart bjj` 는 필요 없다 — backend 가 요청마다 읽는다.
 
 ### Dev 서버 (선택)
 

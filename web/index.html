@@ -45,99 +45,61 @@
 
     <!-- 정규 URL -->
     <link rel="canonical" href="https://bjj.미라클펭귄.com/" />
+
+    <!-- 🔴 색은 web/src/styles/tokens.css 값을 리터럴로 적는다(이 파일은 번들 밖이라 CSS 변수가 아직 없다).
+         bg #0C0D12 · text #EEEEF2 · text2 #7C8098 · accent #1D9E75 — tokens.css 를 고치면 여기도 같이. -->
+    <style>
+      /* 앱 배경과 같은 값 — 첫 페인트에서 흰 화면이 번쩍이지 않게 한다. */
+      html { background: #0C0D12; }
+
+      .prerender-shell {
+        position: fixed; inset: 0;
+        display: flex; flex-direction: column;
+        align-items: center; justify-content: center;
+        gap: 8px; padding: 24px; text-align: center;
+        background: #0C0D12; color: #EEEEF2;
+        /* app.css 의 body 와 같은 스택 — React 가 뜰 때 글꼴이 바뀌어 보이지 않도록. */
+        font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+      }
+      .prerender-shell h1 { margin: 0; font-size: 20px; font-weight: 600; letter-spacing: -0.3px; }
+      /* 24em — 412px 폭 휴대폰에서 설명 한 줄이 그대로 들어간다(그보다 좁으면 자연스럽게 접힌다). */
+      .prerender-shell p  { margin: 0; font-size: 13px; line-height: 1.6; color: #7C8098; max-width: 24em; word-break: keep-all; }
+
+      .prerender-load { display: flex; align-items: center; gap: 8px; margin-top: 16px; font-size: 12px; color: #7C8098; }
+      .prerender-dots { display: inline-flex; align-items: center; gap: 4px; }
+      .prerender-dots i {
+        flex: none; width: 5px; height: 5px; border-radius: 50%; background: #1D9E75; opacity: .25;
+        animation: prerender-blink 1.2s ease-in-out infinite;
+      }
+      .prerender-dots i:nth-child(2) { animation-delay: .16s; }
+      .prerender-dots i:nth-child(3) { animation-delay: .32s; }
+      @keyframes prerender-blink { 0%, 70%, 100% { opacity: .25 } 35% { opacity: 1 } }
+      /* 움직임을 줄여 달라고 한 사용자에게는 깜빡이지 않는 점 3개만 남긴다. */
+      @media (prefers-reduced-motion: reduce) {
+        .prerender-dots i { animation: none; opacity: .5; }
+      }
+    </style>
+    <!-- JS 가 꺼져 있으면 "로딩 중" 은 거짓말이다 — 감추고 아래 안내만 남긴다. -->
+    <noscript><style>.prerender-load { display: none; }</style></noscript>
   </head>
   <body>
-    <!--
-      React mount 전 정적 미리보기 — fetch 기반 AI 분석 도구·SEO 봇이 화면 구조를 파악할 수 있도록 마크업.
-      React가 createRoot(root).render() 호출 시 자동 교체되므로 실 사용자에게는 깜빡임 정도.
-    -->
+    <!-- React mount 전 로딩 화면 — createRoot(root).render() 가 통째로 교체한다.
+         🔴 여기엔 앱 이름(h1)·설명(p)·로딩 표시만 둔다. 기능 카드·사양·색상표·가짜 하단탭은
+            2026-09-09(D-8) 에 걷어냈다(사유는 task-030 이력서 "후속 D-8").
+         🔴 SEO 키워드를 화면 밖에 숨기지 않는다(cloaking) — 그 몫은 위 meta 들이 한다. -->
     <div id="root">
-      <div class="prerender-shell" style="font-family:-apple-system,'Helvetica Neue',sans-serif;color:#1a1a1a;background:#fff;min-height:100vh;display:flex;flex-direction:column">
-        <main style="flex:1;padding:48px 16px 100px;max-width:900px;margin:0 auto;width:100%">
-
-          <header style="margin-bottom:24px">
-            <h1 style="font-size:28px;font-weight:600;letter-spacing:-0.5px;margin:0 0 8px">BJJ 훈련 일지</h1>
-            <p style="margin:0;color:#666;font-size:15px;line-height:1.5">
-              주짓수(BJJ) 훈련을 체계적으로 기록·분석하는 개인 웹앱.
-              수업·드릴·스파링·기술 트리·게임플랜·참고영상을 한 곳에서 관리하고
-              AI 코치/분석으로 약점 진단·개선 제안을 받습니다.
-            </p>
-          </header>
-
-          <section aria-labelledby="features-heading" style="margin-bottom:32px">
-            <h2 id="features-heading" style="font-size:18px;font-weight:600;margin:0 0 12px">주요 화면</h2>
-            <ul style="list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px">
-              <li style="border:0.5px solid rgba(0,0,0,0.12);border-radius:10px;padding:14px;background:#fff">
-                <div style="font-weight:600;font-size:15px;margin-bottom:4px">📅 캘린더</div>
-                <div style="font-size:13px;color:#666">월별 수업·드릴·스파링 기록과 일자별 수련 체크</div>
-              </li>
-              <li style="border:0.5px solid rgba(0,0,0,0.12);border-radius:10px;padding:14px;background:#fff">
-                <div style="font-weight:600;font-size:15px;margin-bottom:4px">🥋 기술 트리</div>
-                <div style="font-size:13px;color:#666">포지션·기술·디테일 카드 관리, 기술명 기반 영상 자동 연결</div>
-              </li>
-              <li style="border:0.5px solid rgba(0,0,0,0.12);border-radius:10px;padding:14px;background:#fff">
-                <div style="font-weight:600;font-size:15px;margin-bottom:4px">🔗 기술 체인</div>
-                <div style="font-size:13px;color:#666">기술 간 전환 흐름과 단계 정의</div>
-              </li>
-              <li style="border:0.5px solid rgba(0,0,0,0.12);border-radius:10px;padding:14px;background:#fff">
-                <div style="font-weight:600;font-size:15px;margin-bottom:4px">🎯 게임플랜</div>
-                <div style="font-size:13px;color:#666">노드·엣지 기반 의사결정 플로우 설계</div>
-              </li>
-              <li style="border:0.5px solid rgba(0,0,0,0.12);border-radius:10px;padding:14px;background:#fff">
-                <div style="font-weight:600;font-size:15px;margin-bottom:4px">🎬 참고영상</div>
-                <div style="font-size:13px;color:#666">YouTube/Instagram 클립 라이브러리 + AI 영상 분석</div>
-              </li>
-              <li style="border:0.5px solid rgba(0,0,0,0.12);border-radius:10px;padding:14px;background:#fff">
-                <div style="font-weight:600;font-size:15px;margin-bottom:4px">🤖 AI 코치</div>
-                <div style="font-size:13px;color:#666">기간 진단 리포트와 다음 주 훈련 포커스 플랜 자동 생성</div>
-              </li>
-            </ul>
-          </section>
-
-          <section aria-labelledby="design-heading" style="margin-bottom:32px;padding:16px;background:#f5f5f5;border-radius:12px">
-            <h2 id="design-heading" style="font-size:16px;font-weight:600;margin:0 0 8px">디자인 / UX 특징</h2>
-            <ul style="margin:0;padding-left:20px;font-size:13px;color:#444;line-height:1.7">
-              <li>모바일 우선 — 갤럭시 S25+ Chrome 폭(~412px) 최적화, 데스크탑 다열 그리드</li>
-              <li>하단 5탭 고정 네비게이션 (캘린더 / 기술 / 체인 / 게임플랜 / 영상)</li>
-              <li>다크모드 자동 (`prefers-color-scheme`)</li>
-              <li>주요 색상 — primary <span style="display:inline-block;width:10px;height:10px;background:#1D9E75;border-radius:2px"></span> #1D9E75 (그린), accent <span style="display:inline-block;width:10px;height:10px;background:#EF9F27;border-radius:2px"></span> #EF9F27 (앰버 — 즐겨찾기)</li>
-              <li>모달 기반 편집 (수업/스파링/기술/영상/게임플랜)</li>
-            </ul>
-          </section>
-
-          <section aria-labelledby="loading-heading" style="text-align:center;padding:24px;color:#999">
-            <h2 id="loading-heading" style="font-size:14px;font-weight:500;margin:0 0 8px">앱 로딩 중…</h2>
-            <p style="margin:0;font-size:12px">JavaScript 활성화 시 자동으로 React 인터페이스가 표시됩니다.</p>
-          </section>
-
-        </main>
-
-        <nav aria-label="주 메뉴" style="position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:0.5px solid rgba(0,0,0,0.12);display:flex;z-index:100">
-          <div style="flex:1;display:flex;flex-direction:column;align-items:center;padding:10px 0 8px;color:#1D9E75;font-size:10px;gap:3px">
-            <span style="font-size:18px">📅</span><span>캘린더</span>
-          </div>
-          <div style="flex:1;display:flex;flex-direction:column;align-items:center;padding:10px 0 8px;color:#666;font-size:10px;gap:3px">
-            <span style="font-size:18px">🥋</span><span>기술</span>
-          </div>
-          <div style="flex:1;display:flex;flex-direction:column;align-items:center;padding:10px 0 8px;color:#666;font-size:10px;gap:3px">
-            <span style="font-size:18px">🔗</span><span>체인</span>
-          </div>
-          <div style="flex:1;display:flex;flex-direction:column;align-items:center;padding:10px 0 8px;color:#666;font-size:10px;gap:3px">
-            <span style="font-size:18px">🎯</span><span>게임플랜</span>
-          </div>
-          <div style="flex:1;display:flex;flex-direction:column;align-items:center;padding:10px 0 8px;color:#666;font-size:10px;gap:3px">
-            <span style="font-size:18px">🎬</span><span>영상</span>
-          </div>
-        </nav>
+      <div class="prerender-shell">
+        <h1>BJJ 훈련 일지</h1>
+        <p>주짓수 훈련을 기록하고 되돌아보는 개인 훈련 일지</p>
+        <div class="prerender-load" role="status" aria-live="polite">
+          <span class="prerender-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span>앱 로딩 중…</span>
+        </div>
+        <noscript>
+          <p>이 앱을 사용하려면 브라우저에서 JavaScript를 활성화해 주세요.</p>
+        </noscript>
       </div>
     </div>
-
-    <noscript>
-      <div style="padding:24px;font-family:sans-serif;line-height:1.6">
-        <h1 style="margin:0 0 12px">BJJ 훈련 일지</h1>
-        <p>이 앱을 사용하려면 JavaScript를 활성화해 주세요.</p>
-      </div>
-    </noscript>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
