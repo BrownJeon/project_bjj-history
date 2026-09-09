@@ -4,6 +4,8 @@ const path  = require('path');
 const https = require('https');
 const http  = require('http');
 const { promisify } = require('util');
+// 🔴 PATH 리터럴 'yt-dlp' 를 쓰지 않는다 — services/ytdlp.js 상단 주석 참고(task-030 D-2).
+const { YTDLP_BIN } = require('./ytdlp');
 
 const execFileP = promisify(execFile);
 
@@ -78,7 +80,7 @@ function dt({ dir, name, idx, text, font, size, x, y, color, alpha }) {
 
 // yt-dlp로 YouTube 클립 세그먼트만 다운로드 (CLIP_SKIP~CLIP_SKIP+CLIP_TAKE 초)
 async function downloadSegment(url, destPath) {
-  await execFileP('yt-dlp', [
+  await execFileP(YTDLP_BIN, [
     '--no-playlist', '--no-warnings', '--quiet',
     '-f', 'best[height<=360][ext=mp4]/best[height<=360]/worst[ext=mp4]/worst',
     '--download-sections', '*' + CLIP_SKIP + '-' + (CLIP_SKIP + CLIP_TAKE),

@@ -3,6 +3,8 @@ const fs   = require('fs');
 const path = require('path');
 const { VideoClip } = require('../models');
 const { getThumbPath, thumbWebPath, ensureDir } = require('./storage');
+// 🔴 PATH 리터럴 'yt-dlp' 를 쓰지 않는다 — services/ytdlp.js 상단 주석 참고(task-030 D-2).
+const { YTDLP_BIN } = require('./ytdlp');
 
 function getThumbDir() {
   return path.dirname(getThumbPath('__placeholder__'));
@@ -23,10 +25,12 @@ function getInstagramCookieArgs(url) {
 function extractThumbUrl(url) {
   return new Promise(resolve => {
     const cookieArgs = getInstagramCookieArgs(url);
-    const proc = spawn('yt-dlp', ['--get-thumbnail', '--no-warnings', ...cookieArgs, url], { timeout: 15000 });
+    const proc = spawn(YTDLP_BIN, ['--get-thumbnail', '--no-warnings', ...cookieArgs, url], { timeout: 15000 });
     let out = '';
     proc.stdout.on('data', d => { out += d.toString(); });
-    proc.on('error', () => resolve(''));
+    // 🔴 실행 자체가 안 됐을 때(ENOENT 등) 원인을 남긴다 — 예전에는 빈 문자열만 돌려줘서
+    //    "썸네일이 없는 영상"과 "yt-dlp 를 못 찾음"이 구별되지 않았다(task-030 D-2).
+    proc.on('error', e => { console.error('[thumbnail] yt-dlp 실행 실패:', e.code || '', e.message); resolve(''); });
     proc.on('close', () => resolve(out.trim().split('\n')[0] || ''));
   });
 }

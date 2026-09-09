@@ -27,6 +27,9 @@ const ResearchVersion      = require('./ResearchVersion');
 const ResearchNode         = require('./ResearchNode');
 const ResearchLink         = require('./ResearchLink');
 const ResearchTask         = require('./ResearchTask');
+const MasterChat           = require('./MasterChat');
+const MasterMessage        = require('./MasterMessage');
+const MasterAction         = require('./MasterAction');
 
 // User 관계 정의 (1:N, 1:1)
 User.hasMany(Class,             { foreignKey: 'user_id', as: 'classes' });
@@ -52,6 +55,10 @@ User.hasMany(ResearchProject,   { foreignKey: 'user_id', as: 'researchProjects' 
 // 이번 주 과제 (task-027) — 🔴 **열린 과제는 계정당 1개**다(DB UNIQUE(user_id, open_slot) 이 강제).
 // 마감된 이력은 몇 건이든 남는다. 행이 없는 것이 정상 상태다(아직 과제를 정하지 않음).
 User.hasMany(ResearchTask,      { foreignKey: 'user_id', as: 'researchTasks' });
+// 관장실 대화 (task-030) — 🔴 **소유 정본은 master_chats.user_id 하나**다.
+// master_messages·master_actions 의 user_id 는 부모에서 유도한 사본이고 권한 판정에 쓰지 않는다
+// (research_* 하위 3테이블과 같은 규약). 행이 없는 것이 정상 상태다(아직 관장과 대화 안 함).
+User.hasMany(MasterChat,        { foreignKey: 'user_id', as: 'masterChats' });
 
 // 관계 정의
 Class.hasMany(Drill,         { foreignKey: 'class_id', as: 'drills' });
@@ -101,6 +108,16 @@ ResearchLink.belongsTo(ResearchNode, { foreignKey: 'node_id' });
 ResearchNode.hasMany(ResearchTask, { foreignKey: 'node_id', as: 'tasks' });
 ResearchTask.belongsTo(ResearchNode, { foreignKey: 'node_id' });
 
+// 관장실 관계 (task-030). DB FK 2건(fk_mm_chat · fk_ma_msg) 과 짝을 이룬다.
+// 🔴 master_actions 는 **message_id** 에만 FK 가 있다(chat_id 는 인덱스용 사본).
+//    대화 삭제 → 메시지 CASCADE → 카드 CASCADE 의 2단 연쇄로 지워진다.
+//    그래도 DELETE /chats/:id 는 지운 건수를 응답에 싣는다 — FK 만 믿으면 앱이 무엇을 지웠는지 모른다.
+MasterChat.hasMany(MasterMessage,   { foreignKey: 'chat_id', as: 'messages' });
+MasterMessage.belongsTo(MasterChat, { foreignKey: 'chat_id' });
+
+MasterMessage.hasMany(MasterAction,   { foreignKey: 'message_id', as: 'actions' });
+MasterAction.belongsTo(MasterMessage, { foreignKey: 'message_id' });
+
 module.exports = {
   sequelize,
   User,
@@ -112,4 +129,5 @@ module.exports = {
   VideoClip, Profile, BeltHistory, CoachReport,
   PickHistory, MembershipPayment,
   LongVideo, LongVideoChapter,
+  MasterChat, MasterMessage, MasterAction,
 };

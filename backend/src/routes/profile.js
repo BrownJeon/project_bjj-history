@@ -138,6 +138,12 @@ function rowNetworks(row) {
   return cleanNetworks([row?.network]);
 }
 
+// ─── 관장 모델 (task-030) ───
+// 🔴 **NULL 이 기본값 opus 를 뜻한다.** 여기서 'opus' 로 채워 내려보내지 않는다 —
+//    프론트가 `masterModel ?? 'opus'` 로 표시하고, DB 는 "고르지 않음"을 그대로 보존한다.
+//    (technique_mastery 를 시드하지 않은 것과 같은 이유: 안 고른 것과 opus 를 고른 것은 다르다.)
+const MASTER_MODELS = ['opus', 'sonnet', 'haiku'];
+
 // ─── 프로필 ───
 router.get('/profile', wrap(async (req, res) => {
   const uid = req.user.id;
@@ -145,7 +151,37 @@ router.get('/profile', wrap(async (req, res) => {
   if (!row) return res.json({});
   row.networks = rowNetworks(row);
   row.network  = row.networks[0] || '';   // 하위호환 — 첫 번째 소속
+  // camelCase 별칭을 추가로 싣는다(스네이크 원본은 그대로 둔다 — 기존 응답에서 아무것도 빼지 않는다).
+  row.masterModel = row.master_model ?? null;
   res.json(row);
+}));
+
+/**
+ * PATCH /api/profile/master-model — {masterModel: 'opus'|'sonnet'|'haiku'|null}
+ *
+ * 🔴 **기존 `PUT /profile` 에 끼워 넣지 않는다.** 저건 부분 갱신이 아니라 nickname·startDate·
+ *    weightClass 를 통째로 덮어쓰는 구조라(위 핸들러 참고), 프론트가 모델만 바꾸려고 호출하면
+ *    닉네임이 빈 문자열로 지워진다. 그래서 이 필드만 건드리는 전용 경로를 둔다.
+ * 🔴 프로필 행이 없으면 만든다 — 모델을 고르는 것이 프로필 첫 생성 시점일 수 있다.
+ */
+router.patch('/profile/master-model', wrap(async (req, res) => {
+  const uid = req.user.id;
+  const body = req.body || {};
+  if (!Object.prototype.hasOwnProperty.call(body, 'masterModel')) {
+    return res.status(400).json({ success: false, message: 'masterModel 을 보내주세요' });
+  }
+  const raw = body.masterModel;
+  const value = (raw === null || raw === '' || raw === undefined) ? null : String(raw);
+  if (value !== null && !MASTER_MODELS.includes(value)) {
+    return res.status(400).json({
+      success: false,
+      message: `관장 모델은 ${MASTER_MODELS.join(' · ')} 중 하나여야 합니다 (비우면 기본값 opus)`,
+    });
+  }
+  const row = await Profile.findOne({ where: { user_id: uid } });
+  if (row) await row.update({ master_model: value });
+  else     await Profile.create({ user_id: uid, master_model: value });
+  res.json({ success: true, data: { masterModel: value }, message: '' });
 }));
 
 router.put('/profile', wrap(async (req, res) => {

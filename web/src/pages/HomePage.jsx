@@ -10,6 +10,8 @@ import ClassEditor from './ClassEditPage';
 import SparEditor from './SparEditPage';
 import * as classesApi from '../api/classes';
 import * as coachApi from '../api/coach';
+import { useMaster } from '../contexts/MasterContext';
+import { relTime } from '../utils/relTime';
 import { getTask } from '../api/research';
 import WeeklyTaskCard from '../components/WeeklyTaskCard';
 
@@ -26,6 +28,9 @@ export default function HomePage() {
   const navigate = useNavigate();
   const { classes, techniques, sessionTypes, reloadClasses } = useCache();
   const { showToast, setLoading } = useUI();
+  // 관장실 최근 대화 한 줄 (task-030 · B-2=A). 목록은 MasterContext 가 이미 한 번 읽어 둔 것을
+  // 그대로 본다 — 홈이 같은 요청을 또 하지 않고, 배지와 항상 같은 값을 보여 준다.
+  const { chats: masterChats, openChat: openMasterChat, toggleList: toggleMasterList } = useMaster();
   const [editingClass, setEditingClass] = useState(null);
 
   // 오늘 기록 카드 상태
@@ -197,6 +202,39 @@ export default function HomePage() {
           <Icon name="users" size={20} color="var(--accent)" />
         </div>
       </div>
+
+      {/* 관장실 — 최근 대화 한 줄. 목록 조회가 실패했으면 "첫 대화" 안내로 조용히 떨어진다.
+          🔴 여기서 오류를 그리지 않는다(홈·내비는 어떤 경우에도 깨지지 않는다). */}
+      {masterChats && masterChats.length > 0 ? (
+        <div className="bjjm-recent">
+          {/* 🔴 D-5 후속3: 여기 있던 🔍 는 **바로 위 검색 바의 선 아이콘과 같은 글리프**였다.
+              하나는 컬러 이모지, 하나는 선 — 위아래로 붙어 있어 앱에서 가장 크게 튀던 자리다.
+              레지스트리의 search 를 그대로 쓴다. 색은 박지 않는다 — currentColor 가
+              .bjjm-recent 의 var(--text2) 를 상속받아 옆의 “최근” 글자와 같은 색이 된다. */}
+          <span style={{ flex: '0 0 auto', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+            <Icon name="search" size={13} />최근
+          </span>
+          <button className="bjjm-q" type="button" onClick={() => openMasterChat(masterChats[0].id)}>
+            “{masterChats[0].title || '새 대화'}”
+          </button>
+          <span style={{ flex: '0 0 auto' }}>{relTime(masterChats[0].lastMessageAt)}</span>
+          {Number(masterChats[0].pendingActions) > 0 && (
+            <span className="bjjm-badge">{masterChats[0].pendingActions}</span>
+          )}
+          {/* 🔴 라우팅이 아니라 오버레이 토글이다(D-3) — 상단 바 💬 와 **같은 하나**를 연다.
+              예전에는 navigate('/master') 였고, 닫으려면 뒤로 가기를 눌러야 했다. */}
+          <span
+            role="button" tabIndex={0} data-home-list="1"
+            onClick={toggleMasterList}
+            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleMasterList(); } }}
+            style={{ flex: '0 0 auto', color: 'var(--accent-lt)', fontWeight: 600, cursor: 'pointer' }}
+          >대화 관리 ›</span>
+        </div>
+      ) : (
+        <div className="bjjm-recent">
+          <span style={{ color: 'var(--text2)' }}>관장님과 첫 대화를 시작해 보세요 — 위 검색창</span>
+        </div>
+      )}
 
       {/* 오늘 기록 카드 — 홈에서 3탭 이내로 스파링 저장까지 가는 진입점 (task-021).
           캘린더의 기존 진입 경로는 그대로 남아 있다 */}

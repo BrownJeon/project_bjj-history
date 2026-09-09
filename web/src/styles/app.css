@@ -28,7 +28,7 @@ input, textarea, select { font-family: inherit; color: var(--text); }
 .app-content {
   flex: 1;
   min-height: 0;            /* flex item이 부모를 넘어 자라지 않도록 */
-  padding: 54px 20px 80px;
+  padding: 0 20px 80px;     /* 상단 54px 은 MasterBar(task-030)가 대신한다 — 고정 아닌 일반 흐름 */
   overflow-y: auto;
   overscroll-behavior: none;
   -webkit-overflow-scrolling: touch;

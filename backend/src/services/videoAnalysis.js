@@ -4,6 +4,9 @@ const fsSync = require('fs');
 const path = require('path');
 const { runClaude } = require('./claudeCli');
 const { getFramesDir, getVideoDir, frameWebPath, videoWebPath, ensureDir } = require('./storage');
+// 🔴 yt-dlp 는 PATH 가 아니라 해석된 절대경로로 부른다 — 이유는 services/ytdlp.js 상단 주석 참고
+//   (pm2 프로세스가 ecosystem 없이 재생성되면 PATH 에서 ~/.local/bin 이 빠져 전부 죽는다).
+const { YTDLP_BIN } = require('./ytdlp');
 
 const INSTAGRAM_COOKIE_PATH  = '/home/brownjeon/.node-local/bjj-data/instagram-cookies.txt';
 const FIREFOX_PROFILE_DIR    = '/home/brownjeon/.mozilla/firefox';
@@ -43,15 +46,18 @@ function runProcess(cmd, args, timeoutMs = 180000) {
       else reject(e);
     });
     proc.on('close', (code, signal) => {
+      // 🔴 cmd 는 이제 절대경로일 수 있다(YTDLP_BIN) — 아래 에러 감지는 경로가 아니라
+      //    "이게 yt-dlp 인가"로 판단해야 한다. 문자열 비교만 남겨두면 인증·버전 안내가 조용히 사라진다.
+      const isYtDlp = cmd === YTDLP_BIN || /(^|\/)yt-dlp$/.test(cmd);
       if (signal) return reject(new Error(`${cmd} 강제 종료 (signal: ${signal}, timeout: ${timeoutMs}ms)`));
       if (code !== 0) {
         // yt-dlp Instagram 인증 에러 감지
-        if (cmd === 'yt-dlp' && /instagram/i.test(args.join(' ')) &&
+        if (isYtDlp && /instagram/i.test(args.join(' ')) &&
             /empty media response|login required|authentication/i.test(err)) {
           return reject(new Error('Instagram 영상은 로그인 인증이 필요하여 다운로드가 불가합니다'));
         }
         // yt-dlp YouTube 다운로드 실패 감지 — 대부분 yt-dlp 버전 노후화로 추출 방식을 못 따라가서 발생
-        if (cmd === 'yt-dlp' && /youtube\.com|youtu\.be/i.test(args.join(' ')) &&
+        if (isYtDlp && /youtube\.com|youtu\.be/i.test(args.join(' ')) &&
             /403|Forbidden|unable to download video data|Requested format is not available|nsig extraction failed|Sign in to confirm|failed to extract any player response/i.test(err)) {
           return reject(new Error(
             'YouTube 영상 다운로드에 실패했습니다. yt-dlp 업데이트가 필요할 수 있습니다 ' +
@@ -177,7 +183,7 @@ async function analyzeVideo(url, clipId = null, onProgress = null) {
   let createdFrames = [];
   try {
     onProgress?.(10, '영상 다운로드 중');
-    await runProcess('yt-dlp', ['-f', 'mp4/best', '-o', videoPath, '--no-warnings', ...cookieArgs, url], 300000); // 5분
+    await runProcess(YTDLP_BIN, ['-f', 'mp4/best', '-o', videoPath, '--no-warnings', ...cookieArgs, url], 300000); // 5분
     onProgress?.(35, '오디오 확인 중');
     const hasAudio = await hasAudioTrack(videoPath);
     let transcript = '';
@@ -287,4 +293,7 @@ module.exports = {
   analyzeVideo, analyzeLocalFile,
   INSTAGRAM_COOKIE_PATH,
   hasCookieFile, hasFirefoxSession, hasInstagramAuth,
+  // task-030: 관장의 `enrich_sns_links` 가 Instagram 메타를 읽을 때 **같은 인증 경로**를 쓴다.
+  // 쿠키 경로·firefox 폴백 판정을 두 벌로 두면 한쪽만 고쳐진다. export 만 추가했고 함수는 무변경.
+  getInstagramCookieArgs,
 };

@@ -54,14 +54,46 @@ function assertPromptSize(prompt) {
   }
 }
 
+// ── 관장실 확장 옵션 (task-030, 계약 E) ────────────────────────────────────
+// 🔴 **미지정 시 argv 는 지금과 바이트 단위로 같다.** 기존 호출부 16곳(AI 5기능)의 회귀를 0으로
+//    유지하는 것이 이 확장의 첫 번째 요건이라, 새 인자는 전부 "값이 있을 때만 push" 한다.
+//    변경 전후 argv 덤프 대조는 QA 하네스(`05-argv.js`)가 재현한다.
+// 🔴 `--tools`·`--agents`·`--mcp-config` 는 **가변/긴 인자**다. 그래서 프롬프트는 지금처럼
+//    argv 두 번째(`--print` 바로 뒤)에 둔다 — 뒤에 두면 가변 인자가 프롬프트를 삼킨다(P0-1 실측).
+// 🔴 `--model` 은 지금까지 'sonnet' 하드코딩이었다. 옵션화하되 **기본값이 'sonnet'** 이라
+//    미지정 호출부의 argv 는 글자 하나 달라지지 않는다.
+function buildArgs(prompt, opts) {
+  const {
+    tools, stdinPrompt,
+    model = 'sonnet',
+    agents, agent, mcpConfig, strictMcp, maxTurns, outputFormat, jsonSchema,
+  } = opts;
+
+  const args = ['--print'];
+  if (!stdinPrompt) args.push(prompt);
+  args.push('--permission-mode', 'bypassPermissions', '--model', model);
+  // 배열이면 가변 인자로 펼친다(`--tools WebSearch`). 문자열이면 기존과 완전히 동일한 한 인자.
+  if (tools) {
+    if (Array.isArray(tools)) { if (tools.length) args.push('--tools', ...tools.map(String)); }
+    else args.push('--tools', tools);
+  }
+  if (agents)    args.push('--agents', typeof agents === 'string' ? agents : JSON.stringify(agents));
+  if (agent)     args.push('--agent', String(agent));
+  if (mcpConfig) args.push('--mcp-config', typeof mcpConfig === 'string' ? mcpConfig : JSON.stringify(mcpConfig));
+  if (strictMcp) args.push('--strict-mcp-config');
+  if (maxTurns != null) args.push('--max-turns', String(maxTurns));
+  if (jsonSchema) args.push('--json-schema', typeof jsonSchema === 'string' ? jsonSchema : JSON.stringify(jsonSchema));
+  // stream-json 은 `--verbose` 가 없으면 CLI 가 거부한다(P0-3 실측).
+  if (outputFormat === 'stream-json') args.push('--output-format', 'stream-json', '--verbose');
+  return args;
+}
+
 // stdinPrompt:false(기본값) → 기존과 100% 동일하게 프롬프트를 argv로 전달.
 // stdinPrompt:true          → argv에 프롬프트를 넣지 않고 stdin에 write(ARG_MAX 회피, `--print`가 공식 지원).
-function runClaudeOnce(prompt, { tools, timeoutMs, stdinPrompt }) {
+function runClaudeOnce(prompt, opts) {
+  const { timeoutMs, stdinPrompt, outputFormat, onEvent } = opts;
   return new Promise((resolve, reject) => {
-    const args = ['--print'];
-    if (!stdinPrompt) args.push(prompt);
-    args.push('--permission-mode', 'bypassPermissions', '--model', 'sonnet');
-    if (tools) args.push('--tools', tools);
+    const args = buildArgs(prompt, opts);
 
     const proc = spawn('claude', args, {
       timeout: timeoutMs,
@@ -76,19 +108,52 @@ function runClaudeOnce(prompt, { tools, timeoutMs, stdinPrompt }) {
     }
 
     let out = '', err = '';
-    proc.stdout.on('data', d => { out += d.toString(); });
+    // stream-json 은 NDJSON 이다 — 청크 경계가 줄 경계와 일치하지 않으므로 **줄 버퍼**가 필수다.
+    // 반쪽 줄을 그대로 JSON.parse 하면 이벤트를 조용히 잃는다.
+    let lineBuf = '';
+    const events = [];
+    const streaming = outputFormat === 'stream-json';
+    const feed = (chunk) => {
+      lineBuf += chunk;
+      let nl;
+      while ((nl = lineBuf.indexOf('\n')) !== -1) {
+        const line = lineBuf.slice(0, nl).trim();
+        lineBuf = lineBuf.slice(nl + 1);
+        if (!line) continue;
+        let obj;
+        try { obj = JSON.parse(line); } catch { continue; }   // 파싱 실패 줄은 무시(계약 E)
+        events.push(obj);
+        if (onEvent) { try { onEvent(obj); } catch (e) { console.error('[claudeCli] onEvent 오류:', e.message); } }
+      }
+    };
+
+    proc.stdout.on('data', d => {
+      const s = d.toString();
+      out += s;
+      if (streaming) feed(s);
+    });
     proc.stderr.on('data', d => { err += d.toString(); });
     proc.on('error', e => {
       if (e.code === 'ENOENT') reject(new Error('claude CLI가 설치되어 있지 않거나 PATH에 없습니다'));
       else reject(e);
     });
     proc.on('close', code => {
+      if (streaming && lineBuf.trim()) feed('\n');   // 개행 없이 끝난 마지막 줄
       if (code !== 0 && code !== null) return reject(new Error(err.trim() || `claude 종료 코드: ${code}`));
       const trimmed = out.trim();
       if (trimmed === 'Execution error' || trimmed.startsWith('Execution error\n')) {
         return reject(new Error(`claude Execution error: ${err.trim() || 'no stderr'}`));
       }
-      resolve(trimmed);
+      if (!streaming) return resolve(trimmed);
+
+      // stream-json 반환값(계약 E): { text, init, result }
+      const init   = events.find(e => e && e.type === 'system' && e.subtype === 'init') || null;
+      const result = events.find(e => e && e.type === 'result') || null;
+      const text = result && typeof result.result === 'string' ? result.result.trim() : '';
+      if (result && result.is_error) {
+        return reject(new Error(String(result.result || 'claude 실행 오류').slice(0, 500)));
+      }
+      resolve({ text, init, result, events });
     });
   });
 }
@@ -129,6 +194,15 @@ async function runClaude(prompt, opts = {}) {
     priority = 'interactive',
     stdinPrompt = false,
   } = opts;
+  // 계약 E 의 새 옵션들은 그대로 runClaudeOnce 로 흘려보낸다(구조분해로 떨어뜨리지 않는다).
+  const once = {
+    tools, timeoutMs, stdinPrompt,
+    model: opts.model, agents: opts.agents, agent: opts.agent,
+    mcpConfig: opts.mcpConfig, strictMcp: opts.strictMcp, maxTurns: opts.maxTurns,
+    outputFormat: opts.outputFormat, jsonSchema: opts.jsonSchema, onEvent: opts.onEvent,
+  };
+  // 🔴 model 미지정이면 buildArgs 의 기본값 'sonnet' 이 그대로 쓰인다 — undefined 를 넘겨도
+  //    기본 매개변수가 동작하도록 키를 지우지 않고 그대로 둔다(구조분해 기본값은 undefined 에만 적용).
   // maxRetries 기본값: interactive=3(기존과 동일한 총 시도 횟수), batch=1(배치가 인터랙티브를
   // 오래 막지 않도록 재시도를 억제 — 개별 호출부가 필요하면 명시적으로 override 가능, 예: S8의 retry 1회 → maxRetries:2)
   const defaultMaxRetries = priority === 'batch' ? 1 : 3;
@@ -140,7 +214,7 @@ async function runClaude(prompt, opts = {}) {
     let lastErr;
     for (let tries = 0; tries < maxRetries; tries++) {
       try {
-        return await runClaudeOnce(prompt, { tools, timeoutMs, stdinPrompt });
+        return await runClaudeOnce(prompt, once);
       } catch (e) {
         lastErr = e;
         const msg = e instanceof Error ? e.message : String(e);
@@ -161,4 +235,7 @@ async function runClaude(prompt, opts = {}) {
   return schedule(priority, attempt);
 }
 
-module.exports = { runClaude };
+// buildArgs 를 export 하는 것은 편의가 아니라 **검증 요건**이다(task-030).
+// 기존 16개 호출부의 argv 가 변경 전후로 바이트 동일한지 QA 가 claude 를 실제로 띄우지 않고
+// 잴 수 있어야 한다. spawn 을 스텁하는 방식은 큐·재시도까지 얽혀 재현이 어렵다.
+module.exports = { runClaude, buildArgs };

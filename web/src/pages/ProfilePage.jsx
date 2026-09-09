@@ -35,12 +35,14 @@ function computeMemberships(memberships) {
   });
 }
 import * as settingsApi from '../api/settings';
+import { setMasterModel as saveMasterModel } from '../api/master';
 import { useUI } from '../contexts/UIContext';
 import { useCache } from '../contexts/CacheContext';
 import Card from '../components/Card';
 import Button from '../components/Button';
 import Modal from '../components/Modal';
 import Icon from '../components/Icon';
+import MasterBar from '../components/MasterBar';
 import BeltBar from '../components/BeltBar';
 import { BELT_LEVELS, beltKey } from '../utils/baseOptions';
 
@@ -69,6 +71,28 @@ export default function ProfilePage() {
   const cookieInputRef = React.useRef(null);
   // 아바타 캐시버스터 버전 (task-019)
   const [avatarVer, setAvatarVer] = useState(0);
+
+  // 관장 모델(task-030). 🔴 기존 PUT /profile 을 쓰지 않는다 — 그건 부분 갱신이 아니라
+  //    화이트리스트 전체를 덮어쓰므로 여기서 부르면 닉네임·수련 시작일이 지워진다.
+  const MASTER_MODELS = [
+    { key: 'opus',   label: 'opus',   desc: '가장 깊게 생각해요 · 기본값 · 한 턴 40~60초', icon: '🧠' },
+    { key: 'sonnet', label: 'sonnet', desc: '빠르고 균형 잡힘 · 한 턴 20~40초',            icon: '⚡' },
+    { key: 'haiku',  label: 'haiku',  desc: '가장 빠름 · 간단한 질문·영상 찾기',             icon: '🪶' },
+  ];
+  const masterModel = profile.masterModel || 'opus';
+
+  async function changeMasterModel(next) {
+    const prev = profile.masterModel || 'opus';
+    if (next === prev) return;
+    setProfile(p => ({ ...p, masterModel: next }));   // 낙관적 — 실패하면 되돌린다
+    try {
+      await saveMasterModel(next);
+      showToast(`관장 모델을 ${next}로 바꿨어요 — 다음 턴부터 적용`);
+    } catch (e) {
+      setProfile(p => ({ ...p, masterModel: prev }));
+      showToast('모델을 바꾸지 못했어요: ' + e.message);
+    }
+  }
 
   function toggleStorageMode(mode) {
     localStorage.setItem(STORAGE_KEY, mode);
@@ -261,7 +285,14 @@ export default function ProfilePage() {
         maxWidth: 460, margin: '0 auto',
       }}
     >
-      <div style={{ padding: '54px 20px 80px' }}>
+      {/* 🔴 이 화면은 `.app-content` 가 아니라 자체 fixed 오버레이(z-index 150)라
+          Layout 의 상단 바를 덮어 버린다. 여기에도 바를 하나 올려 "어떤 화면에 있든
+          관장님께 물어볼 수 있다"를 지킨다(Leader 결정 2026-09-09 #2).
+          padding-top 은 54 → 0 — 바가 그 자리를 그대로 대신한다(Layout 과 같은 구조라
+          바의 `margin: 0 -20px` 이 이 div 의 좌우 20px 을 상쇄한다).
+          대화 패널은 z-index 160 이라 이 오버레이 **위**에서 열린다. */}
+      <div style={{ padding: '0 20px 80px' }}>
+        <MasterBar />
         {/* 헤더 */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
           <span style={{ fontSize: 22, fontWeight: 800, letterSpacing: '-0.5px' }}>프로필</span>
@@ -469,6 +500,45 @@ export default function ProfilePage() {
                 )}
               </button>
             ))}
+          </div>
+        </div>
+
+        {/* 관장 모델 (task-030) — "파일 저장 위치"와 같은 옵션 목록 UI */}
+        <div style={{ marginTop: 24 }}>
+          <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 10 }}>관장 모델</div>
+          <div style={{
+            background: 'var(--surface)', border: '1px solid var(--border)',
+            borderRadius: 14, overflow: 'hidden',
+          }}>
+            {MASTER_MODELS.map((opt, i) => (
+              <button
+                key={opt.key}
+                onClick={() => changeMasterModel(opt.key)}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: 12,
+                  width: '100%', padding: '14px 16px',
+                  background: masterModel === opt.key ? 'var(--accent-dim)' : 'transparent',
+                  border: 'none',
+                  borderTop: i > 0 ? '1px solid var(--border)' : 'none',
+                  cursor: 'pointer', textAlign: 'left',
+                }}
+              >
+                <span style={{ fontSize: 22 }}>{opt.icon}</span>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: masterModel === opt.key ? 'var(--accent)' : 'var(--text)' }}>
+                    {opt.label}
+                    {opt.key === 'opus' && <span style={{ color: 'var(--text3)', fontWeight: 500, marginLeft: 6 }}>기본</span>}
+                  </div>
+                  <div style={{ fontSize: 11, color: 'var(--text2)', marginTop: 2 }}>{opt.desc}</div>
+                </div>
+                {masterModel === opt.key && (
+                  <span style={{ fontSize: 16, color: 'var(--accent)' }}>✓</span>
+                )}
+              </button>
+            ))}
+          </div>
+          <div style={{ fontSize: 11, color: 'var(--text3)', marginTop: 8, lineHeight: 1.6 }}>
+            바꾸면 다음 대화 턴부터 적용돼요. 대화 패널 상단과 “관장이 본 것”에 어떤 모델이 답했는지 표시됩니다.
           </div>
         </div>
 

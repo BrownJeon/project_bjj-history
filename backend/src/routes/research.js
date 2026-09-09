@@ -32,103 +32,17 @@ const importSearch = require('../services/importSearch');
 //    UTC 로 변환되면서 KST 기준 하루가 밀린다. (DB 세션 TZ 는 SYSTEM=KST 로 실측 확인)
 // ─────────────────────────────────────────────────────────────────────────────
 
-// STRICT_TRANS_TABLES + utf8mb3: 길이 초과는 잘림이 아니라 **에러**이고 이모지는 500 이다.
-// 여기서 400 으로 먼저 걸러 사용자에게 이유를 알려 준다(task-022 spar_causes 와 같은 처리).
-const LIMITS = {
-  title: 100, startPos: 50, goal: 200,     // research_projects
-  versionName: 50,                          // research_versions.name
-  label: 100, note: 500,                    // research_nodes
-  memo: 200,                                // research_links.memo
-};
-
-/** 자유 텍스트 정본화 — NFC 정규화(task-014) + 좌우 공백 제거. */
-function clean(raw) {
-  return toNFC(String(raw ?? '')).trim();
-}
-/** VARCHAR(n) 은 문자 수 기준이므로 코드포인트로 센다(JS .length 는 이모지를 2로 세어 어긋난다). */
-function textLen(s) {
-  return [...s].length;
-}
-/** 이 DB 는 전 테이블 utf8mb3 — 4바이트 문자는 `Incorrect string value` 500 이 된다. */
-function hasNonBMP(s) {
-  return [...s].some((ch) => ch.codePointAt(0) > 0xFFFF);
-}
-/** 통과하면 null, 아니면 400 에 실을 메시지. */
-function textError(label, s, max) {
-  if (textLen(s) > max) return `${label}은(는) ${max}자 이내로 입력해주세요`;
-  if (hasNonBMP(s))     return `${label}에 이모지는 사용할 수 없습니다`;
-  return null;
-}
-/** 본문에 그 키가 실제로 있는가 — 부분 갱신(PATCH)의 정본 판정. undefined 값과 미전송을 구분한다. */
-function has(body, key) {
-  return Object.prototype.hasOwnProperty.call(body || {}, key);
-}
-/** 양의 정수 파싱. 아니면 null. */
-function posInt(v) {
-  const n = parseInt(v, 10);
-  return (Number.isInteger(n) && n > 0) ? n : null;
-}
-
-// ── 소유 판별 ────────────────────────────────────────────────────────────────
-// 🔴 **딱 하나만 둔다.** 여러 벌 만들면 한 벌만 고쳐진다(계약 A-2).
-//    네 SQL 전부 research_projects 까지 조인한다 — 정본이 거기 하나이기 때문이다.
-const OWN_SQL = {
-  project: `SELECT p.id, p.user_id, p.title, p.start_pos, p.goal,
-                   DATE_FORMAT(p.created_at, '%Y-%m-%d') AS created_ymd
-              FROM research_projects p
-             WHERE p.id = ? AND p.user_id = ? LIMIT 1`,
-  version: `SELECT v.*, p.user_id AS owner_id
-              FROM research_versions v
-              JOIN research_projects p ON p.id = v.project_id
-             WHERE v.id = ? AND p.user_id = ? LIMIT 1`,
-  node:    `SELECT n.*, v.project_id, p.user_id AS owner_id
-              FROM research_nodes n
-              JOIN research_versions  v ON v.id = n.version_id
-              JOIN research_projects  p ON p.id = v.project_id
-             WHERE n.id = ? AND p.user_id = ? LIMIT 1`,
-  link:    `SELECT l.*, n.version_id, v.project_id, p.user_id AS owner_id
-              FROM research_links l
-              JOIN research_nodes    n ON n.id = l.node_id
-              JOIN research_versions v ON v.id = n.version_id
-              JOIN research_projects p ON p.id = v.project_id
-             WHERE l.id = ? AND p.user_id = ? LIMIT 1`,
-};
-
-/**
- * 소유가 확인된 행을 돌려준다. 없거나 남의 것이면 **null**(호출부는 404 로 끝낸다).
- * @param entity 'project' | 'version' | 'node' | 'link'
- */
-async function resolveOwned(userId, entity, rawId, t = null) {
-  const id = posInt(rawId);
-  if (id === null) return null;
-  const [rows] = await sequelize.query(OWN_SQL[entity], {
-    replacements: [id, userId], transaction: t,
-  });
-  return rows[0] || null;
-}
+// task-030: 검증 프리미티브·소유 판별·노드 조회는 services/researchCore.js 로 **그대로 옮겼다.**
+// 관장의 승인 실행기(services/masterActions.js)가 라우트와 **같은 검증·같은 소유 SQL** 을 써야 하기
+// 때문이다. 두 벌이면 한 벌만 고쳐지고, "화면으로 만들면 400 인데 관장이 만들면 통과"하는 구멍이 생긴다.
+// 🔴 이름·동작은 옮기기 전과 같다 — 아래 1,700줄의 호출부는 한 줄도 바뀌지 않았다.
+const {
+  LIMITS, clean, textLen, hasNonBMP, textError, has, posInt,
+  OWN_SQL, resolveOwned, nodesOfVersion, nodesOfVersions,
+} = require('../services/researchCore');
+const rw = require('../services/researchWrite');
 
 // ── 조회 헬퍼 ────────────────────────────────────────────────────────────────
-
-/** 한 버전의 노드 전체 (DB 행 그대로 — researchTree 순수 함수의 입력 규약). */
-async function nodesOfVersion(versionId, t = null) {
-  const [rows] = await sequelize.query(
-    `SELECT id, user_id, version_id, parent_node_id, kind, label, technique_id, sort_order, note
-       FROM research_nodes WHERE version_id = ? ORDER BY sort_order ASC, id ASC`,
-    { replacements: [versionId], transaction: t }
-  );
-  return rows;
-}
-
-/** 여러 버전의 노드를 **한 번에** 읽는다 — 목록 API 가 버전마다 부르면 N+1 이다. */
-async function nodesOfVersions(versionIds, t = null) {
-  if (!versionIds.length) return [];
-  const [rows] = await sequelize.query(
-    `SELECT id, user_id, version_id, parent_node_id, kind, label, technique_id, sort_order, note
-       FROM research_nodes WHERE version_id IN (?) ORDER BY version_id ASC, sort_order ASC, id ASC`,
-    { replacements: [versionIds], transaction: t }
-  );
-  return rows;
-}
 
 /**
  * 기술 id → 사다리 `reached` 맵.
@@ -452,39 +366,17 @@ router.get('/projects', wrap(async (req, res) => {
  * 응답은 GET /projects/:id 와 **같은 상세 형태**다(프론트가 만들자마자 바로 들어갈 수 있게).
  */
 router.post('/projects', wrap(async (req, res) => {
-  const uid  = req.user.id;
-  const body = req.body || {};
-
-  const title = clean(body.title);
-  if (!title) return fail(res, 400, '연구 제목을 입력해주세요');
-  const startPos = has(body, 'startPos') ? clean(body.startPos) : '';
-  const goal     = has(body, 'goal')     ? clean(body.goal)     : '';
-  for (const [label, value, max] of [
-    ['제목', title, LIMITS.title], ['시작 포지션', startPos, LIMITS.startPos], ['목표', goal, LIMITS.goal],
-  ]) {
-    const err = textError(label, value, max);
-    if (err) return fail(res, 400, err);
+  const uid = req.user.id;
+  // task-030: 검증 + (프로젝트 + v1) 트랜잭션은 services/researchWrite.createProject 로 옮겼다.
+  // 관장의 승인 실행기가 **같은 함수**를 부른다 — 화면으로 만든 것과 관장이 만든 것이
+  // 글자 하나 다르지 않아야 하기 때문이다. 검증 순서·메시지·트랜잭션 경계는 옮기기 전 그대로다.
+  let projectId;
+  try {
+    projectId = await rw.createProject(uid, req.body || {});
+  } catch (e) {
+    if (e.__field) return fail(res, e.status || 400, e.message);
+    throw e;
   }
-
-  const projectId = await sequelize.transaction(async (t) => {
-    const now = new Date();
-    const [r] = await sequelize.query(
-      `INSERT INTO research_projects (user_id, title, start_pos, goal, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?)`,
-      { replacements: [uid, title, startPos || null, goal || null, now, now], transaction: t }
-    );
-    const id = Number(r?.insertId ?? r);
-    // 🔴 v1 은 **같은 트랜잭션**이다. 프로젝트만 만들어지고 버전이 없으면 화면이 표현할 수 없는
-    //    상태가 된다(그래서 마지막 버전 삭제도 거부한다).
-    // 🔴 user_id 는 요청 본문에서 읽지 않고 **부모에서 유도**한다(계약 A-2).
-    await sequelize.query(
-      `INSERT INTO research_versions (user_id, project_id, version_no, name, is_active, parent_version_id, created_at)
-       VALUES (?, ?, 1, NULL, 1, NULL, ?)`,
-      { replacements: [uid, id, now], transaction: t }
-    );
-    return id;
-  });
-
   ok(res, await detailById(uid, projectId));
 }));
 
@@ -916,34 +808,9 @@ router.delete('/versions/:id', wrap(async (req, res) => {
 
 // ═══ 노드 ════════════════════════════════════════════════════════════════════
 
-/**
- * kind 검증 — 화이트리스트 7종. 🔴 **kind 와 깊이 사이에 어떤 제약도 걸지 않는다.**
- * `포지션` 도 어느 깊이에나 온다(실제 수업 theme 이 "싱글엑스 가드 -> 50대50" 처럼 중간에 자리를 바꾼다).
- */
-function kindError(kind) {
-  if (!tree.KINDS.includes(kind)) {
-    return `노드 종류는 ${tree.KINDS.join(' · ')} 중 하나여야 합니다`;
-  }
-  return null;
-}
-
-/**
- * technique_id 검증. 🔴 **남의 기술 id 는 403 이 아니라 404** — 존재 여부 자체를 흘리지 않는다
- * (task-024 `routes/lab.js:29-38` 과 **같은 규칙**).
- * @returns {number|null|'BAD'|'NOTFOUND'}
- */
-async function resolveTechniqueId(uid, raw) {
-  if (raw === null || raw === undefined || raw === '') return null;
-  const tid = posInt(raw);
-  if (tid === null) return 'BAD';
-  const t = await Technique.findOne({ where: { id: tid, user_id: uid }, raw: true });
-  return t ? tid : 'NOTFOUND';
-}
-
-/** 노드 생성·수정이 공유하는 텍스트 검증. 통과하면 null. */
-function nodeTextError(label, note) {
-  return textError('노드 이름', label, LIMITS.label) || textError('메모', note, LIMITS.note);
-}
+// task-030: kind·technique_id·텍스트 검증은 services/researchWrite.js 로 옮겼다 —
+// 관장 승인 실행기가 **같은 검증**을 쓰기 위해서다. 이름과 동작은 그대로다.
+const { kindError, resolveTechniqueId, nodeTextError } = rw;
 
 /** 한 노드를 뷰로. 이름·링크수까지 채워 돌려준다(프론트가 만든 직후 그대로 그릴 수 있게). */
 async function singleNodeView(uid, nodeId) {
@@ -969,52 +836,18 @@ async function singleNodeView(uid, nodeId) {
  * sort_order 는 형제 끝에 붙인다(max+1).
  */
 router.post('/nodes', wrap(async (req, res) => {
-  const uid  = req.user.id;
-  const body = req.body || {};
-
-  const version = await resolveOwned(uid, 'version', body.versionId);
+  const uid = req.user.id;
+  const version = await resolveOwned(uid, 'version', (req.body || {}).versionId);
   if (!version) return fail(res, 404, '버전을 찾을 수 없습니다');
-
-  const kind = clean(body.kind);
-  const kErr = kindError(kind);
-  if (kErr) return fail(res, 400, kErr);
-
-  // 🔴 label 은 빈 문자열을 허용한다(컬럼도 NOT NULL DEFAULT ''). "대처 추가" 인라인 버튼처럼
-  //    이름 없이 자리부터 만드는 흐름이 실제로 있고, 거기서 400 이 나면 빈 곳을 메울 길이 막힌다.
-  const label = has(body, 'label') ? clean(body.label) : '';
-  const note  = has(body, 'note')  ? clean(body.note)  : '';
-  const tErr = nodeTextError(label, note);
-  if (tErr) return fail(res, 400, tErr);
-
-  const techniqueId = await resolveTechniqueId(uid, body.techniqueId);
-  if (techniqueId === 'BAD')      return fail(res, 400, 'techniqueId 가 올바르지 않습니다');
-  if (techniqueId === 'NOTFOUND') return fail(res, 404, '기술을 찾을 수 없습니다');
-
-  const parentRaw = has(body, 'parentNodeId') ? body.parentNodeId : null;
-  const parentId  = (parentRaw === null || parentRaw === undefined || parentRaw === '') ? null : posInt(parentRaw);
-  if (parentRaw !== null && parentRaw !== undefined && parentRaw !== '' && parentId === null) {
-    return fail(res, 400, 'parentNodeId 가 올바르지 않습니다');
+  // task-030: 검증 + INSERT 는 services/researchWrite.createNode 로 옮겼다(관장 승인과 한 벌).
+  let nodeId;
+  try {
+    nodeId = await rw.createNode(uid, version, req.body || {});
+  } catch (e) {
+    if (e.__field) return fail(res, e.status || 400, e.message);
+    throw e;
   }
-
-  const nodes = await nodesOfVersion(version.id);
-  // 신규 노드는 서브트리 높이가 1 이다 — 옮길 자손이 아직 없다.
-  const check = tree.validatePlacement(nodes, null, parentId, {
-    versionId: version.id, subtreeHeightOverride: 1,
-  });
-  if (!check.ok) return fail(res, 400, check.message);
-
-  const siblings = tree.childrenOf(tree.indexNodes(nodes), parentId);
-  const sortOrder = siblings.reduce((mx, s) => Math.max(mx, Number(s.sort_order) || 0), -1) + 1;
-
-  const now = new Date();
-  const [r] = await sequelize.query(
-    `INSERT INTO research_nodes
-       (user_id, version_id, parent_node_id, kind, label, technique_id, sort_order, note, created_at, updated_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-    // 🔴 user_id 는 요청 본문이 아니라 **부모 버전 행에서 유도**한다(계약 A-2).
-    { replacements: [version.user_id, version.id, parentId, kind, label, techniqueId, sortOrder, note || null, now, now] }
-  );
-  ok(res, await singleNodeView(uid, Number(r?.insertId ?? r)));
+  ok(res, await singleNodeView(uid, nodeId));
 }));
 
 /**
@@ -1306,29 +1139,13 @@ router.get('/import-search', wrap(async (req, res) => {
 //    6개 저장소를 한 컬럼이 가리키는 다형 참조라 FK 를 걸 수단이 없고, 그래서 **끊김이 실재한다.**
 //    끊긴 링크는 500 이 아니라 `broken: true` 다 — 위 `attachLinkTargets` 주석 참고.
 
-/** ref_id 소유 확인 — 남의 클립·수업·기술 id 를 매달아 두면 "열기"가 유출 경로가 된다. */
+/**
+ * ref_id 소유 확인 — 남의 클립·수업·기술 id 를 매달아 두면 "열기"가 유출 경로가 된다.
+ * task-030: 구현은 services/researchWrite.refIdError 한 벌이고, 여기서는 이 라우터가 소유한
+ * `LINK_TARGETS` 표만 주입한다 — 두 벌을 두면 한 벌만 고쳐진다.
+ */
 async function refIdError(uid, linkType, rawRefId) {
-  if (linkType === 'url') {
-    // url 은 ref_id 없이 memo 에 주소를 담는다.
-    if (rawRefId !== null && rawRefId !== undefined && rawRefId !== '') {
-      return { message: 'url 링크에는 refId 를 쓰지 않습니다 (주소는 memo 에 넣어주세요)' };
-    }
-    return { value: null };
-  }
-  const spec = LINK_TARGETS[linkType];
-  // 화이트리스트(LINK_TYPES)는 통과했는데 대상표에 짝이 없다 = 위 자기점검이 잡아야 할 배선 실수다.
-  // 그래도 여기서 500 을 내지 않는다 — 만들어지면 영원히 broken 인 링크가 생기므로 아예 거절한다.
-  if (!spec) return { message: `${linkType} 링크는 아직 연결할 수 없습니다` };
-
-  const refId = posInt(rawRefId);
-  if (refId === null) return { message: `${linkType} 링크에는 refId 가 필요합니다` };
-  const [rows] = await sequelize.query(
-    `SELECT id FROM ${spec.table} WHERE id = ? AND user_id = ? LIMIT 1`,
-    { replacements: [refId, uid] }
-  );
-  // 🔴 남의 것이면 404 — 존재 여부를 흘리지 않는다(기술 id 규칙과 같다).
-  if (!rows.length) return { message: '연결 대상을 찾을 수 없습니다', status: 404 };
-  return { value: refId };
+  return rw.refIdError(uid, linkType, rawRefId, LINK_TARGETS);
 }
 
 /**
@@ -1353,25 +1170,17 @@ router.get('/nodes/:id/links', wrap(async (req, res) => {
 
 /** 링크 생성 본문 검증 + INSERT. `POST /links` 와 `POST /nodes/:id/links` 가 **한 벌**을 쓴다. */
 async function createLink(res, uid, node, body) {
-  const linkType = clean(body.linkType);
-  if (!tree.LINK_TYPES.includes(linkType)) {
-    return fail(res, 400, `링크 종류는 ${tree.LINK_TYPES.join(' · ')} 중 하나여야 합니다`);
+  // task-030: 검증 + INSERT 는 services/researchWrite.createLink 로 옮겼다(관장 승인과 한 벌).
+  // LINK_TARGETS 는 이 라우터가 소유한 표라 **주입**한다 — 서비스가 화면 전용 표를 알 필요가 없다.
+  let linkId;
+  try {
+    linkId = await rw.createLink(uid, node, body, { linkTargets: LINK_TARGETS });
+  } catch (e) {
+    if (e.__field) return fail(res, e.status || 400, e.message);
+    throw e;
   }
-  const memo = has(body, 'memo') ? clean(body.memo) : '';
-  const mErr = textError('메모', memo, LIMITS.memo);
-  if (mErr) return fail(res, 400, mErr);
-
-  const ref = await refIdError(uid, linkType, body.refId);
-  if (ref.message) return fail(res, ref.status || 400, ref.message);
-
-  const [r] = await sequelize.query(
-    `INSERT INTO research_links (user_id, node_id, link_type, ref_id, memo, created_at)
-     VALUES (?, ?, ?, ?, ?, ?)`,
-    // 🔴 user_id 는 본문이 아니라 **소유자(research_projects.user_id)**에서 유도한다(계약 A-2).
-    { replacements: [Number(node.owner_id), node.id, linkType, ref.value, memo || null, new Date()] }
-  );
   const [rows] = await sequelize.query('SELECT * FROM research_links WHERE id = ?',
-    { replacements: [Number(r?.insertId ?? r)] });
+    { replacements: [linkId] });
   const [view] = await attachLinkTargets(uid, rows);
   return ok(res, view);
 }
@@ -1623,22 +1432,12 @@ router.post('/task', wrap(async (req, res) => {
   }
 
   try {
-    await sequelize.transaction(async (t) => {
-      // 🔴 트랜잭션 안에서 한 번 더 본다(위 검사와 INSERT 사이에 다른 요청이 끼어들 수 있다).
-      //    FOR UPDATE 로 같은 계정의 열린 행을 잠근다. 최종 방어선은 UNIQUE(user_id, open_slot) 이다.
-      const [locked] = await sequelize.query(
-        'SELECT id FROM research_tasks WHERE user_id = ? AND closed_at IS NULL FOR UPDATE',
-        { replacements: [uid], transaction: t }
-      );
-      if (locked.length) throw Object.assign(new Error('duplicate_open_task'), { __dup: true });
-
-      await sequelize.query(
-        'INSERT INTO research_tasks (user_id, node_id, memo, created_at) VALUES (?, ?, ?, ?)',
-        // 🔴 user_id 는 요청 본문이 아니라 **노드의 소유자**에서 유도한다(계약 A-2 와 같은 규칙).
-        { replacements: [node.owner_id, node.id, memo || null, new Date()], transaction: t }
-      );
-    });
+    // task-030: 트랜잭션·FOR UPDATE·INSERT 는 services/researchWrite.setWeeklyTask 로 옮겼다.
+    // 🔴 `replace` 를 넘기지 않으므로(기본 false) 이 라우트의 동작은 추출 전과 완전히 같다 —
+    //    열린 과제가 있으면 만들지 않고 409 다. `replace:true` 는 관장 승인 화면 전용이다.
+    await rw.setWeeklyTask(uid, node, { memo });
   } catch (e) {
+    if (e.__field) return fail(res, e.status || 400, e.message);
     // UNIQUE(user_id, open_slot) 위반도 같은 뜻이다 — 조용히 삼키지 않고 409 로 번역한다.
     if (e.__dup || String(e.name || '').includes('Unique') || /uq_rt_open/.test(String(e.message || ''))) {
       return fail(res, 409, '이미 진행 중인 과제가 있습니다 — 하나만 파는 것이 규칙입니다',

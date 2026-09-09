@@ -6,10 +6,35 @@
 // 공유 헬퍼로 승격하지 않고 이 파일 안에 자체 구현했다.
 const { spawn } = require('child_process');
 const fs = require('fs/promises');
+const fsSync = require('fs');
+const os = require('os');
 const path = require('path');
 const { toNFC } = require('../utils/nfc');
 
 const MIN_FREE_BYTES_DEFAULT = 3 * 1024 * 1024 * 1024; // 3GB
+
+// ── yt-dlp 실행 파일 경로 (task-030 D-2) ─────────────────────────────────────
+//
+// 🔴 **PATH 에 의존하지 않는다.** 2026-09-09 실측: pm2 프로세스가 ecosystem 없이 재생성되면
+//   `PATH` 에서 `~/.local/bin` 이 빠지고, 그 순간 yt-dlp 를 쓰는 기능(영상 분석·썸네일·SNS 보강·
+//   유튜브 검색)이 **전부** 조용히 죽는다. 968931f 에서 ecosystem 에 PATH 를 고정해 한 번 막았지만,
+//   프로세스가 ecosystem 을 거치지 않고 다시 만들어지면 그 방어는 무력하다. 그래서 여기서
+//   **실행 파일 경로 자체를 해석**한다 — env 나 pm2 설정이 무엇이든 파일이 있으면 찾아낸다.
+//
+// 우선순위: `YTDLP_PATH`(운영자가 명시) → `~/.local/bin/yt-dlp`(이 서버의 실제 설치 위치) → `'yt-dlp'`(PATH).
+// 모듈 로드 시 1회만 계산한다 — 매 호출 statSync 를 하지 않기 위해서다.
+function resolveYtDlp() {
+  const fromEnv = String(process.env.YTDLP_PATH || '').trim();
+  if (fromEnv) return fromEnv;
+  const home = os.homedir() || process.env.HOME || '';
+  if (home) {
+    const local = path.join(home, '.local', 'bin', 'yt-dlp');
+    try { if (fsSync.existsSync(local)) return local; } catch { /* ignore */ }
+  }
+  return 'yt-dlp'; // 마지막 수단 — PATH 에 맡긴다(예전 동작과 동일)
+}
+
+const YTDLP_BIN = resolveYtDlp();
 
 function extractYoutubeId(url) {
   if (!url) return null;
@@ -91,7 +116,7 @@ function spawnWithWatchdog(cmd, args, opts = {}) {
 // S1: 메타데이터 조회 (다운로드 없음) — 60초, 유일한 치명적 단계
 async function fetchMeta(url) {
   const { stdout } = await spawnWithWatchdog(
-    'yt-dlp',
+    YTDLP_BIN,
     ['-J', '--skip-download', '--no-warnings', url],
     { timeoutMs: 60000 }
   );
@@ -132,7 +157,7 @@ async function fetchSubtitleVtt(url, tmpDir) {
   const outTemplate = path.join(tmpDir, 'sub.%(ext)s');
   try {
     await spawnWithWatchdog(
-      'yt-dlp',
+      YTDLP_BIN,
       [
         '--write-auto-sub', '--write-sub', '--sub-lang', 'ko,en', '--sub-format', 'vtt',
         '--skip-download', '--no-warnings', '-o', outTemplate, url,
@@ -168,7 +193,7 @@ async function checkFreeDiskSpace(dirPath, minBytes = MIN_FREE_BYTES_DEFAULT) {
 async function downloadVideo(url, tmpDir, opts = {}) {
   const outTemplate = path.join(tmpDir, 'src.%(ext)s');
   await spawnWithWatchdog(
-    'yt-dlp',
+    YTDLP_BIN,
     [
       '-f', 'bv*[height<=720]+ba/b[height<=720]/best',
       '--merge-output-format', 'mp4',
@@ -189,10 +214,73 @@ async function downloadVideo(url, tmpDir, opts = {}) {
   return path.join(tmpDir, videoFile);
 }
 
+// ── 유튜브 검색 (task-030, 관장의 `search_videos` 도구) ──────────────────────
+//
+// 🔴 **셸을 열지 않는다.** spawn 은 인자 배열이라 `; rm -rf` 같은 문자열이 들어와도 하나의
+//    검색어일 뿐이다. 그래도 제어문자·개행을 지우고 200자로 자른다 — `ytsearchN:` 접두사와
+//    한 인자로 붙기 때문에 개행이 들어가면 yt-dlp 가 다른 것으로 읽을 여지를 남기지 않는다.
+// 🔴 30초 워치독. 검색은 관장 턴 안에서 일어나고, 턴 전체 예산이 240초다.
+// 🔴 `--flat-playlist` 라 영상마다 페이지를 열지 않는다(실측: 2건 조회에 3초대).
+const SEARCH_QUERY_MAX = 200;
+
+/** 검색어 정본화 — 제어문자 제거 + NFC + 길이 상한. */
+function sanitizeSearchQuery(raw) {
+  return toNFC(String(raw ?? ''))
+    // eslint-disable-next-line no-control-regex
+    .replace(/[\u0000-\u001F\u007F]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, SEARCH_QUERY_MAX);
+}
+
+/**
+ * 유튜브 검색.
+ * @returns {Promise<Array<{id,title,channel,duration,views,url,platform:'youtube'}>>}
+ *          결과가 없으면 빈 배열(에러가 아니다 — "못 찾았다"는 정상 결과다).
+ */
+async function searchVideos(query, limit = 5) {
+  const q = sanitizeSearchQuery(query);
+  if (!q) return [];
+  const n = Math.max(1, Math.min(8, parseInt(limit, 10) || 5));
+
+  const { stdout } = await spawnWithWatchdog(
+    YTDLP_BIN,
+    ['-J', '--flat-playlist', '--no-warnings', `ytsearch${n}:${q}`],
+    { timeoutMs: 30000 }
+  );
+  let json;
+  try {
+    json = JSON.parse(stdout.trim());
+  } catch (e) {
+    throw new Error(`유튜브 검색 결과를 읽지 못했습니다: ${e.message}`);
+  }
+  const entries = Array.isArray(json.entries) ? json.entries : [];
+  return entries
+    .filter((e) => e && e.id)
+    .map((e) => ({
+      id: String(e.id),
+      // task-014 와 같은 이유로 NFC 정본화 — 제목이 매칭 키로 쓰인다.
+      title: toNFC(String(e.title || '')),
+      channel: toNFC(String(e.channel || e.uploader || '')),
+      duration: Number.isFinite(Number(e.duration)) ? Math.floor(Number(e.duration)) : null,
+      views: Number.isFinite(Number(e.view_count)) ? Number(e.view_count) : null,
+      // 🔴 url 은 yt-dlp 가 준 것을 그대로 쓴다. 조립하지 않는다 — 프론트의 "열기" 버튼이
+      //    이 값을 글자 그대로 쓰고, QA 가 tool_log 와 바이트 대조한다(Q12b).
+      url: String(e.url || `https://www.youtube.com/watch?v=${e.id}`),
+      platform: 'youtube',
+    }));
+}
+
 module.exports = {
+  // 🔴 yt-dlp 를 spawn/execFile 하는 곳은 **전부** 이 값을 쓴다(PATH 리터럴 'yt-dlp' 금지).
+  //    현재 사용처: 이 파일(4곳) · videoAnalysis.js · snsSearch.js · thumbnailExtractor.js · chainVideoGenerator.js
+  YTDLP_BIN,
+  resolveYtDlp,
   extractYoutubeId,
   fetchMeta,
   fetchSubtitleVtt,
   checkFreeDiskSpace,
   downloadVideo,
+  searchVideos,
+  sanitizeSearchQuery,
 };

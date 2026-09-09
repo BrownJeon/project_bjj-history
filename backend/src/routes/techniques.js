@@ -7,6 +7,7 @@ const { wrap, safeParse } = require('../utils/respond');
 const { toNFC, arrToNFC, eqNFC } = require('../utils/nfc');
 const { analyzeVideo } = require('../services/videoAnalysis');
 const { getFramesDir, getVideoDir } = require('../services/storage');
+const { listPositions } = require('../services/positions');
 
 // 기술명과 매칭되는 미분석 클립을 백그라운드에서 자동 AI 분석
 async function triggerAutoAnalysis(techName, userId) {
@@ -210,77 +211,11 @@ router.delete('/:id', wrap(async (req, res) => {
 
 // 사용 중인 고유 포지션 목록 + 기술·참고영상·드릴·스파링 연결 수 반환
 router.get('/positions', wrap(async (req, res) => {
-  const uid = req.user.id;
-  const { sequelize } = require('../config/db');
-
-  // task-014: 4개 카운터의 키를 전부 NFC로 통일한다.
-  //   안 하면 techniques.pos에 NFD "클로즈가드", video_clips.position에 NFC "클로즈가드"가
-  //   있을 때 서로 다른 키가 되어 화면에 "참고영상 0건"으로 나온다 — 실제로는 1건인데.
-  //   사용자는 이 숫자를 보고 "이 포지션 지워도 영향 없겠네"라고 판단하므로 조용한 오답이 위험하다.
-  //   (task-014 Developer가 운영 API로 clipCount=0 재현 확인)
-  //   목록에 내려주는 name도 NFC가 되므로, 프론트가 그 이름으로 호출하는 rename/삭제 API가
-  //   NFD로 저장된 행까지 정규화 비교로 함께 잡아낸다.
-  const techCounter = new Map();
-  const techRows = await Technique.findAll({ where: { user_id: uid }, attributes: ['pos'], raw: true });
-  for (const row of techRows) {
-    for (const p of parsePos(row.pos).map(toNFC)) techCounter.set(p, (techCounter.get(p) || 0) + 1);
-  }
-
-  const clipCounter = new Map();
-  const clipRows = await VideoClip.findAll({ where: { user_id: uid }, attributes: ['position'], raw: true });
-  for (const row of clipRows) {
-    for (const p of parsePos(row.position).map(toNFC)) clipCounter.set(p, (clipCounter.get(p) || 0) + 1);
-  }
-
-  const drillCounter = new Map();
-  const [drillRows] = await sequelize.query(
-    `SELECT d.pos FROM drills d JOIN classes c ON d.class_id = c.id WHERE c.user_id = ? AND d.pos IS NOT NULL AND d.pos != ''`,
-    { replacements: [uid] }
-  );
-  for (const row of drillRows) { const p = toNFC(row.pos); drillCounter.set(p, (drillCounter.get(p) || 0) + 1); }
-
-  const sparCounter = new Map();
-  const [sparRows] = await sequelize.query(
-    `SELECT ss.positions FROM spar_sessions ss
-     JOIN spar_days sd ON ss.spar_day_id = sd.id
-     JOIN classes c ON sd.class_id = c.id
-     WHERE c.user_id = ?`,
-    { replacements: [uid] }
-  );
-  for (const row of sparRows) {
-    let entries;
-    try { entries = JSON.parse(row.positions || '[]'); } catch { entries = []; }
-    if (!Array.isArray(entries)) continue;
-    for (const e of entries) {
-      if (e?.name) { const p = toNFC(e.name); sparCounter.set(p, (sparCounter.get(p) || 0) + 1); }
-    }
-  }
-
-  // task-016: 목록은 4개 저장소(기술·영상·드릴·스파링)에 쓰인 이름의 **합집합**이다.
-  //
-  // 예전에는 techCounter의 키만 내려줬다. 그래서 기술에는 없고 영상·드릴에만 쓰인 이름
-  // (운영 실측 8종: 오픈 가드, 클로즈드 가드, 패스 (Pass), 하프 가드, 스탠딩,
-  //  클로즈드 가드 (Closed Guard), 터틀, 오픈가드 탑, 하프가드 탑)이 관리 화면에 아예
-  // 뜨지 않아 **이름을 고칠 수도 지울 수도 없었다.** rename/삭제 API는 4곳을 다 훑는데
-  // 목록이 그 이름을 안 내려주니 프론트가 호출할 방법이 없었던 것 — 기능은 있는데 입구가 없었다.
-  // 특히 `클로즈드 가드`(영상)와 `클로즈드 가드 (Closed Guard)`(드릴)처럼 같은 개념이 갈라져
-  // 있어도 rename으로 합칠 수가 없었다.
-  // → 4개 카운터의 키를 합쳐 목록을 만든다. 각 카운터는 이미 위에서 NFC로 정규화된 키를
-  //   쓰므로 합집합에서도 "눈에 같은 이름"이 두 줄로 갈라지지 않는다.
-  const allNames = new Set([
-    ...techCounter.keys(), ...clipCounter.keys(), ...drillCounter.keys(), ...sparCounter.keys(),
-  ]);
-  const result = [...allNames]
-    .map(name => ({
-      name,
-      count:      techCounter.get(name) || 0, // 기존 프론트 호환용 (기술 수)
-      techCount:  techCounter.get(name)  || 0,
-      clipCount:  clipCounter.get(name)  || 0,
-      drillCount: drillCounter.get(name) || 0,
-      sparCount:  sparCounter.get(name)  || 0,
-    }))
-    .sort((a, b) => a.name.localeCompare(b.name, 'ko'));
-  res.json(result);
+  // task-030: 4저장소 합집합 로직은 services/positions.js 로 **추출**했다.
+  // 🔴 관장의 MCP `list_positions` 도구가 **같은 함수**를 쓴다. 두 벌로 갈라 두면
+  //    관장이 제안한 시작 포지션이 관리 화면에는 없는 이름이 될 수 있다(페르소나 원칙 4).
+  //    응답 형태·정렬·NFC 처리는 옮기기 전과 바이트 단위로 같다 — 로직을 옮겼을 뿐이다.
+  res.json(await listPositions(req.user.id));
 }));
 
 // 포지션 이름 변경 — 기술뿐 아니라 참고영상·수업드릴·스파링 기록에 남아있는 같은 이름도 함께 갱신
