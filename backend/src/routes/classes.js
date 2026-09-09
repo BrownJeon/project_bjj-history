@@ -341,6 +341,10 @@ router.post('/:id/generate-video', wrap(async (req, res) => {
 
 router.get('/:id/video-status', wrap(async (req, res) => {
   const classId = req.params.id;
+  // 소유권 확인 — class_video_jobs 에는 user_id 가 없어 classes 로만 판별할 수 있다.
+  // 바로 위 POST /:id/generate-video 와 같은 기준(404 로 존재 자체를 숨긴다, task-031).
+  const cls = await Class.findOne({ where: { id: classId, user_id: req.user.id }, attributes: ['id'] });
+  if (!cls) return res.status(404).json({ error: 'class not found' });
 
   // 최신 잡 조회
   const [[job]] = await sequelize.query(
@@ -364,6 +368,12 @@ router.get('/:id/video-status', wrap(async (req, res) => {
 
 router.delete('/:id/generated-video', wrap(async (req, res) => {
   const classId = req.params.id;
+  // 🔴 파괴적 라우트 — 소유권 확인이 fs.rm 보다 반드시 앞에 와야 한다(task-031).
+  // getClassVideoDir 은 classId 만으로 경로를 만들고 class_video_jobs 에도 user_id 가 없어,
+  // 이 확인이 없으면 인증만 된 사용자가 남의 수업 영상과 잡 행을 지울 수 있었다.
+  const cls = await Class.findOne({ where: { id: classId, user_id: req.user.id }, attributes: ['id'] });
+  if (!cls) return res.status(404).json({ error: 'class not found' });
+
   const videoDir = getClassVideoDir(classId);
   await fs.rm(videoDir, { recursive: true }).catch(() => {});
   await sequelize.query(

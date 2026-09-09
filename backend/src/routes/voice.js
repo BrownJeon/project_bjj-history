@@ -108,20 +108,32 @@ router.post('/analyze', upload.single('audio'), wrap(async (req, res) => {
 }));
 
 // GET /api/voice/jobs — 최근 잡 목록 (pending 포함, 전사 진행 글자 수 포함)
-router.get('/jobs', wrap(async (_req, res) => {
+// 🔴 voice_jobs 에는 user_id 가 없다 — 소유자는 class_id → classes.user_id 로만 판별된다.
+//    이 조인이 없던 동안 이 라우트는 전 사용자의 최근 30건을 그대로 내보냈다(task-031 ⑤).
+//    INNER JOIN 이라 class_id 가 끊긴 잡은 목록에서 빠지는데, POST /analyze 가 classId 를
+//    필수로 받고 소유까지 확인하므로 정상 경로로 생기는 잡은 전부 조인에 걸린다.
+router.get('/jobs', wrap(async (req, res) => {
   const [rows] = await sequelize.query(
-    `SELECT id, class_id, trained_date, status, created_at,
-            CHAR_LENGTH(COALESCE(transcript, '')) AS transcript_len
-     FROM voice_jobs ORDER BY created_at DESC LIMIT 30`
+    `SELECT vj.id, vj.class_id, vj.trained_date, vj.status, vj.created_at,
+            CHAR_LENGTH(COALESCE(vj.transcript, '')) AS transcript_len
+     FROM voice_jobs vj
+     JOIN classes c ON c.id = vj.class_id
+     WHERE c.user_id = ?
+     ORDER BY vj.created_at DESC LIMIT 30`,
+    { replacements: [req.user.id] }
   );
   res.json(rows);
 }));
 
 // GET /api/voice/jobs/:jobId — 단일 잡 상태·결과
+// 남의 잡은 "없는 잡"과 똑같이 404 로 답한다(존재 은닉) — 기존 404 문구를 그대로 쓴다.
 router.get('/jobs/:jobId', wrap(async (req, res) => {
   const [[job]] = await sequelize.query(
-    `SELECT id, class_id, status, result, error, transcript FROM voice_jobs WHERE id = ?`,
-    { replacements: [req.params.jobId] }
+    `SELECT vj.id, vj.class_id, vj.status, vj.result, vj.error, vj.transcript
+     FROM voice_jobs vj
+     JOIN classes c ON c.id = vj.class_id
+     WHERE vj.id = ? AND c.user_id = ?`,
+    { replacements: [req.params.jobId, req.user.id] }
   );
   if (!job) return res.status(404).json({ error: 'job not found' });
   res.json({

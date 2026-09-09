@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { runClaude } = require('../services/claudeCli');
 const { analyzeVideo } = require('../services/videoAnalysis');
+const { VideoClip } = require('../models');
 const { wrap } = require('../utils/respond');
 const { extractJSONObject } = require('../utils/extractJson');
 
@@ -139,6 +140,17 @@ router.post('/analyze-video', wrap(async (req, res) => {
     return res.status(400).json({ error: 'YouTube 또는 Instagram URL만 지원됩니다' });
   }
 
+  // 🔴 clipId 소유권은 응답(그리고 fire-and-forget 분석) 보다 앞에서 확인해야 한다(task-031 ②).
+  // 아래 .then 의 VideoClip.update 는 clipId 만 보고 쓰므로, 이 확인이 없으면 남의 클립의
+  // description/frames/video_file 이 공격자가 지정한 URL 의 분석 결과로 덮어써졌다.
+  // clipId 를 안 보내는 호출(URL 분석만)은 저장 경로 자체가 없어 기존 동작 그대로다.
+  if (clipId) {
+    const owned = await VideoClip.findOne({
+      where: { id: clipId, user_id: req.user.id }, attributes: ['id'],
+    });
+    if (!owned) return res.status(404).json({ error: 'clip not found' });
+  }
+
   const jobId = crypto.randomUUID();
   analyzeJobs.set(jobId, { status: 'pending', startedAt: Date.now(), url, progress: 0, stage: '분석 준비 중' });
   res.json({ jobId, status: 'pending' });
@@ -152,7 +164,6 @@ router.post('/analyze-video', wrap(async (req, res) => {
       // clipId가 있으면 DB에 frames + description 저장
       if (clipId) {
         try {
-          const { VideoClip } = require('../models');
           const updates = {};
           if (result.savedFrames && result.savedFrames.length)
             updates.frames = JSON.stringify(result.savedFrames);
