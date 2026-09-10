@@ -594,10 +594,16 @@ export default function ProfilePage() {
                 background: 'rgba(59,130,246,0.12)', color: 'var(--blue)',
                 border: '1px solid var(--blue)' }}>✓ Firefox 자동</span>
             )}
-            {igCookie.mode === 'file' && (
+            {/* 파일이 있다고 인증된 게 아니다 — sessionid 가 없거나 만료면 실제로는 로그아웃 상태 */}
+            {igCookie.mode === 'file' && igCookie.sessionValid && (
               <span style={{ fontSize: 11, fontWeight: 700, padding: '3px 10px', borderRadius: 20,
                 background: 'var(--accent-dim)', color: 'var(--accent)',
                 border: '1px solid var(--accent)' }}>✓ 파일 인증</span>
+            )}
+            {igCookie.mode === 'file' && !igCookie.sessionValid && (
+              <span style={{ fontSize: 11, fontWeight: 700, padding: '3px 10px', borderRadius: 20,
+                background: 'rgba(245,158,11,0.12)', color: 'var(--amber)',
+                border: '1px solid var(--amber)' }}>⚠ 세션 없음</span>
             )}
             {igCookie.mode === 'none' && (
               <span style={{ fontSize: 11, fontWeight: 700, padding: '3px 10px', borderRadius: 20,
@@ -632,6 +638,16 @@ export default function ProfilePage() {
                 <span style={{ color: 'var(--amber)', marginLeft: 8 }}>
                   — 로그아웃 시 만료될 수 있음
                 </span>
+              </div>
+            )}
+            {igCookie.mode === 'file' && !igCookie.sessionValid && igCookie.hint && (
+              <div style={{ fontSize: 12, color: 'var(--amber)', marginBottom: 10, lineHeight: 1.6,
+                background: 'rgba(245,158,11,0.08)', border: '1px solid var(--amber)',
+                borderRadius: 8, padding: '8px 10px' }}>
+                {igCookie.hint}
+                <div style={{ color: 'var(--text3)', marginTop: 4 }}>
+                  공개 릴(reel)은 로그인 없이도 분석되지만, 스토리·비공개 게시물은 실패합니다.
+                </div>
               </div>
             )}
 

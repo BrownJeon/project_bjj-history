@@ -18,10 +18,15 @@ export function CacheProvider({ children }) {
   const [sessionTypes, setSessionTypes] = useState([]);
   const [loaded, setLoaded] = useState(false);
   const [igCookieConfigured, setIgCookieConfigured] = useState(false);
+  // 쿠키 '파일이 있음'과 '로그인 세션이 살아있음'은 다르다 — 배지/경고는 후자를 봐야 한다.
+  const [igSessionValid, setIgSessionValid] = useState(false);
+  const [igCookieHint,  setIgCookieHint]  = useState(null);
 
   const reloadIgCookie = useCallback(async () => {
     const s = await settingsApi.getInstagramCookieStatus().catch(() => ({ configured: false }));
     setIgCookieConfigured(!!s.configured);
+    setIgSessionValid(!!s.sessionValid);
+    setIgCookieHint(s.hint || null);
   }, []);
 
   const loadAll = useCallback(async () => {
@@ -50,7 +55,7 @@ export function CacheProvider({ children }) {
   return (
     <CacheContext.Provider value={{
       classes, techniques, clips, chains, gameplans, sessionTypes, loaded,
-      igCookieConfigured, reloadIgCookie,
+      igCookieConfigured, igSessionValid, igCookieHint, reloadIgCookie,
       loadAll, reloadClips, reloadTechniques, reloadClasses, reloadChains, reloadGameplans,
     }}>
       {children}

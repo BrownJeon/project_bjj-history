@@ -13,7 +13,7 @@ const detectPlatform = u => !u ? 'other' : u.includes('youtu') ? 'youtube' : u.i
 // ClipsPage.jsx의 로컬 ClipEditor를 추출한 공유 컴포넌트
 // (참고영상 등록/수정 — ClipsPage, TechPlanPage(TechDetailModal) 양쪽에서 재사용)
 export default function ClipEditor({ initial, techniques, onSave, onCancel, analyzeJob }) {
-  const { igCookieConfigured, clips: allClips, reloadClips } = useCache();
+  const { igCookieConfigured, igSessionValid, igCookieHint, clips: allClips, reloadClips } = useCache();
   const [title, setTitle] = useState(initial?.title || '');
   const [url, setUrl]     = useState(initial?.url || '');
   const [techNames, setTechNames] = useState(
@@ -162,9 +162,18 @@ export default function ClipEditor({ initial, techniques, onSave, onCancel, anal
                 ⚠ Instagram은 AI 자동 분석 불가 — 저장 후 상세 화면에서 파일로 분석하거나 프로필에서 쿠키를 설정하세요
               </div>
             )}
-            {isInstagram && igCookieConfigured && (
+            {/* 쿠키 파일이 있어도 로그인 세션이 없으면 "인증됨"이라고 말하면 안 된다.
+                릴은 로그인 없이도 분석되므로 시도 자체는 막지 않고, 무엇이 안 되는지만 알린다. */}
+            {isInstagram && igCookieConfigured && igSessionValid && (
               <div style={{ fontSize: 11, color: 'var(--accent)', marginTop: 3 }}>
                 ✓ Instagram 쿠키 인증됨 — AI 분석 가능
+              </div>
+            )}
+            {isInstagram && igCookieConfigured && !igSessionValid && (
+              <div style={{ fontSize: 11, color: 'var(--amber)', marginTop: 3, lineHeight: 1.5 }}>
+                ⚠ 쿠키 파일은 있으나 <b>로그인 세션이 없습니다</b> — 공개 릴은 분석되지만
+                스토리·비공개 게시물은 실패합니다.
+                {igCookieHint ? <div style={{ marginTop: 2, opacity: .85 }}>{igCookieHint}</div> : null}
               </div>
             )}
           </>
@@ -285,7 +294,7 @@ export default function ClipEditor({ initial, techniques, onSave, onCancel, anal
               ? `🔄 ${analyzeJob.stage || '분석 중'} ${analyzeJob.progress}%`
               : analyzing ? `🔄 ${analyzeStage || 'AI 분석 중'} ${analyzeProgress}%`
               : igBlocked ? '📁 파일로 분석 (상세에서)'
-              : isInstagram ? '✨ AI 분석 (쿠키 인증)'
+              : isInstagram ? (igSessionValid ? '✨ AI 분석 (쿠키 인증)' : '✨ AI 분석 (세션 없음)')
               : '✨ AI 분석';
             return (
               <button onClick={handleAiAnalyze} disabled={disabled}

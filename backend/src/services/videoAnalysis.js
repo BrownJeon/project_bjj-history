@@ -13,6 +13,50 @@ const FIREFOX_PROFILE_DIR    = '/home/brownjeon/.mozilla/firefox';
 
 function hasCookieFile() { return fsSync.existsSync(INSTAGRAM_COOKIE_PATH); }
 
+// ── Instagram 로그인 세션 실제 유효성 검사 (task-031) ────────────────────────
+//
+// 🔴 **파일 존재 여부만 보면 안 된다.** 2026-09-10 실측: `sessionid` 가 하나도 없는 쿠키
+//   파일이 저장돼 있는데도 화면은 "✓ Instagram 쿠키 인증됨 — AI 분석 가능"을 띄웠고,
+//   실제 분석은 "로그인 인증이 필요"로 실패했다. 릴(reel)은 로그인 없이도 받아지기 때문에
+//   평소엔 티가 안 나다가, 로그인이 필수인 스토리(stories)에서만 터져 원인 파악이 어려웠다.
+//
+// Netscape 쿠키 형식: domain \t flag \t path \t secure \t expiry \t name \t value
+// cookiePath 는 테스트에서 합성 파일을 넣어보기 위한 주입 지점이다(운영 경로가 기본값).
+function inspectInstagramCookie(cookiePath = INSTAGRAM_COOKIE_PATH) {
+  if (!fsSync.existsSync(cookiePath)) return { ok: false, reason: 'none', expiresAt: null };
+  let text;
+  try { text = fsSync.readFileSync(cookiePath, 'utf8'); }
+  catch { return { ok: false, reason: 'unreadable', expiresAt: null }; }
+
+  const now = Math.floor(Date.now() / 1000);
+  let expiredAt = null; // sessionid 는 있는데 만료된 경우를 구분하기 위해 기억해둔다
+
+  for (const line of text.split('\n')) {
+    if (!line || line.startsWith('#')) continue;
+    const f = line.split('\t');
+    if (f.length < 7) continue;
+    if (f[5] !== 'sessionid') continue;
+    if (!/(^|\.)instagram\.com$/.test(String(f[0]).replace(/^\./, '.'))) continue;
+    const exp = parseInt(f[4], 10) || 0;
+    if (exp && exp <= now) { expiredAt = new Date(exp * 1000); continue; } // 만료 — 다음 줄 계속 확인
+    return { ok: true, reason: 'ok', expiresAt: exp ? new Date(exp * 1000) : null }; // exp 0 = 세션 쿠키
+  }
+  return { ok: false, reason: expiredAt ? 'expired' : 'no-session', expiresAt: expiredAt };
+}
+
+// 쿠키 파일이 "로그인된" 상태인지 (존재 여부가 아니라 sessionid 유효성 기준)
+function hasInstagramSession() { return inspectInstagramCookie().ok; }
+
+// 실패 메시지에 붙일 구체적 안내 — 사용자가 무엇을 해야 하는지 알 수 있어야 한다
+function instagramAuthHint() {
+  const { reason, expiresAt } = inspectInstagramCookie();
+  if (reason === 'none')       return '저장된 Instagram 쿠키가 없습니다. 프로필 > Instagram 쿠키 인증에서 쿠키 파일을 올려주세요.';
+  if (reason === 'unreadable') return '저장된 Instagram 쿠키 파일을 읽을 수 없습니다. 다시 올려주세요.';
+  if (reason === 'expired')    return `저장된 Instagram 쿠키의 로그인 세션이 만료되었습니다(${expiresAt.toLocaleDateString('ko-KR')}). 로그인한 상태에서 쿠키를 다시 내보내 올려주세요.`;
+  if (reason === 'no-session') return '저장된 Instagram 쿠키에 로그인 세션(sessionid)이 없습니다 — 로그아웃 상태에서 내보낸 파일입니다. Instagram에 로그인한 브라우저에서 쿠키를 다시 내보내 올려주세요.';
+  return '로그인 세션은 저장돼 있으나 Instagram이 이 게시물 접근을 거부했습니다. 비공개 계정이거나 세션이 무효화됐을 수 있습니다.';
+}
+
 // Firefox 프로필에 cookies.sqlite 가 있으면 로그인 이력 있음
 function hasFirefoxSession() {
   if (!fsSync.existsSync(FIREFOX_PROFILE_DIR)) return false;
@@ -53,8 +97,11 @@ function runProcess(cmd, args, timeoutMs = 180000) {
       if (code !== 0) {
         // yt-dlp Instagram 인증 에러 감지
         if (isYtDlp && /instagram/i.test(args.join(' ')) &&
-            /empty media response|login required|authentication/i.test(err)) {
-          return reject(new Error('Instagram 영상은 로그인 인증이 필요하여 다운로드가 불가합니다'));
+            // 'content is unreachable' 는 스토리에서 실제로 돌아오는 문구다(2026-09-10 실측).
+            // 기존 패턴만으로도 'authentication' 에 걸리긴 했으나, 문구가 바뀌면 조용히 빠지므로 명시한다.
+            /empty media response|login required|authentication|content is unreachable|cookies-from-browser/i.test(err)) {
+          const hint = instagramAuthHint();
+          return reject(new Error('Instagram 영상 다운로드에 로그인 인증이 필요합니다.' + (hint ? ' ' + hint : '')));
         }
         // yt-dlp YouTube 다운로드 실패 감지 — 대부분 yt-dlp 버전 노후화로 추출 방식을 못 따라가서 발생
         if (isYtDlp && /youtube\.com|youtu\.be/i.test(args.join(' ')) &&
@@ -293,6 +340,7 @@ module.exports = {
   analyzeVideo, analyzeLocalFile,
   INSTAGRAM_COOKIE_PATH,
   hasCookieFile, hasFirefoxSession, hasInstagramAuth,
+  inspectInstagramCookie, hasInstagramSession, instagramAuthHint,
   // task-030: 관장의 `enrich_sns_links` 가 Instagram 메타를 읽을 때 **같은 인증 경로**를 쓴다.
   // 쿠키 경로·firefox 폴백 판정을 두 벌로 두면 한쪽만 고쳐진다. export 만 추가했고 함수는 무변경.
   getInstagramCookieArgs,
