@@ -79,7 +79,165 @@ function getInstagramCookieArgs(url) {
   return [];
 }
 
-function runProcess(cmd, args, timeoutMs = 180000) {
+// ── yt-dlp stderr 정제 · 번역 (task-033) ────────────────────────────────────
+//
+// 🔴 **yt-dlp 는 성공할 때도 stderr 에 잡음을 쏟는다.** 2026-09-11 실측: 정상 릴·유튜브를
+//    `--dump-json` 으로 조회하면 exit 0 인데도 stderr 첫 줄이 Python deprecation 경고다.
+//    그런데 실패 메시지는 stderr **원문을 그대로** 사용자에게 보여줬다(옛 116행 `err.trim()`).
+//    그 결과 사용자가 "파이썬 버전 만료" 를 원인으로 오진했고, 진짜 원인
+//    (`No video formats found` = 사진만 있는 게시물)은 뒤에 묻혔다.
+//
+// 🔴 **걷어내는 것은 사용자에게 보이는 문장뿐이다.** 서버 로그(console.error)에는 stderr
+//    원문 전체를 남긴다 — 진단에 필요하다.
+//
+// 패턴을 정규식 한 줄로 뭉뚱그리지 않고 목록으로 둔다. yt-dlp 가 문구를 바꾸면 여기만 고치면 된다.
+
+// (1) 줄 단위 잡음 — 이 줄 자체가 통째로 버려진다.
+const YTDLP_NOISE_LINE_PATTERNS = [
+  // yt-dlp 2026.08.19 + python 3.10.12 조합에서 **매 실행마다** 나온다(성공·실패 무관).
+  // 경고일 뿐이고 yt-dlp 는 정상 동작한다 — 원인이 아니다.
+  /^Deprecated Feature:\s*Support for Python version/i,
+  // 위 경고가 두 줄로 나뉘는 버전이 있다 — 이어지는 안내 줄.
+  /^You will no longer receive updates on this version/i,
+  // 문구가 바뀌어도 'Deprecated Feature:' 계열은 전부 안내다.
+  /^Deprecated Feature:/i,
+  // 아래 3종은 yt-dlp 의 상투적인 버그리포트 안내다. 독립된 줄로 나오는 판본에 대비한다
+  // (현재 판본은 ERROR 줄 **안에** 붙여 보내므로 (2) 에서도 같이 지운다).
+  /^please report this issue on/i,
+  /^filling out the appropriate issue template/i,
+  /^Confirm you are on the latest version using/i,
+];
+
+// (2) 줄 **안에** 붙어 오는 잡음 꼬리 — 줄은 남기고 꼬리만 잘라낸다.
+//     2026-09-11 실측 원문(한 줄):
+//       ERROR: [Instagram] Dc94vlzzASW: No video formats found!; please report this issue on
+//       https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template.
+//       Confirm you are on the latest version using  yt-dlp -U
+//     → 세미콜론 뒤는 전부 상투 문구다. 원인은 세미콜론 앞까지다.
+const YTDLP_NOISE_INLINE_PATTERNS = [
+  // 버그리포트 유도 꼬리(세미콜론 이후 전체).
+  /;\s*please report this issue on[\s\S]*$/i,
+  // 위 꼬리가 세미콜론 없이 붙는 판본 대비.
+  /\s*Confirm you are on the latest version using\s+yt-dlp -U\.?\s*$/i,
+  // 쿠키 FAQ 링크 안내 — 인증 분기에서 이미 한국어 안내를 주므로 사용자에겐 중복이다.
+  /\s*See\s+https?:\/\/github\.com\/yt-dlp\/yt-dlp\/wiki\/FAQ\S*\s*for how to manually pass cookies\.?\s*$/i,
+];
+
+/**
+ * stderr 에서 사용자에게 보일 "의미 있는 줄"만 남긴다.
+ * @param {string} raw yt-dlp stderr 원문
+ * @param {{dropWarnings?: boolean}} opts
+ * @returns {string[]} 잡음을 걷어낸 줄 목록(빈 배열이면 전부 잡음이었다는 뜻)
+ */
+function cleanYtDlpStderr(raw, { dropWarnings = true } = {}) {
+  const lines = String(raw || '')
+    .split('\n')
+    .map(l => l.replace(/\r$/, '').trim())
+    .filter(Boolean)
+    .filter(l => !YTDLP_NOISE_LINE_PATTERNS.some(re => re.test(l)))
+    .map(l => YTDLP_NOISE_INLINE_PATTERNS.reduce((s, re) => s.replace(re, ''), l).trim())
+    .filter(Boolean);
+
+  // WARNING 은 **진짜 에러가 따로 있을 때만** 버린다. 경고밖에 없으면 그게 유일한 단서다.
+  const hasError = lines.some(l => /^ERROR:/i.test(l));
+  return (dropWarnings && hasError) ? lines.filter(l => !/^WARNING:/i.test(l)) : lines;
+}
+
+/** 걷어낸 줄 중 기준으로 삼을 첫 에러 줄(없으면 첫 줄, 그것도 없으면 빈 문자열). */
+function firstYtDlpError(lines) {
+  return (lines || []).find(l => /^ERROR:/i.test(l)) || (lines || [])[0] || '';
+}
+
+// (3) 알려진 실패 → 사용자가 무엇을 해야 하는지 아는 한국어 문장. 원문은 서버 로그에만 남는다.
+const YTDLP_ERROR_TRANSLATIONS = [
+  {
+    kind: 'no-video',
+    // 사진만 있는 게시물(캐러셀 포함). 2026-09-11 사용자 실패 건(clip 182)의 진짜 원인이다.
+    test: /No video formats found|No video could be found in this|There's no video/i,
+    message: '이 게시물에는 영상이 없습니다 — 사진만 있는 게시물이에요. 영상 게시물이나 릴(reel) 주소를 넣어 주세요.',
+  },
+  {
+    kind: 'not-found',
+    // 삭제·비공개·오타난 주소. 인스타는 없는 shortcode 에 HTTP 400 을 준다(2026-09-11 실측:
+    // `Video info extraction failed: HTTP Error 400: Bad Request`) — 문구에 'unavailable' 이 없다.
+    test: /Video unavailable|This post is not available|Post unavailable|no longer available|has been removed|Private video|Video info extraction failed.*HTTP Error 4\d\d|HTTP Error 404/i,
+    message: '게시물을 찾을 수 없거나 비공개입니다. 주소가 맞는지, 공개 게시물인지 확인해 주세요.',
+  },
+];
+
+/**
+ * 걷어낸 첫 에러 줄을 한국어 문장으로. 아는 패턴이 없으면 원문 첫 줄을 그대로 붙인다.
+ * @param {string} firstError 걷어낸 첫 에러 줄
+ * @param {{photoCount?: number}} opts photoCount>0 이면 "사진 N장" 을 넣는다(L-3)
+ */
+function translateYtDlpError(firstError, { photoCount = 0 } = {}) {
+  const line = String(firstError || '').trim();
+  if (!line) return '';
+  const hit = YTDLP_ERROR_TRANSLATIONS.find(t => t.test.test(line));
+  if (!hit) {
+    return '영상을 받지 못했습니다 — ' + line.replace(/^ERROR:\s*/i, '').slice(0, 200);
+  }
+  if (hit.kind === 'no-video' && photoCount > 0) {
+    return `이 게시물에는 영상이 없습니다 — 사진 ${photoCount}장만 있는 게시물이에요. `
+         + '영상 게시물이나 릴(reel) 주소를 넣어 주세요.';
+  }
+  return hit.message;
+}
+
+/** args 배열에서 대상 URL 을 되찾는다(마지막 http(s) 인자). */
+function urlFromArgs(args) {
+  for (let i = (args || []).length - 1; i >= 0; i--) {
+    if (/^https?:\/\//i.test(String(args[i]))) return String(args[i]);
+  }
+  return '';
+}
+
+/**
+ * L-3 — "영상이 없다"로 실패했을 때 **사진이 몇 장인지** 세는 진단 조회.
+ *
+ * 🔴 `--ignore-no-formats-error` 를 **다운로드 경로에 넣지 마라**(D-2 결정). 거기서 포맷이
+ *    없으면 그건 진짜 실패다. 이 플래그는 오직 여기 — 이미 실패한 뒤, 1회만, 30초 상한으로 —
+ *    쓰인다. 정상 경로 성능에는 아무 영향이 없다.
+ * @returns {Promise<number>} 사진 장수(0이면 "모르겠다" — 장수 없이 기본 문구로 떨어진다)
+ */
+async function probePhotoCount(url) {
+  if (!url) return 0;
+  try {
+    const out = await runProcess(YTDLP_BIN, [
+      '--dump-json', '--skip-download', '--ignore-no-formats-error', '--no-warnings',
+      ...getInstagramCookieArgs(url), url,
+    ], 30000, { diagnose: false }); // diagnose:false — 진단 호출이 또 진단을 부르지 않게
+    const entries = out.split('\n').map(s => s.trim()).filter(Boolean)
+      .map(s => { try { return JSON.parse(s); } catch { return null; } })
+      .filter(Boolean);
+    if (!entries.length) return 0;
+    // 하나라도 포맷이 있으면 "사진 N장" 이라고 단정하지 않는다 — 영상이 섞인 캐러셀일 수 있다.
+    if (entries.some(e => Array.isArray(e.formats) && e.formats.length > 0)) return 0;
+    return entries.length;
+  } catch (e) {
+    console.error('[yt-dlp][diag] 사진 장수 조회 실패(장수 없이 진행):', e.message);
+    return 0;
+  }
+}
+
+/** yt-dlp 실패 → 사용자에게 보일 최종 문장. 전부 잡음이면 기존처럼 종료 코드 문구로 떨어진다. */
+async function buildYtDlpUserMessage({ err, out, code, cmd, args, diagnose }) {
+  const lines = cleanYtDlpStderr(err);
+  const first = firstYtDlpError(lines);
+  if (!first) {
+    // 걷어내고 나니 남는 게 없다 = stderr 가 전부 잡음이었다. 옛 동작 그대로.
+    return (String(out || '').trim() || `${cmd} 종료 코드: ${code}`).slice(0, 300);
+  }
+  let photoCount = 0;
+  if (diagnose && YTDLP_ERROR_TRANSLATIONS[0].test.test(first)) {
+    photoCount = await probePhotoCount(urlFromArgs(args));
+  }
+  return translateYtDlpError(first, { photoCount });
+}
+
+// opts.diagnose=false 로 부르면 실패 시 추가 진단 조회를 하지 않는다(진단 조회 자신이 쓴다).
+function runProcess(cmd, args, timeoutMs = 180000, opts = {}) {
+  const { diagnose = true } = opts;
   return new Promise((resolve, reject) => {
     const proc = spawn(cmd, args, { timeout: timeoutMs });
     let err = '', out = '';
@@ -95,6 +253,11 @@ function runProcess(cmd, args, timeoutMs = 180000) {
       const isYtDlp = cmd === YTDLP_BIN || /(^|\/)yt-dlp$/.test(cmd);
       if (signal) return reject(new Error(`${cmd} 강제 종료 (signal: ${signal}, timeout: ${timeoutMs}ms)`));
       if (code !== 0) {
+        // 🔴 서버 로그에는 stderr **원문을 그대로** 남긴다(task-033). 사용자 메시지에서만
+        //    잡음을 걷어낸다 — 원문이 없으면 다음 장애 때 원인을 못 찾는다.
+        if (isYtDlp && err.trim()) {
+          console.error(`[yt-dlp] exit=${code} url=${urlFromArgs(args)} stderr(원문):\n${err.trim()}`);
+        }
         // yt-dlp Instagram 인증 에러 감지
         if (isYtDlp && /instagram/i.test(args.join(' ')) &&
             // 'content is unreachable' 는 스토리에서 실제로 돌아오는 문구다(2026-09-10 실측).
@@ -111,6 +274,15 @@ function runProcess(cmd, args, timeoutMs = 180000) {
             '(pip install --user --upgrade yt-dlp). ' +
             '문제가 계속되면 "파일로 분석"으로 영상을 직접 업로드해보세요.'
           ));
+        }
+        // yt-dlp 는 잡음을 걷어내고 한국어로 번역해서 준다(task-033 L-1·L-2·L-3).
+        if (isYtDlp) {
+          return buildYtDlpUserMessage({ err, out, code, cmd, args, diagnose })
+            .then(msg => reject(new Error(msg)))
+            // 번역기 자체가 터져도 실패 사유는 반드시 전달돼야 한다 — 옛 동작으로 떨어진다.
+            .catch(() => reject(new Error(
+              (err.trim() || out.trim() || `${cmd} 종료 코드: ${code}`).slice(0, 300)
+            )));
         }
         // claude 종료 코드 1: stdout에 실제 에러가 있을 수 있음
         const detail = (err.trim() || out.trim() || `${cmd} 종료 코드: ${code}`).slice(0, 300);
@@ -344,4 +516,7 @@ module.exports = {
   // task-030: 관장의 `enrich_sns_links` 가 Instagram 메타를 읽을 때 **같은 인증 경로**를 쓴다.
   // 쿠키 경로·firefox 폴백 판정을 두 벌로 두면 한쪽만 고쳐진다. export 만 추가했고 함수는 무변경.
   getInstagramCookieArgs,
+  // task-033: 잡음 제거·번역은 하네스에서 실제 stderr 원문으로 단위 검사한다.
+  cleanYtDlpStderr, firstYtDlpError, translateYtDlpError, probePhotoCount,
+  YTDLP_NOISE_LINE_PATTERNS, YTDLP_NOISE_INLINE_PATTERNS,
 };
