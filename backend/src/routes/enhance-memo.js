@@ -186,6 +186,10 @@ router.post('/analyze-video', wrap(async (req, res) => {
         method: result.method,
         frames: result.savedFrames || [],
         videoFile: result.savedVideo || null,
+        // task-034 — 영상이 없어 **사진 게시물로 전환**된 경우를 호출부가 구분할 수 있게
+        // 담아 둔다(기존 필드는 하나도 건드리지 않는 순수 추가). 화면 표시는 다음 단계.
+        mediaKind: result.mediaKind || 'video',
+        photoCount: result.photoCount || 0,
       });
     })
     .catch(err => {
@@ -212,6 +216,8 @@ router.get('/analyze-video/:jobId', wrap(async (req, res) => {
     method: job.method || null,
     frames: job.frames || [],
     videoFile: job.videoFile || null,
+    mediaKind: job.mediaKind || null,
+    photoCount: job.photoCount || 0,
     error: job.error || null,
   });
 }));
