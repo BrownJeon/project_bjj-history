@@ -30,6 +30,7 @@ const ResearchTask         = require('./ResearchTask');
 const MasterChat           = require('./MasterChat');
 const MasterMessage        = require('./MasterMessage');
 const MasterAction         = require('./MasterAction');
+const ClipUsageLog         = require('./ClipUsageLog');
 
 // User 관계 정의 (1:N, 1:1)
 User.hasMany(Class,             { foreignKey: 'user_id', as: 'classes' });
@@ -118,6 +119,13 @@ MasterMessage.belongsTo(MasterChat, { foreignKey: 'chat_id' });
 MasterMessage.hasMany(MasterAction,   { foreignKey: 'message_id', as: 'actions' });
 MasterAction.belongsTo(MasterMessage, { foreignKey: 'message_id' });
 
+// 참고영상 사용 기록 (task-035). DB FK fk_cul_clip(ON DELETE CASCADE) 과 짝을 이룬다.
+// 🔴 clips.js 의 DELETE /:id 는 VideoClip.destroy({ where }) 라 Sequelize 훅이 돌지 않는다 —
+//    기록 정리는 **DB CASCADE 가 한다.** 이 관계는 조회용 선언일 뿐 삭제를 대신하지 않는다.
+// 행이 없는 것이 정상 상태다(아직 안 봤고 안 써봄).
+VideoClip.hasMany(ClipUsageLog,   { foreignKey: 'clip_id', as: 'usageLogs' });
+ClipUsageLog.belongsTo(VideoClip, { foreignKey: 'clip_id' });
+
 module.exports = {
   sequelize,
   User,
@@ -126,7 +134,7 @@ module.exports = {
   RecallSummary,
   ResearchProject, ResearchVersion, ResearchNode, ResearchLink, ResearchTask,
   Gameplan, GameplanNode, GameplanEdge,
-  VideoClip, Profile, BeltHistory, CoachReport,
+  VideoClip, ClipUsageLog, Profile, BeltHistory, CoachReport,
   PickHistory, MembershipPayment,
   LongVideo, LongVideoChapter,
   MasterChat, MasterMessage, MasterAction,

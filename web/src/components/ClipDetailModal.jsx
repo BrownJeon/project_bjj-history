@@ -2,7 +2,11 @@ import React, { useState, useRef, useEffect } from 'react';
 import * as enhanceApi from '../api/enhanceMemo';
 import * as clipsApi from '../api/clips';
 import { useCache } from '../contexts/CacheContext';
+import { useUI } from '../contexts/UIContext';
 import { getStorageMode } from '../pages/ProfilePage';
+import {
+  usageOf, fmtMD, MANUAL_KINDS, USAGE_KIND_LABEL, MASTERY_STEP_LABEL,
+} from '../utils/clipUsage';
 import { getPlatformIcon, getPlatformLabel } from '../utils/videoThumb';
 import Modal from './Modal';
 import Button from './Button';
@@ -14,8 +18,88 @@ import VideoPlayer from './VideoPlayer';
  * 영상 상세 모달
  * onEdit / onDelete 를 넘기지 않으면 해당 버튼이 숨겨집니다 (읽기 전용 모드).
  */
+// "최근 3건" 한 줄용 짧은 라벨 — 412px 폭에서 `포지션 스파링` 3번이면 줄이 넘친다
+const RECENT_LABEL = { drill: '드릴', position_spar: '포지션', spar: '스파링' };
+
+function masteryToast(items, verb) {
+  // 한 응답의 항목은 모두 같은 단계다(드릴 +1 → drilled, 포지션 스파링 +1 → position_spar)
+  const step = MASTERY_STEP_LABEL[items[0].step] || items[0].step;
+  return `숙련도 '${step}' 단계 ${verb} — ${items.map((x) => x.name).join(', ')}`;
+}
+
 export default function ClipDetailModal({ c, onClose, onEdit, onDelete, onRefresh, analyzeJob }) {
-  const { igCookieConfigured } = useCache();
+  const { igCookieConfigured, reloadClips, reloadTechniques } = useCache();
+  const { showToast } = useUI();
+
+  // ── 사용 기록 (task-035) ───────────────────────────────────────────────
+  // 🔴 표시값은 **서버 응답이 정본**이다. 부모가 넘긴 `c` 는 스냅샷이라(ClipsPage·TechPlanPage 의
+  //    detail state) +1 한 뒤에도 옛 숫자를 들고 있다 — 첫 값으로만 쓰고 이후엔 응답으로 덮는다.
+  const [usage, setUsage]         = useState(() => usageOf(c));
+  const [lastLog, setLastLog]     = useState(null);   // 이 모달에서 방금 누른 수동 기록 {id, kind, used_on}
+  const [usageBusy, setUsageBusy] = useState(false);
+  const usageBusyRef = useRef(false);   // 연타 차단 — state 는 다음 렌더까지 안 바뀌어서 같은 틱의 두 번째 탭을 못 막는다
+  const usageSeqRef  = useRef(0);       // 늦게 도착한 옛 응답(예: 마운트 때 보낸 view)이 새 숫자를 덮지 않게
+
+  const refreshCaches = () => {
+    // 목록 카드(clips 캐시)와 기술 카드·기술 상세(techniques 캐시)가 둘 다 usage 를 보여 준다
+    reloadClips().catch((e) => console.warn('[clip-usage] 목록 갱신 실패', e.message));
+    reloadTechniques().catch((e) => console.warn('[clip-usage] 기술 목록 갱신 실패', e.message));
+  };
+
+  // 👁 봤음 — 상세를 열면 자동 기록. 하루 1회 규칙은 **서버**가 지킨다(StrictMode 이중 effect 도 거기서 흡수).
+  //    조회는 보조 신호라 실패해도 화면을 막지 않는다(console.warn 만).
+  useEffect(() => {
+    if (c?.id == null) return undefined;
+    const my = ++usageSeqRef.current;
+    clipsApi.logUsage(c.id, 'view')
+      .then((d) => {
+        if (d?.usage && my === usageSeqRef.current) setUsage(usageOf({ usage: d.usage }));
+        if (d?.created) refreshCaches();
+      })
+      .catch((e) => console.warn('[clip-usage] 봤음 기록 실패', e.message));
+    return undefined;
+  }, [c?.id]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  async function handleUse(kind) {
+    if (usageBusyRef.current || c?.id == null) return;
+    usageBusyRef.current = true; setUsageBusy(true);
+    const my = ++usageSeqRef.current;
+    try {
+      const d = await clipsApi.logUsage(c.id, kind);
+      if (d?.usage && my === usageSeqRef.current) setUsage(usageOf({ usage: d.usage }));
+      if (d?.log) setLastLog(d.log);
+      const checked = Array.isArray(d?.masteryChecked) ? d.masteryChecked : [];
+      if (checked.length) showToast(masteryToast(checked, '체크됨'), 3500);
+      else showToast(`${USAGE_KIND_LABEL[kind]} +1 기록했어요`);
+      refreshCaches();
+    } catch (e) {
+      // 🔴 수동 기록 실패는 **반드시** 보여 준다 — 조용히 삼키면 사용자는 기록된 줄 안다(음성 업로드 유실과 같은 종류)
+      showToast(`${USAGE_KIND_LABEL[kind]} 기록 실패 — ${e.message || '다시 시도해 주세요'}`, 4000);
+    } finally {
+      usageBusyRef.current = false; setUsageBusy(false);
+    }
+  }
+
+  async function handleUndo() {
+    if (!lastLog || usageBusyRef.current) return;
+    usageBusyRef.current = true; setUsageBusy(true);
+    const target = lastLog;
+    const my = ++usageSeqRef.current;
+    try {
+      const d = await clipsApi.undoUsage(c.id, target.id);
+      if (d?.usage && my === usageSeqRef.current) setUsage(usageOf({ usage: d.usage }));
+      setLastLog(null);
+      const unchecked = Array.isArray(d?.masteryUnchecked) ? d.masteryUnchecked : [];
+      if (unchecked.length) showToast(masteryToast(unchecked, '해제됨'), 3500);
+      else showToast(`${USAGE_KIND_LABEL[target.kind]} 기록을 취소했어요`);
+      refreshCaches();
+    } catch (e) {
+      showToast(`취소 실패 — ${e.message || '다시 시도해 주세요'}`, 4000);
+    } finally {
+      usageBusyRef.current = false; setUsageBusy(false);
+    }
+  }
+
   const [analyzing, setAnalyzing]             = useState(false);
   const [analyzeProgress, setAnalyzeProgress] = useState(0);
   const [analyzeStage, setAnalyzeStage]       = useState('');
@@ -151,6 +235,70 @@ export default function ClipDetailModal({ c, onClose, onEdit, onDelete, onRefres
           }}>
           <Icon name="link" size={14} color="var(--accent)" /> 원본 영상 열기
         </a>
+      )}
+
+      {/* 사용 기록 (task-035) — 👁 봤음(자동) / 🥋 써봤음(수동 +1) */}
+      {c?.id != null && (
+        <div style={{
+          marginBottom: 12, padding: 10,
+          background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 10,
+        }}>
+          <div style={{ fontSize: 12, color: 'var(--text2)', marginBottom: 8 }}>
+            👁 게시물 조회 <b style={{ color: 'var(--text)' }}>{usage.view}회</b>
+            {usage.last_viewed_on ? ` · 마지막 ${fmtMD(usage.last_viewed_on)}` : ''}
+          </div>
+          <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text)', marginBottom: 6 }}>
+            🥋 기술사용 횟수
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 6 }}>
+            {MANUAL_KINDS.map((k) => (
+              <button
+                key={k}
+                type="button"
+                onClick={() => handleUse(k)}
+                disabled={usageBusy}
+                aria-label={`${USAGE_KIND_LABEL[k]} +1 (지금 ${usage[k]}회)`}
+                style={{
+                  display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2,
+                  minWidth: 0, padding: '8px 4px',
+                  background: 'var(--accent-dim)', color: 'var(--accent)',
+                  border: '1px solid var(--accent)', borderRadius: 10,
+                  cursor: usageBusy ? 'not-allowed' : 'pointer', opacity: usageBusy ? 0.55 : 1,
+                }}
+              >
+                <span style={{
+                  fontSize: 12, fontWeight: 700, maxWidth: '100%',
+                  whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+                }}>{USAGE_KIND_LABEL[k]}</span>
+                <span style={{ fontSize: 11, color: 'var(--text2)', whiteSpace: 'nowrap' }}>
+                  {usage[k]}회 · <b style={{ color: 'var(--accent)' }}>+1</b>
+                </span>
+              </button>
+            ))}
+          </div>
+          <div style={{
+            fontSize: 11, color: usage.recent.length ? 'var(--text3)' : 'var(--amber)', marginTop: 8,
+            whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+          }}>
+            {usage.recent.length
+              ? `최근 ${usage.recent.map((r) => `${fmtMD(r.used_on)} ${RECENT_LABEL[r.kind] || r.kind}`).join(' · ')}`
+              : '아직 안 써봄'}
+          </div>
+          {lastLog && (
+            <button
+              type="button"
+              onClick={handleUndo}
+              disabled={usageBusy}
+              style={{
+                marginTop: 8, padding: 0, background: 'transparent', border: 'none',
+                color: 'var(--red)', fontSize: 12, fontWeight: 600, textDecoration: 'underline',
+                cursor: usageBusy ? 'not-allowed' : 'pointer', opacity: usageBusy ? 0.55 : 1,
+              }}
+            >
+              방금 기록 취소 ({USAGE_KIND_LABEL[lastLog.kind]} {fmtMD(lastLog.used_on)})
+            </button>
+          )}
+        </div>
       )}
 
       {/* AI 분석 버튼 영역 */}

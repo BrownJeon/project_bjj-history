@@ -2,8 +2,13 @@ const express = require('express');
 const router = express.Router();
 const { Op } = require('sequelize');
 const fs = require('fs/promises');
-const { VideoClip } = require('../models');
+const { QueryTypes } = require('sequelize');
+const { sequelize, VideoClip, ClipUsageLog, Technique, TechniqueMastery } = require('../models');
 const { wrap, safeParse, ok, fail } = require('../utils/respond');
+const {
+  USAGE_KINDS, MANUAL_KINDS, kstToday, clipTechNames, getUsageMap, attachClipUsage, emptyUsage,
+} = require('../services/clipUsage');
+const { setMasterySteps } = require('../services/masteryWrite');
 const { toNFC, arrToNFC } = require('../utils/nfc');
 const { queueThumbUpdate } = require('../services/thumbnailExtractor');
 const { getFramesDir, getVideoDir } = require('../services/storage');
@@ -104,7 +109,8 @@ router.get('/', wrap(async (req, res) => {
     order: [['pinned', 'DESC'], ['starred', 'DESC'], ['id', 'DESC']],
     raw: true,
   });
-  res.json(rows.map(normalize));
+  // task-035: 응답 모양(배열) 유지 — 각 원소에 `usage` 만 추가. clip 수와 무관하게 2쿼리.
+  res.json(await attachClipUsage(uid, rows.map(normalize)));
 }));
 
 router.get('/search', wrap(async (req, res) => {
@@ -267,6 +273,175 @@ router.post('/:id/refresh-thumb', wrap(async (req, res) => {
   if (!c) return res.status(404).json({ error: 'not found' });
   queueThumbUpdate(req.params.id, c.url);
   res.json({ ok: true, queued: true });
+}));
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 참고영상 사용 기록 (task-035) — 👁 봤음(자동·하루 1회) / 🥋 써봤음(드릴·포지션 스파링·스파링)
+//
+// 🔴 드릴 +1 → 사다리 2단계(drilled), 포지션 스파링 +1 → 3단계(position_spar) 를 **꺼져 있을 때만** 켠다.
+//    스파링 +1 은 숙련도를 건드리지 않는다(4단계는 spar_sessions 에서 자동 파생 — 사용자 결정 3).
+// 🔴 기술 매칭은 **이름 글자 그대로 일치**만(clipUsage.clipTechNames 주석). matchTechnique(퍼지)·
+//    techAliases 를 쓰지 않는다 — 오매칭으로 숙련도가 켜지는 것보다 안 켜지는 편이 안전하다(task-020b).
+// 🔴 기록 insert 와 숙련도 변경은 **한 트랜잭션**. 부분 반영(기록만 남고 체크 안 됨/그 반대) 금지.
+// 🔴 clip 행을 SELECT … FOR UPDATE 로 잡고 시작한다 — 같은 clip 에 대한 동시 요청(StrictMode 이중
+//    effect 로 view 가 거의 동시에 2번 오는 경우 포함)을 직렬화해서 "view 하루 1회"가 경합으로 깨지지 않게.
+// ─────────────────────────────────────────────────────────────────────────────
+const KIND_STEP  = { drill: 'drilled', position_spar: 'position_spar' };
+const isIdParam  = (v) => /^[1-9]\d{0,9}$/.test(String(v || ''));
+const CLIP_404   = '클립을 찾을 수 없습니다';
+
+function lockClip(uid, clipId, transaction, attributes = ['id']) {
+  return VideoClip.findOne({
+    where: { id: clipId, user_id: uid }, attributes, raw: true,
+    transaction, lock: transaction.LOCK.UPDATE,
+  });
+}
+
+async function usageOf(uid, clipId) {
+  const map = await getUsageMap(uid, [clipId]);
+  return map[clipId] || emptyUsage();
+}
+
+/**
+ * POST /api/clips/:id/usage  body { kind: 'view'|'drill'|'position_spar'|'spar' }
+ * → { created, log: {id, kind, used_on}|null, usage, masteryChecked: [{id, name, step}] }
+ */
+router.post('/:id/usage', wrap(async (req, res) => {
+  const uid = req.user.id;
+  if (!isIdParam(req.params.id)) return fail(res, 404, CLIP_404);
+  const clipId = Number(req.params.id);
+  const kind = (req.body || {}).kind;
+
+  const out = await sequelize.transaction(async (transaction) => {
+    const clip = await lockClip(uid, clipId, transaction, ['id', 'tech_name']);
+    if (!clip) return { status: 404, message: CLIP_404 };
+    if (typeof kind !== 'string' || !USAGE_KINDS.includes(kind)) {
+      return { status: 400, message: `kind 는 ${USAGE_KINDS.join('·')} 중 하나여야 합니다` };
+    }
+    const usedOn = kstToday();
+
+    // 👁 봤음 — 같은 날 이미 있으면 넣지 않는다(clip 행 잠금 뒤라 최신 커밋 기준으로 본다).
+    if (kind === 'view') {
+      const dup = await ClipUsageLog.findOne({
+        where: { user_id: uid, clip_id: clipId, kind: 'view', used_on: usedOn },
+        attributes: ['id'], raw: true, transaction, lock: transaction.LOCK.UPDATE,
+      });
+      if (dup) return { created: false, log: null, masteryChecked: [] };
+    }
+
+    // 🥋 드릴 / 포지션 스파링 — 이름 정확 일치 기술의 해당 단계를 꺼져 있을 때만 켠다.
+    const masteryChecked = [];
+    let masteryIds = null;
+    const step = KIND_STEP[kind];
+    if (step) {
+      masteryIds = [];
+      const names = new Set(clipTechNames(clip.tech_name));
+      if (names.size) {
+        const techs = await Technique.findAll({
+          where: { user_id: uid }, attributes: ['id', 'name'], raw: true, transaction,
+        });
+        const matched = techs
+          .filter((t) => typeof t.name === 'string' && names.has(t.name.normalize('NFC')))
+          .sort((a, b) => a.id - b.id);
+        if (matched.length) {
+          const rows = await TechniqueMastery.findAll({
+            where: { user_id: uid, technique_id: matched.map((t) => t.id) }, raw: true, transaction,
+          });
+          const byTech = new Map(rows.map((r) => [r.technique_id, r]));
+          for (const t of matched) {
+            const cur = byTech.get(t.id);
+            if (cur && cur[step]) continue;   // 이미 켜져 있다 — 건드리지도, 기록하지도 않는다
+            await setMasterySteps(uid, t.id, { [step]: true }, { transaction });
+            masteryIds.push(t.id);
+            masteryChecked.push({ id: t.id, name: t.name, step });
+          }
+        }
+      }
+    }
+
+    const row = await ClipUsageLog.create({
+      user_id: uid, clip_id: clipId, kind, used_on: usedOn,
+      mastery_tech_ids: masteryIds ? JSON.stringify(masteryIds) : null,
+    }, { transaction });
+    return { created: true, log: { id: row.id, kind, used_on: usedOn }, masteryChecked };
+  });
+
+  if (out.status) return fail(res, out.status, out.message);
+  ok(res, { ...out, usage: await usageOf(uid, clipId) });
+}));
+
+/**
+ * DELETE /api/clips/:id/usage/:logId — "방금 기록 취소"
+ * → { usage, masteryUnchecked: [{id, name, step}] }
+ * 🔴 그 clip 에서 **내 최신 수동 기록**만 지울 수 있다(아니면 409) — 과거 기록 임의 삭제 방지.
+ * 🔴 기록이 켰던 단계는, 같은 kind 의 다른 기록이 그 기술 이름을 가진 내 clip 에 **하나도 없을 때만** 끈다.
+ */
+router.delete('/:id/usage/:logId', wrap(async (req, res) => {
+  const uid = req.user.id;
+  if (!isIdParam(req.params.id)) return fail(res, 404, CLIP_404);
+  if (!isIdParam(req.params.logId)) return fail(res, 404, '기록을 찾을 수 없습니다');
+  const clipId = Number(req.params.id);
+  const logId  = Number(req.params.logId);
+
+  const out = await sequelize.transaction(async (transaction) => {
+    const clip = await lockClip(uid, clipId, transaction);
+    if (!clip) return { status: 404, message: CLIP_404 };
+
+    const log = await ClipUsageLog.findOne({
+      where: { id: logId, clip_id: clipId, user_id: uid, kind: MANUAL_KINDS },
+      raw: true, transaction, lock: transaction.LOCK.UPDATE,
+    });
+    if (!log) return { status: 404, message: '기록을 찾을 수 없습니다' };
+
+    const latest = await ClipUsageLog.findOne({
+      where: { clip_id: clipId, user_id: uid, kind: MANUAL_KINDS },
+      attributes: ['id'], order: [['id', 'DESC']], raw: true, transaction, lock: transaction.LOCK.UPDATE,
+    });
+    if (!latest || latest.id !== log.id) {
+      return { status: 409, message: '가장 최근 기록만 취소할 수 있습니다' };
+    }
+
+    await ClipUsageLog.destroy({ where: { id: log.id, user_id: uid }, transaction });
+
+    const masteryUnchecked = [];
+    const step = KIND_STEP[log.kind];
+    const techIds = step
+      ? [...new Set((safeParse(log.mastery_tech_ids, []) || []).map(Number).filter(Number.isInteger))]
+      : [];
+    if (techIds.length) {
+      const techs = await Technique.findAll({
+        where: { user_id: uid, id: techIds }, attributes: ['id', 'name'], raw: true, transaction,
+      });
+      if (techs.length) {
+        // 삭제 **후** 남은 같은 kind 기록들이 달린 내 clip 의 기술 이름 — 한 번에 모은다.
+        const remain = await sequelize.query(
+          `SELECT c.tech_name
+             FROM clip_usage_logs l
+             JOIN video_clips c ON c.id = l.clip_id
+            WHERE l.user_id = ? AND l.kind = ? AND c.user_id = ?`,
+          { replacements: [uid, log.kind, uid], type: QueryTypes.SELECT, transaction }
+        );
+        const remainNames = new Set();
+        for (const r of remain) for (const n of clipTechNames(r.tech_name)) remainNames.add(n);
+
+        const rows = await TechniqueMastery.findAll({
+          where: { user_id: uid, technique_id: techs.map((t) => t.id) }, raw: true, transaction,
+        });
+        const byTech = new Map(rows.map((r) => [r.technique_id, r]));
+        for (const t of techs.sort((a, b) => a.id - b.id)) {
+          if (typeof t.name === 'string' && remainNames.has(t.name.normalize('NFC'))) continue;
+          const cur = byTech.get(t.id);
+          if (!cur || !cur[step]) continue;   // 이미 꺼져 있다(사용자가 /recall 에서 직접 해제 등)
+          await setMasterySteps(uid, t.id, { [step]: false }, { transaction });
+          masteryUnchecked.push({ id: t.id, name: t.name, step });
+        }
+      }
+    }
+    return { masteryUnchecked };
+  });
+
+  if (out.status) return fail(res, out.status, out.message);
+  ok(res, { usage: await usageOf(uid, clipId), masteryUnchecked: out.masteryUnchecked });
 }));
 
 // AI 연계기술 추천 — ai_recommendation 캐싱 포함

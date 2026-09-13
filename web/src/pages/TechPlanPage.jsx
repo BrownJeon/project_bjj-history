@@ -24,6 +24,8 @@ import { BASE_POSITIONS, BASE_CATEGORIES, mergeUnique } from '../utils/baseOptio
 import { uniqueTechPositions, uniqueAllTags } from '../utils/suggestions';
 import ClipsPage from './ClipsPage';
 import PositionManagerModal from '../components/PositionManagerModal';
+import * as labApi from '../api/lab';
+import { usageOf, sumUsage } from '../utils/clipUsage';
 
 const PAGE_SIZE = 10;
 
@@ -211,6 +213,11 @@ function TechTab() {
                         <Tag key={i} tone="blue">{p}</Tag>
                       ))}
                       {(t.clips || []).length > 0 && <Tag tone="purple">영상 {t.clips.length}</Tag>}
+                      {(t.clips || []).length > 0 && (() => {
+                        // task-035 — 관련 영상들의 사용 기록 합계(스파링 성공 수는 상세 팝업에서만)
+                        const s = sumUsage(t.clips);
+                        return <Tag tone="neutral">👁 {s.view} · 🥋 {s.used}</Tag>;
+                      })()}
                     </div>
                   </div>
                   <Icon name="chevR" size={18} color="var(--text3)" />
@@ -262,11 +269,26 @@ function FilterChip({ active, onClick, icon, children }) {
   );
 }
 
-function TechDetailModal({ t, onClose, onEdit, onDelete }) {
+function TechDetailModal({ t: tProp, onClose, onEdit, onDelete }) {
   const { techniques, reloadClips, reloadTechniques } = useCache();
   const { showToast, setLoading } = useUI();
   const [detailClip, setDetailClip] = useState(null);
   const [editingClip, setEditingClip] = useState(null);
+  // 🔴 task-035: 부모의 detail 은 **스냅샷**이다. 중첩 ClipDetailModal 에서 +1 하면 techniques 캐시는
+  //    새로 오지만 스냅샷의 t.clips[].usage 는 옛 숫자다 — 캐시에서 id 로 다시 찾아 쓴다(없으면 스냅샷).
+  const t = techniques.find((x) => x.id === tProp.id) || tProp;
+  const usageSum = sumUsage(t.clips);
+
+  // 스파링 성공 수(자동) — spar_sessions 에서 파생되는 기존 사다리 API 재사용(GET /api/mastery/:techId)
+  const [mastery, setMastery] = useState({ loading: true, data: null, error: '' });
+  useEffect(() => {
+    let alive = true;
+    setMastery({ loading: true, data: null, error: '' });
+    labApi.getMastery(tProp.id)
+      .then((d) => { if (alive) setMastery({ loading: false, data: d, error: '' }); })
+      .catch((e) => { if (alive) setMastery({ loading: false, data: null, error: e.message || '불러오지 못했어요' }); });
+    return () => { alive = false; };
+  }, [tProp.id]);
 
   async function handleClipDelete(id) {
     if (!confirm('삭제하시겠습니까?')) return;
@@ -345,6 +367,41 @@ function TechDetailModal({ t, onClose, onEdit, onDelete }) {
           {t.note}
         </div>
       )}
+      {/* task-035 사용 기록 — 스파링 성공(자동, spar_sessions 파생) + 영상 연습 합계(수동 기록) */}
+      <div style={{
+        background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 10,
+        padding: '10px 12px', marginBottom: 12, fontSize: 12,
+        display: 'flex', flexDirection: 'column', gap: 6,
+      }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, minWidth: 0 }}>
+          <span style={{ color: 'var(--text2)', whiteSpace: 'nowrap' }}>스파링 성공 <span style={{ color: 'var(--text3)' }}>(자동)</span></span>
+          <span style={{ fontWeight: 700, whiteSpace: 'nowrap', color: 'var(--text)' }}>
+            {(() => {
+              if (mastery.loading) return <span style={{ color: 'var(--text3)', fontWeight: 400 }}>불러오는 중…</span>;
+              if (mastery.error || !mastery.data) return <span style={{ color: 'var(--red)', fontWeight: 400 }}>불러오지 못함</span>;
+              const smp = mastery.data.sample || {};
+              // 🔴 표본이 비면 0 이 아니라 '기록 없음' — 0 이면 사용자는 자기가 못한 줄 안다(labAnalytics computeMastery 원칙)
+              if (!((smp.successItems || 0) + (smp.failItems || 0))) {
+                return <span style={{ color: 'var(--text3)', fontWeight: 400 }}>기록 없음</span>;
+              }
+              return `${smp.successItems || 0}회`;
+            })()}
+          </span>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, minWidth: 0 }}>
+          <span style={{ color: 'var(--text2)', whiteSpace: 'nowrap' }}>연습 합계 <span style={{ color: 'var(--text3)' }}>(영상 기록)</span></span>
+          {(t.clips || []).length > 0 ? (
+            <span style={{ fontWeight: 700, whiteSpace: 'nowrap', color: 'var(--text)' }}>👁 {usageSum.view} · 🥋 {usageSum.used}</span>
+          ) : (
+            <span style={{ color: 'var(--text3)', whiteSpace: 'nowrap' }}>관련 영상 없음</span>
+          )}
+        </div>
+        {(t.clips || []).length > 0 && (
+          <div style={{ color: 'var(--text3)', fontSize: 11, textAlign: 'right', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            드릴 {usageSum.drill} · 포지션 스파링 {usageSum.position_spar} · 스파링 {usageSum.spar}
+          </div>
+        )}
+      </div>
       {(t.clips || []).length > 0 && (
         <div style={{ marginBottom: 12 }}>
           <div style={{ fontSize: 12, color: 'var(--text2)', marginBottom: 8, fontWeight: 600 }}>
@@ -386,8 +443,9 @@ function TechDetailModal({ t, onClose, onEdit, onDelete }) {
                                   color: 'var(--text)' }}>
                       {c.title}
                     </div>
-                    <div style={{ fontSize: 11, color: 'var(--text3)', marginTop: 3 }}>
+                    <div style={{ fontSize: 11, color: 'var(--text3)', marginTop: 3, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                       탭하여 상세 보기
+                      <span style={{ color: 'var(--text2)', marginLeft: 6 }}>👁 {usageOf(c).view} · 🥋 {usageOf(c).used}</span>
                       {c.video_file && <span style={{ color: 'var(--accent)', marginLeft: 6 }}>📥 저장됨</span>}
                     </div>
                   </div>

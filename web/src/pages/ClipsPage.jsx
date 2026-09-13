@@ -16,6 +16,7 @@ import Button from '../components/Button';
 import Pagination from '../components/Pagination';
 import ClipDetailModal from '../components/ClipDetailModal';
 import ClipEditor from '../components/ClipEditor';
+import { usageOf, fmtMD } from '../utils/clipUsage';
 
 const PAGE_SIZE = 10;
 const detectPlatform = u => !u ? 'other' : u.includes('youtu') ? 'youtube' : u.includes('instagram') ? 'instagram' : 'other';
@@ -79,6 +80,10 @@ export default function ClipsPage({ embedded = false }) {
     if (filter === 'star')   items = items.filter(c => c.starred);
     if (filter === 'pinned') items = items.filter(c => c.pinned);
     if (filter === 'recent') items.sort((a, b) => (b.pinned || 0) - (a.pinned || 0) || (b.id || 0) - (a.id || 0));
+    // task-035 — 🥋 써봤음(드릴+포지션 스파링+스파링) 기준. 👁 봤음은 세지 않는다(열어 본 것 ≠ 써 본 것).
+    if (filter === 'unused') items = items.filter(c => usageOf(c).used === 0);
+    // Array.prototype.sort 는 안정 정렬(ES2019+) — 동률은 서버가 준 기존 순서(고정·즐겨찾기·최신)를 유지한다
+    if (filter === 'mostUsed') items.sort((a, b) => usageOf(b).used - usageOf(a).used);
     if (techFilter)          items = items.filter(c => {
       const names = c.tech_names?.length ? c.tech_names : (c.tech_name ? [c.tech_name] : []);
       return names.includes(techFilter);
@@ -203,6 +208,8 @@ export default function ClipsPage({ embedded = false }) {
         <FilterChip active={filter === 'recent'} onClick={() => setFilter('recent')} icon="clock">최신순</FilterChip>
         <FilterChip active={filter === 'star'}   onClick={() => setFilter('star')}   icon="star">즐겨찾기</FilterChip>
         <FilterChip active={filter === 'pinned'} onClick={() => setFilter('pinned')} icon="pin">고정</FilterChip>
+        <FilterChip active={filter === 'unused'}   onClick={() => setFilter('unused')}>안 써본 것</FilterChip>
+        <FilterChip active={filter === 'mostUsed'} onClick={() => setFilter('mostUsed')}>많이 쓴 순</FilterChip>
         {embedded && (
           <div style={{ marginLeft: 'auto' }}>
             <Button size="sm" variant="outline" onClick={() => setEditing('new')}>+ 추가</Button>
@@ -340,6 +347,7 @@ function FilterChip({ active, onClick, icon, children }) {
 function ClipCard({ c, onClick, onStar, onPin, analyzeJob }) {
   const thumb = getClipThumb(c);
   const isAnalyzing = analyzeJob && analyzeJob.progress >= 0;
+  const u = usageOf(c);
   return (
     <Card padding={12} onClick={onClick}>
       <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
@@ -384,6 +392,16 @@ function ClipCard({ c, onClick, onStar, onPin, analyzeJob }) {
           {(c.tags || []).map((t, i) => (
             <Tag key={`tag-${i}`} tone="neutral">{t}</Tag>
           ))}
+          {/* task-035 사용 기록 한 줄 — 👁 봤음 · 🥋 써봤음 · 최근 사용일 */}
+          <div style={{
+            fontSize: 11, color: 'var(--text3)', marginTop: 4,
+            whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+          }}>
+            👁 {u.view} · 🥋 {u.used}
+            {u.used === 0
+              ? <span style={{ color: 'var(--amber)', marginLeft: 6 }}>아직 안 써봄</span>
+              : (u.last_used_on ? ` · 최근 ${fmtMD(u.last_used_on)}` : '')}
+          </div>
         </div>
         <span
           onClick={(e) => { e.stopPropagation(); onPin(); }}

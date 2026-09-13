@@ -3,6 +3,7 @@ const router = express.Router();
 const { Technique, TechniqueMastery } = require('../models');
 const { ok, fail, wrap } = require('../utils/respond');
 const lab = require('../services/labAnalytics');
+const { setMasterySteps } = require('../services/masteryWrite');
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 복기(구멍)·연구(사다리) 집계 API — task-024
@@ -75,35 +76,9 @@ router.patch('/mastery/:techId', wrap(async (req, res) => {
     return fail(res, 400, 'drilled 또는 positionSpar 중 하나는 보내야 합니다');
   }
 
-  const where = { user_id: req.user.id, technique_id: tech.id };
-  const existing = await TechniqueMastery.findOne({ where, raw: true });
-  const now = new Date();
-
-  const next = {
-    drilled:       existing ? !!existing.drilled       : false,
-    position_spar: existing ? !!existing.position_spar : false,
-    drilled_at:       existing ? existing.drilled_at       : null,
-    position_spar_at: existing ? existing.position_spar_at : null,
-  };
-  for (const column of ['drilled', 'position_spar']) {
-    if (!Object.prototype.hasOwnProperty.call(patch, column)) continue;
-    const before = next[column];
-    const after  = patch[column];
-    next[column] = after;
-    if (before !== after) next[`${column}_at`] = after ? now : null;
-  }
-
-  if (existing) {
-    await TechniqueMastery.update(next, { where });
-  } else {
-    // UNIQUE(user_id, technique_id) 가 있으므로 동시 요청 중 진 쪽은 충돌한다 —
-    // 그때는 상대가 이미 넣었다는 뜻이라 update 로 이어간다(조용히 삼키지 않고 반영).
-    await TechniqueMastery.create({ ...where, ...next, created_at: now, updated_at: now })
-      .catch(async (e) => {
-        if (String(e.name || '').includes('Unique')) return TechniqueMastery.update(next, { where });
-        throw e;
-      });
-  }
+  // task-035: upsert 본문은 services/masteryWrite.setMasterySteps 로 옮겼다(동작·응답 무변경).
+  //   참고영상 "드릴 +1"·"포지션 스파링 +1" 자동 체크가 같은 규칙으로 같은 행을 쓴다.
+  await setMasterySteps(req.user.id, tech.id, patch);
 
   ok(res, await buildMastery(req, tech.id));
 }));

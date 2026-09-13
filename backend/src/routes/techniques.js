@@ -8,6 +8,7 @@ const { toNFC, arrToNFC, eqNFC } = require('../utils/nfc');
 const { analyzeVideo } = require('../services/videoAnalysis');
 const { getFramesDir, getVideoDir } = require('../services/storage');
 const { listPositions } = require('../services/positions');
+const { getUsageMap, emptyUsage } = require('../services/clipUsage');
 
 // 기술명과 매칭되는 미분석 클립을 백그라운드에서 자동 AI 분석
 async function triggerAutoAnalysis(techName, userId) {
@@ -95,6 +96,10 @@ router.get('/', wrap(async (req, res) => {
     raw: true,
   });
   const clipsByName = await loadClipsByNames(rows.map(r => r.name), uid);
+  // task-035: 모든 기술의 관련 영상 id 를 모아 **한 번에** 사용 기록을 센다(기술·영상 수와 무관하게 2쿼리).
+  const allClipIds = [];
+  for (const list of clipsByName.values()) for (const c of list) allClipIds.push(c.id);
+  const usageMap = await getUsageMap(uid, allClipIds);
   rows.forEach(r => {
     r.positions = parsePos(r.pos);
     r.pos       = r.positions[0] || '';
@@ -104,6 +109,7 @@ router.get('/', wrap(async (req, res) => {
       tech_names: safeParse(c.tech_name, []).map(x => typeof x === 'string' ? x : x.name || ''),
       frames:     safeParse(c.frames, []),
       video_file: c.video_file || '',
+      usage:      usageMap[c.id] || emptyUsage(),
     }));
     r.links = r.clips.map(c => ({ url: c.url, desc: c.title }));
   });

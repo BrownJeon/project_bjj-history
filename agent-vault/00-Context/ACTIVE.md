@@ -1,12 +1,14 @@
 ---
 project: bjj-trainning
-updated: 2026-09-09
+updated: 2026-09-13
 tags:
   - type/context
 ---
 # 현재 상태
 
 ## 지금 상태
+
+✅ **task-035(참고영상 게시물 조회/기술사용 횟수 기록) — 배포·커밋·푸시 완료 (2026-09-13).** 서빙 번들 `index-DN5W5K6M.js`(사용자 문구 수정 반영: `게시물 조회` / `기술사용 횟수`), 새 테이블 `clip_usage_logs`(비어 있음에서 시작). 다음 단계(픽미업·기술연구 활용)는 board 백로그. 상세 [[task-035-clip-usage-count]].
 
 **운영 중** — pm2 `bjj`, 포트 3000 (backend가 `/api/*` + SPA 서빙). **task-031(IDOR)·task-030(관장실)까지 커밋·푸시 완료(`f2a7c66`). 테스트 데이터 정리 완료 — 관장실 대화 0건에서 시작.** 서빙 번들 `index-Bqh3w_qR.js`.
 
