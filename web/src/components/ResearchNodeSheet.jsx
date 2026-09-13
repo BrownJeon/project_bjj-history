@@ -9,6 +9,7 @@ import { KINDS, KIND_TONE } from './ResearchTree';
 import { taskSummary } from '../utils/weeklyTask';
 import { normalizeLinks } from '../utils/researchLinks';
 import { listNodeLinks, addNodeLink, removeNodeLink } from '../api/research';
+import { techniqueUsage, fmtMD, MANUAL_KINDS, USAGE_KIND_LABEL } from '../utils/clipUsage';
 
 // ═════════════════════════════════════════════════════════════════════════════
 // 노드 시트 — 종류 · 이름 · 기술 연결 · 사다리 · 메모
@@ -120,6 +121,51 @@ function KindPicker({ value, onChange }) {
   );
 }
 
+/**
+ * 🥋 기술사용 횟수 (task-037) — techniqueUsage() 결과를 받는다.
+ * 🔴 0 과 "기록 불가"를 섞지 않는다: unused(영상 있음·기록 0) ≠ no_clips(영상 없음 → 기록할 방법 없음).
+ * 🔴 색은 중립(--text/--text2/--text3)만. 앰버는 이 화면에서 "대처 없음" 전용이다.
+ * 🔴 +1 버튼을 여기 만들지 않는다 — 기록은 참고영상 상세(ClipDetailModal) 한 곳에서 한다.
+ *    👁 게시물 조회는 표시하지 않는다(사용자 선택안에 없음).
+ */
+function NodeUsageBox({ usage: u }) {
+  const md = u.state === 'used' ? fmtMD(u.last_used_on) : '';
+  const value = u.state === 'used'
+    ? `${u.used}회${md ? ` · 최근 ${md}` : ''}`
+    : (u.state === 'unused' ? '아직 안 써봄' : '영상 없음');
+  const hint = u.state === 'used'
+    ? `이 기술이 붙은 참고영상 ${u.clipCount}개 합계`
+    : (u.state === 'unused'
+      ? `이 기술이 붙은 참고영상 ${u.clipCount}개 — 참고영상 상세에서 🥋 +1 로 기록합니다`
+      : '이 기술이 붙은 참고영상이 없어 기록할 수 없습니다');
+  return (
+    <div
+      data-testid="research-node-usage"
+      data-state={u.state}
+      style={{
+        marginTop: 8, padding: '10px 12px', borderRadius: 12,
+        background: 'var(--surface)', border: '1px solid var(--border)',
+      }}
+    >
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, flexWrap: 'wrap' }}>
+        <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text2)' }}>🥋 기술사용 횟수</span>
+        <span style={{
+          fontSize: 13, fontWeight: 700,
+          color: u.state === 'used' ? 'var(--text)' : 'var(--text2)',
+        }}>{value}</span>
+      </div>
+      {u.state === 'used' && (
+        <div style={{ fontSize: 11, color: 'var(--text2)', marginTop: 4, lineHeight: 1.5 }}>
+          {MANUAL_KINDS.map((k) => `${USAGE_KIND_LABEL[k]} ${u[k]}`).join(' · ')}
+        </div>
+      )}
+      <div style={{ fontSize: 11, color: 'var(--text3)', marginTop: 4, lineHeight: 1.5 }}>
+        {hint}
+      </div>
+    </div>
+  );
+}
+
 export default function ResearchNodeSheet({
   open, node, draft, techniques, onClose, onSave, onDelete, descendantCount = 0,
   // task-027 — 이번 주 과제 지정. 세 화면 중 **정하는 곳**이 여기다.
@@ -208,6 +254,11 @@ export default function ResearchNodeSheet({
   }, [form.techniqueId, techniques, node]);
 
   const hits = useMemo(() => matchTechniques(techniques, q), [techniques, q]);
+
+  // task-037 — 기술사용 횟수. 🔴 `node` 스냅샷이 아니라 **편집 중인 form.techniqueId + techniques 캐시**로 계산한다.
+  //    node 는 setNodeSheet({node}) 시점의 사본이라, 이 시트를 연 채 자료 링크로 참고영상을 열어 +1 하면
+  //    캐시는 새로 오지만 node 는 옛 값이다. 기술을 바꿔 고르면 저장 전에도 그 기술의 숫자를 보여 준다.
+  const usage = useMemo(() => techniqueUsage(techniques, form.techniqueId), [techniques, form.techniqueId]);
 
   const tSum = useMemo(() => taskSummary(task), [task]);
   // 가져오기 시트가 "이미 붙어 있음"을 판정할 때 쓰는 목록 — 목록 컴포넌트와 **같은 정규화**를 쓴다.
@@ -347,6 +398,9 @@ export default function ResearchNodeSheet({
             기술을 연결하면 숙련도가 열립니다.
           </div>
         )}
+        {/* task-037 — 기술 연결된 경우만. 캐시에서 기술을 못 찾으면(usage null) 그리지 않는다.
+            미연결 노드는 위의 기존 안내만 남는다. */}
+        {form.techniqueId != null && usage && <NodeUsageBox usage={usage} />}
       </div>
 
       {/* ── 붙은 자료 (task-028 C·D) ──────────────────────────────────────────

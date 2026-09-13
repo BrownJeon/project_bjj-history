@@ -933,6 +933,7 @@ export default function ResearchPage() {
           <ResearchTree
             nodes={detail.nodes}
             uncoveredIds={uncovered}
+            techniques={techniques}
             onOpen={(n) => setNodeSheet({ node: n, draft: null })}
             onAddRoot={() => setNodeSheet({ node: null, draft: { versionId: activeVersionId, parentNodeId: null, kind: '포지션' } })}
             onAddChild={(n) => setNodeSheet({ node: null, draft: { versionId: activeVersionId, parentNodeId: n.id, kind: '리액션' } })}

@@ -7,7 +7,7 @@ tags:
 ## Backlog
 - **`backend/batch-analyze.js` 가 description 을 채울 때 AI 추천 캐시를 비우지 않음** — task-036 에서 앱 경로 5곳(PUT·URL 분석·파일 분석·메모 보완 영상 분석·기술 저장 자동 분석)은 `ai_recommendation = NULL` 무효화를 넣었으나, 수동 배치 스크립트(`:55-58`, raw mysql2, 빈 description 만 채움)는 AI 호출 없이 검증할 수 없어 미변경. 설명이 비어 있던 영상에 "(설명 없음)" 기반 추천이 먼저 캐시된 뒤 배치로 설명이 채워지면 옛 추천이 남는다 → 화면의 `🔄 다시 추천`으로 해소 가능. 배치를 다시 쓸 일이 생기면 UPDATE 에 `ai_recommendation=NULL` 추가. LOW (2026-09-13)
 - **참고영상 사용 기록 — 409 취소 실패 후 모달 숫자가 서버와 어긋남** — task-035 Leader 재확인에서 관찰: 다른 곳에서 더 새 기록이 생긴 뒤 `방금 기록 취소` → 409 toast 는 정상이나 모달 카운트가 갱신되지 않고 취소 링크가 남는다. catch 에서 409 면 `lastLog` 비우고 `refreshCaches()`. 또 네트워크 실패 toast 에 axios 원문 `Network Error`(영어) 노출. 동시 기기 사용 때만 발생, LOW (2026-09-13)
-- **task-035 다음 단계(사용자 예고)** — 픽미업 "안 써본 영상 먼저"(`clip_usage_logs` 최근성 가중치 + `pick_history.used=1` 합산, `PickDetailPanel` 조회 기록) / 기술연구 노드에 연습 횟수·최근 사용일. 데이터는 이미 쌓이는 중 (2026-09-13)
+- **task-035 다음 단계(사용자 예고)** — 픽미업 "안 써본 영상 먼저"(`clip_usage_logs` 최근성 가중치 + `pick_history.used=1` 합산). 데이터는 이미 쌓이는 중. ~~기술연구 노드에 연습 횟수·최근 사용일~~ → 해소 [[task-037-research-node-usage]]. ~~`PickDetailPanel` 조회 기록~~ → task-036 에서 사용자가 "픽미업은 조회로 세지 않음" 결정 (2026-09-13)
 - ~~**`VideoClip` 모델에 `ai_recommendation` 누락 → 픽미업 AI 추천 캐시가 한 번도 저장되지 않는다**~~ → **해소: [[task-036-pickmeup-shared-clip-detail]]** (모델 속성 추가 · 저장 실측 · 무효화) — dev-035 가 재현(2026-09-13): `clips.js:331` 의 `VideoClip.update({ ai_recommendation })` 가 UPDATE 문을 만들지 않고 `[0]` 반환(Sequelize 가 모델에 없는 필드를 조용히 버림). 실데이터 `video_clips` 144행 중 값 있는 행 0 → `POST /api/clips/:id/recommend` 가 **매번 Claude 를 다시 호출**. `GET /api/clips` 도 이 컬럼을 안 실어 `PickDetailPanel.jsx:33` 캐시 표시가 비어 있을 것. 수정: `backend/src/models/VideoClip.js` 에 속성 추가 + 응답 확인. 상세 [[task-035-clip-usage-count]] dev-035 결과 절. 비차단(비용·지연) (2026-09-13)
 - **사진 분석이 AI 큐(동시성 1)를 오래 잡을 수 있다** — task-034 타임아웃은 `60s + 20s×장수`(상한 600s). 20장이면 최대 10분간 메모 보완·코치·관장 턴이 전부 대기한다. 실사용에서 체감되면 사진 경로를 `priority:'batch'` 레인으로. 현재 실측 7장 36초라 비차단 (2026-09-11)
 - **`method:'photo-vision'` 이 alert 에 그대로 노출** — `ClipEditor.jsx:90`. `mediaKind`·`photoCount` 로 "사진 N장 분석" 을 표시할 때 함께 정리. 비차단 (2026-09-11)
@@ -44,6 +44,7 @@ tags:
 ## Review
 
 ## Done
+- [[task-037-research-node-usage]] — 기술연구 트리 노드 아래줄·노드 상세에 🥋 기술사용 횟수(기술 단위, 기술트리 카드와 같은 캐시·같은 계산) · `아직 안 써봄`/`영상 없음` 구분 · 열어 둔 시트도 +1 즉시 갱신. 프론트 4파일. unit 25·render 19·CDP 39 PASS(dev 2회 + **Leader 직접 실행 1회**, QA 에이전트 미사용). **배포·푸시 완료** (2026-09-13)
 - [[task-036-pickmeup-shared-clip-detail]] — 픽미업 상세를 `ClipDetailModal` 로 통합(`countView=false` 로 픽미업 조회 미기록 · 하단 고정 픽하기/픽 취소 · 수정/삭제 숨김, `PickDetailPanel.jsx` 삭제) + 연계 기술 AI 추천을 공용 상세로 이동(`ClipRecommendSection`) · 표시 필드 불일치 · 캐시 저장 안 됨(모델 누락) · `refresh` 강제 재생성 · description/기술명 변경 시 캐시 무효화 5경로. unit 28·stub 18·API 13·UI 41·task-035 회귀 47 PASS(Leader 가 unit·API·회귀 직접 재실행). 후속: 픽하기 옆 `✕` 닫기 · 카드 탭 시 상세가 즉시 닫히던 회귀(touchend 호환 click → Modal 오버레이) 수정. **배포·푸시 완료** (2026-09-13)
 - [[task-035-clip-usage-count]] — 참고영상 👁봤음(상세 열면 하루 1회 자동) + 🥋써봤음(드릴/포지션 스파링/스파링 +1, 방금 취소) 기록 테이블 `clip_usage_logs`, 드릴·포지션 스파링 +1 은 정확 일치 기술의 숙련도 2·3단계 자동 체크. 카드 합계·필터 2종·기술 상세 스파링 성공(자동). API 47/47 ×2 · Reviewer PASS · Leader 실패 toast 2경로 직접 12/12. 화면 문구는 사용자 요청으로 `게시물 조회` / `기술사용 횟수`. **배포·푸시 완료** (2026-09-13)
 - [[task-034-photo-post-analysis]] — 영상이 없는 게시물은 **사진 전 장을 받아 분석**(10장 제한 미적용) + 캡션 병합 + `frames` 저장(프론트 변경 0). 실측 7장 원본 해상도·36초, 분석이 사진 속 한국어를 읽어 실수 5가지 정리. 단위 28/28·역검증 6/6 (2026-09-11)

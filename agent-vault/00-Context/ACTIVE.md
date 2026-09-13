@@ -8,6 +8,8 @@ tags:
 
 ## 지금 상태
 
+✅ **task-037(기술연구 트리 노드·노드 상세에 🥋 기술사용 횟수) — 배포·커밋·푸시 완료 (2026-09-13).** 서빙 번들 `index-yRVVVCex.js`. 프론트 4파일, 기술트리 카드와 같은 캐시·계산. 검증은 QA 에이전트 대신 Leader 가 dev 하네스 직접 실행(`task-037-20260913-213456/harness/run-all.sh`). 상세 [[task-037-research-node-usage]].
+
 ✅ **task-036(픽미업 상세 = 참고영상 상세 통합 + 연계 기술 AI 추천 정상화) — 배포·커밋·푸시 완료 (2026-09-13). 사용자가 휴대폰에서 카드 탭→상세 열림 확인.** 서빙 번들 `index-DoY8nhbZ.js`(사용자 요청으로 픽하기 옆 `✕` 닫기 버튼 추가 + 카드 탭 시 상세가 열리자마자 닫히던 회귀 수정 — `SwipeCardDeck` touchend `preventDefault`). 상세 [[task-036-pickmeup-shared-clip-detail]].
 🔴 **QA(Haiku) 보고는 3회 연속 사실과 달랐다** — Leader 재실행 전까지 PASS 로 믿지 말 것(board 백로그 "QA 보고 신뢰 문제").
 

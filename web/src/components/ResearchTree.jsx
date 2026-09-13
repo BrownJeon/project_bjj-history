@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import Tag from './Tag';
 import Icon from './Icon';
+import { techniqueUsage, fmtMD } from '../utils/clipUsage';
 
 // ═════════════════════════════════════════════════════════════════════════════
 // 연구 트리 — task-026
@@ -162,8 +163,21 @@ function IconBtn({ label, onClick, tone = 'var(--text2)', disabled }) {
   );
 }
 
+/**
+ * 아래줄 "기술 · {이름}" 뒤에 붙는 사용 기록 조각 (task-037). techniqueUsage() 결과를 그대로 받는다.
+ * 🔴 0 과 "기록 불가"를 섞지 않는다 — 영상은 있는데 0 이면 `아직 안 써봄`, 영상 자체가 없으면 `영상 없음`.
+ * 🔴 색은 아래줄 그대로(--text3). 앰버는 이 화면에서 "대처 없음" 전용이다.
+ */
+function usageSuffix(u) {
+  if (!u) return '';
+  if (u.state === 'no_clips') return ' · 영상 없음';
+  if (u.state === 'unused') return ' · 아직 안 써봄';
+  const md = fmtMD(u.last_used_on);
+  return ` · 🥋 ${u.used}회${md ? ` · 최근 ${md}` : ''}`;
+}
+
 function NodeRow({
-  row, uncovered, collapsed, onToggleCollapse,
+  row, uncovered, usage, collapsed, onToggleCollapse,
   onOpen, onAddChild, onAddCoverage, onMove, onInsertParent, onDelete,
 }) {
   const [actions, setActions] = useState(false);
@@ -235,6 +249,10 @@ function NodeRow({
                 whiteSpace: 'normal', overflowWrap: 'anywhere', wordBreak: 'break-word',
               }}>
                 {n.techniqueName && <>기술 · {n.techniqueName}</>}
+                {/* task-037 — 기술 단위 사용 기록. 기술 이름이 없는 노드(미연결)에는 붙이지 않는다. */}
+                {n.techniqueName && usage && (
+                  <span data-testid="research-tree-usage" data-state={usage.state}>{usageSuffix(usage)}</span>
+                )}
                 {n.techniqueName && n.note ? ' · ' : ''}
                 {n.note}
               </div>
@@ -291,12 +309,22 @@ function NodeRow({
 export default function ResearchTree({
   nodes,
   uncoveredIds,
+  // task-037 — useCache().techniques. 사용 기록은 **노드가 아니라 이 캐시**에서 읽는다
+  //   (기술트리 카드와 같은 출처·같은 계산 → 참고영상에서 +1 하면 reloadTechniques 로 여기도 따라온다).
+  techniques = [],
   onOpen, onAddChild, onAddRoot, onAddCoverage, onMove, onInsertParent, onDelete,
 }) {
   const [collapsed, setCollapsed] = useState(() => new Set());
 
   const tree = useMemo(() => buildTree(nodes), [nodes]);
   const rows = useMemo(() => visibleRows(tree.rows, collapsed), [tree, collapsed]);
+
+  // 🔴 키는 노드 id 지만 **값은 기술 단위**다 — 같은 technique_id 의 노드는 같은 객체 모양·같은 숫자.
+  const usageByNode = useMemo(() => {
+    const m = new Map();
+    for (const n of (Array.isArray(nodes) ? nodes : [])) m.set(n.id, techniqueUsage(techniques, n.techniqueId));
+    return m;
+  }, [nodes, techniques]);
 
   // 🔴 서버가 준 목록을 그대로 쓴다. 여기서 다시 판정하지 않는다.
   const uncoveredSet = useMemo(
@@ -342,6 +370,7 @@ export default function ResearchTree({
           key={r.node.id}
           row={r}
           uncovered={uncoveredSet.has(r.node.id)}
+          usage={usageByNode.get(r.node.id)}
           collapsed={collapsed}
           onToggleCollapse={toggle}
           onOpen={onOpen}
