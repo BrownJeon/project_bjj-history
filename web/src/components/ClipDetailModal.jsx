@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import * as enhanceApi from '../api/enhanceMemo';
 import * as clipsApi from '../api/clips';
 import { useCache } from '../contexts/CacheContext';
@@ -13,10 +13,17 @@ import Button from './Button';
 import Tag from './Tag';
 import Icon from './Icon';
 import VideoPlayer from './VideoPlayer';
+import ClipRecommendSection from './ClipRecommendSection';
 
 /**
- * 영상 상세 모달
+ * 영상 상세 모달 — 참고영상·기술트리·기술연구·편집기·픽미업이 **모두 이 컴포넌트 하나**를 연다(task-036).
+ * 진입점별 차이는 props 로만 준다. 이 화면을 복제한 변형 컴포넌트를 만들지 말 것.
+ *
  * onEdit / onDelete 를 넘기지 않으면 해당 버튼이 숨겨집니다 (읽기 전용 모드).
+ * countView = true  — false 면 열 때 👁 게시물 조회를 기록하지 않는다(픽미업: 카드 넘기며 여는 건 조회가 아니다).
+ *                     사용 기록 섹션 표시·🥋 +1 동작은 그대로다.
+ * actions   = null  — ReactNode. 있으면 시트 하단에 **스크롤과 무관하게 항상 보이는** 고정 영역으로 렌더
+ *                     (픽미업의 픽하기 / 픽 취소). Modal.jsx 는 건드리지 않고 이 안에서 sticky 로 푼다.
  */
 // "최근 3건" 한 줄용 짧은 라벨 — 412px 폭에서 `포지션 스파링` 3번이면 줄이 넘친다
 const RECENT_LABEL = { drill: '드릴', position_spar: '포지션', spar: '스파링' };
@@ -27,8 +34,19 @@ function masteryToast(items, verb) {
   return `숙련도 '${step}' 단계 ${verb} — ${items.map((x) => x.name).join(', ')}`;
 }
 
-export default function ClipDetailModal({ c, onClose, onEdit, onDelete, onRefresh, analyzeJob }) {
-  const { igCookieConfigured, reloadClips, reloadTechniques } = useCache();
+export default function ClipDetailModal({
+  c, onClose, onEdit, onDelete, onRefresh, analyzeJob, countView = true, actions = null,
+}) {
+  const { igCookieConfigured, reloadClips, reloadTechniques, clips } = useCache();
+
+  // 연계 기술 AI 추천 캐시(task-036) — 기술트리(GET /api/techniques 의 clips[])·편집기 유사 영상(검색 API)이 넘기는
+  // 객체에는 ai_recommendation 필드 자체가 없다. 그대로 두면 캐시가 있어도 "AI 추천 받기"만 보이므로
+  // 필드가 **없을 때만** clips 캐시의 같은 영상에서 보충한다(null 은 "추천 없음"으로 존중).
+  const recClip = useMemo(() => {
+    if (!c || c.ai_recommendation !== undefined) return c;
+    const cached = (clips || []).find((x) => x.id === c.id);
+    return cached ? { ...c, ai_recommendation: cached.ai_recommendation } : c;
+  }, [c, clips]);
   const { showToast } = useUI();
 
   // ── 사용 기록 (task-035) ───────────────────────────────────────────────
@@ -49,7 +67,7 @@ export default function ClipDetailModal({ c, onClose, onEdit, onDelete, onRefres
   // 👁 봤음 — 상세를 열면 자동 기록. 하루 1회 규칙은 **서버**가 지킨다(StrictMode 이중 effect 도 거기서 흡수).
   //    조회는 보조 신호라 실패해도 화면을 막지 않는다(console.warn 만).
   useEffect(() => {
-    if (c?.id == null) return undefined;
+    if (c?.id == null || !countView) return undefined;   // task-036: 픽미업은 조회로 세지 않는다
     const my = ++usageSeqRef.current;
     clipsApi.logUsage(c.id, 'view')
       .then((d) => {
@@ -426,11 +444,33 @@ export default function ClipDetailModal({ c, onClose, onEdit, onDelete, onRefres
         </div>
       )}
 
+      {/* 연계 기술 AI 추천 (task-036) — AI 분석 아래, 수정/삭제 위 */}
+      <ClipRecommendSection clip={recClip} />
+
       {/* 수정/삭제 버튼 (onEdit/onDelete 없으면 숨김) */}
       {(onEdit || onDelete) && (
         <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
           {onEdit   && <Button variant="outline" size="sm" onClick={onEdit}>수정</Button>}
           {onDelete && <Button variant="danger" size="sm" onClick={onDelete} style={{ marginLeft: 'auto' }}>삭제</Button>}
+        </div>
+      )}
+
+      {/* 하단 고정 액션 (task-036) — Modal 시트(.bjj-modal-sheet)가 스크롤 컨테이너라 position:sticky 로
+          스크롤 위치와 상관없이 시트 아래쪽에 붙인다. 🔴 bottom 이 0 이면 Chrome 이 시트 padding-bottom(30px)만큼
+          위에 멈춰 그 틈으로 내용이 비친다(실측) → bottom:-30. 좌우·아래 음수 여백으로 시트 padding(20/20/30)까지
+          배경을 채운다. Modal.jsx 의 footer 는 스크롤 안에 있어 쓰지 않았다(다른 화면 footer 동작 무변경). */}
+      {actions && (
+        <div
+          data-testid="clip-detail-actions"
+          style={{
+            position: 'sticky', bottom: -30, zIndex: 2,
+            margin: '12px -20px -30px',
+            padding: '12px 20px calc(12px + env(safe-area-inset-bottom, 0px))',
+            background: 'var(--surface-up)',
+            borderTop: '1px solid var(--border)',
+          }}
+        >
+          {actions}
         </div>
       )}
     </Modal>

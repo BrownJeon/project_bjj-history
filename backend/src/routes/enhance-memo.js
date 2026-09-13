@@ -167,8 +167,10 @@ router.post('/analyze-video', wrap(async (req, res) => {
           const updates = {};
           if (result.savedFrames && result.savedFrames.length)
             updates.frames = JSON.stringify(result.savedFrames);
-          if (result.description)
+          if (result.description) {
             updates.description = result.description;
+            updates.ai_recommendation = null; // task-036: 추천 재료(description)가 바뀌었다 — 옛 추천 캐시를 비운다
+          }
           if (result.savedVideo)
             updates.video_file = result.savedVideo;
           if (Object.keys(updates).length)

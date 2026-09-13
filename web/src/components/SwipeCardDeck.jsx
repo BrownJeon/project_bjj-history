@@ -123,6 +123,10 @@ export default function SwipeCardDeck({ clips = [], onPick, onCardTap }) {
   }
 
   function handleTouchEnd(e) {
+    // 🔴 터치는 여기서 끝까지 처리한다 — 브라우저가 이 터치로 뒤따라 만드는 호환 mousedown/mouseup/click 을 막는다.
+    //    막지 않으면 탭으로 방금 연 상세 모달(Modal 시트는 아래에서 slideUp 중)의 **오버레이**에 그 click 이 떨어져
+    //    onClose 가 불리고, 모달이 열리자마자 닫힌다(픽미업 카드 탭이 "안 열리는" 증상, task-036 이후).
+    if (e.cancelable) e.preventDefault();
     const t = e.changedTouches[0];
     dragEnd(t.clientX, t.clientY);
   }

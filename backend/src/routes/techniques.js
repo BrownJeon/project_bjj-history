@@ -37,8 +37,10 @@ async function triggerAutoAnalysis(techName, userId) {
         const updates = {};
         if (result.savedFrames?.length)
           updates.frames = JSON.stringify(result.savedFrames);
-        if (result.description)
+        if (result.description) {
           updates.description = result.description;
+          updates.ai_recommendation = null; // task-036: 추천 재료(description)가 바뀌었다 — 옛 추천 캐시를 비운다
+        }
         if (Object.keys(updates).length)
           await VideoClip.update(updates, { where: { id: clip.id } });
         console.log(`[auto-analyze] clip ${clip.id} 분석 완료 (${result.method})`);

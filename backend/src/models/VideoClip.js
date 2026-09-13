@@ -18,6 +18,10 @@ const VideoClip = sequelize.define('VideoClip', {
   pinned:      { type: DataTypes.TINYINT, defaultValue: 0 },
   created_at:  { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
   user_id:     { type: DataTypes.INTEGER, allowNull: true },
+  // task-036: 연계 기술 AI 추천 캐시(JSON 문자열, 모양은 utils/clipRecommend.js). 컬럼은 index.js 부팅
+  // 마이그레이션이 이미 만든다. 🔴 모델에 이 줄이 없으면 Sequelize 가 update 에서 조용히 버려
+  // UPDATE 문 자체가 안 나간다(task-035 재현) — 지우지 말 것.
+  ai_recommendation: { type: DataTypes.TEXT, allowNull: true },
 }, { tableName: 'video_clips' });
 
 module.exports = VideoClip;

@@ -16,6 +16,11 @@ export const getAnalyzeStatus = ()   => client.get('/clips/analyze-status').then
 export const logUsage  = (id, kind)  => client.post(`/clips/${id}/usage`, { kind }).then(r => r.data);
 // "방금 기록 취소" — 그 clip 의 내 최신 수동 기록만(아니면 409) → { usage, masteryUnchecked }
 export const undoUsage = (id, logId) => client.delete(`/clips/${id}/usage/${logId}`).then(r => r.data);
+
+// 연계 기술 AI 추천 (task-036) — 캐시가 있으면 즉시 반환, refresh:true 면 다시 만들어 덮어쓴다
+// → { techniques: [{name, reason}], combos: [{title, steps: string[]}] }
+export const recommendClip = (id, { refresh = false } = {}) =>
+  client.post(`/clips/${id}/recommend`, refresh ? { refresh: true } : {}).then(r => r.data);
 export const uploadVideo = (id, file, onUploadProgress) => {
   const fd = new FormData();
   fd.append('video', file);

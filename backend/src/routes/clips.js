@@ -15,6 +15,9 @@ const { getFramesDir, getVideoDir } = require('../services/storage');
 const multer = require('multer');
 const { analyzeVideo, analyzeLocalFile, hasInstagramAuth } = require('../services/videoAnalysis');
 const { runClaude } = require('../services/claudeCli');
+const {
+  normalizeRecommendation, parseRecommendationText, techNameList, recommendInputsChanged,
+} = require('../utils/clipRecommend');
 
 const videoUpload = multer({
   dest: '/tmp/',
@@ -46,7 +49,10 @@ function autoAnalyzeClip(clipId, url) {
     .then(async result => {
       const updates = {};
       if (result.savedFrames?.length) updates.frames     = JSON.stringify(result.savedFrames);
-      if (result.description)         updates.description = result.description;
+      if (result.description) {
+        updates.description = result.description;
+        updates.ai_recommendation = null; // task-036: 추천 재료(description)가 바뀌었다 — 옛 추천 캐시를 비운다
+      }
       if (result.savedVideo)          updates.video_file  = result.savedVideo;
       // 썸네일이 없으면 첫 번째 분석 프레임으로 대체
       if (result.savedFrames?.length) {
@@ -159,7 +165,9 @@ router.post('/', wrap(async (req, res) => {
 router.put('/:id', wrap(async (req, res) => {
   const uid = req.user.id;
   const { title, url, description, tech_name, tech_names, tags, starred, pinned, positions } = req.body;
-  const old = await VideoClip.findOne({ where: { id: req.params.id, user_id: uid }, attributes: ['url'], raw: true });
+  const old = await VideoClip.findOne({
+    where: { id: req.params.id, user_id: uid }, attributes: ['url', 'description', 'tech_name'], raw: true,
+  });
   if (!old) return res.status(404).json({ error: 'not found' });
   const urlChanged = old.url !== url;
   const data = {
@@ -171,6 +179,9 @@ router.put('/:id', wrap(async (req, res) => {
     position: JSON.stringify(arrToNFC(Array.isArray(positions) ? positions : [])),
     tags: JSON.stringify(arrToNFC(tags || [])),
   };
+  // task-036: 추천 재료(description·기술명)가 **실제로** 달라졌을 때만 옛 추천 캐시를 비운다.
+  //           제목·태그·즐겨찾기만 바꾼 저장에서는 추천을 유지한다.
+  if (recommendInputsChanged(old, data)) data.ai_recommendation = null;
   if (urlChanged) data.thumb_url = '';
   if (starred !== undefined) data.starred = starred ? 1 : 0;
   if (pinned !== undefined) data.pinned = pinned ? 1 : 0;
@@ -221,7 +232,10 @@ router.post('/:id/upload-video', videoUpload.single('video'), wrap(async (req, r
     .then(async result => {
       const updates = {};
       if (result.savedFrames?.length) updates.frames      = JSON.stringify(result.savedFrames);
-      if (result.description)         updates.description = result.description;
+      if (result.description) {
+        updates.description = result.description;
+        updates.ai_recommendation = null; // task-036: 추천 재료(description)가 바뀌었다 — 옛 추천 캐시를 비운다
+      }
       if (result.savedVideo)          updates.video_file  = result.savedVideo;
       // 썸네일이 없으면 첫 번째 분석 프레임으로 대체
       if (result.savedFrames?.length) {
@@ -444,9 +458,18 @@ router.delete('/:id/usage/:logId', wrap(async (req, res) => {
   ok(res, { usage: await usageOf(uid, clipId), masteryUnchecked: out.masteryUnchecked });
 }));
 
-// AI 연계기술 추천 — ai_recommendation 캐싱 포함
+// ─────────────────────────────────────────────────────────────────────────────
+// AI 연계기술 추천 — ai_recommendation 캐싱 포함 (task-036 정상화)
+//
+// body { refresh: true } → 캐시를 무시하고 다시 만들어 덮어쓴다(`🔄 다시 추천`). 없으면 캐시 우선.
+// 🔴 저장·응답 모양은 utils/clipRecommend.normalizeRecommendation 로 맞춘다
+//    { techniques:[{name,reason}], combos:[{title,steps[]}] }. 둘 다 비면 저장하지 않고 500.
+// 🔴 캐시 무효화: description·기술명이 바뀌는 경로(PUT, AI 분석 저장)가 ai_recommendation=NULL 로 비운다.
+//    Claude 호출(수십 초) 중에 재료가 바뀌었으면 옛 재료로 만든 추천을 덮어 저장하지 않는다(조건부 UPDATE).
+// ─────────────────────────────────────────────────────────────────────────────
 router.post('/:id/recommend', wrap(async (req, res) => {
   const uid = req.user.id;
+  const refresh = (req.body || {}).refresh === true;
   const clip = await VideoClip.findOne({
     where: { id: req.params.id, user_id: uid },
     attributes: ['id', 'tech_name', 'description', 'ai_recommendation'],
@@ -454,21 +477,13 @@ router.post('/:id/recommend', wrap(async (req, res) => {
   });
   if (!clip) return fail(res, 404, '클립을 찾을 수 없습니다');
 
-  // 캐시된 값이 있으면 즉시 반환
-  if (clip.ai_recommendation) {
-    const cached = safeParse(clip.ai_recommendation, null);
+  // 캐시된 값이 있으면 즉시 반환 — 모양이 깨진 옛 캐시는 없는 것으로 보고 새로 만든다
+  if (!refresh && clip.ai_recommendation) {
+    const cached = normalizeRecommendation(safeParse(clip.ai_recommendation, null));
     if (cached) return ok(res, cached);
   }
 
-  // tech_names 파싱 (normalize 패턴)
-  let techNames = [];
-  try {
-    const p = JSON.parse(clip.tech_name);
-    if (Array.isArray(p)) techNames = p.filter(Boolean);
-    else if (p) techNames = [String(p)];
-  } catch {
-    if (clip.tech_name) techNames = [clip.tech_name];
-  }
+  const techNames = techNameList(clip.tech_name);
 
   const prompt = `당신은 BJJ(브라질리언 주짓수) 전문 코치입니다.
 아래 영상 기술을 분석하여 연계 가능한 기술과 콤비네이션을 추천해주세요.
@@ -490,25 +505,18 @@ techniques는 3~5개, combos는 2~3개 추천.`;
 
   const raw = await runClaude(prompt);
 
-  // JSON 블록 추출 및 파싱
-  let parsed;
-  try {
-    const cleaned = raw.replace(/```(?:json)?/g, '').replace(/```/g, '').trim();
-    const start = cleaned.indexOf('{');
-    const end   = cleaned.lastIndexOf('}');
-    if (start === -1 || end === -1) throw new Error('JSON 객체를 찾을 수 없습니다');
-    parsed = JSON.parse(cleaned.slice(start, end + 1));
-  } catch {
-    return fail(res, 500, 'AI 추천 파싱 실패');
-  }
+  // JSON 블록 추출 → 계약 모양으로 정규화. 모양이 비면(파싱 실패 포함) 저장하지 않는다.
+  const rec = normalizeRecommendation(parseRecommendationText(raw));
+  if (!rec) return fail(res, 500, 'AI 추천 파싱 실패');
 
-  // 캐시 저장
-  await VideoClip.update(
-    { ai_recommendation: JSON.stringify(parsed) },
-    { where: { id: req.params.id, user_id: uid } }
+  // 캐시 저장 — 읽을 때의 description·tech_name 이 그대로일 때만(생성 중 PUT/분석으로 바뀌었으면 건너뜀)
+  const [saved] = await VideoClip.update(
+    { ai_recommendation: JSON.stringify(rec) },
+    { where: { id: clip.id, user_id: uid, description: clip.description, tech_name: clip.tech_name } }
   );
+  if (!saved) console.warn(`[recommend] clip ${clip.id} 추천 생성 중 재료가 바뀌어 캐시 저장을 건너뜀`);
 
-  return ok(res, parsed);
+  return ok(res, rec);
 }));
 
 module.exports = router;

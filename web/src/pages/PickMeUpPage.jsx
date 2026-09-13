@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useCache } from '../contexts/CacheContext';
 import { useUI } from '../contexts/UIContext';
 import SwipeCardDeck from '../components/SwipeCardDeck';
-import PickDetailPanel from '../components/PickDetailPanel';
+import ClipDetailModal from '../components/ClipDetailModal';
 import { listPicks, createPick, deletePick } from '../api/picks';
 
 // ─── Fisher-Yates 셔플 ──────────────────────────────────────────────────────
@@ -240,7 +240,7 @@ export default function PickMeUpPage() {
     }
   }
 
-  // ─── PickDetailPanel onUnpick ─────────────────────────────────────────────
+  // ─── 상세(ClipDetailModal) 픽 취소 ────────────────────────────────────────
   async function handleUnpick(clipId) {
     // 확정 전 로컬 픽 → DB 호출 없이 목록에서만 제거
     if (detailMode === 'picked') {
@@ -652,19 +652,64 @@ export default function PickMeUpPage() {
         </div>
       )}
 
-      {/* ─── PickDetailPanel (전역 — 탭 무관) ──────────────────────────────── */}
-      {detailClip && (
-        <PickDetailPanel
-          clip={detailClip}
-          mode={detailMode}
-          onClose={() => setDetailClip(null)}
-          onPick={async (clip) => {
-            await handlePick(clip);
-            setDetailClip(null);
-          }}
-          onUnpick={handleUnpick}
-        />
-      )}
+      {/* ─── 상세 (전역 — 탭 무관) ─────────────────────────────────────────────
+          task-036: 참고영상과 **같은 ClipDetailModal** 을 연다 — 상세 화면이 바뀌면 픽미업도 같이 바뀐다.
+          픽미업만의 차이는 props 로만: 조회 기록 안 함(countView=false), 수정·삭제 없음(읽기 전용),
+          하단 고정 픽하기 / 픽 취소(actions). */}
+      {detailClip && (() => {
+        // 이력 탭의 clip 은 GET /api/picks 가 만든 축약 객체(positions·tags·usage·ai_recommendation 없음)라
+        // clips 캐시의 온전한 객체로 연다. 캐시에 없으면(삭제된 영상 등) 넘겨받은 객체 그대로.
+        const clip = (clips || []).find(x => x.id === detailClip.id) || detailClip;
+        const actionBtn = {
+          flex: 1, padding: '14px 0', borderRadius: 12,
+          fontSize: 15, fontWeight: 700, cursor: 'pointer', letterSpacing: 0.3,
+        };
+        // 옛 PickDetailPanel 의 ✕ 버튼 — 픽 버튼 옆에서 바로 닫는다(모달 제목줄 X 까지 손을 올리지 않게)
+        const closeBtn = (
+          <button
+            type="button"
+            aria-label="닫기"
+            onClick={() => setDetailClip(null)}
+            style={{
+              flexShrink: 0, width: 48, padding: '14px 0', borderRadius: 12,
+              background: 'var(--surface-hi)', color: 'var(--text2)',
+              border: '1px solid var(--border-med)', fontSize: 20, lineHeight: 1, cursor: 'pointer',
+            }}
+          >
+            ✕
+          </button>
+        );
+        return (
+          <ClipDetailModal
+            key={detailClip.id}
+            c={clip}
+            countView={false}
+            onClose={() => setDetailClip(null)}
+            actions={
+              <div style={{ display: 'flex', gap: 8 }}>
+                {detailMode === 'browse' ? (
+                  <button
+                    type="button"
+                    onClick={async () => { await handlePick(clip); setDetailClip(null); }}
+                    style={{ ...actionBtn, background: 'var(--accent)', color: '#fff', border: 'none' }}
+                  >
+                    픽하기 ↑
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => handleUnpick(clip.id)}
+                    style={{ ...actionBtn, background: 'var(--red-dim)', color: 'var(--red)', border: '1px solid var(--red)' }}
+                  >
+                    픽 취소
+                  </button>
+                )}
+                {closeBtn}
+              </div>
+            }
+          />
+        );
+      })()}
     </div>
   );
 }

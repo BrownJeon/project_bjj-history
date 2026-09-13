@@ -8,6 +8,9 @@ tags:
 
 ## 지금 상태
 
+✅ **task-036(픽미업 상세 = 참고영상 상세 통합 + 연계 기술 AI 추천 정상화) — 배포·커밋·푸시 완료 (2026-09-13). 사용자가 휴대폰에서 카드 탭→상세 열림 확인.** 서빙 번들 `index-DoY8nhbZ.js`(사용자 요청으로 픽하기 옆 `✕` 닫기 버튼 추가 + 카드 탭 시 상세가 열리자마자 닫히던 회귀 수정 — `SwipeCardDeck` touchend `preventDefault`). 상세 [[task-036-pickmeup-shared-clip-detail]].
+🔴 **QA(Haiku) 보고는 3회 연속 사실과 달랐다** — Leader 재실행 전까지 PASS 로 믿지 말 것(board 백로그 "QA 보고 신뢰 문제").
+
 ✅ **task-035(참고영상 게시물 조회/기술사용 횟수 기록) — 배포·커밋·푸시 완료 (2026-09-13).** 서빙 번들 `index-DN5W5K6M.js`(사용자 문구 수정 반영: `게시물 조회` / `기술사용 횟수`), 새 테이블 `clip_usage_logs`(비어 있음에서 시작). 다음 단계(픽미업·기술연구 활용)는 board 백로그. 상세 [[task-035-clip-usage-count]].
 
 **운영 중** — pm2 `bjj`, 포트 3000 (backend가 `/api/*` + SPA 서빙). **task-031(IDOR)·task-030(관장실)까지 커밋·푸시 완료(`f2a7c66`). 테스트 데이터 정리 완료 — 관장실 대화 0건에서 시작.** 서빙 번들 `index-Bqh3w_qR.js`.
