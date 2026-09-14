@@ -26,8 +26,12 @@
     <meta property="og:description" content="수업·드릴·스파링·기술 트리·게임플랜·참고영상을 한 곳에서 기록하고 AI 코치/분석으로 약점 진단·개선 제안을 받는 주짓수 개인 훈련 웹앱." />
     <meta property="og:url" content="https://bjj.미라클펭귄.com/" />
     <meta property="og:locale" content="ko_KR" />
+    <!-- og-image·아이콘은 web/scripts/gen-app-icons.mjs 가 생성한다(task-038) — 파일을 손대지 말고 스크립트를 다시 돌린다. -->
     <meta property="og:image" content="https://bjj.미라클펭귄.com/og-image.png" />
-    <meta property="og:image:alt" content="BJJ 훈련 일지 대시보드 — 캘린더, 기술 트리, 게임플랜, 코치 리포트" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="BJJ 훈련일지 앱 아이콘 — 브라운 바탕의 BJJ 글자와 검은 띠" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -40,8 +44,10 @@
 
     <!-- PWA 매니페스트·아이콘 -->
     <link rel="manifest" href="/manifest.webmanifest" />
+    <!-- ico 에 sizes 를 명시해야 SVG 를 지원하는 브라우저가 ico 대신 svg 를 고른다("any" 로 두면 ico 가 이긴다). -->
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
 
     <!-- 정규 URL -->
     <link rel="canonical" href="https://bjj.미라클펭귄.com/" />
