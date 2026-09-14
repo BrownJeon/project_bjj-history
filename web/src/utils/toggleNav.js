@@ -5,7 +5,8 @@
 //    (QA 하네스 03-toggle-logic.js). 여기에 컴포넌트/훅을 추가하지 마라 — 테스트 가능성이 설계 요건이다.
 //
 // 동작은 기존 Layout.jsx의 handleTechTabClick과 동일하다:
-//   앞이면 뒤로 · 뒤면 앞으로 · 둘 다 아니면 last(없으면 앞) → last 저장 → 토스트 1회 → navigate
+//   앞이면 뒤로 · 뒤면 앞으로 · 둘 다 아니면(다른 탭에서 넘어옴) 항상 앞 → last 저장 → 토스트 1회 → navigate
+//   (2026-09-14 사용자 결정으로 "짝 밖 → last" 를 "짝 밖 → 앞" 으로 바꿨다 — nextTarget 주석 참고)
 
 // ─── localStorage 안전 접근 (프라이빗 모드에서 throw) ────────────────────────
 // 읽기는 "값이 없다"와 "저장소를 못 읽었다"를 구분해야 한다 — 둘 다 null 로 뭉뚱그리면
@@ -109,18 +110,18 @@ export function isPairActive(pair, pathname) {
 
 // ─── 토글 실행 ──────────────────────────────────────────────────────────────
 /**
- * 탭 클릭 시 어디로 갈지 결정한다 (저장소 읽기만, 쓰기 없음).
- * 앞 → 뒤 · 뒤 → 앞 · 짝 밖 → 저장된 last(없거나 이상하면 앞).
+ * 탭 클릭 시 어디로 갈지 결정한다 (저장소를 읽지 않는다).
+ * 앞 → 뒤 · 뒤 → 앞 · **짝 밖(다른 탭에서 넘어옴) → 항상 앞**.
+ *
+ * 🔴 2026-09-14 사용자 결정: "다른 메뉴를 갔다가 이동시 무조건 앞에 메뉴로" — 예) 홈 → 수업 → 복기 → 홈 → 수업 탭
+ *    이면 복기가 아니라 **수업**. 예전(task-023)에는 짝 밖에서 누르면 마지막에 보던 쪽(lastKey)으로 갔다.
+ *    `storage` 인자는 호출부 호환을 위해 남겨 두고, lastKey 는 applyToggle 이 계속 기록만 한다(더는 이동에 쓰지 않음).
  */
+// eslint-disable-next-line no-unused-vars
 export function nextTarget(pair, pathname, storage) {
   const side = resolveSide(pair, pathname);
   if (side === 'front') return pair.back.to;
   if (side === 'back') return pair.front.to;
-
-  const stored = readKey(storage, pair.lastKey);
-  // 이 짝이 실제로 쓸 수 있는 값만 인정한다. 앱이 쓰는 값은 항상 front.to/back.to 둘 중 하나이므로
-  // 정상 동작에는 아무 차이가 없고, 저장소가 오염됐을 때 엉뚱한 경로로 튀는 것만 막는다.
-  if (stored === pair.front.to || stored === pair.back.to) return stored;
   return pair.front.to;
 }
 
