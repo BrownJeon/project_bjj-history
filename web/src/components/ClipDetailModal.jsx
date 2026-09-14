@@ -8,6 +8,7 @@ import {
   usageOf, fmtMD, MANUAL_KINDS, USAGE_KIND_LABEL, MASTERY_STEP_LABEL,
 } from '../utils/clipUsage';
 import { getPlatformIcon, getPlatformLabel } from '../utils/videoThumb';
+import { downloadFrames as downloadFramesToDevice } from '../utils/download';
 import Modal from './Modal';
 import Button from './Button';
 import Tag from './Tag';
@@ -153,15 +154,9 @@ export default function ClipDetailModal({
   }, [analyzeJob]);
 
   // localFrames를 다운로드하는 헬퍼 (device 모드용)
+  // 웹: 기존 그대로 400ms 간격 `<a download>` · 앱: 폰 Download/BJJ 에 순차 저장 후 결과 토스트(task-039 A-5)
   function downloadFrames(frameList, title) {
-    frameList.forEach((url, i) => {
-      setTimeout(() => {
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `${(title || 'frame').replace(/[^가-힣a-zA-Z0-9]/g, '_')}-${i + 1}.jpg`;
-        document.body.appendChild(a); a.click(); document.body.removeChild(a);
-      }, i * 400);
-    });
+    downloadFramesToDevice(frameList, title, { notify: showToast });
   }
 
   async function handleAiAnalyze() {

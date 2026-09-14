@@ -25,6 +25,15 @@ input, textarea, select { font-family: inherit; color: var(--text); }
   position: relative;
   background: var(--bg);
 }
+/* 안드로이드 앱 상태바 여백(task-039 A-6) — 🔴 스크롤 컨테이너(.app-content)가 아니라 **셸**에 준다.
+   스크롤 컨테이너에 주면 그 안의 sticky 요소가 패딩 기준으로 붙어 스크롤 시 다시 상태바 밑으로 올라간다
+   (TheMeal layout 교훈). 셸 height 는 100dvh + border-box 라 패딩만큼 내용 영역이 줄어든다.
+   셸 안의 절대 배치 패널(관장실 대화·대화 관리)은 셸의 **패딩 박스** 기준이라 top:0 이 상태바 밑으로
+   들어가므로 같은 값만큼 margin-top 으로 내린다(인라인 top:BAR_HEIGHT 는 그대로 둔다). */
+[data-native] .app-shell { padding-top: var(--native-top); }
+[data-native] .bjjm-panel,
+[data-native] .bjjm-list { margin-top: var(--native-top); }
+
 .app-content {
   flex: 1;
   min-height: 0;            /* flex item이 부모를 넘어 자라지 않도록 */

@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 import Button from './Button';
 import * as picksApi from '../api/picks';
 import { getClipThumb, getPlatformIcon } from '../utils/videoThumb';
+import useBackHandler from '../native/useBackHandler';
 
 function pad(n) { return String(n).padStart(2, '0'); }
 
@@ -19,6 +20,8 @@ const textareaStyle = {
 };
 
 export default function SparFeedbackCard({ sessions, classes, sparDayId, todayPicks = [], onClose }) {
+  // 안드로이드 앱 뒤로가기 → 이 카드(전체 화면 오버레이)를 닫는다 — task-039 A-6.
+  useBackHandler(true, onClose);
   const stats = useMemo(() => {
     const goodTechs = [...new Set(
       sessions.flatMap(s => s.successTried.filter(t => t.success).map(t => t.name))

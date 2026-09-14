@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 앱 다크 배경(web/src/styles/tokens.css 의 bg 토큰). XML 주석에는 하이픈 두 개를 쓸 수 없다. 시스템 바 뒤 창 배경으로 쓴다(styles.xml AppTheme.NoActionBar). -->
+    <color name="bjj_window_bg">#0C0D12</color>
+</resources>

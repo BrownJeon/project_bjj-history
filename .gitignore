@@ -52,3 +52,12 @@ coverage/
 # Synology 확장속성 메타 (.env 스트림 포함 — 절대 커밋 금지)
 @eaDir/
 **/@eaDir/
+
+# Android 앱 (task-039) — 소스(mobile/android)는 커밋, 빌드 산출물·기계별 설정·서명 키는 제외
+mobile/node_modules/
+mobile/android/.gradle/
+mobile/android/build/
+mobile/android/app/build/
+mobile/android/local.properties
+*.keystore
+*.jks

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>BJJ 훈련일지</title>
+    <!-- 색은 web/src/styles/tokens.css 와 같은 값(bg #0C0D12 · text #EEEEF2 · text2 #7C8098 · accent #1D9E75). -->
+    <style>
+      html, body { margin: 0; height: 100%; background: #0C0D12; color: #7C8098;
+        font: 14px/1.6 -apple-system, BlinkMacSystemFont, 'Noto Sans KR', system-ui, sans-serif; }
+      main { height: 100%; display: grid; place-items: center; text-align: center; padding: 24px; box-sizing: border-box; }
+      h1 { font-size: 18px; margin: 0 0 8px; color: #EEEEF2; font-weight: 600; }
+      p { margin: 0; word-break: keep-all; }
+      .sub { margin-top: 6px; font-size: 12px; }
+      .connecting { display: none; }
+      body.retrying .connecting { display: block; }
+      body.retrying .fail { display: none; }
+      button { margin-top: 18px; min-height: 44px; padding: 10px 20px; border: 0; border-radius: 10px;
+        background: #1D9E75; color: #fff; font: inherit; font-weight: 600; }
+    </style>
+  </head>
+  <body>
+    <!--
+      이 파일은 거의 보이지 않는다. 앱은 capacitor.config.ts 의 server.url 로 운영 웹을 직접 로드하고,
+      이 파일은 `server.errorPath` 로 지정돼 **운영 웹을 불러오지 못했을 때만**(네트워크 끊김·서버 재시작 중 등) 뜬다.
+      빈 흰 화면이나 크롬 기본 오류 화면 대신, 무슨 일인지와 할 일을 앱 색으로 보여 준다.
+      (Android 에서 이 오류 페이지는 Capacitor 플러그인에 접근할 수 없다 — 순수 HTML 로만 동작해야 한다.)
+    -->
+    <main>
+      <div>
+        <h1>BJJ 훈련일지</h1>
+        <div class="fail">
+          <p>서버에 연결할 수 없습니다.</p>
+          <p class="sub">네트워크 연결을 확인한 뒤 다시 시도해 주세요.</p>
+          <button type="button" id="retry">다시 시도</button>
+        </div>
+        <p class="connecting">서버에 연결 중…</p>
+      </div>
+    </main>
+    <script>
+      (function () {
+        var APP_URL = 'https://bjj.xn--lh0b87pnudm10a4vd.com/';
+        function retry() {
+          document.body.classList.add('retrying');
+          location.replace(APP_URL);
+        }
+        document.getElementById('retry').addEventListener('click', retry);
+        // 네트워크가 돌아오면 사용자가 누르지 않아도 한 번 다시 시도한다.
+        window.addEventListener('online', retry);
+      })();
+    </script>
+  </body>
+</html>

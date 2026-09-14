@@ -1,5 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { getYtEmbed, getPlatformIcon } from '../utils/videoThumb';
+import { useUI } from '../contexts/UIContext';
+import { isNativeApp } from '../native/bridge';
+import { downloadFile, frameFileName, videoFileName } from '../utils/download';
 
 /**
  * VideoPlayer — 영상 플레이어 영역 컴포넌트
@@ -15,6 +18,7 @@ import { getYtEmbed, getPlatformIcon } from '../utils/videoThumb';
  */
 export default function VideoPlayer({ clip }) {
   const c = clip;
+  const { showToast } = useUI();
 
   /* frames 파싱 */
   const frames = (() => {
@@ -42,11 +46,16 @@ export default function VideoPlayer({ clip }) {
     touchStartX.current = null;
   }
 
+  // 웹: 기존 `<a download>` 그대로 · 앱: 폰 Download/BJJ 에 저장하고 완료/실패를 알린다(task-039 A-5)
   function downloadSingleFrame(url, idx, title) {
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${(title || 'frame').replace(/[^가-힣a-zA-Z0-9]/g, '_')}-${idx + 1}.jpg`;
-    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    downloadFile(url, frameFileName(title, idx), { notify: showToast });
+  }
+
+  function downloadVideo(e) {
+    if (!isNativeApp()) return; // 웹은 아래 <a download> 기본 동작 그대로
+    e.preventDefault();
+    showToast('영상을 기기에 저장하는 중…', 2000);
+    downloadFile(c.video_file, videoFileName(c.title), { notify: showToast });
   }
 
   const videoSizeStyle = { width: '100%', aspectRatio: '16/9', borderRadius: 10, overflow: 'hidden' };
@@ -59,7 +68,7 @@ export default function VideoPlayer({ clip }) {
         <div style={{ marginBottom: 10 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
             <span style={{ fontSize: 11, color: 'var(--accent)', fontWeight: 600 }}>📥 저장된 영상 (오프라인 재생 가능)</span>
-            <a href={c.video_file} download={`${c.title || 'video'}.mp4`}
+            <a href={c.video_file} download={videoFileName(c.title)} onClick={downloadVideo}
               style={{ fontSize: 11, color: 'var(--text2)', textDecoration: 'none' }}>↓ 다운로드</a>
           </div>
           <video src={c.video_file} controls playsInline

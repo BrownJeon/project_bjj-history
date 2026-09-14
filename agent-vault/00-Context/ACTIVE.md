@@ -1,12 +1,18 @@
 ---
 project: bjj-trainning
-updated: 2026-09-13
+updated: 2026-09-14
 tags:
   - type/context
 ---
 # 현재 상태
 
 ## 지금 상태
+
+✅ **task-039(Android APK 앱 `BJJ 훈련일지`) — 배포·푸시 완료 (2026-09-14).** 3차 APK md5 `5f6f7d79…`(사용자 폰 설치, Android 15). 실기기 피드백 2건 반영: 하단 탭바↔내비게이션 버튼 겹침(스크린샷으로 해소 확인) · 키보드가 입력창 가림(MainActivity IME 인셋). 🟡 **사용자 확인 대기: 키보드·저장(`Download/BJJ`)·뒤로가기·링크.** 🔴 **업데이트 규칙: 웹 변경 = 웹 배포만(재설치 불필요) / 네이티브(아이콘·권한·플러그인·config·테마·MainActivity·manifest) = APK 재빌드 — 착수 전에 사용자에게 재설치 필요를 먼저 고지.** 빌드·함정 [[android-apk-build]], 상세 [[task-039-android-apk]]. Authelia 완전 제거 완료.
+
+✅ **task-038(앱 아이콘 브라운 BJJ 워드마크) — 배포·푸시 완료 (2026-09-14).** 운영 아이콘 8경로 md5 = repo 산출. 도안 변경은 `web/scripts/gen-app-icons.mjs` 상수만. 상세 [[task-038-app-icon]].
+
+✅ **task-040(하단 토글 탭: 다른 탭에서 오면 항상 앞 화면) — 배포·푸시 완료 (2026-09-14), 사용자 실기기 확인.** 웹만, 서빙 번들 `index-yMEX_KZk.js`. 상세 [[task-040-toggle-tab-front-first]].
 
 ✅ **task-037(기술연구 트리 노드·노드 상세에 🥋 기술사용 횟수) — 배포·커밋·푸시 완료 (2026-09-13).** 서빙 번들 `index-yRVVVCex.js`. 프론트 4파일, 기술트리 카드와 같은 캐시·계산. 검증은 QA 에이전트 대신 Leader 가 dev 하네스 직접 실행(`task-037-20260913-213456/harness/run-all.sh`). 상세 [[task-037-research-node-usage]].
 

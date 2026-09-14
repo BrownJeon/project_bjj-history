@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+        android:requestLegacyExternalStorage — **Android 10(API 29) 한 버전만**을 위한 것이다.
+        영상·캡처 저장(task-039 A-5)은 `Download/BJJ/` 공개 폴더에 파일 경로로 쓴다. Android 11+ 는
+        scoped storage 에서 앱이 만든 파일을 Download/ 에 권한 없이 쓸 수 있지만, Android 10 은
+        이 플래그 + 아래 WRITE 권한이 있어야 같은 경로에 쓸 수 있다. targetSdk 30 이상에서
+        Android 11+ 기기는 이 플래그를 무시한다.
+    -->
+    <!-- allowBackup=false: WebView localStorage 의 로그인 JWT(bjj_token)가 Android 자동 백업으로 기기 밖에 복사되지 않게(task-039 Reviewer LOW) -->
+    <application
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:requestLegacyExternalStorage="true"
+        android:theme="@style/AppTheme">
+
+        <!--
+            launchMode="singleTask" — 로그인 딥링크(bjjapp://auth/callback)가 도착하면 **이미 떠 있는
+            이 화면으로 돌아온다**(새 화면이 하나 더 쌓이지 않는다). 같은 태스크 위에 떠 있던
+            Custom Tab(로그인 창)도 이때 함께 정리된다.
+        -->
+        <activity
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode|navigation"
+            android:name=".MainActivity"
+            android:windowSoftInputMode="adjustResize"
+            android:label="@string/title_activity_main"
+            android:theme="@style/AppTheme.NoActionBarLaunch"
+            android:launchMode="singleTask"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <!--
+                OAuth 로그인 복귀 딥링크 (task-039 A-4).
+
+                Google 은 WebView 안 로그인을 막으므로 앱은 Custom Tab(외부 브라우저)으로 로그인을 열고,
+                서버가 로그인 끝에 `bjjapp://auth/callback?code=<60초 1회용 코드>` 로 302 한다.
+                이 intent-filter 가 그 주소를 이 앱으로 받는다 — 없으면 로그인을 마쳐도 브라우저에
+                "주소를 열 수 없습니다"가 뜨고 앱은 로그인 화면에 그대로 남는다.
+                🔴 딥링크에는 JWT 가 아니라 1회용 코드만 싣는다(웹이 POST /api/auth/app-exchange 로 교환).
+            -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="bjjapp" android:host="auth" />
+            </intent-filter>
+
+        </activity>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"></meta-data>
+        </provider>
+    </application>
+
+    <!-- Permissions -->
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!--
+        저장소 권한 — **Android 10(API 29) 이하에서만** 선언된다(maxSdkVersion="29").
+        근거(플러그인 소스 실측):
+          · @capacitor/file-transfer 1.0.12 `FileTransferPlugin.isStoragePermissionGranted()` —
+            SDK_INT >= R(30) 이면 권한 없이 진행, 그 아래는 READ+WRITE_EXTERNAL_STORAGE 를 요청한다.
+          · @capacitor/filesystem 7.1.8 `isStoragePermissionGranted()` — 30~32 는 앱 폴더 경로면 권한 불필요,
+            33+ 는 항상 불필요, 29 이하는 READ+WRITE 요청.
+        Android 11+ 기기(사용자 휴대폰)에서는 이 두 줄이 아예 무시되므로 권한 요청 창이 뜨지 않는다.
+    -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="29" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="29" />
+</manifest>

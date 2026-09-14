@@ -43,4 +43,17 @@
   --belt-black:   #212121;
 
   --safe-bottom:  env(safe-area-inset-bottom, 0px);
+
+  /* 안드로이드 앱 상단 상태바 여백(task-039 A-6). 웹은 0 — 아래 [data-native] 에서만 값이 생긴다. */
+  --native-top:   0px;
+}
+
+/* 안드로이드 앱(Capacitor, targetSdk 35)은 Android 15 edge-to-edge 로 WebView 가 시스템 바 밑까지 그려지는데
+   이 WebView 는 `env(safe-area-inset-*)` 를 0 으로 준다 — 상단 24px 바닥값만으로는 **하단 탭바가 내비게이션 버튼과
+   겹쳤다**(2026-09-14 실기기). 그래서 앱 설정 `android.adjustMarginsForEdgeToEdge: 'auto'`(mobile/capacitor.config.ts)로
+   WebView 자체를 시스템 바 바깥에 배치한다 → 웹은 상하단 여백을 따로 줄 필요가 없다. 24px 바닥값을 남기면 상단이
+   이중 여백이 되므로 뺀다(env 가 실제 값을 주는 기기에서만 그만큼). `<html data-native>` 는 main.jsx 가 앱에서만 붙인다.
+   🔴 이 값을 되돌리려면 capacitor.config 의 margin 설정도 함께 봐야 한다(둘 중 하나만 바꾸면 겹치거나 이중 여백). */
+[data-native] {
+  --native-top: env(safe-area-inset-top, 0px);
 }

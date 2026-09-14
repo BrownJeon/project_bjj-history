@@ -15,6 +15,7 @@ import { approveAction, getChat, rejectAction } from '../api/master';
 import { getProfile, listBelts } from '../api/profile';
 import { getTask } from '../api/research';
 import { taskSummary } from '../utils/weeklyTask';
+import useBackHandler from '../native/useBackHandler';
 
 const MODEL_DEFAULT = 'opus';
 
@@ -23,8 +24,10 @@ export default function MasterPanel() {
   const { showToast } = useUI();
   const {
     open, chatId, autoResume, close, refresh, setChatTitle, consumeAutoResume,
-    turn, turnEvents, startTurn, adoptChat,
+    turn, turnEvents, startTurn, adoptChat, backToList,
   } = useMaster();
+  // 안드로이드 앱 뒤로가기 = 채팅 헤더 `‹` 와 같은 동작(대화 목록으로, D-7) — task-039 A-6.
+  useBackHandler(open, backToList);
 
   const [messages, setMessages] = useState([]);
   const [actions, setActions] = useState([]);

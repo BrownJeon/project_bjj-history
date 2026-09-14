@@ -1,7 +1,11 @@
 import React, { useEffect } from 'react';
 import Icon from './Icon';
+import useBackHandler from '../native/useBackHandler';
 
 export default function Modal({ open = true, onClose, title, children, footer }) {
+  // 안드로이드 앱 뒤로가기 → 열린 모달 중 맨 위 하나만 닫는다(task-039 A-6). 웹에서는 동작 변화 없음.
+  useBackHandler(open, onClose);
+
   useEffect(() => {
     if (!open) return;
     const onKey = (e) => { if (e.key === 'Escape') onClose && onClose(); };

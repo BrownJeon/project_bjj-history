@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">BJJ 훈련일지</string>
+    <string name="title_activity_main">BJJ 훈련일지</string>
+    <string name="package_name">com.miraclepenguin.bjj</string>
+    <string name="custom_url_scheme">com.miraclepenguin.bjj</string>
+</resources>

@@ -278,7 +278,9 @@ export default function ProfilePage() {
     <div
       className="page-fade"
       style={{
-        position: 'fixed', inset: 0,
+        // top 은 안드로이드 앱에서만 상태바 높이(--native-top, 웹은 0px) — 이 화면은 셸 밖 fixed 오버레이라
+        // 셸의 상태바 여백을 받지 못한다(task-039 A-6).
+        position: 'fixed', top: 'var(--native-top, 0px)', right: 0, bottom: 0, left: 0,
         background: 'var(--bg)',
         zIndex: 150,
         overflowY: 'auto',

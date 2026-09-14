@@ -1,4 +1,5 @@
 import React from 'react';
+import { APP_ORIGIN, isNativeApp, openExternal } from '../native/bridge';
 
 // SVG 아이콘 (inline — CDN 없이)
 const GoogleIcon = () => (
@@ -36,7 +37,15 @@ const BUTTONS = [
 ];
 
 export default function OAuthButtons({ style }) {
-  function handleOAuth(provider) {
+  async function handleOAuth(provider) {
+    // 안드로이드 앱: Google 은 WebView 안 로그인을 막으므로 Custom Tab(외부 브라우저)으로 연다.
+    // 서버가 로그인 끝에 `bjjapp://auth/callback?code=` 로 앱에 돌려보내고, native/NativeAppHost 가 받는다(task-039 A-4).
+    // 절대 주소 — Custom Tab 은 앱 WebView 와 다른 창이라 상대경로를 해석할 기준이 없다.
+    if (isNativeApp()) {
+      const opened = await openExternal(`${APP_ORIGIN}/api/auth/app-start?provider=${encodeURIComponent(provider)}`);
+      if (opened) return;
+      // Browser 플러그인이 없는 APK — 아래 웹 흐름으로 폴백(구글은 막을 수 있지만 아무 반응 없는 것보다 낫다).
+    }
     window.location.href = `/api/auth/${provider}`;
   }
 

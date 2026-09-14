@@ -5,6 +5,8 @@ tags:
 # 칸반 보드
 
 ## Backlog
+- **task-039 dev 하네스 `e2e-039.cjs` 기대값 갱신** — `/home/brownjeon/.node-local/bjj-backup/task-039-20260913-235046/harness/e2e-039.cjs` 의 N4·N5·N10 이 앱 상단 여백 **24px** 를 기대하는데, 실기기 수정으로 `--native-top: env(safe-area-inset-top,0px)`(headless 에서 0px)로 바뀌어 **재실행하면 실패**한다. 기대값을 0px(env)로 고친 뒤 `run-all.sh` 재통과 확인. 앱 네이티브 변경 검증에 이 하네스를 다시 쓰기 전에 처리. LOW [[task-039-android-apk]] (2026-09-14)
+- 🔴 **AI 이미지 생성 대상 포트가 죽어 있음 — `backend/.env` `AI_API_BASE=http://192.168.219.100:8001`** — 2026-09-13 HOME-SERVER Authelia 정리 중 발견, Leader 실측: `:8001/health` 무응답(timeout), `:8000/health` 200 이고 `:8000/openapi.json` 에 `/v1/image/generate` 존재. 다른 프로젝트 6곳은 `:8000` 사용, 코드 기본값도 `:8000`(`classVideoService.js:24`, `chainAiVideoGenerator.js:19`). 영향: 수업 영상·체인 AI 영상의 이미지 생성 호출이 실패(텍스트 AI 는 Claude CLI 라 무관). 수정: `.env` 포트를 `8000` 으로 + `pm2 restart bjj` + 이미지 생성 1회 확인(API 키가 8000 게이트웨이에서 유효한지). task-039 와 무관해 별도 처리 (2026-09-13)
 - **`backend/batch-analyze.js` 가 description 을 채울 때 AI 추천 캐시를 비우지 않음** — task-036 에서 앱 경로 5곳(PUT·URL 분석·파일 분석·메모 보완 영상 분석·기술 저장 자동 분석)은 `ai_recommendation = NULL` 무효화를 넣었으나, 수동 배치 스크립트(`:55-58`, raw mysql2, 빈 description 만 채움)는 AI 호출 없이 검증할 수 없어 미변경. 설명이 비어 있던 영상에 "(설명 없음)" 기반 추천이 먼저 캐시된 뒤 배치로 설명이 채워지면 옛 추천이 남는다 → 화면의 `🔄 다시 추천`으로 해소 가능. 배치를 다시 쓸 일이 생기면 UPDATE 에 `ai_recommendation=NULL` 추가. LOW (2026-09-13)
 - **참고영상 사용 기록 — 409 취소 실패 후 모달 숫자가 서버와 어긋남** — task-035 Leader 재확인에서 관찰: 다른 곳에서 더 새 기록이 생긴 뒤 `방금 기록 취소` → 409 toast 는 정상이나 모달 카운트가 갱신되지 않고 취소 링크가 남는다. catch 에서 409 면 `lastLog` 비우고 `refreshCaches()`. 또 네트워크 실패 toast 에 axios 원문 `Network Error`(영어) 노출. 동시 기기 사용 때만 발생, LOW (2026-09-13)
 - **task-035 다음 단계(사용자 예고)** — 픽미업 "안 써본 영상 먼저"(`clip_usage_logs` 최근성 가중치 + `pick_history.used=1` 합산). 데이터는 이미 쌓이는 중. ~~기술연구 노드에 연습 횟수·최근 사용일~~ → 해소 [[task-037-research-node-usage]]. ~~`PickDetailPanel` 조회 기록~~ → task-036 에서 사용자가 "픽미업은 조회로 세지 않음" 결정 (2026-09-13)
@@ -44,6 +46,9 @@ tags:
 ## Review
 
 ## Done
+- [[task-040-toggle-tab-front-first]] — 하단 토글 탭(수업·기술·연구)을 다른 탭에서 누르면 항상 앞 화면, 같은 탭 재클릭은 토글 유지. `toggleNav.js` `nextTarget` 1곳(웹만, 재설치 불필요). 모듈 8/8·운영 UI CDP 6/6, 사용자 실기기 확인. **배포·푸시 완료** (2026-09-14)
+- [[task-039-android-apk]] — Capacitor 7 원격 URL APK(`BJJ 훈련일지`): 앱 로그인(Custom Tab+302+1회용 코드), `Download/BJJ` 직접 저장, 뒤로가기, 실기기 피드백 2건 반영(탭바↔내비게이션 버튼 겹침 → edge-to-edge margin / 키보드 가림 → MainActivity IME 인셋). 3차 APK `5f6f7d79…`. Authelia 완전 제거. 🟡 사용자 확인 대기: 키보드·저장·뒤로가기·링크. 런북 [[android-apk-build]]. **배포·푸시 완료** (2026-09-14)
+- [[task-038-app-icon]] — 앱 아이콘 T1 "BJJ 워드마크" 브라운(`#795548`·크림 글자·블랙 띠) 생성기 + 웹 아이콘(favicon·apple-touch·PWA 192/512/maskable)·og-image·manifest·Android 적응형 아이콘. 운영 8경로 md5 일치, Reviewer PASS(Low 3). **배포·푸시 완료** (2026-09-14)
 - [[task-037-research-node-usage]] — 기술연구 트리 노드 아래줄·노드 상세에 🥋 기술사용 횟수(기술 단위, 기술트리 카드와 같은 캐시·같은 계산) · `아직 안 써봄`/`영상 없음` 구분 · 열어 둔 시트도 +1 즉시 갱신. 프론트 4파일. unit 25·render 19·CDP 39 PASS(dev 2회 + **Leader 직접 실행 1회**, QA 에이전트 미사용). **배포·푸시 완료** (2026-09-13)
 - [[task-036-pickmeup-shared-clip-detail]] — 픽미업 상세를 `ClipDetailModal` 로 통합(`countView=false` 로 픽미업 조회 미기록 · 하단 고정 픽하기/픽 취소 · 수정/삭제 숨김, `PickDetailPanel.jsx` 삭제) + 연계 기술 AI 추천을 공용 상세로 이동(`ClipRecommendSection`) · 표시 필드 불일치 · 캐시 저장 안 됨(모델 누락) · `refresh` 강제 재생성 · description/기술명 변경 시 캐시 무효화 5경로. unit 28·stub 18·API 13·UI 41·task-035 회귀 47 PASS(Leader 가 unit·API·회귀 직접 재실행). 후속: 픽하기 옆 `✕` 닫기 · 카드 탭 시 상세가 즉시 닫히던 회귀(touchend 호환 click → Modal 오버레이) 수정. **배포·푸시 완료** (2026-09-13)
 - [[task-035-clip-usage-count]] — 참고영상 👁봤음(상세 열면 하루 1회 자동) + 🥋써봤음(드릴/포지션 스파링/스파링 +1, 방금 취소) 기록 테이블 `clip_usage_logs`, 드릴·포지션 스파링 +1 은 정확 일치 기술의 숙련도 2·3단계 자동 체크. 카드 합계·필터 2종·기술 상세 스파링 성공(자동). API 47/47 ×2 · Reviewer PASS · Leader 실패 toast 2경로 직접 12/12. 화면 문구는 사용자 요청으로 `게시물 조회` / `기술사용 횟수`. **배포·푸시 완료** (2026-09-13)

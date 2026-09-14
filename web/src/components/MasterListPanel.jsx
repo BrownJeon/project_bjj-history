@@ -33,6 +33,7 @@ import { useMaster } from '../contexts/MasterContext';
 import { useUI } from '../contexts/UIContext';
 import { archiveChat, deleteChat, listChats, renameChat } from '../api/master';
 import { relTime } from '../utils/relTime';
+import useBackHandler from '../native/useBackHandler';
 
 const PAGE_SIZE = 10;
 const DEBOUNCE_MS = 300;
@@ -66,6 +67,8 @@ function Snippet({ text, q }) {
 
 export default function MasterListPanel() {
   const { listOpen, listSession, closeList, chats, openChat, refresh } = useMaster();
+  // 안드로이드 앱 뒤로가기 → 대화 관리 닫기(목록 헤더 `‹` 와 같은 동작) — task-039 A-6.
+  useBackHandler(listOpen, closeList);
   const { showToast } = useUI();
 
   const [tab, setTab] = useState('open');        // all | open | archived  (기본 = 진행 중)
