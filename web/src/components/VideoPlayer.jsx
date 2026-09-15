@@ -58,6 +58,15 @@ export default function VideoPlayer({ clip }) {
     downloadFile(c.video_file, videoFileName(c.title), { notify: showToast });
   }
 
+  // 음소거 기본값 고정 — 새 영상(src)이 붙을 때 한 번만 건다. 사용자가 컨트롤로 켠 소리는 그 영상 동안 유지된다.
+  function muteVideo(el) {
+    if (!el || el.dataset.bjjMuted === el.getAttribute('src')) return;
+    el.defaultMuted = true;
+    el.muted = true;
+    el.setAttribute('muted', '');
+    el.dataset.bjjMuted = el.getAttribute('src') || '';
+  }
+
   const videoSizeStyle = { width: '100%', aspectRatio: '16/9', borderRadius: 10, overflow: 'hidden' };
   const mediaSizeStyle = { width: '100%', borderRadius: 10, overflow: 'hidden' };
 
@@ -71,7 +80,9 @@ export default function VideoPlayer({ clip }) {
             <a href={c.video_file} download={videoFileName(c.title)} onClick={downloadVideo}
               style={{ fontSize: 11, color: 'var(--text2)', textDecoration: 'none' }}>↓ 다운로드</a>
           </div>
-          <video src={c.video_file} controls playsInline
+          {/* 참고영상은 소리 없이 보는 경우가 대부분이라 음소거로 시작한다(2026-09-14 사용자 요청) — 컨트롤에서 켤 수 있다.
+              React 는 `muted` 를 DOM 속성(attribute)으로 안 남기는 경우가 있어 ref 로 속성·프로퍼티를 함께 고정한다. */}
+          <video src={c.video_file} controls playsInline muted ref={muteVideo}
             style={{ width: '100%', borderRadius: 10, display: 'block', background: '#000', maxHeight: 320 }} />
         </div>
       )}
@@ -79,7 +90,7 @@ export default function VideoPlayer({ clip }) {
       {/* YouTube embed */}
       {c.platform === 'youtube' && getYtEmbed(c.url) && !c.video_file && (
         <div style={{ ...videoSizeStyle, marginBottom: 10 }}>
-          <iframe src={getYtEmbed(c.url)}
+          <iframe src={getYtEmbed(c.url, { mute: true })}
             style={{ width: '100%', height: '100%', border: 'none', display: 'block' }}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen />

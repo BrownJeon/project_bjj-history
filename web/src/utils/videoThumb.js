@@ -17,10 +17,11 @@ export function getYtThumb(url) {
 export function getYtEmbed(url, opts = {}) {
   const id = getYtId(url);
   if (!id) return null;
-  const { start, jsapi } = opts;
+  const { start, jsapi, mute } = opts;
   const params = new URLSearchParams({ rel: '0' });
   if (start) params.set('start', String(Math.max(0, Math.floor(start))));
   if (jsapi) params.set('enablejsapi', '1');
+  if (mute) params.set('mute', '1'); // 음소거로 시작(사용자가 플레이어에서 켤 수 있다)
   return `https://www.youtube.com/embed/${id}?${params.toString()}`;
 }
 

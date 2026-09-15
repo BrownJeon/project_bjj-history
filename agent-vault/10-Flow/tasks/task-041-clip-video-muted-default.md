@@ -7,9 +7,9 @@ tags:
 related_tasks:
   - "[[task-036-pickmeup-shared-clip-detail]]"
   - "[[task-039-android-apk]]"
-status: review
+status: done
 created: 2026-09-14
-updated: 2026-09-14
+updated: 2026-09-15
 ---
 
 # task-041 — 참고영상 영상은 음소거로 재생 시작
@@ -36,3 +36,60 @@ updated: 2026-09-14
 - 서버 쪽은 정상: `index.html` `Cache-Control: no-store`, 서빙 번들 = 새 번들.
 - 조치: 앱을 최근 앱 목록에서 밀어 완전히 종료 후 재실행 → 재확인 요청.
 - 진단 요령: 웹 변경이 폰에 반영됐는지는 `grep -a "assets/index-" /var/log/nginx/access.log | grep -a "wv)"` 로 폰이 새 해시를 받았는지 먼저 본다(access.log 는 vhost 구분이 없어 IP·UA·경로로 가린다).
+
+## 2026-09-15 소실·복구 (developer)
+
+### 무엇이 날아갔나 — **소스만**, 운영은 멀쩡했다
+task-042 작업 중 **커밋되지 않은 채 남아 있던 이 task 의 두 파일 변경이 `git reset` 으로 소실**됐다.
+
+```
+reflog  74192c7 HEAD@{0}: reset: moving to origin/main      ← 여기서 날아감
+        74192c7 HEAD@{1}: commit: …토글 탭 위치 표시 점 2개 (task-042)
+```
+task-042 를 커밋한 직후 `origin/main` 으로 reset 이 돌면서, 아직 커밋 안 된 task-041 의
+`VideoPlayer.jsx`·`videoThumb.js` 변경이 함께 지워졌다. 두 파일의 마지막 커밋은 `ca0c862`(task-039)로
+**task-041 은 한 번도 커밋된 적이 없었다.** 백업(`~/.node-local/bjj-backup/`)에도 없었다.
+
+🔴 **다만 "운영에서도 음소거가 되돌아갔다"는 최초 진단은 틀렸다.** 실측:
+- 서빙 번들 `index-C66v7MFj.js`(9/15 12:50, task-042 배포분) 안에 음소거 로직이 **그대로 살아 있었다** —
+  `h.dataset.bjjMuted===h.getAttribute("src")||(h.defaultMuted=!0,h.muted=!0,h.setAttribute("muted",""),…)`, `"mute","1"`.
+- 빌드가 ext4 미러 `~/.node-local/bjj-web/work/src` 에서 돌아가는데, 그 미러에는 reset 전 소스가 남아 있었기 때문이다.
+- 즉 **사용자는 계속 음소거로 보고 있었고, 잃은 것은 git/NFS 의 소스뿐**이었다.
+
+### 무엇으로 복구했나 — 배포 번들의 **소스맵**에서 원본 그대로
+재작성(reimplement)하지 않았다. 배포된 `index-C66v7MFj.js.map` 의 `sourcesContent` 에
+**원본 두 파일이 통째로 들어 있어** 그대로 꺼내 복원했다.
+
+**복구 증명**: 복원한 소스로 다시 빌드하니 배포 중인 번들과 **바이트 단위로 동일** —
+해시도 파일명도 같다(`index-C66v7MFj.js`, md5 `e29cc18a032d45aefe551011fca304bf`).
+소스가 원본과 한 글자도 다르지 않다는 뜻이다. 배포물 변화 0 이라 `pm2 restart` 도 불필요했다.
+
+### 이력서 기록과 실제 코드가 달랐던 점 (기록 정정)
+| 항목 | 이 문서의 기존 서술 | 실제 원본 코드 |
+|------|------------------|--------------|
+| 재적용 방지 방식 | "새 src 가 붙을 때 한 번만 건다" (방법 미기재) | `el.dataset.bjjMuted === el.getAttribute('src')` **가드**로 같은 src 면 조기 return. ref 콜백 자체는 매 렌더 재부착된다 |
+| JSX `muted` | 언급 없음 | `<video … muted ref={muteVideo}>` — JSX 속성도 **함께** 걸려 있다 |
+| 배포 번들 | `index-CyzrG7gc.js` | 현재 서빙은 `index-C66v7MFj.js` (task-042 배포분이 task-041 을 이미 포함) |
+| `ClipsPage` 죽은 코드 줄번호 | `539/549` | 현재 `549/552` (`_ClipDetail_REMOVED` 는 `:440`) — 여전히 죽은 코드, 범위 밖 |
+
+`dataset` 가드가 **핵심**이다. 이게 없으면 리렌더마다 음소거가 다시 걸려 사용자가 소리를 켤 수 없다.
+
+### 검증 (developer 재실행)
+- **`getYtEmbed` 회귀 0 증명**: `ca0c862` 원본과 복원본을 Node 에서 같이 import 해 **기존 호출 형태 42건**
+  (인자1개 · `{}` · `{jsapi}` · `{start}` · `{start,jsapi}` · `start:0` · `start:12.7` × URL 6종) 출력 URL 대조 →
+  **불일치 0건**. `mute` 를 넘기지 않으면 파라미터가 붙지 않으므로 기존 URL 이 바뀔 수 없다.
+  신규: `{mute:true}` → `?rel=0&mute=1`.
+- **헤드리스 CDP 6/6 PASS** (`google-chrome --headless=new` + CDP 직결, Node 20 은 `--experimental-websocket`).
+  실제 `VideoPlayer.jsx` 컴포넌트를 `UIProvider` 로 감싼 격리 하네스에 마운트 —
+  **운영 DB 를 건드리지 않았다**(상세를 열면 `POST /api/clips/:id/usage` 가 기록되므로 의도적으로 회피, 영상 파일만 :3000 에서 GET).
+  1. 열자마자 `muted`·`defaultMuted`·`muted` 속성 모두 true
+  2. `play()` 후에도 음소거 유지(재생 확인 t=0.56s)
+  3. 🔴 **소리 켠 뒤 리렌더 4회에도 `muted=false` 유지** — 회귀 지점 통과
+  4. 소리 켠 채 계속 재생해도 유지
+  5. 다른 영상(src 변경)으로 바꾸면 다시 음소거
+  6. YouTube iframe src = `…?rel=0&mute=1`
+- **역검증(negative control)**: `dataset` 가드를 뺀 회귀판을 같은 하네스에 넣으니 **③④ 가 정확히 FAIL**
+  (소리 켠 뒤 리렌더하면 `muted=true` 로 되꺼짐) → 테스트 ③ 이 공회전이 아님을 증명.
+
+### 커밋
+이번엔 **커밋했다**(소실 재발 방지). 서빙 번들 `index-C66v7MFj.js` (변화 없음).
