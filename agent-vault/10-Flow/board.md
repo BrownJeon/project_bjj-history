@@ -5,6 +5,8 @@ tags:
 # 칸반 보드
 
 ## Backlog
+- **토글 탭 라벨만 14px·볼드 미적용(기존 버그)** — `ToggleTab.jsx:50` 인라인 `font:'inherit'` 가 `.nav-item{font-size:10px}` 를 이겨 **토글 탭(수업·기술·연구) 라벨만 일반 탭보다 눈에 띄게 크다**. `.nav-item.active{font-weight:600}` 도 안 먹는다. task-023 도입 추정, task-042 에서 발견했으나 **요청 범위 밖 + 매일 보는 글자 크기가 달라지는 시각 변경**이라 의도적으로 미수정. 고치면 1줄(`font:'inherit'` 삭제 — `app.css:15` 에 이미 `button{font-family:inherit}`). **사용자 판단 필요.** LOW [[task-042-toggle-tab-position-dots]] (2026-09-15)
+- **`CoachPage.jsx:132` `renderPreview` 가 `content` 없는 리포트 행 하나로 앱 전체를 죽인다** — task-042 dev 가 하네스에서 실제 재현. 범위 밖이라 미수정. 방어 1줄이면 된다. (2026-09-15)
 - **task-039 dev 하네스 `e2e-039.cjs` 기대값 갱신** — `/home/brownjeon/.node-local/bjj-backup/task-039-20260913-235046/harness/e2e-039.cjs` 의 N4·N5·N10 이 앱 상단 여백 **24px** 를 기대하는데, 실기기 수정으로 `--native-top: env(safe-area-inset-top,0px)`(headless 에서 0px)로 바뀌어 **재실행하면 실패**한다. 기대값을 0px(env)로 고친 뒤 `run-all.sh` 재통과 확인. 앱 네이티브 변경 검증에 이 하네스를 다시 쓰기 전에 처리. LOW [[task-039-android-apk]] (2026-09-14)
 - 🔴 **AI 이미지 생성 대상 포트가 죽어 있음 — `backend/.env` `AI_API_BASE=http://192.168.219.100:8001`** — 2026-09-13 HOME-SERVER Authelia 정리 중 발견, Leader 실측: `:8001/health` 무응답(timeout), `:8000/health` 200 이고 `:8000/openapi.json` 에 `/v1/image/generate` 존재. 다른 프로젝트 6곳은 `:8000` 사용, 코드 기본값도 `:8000`(`classVideoService.js:24`, `chainAiVideoGenerator.js:19`). 영향: 수업 영상·체인 AI 영상의 이미지 생성 호출이 실패(텍스트 AI 는 Claude CLI 라 무관). 수정: `.env` 포트를 `8000` 으로 + `pm2 restart bjj` + 이미지 생성 1회 확인(API 키가 8000 게이트웨이에서 유효한지). task-039 와 무관해 별도 처리 (2026-09-13)
 - **`backend/batch-analyze.js` 가 description 을 채울 때 AI 추천 캐시를 비우지 않음** — task-036 에서 앱 경로 5곳(PUT·URL 분석·파일 분석·메모 보완 영상 분석·기술 저장 자동 분석)은 `ai_recommendation = NULL` 무효화를 넣었으나, 수동 배치 스크립트(`:55-58`, raw mysql2, 빈 description 만 채움)는 AI 호출 없이 검증할 수 없어 미변경. 설명이 비어 있던 영상에 "(설명 없음)" 기반 추천이 먼저 캐시된 뒤 배치로 설명이 채워지면 옛 추천이 남는다 → 화면의 `🔄 다시 추천`으로 해소 가능. 배치를 다시 쓸 일이 생기면 UPDATE 에 `ai_recommendation=NULL` 추가. LOW (2026-09-13)
@@ -44,8 +46,10 @@ tags:
 ## Doing
 
 ## Review
+- [[task-041-clip-video-muted-default]] — 참고영상 상세 영상(저장 영상·YouTube)을 음소거로 재생 시작, 켠 소리는 그 영상 동안 유지. `VideoPlayer.jsx`·`videoThumb.js`(웹만, 재설치 불필요). 운영 CDP 5/5, 배포 번들 `index-CyzrG7gc.js`. 🟡 사용자 실기기 확인 후 커밋·푸시 (2026-09-14)
 
 ## Done
+- [[task-042-toggle-tab-position-dots]] — 하단 토글 탭 점을 TheRoute 방식 **위치 표시 점 2개**(라벨 아래·활성일 때만·front=왼쪽, 현재 쪽만 `--accent`)로 교체 + 코치 리포트 알림을 아이콘 우상단 **알림 전용 배지**로 분리(알림 있을 때만 — 예전엔 앰버가 항상 떠 있었다). `ToggleTab.jsx`·`Layout.jsx` 2파일, `toggleNav.js`·`app.css` 무변경(웹만, 재설치 불필요). 🔴 **Leader 의 62px 여유 추정이 틀려 Developer 가 실측 반박**(아이템 이미 56px·여유 1px·아이콘 2.5px 튐) → 점 줄을 **절대 배치**로 바꿔 아이템 높이 무변경(CSS 해시 동일). dev 모듈36/브라우저16/배지7 · Reviewer 역검증(옛 번들에서 배지 검사가 **실패**하는 것까지 확인) · QA 72/72 · Leader 번들·키·mtime·육안 재확인. task-023 초록 점 육안 숙제 해소. **배포·푸시 완료** (2026-09-15)
 - [[task-040-toggle-tab-front-first]] — 하단 토글 탭(수업·기술·연구)을 다른 탭에서 누르면 항상 앞 화면, 같은 탭 재클릭은 토글 유지. `toggleNav.js` `nextTarget` 1곳(웹만, 재설치 불필요). 모듈 8/8·운영 UI CDP 6/6, 사용자 실기기 확인. **배포·푸시 완료** (2026-09-14)
 - [[task-039-android-apk]] — Capacitor 7 원격 URL APK(`BJJ 훈련일지`): 앱 로그인(Custom Tab+302+1회용 코드), `Download/BJJ` 직접 저장, 뒤로가기, 실기기 피드백 2건 반영(탭바↔내비게이션 버튼 겹침 → edge-to-edge margin / 키보드 가림 → MainActivity IME 인셋). 3차 APK `5f6f7d79…`. Authelia 완전 제거. 🟡 사용자 확인 대기: 키보드·저장·뒤로가기·링크. 런북 [[android-apk-build]]. **배포·푸시 완료** (2026-09-14)
 - [[task-038-app-icon]] — 앱 아이콘 T1 "BJJ 워드마크" 브라운(`#795548`·크림 글자·블랙 띠) 생성기 + 웹 아이콘(favicon·apple-touch·PWA 192/512/maskable)·og-image·manifest·Android 적응형 아이콘. 운영 8경로 md5 일치, Reviewer PASS(Low 3). **배포·푸시 완료** (2026-09-14)

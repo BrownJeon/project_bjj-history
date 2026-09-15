@@ -29,7 +29,8 @@ export default function Layout() {
   //    Tab 으로는 닿는다(WCAG 2.4.3 포커스 순서 · 4.1.2). 가리는 것보다 인스턴스를 하나로 만든다.
   //    열림·chatId 는 MasterContext(Provider 1개)에 있으니 어느 바가 렌더되든 동작은 같다.
   const barInLayout = location.pathname.replace(/\/+$/, '') !== '/me';
-  // 분석이 5번째 탭 뒤로 밀리면서 생기는 접근성 저하 보완 — 안 본 코치 리포트가 있으면 점을 초록으로.
+  // 분석이 5번째 탭 뒤로 밀리면서 생기는 접근성 저하 보완 — 안 본 코치 리포트가 있으면 5번째 탭에 알림 배지.
+  // 🔴 task-042 이후: 배지는 **안 본 리포트가 있을 때만** 뜬다(예전엔 앰버 점이 늘 떠 있고 색만 초록으로 바뀌었다).
   const [unseenReport, setUnseenReport] = useState(false);
   // 저장소가 막힌 브라우저에서 토스트 1회 플래그를 남길 수 없을 때만 쓰이는 메모.
   // 마운트당 하나 = 옛 toastShown state 와 같은 수명. 세 짝이 공유해도 toastKey 로 갈린다.
@@ -47,13 +48,13 @@ export default function Layout() {
         const seenAt = readKey(getStorage(), COACH_SEEN_KEY);
         setUnseenReport(hasUnseenReport(latest && latest.created_at, seenAt));
       } catch {
-        /* 401·네트워크·응답 형태 변화 전부 삼키고 점은 앰버로 둔다 */
+        /* 401·네트워크·응답 형태 변화 전부 삼키고 배지는 띄우지 않는다 */
       }
     })();
     return () => { alive = false; };
   }, []);
 
-  // /coach에 들어가면 그 시점을 워터마크로 남기고 점을 앰버로 되돌린다.
+  // /coach에 들어가면 그 시점을 워터마크로 남기고 알림 배지를 내린다.
   // (CoachPage를 고치지 않고 Layout에서 경로만 감지한다)
   useEffect(() => {
     if (location.pathname !== '/coach') return;
@@ -83,7 +84,7 @@ export default function Layout() {
                 key={t.key}
                 pair={t.pair}
                 memo={toggleMemo.current}
-                dotColor={t.coachDot && unseenReport ? 'var(--accent-lt)' : 'var(--amber)'}
+                alert={!!(t.coachDot && unseenReport)}
               />
             );
           }
