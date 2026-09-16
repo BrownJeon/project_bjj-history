@@ -8,6 +8,8 @@ tags:
 
 ## 지금 상태
 
+✅ **task-043(수업기록 음성분석 실패 — whisper PATH) — 수정·배포 완료 (2026-09-16).** 원인은 whisper 가 아니라 **bjj 프로세스 PATH 에 `~/.local/bin` 이 없던 것**(pm2 가 ecosystem 없이 프로세스를 재생성해 저장 env 가 오염 — `pm2 restart` 로는 영구히 안 고쳐진다). 마지막 정상 전사 2026-09-09. **이 저장소 세 번째 같은 회귀**(09-07 yt-dlp, 09-09 task-030 D-2, 이번 whisper) — yt-dlp 는 `resolveYtDlp()` 방어가 있어 살아남고 whisper 만 죽었다. 2층 수정: ① `voiceAnalysis.js` 에 `resolveWhisper()`(ytdlp 와 동형) ② `pm2 delete && start ecosystem && save`(다운타임 10초). Reviewer PASS. 🔴 **QA 는 "통과" 보고했으나 실제로는 잡 2건이 `error` 였다 — 무음 오디오를 써서 전사 0자 → JSON 실패, DB 상태 미확인**(ACTIVE "QA 검증 관행" 패턴 재발, 누적). Leader 가 실음성으로 재검증(45초 → 242자 한국어). 🟡 **2026-09-10 실패 잡(수업 158, 31분)의 원본이 `/tmp/voice-chunks-1789005996602/` 에 남아 있어 재업로드 없이 복구 가능 — 13~15분, 사용자 판단 대기.** 🟡 오늘 실패 2건은 원본이 이미 삭제돼 재업로드 필요. 상세 [[task-043-whisper-path-resolution]].
+
 ✅ **task-039(Android APK 앱 `BJJ 훈련일지`) — 배포·푸시 완료 (2026-09-14).** 3차 APK md5 `5f6f7d79…`(사용자 폰 설치, Android 15). 실기기 피드백 2건 반영: 하단 탭바↔내비게이션 버튼 겹침(스크린샷으로 해소 확인) · 키보드가 입력창 가림(MainActivity IME 인셋). 🟡 **사용자 확인 대기: 키보드·저장(`Download/BJJ`)·뒤로가기·링크.** 🔴 **업데이트 규칙: 웹 변경 = 웹 배포만(재설치 불필요) / 네이티브(아이콘·권한·플러그인·config·테마·MainActivity·manifest) = APK 재빌드 — 착수 전에 사용자에게 재설치 필요를 먼저 고지.** 빌드·함정 [[android-apk-build]], 상세 [[task-039-android-apk]]. Authelia 완전 제거 완료.
 
 ✅ **task-038(앱 아이콘 브라운 BJJ 워드마크) — 배포·푸시 완료 (2026-09-14).** 운영 아이콘 8경로 md5 = repo 산출. 도안 변경은 `web/scripts/gen-app-icons.mjs` 상수만. 상세 [[task-038-app-icon]].
