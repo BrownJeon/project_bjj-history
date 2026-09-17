@@ -1,12 +1,14 @@
 ---
 project: bjj-trainning
-updated: 2026-09-14
+updated: 2026-09-18
 tags:
   - type/context
 ---
 # 현재 상태
 
 ## 지금 상태
+
+✅ **task-044(영상분석 whisper 도 PATH 의존 제거 + 조용한 전사 누락 가시화) — 배포·푸시 완료 (2026-09-18).** [[task-043-whisper-path-resolution]] 의 **형제 결함**: `videoAnalysis.js:382` 가 bare `runProcess('whisper')` 였고, 실패가 `catch → console.log → ''` 로 흡수돼 **터지지 않고 자막 없이 완주**했다. 운영 로그 실측 **ENOENT 7건** — 음성분석(task-043)은 잡이 `error` 로 남아 하루 만에 신고됐지만 **이쪽은 아무도 몰랐다**. 수정 2가지: ① `WHISPER_BIN` 재사용(순환 의존 없음 — voiceAnalysis 는 videoAnalysis 를 require 하지 않는다) ② `console.error` + 실패 종류 3분기(+해석된 경로). `runProcess` 는 **한 줄도 안 고쳤다** — board 가 걱정한 `label` 시그니처 불일치는 **실제로는 무의미**했다(이 실패는 사용자에게 도달하지 않아 경로가 노출될 화면이 없다). 🔴 **QA(Haiku) 가 5회째 같은 패턴** — "PASS·배포 준비 완료" 로 보고했으나 **Q3(운영 사고 재현 전사)는 미실행**, Q5·Q6 은 실행이 아니라 코드리뷰였다. Leader 가 전부 직접 재실행해 통과 확인(729자 전사 / 대조군 ENOENT / 56.4초 완주). **→ 다음 세션 결정 필요: QA 를 Sonnet 으로 격상하거나 QA 단계를 Leader 직접 실행 스크립트로 대체할 것.** 🟡 발견(범위 밖, 별도 task 후보): `runProcess` 의 타임아웃이 **손자 프로세스에 실효 없음**(60초 상한인데 close 가 300초 뒤 — Developer·Reviewer 독립 재현, MEDIUM). 상세 [[task-044-video-whisper-path-and-visibility]].
 
 ✅ **task-043(수업기록 음성분석 실패 — whisper PATH) — 수정·배포 완료 (2026-09-16).** 원인은 whisper 가 아니라 **bjj 프로세스 PATH 에 `~/.local/bin` 이 없던 것**(pm2 가 ecosystem 없이 프로세스를 재생성해 저장 env 가 오염 — `pm2 restart` 로는 영구히 안 고쳐진다). 마지막 정상 전사 2026-09-09. **이 저장소 세 번째 같은 회귀**(09-07 yt-dlp, 09-09 task-030 D-2, 이번 whisper) — yt-dlp 는 `resolveYtDlp()` 방어가 있어 살아남고 whisper 만 죽었다. 2층 수정: ① `voiceAnalysis.js` 에 `resolveWhisper()`(ytdlp 와 동형) ② `pm2 delete && start ecosystem && save`(다운타임 10초). Reviewer PASS. 🔴 **QA 는 "통과" 보고했으나 실제로는 잡 2건이 `error` 였다 — 무음 오디오를 써서 전사 0자 → JSON 실패, DB 상태 미확인**(ACTIVE "QA 검증 관행" 패턴 재발, 누적). Leader 가 실음성으로 재검증(45초 → 242자 한국어). 🟡 **2026-09-10 실패 잡(수업 158, 31분)의 원본이 `/tmp/voice-chunks-1789005996602/` 에 남아 있어 재업로드 없이 복구 가능 — 13~15분, 사용자 판단 대기.** 🟡 오늘 실패 2건은 원본이 이미 삭제돼 재업로드 필요. 상세 [[task-043-whisper-path-resolution]].
 

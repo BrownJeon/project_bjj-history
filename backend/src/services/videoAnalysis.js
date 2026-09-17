@@ -7,6 +7,12 @@ const { getFramesDir, getVideoDir, frameWebPath, videoWebPath, ensureDir } = req
 // 🔴 yt-dlp 는 PATH 가 아니라 해석된 절대경로로 부른다 — 이유는 services/ytdlp.js 상단 주석 참고
 //   (pm2 프로세스가 ecosystem 없이 재생성되면 PATH 에서 ~/.local/bin 이 빠져 전부 죽는다).
 const { YTDLP_BIN } = require('./ytdlp');
+// 🔴 whisper 도 PATH 가 아니라 해석된 절대경로로 부른다 — 이유는 services/voiceAnalysis.js 상단 주석 참고
+//   (같은 pm2 사고로 ~/.local/bin 이 빠지면 bare `spawn('whisper')` 가 ENOENT 로 떨어진다).
+//   여기가 yt-dlp 와 다른 점: 영상 분석의 전사 실패는 catch 되어 `''` 로 흡수되므로 **터지지 않고
+//   자막 없이 완주한다** — 운영 로그에 ENOENT 7건이 쌓이는 동안 아무도 몰랐다(task-044).
+//   voiceAnalysis → videoAnalysis 방향 require 는 없으므로 순환 의존이 아니다.
+const { WHISPER_BIN } = require('./voiceAnalysis');
 
 const INSTAGRAM_COOKIE_PATH  = '/home/brownjeon/.node-local/bjj-data/instagram-cookies.txt';
 const FIREFOX_PROFILE_DIR    = '/home/brownjeon/.mozilla/firefox';
@@ -376,17 +382,61 @@ async function extractFrames(videoPath, framePrefix) {
   return frames;
 }
 
+/**
+ * 전사 실패의 **종류**를 기계가 읽는 이름으로 돌려준다(task-044 D-2).
+ *
+ * 🔴 `runProcess`(이 파일) 는 실패 사유를 오직 `Error.message` 로만 알려준다 — voiceAnalysis 의
+ *    runProcess 와 달리 `label`·`code` 같은 표시를 붙이지 않는다. 그 함수는 이번 범위에서
+ *    **수정 금지**이므로, 여기서는 그 함수가 만드는 문구를 기준으로 판정한다:
+ *      · ENOENT      → `${cmd} 명령이 설치되어 있지 않습니다`      (287-289행)
+ *      · 타임아웃/시그널 → `${cmd} 강제 종료 (signal: …, timeout: …ms)` (295행)
+ *    문구를 바꾸면 여기도 같이 고쳐야 한다.
+ * @returns {'missing-binary'|'timeout'|'other'}
+ */
+function classifyWhisperFailure(message) {
+  const m = String(message || '');
+  if (/명령이 설치되어 있지 않습니다/.test(m)) return 'missing-binary';
+  if (/강제 종료 \(signal:/.test(m))          return 'timeout';
+  return 'other';
+}
+
+/**
+ * 영상에서 음성 전사를 뽑는다. **실패해도 던지지 않고 `''` 를 돌려준다** — 전사가 없어도
+ * 프레임만으로 분석을 이어가는 것이 맞기 때문이다(호출부 2곳의 흐름은 그대로 둔다).
+ *
+ * 🔴 **바로 그 관용이 장애를 숨겼다.** 2026-09-18 실측: 운영 로그에 "Whisper 스킵: whisper
+ *    명령이 설치되어 있지 않습니다"(ENOENT)가 7건 쌓여 있었는데, 분석은 전부 **정상 완료로**
+ *    끝나 사용자도 운영자도 몰랐다(같은 원인의 수업기록 음성분석은 잡이 `error` 로 남아
+ *    하루 만에 신고됐다 — task-043). 그래서 여기서는
+ *      ① whisper 를 PATH 가 아니라 `WHISPER_BIN`(해석된 절대경로)으로 부르고,
+ *      ② 실패를 `console.log` 가 아니라 `console.error` 로, **종류를 구분해서** 남긴다.
+ *    전사 길이는 호출부의 `hasAudio= … transcriptLen= …` 로그가 이미 찍는다 — 중복 금지.
+ */
 async function getWhisperTranscript(videoPath, audioPath, txtPath) {
+  // 어느 단계에서 깨졌는지(오디오 추출인지 전사인지) 로그로 구분하기 위한 표시.
+  let step = 'ffmpeg(오디오 추출)';
   try {
     await runProcess('ffmpeg', ['-y', '-i', videoPath, '-vn', '-q:a', '5', audioPath], 60000);
-    await runProcess('whisper', [
+    step = 'whisper(전사)';
+    await runProcess(WHISPER_BIN, [
       audioPath, '--model', 'tiny',
       '--output_format', 'txt', '--output_dir', '/tmp',
       '--verbose', 'False',
     ], 60000);
     return (await fs.readFile(txtPath, 'utf-8').catch(() => '')).trim();
   } catch (e) {
-    console.log('[analyze-video] Whisper 스킵:', e.message);
+    const msg  = (e && e.message) || String(e);
+    const kind = classifyWhisperFailure(msg);
+    // "Whisper 스킵" 이라는 말머리는 그대로 둔다 — 기존 로그 grep 이 계속 통하게 하기 위해서다.
+    if (kind === 'missing-binary') {
+      // 🔴 운영자는 **어느 파일을** 못 찾았는지 알아야 한다(task-043 주석과 같은 원칙).
+      //    해석된 경로를 함께 남긴다 — PATH 가 깨진 건지 설치 위치가 옮겨간 건지 구분된다.
+      console.error(`[analyze-video] Whisper 스킵(실행 파일 없음) step=${step} 해석된 whisper 경로=${WHISPER_BIN}: ${msg}`);
+    } else if (kind === 'timeout') {
+      console.error(`[analyze-video] Whisper 스킵(시간 초과·강제 종료) step=${step}: ${msg}`);
+    } else {
+      console.error(`[analyze-video] Whisper 스킵(그 외) step=${step}: ${msg}`);
+    }
     return '';
   }
 }
@@ -847,4 +897,8 @@ module.exports = {
   buildPhotoPrompt, photoAnalysisTimeoutMs,
   PHOTO_DOWNLOAD_CONCURRENCY, PHOTO_ANALYSIS_BASE_MS, PHOTO_ANALYSIS_PER_PHOTO_MS,
   PHOTO_ANALYSIS_MAX_MS,
+  // task-044: 전사 경로. 하네스가 `WHISPER_PATH` 를 없는 경로로 바꿔 넣고 (a) 로그가 실제로
+  // 찍히는지 (b) 반환이 `''` 인지 (c) 분석이 죽지 않는지를 직접 잰다(역검증). 함수는 무변경,
+  // export 만 추가했다 — task-033·034 가 같은 이유로 내부 함수를 열어 둔 것과 같은 방식이다.
+  getWhisperTranscript, classifyWhisperFailure, WHISPER_BIN,
 };
