@@ -19,6 +19,24 @@ jobs:
         working-directory: /home/brownjeon/NFS/homes/brownjeon/project/bjj-trainning
         run: npm ci --no-audit --no-fund --omit=dev
 
+      # web/ 는 Vite 라 NFS noexec 위에서 빌드할 수 없다 — ext4 미러에서 빌드 후
+      # 산출물만 pm2가 서빙하는 로컬 경로로 복사한다 (webhook-deploy/deploy-bjj.sh 와 동일 절차).
+      - name: Sync web to ext4 mirror
+        run: |
+          rsync -a /home/brownjeon/NFS/homes/brownjeon/project/bjj-trainning/web/src/ \
+                /home/brownjeon/.node-local/bjj-web/work/src/ --delete
+          cp /home/brownjeon/NFS/homes/brownjeon/project/bjj-trainning/web/index.html \
+             /home/brownjeon/.node-local/bjj-web/work/index.html
+          rsync -a /home/brownjeon/NFS/homes/brownjeon/project/bjj-trainning/web/public/ \
+                /home/brownjeon/.node-local/bjj-web/work/public/ --delete
+
+      - name: Build frontend
+        working-directory: /home/brownjeon/.node-local/bjj-web/work
+        run: |
+          npm ci --no-audit --no-fund
+          npm run build
+          rsync -a dist/ /home/brownjeon/.node-local/bjj-web/dist/ --delete
+
       - name: Reload PM2
         run: pm2 reload bjj --update-env
 
