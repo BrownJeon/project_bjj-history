@@ -42,11 +42,12 @@ jobs:
 
       - name: Health check
         # pm2 reload 직후 curl 한 번은 Express 가 아직 바인딩되기 전이라 거의 항상 거짓
-        # 실패로 끝난다 — 이 앱은 마이그레이션 점검·cron 등록·백필 착수 등 기동 시 부수
-        # 작업이 있어 바인딩까지 수초~수십 초 걸릴 수 있다. 최대 30회 1초 간격 재시도.
+        # 실패로 끝난다 — 마이그레이션 점검·cron 등록·백필 착수 등 기동 부수 작업 탓에
+        # 바인딩까지 수초~1분 이상 걸릴 수 있다(실측: 연속 배포 시 최대 63초).
+        # 최대 90회 1초 간격 재시도.
         run: |
           ok=0
-          for i in $(seq 1 30); do
+          for i in $(seq 1 90); do
             if curl -fsS http://127.0.0.1:3000/ -o /dev/null; then ok=1; break; fi
             sleep 1
           done
