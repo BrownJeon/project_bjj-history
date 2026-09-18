@@ -349,6 +349,9 @@ export default function CalendarPage() {
                               </span>
                             )}
                           </div>
+                          <div style={{ fontSize: 10, color: 'var(--text3)', marginBottom: 5 }}>
+                            보통 20~30분 정도 걸려요 — 창을 닫아도 계속 진행됩니다
+                          </div>
                           <div className="voice-progress-bar" />
                         </div>
                       );
@@ -635,6 +638,9 @@ function ClassListCard({ c, clips, onEdit, onOpen, voiceProgress }) {
                 )}
               </div>
               <div className="voice-progress-bar" />
+              <div style={{ fontSize: 10, color: 'var(--text3)', marginTop: 4 }}>
+                보통 20~30분 정도 걸려요 — 창을 닫아도 계속 진행됩니다
+              </div>
             </div>
           )}
         </div>

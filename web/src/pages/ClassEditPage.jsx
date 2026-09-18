@@ -172,7 +172,7 @@ export default function ClassEditor({ initial, onClose, onSaved }) {
       // onClose() 전에 파일 스냅샷 캡처 (언마운트 후 React state 소멸 방지)
       const voiceSnapshot = { ...dateVoiceFiles };
       const hasVoice = Object.keys(voiceSnapshot).length > 0;
-      showToast(hasVoice ? '저장됨 — 음성 분석 백그라운드 시작' : (isEdit ? '수정되었습니다' : '추가되었습니다'));
+      showToast(hasVoice ? '저장됨 — 음성 분석 시작 (보통 20~30분 소요)' : (isEdit ? '수정되었습니다' : '추가되었습니다'));
       onSaved && onSaved();
       onClose();
       startVoiceUploads(savedId, voiceSnapshot);
