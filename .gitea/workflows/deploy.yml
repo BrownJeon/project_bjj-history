@@ -41,6 +41,12 @@ jobs:
         run: pm2 reload bjj --update-env
 
       - name: Health check
+        # pm2 reload 직후 curl 한 번은 Express 가 바인딩되기 전이라 거의 항상 거짓 실패로
+        # 끝난다(모든 과거 배포 로그가 이 패턴) — 최대 5회 1초 간격 재시도.
         run: |
-          sleep 3
-          curl -fsS http://127.0.0.1:3000/ -o /dev/null || (pm2 logs bjj --lines 30 --nostream && exit 1)
+          ok=0
+          for i in 1 2 3 4 5; do
+            if curl -fsS http://127.0.0.1:3000/ -o /dev/null; then ok=1; break; fi
+            sleep 1
+          done
+          [ "$ok" = 1 ] || (pm2 logs bjj --lines 30 --nostream && exit 1)
