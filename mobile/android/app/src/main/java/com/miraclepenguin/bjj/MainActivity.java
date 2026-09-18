@@ -2,6 +2,7 @@ package com.miraclepenguin.bjj;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import androidx.core.graphics.Insets;
@@ -27,9 +28,16 @@ public class MainActivity extends BridgeActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM) return;
         WebView webView = getBridge() != null ? getBridge().getWebView() : null;
-        if (webView == null) return;
+
+        // 스파링 기록의 "직접 입력" 칸에서 안드로이드 시스템 Autofill(삼성 자동완성 등)이
+        // 예전에 타이핑했던 값을 목록으로 띄워 키보드를 가리는 문제(2026-09-18) — 웹 쪽 autocomplete="off"는
+        // WebView 내부 입력창에 무시되므로, WebView 자체를 Autofill 트리에서 제외해 근본 차단한다.
+        if (webView != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            webView.setImportantForAutofill(View.IMPORTANT_FOR_AUTOFILL_NO_EXCLUDE_DESCENDANTS);
+        }
+
+        if (webView == null || Build.VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM) return;
 
         ViewCompat.setOnApplyWindowInsetsListener(webView, (v, windowInsets) -> {
             Insets bars = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout());
