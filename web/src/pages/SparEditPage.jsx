@@ -126,7 +126,7 @@ export default function SparEditor({ classId, sparDay, onClose, onSaved, initial
     return mergeUnique(sorted, BASE_TECHNIQUES, techniques.map(t => t.name));
   }, [classes, techniques]);
 
-  const tapTechSuggestions = useMemo(() => {
+  const failTechSuggestions = useMemo(() => {
     const freq = {};
     classes.forEach(c => {
       (c.spar_days || []).forEach(sd => {
@@ -288,9 +288,9 @@ export default function SparEditor({ classId, sparDay, onClose, onSaved, initial
       if (s.outcome) parts.push(s.outcome === 'win' ? '이겼어' : '배웠어');
       let line = `[${parts.join(' · ')}]`;
       const good = s.successTried.filter(t => t.success);
-      const tapTech = s.successTried.filter(t => !t.success);
+      const failTech = s.successTried.filter(t => !t.success);
       if (good.length) line += `\n  성공한 기술: ${good.map(t => t.name).join(', ')}`;
-      if (tapTech.length) line += `\n  탭 당한 기술: ${tapTech.map(t => t.name).join(', ')}`;
+      if (failTech.length) line += `\n  안 된 기술(시도했지만 실패): ${failTech.map(t => t.name).join(', ')}`;
       if ((s.weak || []).length) line += `\n  성장 포인트: ${s.weak.join(', ')}`;
       if (s.note) line += `\n  메모: ${s.note}`;
       return line;
@@ -415,7 +415,7 @@ export default function SparEditor({ classId, sparDay, onClose, onSaved, initial
             session={s}
             weakAutocomplete={weakFreqSuggestions}
             successAutocomplete={successFreqSuggestions}
-            tapTechSuggestions={tapTechSuggestions}
+            failTechSuggestions={failTechSuggestions}
             opponentSuggestions={opponentSuggestions}
             causes={causes}
             onAddCause={addCause}
@@ -542,14 +542,14 @@ function ChipSection({ label, values, baseChips, autocompleteList, color, onTogg
         })}
       </div>
 
-      {/* Layer 3: 직접 입력 + datalist autocomplete */}
+      {/* Layer 3: 직접 입력 — 모바일에서 브라우저 자동완성 목록이 키보드를 가려 제거함(datalist 미사용) */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
         <input
-          list={inputId}
           value={input}
           onChange={e => setInput(e.target.value)}
           onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); handleAdd(); } }}
-          placeholder="직접 입력 또는 검색…"
+          placeholder="직접 입력…"
+          autoComplete="off"
           style={{
             flex: 1, padding: '6px 12px', borderRadius: 20,
             border: '1px dashed var(--border-med)',
@@ -557,11 +557,6 @@ function ChipSection({ label, values, baseChips, autocompleteList, color, onTogg
             fontSize: 12, outline: 'none',
           }}
         />
-        <datalist id={inputId}>
-          {autocompleteList.filter(o => !values.includes(o)).map(o => (
-            <option key={o} value={o} />
-          ))}
-        </datalist>
         {input.trim() && (
           <button onClick={handleAdd} style={{
             width: 26, height: 26, borderRadius: 13,
@@ -669,6 +664,7 @@ function FailDetail({ item, causes, onToggleCause, onReaction, onAddCause }) {
               if (e.key === 'Escape') { setAdding(false); setNewName(''); }
             }}
             placeholder="새 원인 태그 (예: 무게중심)"
+            autoComplete="off"
             style={{
               flex: 1, padding: '6px 12px', borderRadius: 20,
               border: '1px dashed var(--border-med)',
@@ -696,6 +692,7 @@ function FailDetail({ item, causes, onToggleCause, onReaction, onAddCause }) {
         onChange={e => onReaction(e.target.value)}
         maxLength={200}
         placeholder="상대가 어떻게 막았나요? (선택)"
+        autoComplete="off"
         style={{
           width: '100%', padding: '6px 10px', borderRadius: 8,
           border: '1px solid var(--border-med)',
@@ -708,14 +705,14 @@ function FailDetail({ item, causes, onToggleCause, onReaction, onAddCause }) {
 }
 
 function GrowthSessionCard({
-  idx, session, weakAutocomplete, successAutocomplete, tapTechSuggestions,
+  idx, session, weakAutocomplete, successAutocomplete, failTechSuggestions,
   opponentSuggestions, causes, onAddCause, onRemove, onUpdate,
 }) {
   const [expanded, setExpanded] = useState(false);
-  const [customTapTech, setCustomTapTech] = useState('');
+  const [customFailTech, setCustomFailTech] = useState('');
 
   const goodTechs = session.successTried.filter(t => t.success).map(t => t.name);
-  const tapTechs  = session.successTried.filter(t => !t.success).map(t => t.name);
+  const failTechs = session.successTried.filter(t => !t.success).map(t => t.name);
 
   // 실패 항목은 **배열 전체에서의 위치(i)** 를 들고 다닌다. 원인·리액션을 그 항목 객체에
   // 직접 쓰기 위해서다 — 인덱스로 짝지은 별도 배열이 아니므로 항목을 지워도 짝이 밀리지 않는다.
@@ -754,19 +751,19 @@ function GrowthSessionCard({
   }
 
   // 안 된 기술 handlers — 선택을 해제하면 그 항목의 원인·리액션도 같이 사라진다(항목 내부에 있으므로)
-  function toggleTapTech(name) {
-    if (tapTechs.includes(name)) {
+  function toggleFailTech(name) {
+    if (failTechs.includes(name)) {
       const i = session.successTried.findIndex(t => t.name === name && !t.success);
       if (i >= 0) onUpdate('successTried', session.successTried.filter((_, j) => j !== i));
     } else {
       onUpdate('successTried', [...session.successTried, newSuccessItem(name, false)]);
     }
   }
-  function addCustomTapTech() {
-    const val = customTapTech.trim();
-    if (val && !tapTechs.includes(val))
+  function addCustomFailTech() {
+    const val = customFailTech.trim();
+    if (val && !failTechs.includes(val))
       onUpdate('successTried', [...session.successTried, newSuccessItem(val, false)]);
-    setCustomTapTech('');
+    setCustomFailTech('');
   }
 
   /** successTried[i] 에 부분 갱신 — 원인·리액션은 항목 객체 안에 저장된다 */
@@ -784,9 +781,9 @@ function GrowthSessionCard({
     onUpdate(key, Math.max(0, (parseInt(session[key]) || 0) + delta));
   }
 
-  const tapTechChips = [
-    ...tapTechs,
-    ...tapTechSuggestions.filter(s => !tapTechs.includes(s)).slice(0, 8),
+  const failTechChips = [
+    ...failTechs,
+    ...failTechSuggestions.filter(s => !failTechs.includes(s)).slice(0, 8),
   ];
 
   return (
@@ -821,10 +818,10 @@ function GrowthSessionCard({
           뭐가 안 됐어요?
         </div>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-          {tapTechChips.map(chip => {
-            const sel = tapTechs.includes(chip);
+          {failTechChips.map(chip => {
+            const sel = failTechs.includes(chip);
             return (
-              <button key={chip} onClick={() => toggleTapTech(chip)} style={{
+              <button key={chip} onClick={() => toggleFailTech(chip)} style={{
                 padding: '5px 11px', borderRadius: 20,
                 background: sel ? 'var(--red-dim, #fde8e8)' : 'var(--surface)',
                 color: sel ? 'var(--red)' : 'var(--text2)',
@@ -836,11 +833,11 @@ function GrowthSessionCard({
           })}
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
             <input
-              list={`taptech-${idx}`}
-              value={customTapTech}
-              onChange={e => setCustomTapTech(e.target.value)}
-              onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addCustomTapTech(); } }}
+              value={customFailTech}
+              onChange={e => setCustomFailTech(e.target.value)}
+              onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addCustomFailTech(); } }}
               placeholder="직접 입력"
+              autoComplete="off"
               style={{
                 padding: '5px 9px', borderRadius: 20,
                 border: '1px dashed var(--border-med)',
@@ -848,14 +845,8 @@ function GrowthSessionCard({
                 fontSize: 12, outline: 'none', width: 90,
               }}
             />
-            {/* 기존 autocomplete 재사용 — 지금까지 적은 실패 기술 빈도순 */}
-            <datalist id={`taptech-${idx}`}>
-              {tapTechSuggestions.filter(o => !tapTechs.includes(o)).map(o => (
-                <option key={o} value={o} />
-              ))}
-            </datalist>
-            {customTapTech.trim() && (
-              <button onClick={addCustomTapTech} style={{
+            {customFailTech.trim() && (
+              <button onClick={addCustomFailTech} style={{
                 width: 24, height: 24, borderRadius: 12,
                 border: 'none', background: 'var(--red)',
                 color: '#fff', fontSize: 16, cursor: 'pointer',
@@ -984,14 +975,11 @@ function GrowthSessionCard({
           <div className="field" style={{ marginBottom: 0 }}>
             <label>상대 이름</label>
             <input
-              list={`opp-${idx}`}
               value={session.opponent}
               onChange={e => onUpdate('opponent', e.target.value)}
               placeholder="이름 (선택)"
+              autoComplete="off"
             />
-            <datalist id={`opp-${idx}`}>
-              {opponentSuggestions.map(o => <option key={o} value={o} />)}
-            </datalist>
           </div>
 
           {/* 탭 수 */}
