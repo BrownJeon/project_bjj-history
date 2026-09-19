@@ -826,7 +826,7 @@ function GrowthSessionCard({
             return (
               <button key={belt} onClick={() => onUpdate('level', active ? '' : belt)} style={{
                 padding: '6px 13px', borderRadius: 20,
-                border: active ? '2px solid #000' : '1px solid transparent',
+                border: active ? '2px solid #000' : '2px solid transparent',
                 background: active ? pill.active : pill.bg,
                 color: active ? pill.activeText : pill.text,
                 fontSize: 12, fontWeight: active ? 700 : 500,
