@@ -41,8 +41,14 @@
 | 2 | 🔴 webhook 자동배포가 이미 등록됨 → 이중 배포 위험 | 미해소 | 사용자 (§9) |
 | 3 | 🔴 `@workspace/auth-oauth` 의 `file:` 상대경로가 릴리스 깊이에서 깨짐 | 미해소 | developer + 사용자 승인 |
 | 4 | ⚠️ `web/` 에 `package-lock.json` 이 없어 `npm ci` 불가 | 미해소 | developer |
-| 5 | `/home/brownjeon/apps/` 운영 루트 존재 | 확인 필요 | 사용자 |
 | 6 | `shared/.env`·`shared/backend/.env` 서버 배치 | 미해소 | 사용자 (§9) |
+
+> **2026-09-19 실측 — 운영 루트는 이미 준비돼 있다.**
+> `/home/brownjeon/apps/` 는 존재하고 현재 `voicevault/` 하나가 들어 있다.
+> **프로젝트별 base 디렉토리는 사람이 만들 필요가 없다** — `release.sh` 가 첫 배포에서
+> `git clone --mirror` 와 `mkdir -p "$BASE/shared"` 로 만든다.
+> 사람이 미리 해야 하는 것은 **`shared/.env` 배치 하나뿐**이다(없으면 첫 배포가 의도적으로 실패한다).
+
 
 ### 3번 상세 — `npm ci` 가 깨지는 이유
 
