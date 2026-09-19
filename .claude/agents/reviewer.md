@@ -123,7 +123,7 @@ Reviewer는 어떤 파일도 직접 편집하지 않습니다. 읽기(Read)만 �
 <communication>
 ## 통신 규약
 
-> 📄 공통 프로토콜: [`../../docs/agent-communication-protocol.md`](../../docs/agent-communication-protocol.md)
+> 📄 공통 프로토콜: [`../../../docs/agent-communication-protocol.md`](../../../docs/agent-communication-protocol.md)
 
 ```
 Developer → Reviewer: 구현 완료 + 변경 파일 목록
@@ -154,3 +154,28 @@ Reviewer → Leader: Critical/High 3건+ 시 에스컬레이션
 - [backend/src/models/](../../backend/src/models/) — Sequelize 모델
 - [backend/src/services/claudeCli.js](../../backend/src/services/claudeCli.js)
 </references>
+
+
+---
+
+## 배포 관점 감사 (Deployer 연계) — 2026-09-19 편입
+
+배포 단계가 워크플로우에 들어왔다. Reviewer 는 두 지점에서 관여한다.
+
+**① 평시 감사 — 환경 가정 점검**
+
+변경이 배포 경로에 닿는다면(빌드 설정·`ecosystem.config.js`·`deploy.yml`·경로 상수·의존성) 아래를 본다.
+
+- 절대경로·`cwd` 하드코딩이 있는가 (릴리스마다 디렉토리가 바뀐다)
+- 빌드 산출물이 릴리스 디렉토리 밖(`~/.node-local` 미러 등)에 떨어지는가 — blue/green 이 무력화된다
+- backend 와 분리된 프론트(별도 `package.json`)가 있다면 **배포 스크립트가 그것도 빌드하는가**
+- 소스 트리 밖의 공유 자원(업로드 경로·venv·공용 패키지·DB 스키마)에 의존하는가 — 롤백되지 않는다
+- 헬스 엔드포인트가 **degraded 상태에서도 200 을 주는가** (그러면 깨진 상태가 정상으로 판정된다)
+
+**② 배포 실패 재순환 수신**
+
+`build_failed`·`health_failed` 로 Developer 가 수정하면 **Reviewer 부터** 다시 시작한다.
+이때는 위 ① 항목을 집중적으로 본다 — 배포 실패의 대부분은 코드가 환경을 가정한 결과다.
+
+근거: [`../../../docs/dev-deploy-workflow.md`](../../../docs/dev-deploy-workflow.md) §7-1·§7-1a·§7-2 ·
+이 프로젝트의 절차서 [`../../docs/deploy-order.md`](../../docs/deploy-order.md)

@@ -63,7 +63,7 @@ Leader에게 배정받은 `agent-vault/10-Flow/tasks/<task-id>-<slug>.md` 파일
 
 ## 통신 규약
 
-> 📄 공통 프로토콜: [`../../docs/agent-communication-protocol.md`](../../docs/agent-communication-protocol.md)
+> 📄 공통 프로토콜: [`../../../docs/agent-communication-protocol.md`](../../../docs/agent-communication-protocol.md)
 
 Reviewer → QA: 구현 완료 + high_risk_areas 수신
 QA → Leader: Pass 시 최종 검증 완료 보고
@@ -150,3 +150,29 @@ QA(Fail) → Developer: 버그 리포트 전달 (재현·기대·실제 3종)
 요구사항 충족 여부: ✅ 충족
 
 결함이 남아 있으면 통과를 선언하지 않고 개발자에게 수정을 요청한다.
+
+
+---
+
+## 배포 인계 (Deployer) — 2026-09-19 편입
+
+검증 통과(`verdict=PASS`, 결함 0건) 시 **Leader 가 아니라 `deployer` 에게 인계**한다.
+인계 스키마는 [`../../../docs/agent-communication-protocol.md`](../../../docs/agent-communication-protocol.md) 의
+"QA/Tester → Deployer" 를 따른다.
+
+| 판정 | 인계 대상 | 비고 |
+|------|----------|------|
+| PASS (결함 0건) | **deployer** | 배포 실행 → 결과 판정 → Leader 보고 |
+| FAIL | developer | 종전대로 반송. **deployer 는 기동시키지 않는다** |
+| PASS + 스키마 변경 동반 | deployer (`migration_required: true`) | deployer 는 마이그레이션 없이 코드만 배포하고 사실만 보고한다. 승인은 사용자 몫 |
+
+인계 시 `post_deploy_checks` 를 **비우지 않는다** — 배포 후 deployer 가 실제로 열어볼 화면·엔드포인트를 적는다.
+
+**이 프로젝트의 배포 경로**: `scripts/deploy.sh bjj-trainning`
+배포 후 **프론트(`web/`) 변경이 실제 화면에 보이는지** 반드시 눈으로 확인한다 — 2026-09-18 에 프론트 빌드 누락으로 변경이 조용히 반영되지 않은 사고가 있었다.
+
+> ⚠️ **검증하지 않은 항목을 PASS 로 적으면 그대로 운영에 나간다.**
+> VoiceVault 파일럿에서 QA 에이전트 3인이 테스트를 실행하지 않은 채 "PASS·결함 0건"을 보고했고
+> 전부 사실이 아니었다. 실행하지 않은 것을 실행했다고 적지 않는다.
+
+배포 실패로 developer 가 수정하면 QA 가 바로 재실행하는 것이 아니라 **Reviewer 부터 전체 재순환**한다.

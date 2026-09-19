@@ -172,7 +172,7 @@ safeParse, 정적 파일    → 하단 유틸 섹션 (338~355번줄)
 
 ## 통신 규약
 
-> 📄 공통 프로토콜: [`../../docs/agent-communication-protocol.md`](../../docs/agent-communication-protocol.md)
+> 📄 공통 프로토콜: [`../../../docs/agent-communication-protocol.md`](../../../docs/agent-communication-protocol.md)
 
 Leader → Developer → **Reviewer** → QA
 QA(Fail) → Developer: 버그 리포트 수신 → 수정 → Reviewer 재인계
@@ -201,3 +201,30 @@ QA가 결함을 보고하면:
 1. 지목된 파일·라인을 읽어 원인 파악
 2. 수정 후 변경 파일명, 변경 라인, 변경 이유를 QA에게 명확히 보고
 3. 수정 후 테스트 환경 재세팅이 필요하면 갱신된 명령을 다시 전달
+
+
+---
+
+## 배포 실패 수신 시 (Deployer 연계) — 2026-09-19 편입
+
+배포는 `deployer` 가 실행한다. 실패하면 그 리포트가 Developer 에게 **직접** 온다.
+
+| `deploy_status` | 운영 상태 | 해야 할 일 |
+|---|---|---|
+| `build_failed` | **영향 없음** (current 불변) | 빌드 로그를 보고 원인 수정 |
+| `health_failed` | **이전 릴리스로 자동 롤백됨** | 운영은 살아 있다. 서두르지 말고 원인 수정 |
+| `rollback_unhealthy` | 🔴 비정상 | Leader·사용자 판단 대기. 임의 재배포 금지 |
+
+**수정 후 곧바로 재배포를 요청하지 않는다. Reviewer 부터 전체 재순환한다.**
+
+배포 실패를 "환경 문제"로 단정하지 않는다 — 맥에서 돌던 것이 운영에서 깨졌다면 대개 코드가
+환경을 가정하고 있다는 뜻이다. 실제로 반복해서 나온 원인들:
+
+- `ecosystem.config.js` 의 `cwd`·로그 경로 하드코딩 (릴리스가 바뀌어도 옛 코드가 돈다)
+- `package.json` 의 `build` 가 `~/.node-local` 미러로 빌드 (모든 릴리스가 미러 하나를 공유해 blue/green 무력화)
+- backend 와 분리된 프론트(`web/`)를 배포 스크립트가 빌드하지 않음 (변경이 조용히 반영 안 됨)
+- `file:` 의존성이 lock 에 **상대경로**로 굳어 릴리스 깊이에서 `npm ci` 가 ENOENT
+- `prisma generate` 가 **구 스키마로 돌고도 성공 메시지를 낸다** → 생성 결과를 `grep` 으로 검증할 것
+
+근거: [`../../../docs/dev-deploy-workflow.md`](../../../docs/dev-deploy-workflow.md) §7-1·§7-1a·§7-2 ·
+이 프로젝트의 절차서 [`../../docs/deploy-order.md`](../../docs/deploy-order.md)

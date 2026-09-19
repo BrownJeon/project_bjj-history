@@ -156,6 +156,23 @@ StockInvest와 동일한 17개 env 정제(`ANTHROPIC_API_KEY` 포함) → `~/.cl
 
 자세한 진행은 memory `project_bjj.md` 참조.
 
+## 배포
+
+배포 절차의 **정본은 [`docs/deploy-order.md`](docs/deploy-order.md)** 다. 배포 전에 그 문서를 먼저 읽는다.
+
+| 항목 | 값 |
+|---|---|
+| 배포 명령 | `scripts/deploy.sh bjj-trainning` |
+| 실행 주체 | `.claude/agents/deployer.md` (QA PASS 이후에만 기동) |
+| 대상 프로세스 | bjj |
+| 현재 상태 | 🔴 아직 컷오버 전 — 운영이 NFS 편집 트리에서 직접 돈다. webhook 자동배포도 등록돼 있어 이중 배포 위험이 있다 |
+
+- 배포는 **`origin` 의 ref 기준**이다 — push 되지 않은 커밋은 나가지 않는다.
+- `--with-migrate`(DB 마이그레이션)는 **사용자 승인 사항**이다. 개발과 운영이 같은 NAS MariaDB 를 보고, 롤백은 코드만 되돌린다.
+- 배포 실패로 수정했다면 곧바로 재배포하지 않고 **Reviewer 부터 전체 재순환**한다.
+
+워크스페이스 공통: [배포 메커니즘](../docs/dev-deploy-workflow.md) · [연계 정책](../docs/deployer-integration-procedure.md) · [롤아웃 순서](../docs/deploy-rollout-order.md)
+
 ## 에이전트 팀 세션 프로토콜
 
 이 CLAUDE.md 로드 및 현재 상태 요약 완료 후, 아래 팀 소집 문구를 자동 출력한다.
@@ -169,8 +186,9 @@ StockInvest와 동일한 17개 env 정제(`ANTHROPIC_API_KEY` 포함) → `~/.cl
   - developer (Opus)   — backend(Express·Sequelize) + web(React·Vite) 구현
   - reviewer  (Sonnet) — JSON 직렬화·연쇄 삭제 원자성·아키텍처 독립 감사
   - qa        (Haiku)  — API 동작·JSON 직렬화·보안·데이터 무결성 검증
+  - deployer  (Haiku)  — 운영 배포 실행(scripts/deploy.sh bjj-trainning)·결과 판정·롤백
 
-워크플로우: Leader → Developer → Reviewer → QA → Leader
+워크플로우: Leader → Developer → Reviewer → QA → Deployer → Leader
 작업 지시 방법:
   → leader에게 직접 요청하면 팀이 역할별로 분담해서 처리합니다.
   → 팀 정리 시: "팀 정리해줘" 또는 "Clean up the team"

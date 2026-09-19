@@ -1,0 +1,78 @@
+# bjj-trainning(BJJ 훈련일지) 배포 매니페스트
+# 스키마: docs/dev-deploy-workflow.md §3 · 절차서: bjj-trainning/docs/deploy-order.md
+# 실행 주체: .claude/agents/deployer.md
+#
+# ⚠️⚠️ 적용 전 선결 과제 4건 (2026-09-19 점검) — 해소 전에는 deploy.sh 를 실행하지 않는다.
+#   상세와 조치 방법은 docs/deploy-order.md §1 에 있다. 여기서는 요약만 둔다.
+#
+#   1. 🔴 현재 운영이 NFS 편집 트리에서 직접 돈다 (pm2 cwd = NFS). 컷오버가 필요하고
+#      컷오버는 순간적인 서비스 중단을 동반하므로 **사용자가 수행**한다.
+#
+#   2. 🔴 webhook 자동배포가 이미 등록돼 있다 (Gitea repo `project_bjj-history`, hook_id 3 →
+#      `/home/brownjeon/.local/webhook-deploy/deploy-bjj.sh`). blue/green 으로 컷오버하면서
+#      이 훅을 그대로 두면 **push 한 번에 두 경로가 동시에 배포**된다. 훅을 release.sh 경유로
+#      바꾸거나 해제해야 한다 (docs/webhook-deploy-guide.md).
+#
+#   3. 🔴 `@workspace/auth-oauth` 가 `backend/package.json` 에 **저장소 상대경로**로 들어 있다
+#        "@workspace/auth-oauth": "file:../../shared/auth-oauth"
+#      lock 도 같은 상대경로로 굳어 있다. 릴리스 디렉토리에서 이 경로는
+#        /home/brownjeon/apps/bjj/releases/shared/auth-oauth
+#      로 풀리는데 그런 디렉토리는 없다 → `npm ci` 가 ENOENT 로 깨진다.
+#      (VoiceVault 가 2026-09-18 첫 배포에서 같은 계열 문제를 실측했다)
+#      → 권장 조치: `.npmrc` 에 install-links=true + file: 을 NFS 절대경로로 (TheMeal·VoiceVault 방식).
+#        developer 작업이며 사용자 승인 사항이다.
+#
+#   4. `web/` 에 package-lock.json 이 없다 → 그 디렉토리에서는 `npm ci` 를 쓸 수 없어
+#      `npm install` 로 두었다. lock 을 만들면 `npm ci` 로 바꾼다 (재현성이 올라간다).
+#
+# ℹ️ 업로드 데이터는 소스 트리 밖이다 — `/home/brownjeon/NFS/homes/brownjeon/project/files/bjj-trainning`
+#    (backend/src/services/storage.js:4 에 하드코딩). 배포가 건드리지 않으므로 shared 에 넣지 않는다.
+#    다만 **롤백으로 되돌아가지 않는 공유 자원**이라는 점은 DB 와 같은 등급으로 취급한다.
+
+name: bjj
+
+target:
+  host: 125.177.194.26
+  # sshd 가 22 가 아니라 993 에서 돈다 (~/.ssh/config 의 home_ubuntu 별칭과 동일)
+  port: 993
+  user: brownjeon
+  base: /home/brownjeon/apps/bjj
+
+source:
+  # ⚠️ 저장소 이름이 디렉토리 이름(bjj-trainning)과 다르다 — **project_bjj-history** 다.
+  repo: http://192.168.219.154:3000/brownjeon/project_bjj-history.git
+  ref: main
+
+runtime:
+  manager: pm2
+  app: bjj
+  port: 3000
+  ecosystem: ecosystem.config.js   # cwd 가 이미 __dirname 이라 릴리스 경로로 올바르게 해석된다
+
+build:
+  # 루트(package.json: bjj-api)·backend·web 세 곳에 package.json 이 있다.
+  # 런타임 의존성은 backend 쪽이 정본이고, web 은 빌드에 devDependencies(vite)가 필요하다.
+  # web 에는 lock 이 없어 npm ci 를 쓸 수 없다 (선결 과제 4).
+  install: npm ci --no-audit --no-fund && cd backend && npm ci --no-audit --no-fund && cd ../web && npm install --no-audit --no-fund
+  # 🔴 `web/dist` 는 .gitignore 대상이라 저장소에 없다. 여기서 빌드하지 않으면
+  #    /health 는 200 인데 **화면만 비는** 상태가 된다 (2026-09-18 bjj 실사고와 같은 형태).
+  command: cd web && npm run build
+
+shared:
+  - .env             # 루트 .env (backend 가 dotenv 로 읽는다)
+  - backend/.env     # backend 전용 .env 도 존재한다 — 둘 다 서버에 미리 배치할 것
+  - logs
+
+health:
+  # ⚠️ `/api/health` 가 아니라 **`/health`** 다 (backend/src/index.js:19).
+  #    SPA 폴백이 이 경로를 제외하므로 JSON 응답이 온다.
+  path: /health
+  timeout: 30
+
+# 마이그레이션 경로 없음: Sequelize 를 쓰지만 마이그레이션 스크립트가 없고
+# package.json 에 db:migrate 류 명령이 없다. migrate 를 비워 두면 --with-migrate 를 deploy.sh 가 거부한다.
+# migrate:
+#   command: <미정>
+#   requires_approval: true
+
+keep_releases: 5
