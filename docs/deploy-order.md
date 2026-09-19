@@ -194,6 +194,37 @@ scripts/deploy.sh bjj-trainning --rollback 2    # 두 단계 전으로
 > (미러·NFS 를 가리키는 cwd)를 담고 있다. 그리로 롤백하면 재등록이 옛 경로로 떨어져 실패한다.
 > 새 ecosystem 으로 만든 릴리스가 2개 이상 쌓인 뒤에 롤백을 연습한다.
 
+### ⚠️ webhook 배포의 헬스체크가 재기동을 앞질러 `exit=1` 을 낸다 (2026-09-19 실측)
+
+2026-09-19 push 로 돈 webhook 배포가 **`exit=1` 로 끝났는데 운영은 정상이었다.**
+
+```
+========== 2026-09-19 02:04:02 START project_bjj-history sha=cae2b04 ==========
+curl: (7) Failed to connect to 127.0.0.1 port 3000  (반복)
+========== 2026-09-19 02:06:09 END project_bjj-history exit=1 ==========
+```
+
+직후 확인한 실제 상태:
+
+| 확인 | 결과 |
+|---|---|
+| `pm2 list` 의 `bjj` | `online` |
+| `curl 127.0.0.1:3000/health` | **200** |
+| pm2 로그 | `[db] connected` · `[auth] OAuth 활성화: google` · `[static] dist 경로: ...` 정상 |
+
+즉 **헬스체크 루프가 재기동 완료를 기다리지 못하고 먼저 포기한 것**이지 배포가 실패한 게 아니다.
+프론트(`web/`) 빌드까지 포함하는 배포라 재기동이 다른 프로젝트보다 오래 걸린다.
+
+**그래서 이 프로젝트에서는 `exit=1` 을 곧바로 실패로 보고하지 않는다.** 반드시 아래를 먼저 확인한다.
+
+```bash
+ssh home_ubuntu 'pm2 list | grep " bjj "'
+ssh home_ubuntu 'curl -s -o /dev/null -w "%{http_code}\n" http://127.0.0.1:3000/health'
+```
+
+둘 다 정상이면 **배포는 반영됐고 스크립트의 판정만 틀린 것**이다 — 그 사실을 그대로 보고한다.
+근본 조치는 `deploy-bjj.sh` 의 헬스체크 재시도 횟수·간격을 늘리는 것이며 developer 작업이다.
+
 ### 흔할 만한 실패와 원인
 
 | 증상 | 원인 | 조치 |
@@ -204,6 +235,7 @@ scripts/deploy.sh bjj-trainning --rollback 2    # 두 단계 전으로
 | 배포는 됐는데 **옛 코드가 돈다** | `ecosystem.config.js` 의 `cwd` 가 릴리스를 가리키지 않음 | `cwd: __dirname` 으로 고친 뒤 `pm2 delete` → 재배포 |
 | `npm ci` ENOENT (`file:` 의존성) | lock 의 상대경로가 릴리스 깊이에서 어긋남 | §1 의 해당 선결 과제 참고 |
 | 빌드는 맥에서 되는데 우분투에서 깨진다 | 네이티브 모듈·파일명 대소문자·경로 가정 | **코드가 환경을 가정한 것이다.** Reviewer 재순환 대상 |
+| webhook 배포가 `exit=1` 인데 화면은 정상 | 헬스체크가 재기동을 앞질렀다 (위 절) | pm2 상태·`/health` 를 직접 확인한 뒤 판정한다 |
 | `배포가 이미 진행 중이다` | flock 점유 | 진행 중인 배포를 기다린다. 비정상 종료였다면 `$BASE/.deploy.lock` 확인 |
 
 ---
