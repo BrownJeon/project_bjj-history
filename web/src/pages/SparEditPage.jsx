@@ -812,10 +812,84 @@ function GrowthSessionCard({
         </button>
       </div>
 
-      {/* ① 뭐가 안 됐어요? — 복기·연구의 재료가 여기서 나온다. 그래서 맨 위다 (task-022) */}
+      {/* ① 상대 벨트 — 채움률 98%. 선택 안 됨 = 벨트 고유색, 선택됨 = 시간 항목과 동일한 외곽 띠 강조. */}
+      <div style={{ marginBottom: 12 }}>
+        <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text2)', marginBottom: 7 }}>
+          상대 벨트
+        </div>
+        <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+          {BELT_LEVELS.map(belt => {
+            const pill = BELT_PILL[belt] || BELT_PILL['화이트'];
+            const active = session.level === belt;
+            return (
+              <button key={belt} onClick={() => onUpdate('level', active ? '' : belt)} style={{
+                padding: '6px 13px', borderRadius: 20,
+                border: active ? `1px solid ${pill.active}` : '1px solid transparent',
+                background: pill.bg,
+                color: pill.text,
+                fontSize: 12, fontWeight: active ? 700 : 500,
+                cursor: 'pointer',
+              }}>{belt}</button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* ② 시간 — 채움률 96%. 접힘 안으로 넣으면 대부분의 라운드에서 「펼치기+선택」 2탭이 늘어난다.
+          task-017 이 1탭 프리셋으로 만들어 둔 자리를 그대로 지킨다. 접힘에는 채움률이 낮은
+          상대 이름·탭 수·포지션·메모만 남긴다. */}
+      <div style={{ marginBottom: 12 }}>
+        <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text2)', marginBottom: 7 }}>
+          시간(분)
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+          {TIME_PRESETS.map(m => {
+            const active = (parseInt(session.time) || 0) === m;
+            return (
+              <button key={m} onClick={() => onUpdate('time', active ? '' : m)} style={{
+                padding: '7px 15px', borderRadius: 20,
+                border: active ? '1px solid var(--accent)' : '1px solid var(--border-med)',
+                background: active ? 'var(--accent-dim)' : 'var(--surface)',
+                color: active ? 'var(--accent)' : 'var(--text2)',
+                fontSize: 13, fontWeight: active ? 700 : 500,
+                cursor: 'pointer',
+              }}>{m}분</button>
+            );
+          })}
+          <input
+            type="number" inputMode="numeric" min="0" max="127"
+            value={session.time === null || session.time === undefined ? '' : String(session.time)}
+            onChange={e => onUpdate('time', e.target.value)}
+            placeholder="직접"
+            style={{
+              width: 62, padding: '6px 10px', borderRadius: 20,
+              border: '1px dashed var(--border-med)',
+              background: 'transparent', color: 'var(--text)',
+              fontSize: 12, outline: 'none',
+            }}
+          />
+        </div>
+      </div>
+
+      {/* ③ 성공한 기술 — ChipSection 자체 라벨을 섹션 제목으로 쓴다(별도 래퍼 제목 없음) */}
+      <div style={{ marginBottom: 14 }}>
+        <ChipSection
+          label="성공한 기술"
+          values={goodTechs}
+          baseChips={KEY_TECHNIQUES}
+          autocompleteList={successAutocomplete}
+          color="gold"
+          onToggle={toggleGoodTech}
+          onAdd={addGoodTech}
+          onRemove={removeGoodTech}
+          inputId={`success-${idx}`}
+        />
+      </div>
+
+      {/* ④ 실패한 기술 — 복기·연구의 재료가 여기서 나온다 (task-022) */}
       <div style={{ marginBottom: 14 }}>
         <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--red)', marginBottom: 8 }}>
-          뭐가 안 됐어요?
+          실패한 기술
         </div>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
           {failTechChips.map(chip => {
@@ -870,81 +944,7 @@ function GrowthSessionCard({
         ))}
       </div>
 
-      {/* ② 뭐가 됐어요? — 성공한 기술 + 상대 벨트(채움률 98%) */}
-      <div style={{ marginBottom: 12 }}>
-        <div style={{ fontSize: 13, fontWeight: 800, color: '#B8860B', marginBottom: 8 }}>
-          뭐가 됐어요?
-        </div>
-        <ChipSection
-          label="성공한 기술"
-          values={goodTechs}
-          baseChips={KEY_TECHNIQUES}
-          autocompleteList={successAutocomplete}
-          color="gold"
-          onToggle={toggleGoodTech}
-          onAdd={addGoodTech}
-          onRemove={removeGoodTech}
-          inputId={`success-${idx}`}
-        />
-        <div style={{ marginTop: 12 }}>
-          <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text2)', marginBottom: 7 }}>
-            상대 벨트
-          </div>
-          <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-            {BELT_LEVELS.map(belt => {
-              const pill = BELT_PILL[belt] || BELT_PILL['화이트'];
-              const active = session.level === belt;
-              return (
-                <button key={belt} onClick={() => onUpdate('level', active ? '' : belt)} style={{
-                  padding: '6px 13px', borderRadius: 20, border: 'none',
-                  background: active ? pill.active : pill.bg,
-                  color: active ? pill.activeText : pill.text,
-                  fontSize: 12, fontWeight: active ? 700 : 500,
-                  cursor: 'pointer',
-                }}>{belt}</button>
-              );
-            })}
-          </div>
-        </div>
-      </div>
-
-      {/* 시간 — 채움률 96%. 접힘 안으로 넣으면 대부분의 라운드에서 「펼치기+선택」 2탭이 늘어난다.
-          task-017 이 1탭 프리셋으로 만들어 둔 자리를 그대로 지킨다. 접힘에는 채움률이 낮은
-          상대 이름·탭 수·포지션·메모만 남긴다. */}
-      <div style={{ marginBottom: 12 }}>
-        <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text2)', marginBottom: 7 }}>
-          시간(분)
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
-          {TIME_PRESETS.map(m => {
-            const active = (parseInt(session.time) || 0) === m;
-            return (
-              <button key={m} onClick={() => onUpdate('time', active ? '' : m)} style={{
-                padding: '7px 15px', borderRadius: 20,
-                border: active ? '1px solid var(--accent)' : '1px solid var(--border-med)',
-                background: active ? 'var(--accent-dim)' : 'var(--surface)',
-                color: active ? 'var(--accent)' : 'var(--text2)',
-                fontSize: 13, fontWeight: active ? 700 : 500,
-                cursor: 'pointer',
-              }}>{m}분</button>
-            );
-          })}
-          <input
-            type="number" inputMode="numeric" min="0" max="127"
-            value={session.time === null || session.time === undefined ? '' : String(session.time)}
-            onChange={e => onUpdate('time', e.target.value)}
-            placeholder="직접"
-            style={{
-              width: 62, padding: '6px 10px', borderRadius: 20,
-              border: '1px dashed var(--border-med)',
-              background: 'transparent', color: 'var(--text)',
-              fontSize: 12, outline: 'none',
-            }}
-          />
-        </div>
-      </div>
-
-      {/* 성장 포인트 */}
+      {/* ⑤ 성장 포인트 */}
       <div style={{ marginBottom: 10 }}>
         <ChipSection
           label="성장 포인트"
