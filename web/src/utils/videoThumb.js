@@ -17,11 +17,12 @@ export function getYtThumb(url) {
 export function getYtEmbed(url, opts = {}) {
   const id = getYtId(url);
   if (!id) return null;
-  const { start, jsapi, mute } = opts;
+  const { start, jsapi, mute, autoplay } = opts;
   const params = new URLSearchParams({ rel: '0' });
   if (start) params.set('start', String(Math.max(0, Math.floor(start))));
   if (jsapi) params.set('enablejsapi', '1');
   if (mute) params.set('mute', '1'); // 음소거로 시작(사용자가 플레이어에서 켤 수 있다)
+  if (autoplay) params.set('autoplay', '1'); // 대부분 브라우저가 음소거 상태에서만 자동재생을 허용한다 — mute와 함께 써야 한다
   return `https://www.youtube.com/embed/${id}?${params.toString()}`;
 }
 
