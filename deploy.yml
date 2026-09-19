@@ -67,7 +67,11 @@ health:
   # ⚠️ `/api/health` 가 아니라 **`/health`** 다 (backend/src/index.js:19).
   #    SPA 폴백이 이 경로를 제외하므로 JSON 응답이 온다.
   path: /health
-  timeout: 30
+  # ⚠️ 30초로는 모자란다. 2026-09-19 webhook 배포에서 재기동이 90초 창을 넘겨
+  #    `exit=1`(거짓 실패)이 났다 — 배포 전체가 127초였다. 기동만으로도 90초를
+  #    넘길 때가 있어 넉넉히 잡는다. 여기서 실패하면 자동 롤백이 걸리므로
+  #    짧게 잡을 이유가 없다.
+  timeout: 180
 
 # 마이그레이션 경로 없음: Sequelize 를 쓰지만 마이그레이션 스크립트가 없고
 # package.json 에 db:migrate 류 명령이 없다. migrate 를 비워 두면 --with-migrate 를 deploy.sh 가 거부한다.
