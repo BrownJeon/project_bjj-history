@@ -812,9 +812,9 @@ function GrowthSessionCard({
         </button>
       </div>
 
-      {/* ① 상대 벨트 — 채움률 98%. 선택 안 됨 = 벨트 고유색, 선택됨 = 벨트색과 무관한 고정 강조색
-          (accent green) 굵은 테두리 + 글로우로 강조 — 블루 벨트처럼 배경·테두리가 같은 색 계열이면
-          가는 테두리만으로는 구분이 잘 안 돼서(사용자 피드백), 벨트색과 대비되는 색을 쓴다. */}
+      {/* ① 상대 벨트 — 채움률 98%. 선택 안 됨 = 벨트 고유색(연한 배경), 선택됨 = 검정 테두리 +
+          진한 배경(pill.active)으로 강조 — 가는 테두리만으로는 구분이 잘 안 돼서(사용자 피드백),
+          테두리색을 벨트색과 무관한 검정으로 고정하고 배경 자체도 진하게 바꾼다. */}
       <div style={{ marginBottom: 12 }}>
         <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text2)', marginBottom: 7 }}>
           상대 벨트
@@ -826,10 +826,9 @@ function GrowthSessionCard({
             return (
               <button key={belt} onClick={() => onUpdate('level', active ? '' : belt)} style={{
                 padding: '6px 13px', borderRadius: 20,
-                border: active ? '2px solid var(--accent)' : '1px solid transparent',
-                boxShadow: active ? '0 0 0 2px var(--accent-dim)' : 'none',
-                background: pill.bg,
-                color: pill.text,
+                border: active ? '2px solid #000' : '1px solid transparent',
+                background: active ? pill.active : pill.bg,
+                color: active ? pill.activeText : pill.text,
                 fontSize: 12, fontWeight: active ? 700 : 500,
                 cursor: 'pointer',
               }}>{belt}</button>
