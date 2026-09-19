@@ -165,7 +165,7 @@ StockInvest와 동일한 17개 env 정제(`ANTHROPIC_API_KEY` 포함) → `~/.cl
 | 배포 명령 | `scripts/deploy.sh bjj-trainning` |
 | 실행 주체 | `.claude/agents/deployer.md` (QA PASS 이후에만 기동) |
 | 대상 프로세스 | bjj |
-| 현재 상태 | 🔴 아직 컷오버 전 — 운영이 NFS 편집 트리에서 직접 돈다. webhook 자동배포도 등록돼 있어 이중 배포 위험이 있다 |
+| 현재 상태 | ✅ **blue/green 컷오버 완료 (2026-09-19, 릴리스 `20260919-225459-a6aeb379`)**. push 하면 webhook 이 release.sh 로 blue/green 배포한다 — NFS 트리에 빌드해도 운영에 반영되지 않는다 |
 
 - 배포는 **`origin` 의 ref 기준**이다 — push 되지 않은 커밋은 나가지 않는다.
 - `--with-migrate`(DB 마이그레이션)는 **사용자 승인 사항**이다. 개발과 운영이 같은 NAS MariaDB 를 보고, 롤백은 코드만 되돌린다.
