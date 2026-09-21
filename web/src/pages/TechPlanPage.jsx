@@ -24,6 +24,7 @@ import { BASE_POSITIONS, BASE_CATEGORIES, mergeUnique } from '../utils/baseOptio
 import { uniqueTechPositions, uniqueAllTags } from '../utils/suggestions';
 import ClipsPage from './ClipsPage';
 import PositionManagerModal from '../components/PositionManagerModal';
+import TagManagerModal from '../components/TagManagerModal';
 import * as labApi from '../api/lab';
 import { usageOf, sumUsage } from '../utils/clipUsage';
 
@@ -93,6 +94,7 @@ function TechTab() {
   const [editing, setEditing] = useState(null);
   const [page, setPage] = useState(1);
   const [posManaging, setPosManaging] = useState(false);
+  const [tagManaging, setTagManaging] = useState(false);
 
   // 팝업(detail)이 열려 있는 동안 관련영상 수정/삭제로 techniques 캐시가 갱신되면
   // 팝업 내 t.clips 목록도 최신 상태로 동기화 (ClipsPage.jsx의 onRefresh 패턴과 동일 목적)
@@ -179,6 +181,7 @@ function TechTab() {
         <FilterChip active={filter === 'star'} onClick={() => setFilter('star')} icon="star">즐겨찾기</FilterChip>
         <div style={{ marginLeft: 'auto', display: 'flex', gap: 6 }}>
           <Button size="sm" variant="ghost" onClick={() => setPosManaging(true)}>포지션 관리</Button>
+          <Button size="sm" variant="ghost" onClick={() => setTagManaging(true)}>태그 관리</Button>
           <Button size="sm" variant="outline" onClick={() => setEditing('new')}>+ 추가</Button>
         </div>
       </div>
@@ -187,6 +190,13 @@ function TechTab() {
         <PositionManagerModal
           onClose={() => setPosManaging(false)}
           onChanged={() => { reloadTechniques(); reloadClips(); reloadClasses(); }}
+        />
+      )}
+
+      {tagManaging && (
+        <TagManagerModal
+          onClose={() => setTagManaging(false)}
+          onChanged={() => { reloadTechniques(); reloadClips(); }}
         />
       )}
 

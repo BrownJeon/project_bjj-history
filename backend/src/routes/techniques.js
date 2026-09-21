@@ -8,6 +8,7 @@ const { toNFC, arrToNFC, eqNFC } = require('../utils/nfc');
 const { analyzeVideo } = require('../services/videoAnalysis');
 const { getFramesDir, getVideoDir } = require('../services/storage');
 const { listPositions } = require('../services/positions');
+const { listTags, parseTags } = require('../services/tags');
 const { getUsageMap, emptyUsage } = require('../services/clipUsage');
 
 // 기술명과 매칭되는 미분석 클립을 백그라운드에서 자동 AI 분석
@@ -504,6 +505,112 @@ router.delete('/positions/:name', wrap(async (req, res) => {
     updatedCount: removed.tech + removed.clip + removed.drill + removed.spar,
     removed,
   });
+}));
+
+// 사용 중인 고유 태그 목록 — 포지션 관리와 동일한 패턴(services/tags.js), 저장소 2곳(기술·참고영상)
+router.get('/tags', wrap(async (req, res) => {
+  res.json(await listTags(req.user.id));
+}));
+
+// 태그 이름 변경 — 기술·참고영상 두 저장소 모두 갱신. 포지션 rename과 달리 drills(varchar(50))가
+// 없어 길이 제한은 DB 제약이 아니라 UI 일관성을 위한 소프트 상한이다.
+const TAG_NAME_MAX = 60;
+const tagEq = eqNFC; // task-014와 동일한 이유 — NFC/NFD 혼입 시 원시 비교로는 rename이 일부 행을 놓친다.
+
+router.put('/tags/:name', wrap(async (req, res) => {
+  const uid = req.user.id;
+  const oldName = toNFC(decodeURIComponent(req.params.name));
+  const newName = toNFC((req.body?.newName || '').trim());
+  if (!newName) return res.status(400).json({ error: '새 태그명을 입력해주세요' });
+  if (newName.length > TAG_NAME_MAX) {
+    return res.status(400).json({
+      error: `태그명은 ${TAG_NAME_MAX}자 이내로 입력해주세요 (현재 ${newName.length}자)`,
+    });
+  }
+  if (newName === oldName) return res.json({ ok: true, updatedCount: 0 });
+
+  const { sequelize } = require('../config/db');
+
+  // 2개 저장소를 하나의 트랜잭션으로 묶는다 — 포지션 rename과 동일한 이유(중간 실패 시
+  // 기술·영상이 서로 다른 이름으로 갈라진 채 남지 않도록).
+  const updatedCount = await sequelize.transaction(async (t) => {
+    let count = 0;
+
+    const techRows = await Technique.findAll({
+      where: { user_id: uid }, attributes: ['id', 'tags'], raw: true, transaction: t,
+    });
+    for (const row of techRows) {
+      const tags = parseTags(row.tags);
+      if (!tags.some(x => tagEq(x, oldName))) continue;
+      const next = [...new Set(tags.map(x => (tagEq(x, oldName) ? newName : toNFC(x))))];
+      await Technique.update(
+        { tags: JSON.stringify(next) },
+        { where: { id: row.id, user_id: uid }, transaction: t }
+      );
+      count++;
+    }
+
+    const clipRows = await VideoClip.findAll({
+      where: { user_id: uid }, attributes: ['id', 'tags'], raw: true, transaction: t,
+    });
+    for (const row of clipRows) {
+      const tags = parseTags(row.tags);
+      if (!tags.some(x => tagEq(x, oldName))) continue;
+      const next = [...new Set(tags.map(x => (tagEq(x, oldName) ? newName : toNFC(x))))];
+      await VideoClip.update(
+        { tags: JSON.stringify(next) },
+        { where: { id: row.id, user_id: uid }, transaction: t }
+      );
+      count++;
+    }
+
+    return count;
+  });
+
+  res.json({ ok: true, updatedCount });
+}));
+
+// 특정 태그를 기술·참고영상 두 저장소 전부에서 제거
+router.delete('/tags/:name', wrap(async (req, res) => {
+  const uid = req.user.id;
+  const targetName = toNFC(decodeURIComponent(req.params.name));
+  const { sequelize } = require('../config/db');
+
+  const removed = await sequelize.transaction(async (t) => {
+    const n = { tech: 0, clip: 0 };
+
+    const techRows = await Technique.findAll({
+      where: { user_id: uid }, attributes: ['id', 'tags'], raw: true, transaction: t,
+    });
+    for (const row of techRows) {
+      const tags = parseTags(row.tags);
+      if (!tags.some(x => tagEq(x, targetName))) continue;
+      const next = [...new Set(tags.filter(x => !tagEq(x, targetName)).map(toNFC))];
+      await Technique.update(
+        { tags: JSON.stringify(next) },
+        { where: { id: row.id, user_id: uid }, transaction: t }
+      );
+      n.tech++;
+    }
+
+    const clipRows = await VideoClip.findAll({
+      where: { user_id: uid }, attributes: ['id', 'tags'], raw: true, transaction: t,
+    });
+    for (const row of clipRows) {
+      const tags = parseTags(row.tags);
+      if (!tags.some(x => tagEq(x, targetName))) continue;
+      const next = [...new Set(tags.filter(x => !tagEq(x, targetName)).map(toNFC))];
+      await VideoClip.update(
+        { tags: JSON.stringify(next) },
+        { where: { id: row.id, user_id: uid }, transaction: t }
+      );
+      n.clip++;
+    }
+
+    return n;
+  });
+
+  res.json({ ok: true, updatedCount: removed.tech + removed.clip, removed });
 }));
 
 router.patch('/:id/star', wrap(async (req, res) => {

@@ -8,3 +8,6 @@ export const toggleTechStar  = (id) => client.patch(`/techniques/${id}/star`).th
 export const getPositions    = () => client.get('/techniques/positions').then(r => r.data);
 export const deletePosition  = (name) => client.delete(`/techniques/positions/${encodeURIComponent(name)}`).then(r => r.data);
 export const renamePosition  = (name, newName) => client.put(`/techniques/positions/${encodeURIComponent(name)}`, { newName }).then(r => r.data);
+export const getTags    = () => client.get('/techniques/tags').then(r => r.data);
+export const deleteTag  = (name) => client.delete(`/techniques/tags/${encodeURIComponent(name)}`).then(r => r.data);
+export const renameTag  = (name, newName) => client.put(`/techniques/tags/${encodeURIComponent(name)}`, { newName }).then(r => r.data);
