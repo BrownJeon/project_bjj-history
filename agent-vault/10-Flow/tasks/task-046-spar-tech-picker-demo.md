@@ -261,6 +261,8 @@ aliases:
 - Reviewer PASS-with-notes(Critical·High 0) · QA(Sonnet) PASS 5/5 후 Leader 재확인(같은 SELECT, 포트 3146·9346 닫힘, 스크린샷 `03`·`05`·`09a`·`qa-shots/M1` 직접 열람).
 - Reviewer M1(포지션·기타 그룹이 검색 결과 끝에 보이고 선택 가능)·M2(자모 단위 부분일치)는 결함이 아니라 **사용자에게 데모와 함께 물을 항목**으로 올린다.
 
+- [17:18] **배포 확인** — push `5ad089d..dd8e477` → `RELEASE_RESULT {"status":"ok","release":"20260922-171719-dd8e4775","migrated":false}`, pm2 `bjj` online(재시작 0), `/health` 200, `/demo/tech-picker` 200, 서빙 번들 `index-bSKZsvGn.js` 에 데모 라우트·문구 포함. 🟡 사용자 데모 검토 대기.
+
 ## 최종 요약 (사용자용 — 1단계)
 
 **무엇을 만들었나** — 실제 스파링 화면은 그대로 두고, 새 기술 선택 방식을 **직접 만져 볼 수 있는 데모 화면**을 앱에 넣었습니다. 아무것도 저장하지 않습니다.
