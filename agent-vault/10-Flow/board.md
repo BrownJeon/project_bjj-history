@@ -5,6 +5,13 @@ tags:
 # 칸반 보드
 
 ## Backlog
+- **`PUT /api/classes/:id/spar/:sparDayId` 를 본문 없이 보내면 그 일자의 라운드가 전부 지워진다** — task-045 Developer 픽스처에서 실제로 발생. destroy+reinsert 구조라 `sessions` 가 비면 전부 삭제된다. 프론트는 항상 `sessions` 를 보내 **실사용 영향은 없다**. 서버에서 `sessions` 누락을 400 으로 막을지 판단. LOW [[task-045-spar-cause-default-tags]] (2026-09-22)
+- **원인 태그 `syncDefaults` 가 3회 재시도 후 실패하면 `console.error` 만 남기고 옛 목록을 200 으로 돌려준다** — Reviewer M2. 화면은 안 깨지지만 진짜 버그도 "오래된 목록"으로만 보인다. 알림 경로가 필요해지면 여기부터. 같은 맥락 M1: GET 의 부작용이 "없으면 추가"(task-022)에서 "있으면 rename"까지 커졌다 — 지금은 멱등·수렴이라 안전하나 **더 키우지 말 것**. MEDIUM [[task-045-spar-cause-default-tags]] (2026-09-22)
+- **관장 권고(보류) — 직접 입력 태그를 `get_holes` 에서 "직접 입력" 한 묶음으로 집계** — 직접 입력은 기록마다 흩어져 1회짜리로 집계된다. 분석·관장 MCP·RecallPage 에 걸치는 변경이라 별도 task. LOW [[task-045-spar-cause-default-tags]] (2026-09-22)
+- **관장 권고(보류) — 상대 리액션 유형을 두 번째 칩 줄로** — 메모 16건 중 리액션이 4갈래(베이스 낮춤·터틀 롤링·가드 리커버리·넘어와서 패스)로 모인다. 기록이 더 쌓인 뒤 판단. LOW (2026-09-22)
+- **관장 권고(사용자가 보류 선택) — 기존 기록 재분류** — 타이밍 2건(s383·s385) → 대처·연결, `#47` → 그립 병합 + 문장을 메모로. 사용자가 "기록은 그대로"를 택해 하지 않았다. 다시 제안하지 말 것. (2026-09-22)
+- **`docs/gym-master-chat-plan.md` 에 옛 예시 `'각도 부족'` 3곳** — 계획 문서라 동작 영향 없음. LOW (2026-09-22)
+- **`모르겠음` 배타 선택은 프론트만 강제** · 프론트 `UNKNOWN_CAUSE` 와 백엔드 `DEFAULT_CAUSES` 이중 하드코딩(주석 상호참조) — 태그 이름을 바꿀 땐 양쪽 다. LOW (2026-09-22)
 - 🟡 **`videoAnalysis.js` `runProcess` 의 타임아웃이 손자 프로세스에 실효 없다** — task-044 에서 Developer·Reviewer 가 **독립적으로 재현**. `spawn(..., {timeout})` 은 직속 자식만 죽인다: 파이프를 물고 있는 손자가 살아남으면 `close` 이벤트가 상한을 한참 넘겨 온다(실측 60,000ms 상한에 close 300,316ms — 고아 PID PPID=1). 실제 whisper 는 단일 파이썬 프로세스라 **운영에서는 현재 발현하지 않는다**. 다만 ffmpeg 등 자식을 더 만드는 명령에는 상한이 보장되지 않는다. `runProcess` 는 task-044 에서 수정 금지 범위였다. MEDIUM [[task-044-video-whisper-path-and-visibility]] (2026-09-18)
 - **영상분석 전사 60초 타임아웃 — 긴 영상은 조용히 소리가 빠진다** — 운영 로그에 `강제 종료 (signal: SIGTERM, timeout: …)` **5건**. task-044 로 이제 `console.error` 로 보이지만 **값 자체는 안 바꿨다** — 늘리면 분석 지연에 직결돼 사용자 판단 사항. 🟡 **사용자 확인 대기**(2026-09-18 보고함). 참고: 수업기록 음성분석은 청크당 1,800,000ms 를 쓴다. LOW [[task-044-video-whisper-path-and-visibility]] (2026-09-18)
 - **소리 없이 분석된 영상 최대 7건이 남아 있을 수 있다** — task-044 이전 ENOENT 7건은 전사 0자로 "정상 완료"됐다. 상세 화면 `🔄 다시 분석`으로 개별 복구 가능하나 **어느 영상인지 특정되지 않았다**(로그에 clipId 가 없다 — `[analyze-video] hasAudio= … transcriptLen= …` 줄과 대조하면 좁힐 수 있다). 🟡 **사용자 판단 대기**(2026-09-18 보고함). LOW [[task-044-video-whisper-path-and-visibility]] (2026-09-18)
@@ -49,6 +56,7 @@ tags:
 ## Todo
 
 ## Doing
+- [[task-045-spar-cause-default-tags]] — 스파링 실패 원인 태그를 관장 확정 기본 7개로 교체(각도→세팅·연결 없음→대처·연결·이유 모름→모르겠음은 이름만 변경, 기록 무수정). `+` 직접 입력은 그 기록에만 남고 선택지에 안 쌓인다 (2026-09-22)
 
 ## Review
 

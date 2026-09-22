@@ -211,8 +211,9 @@ export default function SparEditor({ classId, sparDay, onClose, onSaved, initial
   }, []);
 
   // 실패 원인 태그 — 이 화면에서만 쓰므로 CacheContext(전 페이지 공통 로딩)에 올리지 않고
-  // 여기서 직접 받는다. 서버가 이 사용자의 첫 조회 때 기본 4개를 넣어 준다.
-  // 비활성 태그까지 함께 받는다 — 과거 기록이 참조하는 이름을 보여 줘야 하기 때문.
+  // 여기서 직접 받는다. 서버가 조회마다 기본 7개(active=1)를 맞춰 준다(task-045).
+  // 비활성(= 직접 입력) 태그까지 함께 받는다 — 과거 기록이 고른 태그의 이름을 보여 줘야 하기 때문.
+  // 선택지로 까는 건 기본 7개뿐이고, 직접 입력 태그는 FailDetail 이 그 항목이 고른 것만 보여 준다.
   const [causes, setCauses] = useState([]);
   const reloadCauses = React.useCallback(async () => {
     const list = await causesApi.listSparCauses().catch(() => []);
@@ -226,7 +227,11 @@ export default function SparEditor({ classId, sparDay, onClose, onSaved, initial
     try {
       const created = await causesApi.createSparCause(name);
       await reloadCauses();
-      return created;          // 방금 만든 태그를 바로 선택할 수 있게 돌려준다
+      // 목록 재조회가 실패해도 방금 받은 태그의 이름은 알고 있다 — 「없는 태그 #id」로 보이지 않게 넣어 둔다
+      if (created && created.id) {
+        setCauses(prev => (prev.some(c => c.id === created.id) ? prev : [...prev, created]));
+      }
+      return created;          // 방금 만든(또는 같은 이름으로 이미 있던) 태그를 바로 선택할 수 있게 돌려준다
     } catch (e) {
       showToast('태그 추가 실패: ' + e.message);
       return null;
@@ -571,24 +576,43 @@ function ChipSection({ label, values, baseChips, autocompleteList, color, onTogg
   );
 }
 
-// 실패 항목 하나의 상세 — 원인 태그 다중선택 + "상대가 어떻게 막았나요?" 한 줄 (task-022).
+// 「모르겠음」 — 다른 원인과 같이 고르지 않는다(관장 확정, task-045).
+// 🔴 이름은 backend/src/routes/sparCauses.js 의 DEFAULT_CAUSES 와 글자까지 같아야 한다.
+const UNKNOWN_CAUSE = '모르겠음';
+
+// 실패 항목 하나의 상세 — 원인 태그 다중선택 + "상대가 어떻게 막았나요?" 한 줄 (task-022 · task-045).
 //
 // 🔴 태그 추가(+)는 **모달을 새로 띄우지 않는다.** 이 화면(SparEditor) 자체가 이미 Modal 안이라
 //   여기서 또 Modal 을 열면 모달 안 모달이 된다 — 배경 스크롤 잠금과 닫기(onClose)가 서로
 //   얽혀 바깥 모달이 같이 닫히기 쉽다. 그래서 카드 안에서 입력칸이 펼쳐지는 인라인 방식으로 둔다.
-function FailDetail({ item, causes, onToggleCause, onReaction, onAddCause }) {
+// 🔴 `+` 로 입력한 태그는 **이 기록에만** 남는다(서버가 active=0 으로 만든다). 다음 기록의 선택지는
+//   다시 기본 7개뿐이다 — task-022 에서는 한 번 적은 문장이 모든 기록의 선택지에 영구히 쌓였다.
+function FailDetail({ item, causes, onChangeCauses, onReaction, onAddCause }) {
   const [adding, setAdding]   = useState(false);
   const [newName, setNewName] = useState('');
   const [busy, setBusy]       = useState(false);
+  // 이 카드에서 방금 직접 입력한 태그 id. 실수로 해제해도 편집하는 동안은 칩이 남아 다시 누를 수
+  // 있게 한다(저장하고 다시 열면 「이 항목이 고른 것」만 남는다 — 안 고른 입력은 흔적이 없다).
+  const [addedIds, setAddedIds] = useState([]);
 
   const selected = Array.isArray(item.causes) ? item.causes : [];
+  const unknownId = causes.find(c => c.active && c.name === UNKNOWN_CAUSE)?.id ?? null;
 
-  // 고를 수 있는 칩 = 활성 태그 + 「비활성이지만 이 기록이 이미 고른」 태그.
-  // 비활성 태그를 빼 버리면 과거 기록에서 원인 칩이 통째로 사라져 기록이 깨져 보인다.
+  // 칩 = 기본 태그(active, 서버가 sort 순으로 준다)
+  //    + 직접 입력 태그 중 「이 항목이 이미 고른 것」·「이 카드에서 방금 입력한 것」.
+  // 다른 기록에서 입력한 태그는 뜨지 않는다. 이 항목이 고른 직접 입력 태그를 빼 버리면 과거 기록에서
+  // 원인 칩이 통째로 사라져 기록이 깨져 보이므로 그건 남긴다(표시는 기본 태그와 똑같이).
   const chips = [
     ...causes.filter(c => c.active),
-    ...causes.filter(c => !c.active && selected.includes(c.id)),
+    ...causes.filter(c => !c.active && (selected.includes(c.id) || addedIds.includes(c.id))),
   ];
+
+  /** 고르기·풀기. 「모르겠음」을 고르면 다른 원인이 풀리고, 다른 원인을 고르면 「모르겠음」이 풀린다. */
+  function toggle(id) {
+    if (selected.includes(id)) return onChangeCauses(selected.filter(x => x !== id));
+    if (unknownId != null && id === unknownId) return onChangeCauses([id]);
+    onChangeCauses([...selected.filter(x => x !== unknownId), id]);
+  }
   // 목록에 아예 없는 id(다른 경로로 행이 지워진 경우). 조용히 버리지 않고 보여 줘서
   // 사용자가 알아채고 해제할 수 있게 한다.
   const orphanIds = selected.filter(id => !causes.some(c => c.id === id));
@@ -600,7 +624,9 @@ function FailDetail({ item, causes, onToggleCause, onReaction, onAddCause }) {
     const created = await onAddCause(val);
     setBusy(false);
     if (created && created.id) {
-      if (!selected.includes(created.id)) onToggleCause(created.id);
+      // 기본 태그 이름을 쳤으면 서버가 그 기본 태그를 돌려준다(active=1) — 이미 칩으로 떠 있다
+      if (!created.active) setAddedIds(prev => (prev.includes(created.id) ? prev : [...prev, created.id]));
+      if (!selected.includes(created.id)) toggle(created.id);
       setNewName('');
       setAdding(false);
     }
@@ -620,21 +646,20 @@ function FailDetail({ item, causes, onToggleCause, onReaction, onAddCause }) {
         {chips.map(c => {
           const sel = selected.includes(c.id);
           return (
-            <button key={c.id} onClick={() => onToggleCause(c.id)} style={{
+            <button key={c.id} onClick={() => toggle(c.id)} style={{
               padding: '5px 11px', borderRadius: 20,
               background: sel ? 'var(--accent)' : 'var(--surface-up)',
               color: sel ? '#fff' : 'var(--text2)',
               border: sel ? '1px solid var(--accent)' : '1px solid var(--border-med)',
               fontSize: 12, fontWeight: sel ? 700 : 500,
-              opacity: c.active ? 1 : 0.6,
               cursor: 'pointer',
             }}>
-              {c.name}{c.active ? '' : ' (해제됨)'}
+              {c.name}
             </button>
           );
         })}
         {orphanIds.map(id => (
-          <button key={`orphan-${id}`} onClick={() => onToggleCause(id)} style={{
+          <button key={`orphan-${id}`} onClick={() => toggle(id)} style={{
             padding: '5px 11px', borderRadius: 20,
             background: 'var(--surface-up)', color: 'var(--text3)',
             border: '1px dashed var(--border-med)',
@@ -652,8 +677,10 @@ function FailDetail({ item, causes, onToggleCause, onReaction, onAddCause }) {
         )}
       </div>
 
+      {/* 입력칸은 한 줄을 통째로 쓰고 추가·취소는 그 아래로 내린다 — 버튼과 한 줄에 두면 390px 폭에서
+          안내문이 「…이 기록」에서 잘려 정작 알려야 할 「이 기록에만 남아요」가 안 보였다(task-045 실측). */}
       {adding && (
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 7 }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 6, marginBottom: 7 }}>
           <input
             value={newName}
             autoFocus
@@ -663,10 +690,10 @@ function FailDetail({ item, causes, onToggleCause, onReaction, onAddCause }) {
               if (e.key === 'Enter') { e.preventDefault(); submitNew(); }
               if (e.key === 'Escape') { setAdding(false); setNewName(''); }
             }}
-            placeholder="새 원인 태그 (예: 무게중심)"
+            placeholder="맞는 칸이 없을 때만, 짧게 — 이 기록에만 남아요"
             autoComplete="off"
             style={{
-              flex: 1, padding: '6px 12px', borderRadius: 20,
+              flex: '1 1 100%', minWidth: 0, padding: '6px 12px', borderRadius: 20,
               border: '1px dashed var(--border-med)',
               background: 'transparent', color: 'var(--text)',
               fontSize: 12, outline: 'none',
@@ -676,7 +703,7 @@ function FailDetail({ item, causes, onToggleCause, onReaction, onAddCause }) {
             padding: '5px 10px', borderRadius: 14, border: 'none',
             background: newName.trim() ? 'var(--accent)' : 'var(--border-med)',
             color: '#fff', fontSize: 12, fontWeight: 700,
-            cursor: busy ? 'wait' : 'pointer', flexShrink: 0,
+            cursor: busy ? 'wait' : 'pointer', flexShrink: 0, marginLeft: 'auto',
           }}>{busy ? '…' : '추가'}</button>
           <button onClick={() => { setAdding(false); setNewName(''); }} style={{
             padding: '5px 8px', borderRadius: 14,
@@ -691,7 +718,7 @@ function FailDetail({ item, causes, onToggleCause, onReaction, onAddCause }) {
         value={item.reaction || ''}
         onChange={e => onReaction(e.target.value)}
         maxLength={200}
-        placeholder="상대가 어떻게 막았나요? (선택)"
+        placeholder="상대가 어떻게 막았나요? (예: 자세를 낮게 깔았음)"
         autoComplete="off"
         style={{
           width: '100%', padding: '6px 10px', borderRadius: 8,
@@ -769,12 +796,6 @@ function GrowthSessionCard({
   /** successTried[i] 에 부분 갱신 — 원인·리액션은 항목 객체 안에 저장된다 */
   function patchItem(i, patch) {
     onUpdate('successTried', session.successTried.map((t, j) => j === i ? { ...t, ...patch } : t));
-  }
-  function toggleCause(i, causeId) {
-    const cur = Array.isArray(session.successTried[i]?.causes) ? session.successTried[i].causes : [];
-    patchItem(i, {
-      causes: cur.includes(causeId) ? cur.filter(c => c !== causeId) : [...cur, causeId],
-    });
   }
 
   function step(key, delta) {
@@ -939,7 +960,7 @@ function GrowthSessionCard({
             key={`${i}-${t.name}`}
             item={t}
             causes={causes}
-            onToggleCause={(cid) => toggleCause(i, cid)}
+            onChangeCauses={(next) => patchItem(i, { causes: next })}
             onReaction={(v) => patchItem(i, { reaction: v })}
             onAddCause={onAddCause}
           />
