@@ -26,7 +26,6 @@ import StudyVideoDetailPage from './pages/StudyVideoDetailPage';
 import ClipsPage from './pages/ClipsPage';
 import CoachPage from './pages/CoachPage';
 import ProfilePage from './pages/ProfilePage';
-import DemoTechPickerPage from './pages/DemoTechPickerPage';
 import NotFoundPage from './pages/NotFoundPage';
 
 // 안드로이드 앱(Capacitor WebView)이면 첫 렌더 전에 `<html data-native>` 를 붙인다 — 상태바 여백
@@ -57,7 +56,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                 <Route path="/clips"     element={<ClipsPage />} />
                 <Route path="/coach"     element={<CoachPage />} />
                 <Route path="/me"        element={<ProfilePage />} />
-                <Route path="/demo/tech-picker" element={<DemoTechPickerPage />} /> {/* task-046 임시 데모 — 메뉴 없음, 저장 안 함 */}
                 <Route path="*"          element={<NotFoundPage />} />
               </Route>
             </Route>

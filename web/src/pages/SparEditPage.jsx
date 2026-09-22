@@ -2,14 +2,17 @@ import React, { useState, useMemo, useEffect } from 'react';
 import * as classesApi from '../api/classes';
 import * as causesApi from '../api/sparCauses';
 import * as enhanceApi from '../api/enhanceMemo';
+import * as techniquesApi from '../api/techniques';
 import { useUI } from '../contexts/UIContext';
 import { useCache } from '../contexts/CacheContext';
 import Modal from '../components/Modal';
 import Button from '../components/Button';
 import Icon from '../components/Icon';
+import TechPicker from '../components/TechPicker';
 import {
-  BELT_LEVELS, BASE_TECHNIQUES, BASE_WEAKNESSES, KEY_TECHNIQUES, mergeUnique,
+  BELT_LEVELS, BASE_WEAKNESSES, TECH_CATEGORIES, mergeUnique,
 } from '../utils/baseOptions';
+import { normalize, holdOf, buildUsage, buildPool, countByCategory } from '../utils/techSearch';
 import { uniqueOpponents } from '../utils/suggestions';
 import SparFeedbackCard from '../components/SparFeedbackCard';
 import { listPicks } from '../api/picks';
@@ -92,7 +95,7 @@ const BELT_PILL = {
 //   홈의 "스파링까지" 진입만 1을 넘겨 "+ 라운드 추가" 1탭을 없앤다 (task-021).
 export default function SparEditor({ classId, sparDay, onClose, onSaved, initialRounds = 0 }) {
   const { showToast, setLoading } = useUI();
-  const { techniques, classes } = useCache();
+  const { techniques, classes, reloadTechniques } = useCache();
   const isEdit = !!sparDay?.id;
 
   const [feedbackData, setFeedbackData] = useState(null);
@@ -111,35 +114,11 @@ export default function SparEditor({ classId, sparDay, onClose, onSaved, initial
     return mergeUnique(sorted, BASE_WEAKNESSES);
   }, [classes]);
 
-  const successFreqSuggestions = useMemo(() => {
-    const freq = {};
-    classes.forEach(c => {
-      (c.spar_days || []).forEach(sd => {
-        (sd.sessions || []).forEach(s => {
-          (s.success || []).forEach(t => {
-            if (t?.success !== false && t?.name) freq[t.name] = (freq[t.name] || 0) + 1;
-          });
-        });
-      });
-    });
-    const sorted = Object.entries(freq).sort((a, b) => b[1] - a[1]).map(([k]) => k);
-    return mergeUnique(sorted, BASE_TECHNIQUES, techniques.map(t => t.name));
-  }, [classes, techniques]);
-
-  const failTechSuggestions = useMemo(() => {
-    const freq = {};
-    classes.forEach(c => {
-      (c.spar_days || []).forEach(sd => {
-        (sd.sessions || []).forEach(s => {
-          (s.success || []).forEach(t => {
-            if (t?.success === false && t?.name) freq[t.name] = (freq[t.name] || 0) + 1;
-          });
-        });
-      });
-    });
-    const sorted = Object.entries(freq).sort((a, b) => b[1] - a[1]).map(([k]) => k);
-    return mergeUnique(sorted, BASE_TECHNIQUES);
-  }, [classes]);
+  // 스파링 기술 선택기(성공·실패) 재료 — 카드마다 계산하지 않고 여기서 한 번 (task-047).
+  // 사용 횟수 = 이 사람 스파링 기록 전체의 성공+실패(정규화 이름). 카테고리 = 기술트리 DB category.
+  const techUsage     = useMemo(() => buildUsage(classes), [classes]);
+  const techPool      = useMemo(() => buildPool(techniques, techUsage), [techniques, techUsage]);
+  const techCatCounts = useMemo(() => countByCategory(techPool), [techPool]);
 
   const opponentSuggestions = useMemo(() => uniqueOpponents(classes), [classes]);
 
@@ -251,6 +230,49 @@ export default function SparEditor({ classId, sparDay, onClose, onSaved, initial
   function removeSession(i) { setSessions(sessions.filter((_, idx) => idx !== i)); }
   function updateSession(i, key, val) {
     setSessions(sessions.map((s, idx) => idx === i ? { ...s, [key]: val } : s));
+  }
+  /** 함수형 갱신 — 기술 선택기 전용. "기술트리에도 등록"은 서버 응답을 기다린 **뒤에** 항목을 넣는데,
+   *  그 사이 화면이 다시 그려졌으면 위 updateSession(렌더 시점 sessions 를 복사)은 옛 상태로 덮어쓴다. */
+  function updateSessionWith(i, fn) {
+    setSessions(prev => prev.map((s, idx) => idx === i ? fn(s) : s));
+  }
+
+  /** `+` → "기술트리에도 등록" (task-047). 성공하면 {name} — 선택기가 그 이름으로 항목을 넣는다.
+   *  🔴 실패하면 이유를 토스트로 알리고 null — 항목을 넣지 않는다(조용히 성공한 척하지 않는다).
+   *  서버(POST /api/techniques)는 같은 이름(대소문자 무시)이 이미 있으면 새로 만들지 않고 {id, existing:true} 를
+   *  돌려준다 — 그때는 그 기술을 고른 것으로 하고, 그 기술의 카테고리는 바꾸지 않는다(서버가 안 바꾼다). */
+  async function registerTechnique(name, category) {
+    const clean = String(name || '').trim();
+    if (!clean || !TECH_CATEGORIES.includes(category)) {
+      showToast('기술트리 등록 실패: 이름과 카테고리를 확인해 주세요');
+      return null;
+    }
+    if (holdOf(normalize(clean))) {   // 화면에서 버튼이 꺼져 있지만 한 번 더 막는다
+      showToast(`「${clean}」은(는) 관장 보류 기술이라 기술트리에 등록하지 않아요 — "이 기록에만"으로 적어 주세요`);
+      return null;
+    }
+    let res;
+    try {
+      res = await techniquesApi.createTechnique({ name: clean, category });
+    } catch (e) {
+      showToast('기술트리 등록 실패: ' + e.message);
+      return null;
+    }
+    if (!res || res.id == null) {
+      showToast('기술트리 등록 실패: 서버가 등록 결과를 돌려주지 않았어요');
+      return null;
+    }
+    try {
+      await reloadTechniques();
+    } catch (e) {
+      // 등록은 됐다 — 항목은 넣는다. 목록 갱신만 실패했음을 숨기지 않는다.
+      showToast(`「${clean}」은(는) 기술트리에 등록됐지만 목록을 다시 불러오지 못했어요: ${e.message}`);
+      return { name: clean };
+    }
+    showToast(res.existing
+      ? `「${clean}」은(는) 이미 기술트리에 있어요 — 그 기술로 골랐어요(카테고리는 그대로)`
+      : `기술트리에 「${clean}」(${category}) 등록`);
+    return { name: clean };
   }
 
   function buildPayload(kept) {
@@ -419,13 +441,15 @@ export default function SparEditor({ classId, sparDay, onClose, onSaved, initial
             idx={i}
             session={s}
             weakAutocomplete={weakFreqSuggestions}
-            successAutocomplete={successFreqSuggestions}
-            failTechSuggestions={failTechSuggestions}
+            techPool={techPool}
+            techCatCounts={techCatCounts}
+            onRegisterTech={registerTechnique}
             opponentSuggestions={opponentSuggestions}
             causes={causes}
             onAddCause={addCause}
             onRemove={() => removeSession(i)}
             onUpdate={(k, v) => updateSession(i, k, v)}
+            onUpdateWith={(fn) => updateSessionWith(i, fn)}
           />
         ))}
         <button
@@ -732,20 +756,19 @@ function FailDetail({ item, causes, onChangeCauses, onReaction, onAddCause }) {
 }
 
 function GrowthSessionCard({
-  idx, session, weakAutocomplete, successAutocomplete, failTechSuggestions,
-  opponentSuggestions, causes, onAddCause, onRemove, onUpdate,
+  idx, session, weakAutocomplete, techPool, techCatCounts, onRegisterTech,
+  opponentSuggestions, causes, onAddCause, onRemove, onUpdate, onUpdateWith,
 }) {
   const [expanded, setExpanded] = useState(false);
-  const [customFailTech, setCustomFailTech] = useState('');
 
-  const goodTechs = session.successTried.filter(t => t.success).map(t => t.name);
-  const failTechs = session.successTried.filter(t => !t.success).map(t => t.name);
-
-  // 실패 항목은 **배열 전체에서의 위치(i)** 를 들고 다닌다. 원인·리액션을 그 항목 객체에
+  // 성공·실패 항목은 **배열 전체에서의 위치(i)** 를 들고 다닌다. 원인·리액션을 그 항목 객체에
   // 직접 쓰기 위해서다 — 인덱스로 짝지은 별도 배열이 아니므로 항목을 지워도 짝이 밀리지 않는다.
-  const failEntries = session.successTried
-    .map((t, i) => ({ t, i }))
-    .filter(x => !x.t.success);
+  // 선택 칩(TechPicker)도 이 위치로 뺀다 — 같은 이름이 두 번 들어간 옛 기록에서도 하나씩 정확히 빠진다.
+  const entries      = session.successTried.map((t, i) => ({ t, i }));
+  const goodEntries  = entries.filter(x => x.t.success);
+  const failEntries  = entries.filter(x => !x.t.success);
+  const goodSelected = goodEntries.map(({ t, i }) => ({ name: t.name, i }));
+  const failSelected = failEntries.map(({ t, i }) => ({ name: t.name, i }));
 
   // 성장 포인트 handlers
   function toggleWeak(name) {
@@ -759,38 +782,31 @@ function GrowthSessionCard({
     if (!session.weak.includes(name)) onUpdate('weak', [...session.weak, name]);
   }
 
-  // 성공한 기술 handlers
-  function toggleGoodTech(name) {
-    if (goodTechs.includes(name)) {
-      const i = session.successTried.findIndex(t => t.name === name && t.success);
-      if (i >= 0) onUpdate('successTried', session.successTried.filter((_, j) => j !== i));
-    } else {
-      onUpdate('successTried', [...session.successTried, newSuccessItem(name, true)]);
-    }
+  // 성공·실패 기술 handlers (task-047 — TechPicker). 같은 기술인지는 **정규화 이름**(띄어쓰기·대소문자 무시)으로 본다 —
+  //   트리 "니슬라이드"를 눌렀을 때 옛 기록의 "니 슬라이드"가 이미 있으면 새로 넣지 않고 그걸 뺀다(토글).
+  //   저장된 이름은 한 글자도 바꾸지 않는다(옛 철자 그대로 저장 — 기존 기록 수정 금지).
+  // 🔴 새 항목은 반드시 newSuccessItem() — causes·reaction 필드가 빠지면 저장(destroy+reinsert)에서 사라진다.
+  // 함수형 갱신(onUpdateWith)을 쓰는 이유: "기술트리에도 등록"은 서버 응답 뒤에 onAdd 가 불린다(렌더 시점 복사본 금지).
+  const sameItem = (success, key) => t => !!t.success === success && normalize(t.name) === key;
+  function toggleTech(name, success) {
+    const key = normalize(name);
+    onUpdateWith(s => {
+      const i = s.successTried.findIndex(sameItem(success, key));
+      return { ...s, successTried: i >= 0
+        ? s.successTried.filter((_, j) => j !== i)
+        : [...s.successTried, newSuccessItem(name, success)] };
+    });
   }
-  function removeGoodTech(name) {
-    const i = session.successTried.findIndex(t => t.name === name && t.success);
-    if (i >= 0) onUpdate('successTried', session.successTried.filter((_, j) => j !== i));
+  function addTech(name, success) {
+    const key = normalize(name);
+    if (!key) return;
+    onUpdateWith(s => (s.successTried.some(sameItem(success, key))
+      ? s
+      : { ...s, successTried: [...s.successTried, newSuccessItem(name, success)] }));
   }
-  function addGoodTech(name) {
-    if (!goodTechs.includes(name))
-      onUpdate('successTried', [...session.successTried, newSuccessItem(name, true)]);
-  }
-
-  // 안 된 기술 handlers — 선택을 해제하면 그 항목의 원인·리액션도 같이 사라진다(항목 내부에 있으므로)
-  function toggleFailTech(name) {
-    if (failTechs.includes(name)) {
-      const i = session.successTried.findIndex(t => t.name === name && !t.success);
-      if (i >= 0) onUpdate('successTried', session.successTried.filter((_, j) => j !== i));
-    } else {
-      onUpdate('successTried', [...session.successTried, newSuccessItem(name, false)]);
-    }
-  }
-  function addCustomFailTech() {
-    const val = customFailTech.trim();
-    if (val && !failTechs.includes(val))
-      onUpdate('successTried', [...session.successTried, newSuccessItem(val, false)]);
-    setCustomFailTech('');
+  // 칩 × — 선택을 해제하면 그 항목의 원인·리액션도 같이 사라진다(항목 내부에 있으므로. 기존과 같음)
+  function removeTechAt(i) {
+    onUpdateWith(s => ({ ...s, successTried: s.successTried.filter((_, j) => j !== i) }));
   }
 
   /** successTried[i] 에 부분 갱신 — 원인·리액션은 항목 객체 안에 저장된다 */
@@ -801,11 +817,6 @@ function GrowthSessionCard({
   function step(key, delta) {
     onUpdate(key, Math.max(0, (parseInt(session[key]) || 0) + delta));
   }
-
-  const failTechChips = [
-    ...failTechs,
-    ...failTechSuggestions.filter(s => !failTechs.includes(s)).slice(0, 8),
-  ];
 
   return (
     <div style={{
@@ -894,65 +905,38 @@ function GrowthSessionCard({
         </div>
       </div>
 
-      {/* ③ 성공한 기술 — ChipSection 자체 라벨을 섹션 제목으로 쓴다(별도 래퍼 제목 없음) */}
+      {/* ③ 성공한 기술 — 카테고리 → 사용 횟수순 목록 / 검색 → 고른 칩 (task-047, 성공·실패 선택기 따로) */}
       <div style={{ marginBottom: 14 }}>
-        <ChipSection
-          label="성공한 기술"
-          values={goodTechs}
-          baseChips={KEY_TECHNIQUES}
-          autocompleteList={successAutocomplete}
-          color="gold"
-          onToggle={toggleGoodTech}
-          onAdd={addGoodTech}
-          onRemove={removeGoodTech}
-          inputId={`success-${idx}`}
+        <div style={{ fontSize: 12, fontWeight: 700, color: '#B8860B', marginBottom: 7 }}>
+          성공한 기술
+        </div>
+        <TechPicker
+          tone="gold"
+          pool={techPool}
+          catCounts={techCatCounts}
+          selected={goodSelected}
+          onToggle={(name) => toggleTech(name, true)}
+          onAdd={(name) => addTech(name, true)}
+          onRemove={removeTechAt}
+          onRegister={onRegisterTech}
         />
       </div>
 
-      {/* ④ 실패한 기술 — 복기·연구의 재료가 여기서 나온다 (task-022) */}
+      {/* ④ 실패한 기술 — 복기·연구의 재료가 여기서 나온다 (task-022). 고른 항목마다 원인 태그(task-045)는 아래 그대로 */}
       <div style={{ marginBottom: 14 }}>
         <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--red)', marginBottom: 8 }}>
           실패한 기술
         </div>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-          {failTechChips.map(chip => {
-            const sel = failTechs.includes(chip);
-            return (
-              <button key={chip} onClick={() => toggleFailTech(chip)} style={{
-                padding: '5px 11px', borderRadius: 20,
-                background: sel ? 'var(--red-dim, #fde8e8)' : 'var(--surface)',
-                color: sel ? 'var(--red)' : 'var(--text2)',
-                fontSize: 12, fontWeight: sel ? 700 : 500,
-                cursor: 'pointer',
-                border: sel ? '1px solid var(--red)' : '1px solid var(--border-med)',
-              }}>{chip}</button>
-            );
-          })}
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
-            <input
-              value={customFailTech}
-              onChange={e => setCustomFailTech(e.target.value)}
-              onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addCustomFailTech(); } }}
-              placeholder="직접 입력"
-              autoComplete="off"
-              style={{
-                padding: '5px 9px', borderRadius: 20,
-                border: '1px dashed var(--border-med)',
-                background: 'transparent', color: 'var(--text)',
-                fontSize: 12, outline: 'none', width: 90,
-              }}
-            />
-            {customFailTech.trim() && (
-              <button onClick={addCustomFailTech} style={{
-                width: 24, height: 24, borderRadius: 12,
-                border: 'none', background: 'var(--red)',
-                color: '#fff', fontSize: 16, cursor: 'pointer',
-                display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                flexShrink: 0,
-              }}>+</button>
-            )}
-          </div>
-        </div>
+        <TechPicker
+          tone="red"
+          pool={techPool}
+          catCounts={techCatCounts}
+          selected={failSelected}
+          onToggle={(name) => toggleTech(name, false)}
+          onAdd={(name) => addTech(name, false)}
+          onRemove={removeTechAt}
+          onRegister={onRegisterTech}
+        />
 
         {/* 고른 실패 기술마다 원인 태그 + 리액션 한 줄 */}
         {failEntries.map(({ t, i }) => (

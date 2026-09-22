@@ -20,7 +20,9 @@ import ClipEditor from '../components/ClipEditor';
 import * as clipsApi from '../api/clips';
 import GameplanDetail from '../components/GameplanDetail';
 import GameplanEditor from '../components/GameplanEditor';
-import { BASE_POSITIONS, BASE_CATEGORIES, mergeUnique } from '../utils/baseOptions';
+import {
+  BASE_POSITIONS, TECH_CATEGORIES, EXCLUDED_CATEGORIES, TECH_CATEGORY_DESC, categoryGroup, mergeUnique,
+} from '../utils/baseOptions';
 import { uniqueTechPositions, uniqueAllTags } from '../utils/suggestions';
 import ClipsPage from './ClipsPage';
 import PositionManagerModal from '../components/PositionManagerModal';
@@ -485,6 +487,9 @@ function TechEditorModal({ initial, onSave, onCancel }) {
   const [tags, setTags]   = useState(initial?.tags || []);
   const [note, setNote]   = useState(initial?.note || '');
   const [starred, setStarred] = useState(!!initial?.starred);
+  // 카테고리 (task-047) — 저장된 값을 **그대로** 들고 시작한다. 옛 값(관절기·초크·포지셔닝 등)도 사용자가
+  // 다른 칸을 누르기 전까지는 바꾸지 않는다(몰래 새 체계로 바꾸지 않음). 빈 값 = 미분류.
+  const [category, setCategory] = useState(initial?.category || '');
 
   const posSuggestions = useMemo(
     () => mergeUnique(BASE_POSITIONS, uniqueTechPositions(techniques)),
@@ -498,7 +503,7 @@ function TechEditorModal({ initial, onSave, onCancel }) {
       name: name.trim(),
       positions: pos,
       pos: pos[0] || '',
-      category: initial?.category || '',
+      category,
       tags,
       note,
       starred: starred ? 1 : 0,
@@ -510,6 +515,10 @@ function TechEditorModal({ initial, onSave, onCancel }) {
       <div className="field">
         <label>기술명 *</label>
         <input value={name} onChange={e => setName(e.target.value)} />
+      </div>
+      <div className="field">
+        <label>카테고리</label>
+        <CategoryField value={category} onChange={setCategory} />
       </div>
       <div className="field">
         <label>포지션</label>
@@ -533,6 +542,47 @@ function TechEditorModal({ initial, onSave, onCancel }) {
         <Button variant="outline" size="sm" onClick={onCancel}>취소</Button>
       </div>
     </Modal>
+  );
+}
+
+// 기술 카테고리 칸 (task-047) — 미분류 + 스파링 카테고리 6개 + 제외 2개(포지션·기타).
+// 이 값이 스파링 기술 선택기(components/TechPicker)의 카테고리 목록을 정한다. 칩 한 번 누르기 — 휴대폰 셀렉트 팝업을 쓰지 않는다.
+// 저장된 값이 이 목록에 없으면(옛 체계 '관절기' 등) 그 값도 칩으로 보여 주고 **선택된 채로 둔다** — 바꾸려면 사용자가 다른 칩을 누른다.
+const CATEGORY_CHOICES = ['', ...TECH_CATEGORIES, ...EXCLUDED_CATEGORIES];
+
+function CategoryField({ value, onChange }) {
+  const cur = String(value || '');
+  const legacy = cur && !CATEGORY_CHOICES.includes(cur) ? cur : null;
+  const choices = legacy ? [...CATEGORY_CHOICES, legacy] : CATEGORY_CHOICES;
+  const group = categoryGroup(cur);
+  const where = TECH_CATEGORIES.includes(group) ? `「${group}」 목록에 보여요`
+    : EXCLUDED_CATEGORIES.includes(group) ? `검색으로만 보여요(「${group} · 제외」)`
+    : '카테고리 목록에 안 나오고 검색으로만 보여요';
+  const hint = legacy
+    ? `옛 값 「${legacy}」 — 스파링 화면에선 ${where}. 바꾸려면 다른 칸을 누르세요`
+    : !cur
+      ? '미분류 — 스파링 화면에선 카테고리 목록에 안 나오고 검색으로만 보여요'
+      : TECH_CATEGORY_DESC[cur] || '';
+  return (
+    <div>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
+        {choices.map(c => {
+          const on = cur === c;
+          const excluded = EXCLUDED_CATEGORIES.includes(c);
+          const label = c === '' ? '미분류' : c === legacy ? `${c} (옛 값)` : c;
+          return (
+            <button key={c || '_none'} type="button" data-tech-cat={c} aria-pressed={on} onClick={() => onChange(c)} style={{
+              padding: '5px 11px', borderRadius: 20, fontSize: 12, cursor: 'pointer',
+              border: on ? '1px solid var(--accent)' : `1px ${c === legacy || excluded || c === '' ? 'dashed' : 'solid'} var(--border-med)`,
+              background: on ? 'var(--accent-dim)' : 'var(--surface)',
+              color: on ? 'var(--accent)' : 'var(--text2)',
+              fontWeight: on ? 700 : 500,
+            }}>{label}</button>
+          );
+        })}
+      </div>
+      {hint && <div style={{ fontSize: 11, color: 'var(--text3)', marginTop: 6, lineHeight: 1.5 }}>{hint}</div>}
+    </div>
   );
 }
 

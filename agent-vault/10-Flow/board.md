@@ -5,6 +5,8 @@ tags:
 # 칸반 보드
 
 ## Backlog
+- **기술트리 미정 4개 분류 — 매트릭스·사지오로·키마스터·밸리다운** — 관장이 이름만으로 판단 불가. category 가 비어 스파링 선택기에서 검색으로만 보인다. 사용자가 기술 관리 화면 카테고리 칸에서 정하면 끝. [[task-047-spar-tech-picker-apply]] (2026-09-22)
+- **관장 확인거리(task-046)** — `백포지션 컨트롤`(실패 4)이 트리 `백포지션`과 미연결 · 탈출 카테고리 트리 0개(기록의 앵클락 탈출·마운트 탈출·가드 리커버리 미연결) · 앵클락 트리 중복 2행 · `니어네이키트 쵸크` 오타 의심 · 별칭 후보(바우앤애로우·버라토플라타·롱스탭 패스·토레안도 패스). 사용자 답변 필요. [[task-046-spar-tech-picker-demo]] (2026-09-22)
 - **`PUT /api/classes/:id/spar/:sparDayId` 를 본문 없이 보내면 그 일자의 라운드가 전부 지워진다** — task-045 Developer 픽스처에서 실제로 발생. destroy+reinsert 구조라 `sessions` 가 비면 전부 삭제된다. 프론트는 항상 `sessions` 를 보내 **실사용 영향은 없다**. 서버에서 `sessions` 누락을 400 으로 막을지 판단. LOW [[task-045-spar-cause-default-tags]] (2026-09-22)
 - **원인 태그 `syncDefaults` 가 3회 재시도 후 실패하면 `console.error` 만 남기고 옛 목록을 200 으로 돌려준다** — Reviewer M2. 화면은 안 깨지지만 진짜 버그도 "오래된 목록"으로만 보인다. 알림 경로가 필요해지면 여기부터. 같은 맥락 M1: GET 의 부작용이 "없으면 추가"(task-022)에서 "있으면 rename"까지 커졌다 — 지금은 멱등·수렴이라 안전하나 **더 키우지 말 것**. MEDIUM [[task-045-spar-cause-default-tags]] (2026-09-22)
 - **관장 권고(보류) — 직접 입력 태그를 `get_holes` 에서 "직접 입력" 한 묶음으로 집계** — 직접 입력은 기록마다 흩어져 1회짜리로 집계된다. 분석·관장 MCP·RecallPage 에 걸치는 변경이라 별도 task. LOW [[task-045-spar-cause-default-tags]] (2026-09-22)
@@ -56,11 +58,12 @@ tags:
 ## Todo
 
 ## Doing
-- [[task-046-spar-tech-picker-demo]] — 스파링 기술 선택기를 카테고리(서브미션·패스·스윕·컨트롤·탈출·테이크다운) → 내 기술트리 검색·선택으로 바꾸기 위한 **1단계 데모**(`/demo/tech-picker`, 저장 안 함). 관장 카테고리안·56개 분류안 포함 (2026-09-22)
 
 ## Review
 
 ## Done
+- [[task-047-spar-tech-picker-apply]] — 스파링 성공·실패 기술을 카테고리 → 검색+탭 목록(성공·실패 따로)으로 교체, `+` 이 기록에만/기술트리 등록 매번 선택, 기술 관리 화면 카테고리 칸, user 3 기술트리 category 51행 백필(백업 있음), 데모 제거 (2026-09-22)
+- [[task-046-spar-tech-picker-demo]] — 기술 선택기 데모(관장 카테고리 6·분류안 56·비교 스위치) → 사용자 결정 후 task-047 로 적용, 데모 제거 (2026-09-22)
 - [[task-045-spar-cause-default-tags]] — 스파링 실패 원인 태그를 관장 확정 기본 7개로 교체(각도→세팅·연결 없음→대처·연결·이유 모름→모르겠음은 이름만 변경, 기록 무수정). `+` 직접 입력은 그 기록에만. 배포 `5ad089d`(릴리스 20260922-132403). user 3 은 첫 화면 열 때 적용 — 사용자 확인 대기 (2026-09-22)
 - [[task-044-video-whisper-path-and-visibility]] — 영상분석의 whisper 도 `WHISPER_BIN`(해석된 절대경로)으로 호출 + 전사 실패를 `console.error` 로 **종류 구분**(실행파일 없음/타임아웃/그 외, 실행파일 없음일 땐 해석된 경로 동반). `videoAnalysis.js` 1파일(+56/-2), `runProcess`·60초 타임아웃·호출부·`voiceAnalysis.js` 무변경. 운영 로그에 ENOENT **7건**이 쌓여 있었는데 분석은 전부 "정상 완료"로 끝나 아무도 몰랐다 — [[task-043-whisper-path-resolution]] 의 형제 결함. Leader 직접 실행: PATH 사고 재현(`PATH=/usr/bin:/bin`) → clip 65 전사 **729자** / 같은 PATH 에서 옛 bare 호출은 **ENOENT 재현**(대조군) / `WHISPER_PATH=/nonexistent` → error 1줄·`''` 반환·`analyzeLocalFile` 56.4초 **완주**(method=vision, 설명 370자). Reviewer PASS(독립 대조군 직접 구성). 🔴 **QA(Haiku) 5회째 같은 패턴** — PASS 보고했으나 Q3 미실행·Q5/Q6 은 코드리뷰로 갈음, Leader 가 전부 재실행. **배포·푸시 완료** (2026-09-18)
 - [[task-041-clip-video-muted-default]] — 참고영상 상세 영상(저장 영상·YouTube)을 음소거로 재생 시작, 켠 소리는 **그 영상 보는 동안 유지**(`el.dataset.bjjMuted` 가드). `VideoPlayer.jsx`·`videoThumb.js`(웹만, 재설치 불필요). 🔴 **9/15 소스 소실 사고** — 커밋 안 된 채 `git reset --hard origin/main`(reflog `HEAD@{0}`)에 날아감. **운영은 멀쩡했다**(서빙 번들 `index-C66v7MFj.js` 에 음소거 로직이 살아 있었음 — ext4 미러에서 빌드됐기 때문). 배포 번들 **소스맵의 `sourcesContent`** 에서 원본을 그대로 꺼내 복원, 재빌드 결과가 배포본과 **바이트 동일**(md5 `e29cc18a…`)해 복구 정확성 증명. `getYtEmbed` 기존 호출 42건 회귀 0 · 헤드리스 CDP 6/6 (가드 뺀 역검증판은 ③④ FAIL 확인). **커밋·푸시 완료** (2026-09-15)

@@ -312,27 +312,6 @@ export default function ProfilePage() {
           </button>
         </div>
 
-        {/* 🧪 task-046 임시 진입 카드 — 기술 선택기 데모(/demo/tech-picker, 저장 안 함). 앱엔 주소창이 없어 여기서 들어간다.
-            2단계(실제 스파링 화면 교체)가 정해지면 이 카드·라우트·데모 파일을 함께 지운다. */}
-        <button
-          onClick={() => navigate('/demo/tech-picker')}
-          style={{
-            width: '100%', display: 'flex', alignItems: 'center', gap: 10,
-            padding: '11px 14px', marginBottom: 14, textAlign: 'left',
-            background: 'var(--surface)', border: '1px dashed var(--amber)', borderRadius: 14,
-            color: 'var(--text)', cursor: 'pointer',
-          }}
-        >
-          <span style={{ fontSize: 20, lineHeight: 1 }}>🧪</span>
-          <span style={{ flex: 1, minWidth: 0 }}>
-            <span style={{ display: 'block', fontSize: 14, fontWeight: 700 }}>기술 선택기 데모</span>
-            <span style={{ display: 'block', fontSize: 12, color: 'var(--text2)', marginTop: 2 }}>
-              스파링 기술 고르는 방식 비교 · 저장 안 됨 · 임시
-            </span>
-          </span>
-          <Icon name="chevR" size={16} color="var(--text3)" />
-        </button>
-
         {/* 프로필 헤더 */}
         <div style={{
           background: 'linear-gradient(135deg, rgba(29,158,117,0.20) 0%, rgba(37,196,144,0.08) 100%)',

@@ -29,17 +29,37 @@ export const BASE_WEAKNESSES = [
   '서브미션 디펜스', '백 탈출', '마운트 탈출',
 ];
 
-// 칩 전용 핵심 기술 15개 — 고정 개수, 기록이 쌓여도 변하지 않음
-export const KEY_TECHNIQUES = [
-  '삼각조르기', '암바', '기무라', '길로틴', 'RNC',
-  '힙범프 스윕', '시저스윕', '펜듈럼 스윕',
-  '싱글렉', '더블렉', '백테이크', '바우앤애로우',
-  '가드 리커버리', '옴플라타', '크로스초크',
-];
+// ─── 기술 카테고리 — 기술트리 `techniques.category` 의 값 체계 (task-046 관장 제안 ② · task-047 적용) ─────────
+// 🔴 이 상수가 한 벌이다. 스파링 기술 선택기(components/TechPicker)·기술 관리 화면(TechPlanPage 편집 모달)·
+//    1회성 백필(backend/scripts/task-047-backfill-tech-categories.js)이 같은 값을 쓴다. 값을 바꾸면 셋 다 본다.
+// 스파링 선택지 = 아래 6개. 가드는 "뭘 했나"가 아니라 "어디서 했나"라 카테고리로 두지 않는다(→ 포지션).
+export const TECH_CATEGORIES = ['서브미션', '패스', '스윕', '컨트롤', '탈출', '테이크다운'];
 
-export const BASE_CATEGORIES = [
-  '관절기', '초크', '스윕', '테이크다운', '포지셔닝',
-];
+export const TECH_CATEGORY_DESC = {
+  '서브미션':   '탭을 받아내는 기술 — 조르기·꺾기 전부',
+  '패스':       '상대 가드를 넘어 위를 잡는 것',
+  '스윕':       '가드(아래)에서 뒤집고 올라가는 것',
+  '컨트롤':     '백·마운트·사이드를 잡거나 지키는 것, 백테이크 포함',
+  '탈출':       '서브미션·불리한 자리에서 빠져나오기, 가드 되찾기 포함',
+  '테이크다운': '선 자세에서 넘기기',
+  '포지션':     '가드·자리 이름 — 스파링 선택지엔 안 나오고 검색하면 보여요',
+  '기타':       '묶음 이름 등 — 스파링 선택지엔 안 나오고 검색하면 보여요',
+};
+
+// 스파링 카테고리 목록에 안 나오는 값. 검색하면 「○○ · 제외」 이름표로 보이고 고를 수도 있다(task-047 결정 M1).
+export const EXCLUDED_CATEGORIES = ['포지션', '기타'];
+
+// 옛 값(task-046 이전 체계) → 지금 체계. **표시·분류에만** 쓴다 — DB 값을 몰래 바꾸지 않는다.
+// 다른 사용자·백필 전 데이터도 스파링 선택기에서 제자리에 보이게 하려는 것.
+export const LEGACY_CATEGORY_MAP = { '관절기': '서브미션', '초크': '서브미션', '포지셔닝': '포지션' };
+
+/** DB category 값 → 선택기 그룹(6개 · 포지션 · 기타 · 미분류). 빈 값·모르는 값 = 미분류(검색으로만). */
+export function categoryGroup(category) {
+  const c = String(category ?? '').normalize('NFC').trim();
+  if (!c) return '미분류';
+  if (TECH_CATEGORIES.includes(c) || EXCLUDED_CATEGORIES.includes(c)) return c;
+  return LEGACY_CATEGORY_MAP[c] || '미분류';
+}
 
 export const BELT_LEVELS = ['화이트', '블루', '퍼플', '브라운', '블랙'];
 
