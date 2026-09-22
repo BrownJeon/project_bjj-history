@@ -253,6 +253,8 @@ aliases:
   - 되돌리기: `node backend/scripts/task-047-backfill-tech-categories.js --user 3 --restore ~/.local/share/bjj-backups/task-047-20260922-184029-user3.json --apply`
 - 순서: 백필 먼저 → push(=배포). 운영 중인 옛 코드는 category 를 표시용으로만 읽어(research·importSearch·mcp) 백필이 먼저여도 깨지는 곳 없음(Reviewer L1 확인).
 
+- [18:42] **배포 확인** — push `dd8e477..facefe4` → `RELEASE_RESULT {"status":"ok","release":"20260922-184223-facefe4d","migrated":false}`, pm2 `bjj` online(재시작 0), `/health` 200, 서빙 번들 `index-CnpIw8au.js` 에 새 선택기 문구 있음·데모 문구/라우트 0.
+
 ## 최종 요약 (사용자용)
 
 **무엇이 바뀌었나**
