@@ -1,7 +1,7 @@
 ---
 id: task-045
 title: 스파링 실패 원인 태그 — 기본 7개(관장 확정) + 직접 입력은 그 기록에만
-status: doing
+status: done
 created: 2026-09-22
 tags:
   - type/task
@@ -244,6 +244,8 @@ Leader/Deployer 인계: PASS, 결함 0건, 스키마 변경 없음(`--with-migra
 - QA 스크린샷 `shots/390/02b`(카드에서 `+`로 넣은 태그가 그 카드에만 선택 칩) · `06`(새 라운드는 기본 7개 + `+` 만)을 Leader 가 직접 열어 확인.
 - Reviewer M1·M2 는 **수용**(설계상 의도, backlog 기록). M2 의 `console.error` 는 task-044 의 "조용한 실패 가시화" 기준(로그에 남는다)을 충족한다고 판단.
 - 배포 경로: 이 프로젝트는 **webhook 이 release.sh 에 위임** — push 가 곧 blue/green 배포다(`~/.local/webhook-deploy/deploy-bjj.sh`, 09-21 `c3f5fd4` 도 push 2분 뒤 릴리스 생성). 그래서 `scripts/deploy.sh` 를 따로 돌리지 않는다(같은 sha 이중 배포). Deployer 역할의 판정(릴리스·`current`·pm2·`/health`·서빙 번들)은 Leader 가 직접 한다.
+- [13:24] **배포 확인** — push `c3f5fd4..5ad089d`(13:23:39) → webhook `RELEASE_RESULT {"status":"ok","release":"20260922-132403-5ad089d5","migrated":false}`, `exit=0`(24초). `current` → 새 릴리스, pm2 `bjj` online(재시작 0), `/health` 200, 서빙 번들 `index-JpejGUTs.js` 에 새 안내 문구 2개 있음·`(해제됨)` 없음. `scripts/deploy.sh` 는 돌리지 않았다(이중 배포 방지).
+- 🟡 **남은 확인**: user 3 은 본인이 스파링 화면을 처음 열 때 sync 된다 → 사용자 휴대폰 확인 후 DB 로 #44 세팅·#46 대처·연결·#48 모르겠음(같은 id), #47 `active=0`, 고정·압박·마무리 생성 확인.
 
 ## 최종 요약 (사용자용)
 

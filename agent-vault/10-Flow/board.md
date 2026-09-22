@@ -56,11 +56,11 @@ tags:
 ## Todo
 
 ## Doing
-- [[task-045-spar-cause-default-tags]] — 스파링 실패 원인 태그를 관장 확정 기본 7개로 교체(각도→세팅·연결 없음→대처·연결·이유 모름→모르겠음은 이름만 변경, 기록 무수정). `+` 직접 입력은 그 기록에만 남고 선택지에 안 쌓인다 (2026-09-22)
 
 ## Review
 
 ## Done
+- [[task-045-spar-cause-default-tags]] — 스파링 실패 원인 태그를 관장 확정 기본 7개로 교체(각도→세팅·연결 없음→대처·연결·이유 모름→모르겠음은 이름만 변경, 기록 무수정). `+` 직접 입력은 그 기록에만. 배포 `5ad089d`(릴리스 20260922-132403). user 3 은 첫 화면 열 때 적용 — 사용자 확인 대기 (2026-09-22)
 - [[task-044-video-whisper-path-and-visibility]] — 영상분석의 whisper 도 `WHISPER_BIN`(해석된 절대경로)으로 호출 + 전사 실패를 `console.error` 로 **종류 구분**(실행파일 없음/타임아웃/그 외, 실행파일 없음일 땐 해석된 경로 동반). `videoAnalysis.js` 1파일(+56/-2), `runProcess`·60초 타임아웃·호출부·`voiceAnalysis.js` 무변경. 운영 로그에 ENOENT **7건**이 쌓여 있었는데 분석은 전부 "정상 완료"로 끝나 아무도 몰랐다 — [[task-043-whisper-path-resolution]] 의 형제 결함. Leader 직접 실행: PATH 사고 재현(`PATH=/usr/bin:/bin`) → clip 65 전사 **729자** / 같은 PATH 에서 옛 bare 호출은 **ENOENT 재현**(대조군) / `WHISPER_PATH=/nonexistent` → error 1줄·`''` 반환·`analyzeLocalFile` 56.4초 **완주**(method=vision, 설명 370자). Reviewer PASS(독립 대조군 직접 구성). 🔴 **QA(Haiku) 5회째 같은 패턴** — PASS 보고했으나 Q3 미실행·Q5/Q6 은 코드리뷰로 갈음, Leader 가 전부 재실행. **배포·푸시 완료** (2026-09-18)
 - [[task-041-clip-video-muted-default]] — 참고영상 상세 영상(저장 영상·YouTube)을 음소거로 재생 시작, 켠 소리는 **그 영상 보는 동안 유지**(`el.dataset.bjjMuted` 가드). `VideoPlayer.jsx`·`videoThumb.js`(웹만, 재설치 불필요). 🔴 **9/15 소스 소실 사고** — 커밋 안 된 채 `git reset --hard origin/main`(reflog `HEAD@{0}`)에 날아감. **운영은 멀쩡했다**(서빙 번들 `index-C66v7MFj.js` 에 음소거 로직이 살아 있었음 — ext4 미러에서 빌드됐기 때문). 배포 번들 **소스맵의 `sourcesContent`** 에서 원본을 그대로 꺼내 복원, 재빌드 결과가 배포본과 **바이트 동일**(md5 `e29cc18a…`)해 복구 정확성 증명. `getYtEmbed` 기존 호출 42건 회귀 0 · 헤드리스 CDP 6/6 (가드 뺀 역검증판은 ③④ FAIL 확인). **커밋·푸시 완료** (2026-09-15)
 - [[task-042-toggle-tab-position-dots]] — 하단 토글 탭 점을 TheRoute 방식 **위치 표시 점 2개**(라벨 아래·활성일 때만·front=왼쪽, 현재 쪽만 `--accent`)로 교체 + 코치 리포트 알림을 아이콘 우상단 **알림 전용 배지**로 분리(알림 있을 때만 — 예전엔 앰버가 항상 떠 있었다). `ToggleTab.jsx`·`Layout.jsx` 2파일, `toggleNav.js`·`app.css` 무변경(웹만, 재설치 불필요). 🔴 **Leader 의 62px 여유 추정이 틀려 Developer 가 실측 반박**(아이템 이미 56px·여유 1px·아이콘 2.5px 튐) → 점 줄을 **절대 배치**로 바꿔 아이템 높이 무변경(CSS 해시 동일). dev 모듈36/브라우저16/배지7 · Reviewer 역검증(옛 번들에서 배지 검사가 **실패**하는 것까지 확인) · QA 72/72 · Leader 번들·키·mtime·육안 재확인. task-023 초록 점 육안 숙제 해소. **배포·푸시 완료** (2026-09-15)
