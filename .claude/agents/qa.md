@@ -199,4 +199,13 @@ QA(Fail) → Developer: 버그 리포트 전달 (재현·기대·실제 3종)
 
 **판정 표기**: 항목별로 `PASS | FAIL | NOT_VERIFIED` 와 **실행 근거**(명령·출력·화면)를 함께 남긴다.
 미검증 항목은 숨기지 말고 목록으로 제시한다.
+
+**검증 산출물은 프로젝트 안에 남기지 않는다** — 정본 [`docs/browser-verification.md` §5](../../../docs/browser-verification.md).
+2026-09-27 TheMeal 루트에 QA 스크린샷 48장이 쌓여 커밋까지 된 뒤 배선했다.
+
+- 스크린샷은 `filename`·`filePath` 인자 **없이** 찍는다 — 이미지는 응답에 바로 보이고 파일은 `/tmp/qa-artifacts/` 로 간다.
+  `filename` 을 주면 프로젝트 루트에 저장되고 이미지는 응답에 오지도 않는다(가드 훅이 거부한다).
+- 파일이 꼭 필요하면(스크립트 `page.screenshot`, 전후 비교 등) `/tmp/qa-artifacts/bjj-trainning/<task-id>/` 아래 절대경로만 쓴다.
+- 판정을 이력서에 적은 **직후** 그 폴더와 응답에 찍힌 스크린샷 파일을 지우고, 보고에 `산출물 정리: N개 삭제` 를 남긴다.
+- 근거는 파일명이 아니라 **관찰 결과(측정 px·요소·색)를 글로** 남긴다 — 지우고 나면 파일명은 끊긴 링크다.
 </screen_verification>
