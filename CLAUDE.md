@@ -183,6 +183,7 @@ StockInvest와 동일한 17개 env 정제(`ANTHROPIC_API_KEY` 포함) → `~/.cl
 프로젝트: BJJ 훈련일지
 팀 구성:
   - leader    (Opus)   — 요구사항 분석·작업 분배·최종 보고
+  - designer  (Opus)   — 화면 데모(docs/demo/)·사용자 승인·구현 가이드 (데모 검토 게이트: 워크스페이스 docs/demo-review-gate.md)
   - developer (Opus)   — backend(Express·Sequelize) + web(React·Vite) 구현
   - reviewer  (Sonnet) — JSON 직렬화·연쇄 삭제 원자성·아키텍처 독립 감사
   - qa        (Haiku)  — API 동작·JSON 직렬화·보안·데이터 무결성 검증
@@ -190,7 +191,7 @@ StockInvest와 동일한 17개 env 정제(`ANTHROPIC_API_KEY` 포함) → `~/.cl
   - judge     (Haiku)  — Jev 판정: 작업 접수 분류·developer 모델·Codex 개입(C1 설계·C2 리뷰 후·C3 재발)
   - codex     (Haiku)  — judge 판정 시에만 Codex 읽기 전용 외부 검토, 실패는 보고 후 진행
 
-워크플로우: Leader(→Judge 접수) → [Judge C1 → Codex?] → Developer → Reviewer → [Judge C2 → Codex? → Reviewer 판정] → QA → Deployer → Leader
+워크플로우: Leader(→Judge 접수) → [화면 작업: Designer 데모 → 사용자 승인] → [Judge C1 → Codex?] → Developer → Reviewer → [Judge C2 → Codex? → Reviewer 판정] → QA → Deployer → Leader
 작업 지시 방법:
   → leader에게 직접 요청하면 팀이 역할별로 분담해서 처리합니다.
   → 팀 정리 시: "팀 정리해줘" 또는 "Clean up the team"
