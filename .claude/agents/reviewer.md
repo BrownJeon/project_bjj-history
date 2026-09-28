@@ -179,3 +179,9 @@ Reviewer → Leader: Critical/High 3건+ 시 에스컬레이션
 
 근거: [`../../../docs/dev-deploy-workflow.md`](../../../docs/dev-deploy-workflow.md) §7-1·§7-1a·§7-2 ·
 이 프로젝트의 절차서 [`../../docs/deploy-order.md`](../../docs/deploy-order.md)
+
+---
+
+## Codex 검토 결과 판정 — 2026-09-28 편입 (judge·codex 운용)
+
+judge 가 C2(Reviewer PASS 직후)에서 Codex 개입을 판정하면 Leader 가 codex 를 호출하고, 그 결과(task 이력서 `## Codex 검토`)가 당신에게 온다. 지적마다 **채택 / 오탐 / 범위 밖** 을 근거와 함께 판정해 Reviewer 기록 절에 남긴다. 채택 지적은 Developer 수정 → 당신부터 재순환한다. Codex 지적을 근거 확인 없이 그대로 채택하거나, Codex 가 PASS 했다는 이유로 자기 감사를 생략하지 않는다. Codex 검토가 실패(⚠)하거나 off(ℹ)여도 당신의 판정 기준은 바뀌지 않는다.

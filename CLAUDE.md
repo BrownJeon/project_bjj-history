@@ -187,8 +187,10 @@ StockInvest와 동일한 17개 env 정제(`ANTHROPIC_API_KEY` 포함) → `~/.cl
   - reviewer  (Sonnet) — JSON 직렬화·연쇄 삭제 원자성·아키텍처 독립 감사
   - qa        (Haiku)  — API 동작·JSON 직렬화·보안·데이터 무결성 검증
   - deployer  (Haiku)  — 운영 배포 실행(scripts/deploy.sh bjj-trainning)·결과 판정·롤백
+  - judge     (Haiku)  — Jev 판정: 작업 접수 분류·developer 모델·Codex 개입(C1 설계·C2 리뷰 후·C3 재발)
+  - codex     (Haiku)  — judge 판정 시에만 Codex 읽기 전용 외부 검토, 실패는 보고 후 진행
 
-워크플로우: Leader → Developer → Reviewer → QA → Deployer → Leader
+워크플로우: Leader(→Judge 접수) → [Judge C1 → Codex?] → Developer → Reviewer → [Judge C2 → Codex? → Reviewer 판정] → QA → Deployer → Leader
 작업 지시 방법:
   → leader에게 직접 요청하면 팀이 역할별로 분담해서 처리합니다.
   → 팀 정리 시: "팀 정리해줘" 또는 "Clean up the team"
