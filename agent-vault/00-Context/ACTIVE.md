@@ -1,12 +1,14 @@
 ---
 project: bjj-trainning
-updated: 2026-09-22
+updated: 2026-09-28
 tags:
   - type/context
 ---
 # 현재 상태
 
 ## 지금 상태
+
+🆕 **judge·codex 편입 (2026-09-28, 워크스페이스 ADP-001 D-08).** 팀에 **judge**(Haiku — 공용 판정 도구로 작업 접수 분류·developer 모델·Codex 개입 판정, Jev 전송)와 **codex**(Haiku — judge 가 개입 판정했을 때만 Codex CLI 읽기 전용 검토)가 들어왔다. **다음 task 부터 적용**: Leader 가 task 이력서 frontmatter 에 `base_ref`·`risk_level` 을 적고 → judge `intake` → (설계 후 judge C1) → Developer(`developer_model` 대로) → Reviewer → judge C2 → (codex 결과는 Reviewer 가 채택·오탐 판정) → QA → Deployer. 절차 정본은 `.claude/agents/leader.md` 끝의 "judge·codex 운용" 절, 이 프로젝트 R2 보강 영역은 `judge.md` "프로젝트 맞춤"(runMigrations·백필 스크립트·스파링 destroy+reinsert·다중 테이블 쓰기·user_id 격리). Codex 연계 스위치는 사용자만 켜고 끈다(현재 on). 🔴 역할 파일·CLAUDE.md·이 ACTIVE 변경은 **아직 커밋 전(워킹 트리)** 이다 — 사용자 지시 시 커밋하고, push 가 곧 배포라 역할 파일만 바뀐 커밋은 따로 push 하지 않고 다음 코드 push 에 같이 내보낸다.
 
 ✅ **task-047(스파링 기술 선택기 실제 적용 — task-046 2단계) — 배포 완료 `facefe4`(릴리스 20260922-184223) (2026-09-22).** 성공·실패 기술 = 카테고리(서브미션·패스·스윕·컨트롤·탈출·테이크다운) → 검색+탭 목록, 성공·실패 따로(사용자 결정). 카테고리는 **DB `techniques.category`** 를 읽는다 — user 3 트리 51행 백필 완료(백업 `~/.local/share/bjj-backups/task-047-20260922-184029-user3.json`, 되돌리기는 스크립트 `--restore`). 미정 4개(매트릭스·사지오로·키마스터·밸리다운)는 비움 → 기술 관리 화면 카테고리 칸에서 사용자가 지정. `+` 는 이 기록에만/기술트리 등록 매번 선택, 보류 4종 등록 차단. 데모·프로필 임시 카드 제거. 상세 [[task-047-spar-tech-picker-apply]].
 
