@@ -73,6 +73,9 @@ export default function PickMeUpPage() {
   const [confirming, setConfirming]       = useState(false);
   const [excludedPickIds, setExcludedPickIds] = useState(() => new Set()); // 현재 세션에서 제외할 clip_id (기본: 오늘 픽)
   const [positionFilter, setPositionFilter] = useState('all'); // 'all' | 포지션명 — 카드 보기 중 실시간 전환
+  // 상세화면에서 픽한 카드 id — 스와이프 픽은 덱이 알아서 다음 카드로 넘어가지만 상세 픽은 그렇지 않아
+  // 방금 뽑은 카드가 덱 맨 위에 남는다. 덱에 넘기는 목록에서만 빼서 같은 효과를 낸다.
+  const [deckRemovedIds, setDeckRemovedIds] = useState(() => new Set());
   const [continuingDate, setContinuingDate] = useState(null); // 이력에서 "이어서 뽑기"로 이어가는 중인 과거 날짜 (null이면 평소처럼 오늘 세션)
 
   // 현재 셔플된 풀에 실제로 존재하는 포지션만 필터 칩으로 노출
@@ -84,9 +87,12 @@ export default function PickMeUpPage() {
 
   // 포지션 필터는 재조회/재셔플 없이 이미 뽑힌 풀을 즉시 다시 거르기만 한다
   const displayedClips = useMemo(() => {
-    if (positionFilter === 'all') return shuffledClips;
-    return shuffledClips.filter(c => (c.positions || []).includes(positionFilter));
-  }, [shuffledClips, positionFilter]);
+    const live = deckRemovedIds.size === 0
+      ? shuffledClips
+      : shuffledClips.filter(c => !deckRemovedIds.has(c.id));
+    if (positionFilter === 'all') return live;
+    return live.filter(c => (c.positions || []).includes(positionFilter));
+  }, [shuffledClips, positionFilter, deckRemovedIds]);
 
   // ─── 이력 탭 상태 ────────────────────────────────────────────────────────
   const [history, setHistory]       = useState([]);
@@ -144,6 +150,7 @@ export default function PickMeUpPage() {
     const shuffled = fisherYates([...source]);
     setCardPool(pool);
     setShuffledClips(shuffled);
+    setDeckRemovedIds(new Set());
     setPositionFilter('all');
     setDeckState('swiping');
   }
@@ -183,6 +190,7 @@ export default function PickMeUpPage() {
   // ─── 다시 생성 (재셔플) ──────────────────────────────────────────────────
   // 포지션 필터가 걸려 있으면 해당 포지션 카드끼리만 순서를 섞는다 (전체 풀은 그대로 유지)
   function handleReshuffle() {
+    setDeckRemovedIds(new Set());
     if (positionFilter === 'all') {
       const base = cardPool === 'starred'
         ? clips.filter(c => c.starred === 1)
@@ -196,6 +204,17 @@ export default function PickMeUpPage() {
       const shuffledMatching = fisherYates(prev.filter(matches));
       let mi = 0;
       return prev.map(c => (matches(c) ? shuffledMatching[mi++] : c));
+    });
+  }
+
+  // ─── 상세화면에서 픽 → 로컬 픽 추가 + 덱에서 빼기 ───────────────────────
+  function handlePickFromDetail(clip) {
+    handlePick(clip);
+    setDeckRemovedIds(prev => {
+      if (prev.has(clip.id)) return prev;
+      const next = new Set(prev);
+      next.add(clip.id);
+      return next;
     });
   }
 
@@ -690,7 +709,7 @@ export default function PickMeUpPage() {
                 {detailMode === 'browse' ? (
                   <button
                     type="button"
-                    onClick={async () => { await handlePick(clip); setDetailClip(null); }}
+                    onClick={() => { handlePickFromDetail(clip); setDetailClip(null); }}
                     style={{ ...actionBtn, background: 'var(--accent)', color: '#fff', border: 'none' }}
                   >
                     픽하기 ↑
