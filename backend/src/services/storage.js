@@ -64,6 +64,31 @@ function longVideoFrameWebPath(userId, videoId, filename) {
   return `/uploads/users/${userId}/long-video-frames/${videoId}/${filename}`;
 }
 
+// 긴 영상 원본 보관 (task-048, S3.5) — 분석용으로 받은 영상을 유튜브 삭제·비공개에 대비해 남긴다.
+// 프레임(getLongVideoFramesDir)과 같은 규칙: userId 필수, DEFAULT_USER 로 떨어지지 않는다.
+// 파일명은 항상 video.mp4 하나 — 재분석은 같은 경로를 원자 교체(임시 이름 → rename)한다.
+// 🔴 이 폴더는 DELETE·S3.5 가 fs.rm(recursive) 로 지운다 → id 는 숫자만 받는다(REV-048-1 L-1).
+//    '' · '../..' · '1/2' · -1 · 1.5 · '1e3' 같은 값이 상위 폴더를 가리키지 못하게 정수(숫자 또는 숫자 문자열)가
+//    아니면 던진다. 기존 함수(getLongVideoFramesDir 등)는 손대지 않았다.
+function assertLongVideoId(fn, name, value) {
+  if (value == null) throw new Error(`${fn}: ${name}가 필요합니다`);
+  const ok = (typeof value === 'number' && Number.isSafeInteger(value) && value >= 0)
+    || (typeof value === 'string' && /^\d+$/.test(value));
+  if (!ok) throw new Error(`${fn}: ${name}는 정수여야 합니다 (${JSON.stringify(value)})`);
+}
+
+function getLongVideoDir(userId, videoId) {
+  assertLongVideoId('getLongVideoDir', 'userId', userId);
+  assertLongVideoId('getLongVideoDir', 'videoId', videoId);
+  return path.join(getUserDir(String(userId)), 'long-videos', String(videoId));
+}
+
+function longVideoWebPath(userId, videoId) {
+  assertLongVideoId('longVideoWebPath', 'userId', userId);
+  assertLongVideoId('longVideoWebPath', 'videoId', videoId);
+  return `/uploads/users/${userId}/long-videos/${videoId}/video.mp4`;
+}
+
 // 프로필 아바타 (task-019) — getThumbPath/thumbWebPath 쌍과 동일한 패턴.
 // ⚠️ 배치 스킴은 users/<id>/ 가 아니라 **정적 루트 평면 배치**다. 바꾸지 말 것 —
 //    기존 DB 값 `/uploads/avatar_3.png` 와 실제 파일 `<staticRoot>/avatar_3.png` 가
@@ -84,6 +109,7 @@ module.exports = {
   frameWebPath, thumbWebPath, videoWebPath, getStaticRoot, ensureDir,
   getClassVideoDir, classVideoWebPath,
   getLongVideoFramesDir, longVideoFrameWebPath,
+  getLongVideoDir, longVideoWebPath,
   getAvatarPath, avatarWebPath,
   DEFAULT_USER,
 };

@@ -292,9 +292,10 @@ router.delete('/:id', wrap(async (req, res) => {
     await LongVideo.destroy({ where: { id: video.id, user_id: uid }, transaction: t });
   });
   ok(res, { ok: true });
-  // S7(task-008)이 챕터 프레임을 영구 저장하므로, DB 삭제 후 그 디렉토리도 정리한다
-  // (실패해도 API 응답에는 영향 없음 — 백그라운드로 베스트에포트 정리)
+  // S7(task-008)이 챕터 프레임을, S3.5(task-048)가 영상 원본을 영구 저장하므로, DB 삭제 후 그 디렉토리도
+  // 정리한다 (실패해도 API 응답에는 영향 없음 — 백그라운드로 베스트에포트 정리)
   fs.rm(storage.getLongVideoFramesDir(uid, video.id), { recursive: true, force: true }).catch(() => {});
+  fs.rm(storage.getLongVideoDir(uid, video.id), { recursive: true, force: true }).catch(() => {});
 }));
 
 // POST /api/long-videos/:id/techniques/:tid/apply — task-009 Phase 3, 설계서 §6-6

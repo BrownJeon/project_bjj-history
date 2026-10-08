@@ -1,6 +1,9 @@
 // 긴 영상 분석 파이프라인 — task-007 Phase 1(S0~S6) + task-008 Phase 2(S7~S9) + task-009 Phase 3(S10)
-// S11(완료/보관)은 Phase 4 소관, 이 파일에서 구현하지 않는다.
+// + task-048 S3.5(분석용으로 받은 영상을 서버에 보관 — 원래 S11 "완료/보관" 중 영상 보관 부분).
+// S11 의 나머지(자막·전사 보관 등)는 구현하지 않았다.
 const fs = require('fs/promises');
+const fsSync = require('fs');
+const { pipeline: streamPipeline } = require('stream/promises');
 const path = require('path');
 const crypto = require('crypto');
 const { spawn } = require('child_process');
@@ -78,6 +81,31 @@ async function getJobById(jobId) {
 async function isJobCanceled(jobId) {
   const job = await getJobById(jobId);
   return job?.status === 'canceled';
+}
+
+// S3 다운로드 진행률 → long_video_jobs.detail 기록기 (task-048 후속).
+// 예전에는 yt-dlp 진행 줄마다 updateJob 을 await 없이 날렸다(6분 영상 실측 90~111줄/약 6초). 그게 풀(max 10)을
+// 밀어내 다운로드 직후의 isJobCanceled 가 30초 획득 제한에 걸려 분석 전체가 "Operation timeout" 으로 죽었다
+// (2026-10-08 e2e 재현). 규칙: (a) 동시에 1건만 — 앞 건이 끝나기 전엔 보내지 않는다 (b) 마지막 **성공** 기록 후
+// minIntervalMs(2초) 미만이면 건너뛴다 (c) 실패는 지금처럼 무시 (d) 퍼센트 정규식·문구는 예전 그대로.
+// 화면 폴링이 5초라 2초 간격이면 표시 차이는 없다. idle() 은 진행 중인 기록이 끝날 때까지 기다린다 —
+// 다운로드가 끝난 뒤 늦게 도착한 진행 문구가 다음 단계(S3.5 등)의 detail 을 덮어쓰지 않게 한다.
+function makeDownloadProgressReporter(jobId, { write = updateJob, minIntervalMs = 2000, now = Date.now } = {}) {
+  let pending = null;
+  let lastOkAt = -Infinity;
+  function report(chunk) {
+    const m = /(\d{1,3}\.\d)%/.exec(chunk);
+    if (!m) return;
+    if (pending) return;                              // (a)
+    if (now() - lastOkAt < minIntervalMs) return;     // (b)
+    pending = Promise.resolve()
+      .then(() => write(jobId, { detail: `영상 다운로드 중 (${m[1]}%)` }))
+      .then(() => { lastOkAt = now(); })
+      .catch(() => {})                                // (c)
+      .finally(() => { pending = null; });
+  }
+  report.idle = () => pending || Promise.resolve();
+  return report;
 }
 
 async function cancelCleanup(jobId, videoId) {
@@ -247,6 +275,168 @@ function runProcess(cmd, args, timeoutMs = 30000) {
   });
 }
 
+// ── S3.5: 영상 서버 보관 (task-048) ─────────────────────────────────────
+// 다운로드한 분석용 영상(tmpDir, ext4)을 storage.getLongVideoDir(NAS)에 video.mp4 로 남긴다.
+// 원칙: (1) 임시 이름으로 복사한 뒤 rename 으로 교체 — 어떤 실패에서도 기존 video.mp4 는 그대로다
+//       (재분석이 이미 저장된 영상을 망치면 안 된다). (2) 운영상 실패(공간 부족·복사·재포장·rename)는
+//       던지지 않고 { saved:false, reason } 으로 돌려준다 — 호출측이 video_path 를 건드리지 않고 분석을
+//       계속한다. 인자 오류(userId 없음 등)만 던진다(storage 의 userId 필수 규칙과 같다).
+const PERSIST_FREE_MARGIN_BYTES = 1024 * 1024 * 1024; // 저장한 뒤에도 NAS 에 1GB 는 남긴다
+const PERSIST_REMUX_TIMEOUT_MS = 10 * 60 * 1000;      // -c copy 재포장(3시간 영상도 I/O 만)
+const PERSIST_CANCEL_POLL_MS = 3000;                  // ytdlp.spawnWithWatchdog 의 취소 확인 주기와 같다
+const PERSIST_TMP_PREFIX = 'video.mp4.tmp-';
+const PERSIST_STALE_TMP_MS = 10 * 60 * 1000;          // 이보다 오래 손대지 않은 임시 파일만 죽은 잔재로 보고 지운다
+
+// 대상 폴더는 아직 없을 수 있어 존재하는 가장 가까운 상위 폴더 기준으로 잰다. 확인 자체 실패 → null
+// (ytdlp.checkFreeDiskSpace 와 같이 "확인 실패는 통과" — 시그니처가 달라 그 함수는 건드리지 않았다)
+async function freeBytesNear(dir) {
+  let cur = path.resolve(dir);
+  for (;;) {
+    try {
+      const st = await fs.statfs(cur);
+      return st.bavail * st.bsize;
+    } catch (e) {
+      const parent = path.dirname(cur);
+      if (e.code !== 'ENOENT' || parent === cur) return null;
+      cur = parent;
+    }
+  }
+}
+
+// 스트림 복사 + 취소 감시. 취소되면 복사를 끊고 err.canceled=true 로 던진다(부분 파일 정리는 호출측).
+async function copyWithCancel(src, dst, cancelCheck, pollMs = PERSIST_CANCEL_POLL_MS) {
+  const ac = new AbortController();
+  let canceled = false;
+  const timer = cancelCheck
+    ? setInterval(async () => {
+        try { if (!canceled && await cancelCheck()) { canceled = true; ac.abort(); } } catch { /* ignore */ }
+      }, pollMs)
+    : null;
+  try {
+    await streamPipeline(fsSync.createReadStream(src), fsSync.createWriteStream(dst), { signal: ac.signal });
+  } catch (e) {
+    if (canceled) {
+      const err = new Error('사용자가 작업을 취소했습니다');
+      err.canceled = true;
+      throw err;
+    }
+    throw e;
+  } finally {
+    clearInterval(timer);
+  }
+}
+
+/**
+ * 분석용 영상을 서버에 보관한다.
+ * @param {string} srcPath   다운로드된 영상(보통 tmpDir/src.mp4)
+ * @param {number} userId    필수 — 없으면 던진다
+ * @param {number} videoId   long_videos.id — 없으면 던진다
+ * @param {object} [opts]    { jobId, cancelCheck } — targetDir·marginBytes·copyFn·cancelPollMs 는 단위 테스트 주입용
+ * @returns {Promise<{saved:true, webPath, filePath, bytes, remuxed} | {saved:false, reason, canceled?}>}
+ */
+async function persistVideo(srcPath, userId, videoId, opts = {}) {
+  if (userId == null) throw new Error('persistVideo: userId가 필요합니다');
+  if (videoId == null) throw new Error('persistVideo: videoId가 필요합니다');
+  if (!srcPath) throw new Error('persistVideo: srcPath가 필요합니다');
+  const {
+    jobId = `${process.pid}-${Date.now()}`,
+    cancelCheck = null,
+    targetDir = storage.getLongVideoDir(userId, videoId),
+    marginBytes = PERSIST_FREE_MARGIN_BYTES,
+    copyFn = copyWithCancel,
+    cancelPollMs = PERSIST_CANCEL_POLL_MS,
+  } = opts;
+  const webPath = storage.longVideoWebPath(userId, videoId);
+  const finalPath = path.join(targetDir, 'video.mp4');
+  // 시도마다 고유한 임시 이름(같은 jobId 가 겹쳐 돌아도 서로의 파일에 쓰지 않는다). 접두사는 유지 — 정리·하네스가 본다.
+  const tmpPath = path.join(targetDir, `${PERSIST_TMP_PREFIX}${jobId}-${process.pid}-${crypto.randomBytes(4).toString('hex')}`);
+
+  let source = srcPath;
+  let remuxPath = null;
+  let renamed = false;
+  let createdDir = false;
+  try {
+    const srcStat = await fs.stat(srcPath).catch(() => null);
+    if (!srcStat?.isFile() || srcStat.size <= 0) return { saved: false, reason: '원본 영상 파일이 없거나 비어 있습니다' };
+
+    // mp4 가 아니면(yt-dlp 단일 포맷 폴백이 webm 등을 줄 때) 같은 코덱 그대로 mp4 로 재포장을 시도한다.
+    // 재포장은 ffmpeg 기본값이면 moov 를 끝에 쓰므로 +faststart 로 앞에 둔다(스트리밍 시작 지연 방지).
+    if (path.extname(srcPath).toLowerCase() !== '.mp4') {
+      remuxPath = path.join(path.dirname(srcPath), `persist-remux-${jobId}.mp4`);
+      try {
+        await runProcess('ffmpeg', ['-y', '-v', 'error', '-i', srcPath, '-map', '0:v:0', '-map', '0:a:0?',
+          '-c', 'copy', '-movflags', '+faststart', remuxPath], PERSIST_REMUX_TIMEOUT_MS);
+      } catch (e) {
+        return { saved: false, reason: `mp4 재포장 실패(${path.extname(srcPath)}): ${e.message}` };
+      }
+      source = remuxPath;
+    }
+    const bytes = (await fs.stat(source)).size;
+    if (bytes <= 0) return { saved: false, reason: '재포장 결과가 비어 있습니다' };
+
+    if (cancelCheck && await cancelCheck()) return { saved: false, canceled: true, reason: '사용자 취소' };
+
+    const free = await freeBytesNear(targetDir);
+    if (free == null) {
+      console.error('[long-video] S3.5 저장소 여유 공간 확인 실패(통과 처리):', targetDir);
+    } else if (free < bytes + marginBytes) {
+      return { saved: false, reason: `저장소 여유 공간 부족 (여유 ${free} < 필요 ${bytes + marginBytes} bytes)` };
+    }
+
+    createdDir = !fsSync.existsSync(targetDir);
+    storage.ensureDir(targetDir);
+    // 이전 임시 파일 정리 — 이 폴더의 임시 파일은 같은 잡이 겹쳐 도는 다른 시도(원자적 claim 없는 워커·부팅 시
+    // running→queued 복귀, REV-048-3)의 **살아 있는** 파일일 수 있으므로 mtime 이 PERSIST_STALE_TMP_MS 보다 오래된
+    // 것만 지운다(살아 있는 복사는 쓰는 동안 mtime 이 계속 갱신된다). 방금 죽은 잔재는 다음 실행의 정리나 DELETE
+    // (폴더 통삭제)가 회수한다. 접두사가 다른 파일과 video.mp4 는 건드리지 않는다. stat/rm 실패는 무시.
+    for (const name of await fs.readdir(targetDir).catch(() => [])) {
+      if (!name.startsWith(PERSIST_TMP_PREFIX)) continue;
+      const p = path.join(targetDir, name);
+      const st = await fs.stat(p).catch(() => null);
+      if (st && Date.now() - st.mtimeMs > PERSIST_STALE_TMP_MS) await fs.rm(p, { force: true }).catch(() => {});
+    }
+
+    await copyFn(source, tmpPath, cancelCheck, cancelPollMs);
+    const copied = await fs.stat(tmpPath);
+    if (copied.size !== bytes) throw new Error(`복사 크기 불일치 (${copied.size} != ${bytes})`);
+    if (cancelCheck && await cancelCheck()) return { saved: false, canceled: true, reason: '사용자 취소' };
+    await fs.rename(tmpPath, finalPath); // 같은 폴더 안 rename — 기존 video.mp4 를 원자적으로 교체
+    renamed = true;
+    return { saved: true, webPath, filePath: finalPath, bytes, remuxed: !!remuxPath };
+  } catch (e) {
+    if (e?.canceled) return { saved: false, canceled: true, reason: '사용자 취소' };
+    return { saved: false, reason: e?.message || String(e) };
+  } finally {
+    if (!renamed) {
+      await fs.rm(tmpPath, { force: true }).catch(() => {});
+      // 이번 실행이 만든 폴더가 비어 있으면 지운다(비어 있지 않으면 rmdir 이 실패 — 기존 파일은 안전)
+      if (createdDir) await fs.rmdir(targetDir).catch(() => {});
+    }
+    if (remuxPath) await fs.rm(remuxPath, { force: true }).catch(() => {});
+  }
+}
+
+// S3.5 결과 → 사용자에게 보일 경고(long_videos.error, done 상태면 상세 화면이 amber 카드로 보여 준다) — REV-048-1 M-1.
+// 경고는 "이 영상은 아직 유튜브에만 의존한다"는 상태일 때만 만든다:
+//   - 이번 실행 시작 때 video_path 가 있었다(hadVideoPath) → 이전 저장본·경로가 그대로 남으므로 경고 없음
+//   - 사용자 취소·분석 중 삭제 → 경고 없음(취소는 done 으로 끝나지도 않는다)
+//   - 저장·기록 모두 성공 → 경고 없음
+//   - 그 밖(저장 실패, 또는 파일은 저장됐지만 video_path 기록 실패) → 경고
+// outcome 이 없으면(S3.5 에 닿지 않음) 판단할 근거가 없으므로 경고 없음. 순수 함수 — DB·파일을 보지 않는다.
+const SAVE_WARNING_REASON_MAX = 120;
+function buildVideoSaveWarning({ hadVideoPath = false, outcome = null } = {}) {
+  if (hadVideoPath || !outcome) return null;
+  if (outcome.canceled || outcome.deleted) return null;
+  if (outcome.saved && outcome.recorded) return null;
+  // 사유는 서버 내부 경로를 마지막 이름만 남기고 한 줄·120자로 줄인다
+  const reason = String(outcome.reason || '알 수 없는 오류')
+    .replace(/\/(?:[^\s'"/]+\/)+([^\s'"/]+)/g, '$1')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, SAVE_WARNING_REASON_MAX);
+  return `영상을 서버에 저장하지 못했습니다(${reason}) — 유튜브에서 영상이 삭제되면 재생할 수 없습니다. 재분석하면 다시 저장을 시도합니다.`;
+}
+
 // S4: 챕터 미확정일 때 시각 판단용 15장 균등 추출 (임시 디렉토리 — 판단 후 파기)
 async function extractVisualFrames(videoPath, outDir, durationSec) {
   const dur = durationSec > 0 ? durationSec : 30;
@@ -412,6 +602,9 @@ async function runPipeline(job) {
   await LongVideo.update({ status: 'running', error: null }, { where: { id: video.id } });
 
   const tmpDir = tmpDirFor(jobId);
+  // task-048 REV-048-1 M-1: 이번 실행 시작 때 저장본이 있었는지 + S3.5 결과 → 최종 완료 시 경고 판단
+  const hadVideoPath = !!video.video_path;
+  let saveOutcome = null;
   try {
     await fs.mkdir(tmpDir, { recursive: true });
 
@@ -495,15 +688,14 @@ async function runPipeline(job) {
     }
 
     let videoPath = null;
+    const downloadProgress = makeDownloadProgressReporter(jobId);
     try {
       videoPath = await ytdlp.downloadVideo(video.url, tmpDir, {
-        onProgress: (chunk) => {
-          const m = /(\d{1,3}\.\d)%/.exec(chunk);
-          if (m) updateJob(jobId, { detail: `영상 다운로드 중 (${m[1]}%)` }).catch(() => {});
-        },
+        onProgress: downloadProgress,
         cancelCheck: () => isJobCanceled(jobId),
       });
     } catch (e) {
+      await downloadProgress.idle();
       // 취소로 인한 reject(ytdlp.js의 cancelCheck → spawnWithWatchdog)를 다운로드 실패와
       // 구분해야 한다 — 그렇지 않으면 /cancel이 이미 세팅한 status='canceled'를 덮어써버린다
       if (await isJobCanceled(jobId)) { await cancelCleanup(jobId, video.id); return; }
@@ -519,6 +711,51 @@ async function runPipeline(job) {
         await errorJob(jobId, msg);
       }
       return;
+    }
+    await downloadProgress.idle(); // 늦게 끝난 진행 기록이 S3.5 의 detail 을 덮지 않게
+
+    if (await isJobCanceled(jobId)) { await cancelCleanup(jobId, video.id); return; }
+
+    // ── S3.5: 영상 서버 보관 (task-048) ────────────────────────────
+    // 분석(S4~S10)이 실패해도 영상은 남도록 다운로드 직후에 둔다. 저장이 안 돼도(공간·NAS 장애·재포장
+    // 실패) 분석은 계속하고 video_path 는 건드리지 않는다 — 처음이면 NULL 그대로(화면은 유튜브 iframe),
+    // 재분석이면 예전 저장본·경로 그대로다.
+    await updateStage(jobId, 'S3.5', 45, '영상 서버에 저장 중');
+    try {
+      const where = { id: video.id, user_id: job.user_id };
+      // 분석 도중 DELETE 된 영상이면 저장하지 않는다 — 라우트의 폴더 정리가 이미 지나가 고아 파일이 된다
+      if (await LongVideo.count({ where })) {
+        const saved = await persistVideo(videoPath, job.user_id, video.id, {
+          jobId,
+          cancelCheck: () => isJobCanceled(jobId),
+        });
+        if (saved.saved) {
+          // rename 뒤에도 행이 있는지 다시 본다. 있으면 이후의 DELETE 가 폴더를 지운다(커밋 → 폴더 정리 순).
+          // 없으면 그 정리가 이미 지나갔으므로 여기서 지운다.
+          if (await LongVideo.count({ where })) {
+            // REV-048-1 L-5: 파일은 이미 저장됐으므로 기록 실패는 "저장 실패"와 따로 남긴다(경고 대상 — video_path 가 NULL)
+            try {
+              await LongVideo.update({ video_path: saved.webPath }, { where });
+              saveOutcome = { saved: true, recorded: true };
+              console.log(`[long-video] job ${jobId} 영상 저장 완료(S3.5): ${saved.filePath} (${saved.bytes} bytes${saved.remuxed ? ', mp4 재포장' : ''})`);
+            } catch (pathErr) {
+              saveOutcome = { saved: true, recorded: false, reason: `video_path 기록 실패: ${pathErr.message}` };
+              console.error(`[long-video] job ${jobId} video_path 기록 실패(파일은 저장됨: ${saved.filePath}, 분석은 계속):`, pathErr.message);
+            }
+          } else {
+            saveOutcome = { saved: false, deleted: true };
+            await fs.rm(storage.getLongVideoDir(job.user_id, video.id), { recursive: true, force: true }).catch(() => {});
+          }
+        } else {
+          saveOutcome = { saved: false, canceled: !!saved.canceled, reason: saved.reason };
+          if (!saved.canceled) console.error(`[long-video] job ${jobId} 영상 저장 건너뜀(S3.5, 분석은 계속):`, saved.reason);
+        }
+      } else {
+        saveOutcome = { saved: false, deleted: true };
+      }
+    } catch (e) {
+      saveOutcome = { saved: false, reason: e.message };
+      console.error(`[long-video] job ${jobId} 영상 저장 실패(S3.5, 분석은 계속):`, e.message);
     }
 
     if (await isJobCanceled(jobId)) { await cancelCleanup(jobId, video.id); return; }
@@ -678,7 +915,9 @@ async function runPipeline(job) {
     const failedCount = Number(counts?.failed || 0);
     const totalCount = Number(counts?.total || finalChapters.length);
 
-    await LongVideo.update({ status: 'done', error: null }, { where: { id: video.id } });
+    // 저장 실패로 아직 유튜브에만 의존하면 done 이어도 경고를 남긴다(상세 화면의 amber 카드). 없으면 예전처럼 null.
+    const saveWarning = buildVideoSaveWarning({ hadVideoPath, outcome: saveOutcome });
+    await LongVideo.update({ status: 'done', error: saveWarning }, { where: { id: video.id } });
     await completeJob(jobId, {
       detail: `구간 분석 완료 (${doneCount}/${totalCount} 성공${failedCount > 0 ? `, ${failedCount}건 실패` : ''})`,
     });
@@ -688,7 +927,8 @@ async function runPipeline(job) {
     await LongVideo.update({ status: 'error', error: e.message || String(e) }, { where: { id: video.id } }).catch(() => {});
   } finally {
     // 잡별 임시 디렉토리는 성공/실패/취소/예외 모든 경로에서 반드시 정리한다
-    // (S7 프레임은 storage.getLongVideoFramesDir의 영구 저장 위치에 있어 여기서 지워지지 않는다)
+    // (S7 프레임은 storage.getLongVideoFramesDir, S3.5 영상은 storage.getLongVideoDir 의 영구 저장
+    //  위치에 있어 여기서 지워지지 않는다)
     await fs.rm(tmpDir, { recursive: true, force: true }).catch(() => {});
   }
 }
@@ -699,6 +939,9 @@ module.exports = {
   runPipeline,
   saveChapters,
   matchEditedChapters, // task-013: DB 없이 매칭 규칙만 단위 검증할 수 있도록 노출
+  persistVideo,        // task-048: S3.5 저장 규칙(원자 교체·실패 시 보존)을 단위 검증할 수 있도록 노출
+  buildVideoSaveWarning, // task-048 REV-048-1 M-1: 저장 실패 경고 규칙(순수 함수)
+  makeDownloadProgressReporter, // task-048 후속: S3 진행 기록 스로틀(동시 1건·2초)을 단위 검증할 수 있도록 노출
   getJobById,
   isJobCanceled,
   matchChapterTechniques,

@@ -190,12 +190,23 @@ async function checkFreeDiskSpace(dirPath, minBytes = MIN_FREE_BYTES_DEFAULT) {
 }
 
 // S3: 다운로드 — 720p 상한, 1800초 전체 타임아웃 + 180초 스톨 워치독
+//
+// 포맷 선택 (task-048): 이 파일이 분석 후 서버에 보관돼 브라우저·안드로이드 WebView 의 <video> 로
+// 재생되므로 H.264(avc1) + AAC(m4a) 를 먼저 고른다. 2026-10-07 실측(long_videos.id=73 원본, 2분 12초):
+//   옛 지정 `bv*[height<=720]+ba` → 398+251 = **AV1 + Opus**(10.9MB). AV1 은 하드웨어 디코더가 없는
+//   폰에서 소프트웨어 디코딩(발열·끊김)이고 iOS 는 일부 기종만 재생한다.
+//   새 지정 → 136+140 = **H.264 High 720p + AAC LC**(18.1MB, 약 1.7배). 오디오는 둘 다 원어(ko) 트랙.
+//   두 파일 모두 moov 가 mdat 앞(offset 32)이다 — yt-dlp 병합 단계가 이미 faststart 로 쓰므로
+//   `--postprocessor-args` 로 faststart 를 따로 주지 않는다.
+// 첫 선택지가 없는 영상(avc1·m4a 미제공)은 옛 지정 그대로 폴백한다 — 분석 동작은 예전과 같다.
+const DOWNLOAD_FORMAT = 'bv*[height<=720][vcodec^=avc1]+ba[ext=m4a]/bv*[height<=720]+ba/b[height<=720]/best';
+
 async function downloadVideo(url, tmpDir, opts = {}) {
   const outTemplate = path.join(tmpDir, 'src.%(ext)s');
   await spawnWithWatchdog(
     YTDLP_BIN,
     [
-      '-f', 'bv*[height<=720]+ba/b[height<=720]/best',
+      '-f', DOWNLOAD_FORMAT,
       '--merge-output-format', 'mp4',
       '-N', '4', '--socket-timeout', '30', '--retries', '5', '--fragment-retries', '10',
       '--newline', '--no-warnings',
@@ -281,6 +292,7 @@ module.exports = {
   fetchSubtitleVtt,
   checkFreeDiskSpace,
   downloadVideo,
+  DOWNLOAD_FORMAT,
   searchVideos,
   sanitizeSearchQuery,
 };

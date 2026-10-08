@@ -5,6 +5,12 @@ tags:
 # 칸반 보드
 
 ## Backlog
+- 🔴 **영상분석 기존 8건 영상 파일 백필(영상만 받아 저장, 재분석 없이)** — task-048 배포 후 사용자 승인으로 진행(사용자 결정 2026-10-07). 운영 DB(`long_videos.video_path`)·NAS 를 쓰므로 백필 스크립트는 judge R2 영역(백업·dry-run·`--restore`). **재분석으로 대신하지 말 것**: 아래 항목처럼 재분석은 다운로드 전에 기존 챕터를 교체한다. 대상은 운영 user 3 의 long_videos 8건(id=74 '바라토플라타 세팅 강의' 포함, 합계 1.1시간). [[task-048-study-video-local-save]] (2026-10-07)
+- **영상분석 재분석이 S3 다운로드 전에 챕터를 전량 교체한다(기존 동작, Reviewer M-2)** — S2.5 `saveChapters` 가 기존 챕터를 분석 결과 없는 `pending` 행으로 바꾼 뒤 다운로드한다. 메타 조회는 되는데 다운로드만 막히면(yt-dlp 고장·봇 검사) "목차만 제공"으로 끝나 기존 S7~S9 분석 결과가 사라진다. 후속: 저장본(`video_path`)이 있으면 S3 를 로컬 파일로 대체(= 유튜브 삭제 후 재분석도 가능), S1 실패를 DB 값으로 이어 가는 분기. MEDIUM [[task-048-study-video-local-save]] (2026-10-08)
+- **영상분석 분석 중 DELETE 가 잡을 멈추지 않는다(기존 동작, Reviewer L-6)** — 챕터 행(FK 없음)·프레임이 고아로 남는다. task-048 가드는 새 영상 저장소만 보호한다. LOW [[task-048-study-video-local-save]] (2026-10-08)
+- **task-048 수용한 위험(Reviewer L-2·3·4·7·9)** — ① avc1 우선 지정이 avc1 최대 480p·VP9 720p 영상에서 480p 를 고를 수 있다(분석 프레임은 640px 라 영향 작음, 재생 화질만) ② `/uploads` 는 인증 없는 정적 서빙·URL 이 순차 정수 — 강의 원본 전체가 이 방식으로 노출(기존 clip-videos 와 같은 종류) ③ 임시 파일 정리는 워커 1개 전제(blue/green 겹침 구간 예외) ④ `<video>` onError 한 번이면 재진입 전까지 iframe 고정 ⑤ 롤백하면 구버전 DELETE 가 `long-videos` 폴더를 안 지워 고아 발생, S3.5 에 전체 타임아웃 없음(NAS 정지 시 단일 워커 정체 — S7 도 동일). LOW [[task-048-study-video-local-save]] (2026-10-08)
+- **긴 영상 워커 중복 실행 방지(기존 결함, Codex C2·Reviewer REV-048-3 DEFER)** — ① `longVideoWorker.js` `pickNextJob` 은 `SELECT … WHERE status='queued'` 뿐이라 원자적 claim 이 없다(조건부 `UPDATE … SET status='running' WHERE id=? AND status='queued'` 후 affectedRows 1 확인) ② 부팅 시 모든 `running` 잡을 `queued` 로 되돌린다(heartbeat 만료 행으로 한정) ③ `tick()` 이 `await pickNextJob()` 뒤에 `processing` 을 다시 확인하지 않아, 조회가 폴링 주기(4초)보다 길면 같은 프로세스에서도 같은 잡을 두 틱이 집을 수 있다([가능성 높음], 미재현) ④ `reanalyze` 의 활성 잡 SELECT→INSERT 사이에 잠금이 없다(`SELECT … FOR UPDATE` 트랜잭션). 단일 pm2 fork·순차 재기동이라 지금 운영에서는 거의 안 나타나지만 task-048 이 영상 저장을 추가해 중복 실행의 피해가 커졌다(임시 파일은 3차 수정으로 방어). MEDIUM [[task-048-study-video-local-save]] (2026-10-08)
+- **task-048 LOW 2건(Reviewer 4차 N-5·N-6)** — N-5: 저장 실패 경고 사유에 고유 임시 파일명(`video.mp4.tmp-<uuid>-<pid>-<hex>`)이 그대로 보인다 → `buildVideoSaveWarning` 정규식에 `video\.mp4\.tmp-\S+` → `임시 파일` 치환 한 줄. N-6: `unit-persist.js` 4b "video.mp4 는 정리 대상 아님" 이 `video.mp4` 가 지워져도 통과하는 약한 검사. 둘 다 기능 무영향. LOW [[task-048-study-video-local-save]] (2026-10-08)
 - **기술트리 미정 4개 분류 — 매트릭스·사지오로·키마스터·밸리다운** — 관장이 이름만으로 판단 불가. category 가 비어 스파링 선택기에서 검색으로만 보인다. 사용자가 기술 관리 화면 카테고리 칸에서 정하면 끝. [[task-047-spar-tech-picker-apply]] (2026-09-22)
 - **관장 확인거리(task-046)** — `백포지션 컨트롤`(실패 4)이 트리 `백포지션`과 미연결 · 탈출 카테고리 트리 0개(기록의 앵클락 탈출·마운트 탈출·가드 리커버리 미연결) · 앵클락 트리 중복 2행 · `니어네이키트 쵸크` 오타 의심 · 별칭 후보(바우앤애로우·버라토플라타·롱스탭 패스·토레안도 패스). 사용자 답변 필요. [[task-046-spar-tech-picker-demo]] (2026-09-22)
 - **`PUT /api/classes/:id/spar/:sparDayId` 를 본문 없이 보내면 그 일자의 라운드가 전부 지워진다** — task-045 Developer 픽스처에서 실제로 발생. destroy+reinsert 구조라 `sessions` 가 비면 전부 삭제된다. 프론트는 항상 `sessions` 를 보내 **실사용 영향은 없다**. 서버에서 `sessions` 누락을 400 으로 막을지 판단. LOW [[task-045-spar-cause-default-tags]] (2026-09-22)
@@ -60,6 +66,7 @@ tags:
 ## Doing
 
 ## Review
+- [[task-048-study-video-local-save]] — 영상분석: 분석용으로 받은 영상을 NAS 에 저장(S3.5, `users/<uid>/long-videos/<vid>/video.mp4`)하고 상세 화면이 저장본(`<video>`)으로 재생, 없거나 오류면 기존 YouTube iframe 폴백. 저장 실패 시 완료 카드에 경고. 데모 생략(사용자 승인 2026-10-07). Reviewer 1~4차 PASS-with-notes · Codex C2 1회(1건 반영) · Leader QA 107/0. **커밋·push(=운영 배포) 사용자 확인 대기** — push 하면 로컬 전용 커밋 `14eb850`(문서)도 함께 나간다 (2026-10-08)
 
 ## Done
 - [[task-047-spar-tech-picker-apply]] — 스파링 성공·실패 기술을 카테고리 → 검색+탭 목록(성공·실패 따로)으로 교체, `+` 이 기록에만/기술트리 등록 매번 선택, 기술 관리 화면 카테고리 칸, user 3 기술트리 category 51행 백필(백업 있음), 데모 제거 (2026-09-22)

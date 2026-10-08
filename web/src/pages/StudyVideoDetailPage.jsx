@@ -41,11 +41,21 @@ export default function StudyVideoDetailPage() {
   const iframeRef = useRef(null);
   const pollTimerRef = useRef(null);
   const lastSeekSecRef = useRef(null); // task-013 버그 B: 마지막으로 이동한 재생 지점(초)
+  // task-048: 서버 보관 영상(video_path) 재생. 플레이어는 이 영상(id)을 처음 불러올 때 한 번 정한다 —
+  // 첫 분석 도중 상세를 보고 있으면 S3.5 가 끝나는 순간 video_path 가 생기는데, 그때 iframe 을 <video> 로
+  // 갈아 끼우면 보던 유튜브 재생이 끊긴다. 그래서 iframe → <video> 전환은 다음 진입부터, <video> → iframe
+  // 전환(onError 폴백)은 즉시. id 별로 기록하므로 다른 영상으로 바뀌면 자연히 다시 정한다.
+  const [playerPick, setPlayerPick] = useState({ id: null, mode: null }); // mode: 'local' | 'yt'
+  const videoRef = useRef(null);
+  const pendingSeekRef = useRef(null); // 메타데이터 로드 전(readyState 0)에 들어온 이동 지점(초)
+
+  useEffect(() => { pendingSeekRef.current = null; }, [id]);
 
   const load = useCallback(async () => {
     try {
       const v = await studyApi.getVideo(id);
       setVideo(v);
+      setPlayerPick(prev => (prev.id === id ? prev : { id, mode: v?.video_path ? 'local' : 'yt' }));
       // task-013 버그 B: 챕터 편집/재분석으로 id가 새로 발급됐을 수 있으므로 재조회 때마다
       // 하이라이트를 다시 해석한다(유령 id 방지 + 보던 지점으로 하이라이트 이동)
       setActiveChapterId(prev => resolveActiveChapterId(v?.chapters, lastSeekSecRef.current, prev));
@@ -92,6 +102,20 @@ export default function StudyVideoDetailPage() {
   function seekTo(sec, chapterId) {
     if (Number.isFinite(sec)) lastSeekSecRef.current = sec; // task-013 버그 B: 지점 기억
     if (chapterId != null) setActiveChapterId(chapterId);
+    // task-048: 서버 보관 영상이면 <video> 를 직접 옮긴다. 메타데이터 전(readyState 0)이면 지점만 맡겨 두고
+    // loadedmetadata 에서 적용한다 — play() 가 로드를 시작시킨다. 아래 iframe 경로는 그대로다.
+    const videoEl = videoRef.current;
+    if (videoEl) {
+      if (!Number.isFinite(sec)) return;
+      if (videoEl.readyState >= 1) {
+        try { videoEl.currentTime = sec; } catch { /* ignore */ }
+      } else {
+        pendingSeekRef.current = sec;
+      }
+      const p = videoEl.play?.();
+      if (p && typeof p.catch === 'function') p.catch(() => {});
+      return;
+    }
     const iframe = iframeRef.current;
     if (!iframe?.contentWindow) return;
     try {
@@ -137,6 +161,21 @@ export default function StudyVideoDetailPage() {
   const job = video.job;
   const active = isActiveJob(job);
   const embed = getYtEmbed(video.url, { jsapi: true });
+  const localSrc = playerPick.id === id && playerPick.mode === 'local' ? (video.video_path || null) : null;
+
+  // task-048: 보관 영상을 못 불러오면(옛 영상·NAS 장애·파일 없음) 이 영상은 유튜브 iframe 으로 돌아간다
+  function handleLocalError() {
+    pendingSeekRef.current = null;
+    setPlayerPick({ id, mode: 'yt' });
+  }
+
+  function handleLocalMetadata(e) {
+    const sec = pendingSeekRef.current;
+    pendingSeekRef.current = null;
+    if (sec != null) {
+      try { e.currentTarget.currentTime = sec; } catch { /* ignore */ }
+    }
+  }
 
   return (
     <div className="page-fade">
@@ -152,7 +191,23 @@ export default function StudyVideoDetailPage() {
         </div>
       </div>
 
-      {embed ? (
+      {localSrc ? (
+        <div style={{
+          width: '100%', aspectRatio: '16/9', borderRadius: 10, overflow: 'hidden', marginBottom: 12,
+          position: 'sticky', top: 0, zIndex: 5, background: 'var(--bg)',
+        }}>
+          <video
+            ref={videoRef}
+            src={localSrc}
+            controls
+            playsInline
+            preload="metadata"
+            onLoadedMetadata={handleLocalMetadata}
+            onError={handleLocalError}
+            style={{ width: '100%', height: '100%', display: 'block', background: '#000' }}
+          />
+        </div>
+      ) : embed ? (
         <div style={{
           width: '100%', aspectRatio: '16/9', borderRadius: 10, overflow: 'hidden', marginBottom: 12,
           position: 'sticky', top: 0, zIndex: 5, background: 'var(--bg)',

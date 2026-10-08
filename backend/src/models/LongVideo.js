@@ -18,7 +18,7 @@ const LongVideo = sequelize.define('LongVideo', {
   summary:         { type: DataTypes.TEXT },
   key_points:      { type: DataTypes.TEXT },
   transcript_path: { type: DataTypes.STRING(500) },
-  video_path:      { type: DataTypes.STRING(500) },                        // Phase 1은 보관 안 함(Phase 3+ S11 전용)
+  video_path:      { type: DataTypes.STRING(500) },                        // task-048 S3.5: 보관 영상 웹 경로(/uploads/users/<uid>/long-videos/<id>/video.mp4), 없으면 NULL → 유튜브 iframe
   video_quality:   { type: DataTypes.STRING(10), defaultValue: '480p' },
   title_locked:    { type: DataTypes.TINYINT, defaultValue: 0 },            // task-010: 사용자가 등록 시 직접 입력한 제목은 S1이 덮어쓰지 않음
   error:           { type: DataTypes.TEXT },
