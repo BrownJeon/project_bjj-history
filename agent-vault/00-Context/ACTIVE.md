@@ -1,12 +1,18 @@
 ---
 project: bjj-trainning
-updated: 2026-09-28
+updated: 2026-10-08
 tags:
   - type/context
 ---
 # 현재 상태
 
 ## 지금 상태
+
+✅ **task-048(영상분석 — 분석한 영상을 서버에 저장하고 서버 파일로 재생) — 배포 완료 `7d987fe`(릴리스 `20261008-104159-7d987fee`, RELEASE_RESULT ok, DB 변경 없음) (2026-10-08). 🟡 사용자 폰 확인 대기.** 영상분석은 원래 **유튜브 iframe 으로만 재생**했고 분석용 영상은 끝나면 지워졌다. 이제 S3.5 가 NAS `users/<uid>/long-videos/<vid>/video.mp4` 에 임시이름 복사→rename 으로 저장하고 `long_videos.video_path`(기존 컬럼)에 웹 경로를 적는다. 상세 화면은 저장본이 있으면 `<video>`, 없거나 오류면 기존 iframe(폴백). 저장 실패 시 완료 상태에 경고 카드. yt-dlp 는 H.264+AAC 우선(기존 지정은 AV1+Opus). 같은 단계의 기존 결함(다운로드 진행률 갱신이 DB 풀을 소진해 분석이 죽음)도 스로틀로 고침. 데모는 judge 가 delta 를 요구했으나 사용자가 생략. judge R2/opus · C2 Codex 1회 · Reviewer 1~4차 · Leader 직접 QA 107/0.
+- 🔴 **기존 8건(user 3, id=74 '바라토플라타 세팅 강의' 포함)은 아직 `video_path` NULL → 유튜브 링크로만 재생.** 영상 파일만 받아 저장하는 **백필은 사용자 결정(2026-10-07)대로 배포 후 별도 승인 대기**(운영 DB·NAS 를 쓰는 R2 작업 — 백업·dry-run·되돌리기 갖출 것). **재분석 버튼으로 대신하지 말 것**: 재분석은 다운로드 전에 기존 챕터 분석을 먼저 교체한다(기존 동작, board 후속) — 다운로드가 막히면 기존 분석 결과를 잃는다.
+- 🟡 미검증: 실제 폰(WebView) 재생·화면, 3시간급 영상 저장, 실제 blue/green 겹침. 폰 확인 시 새 영상 1건을 분석해 상세 화면 재생·챕터 시점 이동을 본다. 분석 도중 상세를 열어 둔 화면은 다음 진입부터 저장본으로 재생(의도).
+- 이 push 에는 10-07 다른 세션의 로컬 문서 커밋 `14eb850`(leader.md 규칙·roadmap.md)이 함께 나갔다. 후속(board Backlog): 저장본으로 재분석 · 긴 영상 워커 중복 실행 방지 · 경고 문구의 임시 파일명 노출(LOW) · 수용 위험 목록. 상세 [[task-048-study-video-local-save]].
+- (참고) 10-05 픽미업 상세에서 픽한 카드를 덱에서 제외하는 수정(`296d21f`)은 이 문서에 기록이 없다 — 코드·git 에는 있고 사용자 폰 확인 대기였다.
 
 ✅ **judge·codex 편입 (2026-09-28, 워크스페이스 ADP-001 D-08) — 커밋(`723d477`·`e4d87c1`)·push·배포 완료(`RELEASE_RESULT status=ok`).** 팀에 **judge**(Haiku — 공용 판정 도구로 작업 접수 분류·developer 모델·Codex 개입 판정, Jev 전송)와 **codex**(Haiku — judge 가 개입 판정했을 때만 Codex CLI 읽기 전용 검토)가 들어왔다. **다음 task 부터 적용**: Leader 가 task 이력서 frontmatter 에 `base_ref`·`risk_level` 을 적고 → judge `intake` → (설계 후 judge C1) → Developer(`developer_model` 대로) → Reviewer → judge C2 → (codex 결과는 Reviewer 가 채택·오탐 판정) → QA → Deployer. 절차 정본은 `.claude/agents/leader.md` 끝의 "judge·codex 운용" 절, 이 프로젝트 R2 보강 영역은 `judge.md` "프로젝트 맞춤"(runMigrations·백필 스크립트·스파링 destroy+reinsert·다중 테이블 쓰기·user_id 격리). Codex 연계 스위치는 사용자만 켜고 끈다(현재 on). 스모크 테스트로 `intake` 판정 1회 실제 Jev 로 확인(정상). 팀 해제(이 세션 작업 종료) — 다음 세션이 새로 팀 소집하면 이 상태에서 이어간다.
 
