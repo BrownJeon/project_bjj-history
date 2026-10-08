@@ -51,6 +51,29 @@ export default function StudyVideoDetailPage() {
 
   useEffect(() => { pendingSeekRef.current = null; }, [id]);
 
+  // task-049: 저장본 <video> 의 poster(목록과 같은 썸네일)는 재생 전에만 칸을 꽉 채우고(cover), 재생이 시작되거나
+  // seek 이 끝나 poster 가 사라지고 영상 프레임이 보이면(onPlay·onSeeked) 영상 본래 비율(contain)로 돌아간다.
+  // 그 <video> 를 영상 id + 재생 주소 키로 기억하므로 영상이나 주소가 바뀌면 키가 달라져 자연히 처음 상태(cover)가 되고,
+  // id 가 바뀔 때는 아래 effect 가 기록을 지워 A → B → A 로 돌아와도 이전 값이 남지 않는다. 일시정지해도 되돌리지 않는다.
+  const [startedKey, setStartedKey] = useState(null);
+  useEffect(() => { setStartedKey(null); }, [id]);
+
+  // task-049: poster 는 썸네일을 new Image() 로 먼저 불러 **로드에 성공했을 때만** 붙인다. 유튜브에서 영상이 지워져 썸네일이
+  // 404 가 되면, 깨진 poster 가 붙은 <video> 는 첫 프레임 대신 칸 전체가 검게 남기 때문이다(poster 속성이 없을 때만 첫 프레임이 보인다).
+  // 성공한 URL 을 기억해 두고 현재 thumb_url 과 같을 때만 쓰므로, 영상(id)이나 thumb_url 이 바뀌면 옛 성공 기록은 쓰이지 않는다.
+  const [posterReady, setPosterReady] = useState(null);
+  const thumbUrl = video?.thumb_url || null;
+  useEffect(() => {
+    setPosterReady(null);
+    if (!thumbUrl) return undefined;
+    let alive = true;
+    const img = new Image();
+    img.onload = () => { if (alive) setPosterReady(thumbUrl); };
+    img.onerror = () => { if (alive) setPosterReady(null); };
+    img.src = thumbUrl;
+    return () => { alive = false; img.onload = null; img.onerror = null; };
+  }, [id, thumbUrl]);
+
   const load = useCallback(async () => {
     try {
       const v = await studyApi.getVideo(id);
@@ -162,6 +185,11 @@ export default function StudyVideoDetailPage() {
   const active = isActiveJob(job);
   const embed = getYtEmbed(video.url, { jsapi: true });
   const localSrc = playerPick.id === id && playerPick.mode === 'local' ? (video.video_path || null) : null;
+  // task-049: 선로딩에 성공한 poster 가 있고 아직 재생이 시작되지 않은 동안만 cover. poster 가 없으면(thumb_url 없음·로드 실패·로딩 중)
+  // 지금(task-048)과 같은 모양(contain 기본값 — 첫 프레임)을 유지한다.
+  const playerKey = localSrc ? `${id}|${localSrc}` : null;
+  const started = playerKey != null && startedKey === playerKey;
+  const posterUrl = thumbUrl && posterReady === thumbUrl ? thumbUrl : undefined;
 
   // task-048: 보관 영상을 못 불러오면(옛 영상·NAS 장애·파일 없음) 이 영상은 유튜브 iframe 으로 돌아간다
   function handleLocalError() {
@@ -202,9 +230,15 @@ export default function StudyVideoDetailPage() {
             controls
             playsInline
             preload="metadata"
+            poster={posterUrl}
+            onPlay={() => setStartedKey(playerKey)}
+            onSeeked={() => setStartedKey(playerKey)}
             onLoadedMetadata={handleLocalMetadata}
             onError={handleLocalError}
-            style={{ width: '100%', height: '100%', display: 'block', background: '#000' }}
+            style={{
+              width: '100%', height: '100%', display: 'block', background: '#000',
+              objectFit: posterUrl && !started ? 'cover' : 'contain',
+            }}
           />
         </div>
       ) : embed ? (
