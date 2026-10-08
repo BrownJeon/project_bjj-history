@@ -1,7 +1,8 @@
 ---
 id: task-049
 title: 영상분석 상세 플레이어에 썸네일(poster) 표시 — 목록 썸네일과 같은 이미지
-status: doing
+status: done
+waiting: device_verify
 created: 2026-10-08
 base_ref: 96a3c35b9b3a062f7163f91d7bf7b87b1a2c6edb
 risk_level: R1
@@ -232,7 +233,28 @@ task-048 하네스 폴더는 수정하지 않고 필요한 파일만 복사·확
 
 ## 최종 요약
 
-(Leader — 완료 후)
+**요청:** 영상분석 상세 플레이어에도 목록처럼 썸네일을 보여 달라(재분석으로 서버 저장본을 확인한 직후).
+
+**원인:** 저장본 `<video preload="metadata">` 에 poster 가 없어 모바일 WebView 는 재생 전 검은 칸이 보이기 쉬웠다. 목록은 `thumb_url`(유튜브 이미지 주소)을 `object-fit: cover` 로 보여 주고 있었다.
+
+**한 일 (2026-10-08 배포, 프론트 한 파일 `StudyVideoDetailPage.jsx`, 백엔드·DB 무변경)**
+- 재생 전: 목록과 같은 썸네일을 poster 로 칸에 꽉 채워(cover) 보인다.
+- 재생을 시작하거나 챕터 이동(seek)이 끝나면 영상 본래 비율(contain)로 돌아간다 — 세로·4:3 영상이 잘리지 않는다. 일시정지해도 되돌리지 않는다. 영상이 바뀌면 처음 상태로 초기화.
+- **썸네일을 먼저 불러 성공했을 때만 poster 로 붙인다.** 실측으로 확인한 문제: 유튜브에서 영상이 지워져 썸네일이 404 가 되면 깨진 poster 가 붙은 `<video>` 는 첫 프레임 대신 칸 전체가 검게 남는다(데스크톱 Chrome 147). 이 경우 poster 없이 기존(task-048)과 같은 모양(첫 프레임)이 된다.
+- 유튜브 iframe 재생(저장본 없는 영상 7건·폴백)은 유튜브가 자체 썸네일을 보여 주므로 변경 없음. 챕터 시점 이동·onError 폴백 로직 무변경.
+
+**배포:** 커밋 `18ce9ef` push → 릴리스 `20261008-122836-18ce9ef0`, `RELEASE_RESULT status=ok`(migrated=false), 서빙 번들 `index-Bvd0LUSn.js`(poster·onSeeked·재생 전 cover 설정 포함 확인), pm2 `bjj` 새 릴리스 경로 online·restarts 0·로그 오류 없음·`/health` 200. 배포 로그상 pm2 재등록(수 초 중단)이 있었다. 이전에 로컬에만 두었던 vault 기록 커밋 2개(`6f56ee1`·`96a3c35`)가 함께 나갔다. 운영 DB 불변(user 3 영상 8건·저장본 1건·진행 중 잡 0). 앱 재설치 불필요(웹만).
+
+**검증:** judge 접수 R1/sonnet·데모 불필요(minor_visual) · C1 Codex 불필요 · C2 Codex 보류(한도 미확인 R1, 대신 초점이던 로드 실패를 실제 Chrome 으로 직접 확인 → 위 퇴보 발견·수정) · Reviewer 감사 2회 PASS-with-notes(HIGH 이상 0) · Leader 직접 QA 완주 PASS 111/FAIL 0(jsdom 78·실제 Chrome 19·픽셀 12·부정 대조 18+6 전부 탐지, 잔여물 0, user 3 불변) · 보조 확인: 실제 저장본 id 74(자발적 seek 없음)·썸네일이 늦게 붙는 순서(잘린 프레임 없음).
+
+**사용자 확인이 필요한 것 (`waiting: device_verify`)**
+1. 저장본이 있는 영상(현재 id=74 '바라토플라타 세팅 강의')의 상세 화면에서 재생 전 썸네일이 목록과 같은 그림으로 칸을 채우는지, 재생·챕터 클릭 후 영상이 잘리지 않는지 — **폰 앱(WebView)과 웹 모두**. 안드로이드 WebView·iOS Safari 실기기, 실제 HTTP 404, 선로딩 직전 1프레임 미만 구간은 이 서버에서 검증하지 못했다.
+2. 저장본이 없는 나머지 7건은 유튜브 재생이라 달라진 점이 없다(백필 승인 후 저장본이 생기면 같이 적용됨).
+
+**남은 일 / 제안 (사용자 결정)**
+- **썸네일도 서버에 저장** — 지금 `thumb_url` 은 유튜브 CDN 주소라 영상이 삭제되면 **목록 썸네일도 같이 사라진다**(기존 동작). 플레이어는 이번 수정으로 첫 프레임이 대신 보이지만, 목록은 빈 칸이 된다. S3.5 에 썸네일 저장 한 단계 + 기존 8건 백필을 **영상 백필과 한 번에** 하는 것이 효율적이다.
+- 🔴 기존 8건 영상 파일 백필(task-048)은 여전히 사용자 승인 대기.
+- LOW 후속(Reviewer): N-2 `onPlay`→`onPlaying`(첫 프레임 직전 구간, 추측성) · N-7 저장본이 없는 영상에서도 썸네일을 요청(약 100KB) · N-8 열어 둔 화면에서 `thumb_url` 갱신 시 poster 일시 변동 · N-9 jsdom 에 "재생 시작 후 onload" 단언 없음 · N-5 Safari 의 poster object-fit 차이(미확인).
 
 ## 데모 검토 (demo gate)
 
