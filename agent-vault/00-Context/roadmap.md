@@ -109,8 +109,8 @@ tags: [type/roadmap]
 - [x] (2) 영상 고정과 활성 챕터 표시 [[task-010-study-ux-improvements]] [[task-013-study-backlog-fixes]]
 - [x] (6) 영상분석 음성 전사가 PATH에 의존하지 않고 실패가 로그에 보임 [[task-044-video-whisper-path-and-visibility]]
 - [x] (6) 분석한 영상을 서버에 저장해 유튜브에서 지워져도 서버 영상으로 재생 (저장 실패 시 경고 카드) [[task-048-study-video-local-save]]
-- [ ] (7) 이미 분석한 영상 8건의 영상 파일 서버 저장 (사용자 승인 후 별도 작업) [[task-048-study-video-local-save]]
-- [ ] (7) 저장본으로 재분석 (유튜브가 사라진 뒤에도 재분석, 재분석이 기존 챕터를 먼저 지우는 문제) [[task-048-study-video-local-save]]
+- [ ] (7) 이미 분석한 영상 8건의 영상 파일 서버 저장 (사용자 승인 후 별도 작업)
+- [ ] (7) 저장본으로 재분석 (유튜브가 사라진 뒤에도 재분석, 재분석이 기존 챕터를 먼저 지우는 문제)
 
 ### /clips | 참고영상
 - [x] (1) 참고영상 등록·목록·즐겨찾기
