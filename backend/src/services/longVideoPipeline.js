@@ -14,6 +14,7 @@ const ytdlp = require('./ytdlp');
 const chapterPlanner = require('./chapterPlanner');
 const vttParser = require('./vttParser');
 const storage = require('./storage');
+const longVideoThumb = require('./longVideoThumb');
 const { extractJSONObject } = require('../utils/extractJson');
 const techMatch = require('../utils/techMatch');
 
@@ -437,6 +438,45 @@ function buildVideoSaveWarning({ hadVideoPath = false, outcome = null } = {}) {
   return `영상을 서버에 저장하지 못했습니다(${reason}) — 유튜브에서 영상이 삭제되면 재생할 수 없습니다. 재분석하면 다시 저장을 시도합니다.`;
 }
 
+// ── S1.5: 썸네일 서버 보관 (task-050) ───────────────────────────────────
+// S1 메타의 썸네일 주소를 받아 영상 폴더(storage.getLongVideoDir)에 thumb.<ext> 로 남기고 thumb_url 을 서버 경로로 바꾼다.
+// 비치명: 실패는 로그만 남기고 thumb_url 은 S1 이 쓴 값 그대로(첫 분석이면 유튜브 주소, 이미 서버 경로면 그 경로) —
+// 사용자 경고 카드는 만들지 않는다. 다운로드(S3)보다 앞이라 S3 가 실패해 '목차만 제공'으로 끝나도 썸네일은 남는다.
+// 분석 도중 DELETE 된 영상: S3.5 와 같은 행 확인 패턴 — 저장 전에 행이 없으면 받지 않고, rename 뒤(commit)에 행이
+// 없으면 라우트의 폴더 정리가 이미 지나간 것이므로 여기서 폴더를 지운다. 반환값은 하네스·로그 판단용.
+async function saveThumbnailStep(jobId, userId, videoId, thumbUrl, { persist = longVideoThumb.persistThumbnail } = {}) {
+  if (!thumbUrl) return { skipped: true };
+  const where = { id: videoId, user_id: userId };
+  try {
+    if (!(await LongVideo.count({ where }))) return { saved: false, deleted: true };
+    let deleted = false;
+    const r = await persist(thumbUrl, userId, videoId, {
+      commit: async (webPath) => {
+        if (!(await LongVideo.count({ where }))) {
+          deleted = true;
+          throw new Error('분석 도중 영상이 삭제되었습니다');
+        }
+        await LongVideo.update({ thumb_url: webPath }, { where });
+      },
+    });
+    if (deleted) {
+      await fs.rm(storage.getLongVideoDir(userId, videoId), { recursive: true, force: true }).catch(() => {});
+      return { saved: false, deleted: true };
+    }
+    if (r.saved && r.recorded) {
+      console.log(`[long-video] job ${jobId} 썸네일 저장 완료(S1.5): ${r.filePath} (${r.bytes} bytes)`);
+    } else if (r.saved) {
+      console.error(`[long-video] job ${jobId} 썸네일 thumb_url 기록 실패(S1.5, 파일은 저장됨: ${r.filePath}, 분석은 계속):`, r.reason);
+    } else {
+      console.error(`[long-video] job ${jobId} 썸네일 저장 건너뜀(S1.5, 분석은 계속):`, r.reason);
+    }
+    return r;
+  } catch (e) {
+    console.error(`[long-video] job ${jobId} 썸네일 저장 실패(S1.5, 분석은 계속):`, e.message);
+    return { saved: false, reason: e.message };
+  }
+}
+
 // S4: 챕터 미확정일 때 시각 판단용 15장 균등 추출 (임시 디렉토리 — 판단 후 파기)
 async function extractVisualFrames(videoPath, outDir, durationSec) {
   const dur = durationSec > 0 ? durationSec : 30;
@@ -630,14 +670,19 @@ async function runPipeline(job) {
     // task-010: title_locked=1(사용자가 등록 시 제목을 직접 입력)이면 이 실행(최초 등록이든
     // 재분석이든)에서 유튜브 제목으로 절대 덮어쓰지 않는다. title_locked=0(기존과 동일한 경우 —
     // 사용자가 제목을 안 넣고 등록)이면 지금까지와 완전히 동일하게 매번 유튜브 제목으로 재동기화한다.
+    // task-050: thumb_url 이 이미 서버 보관본(/uploads/...)이면 유튜브 주소로 되돌리지 않는다 — 최신 썸네일은
+    // 아래 S1.5 가 같은 파일을 원자 교체해 반영하고, S1.5 가 실패해도 서버 썸네일은 그대로 남는다.
     await LongVideo.update({
       title: video.title_locked ? video.title : (meta.title || video.title),
       channel: meta.channel || video.channel,
       duration_sec: meta.durationSec,
-      thumb_url: meta.thumbUrl || video.thumb_url,
+      thumb_url: longVideoThumb.isServerThumbUrl(video.thumb_url) ? video.thumb_url : (meta.thumbUrl || video.thumb_url),
     }, { where: { id: video.id } });
 
     if (await isJobCanceled(jobId)) { await cancelCleanup(jobId, video.id); return; }
+
+    // ── S1.5: 썸네일 서버 보관 (task-050, 비치명 — 위 saveThumbnailStep 주석 참고) ──
+    await saveThumbnailStep(jobId, job.user_id, video.id, meta.thumbUrl);
 
     // 우선순위 1: 유튜브 제작자 챕터
     let candidateChapters = meta.chapters?.length
@@ -942,6 +987,7 @@ module.exports = {
   persistVideo,        // task-048: S3.5 저장 규칙(원자 교체·실패 시 보존)을 단위 검증할 수 있도록 노출
   buildVideoSaveWarning, // task-048 REV-048-1 M-1: 저장 실패 경고 규칙(순수 함수)
   makeDownloadProgressReporter, // task-048 후속: S3 진행 기록 스로틀(동시 1건·2초)을 단위 검증할 수 있도록 노출
+  saveThumbnailStep,   // task-050: S1.5 썸네일 보관(행 확인·삭제 가드)을 검증할 수 있도록 노출
   getJobById,
   isJobCanceled,
   matchChapterTechniques,

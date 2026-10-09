@@ -89,6 +89,19 @@ function longVideoWebPath(userId, videoId) {
   return `/uploads/users/${userId}/long-videos/${videoId}/video.mp4`;
 }
 
+// 긴 영상 썸네일 보관 (task-050) — 영상과 같은 폴더(getLongVideoDir)에 thumb.<ext> 하나.
+// 확장자는 응답 바이트의 매직 바이트로 정해진 세 가지만 받는다(longVideoThumb.js). 정수 id 검증은 위와 같다.
+const LONG_VIDEO_THUMB_EXTS = Object.freeze(['jpg', 'webp', 'png']);
+
+function longVideoThumbWebPath(userId, videoId, ext) {
+  assertLongVideoId('longVideoThumbWebPath', 'userId', userId);
+  assertLongVideoId('longVideoThumbWebPath', 'videoId', videoId);
+  if (!LONG_VIDEO_THUMB_EXTS.includes(ext)) {
+    throw new Error(`longVideoThumbWebPath: 허용되지 않은 확장자입니다 (${JSON.stringify(ext)})`);
+  }
+  return `/uploads/users/${userId}/long-videos/${videoId}/thumb.${ext}`;
+}
+
 // 프로필 아바타 (task-019) — getThumbPath/thumbWebPath 쌍과 동일한 패턴.
 // ⚠️ 배치 스킴은 users/<id>/ 가 아니라 **정적 루트 평면 배치**다. 바꾸지 말 것 —
 //    기존 DB 값 `/uploads/avatar_3.png` 와 실제 파일 `<staticRoot>/avatar_3.png` 가
@@ -110,6 +123,7 @@ module.exports = {
   getClassVideoDir, classVideoWebPath,
   getLongVideoFramesDir, longVideoFrameWebPath,
   getLongVideoDir, longVideoWebPath,
+  longVideoThumbWebPath, LONG_VIDEO_THUMB_EXTS,
   getAvatarPath, avatarWebPath,
   DEFAULT_USER,
 };
