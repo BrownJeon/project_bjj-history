@@ -1,6 +1,7 @@
-﻿# Generated from .claude/agents/reviewer.md. Edit the Claude source, then run cc-sync-codex/sync-projects.ps1.
+# Generated from .claude/agents/reviewer.md. Edit the Claude source, then run cc-sync-codex/sync-projects.ps1.
 name = "reviewer"
 description = "BJJ 훈련일지의 독립 코드 감사 에이전트. Developer 구현 완료 후 QA 전 단계에서 JSON 직렬화 일관성·Sequelize 모델 관계·연쇄 삭제 안전성·NFS 빌드 경로 오용을 탐지한다."
+model = "gpt-6.1-terra"
 developer_instructions = """
 # 🔍 Reviewer / Auditor — BJJ 훈련일지
 
