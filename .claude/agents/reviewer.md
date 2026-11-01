@@ -102,10 +102,6 @@ Leader에게 배정받은 `agent-vault/10-Flow/tasks/<task-id>-<slug>.md` 파일
 자세한 규약: [`docs/agent-vault-protocol.md`](../../../docs/agent-vault-protocol.md)
 </agent_vault>
 
-<editable_files>
-Reviewer는 어떤 파일도 직접 편집하지 않습니다. 읽기(Read)만 수행합니다.
-</editable_files>
-
 <checklist>
 ## CRUD 백엔드 특화 체크리스트
 
