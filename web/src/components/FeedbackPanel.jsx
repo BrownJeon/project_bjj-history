@@ -102,7 +102,7 @@ export default function FeedbackPanel() {
   const ready = !reviewPrevious && record?.ready && (!currentTurn || (record.cursor === record.turns.length - 1 && currentTurn.answer !== null));
   if (!open) return null;
   return <>
-    <Modal title={stage === 'conversation' ? '관장과 보완' : '피드백'} onClose={requestClose} fullScreen>
+    <Modal title={stage === 'conversation' ? '관장과 보완' : '피드백'} onClose={requestClose}>
       <div className="fb-stack" data-testid="feedback-panel">
         <div className="fb-steps">{['입력', '관장과 보완', '정리'].map((label, index) => <span key={label} aria-current={['input', 'conversation', 'summary'][index] === stage ? 'step' : undefined}><b>{index + 1}</b>{label}{index < 2 && ' ›'}</span>)}</div>
         {loading && <p className="fb-muted" role="status">저장된 피드백을 불러오는 중…</p>}

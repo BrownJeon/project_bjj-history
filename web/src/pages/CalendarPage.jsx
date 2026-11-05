@@ -170,7 +170,10 @@ export default function CalendarPage() {
       {/* 헤더 */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
         <span style={{ fontSize: 22, fontWeight: 800, letterSpacing: '-0.5px' }}>수업</span>
-        <div className="fb-entry-actions"><Button size="sm" variant="outline" onClick={() => setEditingClass('new')}>+수업</Button><Button size="sm" onClick={() => openFeedback()}>+피드백</Button></div>
+        <div className="fb-entry-actions calendar-entry-actions">
+          <Button size="sm" variant="outline" onClick={() => setEditingClass('new')}>+수업</Button>
+          <Button size="sm" variant="outline" onClick={() => openFeedback()}>+피드백</Button>
+        </div>
       </div>
 
       {/* 뷰 탭 */}

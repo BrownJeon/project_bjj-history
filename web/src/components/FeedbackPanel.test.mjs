@@ -430,6 +430,24 @@ test('Recall applies one range to feedback/holes/stale/positions/search and reje
   }, { screen: 'RecallPage' });
 });
 
+test('recall returns focus to the saved feedback card after refreshing the same period', async () => {
+  await environment(async ({ click, store }) => {
+    const opener = document.querySelector('[data-testid="feedback-list"] .fb-list-button');
+    await click(opener);
+    assert.equal(store.calls.filter(call => call.url === '/feedback/recap').length, 2);
+    assert.ok(opener.isConnected);
+    await click(document.querySelector('[role="dialog"] [aria-label="닫기"]'));
+    assert.equal(document.activeElement, opener);
+  }, { screen: 'RecallPage', initial: record(), custom(call, store) {
+    if (call.url !== '/feedback/recap') return undefined;
+    return {
+      from: call.params.from ?? null, to: call.params.to ?? null,
+      items: [copy(store.record)], results: [], failures: [],
+      summary: { feedbackCount: 1, resultCount: 0, failureCount: 0 },
+    };
+  } });
+});
+
 test('orphan draft UI recovers into an explicitly selected question and survives save/reopen', async () => {
   await environment(async ({ feedback, store, update, button, click, input }) => {
     await update(() => feedback.openFeedback(1)); await update(() => feedback.controller.setAnswerDraft('b', '복구해야 하는 내 초안'));

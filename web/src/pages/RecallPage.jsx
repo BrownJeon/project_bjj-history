@@ -470,7 +470,9 @@ export default function RecallPage() {
     const fail = (key) => (e) => {
       if (alive) setErrs(prev => ({ ...prev, [key]: e.message || '불러오지 못했습니다' }));
     };
-    setHoles(null); setStale(null); setPositions([]); setRecap(null); setErrs({});
+    setHoles(null); setStale(null); setPositions([]); setErrs({});
+    // Keep the opener mounted while refreshing the same period behind a feedback dialog.
+    setRecap(previous => previous?.from === (from || null) && previous?.to === (to || null) ? previous : null);
     getHoles(undefined, { from, to }).then(d => { if (alive) setHoles(d); }).catch(fail('holes'));
     getStale(undefined, { from, to }).then(d => { if (alive) setStale(d); }).catch(fail('stale'));
     getPositions({ from, to }).then(d => { if (alive) setPositions(Array.isArray(d) ? d : []); }).catch(fail('positions'));
