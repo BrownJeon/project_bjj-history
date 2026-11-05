@@ -11,6 +11,7 @@ import Tag from '../components/Tag';
 import Icon from '../components/Icon';
 import Button from '../components/Button';
 import { getClipThumb, getPlatformIcon, getPlatformLabel } from '../utils/videoThumb';
+import { useFeedback } from '../contexts/FeedbackContext';
 
 function pad(n) { return String(n).padStart(2, '0'); }
 function todayStr() {
@@ -24,6 +25,7 @@ const TYPE_LABEL = { gi: 'Gi', nogi: 'No-Gi', open: '오픈매트', comp: '대�
 export default function CalendarPage() {
   const { classes, clips, reloadClasses } = useCache();
   const { showToast, setLoading } = useUI();
+  const { openFeedback } = useFeedback();
   const [year, setYear]   = useState(new Date().getFullYear());
   const [month, setMonth] = useState(new Date().getMonth());
   const [selected, setSelected] = useState(todayStr());
@@ -168,7 +170,7 @@ export default function CalendarPage() {
       {/* 헤더 */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
         <span style={{ fontSize: 22, fontWeight: 800, letterSpacing: '-0.5px' }}>수업</span>
-        <Button size="sm" variant="outline" onClick={() => setEditingClass('new')}>+ 수업 추가</Button>
+        <div className="fb-entry-actions"><Button size="sm" variant="outline" onClick={() => setEditingClass('new')}>+수업</Button><Button size="sm" onClick={() => openFeedback()}>+피드백</Button></div>
       </div>
 
       {/* 뷰 탭 */}

@@ -7,8 +7,10 @@ import client from './client';
 //    조용히 404 가 된다 — 바꾸려면 backend/src/routes/index.js 와 함께 바꿔야 한다.
 
 /** GET /api/holes — 실패 집계. min 은 구멍 threshold(기본 2, 1~99). */
-export const getHoles = (min) =>
-  client.get('/holes', { params: min == null ? undefined : { min } }).then(r => r.data);
+export const getHoles = (min, { from, to } = {}) =>
+  client.get('/holes', { params: {
+    ...(min == null ? {} : { min }), ...(from ? { from } : {}), ...(to ? { to } : {}),
+  } }).then(r => r.data);
 
 /** GET /api/mastery/:techId — 사다리 5단계. */
 export const getMastery = (techId) =>

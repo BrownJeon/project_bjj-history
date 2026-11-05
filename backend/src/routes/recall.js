@@ -5,6 +5,7 @@ const { RecallSummary } = require('../models');
 const { ok, fail, wrap } = require('../utils/respond');
 const lab    = require('../services/labAnalytics');
 const recall = require('../services/recallSearch');
+const { dateRange } = require('../services/feedbackCore');
 const { runClaude } = require('../services/claudeCli');
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -41,6 +42,7 @@ function readFilters(src) {
     if (recall.cpLength(rawPos) > POS_MAX_CP) return { error: `포지션 이름은 ${POS_MAX_CP}자 이내여야 합니다` };
     if (recall.hasNonBMP(rawPos))             return { error: '포지션 이름에 이모지는 사용할 수 없습니다' };
   }
+  try { dateRange({ from, to }); } catch (error) { return { error: error.message }; }
   if (from && !DATE_RE.test(from)) return { error: 'from 은 YYYY-MM-DD 형식이어야 합니다' };
   if (to   && !DATE_RE.test(to))   return { error: 'to 는 YYYY-MM-DD 형식이어야 합니다' };
   if (from && to && from > to)     return { error: 'from 이 to 보다 늦습니다' };
@@ -89,7 +91,7 @@ router.get('/search', wrap(async (req, res) => {
  * 유일하게 확실한 방법이다. 데이터가 작아 비용은 무시할 수준이다.
  */
 router.get('/stale', wrap(async (req, res) => {
-  const data  = await lab.loadLabData(req.user.id);
+  const data  = await lab.loadLabData(req.user.id, dateRange(req.query));
   const holes = lab.computeHoles(data);
   const result = lab.computeStale(data, { holes, limit: req.query.limit });
   ok(res, { threshold: holes.threshold, ...result });

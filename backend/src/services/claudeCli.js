@@ -73,7 +73,8 @@ function buildArgs(prompt, opts) {
   if (!stdinPrompt) args.push(prompt);
   args.push('--permission-mode', 'bypassPermissions', '--model', model);
   // 배열이면 가변 인자로 펼친다(`--tools WebSearch`). 문자열이면 기존과 완전히 동일한 한 인자.
-  if (tools) {
+  if (tools === '') args.push('--tools', '');
+  else if (tools) {
     if (Array.isArray(tools)) { if (tools.length) args.push('--tools', ...tools.map(String)); }
     else args.push('--tools', tools);
   }

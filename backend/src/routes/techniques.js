@@ -224,7 +224,7 @@ router.get('/positions', wrap(async (req, res) => {
   // 🔴 관장의 MCP `list_positions` 도구가 **같은 함수**를 쓴다. 두 벌로 갈라 두면
   //    관장이 제안한 시작 포지션이 관리 화면에는 없는 이름이 될 수 있다(페르소나 원칙 4).
   //    응답 형태·정렬·NFC 처리는 옮기기 전과 바이트 단위로 같다 — 로직을 옮겼을 뿐이다.
-  res.json(await listPositions(req.user.id));
+  res.json(await listPositions(req.user.id, { from: req.query.from, to: req.query.to }));
 }));
 
 // 포지션 이름 변경 — 기술뿐 아니라 참고영상·수업드릴·스파링 기록에 남아있는 같은 이름도 함께 갱신

@@ -16,7 +16,9 @@ client.interceptors.response.use(
   (res) => {
     if (res.data && typeof res.data === 'object' && 'success' in res.data) {
       if (res.data.success === false) {
-        return Promise.reject(new Error(res.data.message || '요청 실패'));
+        const error = new Error(res.data.message || '요청 실패');
+        error.status = res.status;
+        return Promise.reject(error);
       }
       return { ...res, data: res.data.data ?? res.data };
     }
@@ -28,7 +30,9 @@ client.interceptors.response.use(
       window.location.href = '/login';
     }
     const msg = err.response?.data?.message || err.response?.data?.error || err.message;
-    return Promise.reject(new Error(msg));
+    const error = new Error(msg);
+    error.status = err.response?.status;
+    return Promise.reject(error);
   }
 );
 

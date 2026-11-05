@@ -21,6 +21,7 @@ router.use('/voice',        require('./voice'));
 router.use('/coach',        require('./coach'));
 router.use('/long-videos',  require('./longVideos'));
 router.use('/settings',     require('./settings'));
+router.use('/feedback',     require('./feedback'));
 router.use('/recall',       require('./recall'));
 router.use('/research',     require('./research'));
 // 관장실 (task-030) — /chats · /chats/:id/turns(SSE) · /actions/:id/approve · /search/sns

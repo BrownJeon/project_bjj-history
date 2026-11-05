@@ -24,6 +24,7 @@ import TechPlanPage from './pages/TechPlanPage';
 import StudyVideoPage from './pages/StudyVideoPage';
 import StudyVideoDetailPage from './pages/StudyVideoDetailPage';
 import ClipsPage from './pages/ClipsPage';
+import FeedbackPage from './pages/FeedbackPage';
 import CoachPage from './pages/CoachPage';
 import ProfilePage from './pages/ProfilePage';
 import NotFoundPage from './pages/NotFoundPage';
@@ -54,6 +55,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                 <Route path="/study"     element={<StudyVideoPage />} />
                 <Route path="/study/:id" element={<StudyVideoDetailPage />} />
                 <Route path="/clips"     element={<ClipsPage />} />
+                <Route path="/feedback"  element={<FeedbackPage />} />
                 <Route path="/coach"     element={<CoachPage />} />
                 <Route path="/me"        element={<ProfilePage />} />
                 <Route path="*"          element={<NotFoundPage />} />

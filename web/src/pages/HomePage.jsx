@@ -14,6 +14,8 @@ import { useMaster } from '../contexts/MasterContext';
 import { relTime } from '../utils/relTime';
 import { getTask } from '../api/research';
 import WeeklyTaskCard from '../components/WeeklyTaskCard';
+import FeedbackHomeCard from '../components/FeedbackHomeCard';
+import { useFeedback } from '../contexts/FeedbackContext';
 
 function pad(n) { return String(n).padStart(2, '0'); }
 function ymd(d) { return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`; }
@@ -28,6 +30,7 @@ export default function HomePage() {
   const navigate = useNavigate();
   const { classes, techniques, sessionTypes, reloadClasses } = useCache();
   const { showToast, setLoading } = useUI();
+  const { version: feedbackVersion } = useFeedback();
   // 관장실 최근 대화 한 줄 (task-030 · B-2=A). 목록은 MasterContext 가 이미 한 번 읽어 둔 것을
   // 그대로 본다 — 홈이 같은 요청을 또 하지 않고, 배지와 항상 같은 값을 보여 준다.
   const { chats: masterChats, openChat: openMasterChat, toggleList: toggleMasterList } = useMaster();
@@ -64,7 +67,7 @@ export default function HomePage() {
       .catch(e => setTaskErr(e.message || '불러오지 못했습니다'))
       .finally(() => setTaskLoading(false));
   }, []);
-  useEffect(() => { reloadWeeklyTask(); }, [reloadWeeklyTask]);
+  useEffect(() => { reloadWeeklyTask(); }, [reloadWeeklyTask, feedbackVersion]);
 
   // 목록이 도착하면 첫 항목을 기본 선택. 서버가 목록을 못 주는 상황(= 사실상 수업 생성도 실패하는 상황)에도
   // 버튼은 그대로 동작하고 theme 만 빈 값이 된다 — 빈 theme 는 음성분석이 나중에 채워 준다.
@@ -307,7 +310,8 @@ export default function HomePage() {
         )}
       </Card>
 
-      {/* 이번 주 과제 (task-027) — 오늘 기록 바로 아래.
+      <FeedbackHomeCard />
+      {/* 이번 주 과제 (task-027) — 피드백 카드 아래.
           🔴 매트에 나가기 전에 눈에 들어와야 하므로 접히지 않고, 없을 때도 숨기지 않는다.
              (없으면 /research 로 보낸다 — 기능이 있다는 사실 자체가 보여야 한다.) */}
       <WeeklyTaskCard

@@ -20,6 +20,7 @@
 //  5. 날짜: DATE 컬럼이 Date 객체로 오는 경로에서 toISOString() 을 쓰면 KST(+9) 기준
 //     하루가 밀린다(2026-06-24 → 2026-06-23). SQL 의 DATE_FORMAT 으로 뽑는다.
 const { sequelize } = require('../config/db');
+const { dateRange } = require('./feedbackCore');
 const { normalize, matchTechnique } = require('../utils/techMatch');
 
 // 🔴 영문 + 한글 **병기** 필수. 실측: belt_history 는 영문('white')과 한글('화이트')이 섞여 있고
@@ -139,7 +140,10 @@ function parseJsonArray(value, label, failures) {
  * 🔴 날짜는 SQL 의 DATE_FORMAT 으로 문자열화한다(드라이버가 Date 로 주는 경로의 하루 밀림 차단).
  * 🔴 spar_causes 는 **읽기만** 한다 — 조회 API 가 시드를 만들면 안 된다.
  */
-async function loadLabData(userId) {
+async function loadLabData(userId, filters = {}) {
+  const range = dateRange(filters);
+  const conditions = column => `${range.from ? ` AND ${column} >= ?` : ''}${range.to ? ` AND ${column} <= ?` : ''}`;
+  const recordParams = [userId, ...(range.from ? [range.from] : []), ...(range.to ? [range.to] : [])];
   const parseFailures = [];
 
   const [techniques] = await sequelize.query(
@@ -159,18 +163,18 @@ async function loadLabData(userId) {
        FROM spar_sessions ss
        JOIN spar_days sd ON sd.id = ss.spar_day_id
        JOIN classes    c  ON c.id  = sd.class_id
-      WHERE c.user_id = ?
+      WHERE c.user_id = ?${conditions("sd.date")}
       ORDER BY ss.id ASC`,
-    { replacements: [userId] }
+    { replacements: recordParams }
   );
 
   const [drillRows] = await sequelize.query(
     `SELECT d.id, d.tech, DATE_FORMAT(d.date, '%Y-%m-%d') AS date
        FROM drills d
        JOIN classes c ON c.id = d.class_id
-      WHERE c.user_id = ?
+      WHERE c.user_id = ?${conditions("d.date")}
       ORDER BY d.id ASC`,
-    { replacements: [userId] }
+    { replacements: recordParams }
   );
 
   // 실패 원인 태그 이름 사전 — 시드하지 않고 있는 그대로 읽는다(없으면 빈 맵).

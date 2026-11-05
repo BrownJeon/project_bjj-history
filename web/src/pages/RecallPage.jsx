@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCache } from '../contexts/CacheContext';
 import { useUI } from '../contexts/UIContext';
@@ -12,6 +12,11 @@ import Button from '../components/Button';
 import Modal from '../components/Modal';
 import RecallLadder from '../components/RecallLadder';
 import ClassDetailModal from '../components/ClassDetailModal';
+import RecallPeriodControls from '../components/RecallPeriodControls';
+import FeedbackRecap from '../components/FeedbackRecap';
+import { useFeedback } from '../contexts/FeedbackContext';
+import { getFeedbackRecap } from '../api/feedback';
+import { feedbackPeriod, todayKst } from '../utils/feedbackPeriod';
 
 // ═════════════════════════════════════════════════════════════════════════════
 // 복기 화면 — task-025
@@ -66,36 +71,6 @@ function fmtDay(v) {
     return `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}`;
   }
   return s.slice(0, 10).replace(/-/g, '.');
-}
-
-/**
- * 검색 기간 기본값 = 3개월 전 ~ 오늘 (task-029 A-3).
- *
- * 🔴 toISOString() 금지. UTC 로 밀려 KST(+9) 기준 하루가 어긋난다 — 위 3번 함정 그대로다.
- *    로컬 게터(getFullYear/getMonth/getDate) + padStart 로만 'YYYY-MM-DD' 를 조립한다.
- * 🔴 setMonth(getMonth() - 3) 은 말일에서 다음 달로 이월한다
- *    (5/31 → 2/31 → 3/3, 7/31 → 4/31 → 5/1, 12/31 → 9/31 → 10/1).
- *    그러면 "3개월 전"이 실제로는 89일 전이 되어 그 사이 기록이 기본 화면에서 조용히 빠진다.
- *    → 달을 먼저 옮기고 일자를 **그 달 말일로 자른다**(5/31 → 2/28, 윤년이면 2/29).
- */
-const pad2 = (n) => String(n).padStart(2, '0');
-
-function ymdLocal(d) {
-  return `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
-}
-
-function monthsBeforeLocal(base, months) {
-  const total = base.getFullYear() * 12 + base.getMonth() - months;
-  const y = Math.floor(total / 12);
-  const m = total - y * 12;                          // 0..11
-  const lastDay = new Date(y, m + 1, 0).getDate();   // 그 달의 말일 (로컬 생성자, UTC 왕복 없음)
-  return `${y}-${pad2(m + 1)}-${pad2(Math.min(base.getDate(), lastDay))}`;
-}
-
-/** 마운트 시 1회만 고정하는 기본 기간. */
-function defaultRange() {
-  const now = new Date();
-  return { from: monthsBeforeLocal(now, 3), to: ymdLocal(now) };
 }
 
 /**
@@ -365,7 +340,7 @@ function PositionGrid({ positions, activePos, onPick }) {
 
   return (
     <Card>
-      <Hint>이름이 기억나지 않을 때. 누르면 아래 검색의 포지션 필터로 들어갑니다.</Hint>
+      <Hint>기록은 선택 기간, 기술·영상 자료 수는 전체 재고입니다. 누르면 같은 기간의 수업을 검색합니다.</Hint>
       <div style={{ ...grid, marginTop: 8 }}>
         {main.map(p => (
           <PosCell key={p.name} p={p}
@@ -458,6 +433,7 @@ export default function RecallPage() {
   const navigate = useNavigate();
   const { classes, techniques } = useCache();
   const { showToast } = useUI();
+  const { version: feedbackVersion } = useFeedback();
 
   const [holes, setHoles] = useState(null);
   const [stale, setStale] = useState(null);
@@ -471,9 +447,10 @@ export default function RecallPage() {
   // 기본 기간은 마운트 시 한 번만 정한다. 렌더마다 다시 계산하면 자정을 넘기는 순간
   // 아래 "기본값과 다른가" 판정이 흔들려 초기화 버튼이 혼자 나타난다.
   // 🔴 빈 값(전체 조회)을 기본값으로 되채우지 않는다 — 되채우면 전체 조회를 할 방법이 없어진다.
-  const [defaults] = useState(defaultRange);
-  const [from, setFrom] = useState(defaults.from);
-  const [to, setTo] = useState(defaults.to);
+  const [period, setPeriod] = useState(() => ({ mode: 'month', anchor: todayKst(), ...feedbackPeriod('month') }));
+  const { from, to } = period;
+  const [recap, setRecap] = useState(null), [reload, setReload] = useState(0);
+  const searchSequence = useRef(0), summarySequence = useRef(0);
   const [applied, setApplied] = useState(null);
   const [res, setRes] = useState(null);
   const [searching, setSearching] = useState(false);
@@ -493,51 +470,48 @@ export default function RecallPage() {
     const fail = (key) => (e) => {
       if (alive) setErrs(prev => ({ ...prev, [key]: e.message || '불러오지 못했습니다' }));
     };
-    getHoles().then(d => { if (alive) setHoles(d); }).catch(fail('holes'));
-    getStale().then(d => { if (alive) setStale(d); }).catch(fail('stale'));
-    getPositions().then(d => { if (alive) setPositions(Array.isArray(d) ? d : []); }).catch(fail('positions'));
+    setHoles(null); setStale(null); setPositions([]); setRecap(null); setErrs({});
+    getHoles(undefined, { from, to }).then(d => { if (alive) setHoles(d); }).catch(fail('holes'));
+    getStale(undefined, { from, to }).then(d => { if (alive) setStale(d); }).catch(fail('stale'));
+    getPositions({ from, to }).then(d => { if (alive) setPositions(Array.isArray(d) ? d : []); }).catch(fail('positions'));
+    getFeedbackRecap({ from, to }).then(d => { if (alive) setRecap(d); }).catch(fail('feedback'));
     return () => { alive = false; };
-  }, []);
+  }, [from, to, feedbackVersion, reload]);
+
+  useEffect(() => {
+    searchSequence.current += 1; summarySequence.current += 1;
+    setRes(null); setApplied(null); setSummary(null); setSummaryErr(''); setSearchErr(''); setSearching(false); setSummarizing(false);
+    return () => { searchSequence.current += 1; summarySequence.current += 1; };
+  }, [from, to]);
 
   const runSearch = useCallback(async (override) => {
+    const sequence = ++searchSequence.current;
+    summarySequence.current += 1;
     const cond = {
       q: (override?.q ?? q).trim(),
       pos: override?.pos ?? pos,
       from: override?.from ?? from,
       to: override?.to ?? to,
     };
-    setSearching(true); setSearchErr(''); setSummary(null); setSummaryErr('');
+    setSearching(true); setSearchErr(''); setSummary(null); setSummaryErr(''); setSummarizing(false);
     try {
       const d = await searchRecall(cond);
+      if (sequence !== searchSequence.current) return;
       setRes(d);
       setApplied(cond);
     } catch (e) {
+      if (sequence !== searchSequence.current) return;
       setRes(null); setApplied(cond);
       setSearchErr(e.message || '검색에 실패했습니다');
     } finally {
-      setSearching(false);
+      if (sequence === searchSequence.current) setSearching(false);
     }
   }, [q, pos, from, to]);
 
-  // 포지션 칸을 누르면 그 자리에서 검색까지 간다 (격자는 검색의 진입로다).
-  //
-  // 🔴 격자 칸의 `기록 N`(PosCell)은 getPositions() 가 주는 **전체 기간** 집계다
-  //    (/api/techniques/positions 에는 날짜 파라미터가 없다). 검색 폼의 기본값은 3개월이라
-  //    그대로 두면 "기록 12" 칸을 눌렀는데 결과가 4건 나온다 — 에러 없이 숫자가 거짓말을 한다.
-  //    실측: user 3 수업 29건 중 기본 3개월 창 안은 15건, 14건(48%)이 빠졌다.
-  //    → 격자는 "전체 기간 진입로", 검색 폼은 "3개월 기본" 으로 역할을 나눈다.
-  // 🔴 setFrom/setTo 는 비동기라 바로 아래 runSearch 안의 from/to 는 아직 옛 값이다.
-  //    override 로 from:''/to:'' 를 **같이** 넘겨야 한다. 안 넘기면 첫 클릭만 옛 기간으로
-  //    나가는, 이 프로젝트가 반복해 온 "에러 없이 한 번만 어긋나는" 결함이 된다.
+  // 포지션을 선택하거나 해제해도 복기 전체의 적용 기간을 유지한다.
   const pickPos = useCallback((name) => {
     setPos(name);
-    // 🔴 pickPos 는 "선택"과 "해제"를 겸한다(격자 재클릭 · `{pos} ✕` 태그가 name='' 로 들어온다).
-    //    기간 초기화는 **선택에만** 딸린다 — 해제는 조건 하나를 빼는 것이지 기간까지 되돌리라는
-    //    뜻이 아니다. 구분하지 않으면 "격자 클릭 → 날짜 손으로 재지정 → ✕ 해제" 에서
-    //    사용자가 방금 지정한 날짜가 조용히 날아간다.
-    if (!name) { runSearch({ pos: '' }); return; }
-    setFrom(''); setTo('');
-    runSearch({ pos: name, from: '', to: '' });
+    runSearch({ pos: name });
   }, [runSearch]);
 
   const openClass = useCallback((classId) => {
@@ -550,13 +524,15 @@ export default function RecallPage() {
 
   const runSummarize = useCallback(async () => {
     if (!applied) return;
+    const sequence = ++summarySequence.current;
     setSummarizing(true); setSummaryErr('');
     try {
-      setSummary(await summarizeRecall(applied));
+      const result = await summarizeRecall(applied);
+      if (sequence === summarySequence.current) setSummary(result);
     } catch (e) {
-      setSummaryErr(e.message || 'AI 요약에 실패했습니다');
+      if (sequence === summarySequence.current) setSummaryErr(e.message || 'AI 요약에 실패했습니다');
     } finally {
-      setSummarizing(false);
+      if (sequence === summarySequence.current) setSummarizing(false);
     }
   }, [applied]);
 
@@ -569,9 +545,8 @@ export default function RecallPage() {
       .slice(0, 6);
   }, [applied, techniques]);
 
-  // from/to 가 이제 항상 차 있으므로 `(q || pos || from || to)` 는 늘 참이다.
-  // 아무것도 안 건드렸는데 초기화가 떠 있지 않도록 **기본값과 다를 때**로 판정한다.
-  const condDirty = !!q || !!pos || from !== defaults.from || to !== defaults.to;
+  // 검색어·포지션만 초기화한다. 기간은 상단 공통 선택을 유지한다.
+  const condDirty = !!q || !!pos;
 
   // 빈 상태 ①: 구멍도 미연결도 0 → 1번 블록을 빈 카드로 남기지 않고 격자를 위로 올린다.
   const sparEmpty = !!holes && (holes.empty || holes.summary?.sparSessions === 0);
@@ -590,6 +565,8 @@ export default function RecallPage() {
   return (
     <div>
       <h1 className="page-header">복기</h1>
+      <RecallPeriodControls value={period} onChange={setPeriod} />
+      <FeedbackRecap data={recap} error={errs.feedback} sparFailures={errs.holes ? undefined : holes?.summary?.failItems} onRetry={() => setReload(value => value + 1)} from={from} to={to} />
 
       {/* 구멍이 하나도 없으면 격자가 맨 위로 올라온다 */}
       {holeBlockHidden && gridBlock}
@@ -609,6 +586,7 @@ export default function RecallPage() {
 
       {/* ── 2. 잊기 직전 ────────────────────────────────────────────────────── */}
       <SectionTitle>잊기 직전</SectionTitle>
+      <p className="fb-muted" style={{ marginBottom: 8 }}>숙련도는 누적 기준이며, 활동 근거는 선택 기간을 참고합니다.</p>
       {errs.stale
         ? <Card><Hint>잊기 직전 목록을 불러오지 못했습니다 — {errs.stale}</Hint></Card>
         : stale
@@ -639,26 +617,7 @@ export default function RecallPage() {
           </div>
 
           <div style={{ display: 'flex', gap: 6, alignItems: 'center', marginTop: 8, flexWrap: 'wrap' }}>
-            {/* value 가 이미 'YYYY-MM-DD' 문자열이다 — 그대로 API 에 넘긴다(Date 왕복 금지). */}
-            <input type="date" value={from} onChange={(e) => setFrom(e.target.value)}
-              style={dateInput} />
-            <span style={{ fontSize: 12, color: 'var(--text3)' }}>~</span>
-            <input type="date" value={to} onChange={(e) => setTo(e.target.value)}
-              style={dateInput} />
-
-            {/* 🔴 요구사항 원문은 "날짜를 선택하지 않으면 모든 날짜를 대상으로 조회해줘" 다.
-                기본값이 채워지면서 날짜를 비우는 유일한 방법이 date 입력 Backspace 가 됐다
-                (Chrome 데스크톱에는 지우기 버튼이 없다). 기능이 남아 있어도 입구가 없으면
-                구현되지 않은 것이다 — task-016 의 "기능은 있는데 입구가 없었다"와 같은 실패.
-                비어 있을 때는 링크가 아니라 **지금이 전체 기간이라는 표시**로 바꾼다. */}
-            {(from || to)
-              ? (
-                <span
-                  onClick={() => { setFrom(''); setTo(''); }}
-                  style={{ fontSize: 11, fontWeight: 700, color: 'var(--accent-lt)', cursor: 'pointer', padding: '0 2px' }}
-                >전체 기간</span>
-              )
-              : <Tag tone="accent">전체 기간</Tag>}
+            <span className="fb-muted">검색 기간 · {from ? `${from} ~ ${to}` : '전체 기간'} (위 기간 선택과 동일)</span>
 
             {pos && (
               <Tag tone="accent" onClick={() => pickPos('')} style={{ cursor: 'pointer' }}>
@@ -667,7 +626,7 @@ export default function RecallPage() {
             )}
             {condDirty && (
               <span
-                onClick={() => { setQ(''); setPos(''); setFrom(defaults.from); setTo(defaults.to); setRes(null); setApplied(null); setSummary(null); }}
+                onClick={() => { setQ(''); setPos(''); setRes(null); setApplied(null); setSummary(null); }}
                 style={{ marginLeft: 'auto', fontSize: 11, color: 'var(--text3)', cursor: 'pointer' }}
               >조건 초기화</span>
             )}
@@ -818,10 +777,3 @@ export default function RecallPage() {
     </div>
   );
 }
-
-const dateInput = {
-  padding: '7px 9px', fontSize: 12,
-  background: 'var(--surface-up)', border: '1px solid var(--border)',
-  borderRadius: 8, color: 'var(--text)', outline: 'none',
-  colorScheme: 'dark',
-};

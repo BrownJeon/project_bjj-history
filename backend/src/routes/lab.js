@@ -3,6 +3,7 @@ const router = express.Router();
 const { Technique, TechniqueMastery } = require('../models');
 const { ok, fail, wrap } = require('../utils/respond');
 const lab = require('../services/labAnalytics');
+const { dateRange } = require('../services/feedbackCore');
 const { setMasterySteps } = require('../services/masteryWrite');
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -22,7 +23,7 @@ const { setMasterySteps } = require('../services/masteryWrite');
  * ?min= 으로 threshold 조정 (기본 2, 1~99 클램프).
  */
 router.get('/holes', wrap(async (req, res) => {
-  const data = await lab.loadLabData(req.user.id);
+  const data = await lab.loadLabData(req.user.id, dateRange(req.query));
   const result = lab.computeHoles(data, { threshold: req.query.min });
   ok(res, result);
 }));

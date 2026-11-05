@@ -21,8 +21,8 @@ export const searchRecall = ({ q, pos, from, to } = {}) =>
   client.get('/recall/search', { params: clean({ q, pos, from, to }) }).then(r => r.data);
 
 /** GET /api/recall/stale?limit — 잊기 직전(구멍 제외). */
-export const getStale = (limit) =>
-  client.get('/recall/stale', { params: clean({ limit }) }).then(r => r.data);
+export const getStale = (limit, { from, to } = {}) =>
+  client.get('/recall/stale', { params: clean({ limit, from, to }) }).then(r => r.data);
 
 /**
  * POST /api/recall/summarize — AI 복기 카드.

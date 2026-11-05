@@ -22,6 +22,7 @@
 //   rename/삭제 API는 4곳을 다 훑는데 목록이 그 이름을 안 내려주니 프론트가 호출할 방법이 없었던 것.
 const { sequelize } = require('../config/db');
 const { Technique, VideoClip } = require('../models');
+const { dateRange } = require('./feedbackCore');
 const { toNFC } = require('../utils/nfc');
 
 /** techniques.pos · video_clips.position 의 JSON 배열(또는 레거시 단일 문자열) 파싱. */
@@ -42,7 +43,10 @@ function parsePos(raw) {
  * @returns {Promise<Array<{name, count, techCount, clipCount, drillCount, sparCount}>>}
  *          이름 오름차순(ko 로케일). 라우트 응답과 **같은 배열**이다.
  */
-async function listPositions(uid) {
+async function listPositions(uid, filters = {}) {
+  const range = dateRange(filters);
+  const conditions = column => `${range.from ? ` AND ${column} >= ?` : ''}${range.to ? ` AND ${column} <= ?` : ''}`;
+  const recordParams = [uid, ...(range.from ? [range.from] : []), ...(range.to ? [range.to] : [])];
   const techCounter = new Map();
   const techRows = await Technique.findAll({ where: { user_id: uid }, attributes: ['pos'], raw: true });
   for (const row of techRows) {
@@ -57,8 +61,8 @@ async function listPositions(uid) {
 
   const drillCounter = new Map();
   const [drillRows] = await sequelize.query(
-    `SELECT d.pos FROM drills d JOIN classes c ON d.class_id = c.id WHERE c.user_id = ? AND d.pos IS NOT NULL AND d.pos != ''`,
-    { replacements: [uid] }
+    `SELECT d.pos FROM drills d JOIN classes c ON d.class_id = c.id WHERE c.user_id = ? AND d.pos IS NOT NULL AND d.pos != ''${conditions('d.date')}`,
+    { replacements: recordParams }
   );
   for (const row of drillRows) { const p = toNFC(row.pos); drillCounter.set(p, (drillCounter.get(p) || 0) + 1); }
 
@@ -67,8 +71,8 @@ async function listPositions(uid) {
     `SELECT ss.positions FROM spar_sessions ss
      JOIN spar_days sd ON ss.spar_day_id = sd.id
      JOIN classes c ON sd.class_id = c.id
-     WHERE c.user_id = ?`,
-    { replacements: [uid] }
+     WHERE c.user_id = ?${conditions('sd.date')}`,
+    { replacements: recordParams }
   );
   for (const row of sparRows) {
     let entries;
@@ -90,6 +94,7 @@ async function listPositions(uid) {
       clipCount:  clipCounter.get(name)  || 0,
       drillCount: drillCounter.get(name) || 0,
       sparCount:  sparCounter.get(name)  || 0,
+      ...(range.from || range.to ? { activityRange: range, referenceScope: 'all' } : {}),
     }))
     .sort((a, b) => a.name.localeCompare(b.name, 'ko'));
 }

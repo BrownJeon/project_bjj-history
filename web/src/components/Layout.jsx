@@ -6,6 +6,8 @@ import MasterBar from './MasterBar';
 import MasterListPanel from './MasterListPanel';
 import MasterPanel from './MasterPanel';
 import { MasterProvider } from '../contexts/MasterContext';
+import { FeedbackProvider } from '../contexts/FeedbackContext';
+import FeedbackPanel from './FeedbackPanel';
 import { listReports } from '../api/coach';
 import {
   COACH_SEEN_KEY, TOGGLE_PAIRS, createToggleMemo, getStorage, hasUnseenReport, readKey, writeKey,
@@ -66,6 +68,7 @@ export default function Layout() {
     // 🔴 관장실(task-030)은 **추가만** 한다 — 아래 하단 5탭 블록은 한 줄도 바뀌지 않았다.
     //    MasterProvider 는 Layout 안에서만 감싼다(로그인·회원가입 화면엔 없다).
     <MasterProvider>
+    <FeedbackProvider>
     <div className="app-shell">
       <main className="app-content">
         {/* 상단 바 — `.app-content` 안 <Outlet/> 앞. 고정이 아니라 내용과 함께 스크롤된다. */}
@@ -117,7 +120,9 @@ export default function Layout() {
       {/* 대화 패널 — 셸 전체를 덮는다(z-index 160 > 프로필 오버레이 150 > nav 100).
           닫으면 보던 화면 그대로. z-index 는 MasterBar.jsx 의 `.bjjm-panel` 규칙에 있다. */}
       <MasterPanel />
+      <FeedbackPanel />
     </div>
+    </FeedbackProvider>
     </MasterProvider>
   );
 }

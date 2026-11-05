@@ -17,6 +17,7 @@ import Pagination from '../components/Pagination';
 import ClipDetailModal from '../components/ClipDetailModal';
 import ClipEditor from '../components/ClipEditor';
 import { usageOf, fmtMD } from '../utils/clipUsage';
+import { filterClips, rankedClipTechniques } from '../utils/clipFilters';
 
 const PAGE_SIZE = 10;
 const detectPlatform = u => !u ? 'other' : u.includes('youtu') ? 'youtube' : u.includes('instagram') ? 'instagram' : 'other';
@@ -62,50 +63,9 @@ export default function ClipsPage({ embedded = false }) {
     return () => { if (pollRef.current) clearInterval(pollRef.current); };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // 사용 빈도순 기술명 (다중 기술 지원)
-  const techNames = useMemo(() => {
-    const count = new Map();
-    for (const c of clips) {
-      const names = c.tech_names?.length ? c.tech_names : (c.tech_name ? [c.tech_name] : []);
-      for (const n of names) {
-        const t = (n || '').trim();
-        if (t) count.set(t, (count.get(t) || 0) + 1);
-      }
-    }
-    return [...count.entries()].sort((a, b) => b[1] - a[1]).map(([n]) => n);
-  }, [clips]);
-
-  const list = useMemo(() => {
-    let items = [...clips];
-    if (filter === 'star')   items = items.filter(c => c.starred);
-    if (filter === 'pinned') items = items.filter(c => c.pinned);
-    if (filter === 'recent') items.sort((a, b) => (b.pinned || 0) - (a.pinned || 0) || (b.id || 0) - (a.id || 0));
-    // task-035 — 🥋 써봤음(드릴+포지션 스파링+스파링) 기준. 👁 봤음은 세지 않는다(열어 본 것 ≠ 써 본 것).
-    if (filter === 'unused') items = items.filter(c => usageOf(c).used === 0);
-    // Array.prototype.sort 는 안정 정렬(ES2019+) — 동률은 서버가 준 기존 순서(고정·즐겨찾기·최신)를 유지한다
-    if (filter === 'mostUsed') items.sort((a, b) => usageOf(b).used - usageOf(a).used);
-    if (techFilter)          items = items.filter(c => {
-      const names = c.tech_names?.length ? c.tech_names : (c.tech_name ? [c.tech_name] : []);
-      return names.includes(techFilter);
-    });
-    if (search) {
-      // .normalize('NFC') 필수 — task-014. 한글은 완성형(NFC)과 자모분리형(NFD) 두 가지로
-      // 저장될 수 있고 화면에는 똑같이 보이지만 includes()는 다른 문자열로 판정한다.
-      // 이 목록의 title/description 은 사용자가 직접 친 것만이 아니라 긴 영상 분석의 기술
-      // 연동(POST /long-videos/:id/techniques/:tid/apply)이 yt-dlp 제목을 이어붙여 만들거나
-      // AI가 생성한 문자열이 들어온다 — 즉 외부 유래 NFD가 도달할 수 있는 자리다.
-      // 검색어(q)는 항상 키보드 입력이라 NFC이므로, 정규화가 없으면 눈에 보이는 영상이
-      // 에러 없이 "검색 결과 없음"이 된다(task-010에서 /study 검색이 실제로 이랬다).
-      const q = search.toLowerCase().normalize('NFC');
-      items = items.filter(c =>
-        (c.title || '').toLowerCase().normalize('NFC').includes(q) ||
-        (c.tech_name || '').toLowerCase().normalize('NFC').includes(q) ||
-        (c.description || '').toLowerCase().normalize('NFC').includes(q) ||
-        (c.tags || []).some(x => (x || '').toLowerCase().normalize('NFC').includes(q))
-      );
-    }
-    return items;
-  }, [clips, search, filter, techFilter]);
+  // 참고영상과 피드백 선택기가 같은 검색·정렬·사용 횟수 기준을 공유한다.
+  const techNames = useMemo(() => rankedClipTechniques(clips), [clips]);
+  const list = useMemo(() => filterClips(clips, { search, filter, techFilter }), [clips, search, filter, techFilter]);
 
   useEffect(() => { setPage(1); }, [search, filter, techFilter]);
 

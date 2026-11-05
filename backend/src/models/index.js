@@ -1,6 +1,7 @@
 const { sequelize } = require('../config/db');
 
 const User            = require('./User');
+const Feedback        = require('./Feedback');
 const Class           = require('./Class');
 const Drill           = require('./Drill');
 const SparDay         = require('./SparDay');
@@ -60,6 +61,9 @@ User.hasMany(ResearchTask,      { foreignKey: 'user_id', as: 'researchTasks' });
 // master_messages·master_actions 의 user_id 는 부모에서 유도한 사본이고 권한 판정에 쓰지 않는다
 // (research_* 하위 3테이블과 같은 규약). 행이 없는 것이 정상 상태다(아직 관장과 대화 안 함).
 User.hasMany(MasterChat,        { foreignKey: 'user_id', as: 'masterChats' });
+
+User.hasMany(Feedback, { foreignKey: 'user_id', as: 'feedbackRecords', onDelete: 'CASCADE' });
+Feedback.belongsTo(User, { foreignKey: 'user_id', onDelete: 'CASCADE' });
 
 // 관계 정의
 Class.hasMany(Drill,         { foreignKey: 'class_id', as: 'drills' });
@@ -128,7 +132,7 @@ ClipUsageLog.belongsTo(VideoClip, { foreignKey: 'clip_id' });
 
 module.exports = {
   sequelize,
-  User,
+  User, Feedback,
   Class, Drill, SparDay, SparSession, SparCause,
   Technique, TechniqueChain, ChainStep, TechniqueMastery,
   RecallSummary,
