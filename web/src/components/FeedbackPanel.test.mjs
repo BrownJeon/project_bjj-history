@@ -448,6 +448,26 @@ test('recall returns focus to the saved feedback card after refreshing the same 
   } });
 });
 
+test('recall clears previously loaded counts when refreshing the same period fails', async () => {
+  let failRefresh = false;
+  await environment(async ({ click }) => {
+    const opener = document.querySelector('[data-testid="feedback-list"] .fb-list-button');
+    assert.equal(document.querySelector('[data-testid="recall-summary"] strong').textContent, '1');
+    failRefresh = true;
+    await click(opener);
+    assert.match(document.body.textContent, /피드백 집계를 불러오지 못했습니다/);
+    assert.equal(document.querySelector('[data-testid="recall-summary"] strong').textContent, '—');
+  }, { screen: 'RecallPage', initial: record(), custom(call, store) {
+    if (call.url !== '/feedback/recap') return undefined;
+    if (failRefresh) throw new Error('피드백 집계 요청 실패');
+    return {
+      from: call.params.from ?? null, to: call.params.to ?? null,
+      items: [copy(store.record)], results: [], failures: [],
+      summary: { feedbackCount: 1, resultCount: 0, failureCount: 0 },
+    };
+  } });
+});
+
 test('orphan draft UI recovers into an explicitly selected question and survives save/reopen', async () => {
   await environment(async ({ feedback, store, update, button, click, input }) => {
     await update(() => feedback.openFeedback(1)); await update(() => feedback.controller.setAnswerDraft('b', '복구해야 하는 내 초안'));

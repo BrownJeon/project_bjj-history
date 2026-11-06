@@ -476,7 +476,10 @@ export default function RecallPage() {
     getHoles(undefined, { from, to }).then(d => { if (alive) setHoles(d); }).catch(fail('holes'));
     getStale(undefined, { from, to }).then(d => { if (alive) setStale(d); }).catch(fail('stale'));
     getPositions({ from, to }).then(d => { if (alive) setPositions(Array.isArray(d) ? d : []); }).catch(fail('positions'));
-    getFeedbackRecap({ from, to }).then(d => { if (alive) setRecap(d); }).catch(fail('feedback'));
+    getFeedbackRecap({ from, to }).then(d => { if (alive) setRecap(d); }).catch(e => {
+      if (alive) setRecap(null);
+      fail('feedback')(e);
+    });
     return () => { alive = false; };
   }, [from, to, feedbackVersion, reload]);
 

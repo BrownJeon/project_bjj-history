@@ -19,7 +19,9 @@
 .fb-quote { margin:8px 0 0;padding:9px 11px;border-left:2px solid var(--accent);background:var(--surface-up);color:var(--text2);font-size:12px;white-space:pre-wrap;line-height:1.6; }
 .fb-question { padding:14px;background:var(--surface);border:1px solid var(--border);border-radius:4px 14px 14px;display:grid;gap:8px; }
 .fb-entry-actions { display:flex;gap:8px;align-items:center;flex-shrink:0; }.fb-entry-actions button { white-space:nowrap; }
-.calendar-entry-actions > button { zoom: .9; }
+.calendar-entry-actions > button { position: relative; zoom: .9; }
+/* Keep the tap area at least 44px high when the visible button is scaled down. */
+.calendar-entry-actions > button::after { content: ''; position: absolute; inset: -4px 0; }
 .fb-period { display:flex;gap:4px;border-radius:10px;background:var(--surface);padding:4px; }.fb-period button { flex:1;min-height:44px;border:0;border-radius:7px;background:transparent;color:var(--text2);font-size:12px; }.fb-period [aria-pressed="true"] { background:var(--surface-hi);color:var(--accent-lt);font-weight:700; }
 .fb-date-grid { display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px; }.fb-counts { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;text-align:center; }.fb-counts strong { display:block;font-size:22px;color:var(--text); }.fb-counts span { font-size:11px;color:var(--text2); }
 .fb-stack hr { border:0;border-top:1px solid var(--border);margin:3px 0; }.fb-stack ol,.fb-stack ul { padding-left:20px;line-height:1.8;font-size:13px; }
