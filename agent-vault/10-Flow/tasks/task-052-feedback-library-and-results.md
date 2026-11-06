@@ -9,8 +9,8 @@ execution_context:
   origin_tool: codex
   current_tool: codex
   current_procedure: codex_scoped
-  current_scope: "사용자 실기기 확인 버전과 문서 푸시 후 자동 배포 버전을 구분해 종료 기록 갱신"
-  last_event_id: exec-052-020
+  current_scope: "사용자 실기기 확인 버전을 별도로 보존하고 14:19 문서 자동 배포 결과를 종료 기록에 추가"
+  last_event_id: exec-052-021
 tags:
   - type/task
   - domain/ux
@@ -69,6 +69,7 @@ demo_gate:
 | exec-052-018 | 2026-11-06 11:34 | resume | codex → codex / codex_scoped | 독립 자동 QA와 메인 브라우저 결과를 통합해 PASS, 신규 결함 0. 메인 Codex가 `d690e6e`를 운영 배포 완료 | 아래 배포 기록과 `RELEASE_RESULT` |
 | exec-052-019 | 2026-11-06 12:56 | resume | codex → codex / codex_scoped | 사용자 실기기 확인을 기록하고 종료. 확인 대상 운영 릴리스 `20261106-113448-d690e6e3` (`d690e6e`) | 사용자 원문 `실기기에서 확인했어. 커밋 및 푸시 후에 해당 작업종료해줘` |
 | exec-052-020 | 2026-11-06 14:04 | resume | codex → codex / codex_scoped | 종료된 task-052의 문서 자동 배포와 사용자 실기기 확인을 작업 이력 및 `ACTIVE.md`에 구분해 반영 | 사용자 요청, 아래 배포 기록과 `RELEASE_RESULT` |
+| exec-052-021 | 2026-11-06 14:28 | resume | codex → codex / codex_scoped | 작업 이력과 `ACTIVE.md`에 `20261106-141858-8e251c14` 문서 자동 배포를 추가하고, 실기기 확인 버전 `20261106-113448-d690e6e3`을 별도로 보존 | 사용자 요청, 아래 배포 기록과 `RELEASE_RESULT` |
 
 ## 배포 기록
 
@@ -83,6 +84,7 @@ demo_gate:
 - 운영 `current`, pm2 online·재시작 0, 내부 및 공개 헬스 200을 확인했다. 운영 웹 파일과 QA 빌드는 바이트 단위로 일치하고 로그인 화면을 브라우저에서 확인했다. 운영 인증 후 필터·영상 선택 및 Android 실기기는 미확인이다.
 - 이후 사용자가 실기기에서 확인한 릴리스는 `20261106-113448-d690e6e3`이다. 확인 근거는 `exec-052-019`의 사용자 확인 기록이다.
 - 2026-11-06 13:55:40 KST, `ACTIVE.md`와 `AGENTS.md` 문서 커밋 `b2ce9843faa6a0b0c10efcdd321d1b58b1f45950` 푸시로 운영 릴리스 `20261106-135531-b2ce9843`이 자동 배포됐다. `RELEASE_RESULT status=ok`, `migrated=false`, 이전 릴리스 `20261106-125716-acc36d35`. 운영 `current`, 공개 헬스체크 HTTP 200, 실기기 확인 릴리스와 피드백 화면 JS·CSS의 바이트 일치를 확인했다.
+- 2026-11-06 14:19:07 KST, task-052 작업 이력과 `ACTIVE.md` 문서 커밋 `8e251c1465c5c5819fc7ad271c4f5be34ab8596e` 푸시로 운영 릴리스 `20261106-141858-8e251c14`가 자동 배포됐다. `RELEASE_RESULT status=ok`, `migrated=false`, 이전 릴리스 `20261106-135531-b2ce9843`. 운영 `current`, 공개 헬스체크 HTTP 200, 실기기 확인 릴리스와 피드백 화면 JS·CSS의 바이트 일치를 확인했다.
 
 ## v2 구현 승인 및 현재 착수 범위
 
