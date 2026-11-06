@@ -6,6 +6,8 @@ import Button from './Button';
 import Icon from './Icon';
 import { FilterChip, TechniqueFilter } from './LibraryFilters';
 
+const PICKER_FILTERS = CLIP_FILTERS.filter(([key]) => key !== 'unused' && key !== 'mostUsed');
+
 export default function FeedbackClipPicker({ selectedIds, onChange, onOpen, disabled = false, linkedClips = [] }) {
   const { clips, reloadClips } = useCache();
   const [search, setSearch] = useState(''), [filter, setFilter] = useState('all');
@@ -30,7 +32,7 @@ export default function FeedbackClipPicker({ selectedIds, onChange, onOpen, disa
     <label className="fb-field">영상 검색<input type="search" value={search} onChange={e => setSearch(e.target.value)} placeholder="제목·기술명·설명·태그 검색" data-testid="video-search" /></label>
     <div className="fb-filter-controls">
       <div className="fb-library-filters" aria-label="참고영상 필터">
-        {CLIP_FILTERS.map(([key, label, icon]) => <FilterChip key={key} active={filter === key} icon={icon}
+        {PICKER_FILTERS.map(([key, label, icon]) => <FilterChip key={key} active={filter === key} icon={icon}
           onClick={() => setFilter(key)}>{label}</FilterChip>)}
       </div>
       <TechniqueFilter names={names} value={techFilter} onChange={setTechFilter} />
