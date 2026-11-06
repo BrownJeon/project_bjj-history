@@ -4,11 +4,12 @@ import { CLIP_FILTERS, filterClips, paginateClips, rankedClipTechniques } from '
 import { usageOf } from '../utils/clipUsage';
 import Button from './Button';
 import Icon from './Icon';
+import { FilterChip, TechniqueFilter } from './LibraryFilters';
 
 export default function FeedbackClipPicker({ selectedIds, onChange, onOpen, disabled = false, linkedClips = [] }) {
   const { clips, reloadClips } = useCache();
   const [search, setSearch] = useState(''), [filter, setFilter] = useState('all');
-  const [techFilter, setTechFilter] = useState(''), [techOpen, setTechOpen] = useState(false), [techSearch, setTechSearch] = useState('');
+  const [techFilter, setTechFilter] = useState('');
   const [page, setPage] = useState(1), [error, setError] = useState(''), [loading, setLoading] = useState(false);
   // CacheContext intentionally swallows initial failures. Verify this picker request
   // explicitly so an unavailable library is not presented as an empty library.
@@ -27,16 +28,12 @@ export default function FeedbackClipPicker({ selectedIds, onChange, onOpen, disa
   return <div className="fb-stack" data-testid="feedback-video-picker">
     <h3>등록영상에서 선택</h3>
     <label className="fb-field">영상 검색<input type="search" value={search} onChange={e => setSearch(e.target.value)} placeholder="제목·기술명·설명·태그 검색" data-testid="video-search" /></label>
-    <div className="fb-wrap" aria-label="참고영상 필터">{CLIP_FILTERS.map(([key, label]) => <button type="button" key={key} className="fb-chip" aria-pressed={filter === key} onClick={() => setFilter(key)}>{label}</button>)}</div>
-    <div>
-      <button type="button" className="fb-chip" aria-expanded={techOpen} onClick={() => setTechOpen(!techOpen)}>{techFilter || '기술 선택'} {techOpen ? '▴' : '▾'}</button>
-      {techOpen && <div className="fb-dropdown">
-        <label className="fb-field">기술 검색<input type="search" value={techSearch} onChange={e => setTechSearch(e.target.value)} placeholder="기술 검색…" /></label>
-        <div className="fb-dropdown-options">
-          <button type="button" className="fb-chip" aria-pressed={!techFilter} onClick={() => { setTechFilter(''); setTechOpen(false); }}>모든 기술</button>
-          {names.filter(name => name.toLowerCase().includes(techSearch.toLowerCase())).map(name => <button type="button" className="fb-chip" key={name} aria-pressed={techFilter === name} onClick={() => { setTechFilter(name); setTechOpen(false); }}>{name}</button>)}
-        </div>
-      </div>}
+    <div className="fb-filter-controls">
+      <div className="fb-library-filters" aria-label="참고영상 필터">
+        {CLIP_FILTERS.map(([key, label, icon]) => <FilterChip key={key} active={filter === key} icon={icon}
+          onClick={() => setFilter(key)}>{label}</FilterChip>)}
+      </div>
+      <TechniqueFilter names={names} value={techFilter} onChange={setTechFilter} />
     </div>
     <div className="fb-row fb-muted"><span data-testid="video-result-count">조회 {result.total}개 · {result.from}–{result.to}</span><strong data-testid="video-selected-count">선택 {selectedIds.length}개</strong></div>
     {error ? <div role="alert" className="fb-notice error">영상을 불러오지 못했습니다. {error}<Button size="sm" variant="outline" onClick={retry} disabled={loading}>다시 불러오기</Button></div>

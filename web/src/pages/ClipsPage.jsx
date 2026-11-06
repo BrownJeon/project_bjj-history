@@ -18,7 +18,7 @@ import Pagination from '../components/Pagination';
 import ClipDetailModal from '../components/ClipDetailModal';
 import ClipEditor from '../components/ClipEditor';
 import { usageOf, fmtMD } from '../utils/clipUsage';
-import { filterClips, rankedClipTechniques } from '../utils/clipFilters';
+import { CLIP_FILTERS, filterClips, rankedClipTechniques } from '../utils/clipFilters';
 
 const PAGE_SIZE = 10;
 const detectPlatform = u => !u ? 'other' : u.includes('youtu') ? 'youtube' : u.includes('instagram') ? 'instagram' : 'other';
@@ -145,12 +145,8 @@ export default function ClipsPage({ embedded = false }) {
 
       {/* 기본 필터 칩 */}
       <div style={{ display: 'flex', gap: 6, marginBottom: 8, alignItems: 'center', flexWrap: 'wrap' }}>
-        <FilterChip active={filter === 'all'}    onClick={() => setFilter('all')}>전체</FilterChip>
-        <FilterChip active={filter === 'recent'} onClick={() => setFilter('recent')} icon="clock">최신순</FilterChip>
-        <FilterChip active={filter === 'star'}   onClick={() => setFilter('star')}   icon="star">즐겨찾기</FilterChip>
-        <FilterChip active={filter === 'pinned'} onClick={() => setFilter('pinned')} icon="pin">고정</FilterChip>
-        <FilterChip active={filter === 'unused'}   onClick={() => setFilter('unused')}>안 써본 것</FilterChip>
-        <FilterChip active={filter === 'mostUsed'} onClick={() => setFilter('mostUsed')}>많이 쓴 순</FilterChip>
+        {CLIP_FILTERS.map(([key, label, icon]) => <FilterChip key={key} active={filter === key} icon={icon}
+          onClick={() => setFilter(key)}>{label}</FilterChip>)}
         {embedded && (
           <div style={{ marginLeft: 'auto' }}>
             <Button size="sm" variant="outline" onClick={() => setEditing('new')}>+ 추가</Button>

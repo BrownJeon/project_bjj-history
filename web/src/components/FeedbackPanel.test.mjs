@@ -96,7 +96,7 @@ test('Calendar keeps calendar/list and existing ClassEditor, while independent f
 });
 
 test('video picker pages five after filters, retains hidden selections and directly opens full-usage ClipDetailModal', async () => {
-  await environment(async ({ button, click, update }) => {
+  await environment(async ({ button, click, input, update }) => {
     await click(button('피드백 열기'));
     const details = document.querySelector('[data-testid="feedback-panel"] details');
     await update(() => { details.open = true; details.dispatchEvent(new window.Event('toggle')); });
@@ -106,6 +106,11 @@ test('video picker pages five after filters, retains hidden selections and direc
     await click(document.querySelector('[data-testid="select-video-6"]')); await click(button('즐겨찾기'));
     assert.equal(document.querySelectorAll('[data-testid="video-results"] .fb-video-choice').length, 5);
     assert.equal(document.querySelector('[data-testid="video-pagination"]'), null);
+    assert.match(document.querySelector('[data-testid="video-selected-count"]').textContent, /2/);
+    await click(button('기술 선택 ▼'));
+    await input(document.querySelector('[aria-label="기술 검색"]'), '초크');
+    await click(button('초크'));
+    assert.ok(button('초크 ▼'));
     assert.match(document.querySelector('[data-testid="video-selected-count"]').textContent, /2/);
     const preview = [...document.querySelectorAll('button')].find(node => node.textContent === '미리보기'); await click(preview);
     assert.ok([...document.querySelectorAll('[aria-label]')].find(node => node.getAttribute('aria-label') === '드릴 +1 (지금 2회)'));

@@ -1,7 +1,7 @@
 import { usageOf } from './clipUsage.js';
 
 export const CLIP_FILTERS = [
-  ['all', '전체'], ['recent', '최신순'], ['star', '즐겨찾기'], ['pinned', '고정'],
+  ['all', '전체'], ['recent', '최신순', 'clock'], ['star', '즐겨찾기', 'star'], ['pinned', '고정', 'pin'],
   ['unused', '안 써본 것'], ['mostUsed', '많이 쓴 순'],
 ];
 

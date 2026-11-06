@@ -75,12 +75,14 @@ export default function FeedbackPage() {
       <Icon name="search" size={16} />
       <input type="search" aria-label="피드백 검색" placeholder="제목·기술명·내용 검색" value={criteria.search} onChange={event => change({ search: event.target.value })} />
     </label>
-    <div className="fb-library-filters" aria-label="피드백 조회 조건">
-      {FILTERS.map(([key, label, icon]) => <FilterChip key={key} active={key === criteria.filter} icon={icon}
-        onClick={() => { if (key !== criteria.filter) change({ filter: key }); }}>{label}</FilterChip>)}
+    <div className="fb-filter-controls">
+      <div className="fb-library-filters" aria-label="피드백 조회 조건">
+        {FILTERS.map(([key, label, icon]) => <FilterChip key={key} active={key === criteria.filter} icon={icon}
+          onClick={() => { if (key !== criteria.filter) change({ filter: key }); }}>{label}</FilterChip>)}
+      </div>
+      <TechniqueFilter names={data?.techniqueOptions ?? []} value={criteria.technique} showClear
+        emptyText="저장된 피드백 기술이 없습니다." onChange={technique => change({ technique })} />
     </div>
-    <TechniqueFilter names={data?.techniqueOptions ?? []} value={criteria.technique} showClear
-      emptyText="저장된 피드백 기술이 없습니다." onChange={technique => change({ technique })} />
     <div className="fb-library-content" aria-busy={loading || (!shown && !error)}>
       {error && <div className="fb-notice error" role="alert">{error}<Button variant="outline" size="sm" onClick={() => setRetry(value => value + 1)}>다시 불러오기</Button></div>}
       {!shown && !error && <p className="fb-muted" role="status">피드백을 불러오는 중…</p>}
