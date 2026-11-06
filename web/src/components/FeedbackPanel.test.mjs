@@ -101,7 +101,14 @@ test('video picker pages five after filters, retains hidden selections and direc
     const details = document.querySelector('[data-testid="feedback-panel"] details');
     await update(() => { details.open = true; details.dispatchEvent(new window.Event('toggle')); });
     assert.equal(document.querySelectorAll('[data-testid="video-results"] .fb-video-choice').length, 5);
-    await click(document.querySelector('[data-testid="select-video-1"]')); await click(button('다음'));
+    const firstVideo = document.querySelector('[data-testid="select-video-1"]');
+    const thumb = firstVideo.querySelector('img');
+    assert.equal(thumb.getAttribute('src'), '/uploads/synthetic-thumbnail.jpg');
+    assert.match(firstVideo.parentElement.textContent, /미리보기/);
+    assert.doesNotMatch(firstVideo.parentElement.textContent, /조회|써봤음/);
+    await update(() => thumb.dispatchEvent(new window.Event('error')));
+    assert.equal(thumb.hidden, true);
+    await click(firstVideo); await click(button('다음'));
     assert.equal(document.querySelectorAll('[data-testid="video-results"] .fb-video-choice').length, 2);
     await click(document.querySelector('[data-testid="select-video-6"]')); await click(button('즐겨찾기'));
     assert.equal(document.querySelectorAll('[data-testid="video-results"] .fb-video-choice').length, 5);
@@ -118,7 +125,10 @@ test('video picker pages five after filters, retains hidden selections and direc
     assert.ok(document.querySelector('[data-testid="feedback-panel"]')); assert.equal(document.querySelectorAll('[role="dialog"]').length, 1);
     assert.match(document.querySelector('[data-testid="video-selected-count"]').textContent, /2/);
     assert.equal(document.activeElement, preview);
-  });
+  }, { custom(call) {
+    if (call.url === '/clips') return clips.map(clip => clip.id === 1 ? { ...clip, thumb_url: '/uploads/synthetic-thumbnail.jpg' } : clip);
+    return undefined;
+  } });
 });
 
 test('input, one-at-a-time answer, integrated card and current-task assignment use real UI handlers', async () => {

@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useCache } from '../contexts/CacheContext';
 import { CLIP_FILTERS, filterClips, paginateClips, rankedClipTechniques } from '../utils/clipFilters';
-import { usageOf } from '../utils/clipUsage';
+import { getClipThumb } from '../utils/videoThumb';
 import Button from './Button';
 import Icon from './Icon';
 import { FilterChip, TechniqueFilter } from './LibraryFilters';
@@ -40,12 +40,20 @@ export default function FeedbackClipPicker({ selectedIds, onChange, onOpen, disa
     <div className="fb-row fb-muted"><span data-testid="video-result-count">조회 {result.total}개 · {result.from}–{result.to}</span><strong data-testid="video-selected-count">선택 {selectedIds.length}개</strong></div>
     {error ? <div role="alert" className="fb-notice error">영상을 불러오지 못했습니다. {error}<Button size="sm" variant="outline" onClick={retry} disabled={loading}>다시 불러오기</Button></div>
       : <div className="fb-stack" data-testid="video-results">{result.items.map(clip => {
-        const chosen = selectedIds.includes(clip.id), usage = usageOf(clip);
+        const chosen = selectedIds.includes(clip.id), thumb = getClipThumb(clip);
         return <div key={clip.id} className={`fb-video-choice${chosen ? ' selected' : ''}`}>
           <button type="button" className="fb-video-row" aria-pressed={chosen} disabled={disabled} onClick={() => toggle(clip.id)} data-testid={`select-video-${clip.id}`}>
-            <span className="fb-video-glyph"><Icon name={chosen ? 'check' : 'video'} size={18} /></span><span style={{ flex: 1, minWidth: 0 }}><strong>{clip.title || '제목 없는 영상'}</strong><small>{clip.tech_names?.join(' · ') || clip.tech_name || '기술 미연결'}</small></span><Icon name={chosen ? 'check' : 'plus'} size={16} />
+            <span className="fb-video-thumb" aria-hidden="true">
+              <span>썸네일 없음</span>
+              {thumb && <img key={thumb} src={thumb} alt="" loading="lazy" onError={event => { event.currentTarget.hidden = true; }} />}
+              {chosen && <span className="fb-video-thumb-check"><Icon name="check" size={12} /></span>}
+            </span>
+            <span className="fb-video-caption">
+              <strong>{clip.title || '제목 없는 영상'}</strong>
+              <small>{clip.tech_names?.join(' · ') || clip.tech_name || '기술 미연결'}</small>
+            </span>
           </button>
-          <div className="fb-row"><span className="fb-muted">조회 {usage.view} · 써봤음 {usage.used}</span><Button size="sm" variant="outline" onClick={() => onOpen(clip.id)}>미리보기</Button></div>
+          <Button size="sm" variant="outline" style={{ flexShrink: 0 }} onClick={() => onOpen(clip.id)}>미리보기</Button>
         </div>;
       })}{!result.total && <p className="fb-muted">조건에 맞는 영상이 없습니다. 검색어나 필터를 바꿔 보세요.</p>}</div>}
     {result.pages > 1 && <div className="fb-row" data-testid="video-pagination"><Button variant="outline" size="sm" onClick={() => setPage(result.page - 1)} disabled={result.page === 1}>이전</Button><span className="fb-muted">{result.page} / {result.pages} 페이지</span><Button variant="outline" size="sm" onClick={() => setPage(result.page + 1)} disabled={result.page === result.pages}>다음</Button></div>}
