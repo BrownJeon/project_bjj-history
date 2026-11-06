@@ -9,8 +9,8 @@ execution_context:
   origin_tool: codex
   current_tool: codex
   current_procedure: codex_scoped
-  current_scope: "사용자 실기기 확인 버전을 별도로 보존하고 14:19 문서 자동 배포 결과를 종료 기록에 추가"
-  last_event_id: exec-052-021
+  current_scope: "사용자 실기기 확인 버전을 별도로 보존하고 14:30 문서 자동 배포 결과를 종료 기록에 추가"
+  last_event_id: exec-052-022
 tags:
   - type/task
   - domain/ux
@@ -70,6 +70,7 @@ demo_gate:
 | exec-052-019 | 2026-11-06 12:56 | resume | codex → codex / codex_scoped | 사용자 실기기 확인을 기록하고 종료. 확인 대상 운영 릴리스 `20261106-113448-d690e6e3` (`d690e6e`) | 사용자 원문 `실기기에서 확인했어. 커밋 및 푸시 후에 해당 작업종료해줘` |
 | exec-052-020 | 2026-11-06 14:04 | resume | codex → codex / codex_scoped | 종료된 task-052의 문서 자동 배포와 사용자 실기기 확인을 작업 이력 및 `ACTIVE.md`에 구분해 반영 | 사용자 요청, 아래 배포 기록과 `RELEASE_RESULT` |
 | exec-052-021 | 2026-11-06 14:28 | resume | codex → codex / codex_scoped | 작업 이력과 `ACTIVE.md`에 `20261106-141858-8e251c14` 문서 자동 배포를 추가하고, 실기기 확인 버전 `20261106-113448-d690e6e3`을 별도로 보존 | 사용자 요청, 아래 배포 기록과 `RELEASE_RESULT` |
+| exec-052-022 | 2026-11-06 14:40 | resume | codex → codex / codex_scoped | 작업 이력과 `ACTIVE.md`에 `20261106-143025-cdf167e7` 문서 자동 배포를 추가하고, 실기기 확인 버전 `20261106-113448-d690e6e3`을 별도로 보존 | 사용자 요청, 아래 배포 기록과 `RELEASE_RESULT` |
 
 ## 배포 기록
 
@@ -85,6 +86,7 @@ demo_gate:
 - 이후 사용자가 실기기에서 확인한 릴리스는 `20261106-113448-d690e6e3`이다. 확인 근거는 `exec-052-019`의 사용자 확인 기록이다.
 - 2026-11-06 13:55:40 KST, `ACTIVE.md`와 `AGENTS.md` 문서 커밋 `b2ce9843faa6a0b0c10efcdd321d1b58b1f45950` 푸시로 운영 릴리스 `20261106-135531-b2ce9843`이 자동 배포됐다. `RELEASE_RESULT status=ok`, `migrated=false`, 이전 릴리스 `20261106-125716-acc36d35`. 운영 `current`, 공개 헬스체크 HTTP 200, 실기기 확인 릴리스와 피드백 화면 JS·CSS의 바이트 일치를 확인했다.
 - 2026-11-06 14:19:07 KST, task-052 작업 이력과 `ACTIVE.md` 문서 커밋 `8e251c1465c5c5819fc7ad271c4f5be34ab8596e` 푸시로 운영 릴리스 `20261106-141858-8e251c14`가 자동 배포됐다. `RELEASE_RESULT status=ok`, `migrated=false`, 이전 릴리스 `20261106-135531-b2ce9843`. 운영 `current`, 공개 헬스체크 HTTP 200, 실기기 확인 릴리스와 피드백 화면 JS·CSS의 바이트 일치를 확인했다.
+- 2026-11-06 14:30:34 KST, task-052 작업 이력과 `ACTIVE.md` 문서 커밋 `cdf167e7500c6d2c7142e88ea0e5f9b9ffa80db1` 푸시로 운영 릴리스 `20261106-143025-cdf167e7`이 자동 배포됐다. `RELEASE_RESULT status=ok`, `migrated=false`, 이전 릴리스 `20261106-141858-8e251c14`. 운영 `current`, 공개 헬스체크 HTTP 200, 실기기 확인 릴리스와 피드백 화면 JS·CSS의 바이트 일치를 확인했다.
 
 ## v2 구현 승인 및 현재 착수 범위
 
