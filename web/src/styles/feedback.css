@@ -33,6 +33,10 @@
 .fb-training-training { color:var(--text);background:var(--blue-dim); }
 .fb-training-completed { color:var(--accent-lt);background:var(--accent-dim); }
 .fb-library { gap:12px; }
+.fb-library-filters { display:flex;flex-wrap:wrap;align-items:center;gap:6px; }
+.fb-library .library-filter-button { min-width:44px;min-height:44px; }
+.fb-library .library-tech-options button { min-height:44px; }
+.fb-library .library-tech-filter > button { min-height:44px; }
 .fb-library h1 { font-size:22px;font-weight:800;letter-spacing:-.5px; }
 .fb-library-search { display:flex;align-items:center;gap:8px;padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text2); }
 .fb-library-search:focus-within { outline:2px solid var(--accent-lt);outline-offset:2px; }
@@ -48,9 +52,6 @@
 .fb-summary-heading .fb-meta { flex:1; }
 .fb-star-error { flex-basis:100%;color:var(--text);overflow-wrap:anywhere; }
 .fb-library-card .fb-star-error { padding:5px 12px; }
-.fb-tech-filter { position:relative; }
-.fb-tech-filter [data-selected="true"] { color:var(--accent-lt);border-color:var(--accent);background:var(--accent-dim);overflow-wrap:anywhere; }
-.fb-tech-menu { position:absolute;top:100%;left:0;z-index:5;width:min(100%,270px); }
 .fb-tech-option { padding:7px 9px;border:0;border-radius:7px;background:transparent;color:var(--text);font-size:13px;cursor:pointer;overflow-wrap:anywhere; }
 .fb-tech-option[aria-pressed="true"] { background:var(--accent-dim);color:var(--accent-lt); }
 .fb-situation { min-width:0;border:0; }

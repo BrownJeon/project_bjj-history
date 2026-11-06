@@ -11,6 +11,7 @@ import {
 import Card from '../components/Card';
 import Tag from '../components/Tag';
 import Icon from '../components/Icon';
+import { FilterChip, TechniqueFilter } from '../components/LibraryFilters';
 import Modal from '../components/Modal';
 import Button from '../components/Button';
 import Pagination from '../components/Pagination';
@@ -28,9 +29,6 @@ export default function ClipsPage({ embedded = false }) {
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState('all');     // all | recent | star
   const [techFilter, setTechFilter] = useState(''); // 기술명 (빈 문자열이면 미선택)
-  const [techOpen, setTechOpen]     = useState(false);
-  const [techSearch, setTechSearch] = useState('');
-  const techDropRef = useRef(null);
   const [editing, setEditing] = useState(null);
   const [detail, setDetail] = useState(null);
   const [page, setPage] = useState(1);
@@ -68,23 +66,6 @@ export default function ClipsPage({ embedded = false }) {
   const list = useMemo(() => filterClips(clips, { search, filter, techFilter }), [clips, search, filter, techFilter]);
 
   useEffect(() => { setPage(1); }, [search, filter, techFilter]);
-
-  const filteredTechNames = useMemo(() =>
-    techSearch.trim()
-      ? techNames.filter(n => n.toLowerCase().includes(techSearch.toLowerCase()))
-      : techNames,
-    [techNames, techSearch]
-  );
-
-  useEffect(() => {
-    if (!techOpen) return;
-    function handleClick(e) {
-      if (techDropRef.current && !techDropRef.current.contains(e.target))
-        setTechOpen(false);
-    }
-    document.addEventListener('mousedown', handleClick);
-    return () => document.removeEventListener('mousedown', handleClick);
-  }, [techOpen]);
 
   const paged = useMemo(
     () => list.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE),
@@ -179,56 +160,8 @@ export default function ClipsPage({ embedded = false }) {
 
       {/* 기술명 필터 — 드롭다운 */}
       {techNames.length > 0 && (
-        <div style={{ marginBottom: 12, position: 'relative' }} ref={techDropRef}>
-          <button
-            onClick={() => { setTechOpen(o => !o); setTechSearch(''); }}
-            style={{
-              display: 'inline-flex', alignItems: 'center', gap: 6,
-              padding: '6px 14px', borderRadius: 20,
-              border: techFilter ? '1.5px solid var(--accent)' : '1px solid var(--border-med)',
-              background: techFilter ? 'var(--accent-dim)' : 'var(--surface-up)',
-              color: techFilter ? 'var(--accent)' : 'var(--text2)',
-              fontSize: 13, fontWeight: techFilter ? 700 : 500, cursor: 'pointer',
-            }}
-          >
-            {techFilter || '기술 선택'}
-            <span style={{ fontSize: 10 }}>{techOpen ? '▲' : '▼'}</span>
-          </button>
-
-          {techOpen && (
-            <div style={{
-              position: 'absolute', top: '110%', left: 0, zIndex: 200,
-              width: 240, maxHeight: 260,
-              background: 'var(--surface)', border: '1px solid var(--border)',
-              borderRadius: 14, boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
-              display: 'flex', flexDirection: 'column', overflow: 'hidden',
-            }}>
-              <div style={{ padding: '8px 10px', borderBottom: '1px solid var(--border)' }}>
-                <input
-                  autoFocus
-                  value={techSearch}
-                  onChange={e => setTechSearch(e.target.value)}
-                  placeholder="기술 검색…"
-                  style={{ width: '100%', border: 'none', outline: 'none',
-                           background: 'transparent', fontSize: 13, color: 'var(--text)' }}
-                />
-              </div>
-              <div style={{ overflowY: 'auto', flex: 1 }}>
-                <button onClick={() => { setTechFilter(''); setTechOpen(false); }}
-                  style={dropItemStyle(!techFilter)}>모든 기술</button>
-                {filteredTechNames.length === 0 && (
-                  <div style={{ padding: '10px 14px', fontSize: 12, color: 'var(--text3)' }}>
-                    검색 결과 없음
-                  </div>
-                )}
-                {filteredTechNames.map(n => (
-                  <button key={n}
-                    onClick={() => { setTechFilter(n); setTechOpen(false); setTechSearch(''); }}
-                    style={dropItemStyle(techFilter === n)}>{n}</button>
-                ))}
-              </div>
-            </div>
-          )}
+        <div style={{ marginBottom: 12 }}>
+          <TechniqueFilter names={techNames} value={techFilter} onChange={setTechFilter} />
         </div>
       )}
 
@@ -268,39 +201,6 @@ export default function ClipsPage({ embedded = false }) {
         />
       )}
     </div>
-  );
-}
-
-function dropItemStyle(active) {
-  return {
-    display: 'block', width: '100%', textAlign: 'left',
-    padding: '9px 14px', border: 'none', cursor: 'pointer',
-    fontSize: 13, fontWeight: active ? 700 : 400,
-    background: active ? 'var(--accent-dim)' : 'transparent',
-    color: active ? 'var(--accent)' : 'var(--text)',
-  };
-}
-
-function FilterChip({ active, onClick, icon, children }) {
-  return (
-    <button
-      onClick={onClick}
-      style={{
-        display: 'inline-flex', alignItems: 'center', gap: 4,
-        padding: '6px 12px',
-        background: active ? 'var(--accent)' : 'var(--surface-up)',
-        color: active ? '#fff' : 'var(--text2)',
-        border: 'none',
-        borderRadius: 16,
-        fontSize: 12, fontWeight: 600,
-        cursor: 'pointer',
-        whiteSpace: 'nowrap',
-        flexShrink: 0,
-      }}
-    >
-      {icon && <Icon name={icon} size={12} color={active ? '#fff' : 'var(--text2)'} filled={(icon === 'star' || icon === 'pin') && active} />}
-      {children}
-    </button>
   );
 }
 

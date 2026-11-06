@@ -1,57 +1,18 @@
-import React, { useEffect, useId, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { listFeedback } from '../api/feedback';
 import Button from '../components/Button';
 import FeedbackStarButton from '../components/FeedbackStarButton';
 import FeedbackStatus, { FeedbackLegacySituation } from '../components/FeedbackStatus';
 import Icon from '../components/Icon';
+import { FilterChip, TechniqueFilter } from '../components/LibraryFilters';
 import Pagination from '../components/Pagination';
 import { useFeedback } from '../contexts/FeedbackContext';
 import { savedSituationLabels } from '../utils/feedbackInput';
 
 const PAGE_SIZE = 10;
-const FILTERS = { all: '전체', recent: '최신순', star: '즐겨찾기', completed: '완료' };
-const normalized = value => value.normalize('NFC').toLowerCase();
-
-function TechniqueFilter({ names, value, onChange }) {
-  const [open, setOpen] = useState(false);
-  const [query, setQuery] = useState('');
-  const dropdown = useRef(null), trigger = useRef(null);
-  const controls = useId();
-  useEffect(() => {
-    if (!open) return;
-    function dismiss(event) {
-      if (!dropdown.current?.contains(event.target)) setOpen(false);
-    }
-    document.addEventListener('pointerdown', dismiss);
-    return () => document.removeEventListener('pointerdown', dismiss);
-  }, [open]);
-  function choose(name) {
-    onChange(name);
-    setOpen(false);
-    trigger.current?.focus({ preventScroll: true });
-  }
-  const matches = names.filter(name => normalized(name).includes(normalized(query.trim())));
-  return <div className="fb-tech-filter fb-wrap" ref={dropdown} onKeyDown={event => {
-    if (open && event.key === 'Escape' && !event.nativeEvent.isComposing) {
-      event.preventDefault();
-      event.stopPropagation();
-      setOpen(false);
-      trigger.current?.focus({ preventScroll: true });
-    }
-  }}>
-    <button ref={trigger} type="button" className="fb-chip" aria-expanded={open} aria-controls={open ? controls : undefined}
-      data-selected={Boolean(value)} onClick={() => { setOpen(!open); setQuery(''); }}>{value || '기술 선택'} {open ? '▴' : '▾'}</button>
-    {value && <Button variant="ghost" size="sm" onClick={() => choose('')}>기술 조건 해제</Button>}
-    {open && <div id={controls} className="fb-dropdown fb-tech-menu">
-      <input autoFocus type="search" className="fb-control" aria-label="기술 검색" placeholder="기술 검색…" value={query} onChange={event => setQuery(event.target.value)} />
-      <div className="fb-dropdown-options">
-        <button type="button" className="fb-tech-option" aria-pressed={!value} onClick={() => choose('')}>모든 기술</button>
-        {matches.map(name => <button type="button" className="fb-tech-option" key={name} aria-pressed={value === name} onClick={() => choose(name)}>{name}</button>)}
-        {!matches.length && <p className="fb-muted">{names.length ? '검색 결과 없음' : '저장된 피드백 기술이 없습니다.'}</p>}
-      </div>
-    </div>}
-  </div>;
-}
+const FILTERS = [
+  ['all', '전체'], ['recent', '최신순', 'clock'], ['star', '즐겨찾기', 'star'], ['completed', '완료', 'check'],
+];
 
 function FeedbackListCard({ item, onOpen, onStarSaved }) {
   const title = item.summary?.title || item.technique || '피드백';
@@ -114,11 +75,12 @@ export default function FeedbackPage() {
       <Icon name="search" size={16} />
       <input type="search" aria-label="피드백 검색" placeholder="제목·기술명·내용 검색" value={criteria.search} onChange={event => change({ search: event.target.value })} />
     </label>
-    <div className="fb-wrap" aria-label="피드백 조회 조건">
-      {Object.entries(FILTERS).map(([key, label]) => <button type="button" className="fb-chip" key={key} aria-pressed={key === criteria.filter}
-        onClick={() => { if (key !== criteria.filter) change({ filter: key }); }}>{label}</button>)}
+    <div className="fb-library-filters" aria-label="피드백 조회 조건">
+      {FILTERS.map(([key, label, icon]) => <FilterChip key={key} active={key === criteria.filter} icon={icon}
+        onClick={() => { if (key !== criteria.filter) change({ filter: key }); }}>{label}</FilterChip>)}
     </div>
-    <TechniqueFilter names={data?.techniqueOptions ?? []} value={criteria.technique} onChange={technique => change({ technique })} />
+    <TechniqueFilter names={data?.techniqueOptions ?? []} value={criteria.technique} showClear
+      emptyText="저장된 피드백 기술이 없습니다." onChange={technique => change({ technique })} />
     <div className="fb-library-content" aria-busy={loading || (!shown && !error)}>
       {error && <div className="fb-notice error" role="alert">{error}<Button variant="outline" size="sm" onClick={() => setRetry(value => value + 1)}>다시 불러오기</Button></div>}
       {!shown && !error && <p className="fb-muted" role="status">피드백을 불러오는 중…</p>}

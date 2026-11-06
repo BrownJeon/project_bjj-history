@@ -168,7 +168,7 @@ test('feedback list retains the search, past technique filter, page and opener w
     const search = document.querySelector('[aria-label="피드백 검색"]');
     await input(search, '이전 메모');
     await click(button('완료'));
-    await click(button('기술 선택 ▾'));
+    await click(button('기술 선택 ▼'));
     await click(button('미등록 이전 기술'));
     await click(button('2'));
     const lastRead = store.calls.filter(call => call.method === 'GET' && call.url === '/feedback').at(-1);
@@ -192,7 +192,7 @@ test('feedback list retains the search, past technique filter, page and opener w
     assert.equal(search.value, '이전 메모');
     assert.equal(document.activeElement, opener);
     assert.equal(button('완료').getAttribute('aria-pressed'), 'true');
-    assert.ok(button('미등록 이전 기술 ▾'));
+    assert.ok(button('미등록 이전 기술 ▼'));
     assert.equal(store.calls.filter(call => call.method === 'GET' && call.url === '/feedback').at(-1).params.page, 2);
   }, { screen: 'FeedbackPage', initial: record({ technique: '미등록 이전 기술', situation: '구 자유 입력', trainingStatus: 'completed' }), custom(call, store) {
     if (call.method === 'GET' && call.url === '/feedback') return { items: [copy(store.record)], total: 21, page: call.params.page, limit: 10, techniqueOptions: ['미등록 이전 기술'] };
