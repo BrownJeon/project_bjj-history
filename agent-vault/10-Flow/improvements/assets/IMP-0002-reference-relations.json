@@ -1,0 +1,2660 @@
+{
+  "observed_at": "2026-11-08T19:34:11+09:00",
+  "method": "Public server-rendered HTML, three concurrent read-only requests, no retries, text/image/video bodies not stored.",
+  "scope": "Source graph claims only. No execution conditions or equivalence approved. Not an app import or coach validation.",
+  "source_count": 159,
+  "observed_count": 159,
+  "counts": {
+    "incoming": 242,
+    "outgoing": 242,
+    "related": 488
+  },
+  "unknown_target_slugs": [],
+  "items": [
+    {
+      "source_slug": "standing",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/standing",
+      "status": "observed",
+      "incoming": [],
+      "outgoing": [
+        "single-leg-takedown",
+        "foot-sweep",
+        "sprawl",
+        "collar-drag",
+        "duck-under",
+        "ankle-pick",
+        "snap-down",
+        "double-leg-takedown",
+        "body-lock",
+        "under-hook",
+        "two-on-one"
+      ],
+      "related": []
+    },
+    {
+      "source_slug": "single-leg-takedown",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/single-leg-takedown",
+      "status": "observed",
+      "incoming": [
+        "standing",
+        "collar-drag",
+        "technical-stand-up"
+      ],
+      "outgoing": [
+        "side-control",
+        "shin-trap"
+      ],
+      "related": [
+        "double-leg-takedown",
+        "ankle-pick",
+        "snap-down",
+        "arm-drag",
+        "sprawl"
+      ]
+    },
+    {
+      "source_slug": "collar-drag",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/collar-drag",
+      "status": "observed",
+      "incoming": [
+        "standing"
+      ],
+      "outgoing": [
+        "single-leg-takedown"
+      ],
+      "related": [
+        "arm-drag",
+        "two-on-one",
+        "back-take"
+      ]
+    },
+    {
+      "source_slug": "ankle-pick",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/ankle-pick",
+      "status": "observed",
+      "incoming": [
+        "standing"
+      ],
+      "outgoing": [
+        "side-control"
+      ],
+      "related": [
+        "snap-down",
+        "front-headlock",
+        "single-leg-takedown",
+        "collar-drag"
+      ]
+    },
+    {
+      "source_slug": "double-leg-takedown",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/double-leg-takedown",
+      "status": "observed",
+      "incoming": [
+        "standing"
+      ],
+      "outgoing": [
+        "side-control"
+      ],
+      "related": [
+        "single-leg-takedown",
+        "sprawl",
+        "snap-down",
+        "body-lock"
+      ]
+    },
+    {
+      "source_slug": "inside-trip",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/inside-trip",
+      "status": "observed",
+      "incoming": [
+        "body-lock"
+      ],
+      "outgoing": [
+        "side-control"
+      ],
+      "related": [
+        "under-hook",
+        "outside-trip",
+        "double-leg-takedown"
+      ]
+    },
+    {
+      "source_slug": "outside-trip",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/outside-trip",
+      "status": "observed",
+      "incoming": [
+        "under-hook"
+      ],
+      "outgoing": [
+        "side-control"
+      ],
+      "related": [
+        "inside-trip",
+        "body-lock",
+        "foot-sweep"
+      ]
+    },
+    {
+      "source_slug": "break-fall",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/break-fall",
+      "status": "observed",
+      "incoming": [],
+      "outgoing": [],
+      "related": [
+        "foot-sweep",
+        "inside-trip",
+        "outside-trip",
+        "double-leg-takedown"
+      ]
+    },
+    {
+      "source_slug": "takedown",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/takedown",
+      "status": "observed",
+      "incoming": [],
+      "outgoing": [],
+      "related": [
+        "body-lock"
+      ]
+    },
+    {
+      "source_slug": "open-guard",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/open-guard",
+      "status": "observed",
+      "incoming": [
+        "guard-recovery"
+      ],
+      "outgoing": [
+        "lasso-guard",
+        "de-la-riva-guard",
+        "matrix",
+        "knee-cut",
+        "tripod-sweep",
+        "headquarters-position",
+        "toreando-pass",
+        "double-under",
+        "k-guard",
+        "x-pass",
+        "wiper",
+        "surfer-pass",
+        "over-under",
+        "fifty-fifty-position",
+        "deep-de-riva-guard"
+      ],
+      "related": [
+        "spider-guard",
+        "butterfly-guard",
+        "x-guard",
+        "collar-and-sleeve-guard"
+      ]
+    },
+    {
+      "source_slug": "closed-guard",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/closed-guard",
+      "status": "observed",
+      "incoming": [],
+      "outgoing": [
+        "scissors-sweep",
+        "omoplata",
+        "kimura",
+        "flower-sweep",
+        "rubber-guard",
+        "cross-collar-control",
+        "hip-bump-sweep",
+        "arm-drag",
+        "lumberjack-sweep",
+        "pendulum-sweep",
+        "guillotine-choke"
+      ],
+      "related": [
+        "triangle-choke",
+        "armbar"
+      ]
+    },
+    {
+      "source_slug": "half-guard",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/half-guard",
+      "status": "observed",
+      "incoming": [],
+      "outgoing": [
+        "kimura",
+        "knee-shield",
+        "deep-half-guard",
+        "lockdown",
+        "coyote-guard",
+        "smash-pass",
+        "under-hook",
+        "darce-choke",
+        "guillotine-choke"
+      ],
+      "related": [
+        "z-guard"
+      ]
+    },
+    {
+      "source_slug": "de-la-riva-guard",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/de-la-riva-guard",
+      "status": "observed",
+      "incoming": [
+        "open-guard"
+      ],
+      "outgoing": [
+        "berimbolo",
+        "matrix",
+        "tripod-sweep",
+        "kiss-of-dragon",
+        "inverted-guard",
+        "reverse-de-riva-guard"
+      ],
+      "related": [
+        "deep-de-riva-guard",
+        "x-guard",
+        "single-leg-x-guard"
+      ]
+    },
+    {
+      "source_slug": "single-leg-x-guard",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/single-leg-x-guard",
+      "status": "observed",
+      "incoming": [
+        "x-guard",
+        "shin-to-shin-guard"
+      ],
+      "outgoing": [
+        "straight-ankle-lock",
+        "backside-fifty-fifty",
+        "outside-ashi-garami"
+      ],
+      "related": [
+        "ashi-garami",
+        "k-guard"
+      ]
+    },
+    {
+      "source_slug": "sweep",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/sweep",
+      "status": "observed",
+      "incoming": [
+        "knee-shield",
+        "x-guard",
+        "lockdown",
+        "squid-guard",
+        "coyote-guard"
+      ],
+      "outgoing": [
+        "side-control",
+        "knee-on-belly",
+        "mount"
+      ],
+      "related": [
+        "scissors-sweep",
+        "hip-bump-sweep",
+        "flower-sweep",
+        "tripod-sweep",
+        "kimura-sweep",
+        "balloon-sweep"
+      ]
+    },
+    {
+      "source_slug": "knee-shield",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/knee-shield",
+      "status": "observed",
+      "incoming": [
+        "half-guard"
+      ],
+      "outgoing": [
+        "sweep",
+        "crazy-dog-pass",
+        "guard-recovery"
+      ],
+      "related": [
+        "z-guard",
+        "under-hook",
+        "deep-half-guard",
+        "lockdown"
+      ]
+    },
+    {
+      "source_slug": "butterfly-guard",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/butterfly-guard",
+      "status": "observed",
+      "incoming": [],
+      "outgoing": [
+        "kimura-sweep",
+        "arm-drag",
+        "loop-choke"
+      ],
+      "related": [
+        "x-guard",
+        "sit-up-guard",
+        "half-guard"
+      ]
+    },
+    {
+      "source_slug": "lasso-guard",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/lasso-guard",
+      "status": "observed",
+      "incoming": [
+        "open-guard"
+      ],
+      "outgoing": [
+        "omoplata",
+        "bicep-slicer"
+      ],
+      "related": [
+        "spider-guard",
+        "de-la-riva-guard",
+        "x-guard",
+        "collar-and-sleeve-guard"
+      ]
+    },
+    {
+      "source_slug": "k-guard",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/k-guard",
+      "status": "observed",
+      "incoming": [
+        "open-guard"
+      ],
+      "outgoing": [
+        "ashi-garami",
+        "z-lock"
+      ],
+      "related": [
+        "matrix",
+        "single-leg-x-guard",
+        "inside-heel-hook",
+        "inverted-guard"
+      ]
+    },
+    {
+      "source_slug": "x-guard",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/x-guard",
+      "status": "observed",
+      "incoming": [],
+      "outgoing": [
+        "sweep",
+        "single-leg-x-guard"
+      ],
+      "related": [
+        "butterfly-guard",
+        "shin-to-shin-guard",
+        "de-la-riva-guard",
+        "technical-stand-up"
+      ]
+    },
+    {
+      "source_slug": "tripod-sweep",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/tripod-sweep",
+      "status": "observed",
+      "incoming": [
+        "de-la-riva-guard",
+        "open-guard"
+      ],
+      "outgoing": [
+        "knee-on-belly"
+      ],
+      "related": [
+        "lumberjack-sweep",
+        "single-leg-x-guard"
+      ]
+    },
+    {
+      "source_slug": "deep-half-guard",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/deep-half-guard",
+      "status": "observed",
+      "incoming": [
+        "half-guard"
+      ],
+      "outgoing": [
+        "balloon-sweep",
+        "waiter-guard"
+      ],
+      "related": [
+        "waiter-sweep",
+        "lockdown"
+      ]
+    },
+    {
+      "source_slug": "reverse-de-riva-guard",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/reverse-de-riva-guard",
+      "status": "observed",
+      "incoming": [
+        "de-la-riva-guard"
+      ],
+      "outgoing": [
+        "kiss-of-dragon"
+      ],
+      "related": [
+        "berimbolo",
+        "deep-de-riva-guard",
+        "inverted-guard"
+      ]
+    },
+    {
+      "source_slug": "spider-guard",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/spider-guard",
+      "status": "observed",
+      "incoming": [],
+      "outgoing": [
+        "triangle-choke"
+      ],
+      "related": [
+        "lasso-guard",
+        "collar-and-sleeve-guard",
+        "de-la-riva-guard",
+        "single-leg-x-guard"
+      ]
+    },
+    {
+      "source_slug": "worm-guard",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/worm-guard",
+      "status": "observed",
+      "incoming": [
+        "lapel-guard"
+      ],
+      "outgoing": [
+        "back-take",
+        "lapel-pass"
+      ],
+      "related": [
+        "squid-guard"
+      ]
+    },
+    {
+      "source_slug": "balloon-sweep",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/balloon-sweep",
+      "status": "observed",
+      "incoming": [
+        "deep-half-guard"
+      ],
+      "outgoing": [
+        "mount"
+      ],
+      "related": [
+        "waiter-guard",
+        "waiter-sweep",
+        "half-guard"
+      ]
+    },
+    {
+      "source_slug": "coyote-guard",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/coyote-guard",
+      "status": "observed",
+      "incoming": [
+        "half-guard"
+      ],
+      "outgoing": [
+        "sweep",
+        "coyote-armbar"
+      ],
+      "related": [
+        "under-hook",
+        "lockdown",
+        "deep-half-guard"
+      ]
+    },
+    {
+      "source_slug": "kimura-sweep",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/kimura-sweep",
+      "status": "observed",
+      "incoming": [
+        "butterfly-guard",
+        "kimura"
+      ],
+      "outgoing": [
+        "mount"
+      ],
+      "related": [
+        "closed-guard",
+        "hip-bump-sweep",
+        "back-take"
+      ]
+    },
+    {
+      "source_slug": "kiss-of-dragon",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/kiss-of-dragon",
+      "status": "observed",
+      "incoming": [
+        "de-la-riva-guard",
+        "reverse-de-riva-guard"
+      ],
+      "outgoing": [
+        "back-take"
+      ],
+      "related": [
+        "berimbolo",
+        "deep-de-riva-guard"
+      ]
+    },
+    {
+      "source_slug": "scissors-sweep",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/scissors-sweep",
+      "status": "observed",
+      "incoming": [
+        "closed-guard"
+      ],
+      "outgoing": [
+        "mount"
+      ],
+      "related": [
+        "hip-bump-sweep",
+        "flower-sweep",
+        "kimura-sweep"
+      ]
+    },
+    {
+      "source_slug": "sit-up-guard",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/sit-up-guard",
+      "status": "observed",
+      "incoming": [],
+      "outgoing": [
+        "wrestle-up"
+      ],
+      "related": [
+        "butterfly-guard",
+        "single-leg-x-guard",
+        "arm-drag",
+        "technical-stand-up"
+      ]
+    },
+    {
+      "source_slug": "flower-sweep",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/flower-sweep",
+      "status": "observed",
+      "incoming": [
+        "closed-guard"
+      ],
+      "outgoing": [
+        "mount"
+      ],
+      "related": [
+        "pendulum-sweep",
+        "scissors-sweep",
+        "armbar",
+        "omoplata"
+      ]
+    },
+    {
+      "source_slug": "matrix",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/matrix",
+      "status": "observed",
+      "incoming": [
+        "de-la-riva-guard",
+        "open-guard"
+      ],
+      "outgoing": [
+        "back-take"
+      ],
+      "related": [
+        "berimbolo",
+        "inverted-guard",
+        "k-guard"
+      ]
+    },
+    {
+      "source_slug": "rubber-guard",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/rubber-guard",
+      "status": "observed",
+      "incoming": [
+        "closed-guard"
+      ],
+      "outgoing": [
+        "gogoplata",
+        "omoplata"
+      ],
+      "related": [
+        "triangle-choke",
+        "lockdown"
+      ]
+    },
+    {
+      "source_slug": "foot-sweep",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/foot-sweep",
+      "status": "observed",
+      "incoming": [
+        "standing"
+      ],
+      "outgoing": [
+        "side-control"
+      ],
+      "related": [
+        "single-leg-takedown",
+        "inside-trip",
+        "outside-trip",
+        "break-fall"
+      ]
+    },
+    {
+      "source_slug": "z-guard",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/z-guard",
+      "status": "observed",
+      "incoming": [],
+      "outgoing": [
+        "kimura",
+        "choi-bar"
+      ],
+      "related": [
+        "knee-shield",
+        "half-guard",
+        "deep-half-guard",
+        "lockdown",
+        "guard-recovery"
+      ]
+    },
+    {
+      "source_slug": "collar-and-sleeve-guard",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/collar-and-sleeve-guard",
+      "status": "observed",
+      "incoming": [],
+      "outgoing": [
+        "omoplata"
+      ],
+      "related": [
+        "spider-guard",
+        "lasso-guard",
+        "open-guard",
+        "triangle-choke"
+      ]
+    },
+    {
+      "source_slug": "deep-de-riva-guard",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/deep-de-riva-guard",
+      "status": "observed",
+      "incoming": [
+        "open-guard"
+      ],
+      "outgoing": [
+        "berimbolo"
+      ],
+      "related": [
+        "de-la-riva-guard",
+        "reverse-de-riva-guard",
+        "inverted-guard"
+      ]
+    },
+    {
+      "source_slug": "lapel-guard",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/lapel-guard",
+      "status": "observed",
+      "incoming": [],
+      "outgoing": [
+        "worm-guard"
+      ],
+      "related": [
+        "squid-guard",
+        "lapel-pass",
+        "collar-and-sleeve-guard"
+      ]
+    },
+    {
+      "source_slug": "octopus-guard",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/octopus-guard",
+      "status": "observed",
+      "incoming": [
+        "arm-drag"
+      ],
+      "outgoing": [
+        "back-take"
+      ],
+      "related": [
+        "closed-guard",
+        "sit-up-guard"
+      ]
+    },
+    {
+      "source_slug": "waiter-guard",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/waiter-guard",
+      "status": "observed",
+      "incoming": [
+        "deep-half-guard"
+      ],
+      "outgoing": [
+        "waiter-sweep"
+      ],
+      "related": [
+        "half-guard",
+        "balloon-sweep"
+      ]
+    },
+    {
+      "source_slug": "wrestle-up",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/wrestle-up",
+      "status": "observed",
+      "incoming": [
+        "sit-up-guard"
+      ],
+      "outgoing": [
+        "technical-stand-up"
+      ],
+      "related": [
+        "single-leg-takedown",
+        "x-guard",
+        "single-leg-x-guard",
+        "de-la-riva-guard"
+      ]
+    },
+    {
+      "source_slug": "inverted-guard",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/inverted-guard",
+      "status": "observed",
+      "incoming": [
+        "de-la-riva-guard"
+      ],
+      "outgoing": [
+        "berimbolo"
+      ],
+      "related": [
+        "reverse-de-riva-guard",
+        "matrix",
+        "k-guard",
+        "deep-de-riva-guard"
+      ]
+    },
+    {
+      "source_slug": "john-wayne-sweep",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/john-wayne-sweep",
+      "status": "observed",
+      "incoming": [
+        "under-hook"
+      ],
+      "outgoing": [
+        "side-control"
+      ],
+      "related": [
+        "half-guard",
+        "lockdown",
+        "knee-shield"
+      ]
+    },
+    {
+      "source_slug": "lumberjack-sweep",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/lumberjack-sweep",
+      "status": "observed",
+      "incoming": [
+        "closed-guard"
+      ],
+      "outgoing": [
+        "mount"
+      ],
+      "related": [
+        "tripod-sweep",
+        "ankle-pick",
+        "open-guard"
+      ]
+    },
+    {
+      "source_slug": "guard-recovery",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/guard-recovery",
+      "status": "observed",
+      "incoming": [
+        "knee-shield"
+      ],
+      "outgoing": [
+        "open-guard"
+      ],
+      "related": [
+        "z-guard",
+        "technical-stand-up",
+        "inverted-guard"
+      ]
+    },
+    {
+      "source_slug": "hip-bump-sweep",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/hip-bump-sweep",
+      "status": "observed",
+      "incoming": [
+        "closed-guard"
+      ],
+      "outgoing": [
+        "mount"
+      ],
+      "related": [
+        "scissors-sweep",
+        "kimura",
+        "kimura-sweep",
+        "flower-sweep"
+      ]
+    },
+    {
+      "source_slug": "pendulum-sweep",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/pendulum-sweep",
+      "status": "observed",
+      "incoming": [
+        "closed-guard"
+      ],
+      "outgoing": [
+        "mount"
+      ],
+      "related": [
+        "flower-sweep",
+        "scissors-sweep",
+        "armbar"
+      ]
+    },
+    {
+      "source_slug": "technical-stand-up",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/technical-stand-up",
+      "status": "observed",
+      "incoming": [
+        "wrestle-up"
+      ],
+      "outgoing": [
+        "single-leg-takedown"
+      ],
+      "related": [
+        "guard-recovery",
+        "sit-up-guard"
+      ]
+    },
+    {
+      "source_slug": "waiter-sweep",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/waiter-sweep",
+      "status": "observed",
+      "incoming": [
+        "waiter-guard"
+      ],
+      "outgoing": [],
+      "related": [
+        "deep-half-guard",
+        "balloon-sweep",
+        "half-guard"
+      ]
+    },
+    {
+      "source_slug": "shin-to-shin-guard",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/shin-to-shin-guard",
+      "status": "observed",
+      "incoming": [],
+      "outgoing": [
+        "single-leg-x-guard"
+      ],
+      "related": [
+        "x-guard",
+        "k-guard",
+        "shin-trap",
+        "ashi-garami"
+      ]
+    },
+    {
+      "source_slug": "squid-guard",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/squid-guard",
+      "status": "observed",
+      "incoming": [],
+      "outgoing": [
+        "sweep"
+      ],
+      "related": [
+        "lapel-guard",
+        "worm-guard",
+        "de-la-riva-guard",
+        "lapel-pass"
+      ]
+    },
+    {
+      "source_slug": "guard",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/guard",
+      "status": "observed",
+      "incoming": [],
+      "outgoing": [],
+      "related": []
+    },
+    {
+      "source_slug": "knee-cut",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/knee-cut",
+      "status": "observed",
+      "incoming": [
+        "open-guard",
+        "headquarters-position"
+      ],
+      "outgoing": [
+        "side-control"
+      ],
+      "related": [
+        "knee-slide",
+        "leg-weave",
+        "long-step",
+        "toreando-pass",
+        "leg-drag"
+      ]
+    },
+    {
+      "source_slug": "leg-drag",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/leg-drag",
+      "status": "observed",
+      "incoming": [
+        "turtle",
+        "wiper"
+      ],
+      "outgoing": [
+        "back-control",
+        "side-control"
+      ],
+      "related": [
+        "toreando-pass",
+        "x-pass",
+        "headquarters-position",
+        "shin-trap"
+      ]
+    },
+    {
+      "source_slug": "toreando-pass",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/toreando-pass",
+      "status": "observed",
+      "incoming": [
+        "open-guard"
+      ],
+      "outgoing": [
+        "side-control"
+      ],
+      "related": [
+        "x-pass",
+        "leg-drag",
+        "headquarters-position",
+        "knee-cut",
+        "long-step"
+      ]
+    },
+    {
+      "source_slug": "long-step",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/long-step",
+      "status": "observed",
+      "incoming": [
+        "headquarters-position"
+      ],
+      "outgoing": [
+        "north-south-position"
+      ],
+      "related": [
+        "back-step",
+        "knee-cut"
+      ]
+    },
+    {
+      "source_slug": "pressure-pass",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/pressure-pass",
+      "status": "observed",
+      "incoming": [
+        "over-under"
+      ],
+      "outgoing": [
+        "side-control"
+      ],
+      "related": [
+        "smash-pass",
+        "stack-pass",
+        "double-under",
+        "crazy-dog-pass"
+      ]
+    },
+    {
+      "source_slug": "stack-pass",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/stack-pass",
+      "status": "observed",
+      "incoming": [
+        "double-under"
+      ],
+      "outgoing": [
+        "side-control"
+      ],
+      "related": [
+        "over-under",
+        "pressure-pass",
+        "headquarters-position"
+      ]
+    },
+    {
+      "source_slug": "leg-weave",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/leg-weave",
+      "status": "observed",
+      "incoming": [
+        "headquarters-position"
+      ],
+      "outgoing": [
+        "side-control"
+      ],
+      "related": [
+        "knee-cut",
+        "crazy-dog-pass",
+        "long-step"
+      ]
+    },
+    {
+      "source_slug": "over-under",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/over-under",
+      "status": "observed",
+      "incoming": [
+        "open-guard"
+      ],
+      "outgoing": [
+        "pressure-pass"
+      ],
+      "related": [
+        "double-under",
+        "stack-pass",
+        "body-lock"
+      ]
+    },
+    {
+      "source_slug": "smash-pass",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/smash-pass",
+      "status": "observed",
+      "incoming": [
+        "half-guard"
+      ],
+      "outgoing": [
+        "side-control"
+      ],
+      "related": [
+        "pressure-pass",
+        "stack-pass",
+        "double-under",
+        "knee-shield"
+      ]
+    },
+    {
+      "source_slug": "double-under",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/double-under",
+      "status": "observed",
+      "incoming": [
+        "open-guard"
+      ],
+      "outgoing": [
+        "stack-pass"
+      ],
+      "related": [
+        "over-under",
+        "pressure-pass",
+        "smash-pass"
+      ]
+    },
+    {
+      "source_slug": "crazy-dog-pass",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/crazy-dog-pass",
+      "status": "observed",
+      "incoming": [
+        "knee-shield"
+      ],
+      "outgoing": [
+        "side-control"
+      ],
+      "related": [
+        "half-guard",
+        "leg-weave",
+        "pressure-pass",
+        "smash-pass"
+      ]
+    },
+    {
+      "source_slug": "gator-roll",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/gator-roll",
+      "status": "observed",
+      "incoming": [
+        "turtle"
+      ],
+      "outgoing": [
+        "darce-choke"
+      ],
+      "related": [
+        "front-headlock",
+        "anaconda-choke"
+      ]
+    },
+    {
+      "source_slug": "knee-slide",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/knee-slide",
+      "status": "observed",
+      "incoming": [
+        "headquarters-position"
+      ],
+      "outgoing": [
+        "under-hook"
+      ],
+      "related": [
+        "knee-cut",
+        "leg-weave",
+        "long-step",
+        "toreando-pass"
+      ]
+    },
+    {
+      "source_slug": "back-step",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/back-step",
+      "status": "observed",
+      "incoming": [
+        "headquarters-position"
+      ],
+      "outgoing": [
+        "mount"
+      ],
+      "related": [
+        "long-step",
+        "knee-cut",
+        "half-guard"
+      ]
+    },
+    {
+      "source_slug": "lapel-pass",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/lapel-pass",
+      "status": "observed",
+      "incoming": [
+        "worm-guard"
+      ],
+      "outgoing": [
+        "side-control"
+      ],
+      "related": [
+        "lapel-guard",
+        "squid-guard",
+        "pressure-pass"
+      ]
+    },
+    {
+      "source_slug": "shin-trap",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/shin-trap",
+      "status": "observed",
+      "incoming": [
+        "single-leg-takedown"
+      ],
+      "outgoing": [
+        "heel-hook"
+      ],
+      "related": [
+        "leg-drag",
+        "wiper",
+        "shin-to-shin-guard"
+      ]
+    },
+    {
+      "source_slug": "surfer-pass",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/surfer-pass",
+      "status": "observed",
+      "incoming": [
+        "open-guard"
+      ],
+      "outgoing": [
+        "knee-on-belly"
+      ],
+      "related": [
+        "toreando-pass",
+        "x-pass",
+        "long-step",
+        "headquarters-position"
+      ]
+    },
+    {
+      "source_slug": "duck-under",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/duck-under",
+      "status": "observed",
+      "incoming": [
+        "standing"
+      ],
+      "outgoing": [
+        "back-control"
+      ],
+      "related": [
+        "two-on-one",
+        "arm-drag",
+        "snap-down",
+        "collar-drag"
+      ]
+    },
+    {
+      "source_slug": "wiper",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/wiper",
+      "status": "observed",
+      "incoming": [
+        "open-guard"
+      ],
+      "outgoing": [
+        "leg-drag"
+      ],
+      "related": [
+        "shin-trap",
+        "foot-work",
+        "z-guard"
+      ]
+    },
+    {
+      "source_slug": "x-pass",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/x-pass",
+      "status": "observed",
+      "incoming": [
+        "open-guard"
+      ],
+      "outgoing": [
+        "knee-on-belly"
+      ],
+      "related": [
+        "toreando-pass",
+        "leg-drag",
+        "knee-cut",
+        "headquarters-position"
+      ]
+    },
+    {
+      "source_slug": "guard-pass",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/guard-pass",
+      "status": "observed",
+      "incoming": [],
+      "outgoing": [],
+      "related": []
+    },
+    {
+      "source_slug": "side-control",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/side-control",
+      "status": "observed",
+      "incoming": [
+        "sweep",
+        "single-leg-takedown",
+        "foot-sweep",
+        "knee-cut",
+        "ankle-pick",
+        "toreando-pass",
+        "stack-pass",
+        "smash-pass",
+        "double-leg-takedown",
+        "leg-weave",
+        "leg-drag",
+        "crazy-dog-pass",
+        "pressure-pass",
+        "lapel-pass",
+        "inside-trip",
+        "outside-trip",
+        "john-wayne-sweep"
+      ],
+      "outgoing": [
+        "kimura",
+        "mount",
+        "americana",
+        "north-south-position",
+        "knee-on-belly",
+        "paper-cutter-choke",
+        "truck",
+        "straight-collar-control",
+        "buggy-choke",
+        "von-flue-choke",
+        "key-lock",
+        "darce-choke"
+      ],
+      "related": [
+        "arm-triangle"
+      ]
+    },
+    {
+      "source_slug": "mount",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/mount",
+      "status": "observed",
+      "incoming": [
+        "scissors-sweep",
+        "side-control",
+        "kimura-sweep",
+        "balloon-sweep",
+        "flower-sweep",
+        "sweep",
+        "hip-bump-sweep",
+        "back-step",
+        "under-hook",
+        "knee-on-belly",
+        "lumberjack-sweep",
+        "pendulum-sweep"
+      ],
+      "outgoing": [
+        "high-mount",
+        "armbar",
+        "arm-triangle",
+        "s-mount",
+        "cross-collar-control",
+        "three-quarter-mount",
+        "cross-collar-choke"
+      ],
+      "related": [
+        "ezekiel-choke"
+      ]
+    },
+    {
+      "source_slug": "back-take",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/back-take",
+      "status": "observed",
+      "incoming": [
+        "kimura",
+        "berimbolo",
+        "turtle",
+        "matrix",
+        "kiss-of-dragon",
+        "worm-guard",
+        "arm-drag",
+        "three-quarter-mount",
+        "octopus-guard"
+      ],
+      "outgoing": [
+        "back-control",
+        "rear-naked-choke",
+        "bow-and-arrow-choke"
+      ],
+      "related": [
+        "seat-belt-grip"
+      ]
+    },
+    {
+      "source_slug": "back-control",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/back-control",
+      "status": "observed",
+      "incoming": [
+        "back-take",
+        "leg-drag",
+        "darce-choke",
+        "duck-under",
+        "crab-ride"
+      ],
+      "outgoing": [
+        "seat-belt-grip",
+        "bow-and-arrow-choke",
+        "rear-naked-choke",
+        "straight-collar-control"
+      ],
+      "related": [
+        "back-mount",
+        "crucifix",
+        "truck"
+      ]
+    },
+    {
+      "source_slug": "turtle",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/turtle",
+      "status": "observed",
+      "incoming": [],
+      "outgoing": [
+        "back-take",
+        "crucifix",
+        "leg-drag",
+        "darce-choke",
+        "front-headlock",
+        "gator-roll",
+        "truck",
+        "clock-choke"
+      ],
+      "related": [
+        "anaconda-choke"
+      ]
+    },
+    {
+      "source_slug": "knee-on-belly",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/knee-on-belly",
+      "status": "observed",
+      "incoming": [
+        "sweep",
+        "side-control",
+        "tripod-sweep",
+        "x-pass",
+        "surfer-pass"
+      ],
+      "outgoing": [
+        "ezekiel-choke",
+        "armbar",
+        "baseball-bat-choke",
+        "mount"
+      ],
+      "related": [
+        "paper-cutter-choke",
+        "north-south-position"
+      ]
+    },
+    {
+      "source_slug": "berimbolo",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/berimbolo",
+      "status": "observed",
+      "incoming": [
+        "de-la-riva-guard",
+        "inverted-guard",
+        "deep-de-riva-guard"
+      ],
+      "outgoing": [
+        "back-take",
+        "crab-ride"
+      ],
+      "related": [
+        "reverse-de-riva-guard",
+        "matrix"
+      ]
+    },
+    {
+      "source_slug": "headquarters-position",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/headquarters-position",
+      "status": "observed",
+      "incoming": [
+        "open-guard"
+      ],
+      "outgoing": [
+        "knee-cut",
+        "leg-weave",
+        "back-step",
+        "long-step",
+        "knee-slide",
+        "estima-lock"
+      ],
+      "related": [
+        "toreando-pass"
+      ]
+    },
+    {
+      "source_slug": "arm-drag",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/arm-drag",
+      "status": "observed",
+      "incoming": [
+        "butterfly-guard",
+        "closed-guard"
+      ],
+      "outgoing": [
+        "back-mount",
+        "back-take",
+        "octopus-guard"
+      ],
+      "related": [
+        "collar-drag",
+        "two-on-one",
+        "single-leg-takedown"
+      ]
+    },
+    {
+      "source_slug": "under-hook",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/under-hook",
+      "status": "observed",
+      "incoming": [
+        "knee-slide",
+        "standing",
+        "half-guard"
+      ],
+      "outgoing": [
+        "mount",
+        "outside-trip",
+        "john-wayne-sweep"
+      ],
+      "related": [
+        "lockdown",
+        "body-lock",
+        "back-take",
+        "knee-shield"
+      ]
+    },
+    {
+      "source_slug": "front-headlock",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/front-headlock",
+      "status": "observed",
+      "incoming": [
+        "snap-down",
+        "turtle"
+      ],
+      "outgoing": [
+        "guillotine-choke",
+        "peruvian-necktie",
+        "brabo-choke",
+        "darce-choke"
+      ],
+      "related": [
+        "anaconda-choke"
+      ]
+    },
+    {
+      "source_slug": "fifty-fifty-position",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/fifty-fifty-position",
+      "status": "observed",
+      "incoming": [
+        "open-guard"
+      ],
+      "outgoing": [
+        "toe-hold",
+        "outside-heel-hook",
+        "knee-bar"
+      ],
+      "related": [
+        "outside-ashi-garami",
+        "backside-fifty-fifty",
+        "straight-ankle-lock"
+      ]
+    },
+    {
+      "source_slug": "ashi-garami",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/ashi-garami",
+      "status": "observed",
+      "incoming": [
+        "k-guard"
+      ],
+      "outgoing": [
+        "saddle-position",
+        "inside-ashi-garami",
+        "foot-lock",
+        "knee-bar"
+      ],
+      "related": [
+        "outside-ashi-garami",
+        "straight-ankle-lock",
+        "single-leg-x-guard"
+      ]
+    },
+    {
+      "source_slug": "north-south-position",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/north-south-position",
+      "status": "observed",
+      "incoming": [
+        "side-control",
+        "long-step"
+      ],
+      "outgoing": [
+        "anaconda-choke",
+        "kimura",
+        "north-south-choke"
+      ],
+      "related": [
+        "knee-on-belly"
+      ]
+    },
+    {
+      "source_slug": "saddle-position",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/saddle-position",
+      "status": "observed",
+      "incoming": [
+        "ashi-garami"
+      ],
+      "outgoing": [
+        "inside-heel-hook",
+        "knee-bar",
+        "toe-hold"
+      ],
+      "related": [
+        "honey-hole",
+        "inside-ashi-garami",
+        "backside-fifty-fifty"
+      ]
+    },
+    {
+      "source_slug": "s-mount",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/s-mount",
+      "status": "observed",
+      "incoming": [
+        "high-mount",
+        "mount"
+      ],
+      "outgoing": [
+        "armbar",
+        "triangle-choke"
+      ],
+      "related": []
+    },
+    {
+      "source_slug": "truck",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/truck",
+      "status": "observed",
+      "incoming": [
+        "side-control",
+        "turtle"
+      ],
+      "outgoing": [
+        "banana-split",
+        "calf-slicer"
+      ],
+      "related": [
+        "twister"
+      ]
+    },
+    {
+      "source_slug": "crucifix",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/crucifix",
+      "status": "observed",
+      "incoming": [
+        "turtle"
+      ],
+      "outgoing": [
+        "cross-collar-choke"
+      ],
+      "related": [
+        "back-control",
+        "armbar",
+        "truck"
+      ]
+    },
+    {
+      "source_slug": "body-lock",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/body-lock",
+      "status": "observed",
+      "incoming": [
+        "standing"
+      ],
+      "outgoing": [
+        "inside-trip"
+      ],
+      "related": [
+        "outside-trip",
+        "under-hook",
+        "double-leg-takedown",
+        "smash-pass"
+      ]
+    },
+    {
+      "source_slug": "cross-collar-control",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/cross-collar-control",
+      "status": "observed",
+      "incoming": [
+        "mount",
+        "closed-guard"
+      ],
+      "outgoing": [
+        "armbar",
+        "loop-choke"
+      ],
+      "related": [
+        "cross-collar-choke",
+        "bow-and-arrow-choke",
+        "straight-collar-control"
+      ]
+    },
+    {
+      "source_slug": "outside-ashi-garami",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/outside-ashi-garami",
+      "status": "observed",
+      "incoming": [
+        "single-leg-x-guard"
+      ],
+      "outgoing": [
+        "straight-ankle-lock",
+        "aoki-lock"
+      ],
+      "related": [
+        "ashi-garami",
+        "outside-heel-hook",
+        "fifty-fifty-position"
+      ]
+    },
+    {
+      "source_slug": "two-on-one",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/two-on-one",
+      "status": "observed",
+      "incoming": [
+        "standing"
+      ],
+      "outgoing": [
+        "flying-armbar"
+      ],
+      "related": [
+        "arm-drag",
+        "collar-drag",
+        "duck-under",
+        "single-leg-takedown",
+        "back-take"
+      ]
+    },
+    {
+      "source_slug": "snap-down",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/snap-down",
+      "status": "observed",
+      "incoming": [
+        "standing"
+      ],
+      "outgoing": [
+        "front-headlock"
+      ],
+      "related": [
+        "ankle-pick",
+        "guillotine-choke",
+        "two-on-one",
+        "turtle"
+      ]
+    },
+    {
+      "source_slug": "straight-collar-control",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/straight-collar-control",
+      "status": "observed",
+      "incoming": [
+        "side-control",
+        "back-control"
+      ],
+      "outgoing": [
+        "canto-choke",
+        "bow-and-arrow-choke"
+      ],
+      "related": [
+        "cross-collar-control",
+        "loop-choke",
+        "baseball-bat-choke"
+      ]
+    },
+    {
+      "source_slug": "crab-ride",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/crab-ride",
+      "status": "observed",
+      "incoming": [
+        "berimbolo"
+      ],
+      "outgoing": [
+        "back-control"
+      ],
+      "related": [
+        "back-take",
+        "truck",
+        "matrix"
+      ]
+    },
+    {
+      "source_slug": "sprawl",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/sprawl",
+      "status": "observed",
+      "incoming": [
+        "standing"
+      ],
+      "outgoing": [
+        "loop-choke",
+        "guillotine-choke"
+      ],
+      "related": [
+        "snap-down",
+        "front-headlock",
+        "double-leg-takedown",
+        "single-leg-takedown"
+      ]
+    },
+    {
+      "source_slug": "high-mount",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/high-mount",
+      "status": "observed",
+      "incoming": [
+        "mount"
+      ],
+      "outgoing": [
+        "s-mount"
+      ],
+      "related": [
+        "armbar",
+        "cross-collar-choke",
+        "ezekiel-choke"
+      ]
+    },
+    {
+      "source_slug": "back-mount",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/back-mount",
+      "status": "observed",
+      "incoming": [
+        "arm-drag"
+      ],
+      "outgoing": [
+        "bow-and-arrow-choke"
+      ],
+      "related": [
+        "seat-belt-grip",
+        "rear-naked-choke",
+        "crucifix",
+        "back-control"
+      ]
+    },
+    {
+      "source_slug": "honey-hole",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/honey-hole",
+      "status": "observed",
+      "incoming": [
+        "inside-ashi-garami"
+      ],
+      "outgoing": [
+        "inside-heel-hook"
+      ],
+      "related": [
+        "saddle-position",
+        "knee-bar"
+      ]
+    },
+    {
+      "source_slug": "backside-fifty-fifty",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/backside-fifty-fifty",
+      "status": "observed",
+      "incoming": [
+        "single-leg-x-guard"
+      ],
+      "outgoing": [
+        "inside-heel-hook"
+      ],
+      "related": [
+        "fifty-fifty-position",
+        "saddle-position",
+        "k-guard"
+      ]
+    },
+    {
+      "source_slug": "inside-ashi-garami",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/inside-ashi-garami",
+      "status": "observed",
+      "incoming": [
+        "ashi-garami"
+      ],
+      "outgoing": [
+        "honey-hole"
+      ],
+      "related": [
+        "saddle-position",
+        "inside-heel-hook",
+        "backside-fifty-fifty"
+      ]
+    },
+    {
+      "source_slug": "lockdown",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/lockdown",
+      "status": "observed",
+      "incoming": [
+        "half-guard"
+      ],
+      "outgoing": [
+        "sweep"
+      ],
+      "related": [
+        "under-hook",
+        "deep-half-guard",
+        "back-take"
+      ]
+    },
+    {
+      "source_slug": "seat-belt-grip",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/seat-belt-grip",
+      "status": "observed",
+      "incoming": [
+        "back-control"
+      ],
+      "outgoing": [
+        "rear-naked-choke"
+      ],
+      "related": [
+        "back-mount",
+        "bow-and-arrow-choke"
+      ]
+    },
+    {
+      "source_slug": "three-quarter-mount",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/three-quarter-mount",
+      "status": "observed",
+      "incoming": [
+        "mount"
+      ],
+      "outgoing": [
+        "back-take"
+      ],
+      "related": [
+        "high-mount",
+        "half-guard",
+        "knee-on-belly"
+      ]
+    },
+    {
+      "source_slug": "escape",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/escape",
+      "status": "observed",
+      "incoming": [],
+      "outgoing": [],
+      "related": [
+        "guard-recovery",
+        "technical-stand-up",
+        "under-hook",
+        "knee-shield"
+      ]
+    },
+    {
+      "source_slug": "foot-work",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/foot-work",
+      "status": "observed",
+      "incoming": [],
+      "outgoing": [],
+      "related": [
+        "wiper",
+        "toreando-pass",
+        "technical-stand-up",
+        "guard-recovery"
+      ]
+    },
+    {
+      "source_slug": "entry",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/entry",
+      "status": "observed",
+      "incoming": [],
+      "outgoing": [],
+      "related": [
+        "arm-drag",
+        "snap-down",
+        "headquarters-position",
+        "ashi-garami",
+        "berimbolo"
+      ]
+    },
+    {
+      "source_slug": "kimura",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/kimura",
+      "status": "observed",
+      "incoming": [
+        "side-control",
+        "half-guard",
+        "closed-guard",
+        "north-south-position",
+        "z-guard"
+      ],
+      "outgoing": [
+        "back-take",
+        "kimura-sweep",
+        "armbar",
+        "tarikoplata",
+        "wrist-lock"
+      ],
+      "related": [
+        "americana",
+        "omoplata"
+      ]
+    },
+    {
+      "source_slug": "omoplata",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/omoplata",
+      "status": "observed",
+      "incoming": [
+        "closed-guard",
+        "lasso-guard",
+        "triangle-choke",
+        "armbar",
+        "rubber-guard",
+        "collar-and-sleeve-guard"
+      ],
+      "outgoing": [
+        "triangle-choke",
+        "baratoplata"
+      ],
+      "related": [
+        "gogoplata",
+        "kimura"
+      ]
+    },
+    {
+      "source_slug": "armbar",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/armbar",
+      "status": "observed",
+      "incoming": [
+        "s-mount",
+        "mount",
+        "knee-on-belly",
+        "cross-collar-control",
+        "kimura"
+      ],
+      "outgoing": [
+        "triangle-choke",
+        "omoplata"
+      ],
+      "related": [
+        "flying-armbar",
+        "coyote-armbar"
+      ]
+    },
+    {
+      "source_slug": "triangle-choke",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/triangle-choke",
+      "status": "observed",
+      "incoming": [
+        "spider-guard",
+        "s-mount",
+        "armbar",
+        "omoplata"
+      ],
+      "outgoing": [
+        "omoplata"
+      ],
+      "related": [
+        "closed-guard",
+        "gogoplata"
+      ]
+    },
+    {
+      "source_slug": "darce-choke",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/darce-choke",
+      "status": "observed",
+      "incoming": [
+        "turtle",
+        "gator-roll",
+        "front-headlock",
+        "side-control",
+        "half-guard"
+      ],
+      "outgoing": [
+        "back-control"
+      ],
+      "related": [
+        "anaconda-choke",
+        "brabo-choke",
+        "arm-triangle",
+        "peruvian-necktie"
+      ]
+    },
+    {
+      "source_slug": "knee-bar",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/knee-bar",
+      "status": "observed",
+      "incoming": [
+        "toe-hold",
+        "saddle-position",
+        "fifty-fifty-position",
+        "ashi-garami"
+      ],
+      "outgoing": [],
+      "related": [
+        "heel-hook",
+        "armbar",
+        "calf-slicer"
+      ]
+    },
+    {
+      "source_slug": "guillotine-choke",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/guillotine-choke",
+      "status": "observed",
+      "incoming": [
+        "front-headlock",
+        "closed-guard",
+        "sprawl",
+        "half-guard"
+      ],
+      "outgoing": [],
+      "related": [
+        "darce-choke",
+        "anaconda-choke",
+        "peruvian-necktie",
+        "snap-down"
+      ]
+    },
+    {
+      "source_slug": "straight-ankle-lock",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/straight-ankle-lock",
+      "status": "observed",
+      "incoming": [
+        "single-leg-x-guard",
+        "outside-ashi-garami"
+      ],
+      "outgoing": [
+        "heel-hook"
+      ],
+      "related": [
+        "ashi-garami",
+        "aoki-lock",
+        "foot-lock"
+      ]
+    },
+    {
+      "source_slug": "bow-and-arrow-choke",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/bow-and-arrow-choke",
+      "status": "observed",
+      "incoming": [
+        "back-control",
+        "back-mount",
+        "back-take",
+        "straight-collar-control"
+      ],
+      "outgoing": [],
+      "related": [
+        "seat-belt-grip",
+        "rear-naked-choke",
+        "cross-collar-choke",
+        "clock-choke"
+      ]
+    },
+    {
+      "source_slug": "heel-hook",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/heel-hook",
+      "status": "observed",
+      "incoming": [
+        "straight-ankle-lock",
+        "shin-trap"
+      ],
+      "outgoing": [],
+      "related": [
+        "inside-heel-hook",
+        "outside-heel-hook",
+        "ashi-garami",
+        "saddle-position",
+        "knee-bar"
+      ]
+    },
+    {
+      "source_slug": "rear-naked-choke",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/rear-naked-choke",
+      "status": "observed",
+      "incoming": [
+        "seat-belt-grip",
+        "back-take",
+        "back-control"
+      ],
+      "outgoing": [],
+      "related": [
+        "back-mount",
+        "bow-and-arrow-choke",
+        "crucifix"
+      ]
+    },
+    {
+      "source_slug": "toe-hold",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/toe-hold",
+      "status": "observed",
+      "incoming": [
+        "fifty-fifty-position",
+        "saddle-position"
+      ],
+      "outgoing": [
+        "knee-bar"
+      ],
+      "related": [
+        "estima-lock",
+        "foot-lock",
+        "aoki-lock",
+        "heel-hook"
+      ]
+    },
+    {
+      "source_slug": "loop-choke",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/loop-choke",
+      "status": "observed",
+      "incoming": [
+        "cross-collar-control",
+        "butterfly-guard",
+        "sprawl"
+      ],
+      "outgoing": [],
+      "related": [
+        "cross-collar-choke",
+        "closed-guard",
+        "guillotine-choke"
+      ]
+    },
+    {
+      "source_slug": "inside-heel-hook",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/inside-heel-hook",
+      "status": "observed",
+      "incoming": [
+        "saddle-position",
+        "backside-fifty-fifty",
+        "honey-hole"
+      ],
+      "outgoing": [],
+      "related": [
+        "inside-ashi-garami",
+        "heel-hook"
+      ]
+    },
+    {
+      "source_slug": "arm-triangle",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/arm-triangle",
+      "status": "observed",
+      "incoming": [
+        "mount"
+      ],
+      "outgoing": [],
+      "related": [
+        "darce-choke",
+        "brabo-choke",
+        "north-south-choke",
+        "side-control"
+      ]
+    },
+    {
+      "source_slug": "cross-collar-choke",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/cross-collar-choke",
+      "status": "observed",
+      "incoming": [
+        "crucifix",
+        "mount"
+      ],
+      "outgoing": [],
+      "related": [
+        "cross-collar-control",
+        "loop-choke",
+        "bow-and-arrow-choke",
+        "closed-guard"
+      ]
+    },
+    {
+      "source_slug": "foot-lock",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/foot-lock",
+      "status": "observed",
+      "incoming": [
+        "ashi-garami"
+      ],
+      "outgoing": [],
+      "related": [
+        "straight-ankle-lock",
+        "toe-hold",
+        "estima-lock"
+      ]
+    },
+    {
+      "source_slug": "wrist-lock",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/wrist-lock",
+      "status": "observed",
+      "incoming": [
+        "kimura"
+      ],
+      "outgoing": [],
+      "related": [
+        "americana",
+        "key-lock",
+        "closed-guard"
+      ]
+    },
+    {
+      "source_slug": "ezekiel-choke",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/ezekiel-choke",
+      "status": "observed",
+      "incoming": [
+        "knee-on-belly"
+      ],
+      "outgoing": [],
+      "related": [
+        "mount",
+        "back-control",
+        "cross-collar-choke",
+        "arm-triangle"
+      ]
+    },
+    {
+      "source_slug": "banana-split",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/banana-split",
+      "status": "observed",
+      "incoming": [
+        "truck"
+      ],
+      "outgoing": [
+        "twister"
+      ],
+      "related": [
+        "crucifix",
+        "calf-slicer"
+      ]
+    },
+    {
+      "source_slug": "baseball-bat-choke",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/baseball-bat-choke",
+      "status": "observed",
+      "incoming": [
+        "knee-on-belly"
+      ],
+      "outgoing": [],
+      "related": [
+        "side-control",
+        "paper-cutter-choke",
+        "straight-collar-control",
+        "cross-collar-choke"
+      ]
+    },
+    {
+      "source_slug": "calf-slicer",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/calf-slicer",
+      "status": "observed",
+      "incoming": [
+        "truck"
+      ],
+      "outgoing": [],
+      "related": [
+        "twister",
+        "bicep-slicer",
+        "knee-bar"
+      ]
+    },
+    {
+      "source_slug": "americana",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/americana",
+      "status": "observed",
+      "incoming": [
+        "side-control"
+      ],
+      "outgoing": [],
+      "related": [
+        "key-lock",
+        "kimura",
+        "mount",
+        "armbar"
+      ]
+    },
+    {
+      "source_slug": "flying-armbar",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/flying-armbar",
+      "status": "observed",
+      "incoming": [
+        "two-on-one"
+      ],
+      "outgoing": [],
+      "related": [
+        "armbar",
+        "choi-bar",
+        "triangle-choke",
+        "collar-and-sleeve-guard"
+      ]
+    },
+    {
+      "source_slug": "tarikoplata",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/tarikoplata",
+      "status": "observed",
+      "incoming": [
+        "kimura"
+      ],
+      "outgoing": [],
+      "related": [
+        "baratoplata",
+        "omoplata",
+        "armbar"
+      ]
+    },
+    {
+      "source_slug": "anaconda-choke",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/anaconda-choke",
+      "status": "observed",
+      "incoming": [
+        "north-south-position"
+      ],
+      "outgoing": [],
+      "related": [
+        "darce-choke",
+        "brabo-choke",
+        "front-headlock",
+        "gator-roll",
+        "turtle"
+      ]
+    },
+    {
+      "source_slug": "baratoplata",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/baratoplata",
+      "status": "observed",
+      "incoming": [
+        "omoplata"
+      ],
+      "outgoing": [],
+      "related": [
+        "tarikoplata",
+        "kimura",
+        "gogoplata"
+      ]
+    },
+    {
+      "source_slug": "brabo-choke",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/brabo-choke",
+      "status": "observed",
+      "incoming": [
+        "front-headlock"
+      ],
+      "outgoing": [],
+      "related": [
+        "darce-choke",
+        "anaconda-choke",
+        "arm-triangle"
+      ]
+    },
+    {
+      "source_slug": "clock-choke",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/clock-choke",
+      "status": "observed",
+      "incoming": [
+        "turtle"
+      ],
+      "outgoing": [],
+      "related": [
+        "bow-and-arrow-choke",
+        "paper-cutter-choke",
+        "crucifix",
+        "back-take"
+      ]
+    },
+    {
+      "source_slug": "gogoplata",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/gogoplata",
+      "status": "observed",
+      "incoming": [
+        "rubber-guard"
+      ],
+      "outgoing": [],
+      "related": [
+        "omoplata",
+        "closed-guard",
+        "triangle-choke",
+        "baratoplata"
+      ]
+    },
+    {
+      "source_slug": "north-south-choke",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/north-south-choke",
+      "status": "observed",
+      "incoming": [
+        "north-south-position"
+      ],
+      "outgoing": [],
+      "related": [
+        "side-control",
+        "arm-triangle",
+        "darce-choke"
+      ]
+    },
+    {
+      "source_slug": "buggy-choke",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/buggy-choke",
+      "status": "observed",
+      "incoming": [
+        "side-control"
+      ],
+      "outgoing": [],
+      "related": [
+        "triangle-choke",
+        "guard-recovery",
+        "mount"
+      ]
+    },
+    {
+      "source_slug": "canto-choke",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/canto-choke",
+      "status": "observed",
+      "incoming": [
+        "straight-collar-control"
+      ],
+      "outgoing": [],
+      "related": [
+        "side-control",
+        "paper-cutter-choke",
+        "baseball-bat-choke"
+      ]
+    },
+    {
+      "source_slug": "key-lock",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/key-lock",
+      "status": "observed",
+      "incoming": [
+        "side-control"
+      ],
+      "outgoing": [],
+      "related": [
+        "americana",
+        "kimura",
+        "mount"
+      ]
+    },
+    {
+      "source_slug": "twister",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/twister",
+      "status": "observed",
+      "incoming": [
+        "banana-split"
+      ],
+      "outgoing": [],
+      "related": [
+        "truck",
+        "calf-slicer",
+        "back-control"
+      ]
+    },
+    {
+      "source_slug": "aoki-lock",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/aoki-lock",
+      "status": "observed",
+      "incoming": [
+        "outside-ashi-garami"
+      ],
+      "outgoing": [],
+      "related": [
+        "straight-ankle-lock",
+        "toe-hold",
+        "estima-lock",
+        "heel-hook"
+      ]
+    },
+    {
+      "source_slug": "estima-lock",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/estima-lock",
+      "status": "observed",
+      "incoming": [
+        "headquarters-position"
+      ],
+      "outgoing": [],
+      "related": [
+        "toe-hold",
+        "foot-lock",
+        "straight-ankle-lock",
+        "aoki-lock"
+      ]
+    },
+    {
+      "source_slug": "paper-cutter-choke",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/paper-cutter-choke",
+      "status": "observed",
+      "incoming": [
+        "side-control"
+      ],
+      "outgoing": [],
+      "related": [
+        "knee-on-belly",
+        "baseball-bat-choke",
+        "clock-choke",
+        "bow-and-arrow-choke"
+      ]
+    },
+    {
+      "source_slug": "peruvian-necktie",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/peruvian-necktie",
+      "status": "observed",
+      "incoming": [
+        "front-headlock"
+      ],
+      "outgoing": [],
+      "related": [
+        "guillotine-choke",
+        "anaconda-choke",
+        "darce-choke",
+        "turtle"
+      ]
+    },
+    {
+      "source_slug": "z-lock",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/z-lock",
+      "status": "observed",
+      "incoming": [
+        "k-guard"
+      ],
+      "outgoing": [],
+      "related": [
+        "heel-hook",
+        "toe-hold",
+        "ashi-garami"
+      ]
+    },
+    {
+      "source_slug": "bicep-slicer",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/bicep-slicer",
+      "status": "observed",
+      "incoming": [
+        "lasso-guard"
+      ],
+      "outgoing": [],
+      "related": [
+        "calf-slicer",
+        "kimura",
+        "armbar",
+        "closed-guard"
+      ]
+    },
+    {
+      "source_slug": "choi-bar",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/choi-bar",
+      "status": "observed",
+      "incoming": [
+        "z-guard"
+      ],
+      "outgoing": [],
+      "related": [
+        "armbar",
+        "flying-armbar",
+        "coyote-armbar",
+        "closed-guard"
+      ]
+    },
+    {
+      "source_slug": "outside-heel-hook",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/outside-heel-hook",
+      "status": "observed",
+      "incoming": [
+        "fifty-fifty-position"
+      ],
+      "outgoing": [],
+      "related": [
+        "outside-ashi-garami",
+        "heel-hook",
+        "straight-ankle-lock"
+      ]
+    },
+    {
+      "source_slug": "von-flue-choke",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/von-flue-choke",
+      "status": "observed",
+      "incoming": [
+        "side-control"
+      ],
+      "outgoing": [],
+      "related": [
+        "guillotine-choke",
+        "arm-triangle",
+        "darce-choke"
+      ]
+    },
+    {
+      "source_slug": "coyote-armbar",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/coyote-armbar",
+      "status": "observed",
+      "incoming": [
+        "coyote-guard"
+      ],
+      "outgoing": [],
+      "related": [
+        "armbar",
+        "half-guard",
+        "choi-bar"
+      ]
+    },
+    {
+      "source_slug": "choke",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/choke",
+      "status": "observed",
+      "incoming": [],
+      "outgoing": [],
+      "related": [
+        "arm-triangle"
+      ]
+    },
+    {
+      "source_slug": "counter",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/counter",
+      "status": "observed",
+      "incoming": [],
+      "outgoing": [],
+      "related": [
+        "von-flue-choke",
+        "sprawl",
+        "guard-recovery",
+        "technical-stand-up"
+      ]
+    },
+    {
+      "source_slug": "submission",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/submission",
+      "status": "observed",
+      "incoming": [],
+      "outgoing": [],
+      "related": []
+    }
+  ]
+}

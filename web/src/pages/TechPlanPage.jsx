@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useLayoutEffect, useReducer, useRef } from 'react';
 import { useCache } from '../contexts/CacheContext';
 import { useUI } from '../contexts/UIContext';
 import * as techApi from '../api/techniques';
@@ -29,6 +29,8 @@ import PositionManagerModal from '../components/PositionManagerModal';
 import TagManagerModal from '../components/TagManagerModal';
 import * as labApi from '../api/lab';
 import { usageOf, sumUsage } from '../utils/clipUsage';
+import { TechDescriptionSection, TechRelationSections } from '../components/TechReferenceSection';
+import { toSections, historyReducer, initHistory, createLatestGuard } from '../utils/techReferenceModel';
 
 const PAGE_SIZE = 10;
 
@@ -241,12 +243,13 @@ function TechTab() {
         </>
       )}
 
+      {/* task-054: 모달 안에서 연결 기술로 이동할 수 있으므로 편집·삭제 대상은 모달이 현재 보고 있는 기술이다. */}
       {detail && (
         <TechDetailModal
           t={detail}
           onClose={() => setDetail(null)}
-          onEdit={() => { setEditing(detail); setDetail(null); }}
-          onDelete={() => handleDelete(detail.id)}
+          onEdit={(current) => { setEditing(current || detail); setDetail(null); }}
+          onDelete={(currentId) => handleDelete(currentId ?? detail.id)}
         />
       )}
       {editing && (
@@ -286,21 +289,83 @@ function TechDetailModal({ t: tProp, onClose, onEdit, onDelete }) {
   const { showToast, setLoading } = useUI();
   const [detailClip, setDetailClip] = useState(null);
   const [editingClip, setEditingClip] = useState(null);
+  // task-054: 같은 모달 안에서 연결 기술로 이동한다. activeId = 지금 보고 있는 기술, stack = 이전 기술들.
+  const [hist, dispatchHist] = useReducer(historyReducer, tProp.id, initHistory);
+  const activeId = hist.activeId;
   // 🔴 task-035: 부모의 detail 은 **스냅샷**이다. 중첩 ClipDetailModal 에서 +1 하면 techniques 캐시는
   //    새로 오지만 스냅샷의 t.clips[].usage 는 옛 숫자다 — 캐시에서 id 로 다시 찾아 쓴다(없으면 스냅샷).
-  const t = techniques.find((x) => x.id === tProp.id) || tProp;
+  const found = techniques.find((x) => x.id === activeId);
+  const t = found || (activeId === tProp.id ? tProp : { id: activeId, name: '', clips: [] });
   const usageSum = sumUsage(t.clips);
 
+  // 이동해 온 기술이 캐시에서 사라졌으면(다른 곳에서 삭제 등) 한 단계 되돌린다 — 빈 상세를 남기지 않는다.
+  const missingMoved = !found && activeId !== tProp.id && techniques.length > 0;
+  useEffect(() => {
+    if (!missingMoved) return;
+    dispatchHist({ type: 'pop' });
+    showToast('이 기술을 찾을 수 없어 이전 기술로 돌아갔어요');
+  }, [missingMoved, activeId]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // 늦은 응답 무시 — 빠르게 이동했을 때 이전 기술의 응답이 현재 기술을 덮지 않게 한다.
+  const guardRef = useRef(null);
+  if (!guardRef.current) guardRef.current = createLatestGuard();
+
   // 스파링 성공 수(자동) — spar_sessions 에서 파생되는 기존 사다리 API 재사용(GET /api/mastery/:techId)
-  const [mastery, setMastery] = useState({ loading: true, data: null, error: '' });
+  const [mastery, setMastery] = useState({ loading: true, data: null, error: '', forId: activeId });
   useEffect(() => {
     let alive = true;
-    setMastery({ loading: true, data: null, error: '' });
-    labApi.getMastery(tProp.id)
-      .then((d) => { if (alive) setMastery({ loading: false, data: d, error: '' }); })
-      .catch((e) => { if (alive) setMastery({ loading: false, data: null, error: e.message || '불러오지 못했어요' }); });
+    const tk = guardRef.current.begin('mastery');
+    const ok = () => alive && guardRef.current.isCurrent(tk);
+    setMastery({ loading: true, data: null, error: '', forId: activeId });
+    labApi.getMastery(activeId)
+      .then((d) => { if (ok()) setMastery({ loading: false, data: d, error: '', forId: activeId }); })
+      .catch((e) => { if (ok()) setMastery({ loading: false, data: null, error: e.message || '불러오지 못했어요', forId: activeId }); });
     return () => { alive = false; };
-  }, [tProp.id]);
+  }, [activeId]);
+  const masteryView = mastery.forId === activeId ? mastery : { loading: true, data: null, error: '' };
+
+  // task-054 관장 설명·앞뒤 연결·함께 보는 기술(GET /api/techniques/:id/reference). 실패해도 메모·집계·영상은 그대로.
+  const [refReload, setRefReload] = useState(0);
+  const [refState, setRefState] = useState({ status: 'loading', sections: null, forId: activeId });
+  useEffect(() => {
+    let alive = true;
+    const tk = guardRef.current.begin('reference');
+    const ok = () => alive && guardRef.current.isCurrent(tk);
+    setRefState({ status: 'loading', sections: null, forId: activeId });
+    techApi.getTechniqueReference(activeId)
+      .then((d) => { if (ok()) setRefState({ status: 'ready', sections: toSections(d), forId: activeId }); })
+      .catch(() => { if (ok()) setRefState({ status: 'error', sections: null, forId: activeId }); });
+    return () => { alive = false; };
+  }, [activeId, refReload]);
+  const refView = refState.forId === activeId ? refState : { status: 'loading', sections: null };
+  const retryReference = () => {
+    // 재시도 버튼은 로딩/성공 시 사라진다. 버튼이 제거되기 전에 모달에 초점을 남긴다.
+    anchorRef.current?.closest('[role="dialog"]')?.focus({ preventScroll: true });
+    setRefReload((n) => n + 1);
+  };
+
+  function handleNavigate(card) {
+    const id = card?.targetTechniqueId;
+    if (id == null || id === activeId) return;
+    // 명시적으로 연결된 내 기술 ID 로만 이동한다(이름 매칭·새 기술 생성 없음).
+    if (!techniques.some((x) => x.id === id)) {
+      showToast('이 기술을 찾을 수 없어요. 지금 기술을 계속 보여 드려요');
+      return;
+    }
+    dispatchHist({ type: 'push', id });
+  }
+
+  // 기술이 바뀔 때만: 모달 스크롤 맨 위 + 대화상자에 초점(새 제목을 알림). 최초 열기·닫기·영상 모달 복귀는 Modal 이 담당.
+  const anchorRef = useRef(null);
+  const prevActiveRef = useRef(activeId);
+  useLayoutEffect(() => {
+    if (prevActiveRef.current === activeId) return;
+    prevActiveRef.current = activeId;
+    const sheet = anchorRef.current?.closest('[role="dialog"]');
+    if (!sheet) return;
+    sheet.scrollTop = 0;
+    sheet.focus({ preventScroll: true });
+  }, [activeId]);
 
   async function handleClipDelete(id) {
     if (!confirm('삭제하시겠습니까?')) return;
@@ -356,6 +421,12 @@ function TechDetailModal({ t: tProp, onClose, onEdit, onDelete }) {
 
   return (
     <Modal title={t.name} onClose={onClose}>
+      <span ref={anchorRef} hidden />
+      {hist.stack.length > 0 && (
+        <button type="button" className="tech-ref-back" onClick={() => dispatchHist({ type: 'pop' })}>
+          ← 이전 기술로 돌아가기
+        </button>
+      )}
       <div style={{ display: 'flex', gap: 6, marginBottom: 12, flexWrap: 'wrap' }}>
         {(t.positions?.length ? t.positions : (t.pos ? [t.pos] : [])).map((p, i) => (
           <Tag key={i} tone="blue">{p}</Tag>
@@ -365,20 +436,13 @@ function TechDetailModal({ t: tProp, onClose, onEdit, onDelete }) {
           <Tag key={i} tone="neutral">{x}</Tag>
         ))}
       </div>
-      {t.note && (
-        <div style={{
-          background: 'var(--surface)',
-          border: '1px solid var(--border)',
-          borderRadius: 10,
-          padding: 12,
-          fontSize: 13,
-          color: 'var(--text)',
-          whiteSpace: 'pre-wrap',
-          marginBottom: 12,
-        }}>
-          {t.note}
-        </div>
-      )}
+      {/* task-054 관장 설명 — 기술이 바뀌면 key 로 다시 그려 '자세히 보기'를 접는다 */}
+      <TechDescriptionSection
+        key={`desc-${activeId}`}
+        status={refView.status}
+        sections={refView.sections}
+        onRetry={retryReference}
+      />
       {/* task-035 사용 기록 — 스파링 성공(자동, spar_sessions 파생) + 영상 연습 합계(수동 기록) */}
       <div style={{
         background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 10,
@@ -389,9 +453,9 @@ function TechDetailModal({ t: tProp, onClose, onEdit, onDelete }) {
           <span style={{ color: 'var(--text2)', whiteSpace: 'nowrap' }}>스파링 성공 <span style={{ color: 'var(--text3)' }}>(자동)</span></span>
           <span style={{ fontWeight: 700, whiteSpace: 'nowrap', color: 'var(--text)' }}>
             {(() => {
-              if (mastery.loading) return <span style={{ color: 'var(--text3)', fontWeight: 400 }}>불러오는 중…</span>;
-              if (mastery.error || !mastery.data) return <span style={{ color: 'var(--red)', fontWeight: 400 }}>불러오지 못함</span>;
-              const smp = mastery.data.sample || {};
+              if (masteryView.loading) return <span style={{ color: 'var(--text3)', fontWeight: 400 }}>불러오는 중…</span>;
+              if (masteryView.error || !masteryView.data) return <span style={{ color: 'var(--red)', fontWeight: 400 }}>불러오지 못함</span>;
+              const smp = masteryView.data.sample || {};
               // 🔴 표본이 비면 0 이 아니라 '기록 없음' — 0 이면 사용자는 자기가 못한 줄 안다(labAnalytics computeMastery 원칙)
               if (!((smp.successItems || 0) + (smp.failItems || 0))) {
                 return <span style={{ color: 'var(--text3)', fontWeight: 400 }}>기록 없음</span>;
@@ -414,6 +478,32 @@ function TechDetailModal({ t: tProp, onClose, onEdit, onDelete }) {
           </div>
         )}
       </div>
+      {/* task-054 앞뒤 연결 + 함께 보는 기술 */}
+      <TechRelationSections
+        status={refView.status}
+        sections={refView.sections}
+        currentName={t.name}
+        onNavigate={handleNavigate}
+        onRetry={retryReference}
+      />
+      {/* 개인 메모 — 관장 설명과 분리된 사용자 기록(설명으로 덮거나 합치지 않는다) */}
+      <h3 className="tech-ref-heading">개인 메모</h3>
+      {t.note ? (
+        <div style={{
+          background: 'var(--surface)',
+          border: '1px solid var(--border)',
+          borderRadius: 10,
+          padding: 12,
+          fontSize: 13,
+          color: 'var(--text)',
+          whiteSpace: 'pre-wrap',
+          marginBottom: 12,
+        }}>
+          {t.note}
+        </div>
+      ) : (
+        <p className="tech-ref-copy">작성한 개인 메모가 없어요.</p>
+      )}
       {(t.clips || []).length > 0 && (
         <div style={{ marginBottom: 12 }}>
           <div style={{ fontSize: 12, color: 'var(--text2)', marginBottom: 8, fontWeight: 600 }}>
@@ -468,8 +558,8 @@ function TechDetailModal({ t: tProp, onClose, onEdit, onDelete }) {
         </div>
       )}
       <div style={{ display: 'flex', gap: 8 }}>
-        <Button variant="danger" size="sm" onClick={onDelete}>삭제</Button>
-        <Button variant="outline" size="sm" onClick={onEdit}>수정</Button>
+        <Button variant="danger" size="sm" onClick={() => onDelete(t.id)}>삭제</Button>
+        <Button variant="outline" size="sm" onClick={() => onEdit(t)}>수정</Button>
         <Button variant="primary" size="sm" full onClick={onClose}>닫기</Button>
       </div>
     </Modal>

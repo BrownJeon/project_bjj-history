@@ -1,0 +1,13 @@
+{
+  "task_id": "task-054",
+  "ddl": "created-and-verified",
+  "new_techniques": 110,
+  "new_links": 110,
+  "total_techniques": 170,
+  "existing_rows_preserved": 60,
+  "video_rows_preserved": 177,
+  "other_account_counts_unchanged": true,
+  "private_backup_modes": "0600",
+  "actual_sql_reference_checks": "PASS; zero/single/multiple relations and other-account404",
+  "restore_executed": false
+}

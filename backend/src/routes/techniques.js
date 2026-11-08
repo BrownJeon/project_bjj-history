@@ -3,7 +3,8 @@ const router = express.Router();
 const { Op } = require('sequelize');
 const fs = require('fs/promises');
 const { Technique, VideoClip } = require('../models');
-const { wrap, safeParse } = require('../utils/respond');
+const { wrap, safeParse, ok, fail } = require('../utils/respond');
+const { getReference } = require('../services/techniqueReference');
 const { toNFC, arrToNFC, eqNFC } = require('../utils/nfc');
 const { analyzeVideo } = require('../services/videoAnalysis');
 const { getFramesDir, getVideoDir } = require('../services/storage');
@@ -611,6 +612,17 @@ router.delete('/tags/:name', wrap(async (req, res) => {
   });
 
   res.json({ ok: true, updatedCount: removed.tech + removed.clip, removed });
+}));
+
+// task-054: 기술 상세의 관장 설명·앞뒤 연결·함께 보는 기술 (읽기 전용, 개인 기록 불변)
+router.get('/:id/reference', wrap(async (req, res) => {
+  if (!/^\d+$/.test(req.params.id)) return fail(res, 400, 'invalid technique id');
+  try {
+    ok(res, await getReference(Number(req.params.id), req.user.id));
+  } catch (e) {
+    if (e.status === 404) return fail(res, 404, 'not found');
+    throw e;
+  }
 }));
 
 router.patch('/:id/star', wrap(async (req, res) => {

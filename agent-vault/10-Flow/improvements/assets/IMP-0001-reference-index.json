@@ -1,0 +1,962 @@
+{
+  "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques",
+  "observed_on": "2026-11-08",
+  "method": "Public rendered HTML; names/slugs/category only. Descriptions and images not copied. No app/DB import performed.",
+  "count": 159,
+  "items": [
+    {
+      "source_slug": "standing",
+      "source_name": "스탠딩",
+      "source_category": "스탠딩",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/standing"
+    },
+    {
+      "source_slug": "single-leg-takedown",
+      "source_name": "싱글 레그 테이크다운",
+      "source_category": "스탠딩",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/single-leg-takedown"
+    },
+    {
+      "source_slug": "collar-drag",
+      "source_name": "칼라 드래그",
+      "source_category": "스탠딩",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/collar-drag"
+    },
+    {
+      "source_slug": "ankle-pick",
+      "source_name": "앵클 픽",
+      "source_category": "스탠딩",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/ankle-pick"
+    },
+    {
+      "source_slug": "double-leg-takedown",
+      "source_name": "더블 레그 테이크다운",
+      "source_category": "스탠딩",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/double-leg-takedown"
+    },
+    {
+      "source_slug": "inside-trip",
+      "source_name": "인사이드 트립",
+      "source_category": "스탠딩",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/inside-trip"
+    },
+    {
+      "source_slug": "outside-trip",
+      "source_name": "아웃사이드 트립",
+      "source_category": "스탠딩",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/outside-trip"
+    },
+    {
+      "source_slug": "break-fall",
+      "source_name": "낙법",
+      "source_category": "스탠딩",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/break-fall"
+    },
+    {
+      "source_slug": "takedown",
+      "source_name": "테이크다운",
+      "source_category": "스탠딩",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/takedown"
+    },
+    {
+      "source_slug": "open-guard",
+      "source_name": "오픈 가드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/open-guard"
+    },
+    {
+      "source_slug": "closed-guard",
+      "source_name": "클로즈 가드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/closed-guard"
+    },
+    {
+      "source_slug": "half-guard",
+      "source_name": "하프 가드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/half-guard"
+    },
+    {
+      "source_slug": "de-la-riva-guard",
+      "source_name": "델라히바 가드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/de-la-riva-guard"
+    },
+    {
+      "source_slug": "single-leg-x-guard",
+      "source_name": "싱글 레그 X 가드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/single-leg-x-guard"
+    },
+    {
+      "source_slug": "sweep",
+      "source_name": "스윕",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/sweep"
+    },
+    {
+      "source_slug": "knee-shield",
+      "source_name": "니실드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/knee-shield"
+    },
+    {
+      "source_slug": "butterfly-guard",
+      "source_name": "버터플라이 가드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/butterfly-guard"
+    },
+    {
+      "source_slug": "lasso-guard",
+      "source_name": "라쏘 가드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/lasso-guard"
+    },
+    {
+      "source_slug": "k-guard",
+      "source_name": "K 가드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/k-guard"
+    },
+    {
+      "source_slug": "x-guard",
+      "source_name": "X 가드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/x-guard"
+    },
+    {
+      "source_slug": "tripod-sweep",
+      "source_name": "트라이팟 스윕",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/tripod-sweep"
+    },
+    {
+      "source_slug": "deep-half-guard",
+      "source_name": "딥 하프 가드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/deep-half-guard"
+    },
+    {
+      "source_slug": "reverse-de-riva-guard",
+      "source_name": "리버스 델라히바 가드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/reverse-de-riva-guard"
+    },
+    {
+      "source_slug": "spider-guard",
+      "source_name": "스파이더 가드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/spider-guard"
+    },
+    {
+      "source_slug": "worm-guard",
+      "source_name": "웜 가드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/worm-guard"
+    },
+    {
+      "source_slug": "balloon-sweep",
+      "source_name": "벌룬 스윕",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/balloon-sweep"
+    },
+    {
+      "source_slug": "coyote-guard",
+      "source_name": "코요테 가드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/coyote-guard"
+    },
+    {
+      "source_slug": "kimura-sweep",
+      "source_name": "기무라 스윕",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/kimura-sweep"
+    },
+    {
+      "source_slug": "kiss-of-dragon",
+      "source_name": "키스 오브 드래곤",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/kiss-of-dragon"
+    },
+    {
+      "source_slug": "scissors-sweep",
+      "source_name": "시저스 스윕",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/scissors-sweep"
+    },
+    {
+      "source_slug": "sit-up-guard",
+      "source_name": "싯업 가드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/sit-up-guard"
+    },
+    {
+      "source_slug": "flower-sweep",
+      "source_name": "플라워 스윕",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/flower-sweep"
+    },
+    {
+      "source_slug": "matrix",
+      "source_name": "매트릭스",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/matrix"
+    },
+    {
+      "source_slug": "rubber-guard",
+      "source_name": "러버 가드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/rubber-guard"
+    },
+    {
+      "source_slug": "foot-sweep",
+      "source_name": "풋 스윕",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/foot-sweep"
+    },
+    {
+      "source_slug": "z-guard",
+      "source_name": "Z 가드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/z-guard"
+    },
+    {
+      "source_slug": "collar-and-sleeve-guard",
+      "source_name": "칼라 앤 슬리브 가드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/collar-and-sleeve-guard"
+    },
+    {
+      "source_slug": "deep-de-riva-guard",
+      "source_name": "딥 델라히바 가드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/deep-de-riva-guard"
+    },
+    {
+      "source_slug": "lapel-guard",
+      "source_name": "라펠 가드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/lapel-guard"
+    },
+    {
+      "source_slug": "octopus-guard",
+      "source_name": "옥토퍼스 가드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/octopus-guard"
+    },
+    {
+      "source_slug": "waiter-guard",
+      "source_name": "웨이터 가드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/waiter-guard"
+    },
+    {
+      "source_slug": "wrestle-up",
+      "source_name": "레슬업",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/wrestle-up"
+    },
+    {
+      "source_slug": "inverted-guard",
+      "source_name": "인버티드 가드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/inverted-guard"
+    },
+    {
+      "source_slug": "john-wayne-sweep",
+      "source_name": "존 웨인 스윕",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/john-wayne-sweep"
+    },
+    {
+      "source_slug": "lumberjack-sweep",
+      "source_name": "럼버잭스윕",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/lumberjack-sweep"
+    },
+    {
+      "source_slug": "guard-recovery",
+      "source_name": "가드 리커버리",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/guard-recovery"
+    },
+    {
+      "source_slug": "hip-bump-sweep",
+      "source_name": "힙 범프 스윕",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/hip-bump-sweep"
+    },
+    {
+      "source_slug": "pendulum-sweep",
+      "source_name": "펜듈럼 스윕",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/pendulum-sweep"
+    },
+    {
+      "source_slug": "technical-stand-up",
+      "source_name": "테크니컬 스탠드업",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/technical-stand-up"
+    },
+    {
+      "source_slug": "waiter-sweep",
+      "source_name": "웨이터 스윕",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/waiter-sweep"
+    },
+    {
+      "source_slug": "shin-to-shin-guard",
+      "source_name": "신투신 가드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/shin-to-shin-guard"
+    },
+    {
+      "source_slug": "squid-guard",
+      "source_name": "스퀴드 가드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/squid-guard"
+    },
+    {
+      "source_slug": "guard",
+      "source_name": "가드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/guard"
+    },
+    {
+      "source_slug": "knee-cut",
+      "source_name": "니컷",
+      "source_category": "가드 패스",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/knee-cut"
+    },
+    {
+      "source_slug": "leg-drag",
+      "source_name": "레그 드래그",
+      "source_category": "가드 패스",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/leg-drag"
+    },
+    {
+      "source_slug": "toreando-pass",
+      "source_name": "토레안도 패스",
+      "source_category": "가드 패스",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/toreando-pass"
+    },
+    {
+      "source_slug": "long-step",
+      "source_name": "롱스텝",
+      "source_category": "가드 패스",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/long-step"
+    },
+    {
+      "source_slug": "pressure-pass",
+      "source_name": "압박 패스",
+      "source_category": "가드 패스",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/pressure-pass"
+    },
+    {
+      "source_slug": "stack-pass",
+      "source_name": "스택 패스",
+      "source_category": "가드 패스",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/stack-pass"
+    },
+    {
+      "source_slug": "leg-weave",
+      "source_name": "레그 위브",
+      "source_category": "가드 패스",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/leg-weave"
+    },
+    {
+      "source_slug": "over-under",
+      "source_name": "오버 언더",
+      "source_category": "가드 패스",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/over-under"
+    },
+    {
+      "source_slug": "smash-pass",
+      "source_name": "스매시 패스",
+      "source_category": "가드 패스",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/smash-pass"
+    },
+    {
+      "source_slug": "double-under",
+      "source_name": "더블 언더",
+      "source_category": "가드 패스",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/double-under"
+    },
+    {
+      "source_slug": "crazy-dog-pass",
+      "source_name": "크레이지 독 패스",
+      "source_category": "가드 패스",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/crazy-dog-pass"
+    },
+    {
+      "source_slug": "gator-roll",
+      "source_name": "게이터 롤",
+      "source_category": "가드 패스",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/gator-roll"
+    },
+    {
+      "source_slug": "knee-slide",
+      "source_name": "니슬라이드",
+      "source_category": "가드 패스",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/knee-slide"
+    },
+    {
+      "source_slug": "back-step",
+      "source_name": "백 스텝",
+      "source_category": "가드 패스",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/back-step"
+    },
+    {
+      "source_slug": "lapel-pass",
+      "source_name": "라펠 패스",
+      "source_category": "가드 패스",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/lapel-pass"
+    },
+    {
+      "source_slug": "shin-trap",
+      "source_name": "신 트랩",
+      "source_category": "가드 패스",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/shin-trap"
+    },
+    {
+      "source_slug": "surfer-pass",
+      "source_name": "서퍼 패스",
+      "source_category": "가드 패스",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/surfer-pass"
+    },
+    {
+      "source_slug": "duck-under",
+      "source_name": "덕 언더",
+      "source_category": "가드 패스",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/duck-under"
+    },
+    {
+      "source_slug": "wiper",
+      "source_name": "와이퍼",
+      "source_category": "가드 패스",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/wiper"
+    },
+    {
+      "source_slug": "x-pass",
+      "source_name": "엑스 패스",
+      "source_category": "가드 패스",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/x-pass"
+    },
+    {
+      "source_slug": "guard-pass",
+      "source_name": "가드 패스",
+      "source_category": "가드 패스",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/guard-pass"
+    },
+    {
+      "source_slug": "side-control",
+      "source_name": "사이드 컨트롤",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/side-control"
+    },
+    {
+      "source_slug": "mount",
+      "source_name": "마운트",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/mount"
+    },
+    {
+      "source_slug": "back-take",
+      "source_name": "백 테이크",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/back-take"
+    },
+    {
+      "source_slug": "back-control",
+      "source_name": "백 컨트롤",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/back-control"
+    },
+    {
+      "source_slug": "turtle",
+      "source_name": "터틀",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/turtle"
+    },
+    {
+      "source_slug": "knee-on-belly",
+      "source_name": "니온밸리",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/knee-on-belly"
+    },
+    {
+      "source_slug": "berimbolo",
+      "source_name": "베림볼로",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/berimbolo"
+    },
+    {
+      "source_slug": "headquarters-position",
+      "source_name": "헤드쿼터 포지션",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/headquarters-position"
+    },
+    {
+      "source_slug": "arm-drag",
+      "source_name": "암 드래그",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/arm-drag"
+    },
+    {
+      "source_slug": "under-hook",
+      "source_name": "언더훅",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/under-hook"
+    },
+    {
+      "source_slug": "front-headlock",
+      "source_name": "프론트 헤드락",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/front-headlock"
+    },
+    {
+      "source_slug": "fifty-fifty-position",
+      "source_name": "50 대 50 포지션",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/fifty-fifty-position"
+    },
+    {
+      "source_slug": "ashi-garami",
+      "source_name": "아시 가라미",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/ashi-garami"
+    },
+    {
+      "source_slug": "north-south-position",
+      "source_name": "남북 포지션",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/north-south-position"
+    },
+    {
+      "source_slug": "saddle-position",
+      "source_name": "새들 포지션",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/saddle-position"
+    },
+    {
+      "source_slug": "s-mount",
+      "source_name": "S 마운트",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/s-mount"
+    },
+    {
+      "source_slug": "truck",
+      "source_name": "트럭",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/truck"
+    },
+    {
+      "source_slug": "crucifix",
+      "source_name": "크루시픽스",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/crucifix"
+    },
+    {
+      "source_slug": "body-lock",
+      "source_name": "바디락",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/body-lock"
+    },
+    {
+      "source_slug": "cross-collar-control",
+      "source_name": "크로스 칼라 컨트롤",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/cross-collar-control"
+    },
+    {
+      "source_slug": "outside-ashi-garami",
+      "source_name": "아웃사이드 아시 가라미",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/outside-ashi-garami"
+    },
+    {
+      "source_slug": "two-on-one",
+      "source_name": "투 온 원",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/two-on-one"
+    },
+    {
+      "source_slug": "snap-down",
+      "source_name": "스냅 다운",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/snap-down"
+    },
+    {
+      "source_slug": "straight-collar-control",
+      "source_name": "스트레이트 칼라 컨트롤",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/straight-collar-control"
+    },
+    {
+      "source_slug": "crab-ride",
+      "source_name": "크랩 라이드",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/crab-ride"
+    },
+    {
+      "source_slug": "sprawl",
+      "source_name": "스프롤",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/sprawl"
+    },
+    {
+      "source_slug": "high-mount",
+      "source_name": "하이 마운트",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/high-mount"
+    },
+    {
+      "source_slug": "back-mount",
+      "source_name": "백 마운트",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/back-mount"
+    },
+    {
+      "source_slug": "honey-hole",
+      "source_name": "허니 홀",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/honey-hole"
+    },
+    {
+      "source_slug": "backside-fifty-fifty",
+      "source_name": "백사이드 50/50",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/backside-fifty-fifty"
+    },
+    {
+      "source_slug": "inside-ashi-garami",
+      "source_name": "인사이드 아시 가라미",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/inside-ashi-garami"
+    },
+    {
+      "source_slug": "lockdown",
+      "source_name": "락다운",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/lockdown"
+    },
+    {
+      "source_slug": "seat-belt-grip",
+      "source_name": "싯벨트 그립",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/seat-belt-grip"
+    },
+    {
+      "source_slug": "three-quarter-mount",
+      "source_name": "3/4 마운트",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/three-quarter-mount"
+    },
+    {
+      "source_slug": "escape",
+      "source_name": "이스케이프",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/escape"
+    },
+    {
+      "source_slug": "foot-work",
+      "source_name": "풋 워크",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/foot-work"
+    },
+    {
+      "source_slug": "entry",
+      "source_name": "엔트리",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/entry"
+    },
+    {
+      "source_slug": "kimura",
+      "source_name": "기무라",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/kimura"
+    },
+    {
+      "source_slug": "omoplata",
+      "source_name": "오모플라타",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/omoplata"
+    },
+    {
+      "source_slug": "armbar",
+      "source_name": "암바",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/armbar"
+    },
+    {
+      "source_slug": "triangle-choke",
+      "source_name": "트라이앵글 초크",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/triangle-choke"
+    },
+    {
+      "source_slug": "darce-choke",
+      "source_name": "다스 초크",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/darce-choke"
+    },
+    {
+      "source_slug": "knee-bar",
+      "source_name": "니바",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/knee-bar"
+    },
+    {
+      "source_slug": "guillotine-choke",
+      "source_name": "길로틴 초크",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/guillotine-choke"
+    },
+    {
+      "source_slug": "straight-ankle-lock",
+      "source_name": "스트레이트 앵클락",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/straight-ankle-lock"
+    },
+    {
+      "source_slug": "bow-and-arrow-choke",
+      "source_name": "보우앤로우 초크",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/bow-and-arrow-choke"
+    },
+    {
+      "source_slug": "heel-hook",
+      "source_name": "힐훅",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/heel-hook"
+    },
+    {
+      "source_slug": "rear-naked-choke",
+      "source_name": "리어 네이키드 초크",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/rear-naked-choke"
+    },
+    {
+      "source_slug": "toe-hold",
+      "source_name": "토홀드",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/toe-hold"
+    },
+    {
+      "source_slug": "loop-choke",
+      "source_name": "루프 초크",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/loop-choke"
+    },
+    {
+      "source_slug": "inside-heel-hook",
+      "source_name": "인사이드 힐훅",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/inside-heel-hook"
+    },
+    {
+      "source_slug": "arm-triangle",
+      "source_name": "암 트라이앵글",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/arm-triangle"
+    },
+    {
+      "source_slug": "cross-collar-choke",
+      "source_name": "크로스 칼라 초크",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/cross-collar-choke"
+    },
+    {
+      "source_slug": "foot-lock",
+      "source_name": "풋락",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/foot-lock"
+    },
+    {
+      "source_slug": "wrist-lock",
+      "source_name": "리스트 락",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/wrist-lock"
+    },
+    {
+      "source_slug": "ezekiel-choke",
+      "source_name": "이제키엘 초크",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/ezekiel-choke"
+    },
+    {
+      "source_slug": "banana-split",
+      "source_name": "바나나 스플릿",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/banana-split"
+    },
+    {
+      "source_slug": "baseball-bat-choke",
+      "source_name": "베이스볼 초크",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/baseball-bat-choke"
+    },
+    {
+      "source_slug": "calf-slicer",
+      "source_name": "카프 슬라이서",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/calf-slicer"
+    },
+    {
+      "source_slug": "americana",
+      "source_name": "아메리카나",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/americana"
+    },
+    {
+      "source_slug": "flying-armbar",
+      "source_name": "플라잉 암바",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/flying-armbar"
+    },
+    {
+      "source_slug": "tarikoplata",
+      "source_name": "타리코플라타",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/tarikoplata"
+    },
+    {
+      "source_slug": "anaconda-choke",
+      "source_name": "아나콘다 초크",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/anaconda-choke"
+    },
+    {
+      "source_slug": "baratoplata",
+      "source_name": "바라토플라타",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/baratoplata"
+    },
+    {
+      "source_slug": "brabo-choke",
+      "source_name": "브라보 초크",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/brabo-choke"
+    },
+    {
+      "source_slug": "clock-choke",
+      "source_name": "클락 초크",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/clock-choke"
+    },
+    {
+      "source_slug": "gogoplata",
+      "source_name": "고고플라타",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/gogoplata"
+    },
+    {
+      "source_slug": "north-south-choke",
+      "source_name": "노스 사우스 초크",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/north-south-choke"
+    },
+    {
+      "source_slug": "buggy-choke",
+      "source_name": "버기 초크",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/buggy-choke"
+    },
+    {
+      "source_slug": "canto-choke",
+      "source_name": "칸토 초크",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/canto-choke"
+    },
+    {
+      "source_slug": "key-lock",
+      "source_name": "키락",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/key-lock"
+    },
+    {
+      "source_slug": "twister",
+      "source_name": "트위스터",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/twister"
+    },
+    {
+      "source_slug": "aoki-lock",
+      "source_name": "아오키 락",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/aoki-lock"
+    },
+    {
+      "source_slug": "estima-lock",
+      "source_name": "에스티마 락",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/estima-lock"
+    },
+    {
+      "source_slug": "paper-cutter-choke",
+      "source_name": "페이퍼 커터 초크",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/paper-cutter-choke"
+    },
+    {
+      "source_slug": "peruvian-necktie",
+      "source_name": "페루비안 넥타이",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/peruvian-necktie"
+    },
+    {
+      "source_slug": "z-lock",
+      "source_name": "Z 락",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/z-lock"
+    },
+    {
+      "source_slug": "bicep-slicer",
+      "source_name": "바이셉 슬라이서",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/bicep-slicer"
+    },
+    {
+      "source_slug": "choi-bar",
+      "source_name": "초이바",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/choi-bar"
+    },
+    {
+      "source_slug": "outside-heel-hook",
+      "source_name": "아웃사이드 힐훅",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/outside-heel-hook"
+    },
+    {
+      "source_slug": "von-flue-choke",
+      "source_name": "폰 플루 초크",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/von-flue-choke"
+    },
+    {
+      "source_slug": "coyote-armbar",
+      "source_name": "코요테 암바",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/coyote-armbar"
+    },
+    {
+      "source_slug": "choke",
+      "source_name": "초크",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/choke"
+    },
+    {
+      "source_slug": "counter",
+      "source_name": "카운터",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/counter"
+    },
+    {
+      "source_slug": "submission",
+      "source_name": "서브미션",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/submission"
+    }
+  ]
+}

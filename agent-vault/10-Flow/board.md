@@ -65,6 +65,8 @@ tags:
 
 ## Doing
 
+- [[task-054-improve-technique-tree]] — 사용자승인운영DB반영완료: 신규110+연결110/총170,기존60·영상177불변. QA49+15·C2done·최신origin선택본buildPASS, 선택커밋/push·웹배포준비. 21후속·챔피언검토만 (2026-11-08).
+
 ## Review
 
 ## Done

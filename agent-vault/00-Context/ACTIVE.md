@@ -8,6 +8,8 @@ tags:
 
 ## 지금 상태
 
+🟡 **task-054(기술트리 목록·상세 개선과 챔피언 백데이터 검토) — 운영 DB 반영 완료, 선택 커밋·웹 배포 준비 (2026-11-08, doing / deploy_ready).** 사용자Codex운영승인으로연결테이블1개생성·기술110/연결110커밋,개인총170. 기존60행·영상177행전체불변/다른사용자행수불변·백업600검증. 실제SQL설명/0·1·N·타사용자404정상,관장분류채택. Reviewer PASS·QA49+15·C2 done/지적0,새origin55f8ad4기반선택19source동일·buildPASS. 무관한local12커밋/dirty보존,관리worktree선택commit/push/배포대기. 챔피언검토만·21후속확정. 운영HTTP/실화면·실기기미확인. 상세 [[task-054-improve-technique-tree]].
+
 ✅ **task-052(피드백 전체 목록·훈련 상태·입력 선택·결과 수정삭제) — 사용자 실기기 확인 및 작업 종료 (2026-11-06).** 사용자가 실기기에서 확인한 릴리스는 `20261106-113448-d690e6e3`이다. 2026-11-06 14:30에는 작업 이력과 `ACTIVE.md` 문서 커밋이 운영 릴리스 `20261106-143025-cdf167e7`로 자동 배포됐다. `RELEASE_RESULT ok`, 헬스체크 HTTP 200을 확인했으며, 피드백 화면 JS·CSS는 실기기 확인 버전과 일치한다. 상세 [[task-052-feedback-library-and-results]].
 
 ✅ **task-049(영상분석 상세 플레이어 썸네일) — 배포 완료 `18ce9ef`(릴리스 `20261008-122836-18ce9ef0`, RELEASE_RESULT ok, 프론트 한 파일·DB 무변경) (2026-10-08). 🟡 사용자 폰 확인 대기.** task-048 의 서버 저장본 `<video>` 에 poster 가 없어 모바일에서 재생 전 검은 칸이던 것을, 목록과 같은 `thumb_url` 을 재생 전 poster 로(cover) 보여 주고 재생 시작·seek 완료 후엔 contain 으로 돌린다. **썸네일을 `new Image()` 로 먼저 불러 성공했을 때만 poster 를 붙인다** — 실측(데스크톱 Chrome 147): 깨진 poster 는 첫 프레임 대신 칸 전체를 검게 만들어, 유튜브에서 영상이 지워져 썸네일이 404 가 되는 상황에서 poster 없던 배포본보다 퇴보하기 때문. judge R1/sonnet·데모 불필요 · Codex 보류(한도 미확인 R1) · Reviewer 2회 · Leader QA 111/0. 이 push 에 task-048 vault 기록 커밋 2개도 함께 나갔다.

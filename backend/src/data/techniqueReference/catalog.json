@@ -1,0 +1,6697 @@
+{
+  "version": 1,
+  "generated_from": {
+    "files": [
+      {
+        "path": "agent-vault/10-Flow/improvements/assets/IMP-0001-reference-index.json",
+        "sha256": "cddcf44ff15ca0833e2067477b65df0d631786ebab5c7643c83365062ceea260",
+        "present": true
+      },
+      {
+        "path": "agent-vault/10-Flow/improvements/assets/IMP-0002-reference-relations.json",
+        "sha256": "958f026e06f7634b4852221804c2ca540cc8db022c4dc0f6420bd808c92e5d8a",
+        "present": true
+      },
+      {
+        "path": "backend/src/data/techniqueReference/descriptions.json",
+        "sha256": "be49ff3555ed334ce4f268081456d438773a948d6e33e7f11796916cad614f24",
+        "present": true
+      }
+    ]
+  },
+  "items": [
+    {
+      "slug": "standing",
+      "name": "스탠딩",
+      "source_category": "스탠딩",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/standing",
+      "kind": "position",
+      "description": {
+        "summary": "두 사람이 서서 마주 보는 상태예요. 경기는 여기서 시작하고, 그립 싸움을 거쳐 넘어뜨리기로 넘어가요.",
+        "conditions": [
+          "경기를 막 시작했을 때"
+        ],
+        "principles": [
+          "그립 싸움이 여기서 시작돼요",
+          "넘어뜨리기를 시도하는 출발점이에요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "테이크다운"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [],
+        "outgoing": [
+          "single-leg-takedown",
+          "foot-sweep",
+          "sprawl",
+          "collar-drag",
+          "duck-under",
+          "ankle-pick",
+          "snap-down",
+          "double-leg-takedown",
+          "body-lock",
+          "under-hook",
+          "two-on-one"
+        ],
+        "related": []
+      }
+    },
+    {
+      "slug": "single-leg-takedown",
+      "name": "싱글 레그 테이크다운",
+      "source_category": "스탠딩",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/single-leg-takedown",
+      "kind": "technique",
+      "description": {
+        "summary": "서 있는 상대의 다리 하나를 잡아서 매트로 넘기는 기술이에요. 한쪽 다리에 손이 닿을 때 써요.",
+        "conditions": [
+          "상대 다리 한쪽을 잡을 수 있을 때"
+        ],
+        "principles": [
+          "잡은 다리를 놓치지 않고 통제한 채 바닥으로 데려가요",
+          "발목 쪽이든 허벅지 쪽이든 잡는 높이는 바꿀 수 있어요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "standing",
+          "collar-drag",
+          "technical-stand-up"
+        ],
+        "outgoing": [
+          "side-control",
+          "shin-trap"
+        ],
+        "related": [
+          "double-leg-takedown",
+          "ankle-pick",
+          "snap-down",
+          "arm-drag",
+          "sprawl"
+        ]
+      }
+    },
+    {
+      "slug": "collar-drag",
+      "name": "칼라 드래그",
+      "source_category": "스탠딩",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/collar-drag",
+      "kind": "technique",
+      "description": {
+        "summary": "잡고 있는 깃을 앞으로 끌어서 상대 중심을 흔드는 기술이에요. 무너진 틈에 더 좋은 자리를 가져갈 때 써요.",
+        "conditions": [
+          "상대 깃 그립을 잡았을 때"
+        ],
+        "principles": [
+          "깃을 앞으로 확 끌어 자세를 무너뜨려요",
+          "흔들린 틈으로 유리한 자리를 차지해요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "테이크다운",
+          "스윕",
+          "백 테이크"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "standing"
+        ],
+        "outgoing": [
+          "single-leg-takedown"
+        ],
+        "related": [
+          "arm-drag",
+          "two-on-one",
+          "back-take"
+        ]
+      }
+    },
+    {
+      "slug": "ankle-pick",
+      "name": "앵클 픽",
+      "source_category": "스탠딩",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/ankle-pick",
+      "kind": "technique",
+      "description": {
+        "summary": "상대 발목을 집어서 넘어뜨리는 테이크다운이에요. 기에서도 노기에서도 쓸 수 있어요.",
+        "conditions": [
+          "상대 발목에 손이 닿을 때"
+        ],
+        "principles": [
+          "손으로 발목을 붙잡아요",
+          "그립이나 머리 압박으로 중심을 먼저 흔들고 넘겨요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "standing"
+        ],
+        "outgoing": [
+          "side-control"
+        ],
+        "related": [
+          "snap-down",
+          "front-headlock",
+          "single-leg-takedown",
+          "collar-drag"
+        ]
+      }
+    },
+    {
+      "slug": "double-leg-takedown",
+      "name": "더블 레그 테이크다운",
+      "source_category": "스탠딩",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/double-leg-takedown",
+      "kind": "technique",
+      "description": {
+        "summary": "상대 두 다리를 한꺼번에 잡아서 넘기는 테이크다운이에요. 몸 높이를 낮출 수 있을 때 들어가요.",
+        "conditions": [
+          "레벨 체인지로 자세를 낮출 수 있을 때"
+        ],
+        "principles": [
+          "먼저 몸 높이를 낮춰요",
+          "골반과 다리 쪽으로 밀고 들어가 매트에 눕혀요"
+        ],
+        "mistakes": [
+          "무릎을 굽히지 않고 허리만 숙여 들어가면 높이가 안 낮아져요"
+        ],
+        "mistakes_basis": "coach_general",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "standing"
+        ],
+        "outgoing": [
+          "side-control"
+        ],
+        "related": [
+          "single-leg-takedown",
+          "sprawl",
+          "snap-down",
+          "body-lock"
+        ]
+      }
+    },
+    {
+      "slug": "inside-trip",
+      "name": "인사이드 트립",
+      "source_category": "스탠딩",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/inside-trip",
+      "kind": "technique",
+      "description": {
+        "summary": "붙어 있는 상태에서 상대 다리를 안쪽으로 걸어 넘기는 테이크다운이에요. 바디락이나 클린치가 잡혔을 때 써요.",
+        "conditions": [
+          "바디락이나 클린치로 붙어 있을 때"
+        ],
+        "principles": [
+          "상체부터 먼저 잡아 두어요",
+          "다리 안쪽으로 상대 다리를 걷거나 막아요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "body-lock"
+        ],
+        "outgoing": [
+          "side-control"
+        ],
+        "related": [
+          "under-hook",
+          "outside-trip",
+          "double-leg-takedown"
+        ]
+      }
+    },
+    {
+      "slug": "outside-trip",
+      "name": "아웃사이드 트립",
+      "source_category": "스탠딩",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/outside-trip",
+      "kind": "technique",
+      "description": {
+        "summary": "상대 다리를 바깥쪽에서 걸어 넘기는 테이크다운이에요. 상체를 잡고 있을 때 써요.",
+        "conditions": [
+          "상체를 통제하고 있을 때"
+        ],
+        "principles": [
+          "상체 통제와 다리 위치를 같이 맞춰요",
+          "바깥쪽에서 다리를 걸거나 걷어내요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "under-hook"
+        ],
+        "outgoing": [
+          "side-control"
+        ],
+        "related": [
+          "inside-trip",
+          "body-lock",
+          "foot-sweep"
+        ]
+      }
+    },
+    {
+      "slug": "break-fall",
+      "name": "낙법",
+      "source_category": "스탠딩",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/break-fall",
+      "kind": "technique",
+      "description": {
+        "summary": "넘어질 때 몸을 통제해서 충격을 줄이는 안전 기술이에요. 테이크다운이나 던지기를 연습하기 전에 먼저 익혀 둬요.",
+        "conditions": [
+          "테이크다운·던지기처럼 충격이 큰 동작을 연습할 때"
+        ],
+        "principles": [
+          "통제된 방식으로 넘어져요",
+          "충격을 줄이는 게 목적이에요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": "공격 기술이 아니라 안전 기술이지만 직접 몸으로 실행하는 동작이라 technique로 분류",
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [],
+        "outgoing": [],
+        "related": [
+          "foot-sweep",
+          "inside-trip",
+          "outside-trip",
+          "double-leg-takedown"
+        ]
+      }
+    },
+    {
+      "slug": "takedown",
+      "name": "테이크다운",
+      "source_category": "스탠딩",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/takedown",
+      "kind": "concept",
+      "description": {
+        "summary": "서 있는 상대를 바닥으로 데려가는 기술들을 통틀어 부르는 말이에요. 레슬링과 유도에서 온 것이 많고, 그라운드 공방을 여는 첫 단계예요.",
+        "conditions": [
+          "두 사람이 서 있을 때"
+        ],
+        "principles": [
+          "그라운드 공방이 여기서 시작돼요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "더블 레그 테이크다운",
+          "싱글 레그 테이크다운"
+        ],
+        "next_note": null,
+        "kind_note": "개별 동작이 아니라 서서 넘기는 기술 전체를 묶는 분류",
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [],
+        "outgoing": [],
+        "related": [
+          "body-lock"
+        ]
+      }
+    },
+    {
+      "slug": "open-guard",
+      "name": "오픈 가드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/open-guard",
+      "kind": "position",
+      "description": {
+        "summary": "바텀에서 다리를 잠그지 않고 거리로 상대를 다루는 가드예요. 여러 특수 가드가 여기서 갈라져 나와요.",
+        "conditions": [
+          "다리로 상대와 거리를 잡고 있을 때"
+        ],
+        "principles": [
+          "상대를 다리로 완전히 감싸지 않아요",
+          "다리로 거리를 조절하며 통제해요",
+          "여러 특수 가드의 바탕이에요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "guard-recovery"
+        ],
+        "outgoing": [
+          "lasso-guard",
+          "de-la-riva-guard",
+          "matrix",
+          "knee-cut",
+          "tripod-sweep",
+          "headquarters-position",
+          "toreando-pass",
+          "double-under",
+          "k-guard",
+          "x-pass",
+          "wiper",
+          "surfer-pass",
+          "over-under",
+          "fifty-fifty-position",
+          "deep-de-riva-guard"
+        ],
+        "related": [
+          "spider-guard",
+          "butterfly-guard",
+          "x-guard",
+          "collar-and-sleeve-guard"
+        ]
+      }
+    },
+    {
+      "slug": "closed-guard",
+      "name": "클로즈 가드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/closed-guard",
+      "kind": "position",
+      "description": {
+        "summary": "바텀에서 다리로 상대 허리를 감고 발목을 잠근 가드예요. 상대 움직임을 묶어 두고 스윕이나 서브미션을 노릴 때 써요.",
+        "conditions": [
+          "상대가 내 다리 사이에 있을 때"
+        ],
+        "principles": [
+          "다리로 허리를 감고 발목을 교차해 잠가요",
+          "상대가 마음대로 못 움직이게 해요"
+        ],
+        "mistakes": [
+          "다리만 잠그고 상대 자세를 무너뜨리지 않은 채 기다리기만 하는 경우가 많아요"
+        ],
+        "mistakes_basis": "coach_general",
+        "next": [
+          "스윕",
+          "서브미션"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [],
+        "outgoing": [
+          "scissors-sweep",
+          "omoplata",
+          "kimura",
+          "flower-sweep",
+          "rubber-guard",
+          "cross-collar-control",
+          "hip-bump-sweep",
+          "arm-drag",
+          "lumberjack-sweep",
+          "pendulum-sweep",
+          "guillotine-choke"
+        ],
+        "related": [
+          "triangle-choke",
+          "armbar"
+        ]
+      }
+    },
+    {
+      "slug": "half-guard",
+      "name": "하프 가드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/half-guard",
+      "kind": "position",
+      "description": {
+        "summary": "바텀에서 상대 다리 하나만 다리로 묶는, 자주 나오는 중간 자세예요. 바텀은 스윕을, 탑은 패스를 노려요.",
+        "conditions": [
+          "상대 다리 하나만 내 다리로 감쌌을 때"
+        ],
+        "principles": [
+          "바텀은 주로 스윕을 노려요",
+          "탑은 주로 패스를 노려요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "스윕",
+          "패스"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [],
+        "outgoing": [
+          "kimura",
+          "knee-shield",
+          "deep-half-guard",
+          "lockdown",
+          "coyote-guard",
+          "smash-pass",
+          "under-hook",
+          "darce-choke",
+          "guillotine-choke"
+        ],
+        "related": [
+          "z-guard"
+        ]
+      }
+    },
+    {
+      "slug": "de-la-riva-guard",
+      "name": "델라히바 가드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/de-la-riva-guard",
+      "kind": "position",
+      "description": {
+        "summary": "한 발을 상대 다리에 걸고 소매나 깃을 잡는 오픈 가드예요. 상대가 서 있을 때 스윕이나 백 테이크로 이어 가요.",
+        "conditions": [
+          "오픈 가드에서 상대가 서 있을 때"
+        ],
+        "principles": [
+          "한 발로 상대 다리를 걸어 둬요",
+          "소매나 깃 그립으로 상대를 다뤄요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "스윕",
+          "백 테이크"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "open-guard"
+        ],
+        "outgoing": [
+          "berimbolo",
+          "matrix",
+          "tripod-sweep",
+          "kiss-of-dragon",
+          "inverted-guard",
+          "reverse-de-riva-guard"
+        ],
+        "related": [
+          "deep-de-riva-guard",
+          "x-guard",
+          "single-leg-x-guard"
+        ]
+      }
+    },
+    {
+      "slug": "single-leg-x-guard",
+      "name": "싱글 레그 X 가드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/single-leg-x-guard",
+      "kind": "position",
+      "description": {
+        "summary": "상대 다리 한쪽에 제어를 몰아 주는 X 가드 변형이에요. 중심을 무너뜨려 스윕하거나 하체 공격으로 들어갈 때 써요.",
+        "conditions": [
+          "상대 다리 한쪽을 내 다리로 묶었을 때"
+        ],
+        "principles": [
+          "한 다리에 제어를 집중해요",
+          "상대 중심을 무너뜨려요",
+          "하체 공격으로 들어갈 길을 만들어요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "스윕",
+          "하체 공격"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "x-guard",
+          "shin-to-shin-guard"
+        ],
+        "outgoing": [
+          "straight-ankle-lock",
+          "backside-fifty-fifty",
+          "outside-ashi-garami"
+        ],
+        "related": [
+          "ashi-garami",
+          "k-guard"
+        ]
+      }
+    },
+    {
+      "slug": "sweep",
+      "name": "스윕",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/sweep",
+      "kind": "concept",
+      "description": {
+        "summary": "바텀에서 상대 중심을 무너뜨려 위아래를 뒤집는 기술들을 통틀어 부르는 말이에요. 가드에 있을 때 불리한 자리를 유리한 자리로 바꾸려고 써요.",
+        "conditions": [
+          "가드(바텀)에 있을 때"
+        ],
+        "principles": [
+          "상대 균형을 무너뜨려요",
+          "아래 자리에서 위 자리로 바꿔요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": "개별 기술이 아니라 바텀에서 탑으로 뒤집는 기술 전체를 묶는 분류",
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "knee-shield",
+          "x-guard",
+          "lockdown",
+          "squid-guard",
+          "coyote-guard"
+        ],
+        "outgoing": [
+          "side-control",
+          "knee-on-belly",
+          "mount"
+        ],
+        "related": [
+          "scissors-sweep",
+          "hip-bump-sweep",
+          "flower-sweep",
+          "tripod-sweep",
+          "kimura-sweep",
+          "balloon-sweep"
+        ]
+      }
+    },
+    {
+      "slug": "knee-shield",
+      "name": "니실드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/knee-shield",
+      "kind": "position",
+      "description": {
+        "summary": "무릎을 세워 방패처럼 쓰는 하프 가드 변형이에요. 상대가 체중을 실어 누르러 올 때 막아 두고 스윕이나 다른 자세로 넘어가요.",
+        "conditions": [
+          "하프 가드에서 상대가 눌러 올 때"
+        ],
+        "principles": [
+          "무릎으로 벽을 세워요",
+          "상대 체중이 내 몸통에 실리지 않게 막아요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "스윕",
+          "트랜지션"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "half-guard"
+        ],
+        "outgoing": [
+          "sweep",
+          "crazy-dog-pass",
+          "guard-recovery"
+        ],
+        "related": [
+          "z-guard",
+          "under-hook",
+          "deep-half-guard",
+          "lockdown"
+        ]
+      }
+    },
+    {
+      "slug": "butterfly-guard",
+      "name": "버터플라이 가드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/butterfly-guard",
+      "kind": "position",
+      "description": {
+        "summary": "두 발을 상대 허벅지 안쪽에 거는 오픈 가드예요. 상대가 앞에 앉거나 무릎 꿇고 가까이 있을 때 들어 올려 스윕해요.",
+        "conditions": [
+          "상대가 앞에 앉거나 무릎 꿇고 가까이 있을 때"
+        ],
+        "principles": [
+          "양발을 허벅지 안쪽에 걸어요",
+          "지렛대로 상대를 들어 올려요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "스윕"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [],
+        "outgoing": [
+          "kimura-sweep",
+          "arm-drag",
+          "loop-choke"
+        ],
+        "related": [
+          "x-guard",
+          "sit-up-guard",
+          "half-guard"
+        ]
+      }
+    },
+    {
+      "slug": "lasso-guard",
+      "name": "라쏘 가드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/lasso-guard",
+      "kind": "position",
+      "description": {
+        "summary": "다리로 상대 팔을 감고 소매를 잡아 묶는 기 가드예요. 스파이더 가드와 비슷하게 제어하지만 공격 갈래는 달라요.",
+        "conditions": [
+          "도복 소매 그립을 잡았을 때"
+        ],
+        "principles": [
+          "다리로 상대 팔을 휘감아요",
+          "소매 그립으로 움직임을 막아요",
+          "스파이더 가드와 제어는 비슷하지만 공격 선택지가 달라요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "스윕",
+          "서브미션"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "open-guard"
+        ],
+        "outgoing": [
+          "omoplata",
+          "bicep-slicer"
+        ],
+        "related": [
+          "spider-guard",
+          "de-la-riva-guard",
+          "x-guard",
+          "collar-and-sleeve-guard"
+        ]
+      }
+    },
+    {
+      "slug": "k-guard",
+      "name": "K 가드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/k-guard",
+      "kind": "position",
+      "description": {
+        "summary": "다리를 가위처럼 써서 상대 몸통과 다리를 함께 잡아 두는 현대식 오픈 가드예요. 레그락이나 백 테이크, 매트릭스로 이어 갈 때 써요.",
+        "conditions": [
+          "오픈 가드에서 들어갈 때"
+        ],
+        "principles": [
+          "다리를 가위 모양으로 써서 몸통과 다리를 같이 통제해요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "레그락",
+          "백 테이크",
+          "매트릭스"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "open-guard"
+        ],
+        "outgoing": [
+          "ashi-garami",
+          "z-lock"
+        ],
+        "related": [
+          "matrix",
+          "single-leg-x-guard",
+          "inside-heel-hook",
+          "inverted-guard"
+        ]
+      }
+    },
+    {
+      "slug": "x-guard",
+      "name": "X 가드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/x-guard",
+      "kind": "position",
+      "description": {
+        "summary": "아래에 깔린 채 내 두 다리를 엇갈려 상대 다리 하나에 거는 가드예요. 상대 다리가 내 다리 사이로 들어와 있을 때 잡을 수 있어요.",
+        "conditions": [
+          "상대 다리 하나가 내 다리 사이에 들어와 있어요"
+        ],
+        "principles": [
+          "엇갈린 두 다리로 상대 다리 하나를 묶어 둬요",
+          "그 다리를 묶은 채 스윕을 노려요",
+          "다리 공격으로도 넘어갈 수 있어요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "스윕",
+          "다리 공격"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [],
+        "outgoing": [
+          "sweep",
+          "single-leg-x-guard"
+        ],
+        "related": [
+          "butterfly-guard",
+          "shin-to-shin-guard",
+          "de-la-riva-guard",
+          "technical-stand-up"
+        ]
+      }
+    },
+    {
+      "slug": "tripod-sweep",
+      "name": "트라이팟 스윕",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/tripod-sweep",
+      "kind": "technique",
+      "description": {
+        "summary": "아래에서 상대 다리를 잡고 균형을 무너뜨려 매트에 눕히는 기본 스윕이에요. 입문 때 많이 배우고, 여러 가드에서 시도할 수 있어요.",
+        "conditions": [
+          "상대 다리를 잡을 수 있어요",
+          "한 가드에 묶이지 않고 여러 가드에서 걸 수 있어요"
+        ],
+        "principles": [
+          "상대 다리를 붙들어 버티는 축을 없애요",
+          "균형이 깨진 방향으로 상대를 눕혀요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "de-la-riva-guard",
+          "open-guard"
+        ],
+        "outgoing": [
+          "knee-on-belly"
+        ],
+        "related": [
+          "lumberjack-sweep",
+          "single-leg-x-guard"
+        ]
+      }
+    },
+    {
+      "slug": "deep-half-guard",
+      "name": "딥 하프 가드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/deep-half-guard",
+      "kind": "position",
+      "description": {
+        "summary": "하프 가드에서 상대 무게중심 밑까지 깊이 파고든 자세예요. 상대 체중을 받치는 자리를 차지해서 스윕을 노릴 때 써요.",
+        "conditions": [
+          "하프 가드에서 상대 중심 아래까지 들어가 있어요"
+        ],
+        "principles": [
+          "상대 체중이 쏠리는 방향을 내가 정해요",
+          "상대 다리와 힙을 잡아 균형을 흔들어요",
+          "이 자리에서는 스윕 선택지가 많아요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "스윕"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "half-guard"
+        ],
+        "outgoing": [
+          "balloon-sweep",
+          "waiter-guard"
+        ],
+        "related": [
+          "waiter-sweep",
+          "lockdown"
+        ]
+      }
+    },
+    {
+      "slug": "reverse-de-riva-guard",
+      "name": "리버스 델라히바 가드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/reverse-de-riva-guard",
+      "kind": "position",
+      "description": {
+        "summary": "델라히바와 반대 방향으로 다리를 걸어 상대 다리를 잡는 가드예요. 일부 스윕과 백 테이크로 넘어갈 때 자주 써요.",
+        "conditions": [
+          "델라히바와 반대쪽으로 다리를 걸어 두고 있어요"
+        ],
+        "principles": [
+          "걸어 둔 다리 방향 덕분에 특정 스윕이 쉬워져요",
+          "상대 등 쪽으로 돌아 들어가는 길이 열려요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "스윕",
+          "백 테이크"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "de-la-riva-guard"
+        ],
+        "outgoing": [
+          "kiss-of-dragon"
+        ],
+        "related": [
+          "berimbolo",
+          "deep-de-riva-guard",
+          "inverted-guard"
+        ]
+      }
+    },
+    {
+      "slug": "spider-guard",
+      "name": "스파이더 가드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/spider-guard",
+      "kind": "position",
+      "description": {
+        "summary": "상대 소매를 잡고 두 발을 상대 팔 안쪽에 대서 거리를 두는 가드예요. 팔다리가 긴 사람에게 특히 잘 맞아요.",
+        "conditions": [
+          "상대 소매 그립을 잡았어요",
+          "발을 상대 팔 안쪽에 올릴 수 있어요"
+        ],
+        "principles": [
+          "발로 거리를 유지하면서 상대 균형을 흔들어요",
+          "잡은 소매와 발로 상대 팔을 묶어 둬요",
+          "흔든 틈에 스윕이나 서브미션으로 넘어가요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "스윕",
+          "서브미션"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [],
+        "outgoing": [
+          "triangle-choke"
+        ],
+        "related": [
+          "lasso-guard",
+          "collar-and-sleeve-guard",
+          "de-la-riva-guard",
+          "single-leg-x-guard"
+        ]
+      }
+    },
+    {
+      "slug": "worm-guard",
+      "name": "웜 가드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/worm-guard",
+      "kind": "position",
+      "description": {
+        "summary": "상대 라펠을 빼서 내 다리에 감아 쓰는 도복 가드예요. 라펠 가드에서 들어가는 고급 변형이라 기본 라펠 가드부터 익히는 게 좋아요.",
+        "conditions": [
+          "라펠 가드에서 시작해요",
+          "상대 라펠을 내 다리에 감을 수 있어요"
+        ],
+        "principles": [
+          "다리에 감은 라펠로 상대 움직임을 크게 묶어요",
+          "묶어 둔 상태에서 스윕과 서브미션을 함께 노려요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "라펠 가드",
+          "스윕",
+          "서브미션"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "lapel-guard"
+        ],
+        "outgoing": [
+          "back-take",
+          "lapel-pass"
+        ],
+        "related": [
+          "squid-guard"
+        ]
+      }
+    },
+    {
+      "slug": "balloon-sweep",
+      "name": "벌룬 스윕",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/balloon-sweep",
+      "kind": "technique",
+      "description": {
+        "summary": "아래에서 다리로 상대를 들어 올려 내 머리 위쪽으로 넘기는 스윕이에요. 상대가 서 있거나 무릎을 세웠을 때 노려요.",
+        "conditions": [
+          "오픈 가드에서 상대가 서 있거나 무릎을 세웠어요",
+          "클로즈 가드 변형으로도 걸 수 있어요"
+        ],
+        "principles": [
+          "다리로 상대를 띄워서 버티는 힘을 빼요",
+          "앞쪽, 내 머리 위 방향으로 넘겨요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "오픈 가드",
+          "클로즈 가드"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "deep-half-guard"
+        ],
+        "outgoing": [
+          "mount"
+        ],
+        "related": [
+          "waiter-guard",
+          "waiter-sweep",
+          "half-guard"
+        ]
+      }
+    },
+    {
+      "slug": "coyote-guard",
+      "name": "코요테 가드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/coyote-guard",
+      "kind": "position",
+      "description": {
+        "summary": "하프 가드에서 밑에서 잡은 언더훅을 중심으로 운영하는 방식이에요. 옆으로 몸을 세워 도그파이트를 만든 뒤 스윕이나 백을 노려요.",
+        "conditions": [
+          "하프 가드에서 언더훅을 잡았어요"
+        ],
+        "principles": [
+          "언더훅을 축으로 움직여요",
+          "옆으로 일어나 도그파이트 자세를 만들어요",
+          "그 자세에서 스윕하거나 등을 잡아요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "하프 가드",
+          "도그파이트",
+          "스윕",
+          "백 테이크"
+        ],
+        "next_note": null,
+        "kind_note": "하프 가드 안의 하위 체계로 소개돼요. 독립 가드라기보다 하프 가드 변형으로 보는 게 맞아요.",
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "half-guard"
+        ],
+        "outgoing": [
+          "sweep",
+          "coyote-armbar"
+        ],
+        "related": [
+          "under-hook",
+          "lockdown",
+          "deep-half-guard"
+        ]
+      }
+    },
+    {
+      "slug": "kimura-sweep",
+      "name": "기무라 스윕",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/kimura-sweep",
+      "kind": "technique",
+      "description": {
+        "summary": "아래에서 기무라를 걸 것처럼 위협해서 상대 균형을 무너뜨리고 위아래를 바꾸는 스윕이에요. 클로즈 가드와 하프 가드에서 두루 써요.",
+        "conditions": [
+          "클로즈 가드나 하프 가드에 있어요",
+          "기무라 그립으로 위협할 수 있어요"
+        ],
+        "principles": [
+          "관절기 위협으로 상대가 버티는 자세를 무너뜨려요",
+          "무너진 틈에 위아래를 바꿔요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "기무라",
+          "클로즈 가드",
+          "하프 가드"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "butterfly-guard",
+          "kimura"
+        ],
+        "outgoing": [
+          "mount"
+        ],
+        "related": [
+          "closed-guard",
+          "hip-bump-sweep",
+          "back-take"
+        ]
+      }
+    },
+    {
+      "slug": "kiss-of-dragon",
+      "name": "키스 오브 드래곤",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/kiss-of-dragon",
+      "kind": "technique",
+      "description": {
+        "summary": "오픈 가드, 주로 리버스 델라히바에서 상대 밑으로 몸을 뒤집어 들어가 등을 잡는 고급 백 테이크예요.",
+        "conditions": [
+          "오픈 가드에 있어요, 주로 리버스 델라히바에서 시작해요"
+        ],
+        "principles": [
+          "상대 밑으로 몸을 뒤집어 파고들어요",
+          "훅을 먼저 걸고 나서 백 컨트롤로 넘어가요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "리버스 델라히바 가드",
+          "백 컨트롤"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "de-la-riva-guard",
+          "reverse-de-riva-guard"
+        ],
+        "outgoing": [
+          "back-take"
+        ],
+        "related": [
+          "berimbolo",
+          "deep-de-riva-guard"
+        ]
+      }
+    },
+    {
+      "slug": "scissors-sweep",
+      "name": "시저스 스윕",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/scissors-sweep",
+      "kind": "technique",
+      "description": {
+        "summary": "클로즈 가드에서 두 다리를 가위처럼 엇갈려 상대를 넘기는 기본 스윕이에요. 입문자도 익히기 쉬워요.",
+        "conditions": [
+          "클로즈 가드에 있어요"
+        ],
+        "principles": [
+          "두 다리를 서로 반대로 움직여 상대 균형을 깨요",
+          "넘긴 뒤 바로 위 포지션을 잡아요"
+        ],
+        "mistakes": [
+          "상대 균형을 먼저 흔들지 않고 다리만 가위질하면 잘 안 넘어가요"
+        ],
+        "mistakes_basis": "coach_general",
+        "next": [
+          "마운트",
+          "사이드 컨트롤"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "closed-guard"
+        ],
+        "outgoing": [
+          "mount"
+        ],
+        "related": [
+          "hip-bump-sweep",
+          "flower-sweep",
+          "kimura-sweep"
+        ]
+      }
+    },
+    {
+      "slug": "sit-up-guard",
+      "name": "싯업 가드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/sit-up-guard",
+      "kind": "position",
+      "description": {
+        "summary": "등을 매트에 대지 않고 상체를 세워 앉은 채로 운영하는 오픈 가드예요. 다른 가드나 공격으로 옮겨 가는 출발점으로 써요.",
+        "conditions": [
+          "상체를 세우고 앉아 있어요"
+        ],
+        "principles": [
+          "앉은 자세에서 다른 가드로 갈아타기 쉬워요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "버터플라이 가드",
+          "싱글 레그 X"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [],
+        "outgoing": [
+          "wrestle-up"
+        ],
+        "related": [
+          "butterfly-guard",
+          "single-leg-x-guard",
+          "arm-drag",
+          "technical-stand-up"
+        ]
+      }
+    },
+    {
+      "slug": "flower-sweep",
+      "name": "플라워 스윕",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/flower-sweep",
+      "kind": "technique",
+      "description": {
+        "summary": "클로즈 가드에서 상대 팔과 같은 쪽 다리를 잡고 힙을 흔들어 넘기는 기본 스윕이에요. 넘기면 마운트로 끝내요.",
+        "conditions": [
+          "클로즈 가드에 있어요",
+          "상대 소매나 팔, 그리고 같은 쪽 다리를 잡았어요"
+        ],
+        "principles": [
+          "힙을 시계추처럼 흔들어 반동으로 균형을 깨요",
+          "넘긴 뒤 마운트로 올라가요"
+        ],
+        "mistakes": [
+          "팔과 같은 쪽 다리를 확실히 잡기 전에 흔들면 상대가 버텨요"
+        ],
+        "mistakes_basis": "coach_general",
+        "next": [
+          "마운트"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "closed-guard"
+        ],
+        "outgoing": [
+          "mount"
+        ],
+        "related": [
+          "pendulum-sweep",
+          "scissors-sweep",
+          "armbar",
+          "omoplata"
+        ]
+      }
+    },
+    {
+      "slug": "matrix",
+      "name": "매트릭스",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/matrix",
+      "kind": "technique",
+      "description": {
+        "summary": "다리를 엮어 상대 골반을 묶은 뒤 등으로 넘어가는 고급 백 테이크 방식이에요.",
+        "conditions": [],
+        "principles": [
+          "다리를 엮어 상대 골반부터 묶어요",
+          "골반을 묶은 다음 백 컨트롤로 옮겨요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "백 컨트롤"
+        ],
+        "next_note": null,
+        "kind_note": "단일 동작보다 백 테이크 체계로 소개돼요. 시작 조건은 메모에 없어요.",
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "de-la-riva-guard",
+          "open-guard"
+        ],
+        "outgoing": [
+          "back-take"
+        ],
+        "related": [
+          "berimbolo",
+          "inverted-guard",
+          "k-guard"
+        ]
+      }
+    },
+    {
+      "slug": "rubber-guard",
+      "name": "러버 가드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/rubber-guard",
+      "kind": "position",
+      "description": {
+        "summary": "아래에서 한 다리를 높이 올려 상대 상체 자세를 무너뜨리는 가드예요. 몸이 유연해야 쓸 수 있어요.",
+        "conditions": [
+          "몸이 충분히 유연해요"
+        ],
+        "principles": [
+          "높이 올린 다리로 상대 상체를 무너뜨려요",
+          "무너진 상대를 묶고 서브미션 기회를 만들어요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "closed-guard"
+        ],
+        "outgoing": [
+          "gogoplata",
+          "omoplata"
+        ],
+        "related": [
+          "triangle-choke",
+          "lockdown"
+        ]
+      }
+    },
+    {
+      "slug": "foot-sweep",
+      "name": "풋 스윕",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/foot-sweep",
+      "kind": "technique",
+      "description": {
+        "summary": "서서 맞붙었을 때 상대 윗몸을 잡고 발을 쓸어 넘기는 테이크다운이에요.",
+        "conditions": [
+          "서서 맞잡고 있어요"
+        ],
+        "principles": [
+          "상대 윗몸을 잡아 움직임을 통제해요",
+          "발을 쓸어 중심을 빼앗아요"
+        ],
+        "mistakes": [
+          "윗몸을 먼저 흔들지 않고 발만 차면 상대가 버텨요"
+        ],
+        "mistakes_basis": "coach_general",
+        "next": [],
+        "next_note": null,
+        "kind_note": "원본 분류는 가드·스윕이지만 실제로는 선 자세 테이크다운이에요.",
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "standing"
+        ],
+        "outgoing": [
+          "side-control"
+        ],
+        "related": [
+          "single-leg-takedown",
+          "inside-trip",
+          "outside-trip",
+          "break-fall"
+        ]
+      }
+    },
+    {
+      "slug": "z-guard",
+      "name": "Z 가드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/z-guard",
+      "kind": "position",
+      "description": {
+        "summary": "하프 가드에서 위쪽 무릎을 방패처럼 세워 상대를 막는 변형이에요(니 실드라고도 해요). 상대가 체중을 실어 들어올 때 거리를 지키려고 써요.",
+        "conditions": [
+          "상대가 몸을 실어 누르며 들어오고 있어요"
+        ],
+        "principles": [
+          "위쪽 무릎을 세워 상대가 가까이 오지 못하게 막아요",
+          "막는 동안 반격할 틈을 봐요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [],
+        "outgoing": [
+          "kimura",
+          "choi-bar"
+        ],
+        "related": [
+          "knee-shield",
+          "half-guard",
+          "deep-half-guard",
+          "lockdown",
+          "guard-recovery"
+        ]
+      }
+    },
+    {
+      "slug": "collar-and-sleeve-guard",
+      "name": "칼라 앤 슬리브 가드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/collar-and-sleeve-guard",
+      "kind": "position",
+      "description": {
+        "summary": "상대 깃 하나와 소매 하나를 잡는 기본 도복 오픈 가드예요. 구조가 단순해서 여러 공격의 출발점으로 쓰기 좋아요.",
+        "conditions": [
+          "깃 하나, 소매 하나를 각각 잡았어요"
+        ],
+        "principles": [
+          "두 그립으로 상대 움직임을 통제해요",
+          "단순한 그립에서 여러 공격으로 갈라져요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [],
+        "outgoing": [
+          "omoplata"
+        ],
+        "related": [
+          "spider-guard",
+          "lasso-guard",
+          "open-guard",
+          "triangle-choke"
+        ]
+      }
+    },
+    {
+      "slug": "deep-de-riva-guard",
+      "name": "딥 델라히바 가드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/deep-de-riva-guard",
+      "kind": "position",
+      "description": {
+        "summary": "델라히바에서 상대 무게중심 밑으로 더 깊이 들어간 가드예요. 통제를 더 강하게 하고 스윕이나 백 테이크로 넘어갈 때 써요.",
+        "conditions": [],
+        "principles": [
+          "상대 중심 아래로 더 깊이 파고들어요",
+          "깊이 들어간 만큼 통제가 강해져요",
+          "스윕과 백 테이크의 발판이 돼요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "델라히바 가드",
+          "스윕",
+          "백 테이크"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "open-guard"
+        ],
+        "outgoing": [
+          "berimbolo"
+        ],
+        "related": [
+          "de-la-riva-guard",
+          "reverse-de-riva-guard",
+          "inverted-guard"
+        ]
+      }
+    },
+    {
+      "slug": "lapel-guard",
+      "name": "라펠 가드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/lapel-guard",
+      "kind": "position",
+      "description": {
+        "summary": "상대 도복 라펠을 이용해 움직임을 묶는 가드예요. 도복이 있어야 하고, 스윕 운영과 엮어서 써요.",
+        "conditions": [
+          "상대 도복의 긴 깃(라펠)을 쓸 수 있어요"
+        ],
+        "principles": [
+          "라펠로 상대 움직임을 묶어요",
+          "묶어 둔 틈에 공격 기회를 만들어요",
+          "스윕 전략과 연결해요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "스윕"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [],
+        "outgoing": [
+          "worm-guard"
+        ],
+        "related": [
+          "squid-guard",
+          "lapel-pass",
+          "collar-and-sleeve-guard"
+        ]
+      }
+    },
+    {
+      "slug": "octopus-guard",
+      "name": "옥토퍼스 가드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/octopus-guard",
+      "kind": "position",
+      "description": {
+        "summary": "깔린 상태에서 상대 옆으로 일어나 앉고 한 팔을 상대 등 너머로 감는 가드예요. 하프 가드나 사이드 컨트롤 밑에서 반격을 시작할 때 써요.",
+        "conditions": [
+          "하프 가드나 사이드 컨트롤 밑에 있어요"
+        ],
+        "principles": [
+          "상대 옆쪽으로 앉아 올라와요",
+          "한 팔을 상대 등 너머로 감아요",
+          "그 각도에서 공격을 시작해요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "스윕",
+          "백 테이크",
+          "프론트 헤드락"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "arm-drag"
+        ],
+        "outgoing": [
+          "back-take"
+        ],
+        "related": [
+          "closed-guard",
+          "sit-up-guard"
+        ]
+      }
+    },
+    {
+      "slug": "waiter-guard",
+      "name": "웨이터 가드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/waiter-guard",
+      "kind": "position",
+      "description": {
+        "summary": "바닥에서 쓰는 하위 가드예요. 쟁반을 받쳐 든 웨이터 같은 모양이라 이 이름이 붙었고, 스윕을 노릴 때 준비 자세로 써요.",
+        "conditions": [],
+        "principles": [
+          "상대를 붙잡아 두고 더 좋은 자리로 옮길 틈을 만들어요",
+          "몇몇 스윕으로 가기 전의 준비 자세로 써요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "deep-half-guard"
+        ],
+        "outgoing": [
+          "waiter-sweep"
+        ],
+        "related": [
+          "half-guard",
+          "balloon-sweep"
+        ]
+      }
+    },
+    {
+      "slug": "wrestle-up",
+      "name": "레슬업",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/wrestle-up",
+      "kind": "technique",
+      "description": {
+        "summary": "가드 아래에서 계속 버티지 않고 레슬링 자세로 일어나는 전환 동작이에요. 바닥 싸움 대신 위로 올라가고 싶을 때 써요.",
+        "conditions": [
+          "가드 포지션에 있을 때"
+        ],
+        "principles": [
+          "바닥 자세를 버리고 일어나 레슬링 자세를 만들어요",
+          "일어난 뒤 다리 공격·바디락·상위 공격으로 이어 가요"
+        ],
+        "mistakes": [
+          "일어나는 동안 상대를 잡고 있던 손을 놓으면 상대가 먼저 눌러 올 수 있어요"
+        ],
+        "mistakes_basis": "coach_general",
+        "next": [
+          "싱글 레그",
+          "바디락"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "sit-up-guard"
+        ],
+        "outgoing": [
+          "technical-stand-up"
+        ],
+        "related": [
+          "single-leg-takedown",
+          "x-guard",
+          "single-leg-x-guard",
+          "de-la-riva-guard"
+        ]
+      }
+    },
+    {
+      "slug": "inverted-guard",
+      "name": "인버티드 가드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/inverted-guard",
+      "kind": "position",
+      "description": {
+        "summary": "몸을 거꾸로 뒤집은 채 다리로 상대를 붙잡는 현대식 하위 가드예요. 평소와 다른 공격 각도를 만들고 싶을 때 써요.",
+        "conditions": [
+          "유연성과 몸 쓰는 기동성이 많이 필요해요"
+        ],
+        "principles": [
+          "뒤집힌 자세에서도 다리로 상대를 계속 다뤄요",
+          "흔하지 않은 각도에서 공격 기회가 생겨요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "de-la-riva-guard"
+        ],
+        "outgoing": [
+          "berimbolo"
+        ],
+        "related": [
+          "reverse-de-riva-guard",
+          "matrix",
+          "k-guard",
+          "deep-de-riva-guard"
+        ]
+      }
+    },
+    {
+      "slug": "john-wayne-sweep",
+      "name": "존 웨인 스윕",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/john-wayne-sweep",
+      "kind": "technique",
+      "description": {
+        "summary": "하프 가드 아래에서 상대를 뒤집는 스윕이에요. 하프 가드 바닥에 깔렸을 때 위로 올라가는 길로 써요.",
+        "conditions": [
+          "하프 가드 바닥 쪽에 있을 때"
+        ],
+        "principles": [
+          "엉덩이 움직임과 지렛대로 상대 균형을 무너뜨려요",
+          "뒤집은 다음 상위 포지션을 바로 잡아요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "under-hook"
+        ],
+        "outgoing": [
+          "side-control"
+        ],
+        "related": [
+          "half-guard",
+          "lockdown",
+          "knee-shield"
+        ]
+      }
+    },
+    {
+      "slug": "lumberjack-sweep",
+      "name": "럼버잭스윕",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/lumberjack-sweep",
+      "kind": "technique",
+      "description": {
+        "summary": "일어선 상대를 뒤로 넘어뜨리는 하위 스윕이에요. 주로 클로즈드 가드 안에서 상대가 일어나 가드를 열려 할 때 노려요.",
+        "conditions": [
+          "상대가 클로즈드 가드 안에서 일어나 가드를 풀려 할 때"
+        ],
+        "principles": [
+          "상대의 두 발목이나 뒤꿈치를 잡아요",
+          "엉덩이로 상대 무릎을 밀어 뒤로 쓰러뜨려요"
+        ],
+        "mistakes": [
+          "발목을 잡기 전에 엉덩이부터 밀면 상대가 한 발 물러나 버틸 수 있어요"
+        ],
+        "mistakes_basis": "coach_general",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "closed-guard"
+        ],
+        "outgoing": [
+          "mount"
+        ],
+        "related": [
+          "tripod-sweep",
+          "ankle-pick",
+          "open-guard"
+        ]
+      }
+    },
+    {
+      "slug": "guard-recovery",
+      "name": "가드 리커버리",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/guard-recovery",
+      "kind": "concept",
+      "description": {
+        "summary": "패스를 허용했거나 주도권을 놓친 뒤 다시 가드를 세우는 방어 과정이에요. 눌리기 시작할 때 버티고 되돌아오는 데 써요.",
+        "conditions": [
+          "패스를 허용했거나 컨트롤을 놓쳤을 때"
+        ],
+        "principles": [
+          "프레임을 세워 공간을 지켜요",
+          "엉덩이를 움직여 각도를 되찾아요",
+          "다리 위치를 다시 잡아 상대 압박을 막아요"
+        ],
+        "mistakes": [
+          "프레임 없이 엉덩이만 빼려 하면 상대 체중에 그대로 눌리기 쉬워요"
+        ],
+        "mistakes_basis": "coach_general",
+        "next": [],
+        "next_note": null,
+        "kind_note": "한 동작이 아니라 패스를 당한 뒤 가드를 되찾는 하위 방어 과정 전체를 가리켜서 개념으로 분류했어요.",
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "knee-shield"
+        ],
+        "outgoing": [
+          "open-guard"
+        ],
+        "related": [
+          "z-guard",
+          "technical-stand-up",
+          "inverted-guard"
+        ]
+      }
+    },
+    {
+      "slug": "hip-bump-sweep",
+      "name": "힙 범프 스윕",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/hip-bump-sweep",
+      "kind": "technique",
+      "description": {
+        "summary": "클로즈드 가드 아래에서 상체를 일으켜 엉덩이로 상대를 밀어 넘기는 스윕이에요. 상대가 자세를 세울 때 쓰기 좋아요.",
+        "conditions": [
+          "상대가 클로즈드 가드 안에서 자세를 세울 때"
+        ],
+        "principles": [
+          "싯업하듯 상체를 일으켜요",
+          "엉덩이를 앞으로 밀어 상대를 넘어뜨려요",
+          "기무라·길로틴 위협과 묶어 쓰면 좋아요"
+        ],
+        "mistakes": [
+          "상체를 반쯤만 일으킨 채 밀면 힘이 안 실려 상대가 버티기 쉬워요"
+        ],
+        "mistakes_basis": "coach_general",
+        "next": [
+          "기무라",
+          "길로틴"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "closed-guard"
+        ],
+        "outgoing": [
+          "mount"
+        ],
+        "related": [
+          "scissors-sweep",
+          "kimura",
+          "kimura-sweep",
+          "flower-sweep"
+        ]
+      }
+    },
+    {
+      "slug": "pendulum-sweep",
+      "name": "펜듈럼 스윕",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/pendulum-sweep",
+      "kind": "technique",
+      "description": {
+        "summary": "클로즈드 가드 아래에서 다리를 흔들어 만든 힘으로 상대를 뒤집는 스윕이에요. 넘긴 뒤 바로 마운트로 올라가요.",
+        "conditions": [
+          "클로즈드 가드에 있을 때"
+        ],
+        "principles": [
+          "다리를 흔들어 돌리는 힘을 만들어요",
+          "상대 팔과 각도를 붙잡아 둬요",
+          "뒤집은 즉시 마운트를 잡아요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "마운트"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "closed-guard"
+        ],
+        "outgoing": [
+          "mount"
+        ],
+        "related": [
+          "flower-sweep",
+          "scissors-sweep",
+          "armbar"
+        ]
+      }
+    },
+    {
+      "slug": "technical-stand-up",
+      "name": "테크니컬 스탠드업",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/technical-stand-up",
+      "kind": "technique",
+      "description": {
+        "summary": "바닥에 앉거나 누운 상태에서 안전하게 일어서는 기본기예요. 거리를 지키면서 일어나야 할 때 써요.",
+        "conditions": [
+          "바닥에 앉았거나 누운 상태일 때"
+        ],
+        "principles": [
+          "한 손으로 매트를 짚고 다른 손으로 프레임을 세워요",
+          "다리를 뒤로 빼면서 일어나요",
+          "일어나는 동안 거리와 자세를 지켜요"
+        ],
+        "mistakes": [
+          "프레임 없이 정면으로 일어나면 일어나는 도중에 상대에게 잡히기 쉬워요"
+        ],
+        "mistakes_basis": "coach_general",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "wrestle-up"
+        ],
+        "outgoing": [
+          "single-leg-takedown"
+        ],
+        "related": [
+          "guard-recovery",
+          "sit-up-guard"
+        ]
+      }
+    },
+    {
+      "slug": "waiter-sweep",
+      "name": "웨이터 스윕",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/waiter-sweep",
+      "kind": "technique",
+      "description": {
+        "summary": "아래에서 상대 다리를 받쳐 들어 올려 위로 올라가는 스윕이에요. 웨이터 가드나 딥 하프 가드에 있을 때 써요.",
+        "conditions": [
+          "웨이터 가드나 딥 하프 가드에 있을 때"
+        ],
+        "principles": [
+          "상대 다리를 선반 받치듯 들어 올려요",
+          "아래쪽 컨트롤을 유지한 채 상위 포지션까지 올라가요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "waiter-guard"
+        ],
+        "outgoing": [],
+        "related": [
+          "deep-half-guard",
+          "balloon-sweep",
+          "half-guard"
+        ]
+      }
+    },
+    {
+      "slug": "shin-to-shin-guard",
+      "name": "신투신 가드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/shin-to-shin-guard",
+      "kind": "position",
+      "description": {
+        "summary": "내 정강이를 상대 정강이에 붙여 다루는 하위 가드예요. 상대 움직임을 줄이고 하체 공격을 준비할 때 써요.",
+        "conditions": [],
+        "principles": [
+          "정강이 접촉으로 상대 움직임을 줄여요",
+          "싱글 레그 X 가드로 들어가는 쉬운 입구가 돼요",
+          "하체 공격을 준비하는 자리로 써요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "싱글 레그 X 가드"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [],
+        "outgoing": [
+          "single-leg-x-guard"
+        ],
+        "related": [
+          "x-guard",
+          "k-guard",
+          "shin-trap",
+          "ashi-garami"
+        ]
+      }
+    },
+    {
+      "slug": "squid-guard",
+      "name": "스퀴드 가드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/squid-guard",
+      "kind": "position",
+      "description": {
+        "summary": "여러 접촉점을 동시에 써서 상대를 붙잡는 현대식 가드예요. 상대를 헷갈리게 하면서 여러 공격을 고를 수 있게 해 줘요.",
+        "conditions": [],
+        "principles": [
+          "여러 지점을 한꺼번에 써서 붙잡아요",
+          "상대가 어디를 막을지 헷갈리게 만들어요",
+          "공격 선택지가 다양해요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": "출처가 '가드 시스템'이라고 부르지만 하위 가드 자세라서 포지션으로 분류했어요.",
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [],
+        "outgoing": [
+          "sweep"
+        ],
+        "related": [
+          "lapel-guard",
+          "worm-guard",
+          "de-la-riva-guard",
+          "lapel-pass"
+        ]
+      }
+    },
+    {
+      "slug": "guard",
+      "name": "가드",
+      "source_category": "가드 · 스윕",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/guard",
+      "kind": "concept",
+      "description": {
+        "summary": "바닥에서 다리로 상대를 막고 붙잡는 기본 자세이자 여러 가드를 묶는 상위 분류예요. 방어하면서 공격 기회를 찾는 출발점이에요.",
+        "conditions": [],
+        "principles": [
+          "다리로 방어하면서 상대를 붙잡아요",
+          "방어와 공격 양쪽에 쓰는 전략 자세예요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "스윕",
+          "서브미션",
+          "포지션 전진"
+        ],
+        "next_note": null,
+        "kind_note": "기본 포지션이면서 여러 가드를 묶는 분류 페이지를 겸해서 개념으로 분류했어요.",
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [],
+        "outgoing": [],
+        "related": []
+      }
+    },
+    {
+      "slug": "knee-cut",
+      "name": "니컷",
+      "source_category": "가드 패스",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/knee-cut",
+      "kind": "technique",
+      "description": {
+        "summary": "상위에서 한쪽 무릎으로 상대 허벅지를 가로질러 다리 방어선을 통과하는 기본 가드 패스예요. 이건 대표 원리 설명이고, 모든 변형의 고정 체크리스트는 아니에요.",
+        "conditions": [
+          "상대 다리 사이에서 지나갈 방향을 만들 수 있어야 해요",
+          "상대가 옆으로 돌아 무릎 방패를 다시 세우는 걸 막을 상체 제어가 필요해요"
+        ],
+        "principles": [
+          "한쪽 무릎은 상대 두 다리 사이로 밀어 넣고 반대 무릎은 매트에 붙여 둬요",
+          "무릎만 움직이지 말고 골반과 상체 제어를 같이 유지해요",
+          "마지막에 잡힌 발목까지 빼내야 패스가 끝나요"
+        ],
+        "mistakes": [
+          "상체 공간을 열어 둔 채 무릎만 급하게 빼다가 프레임이나 니실드에 다시 막히는 거예요"
+        ],
+        "mistakes_basis": "coach_general",
+        "next": [
+          "사이드 컨트롤"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft_existing",
+          "basis": "existing_coach_draft+source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "open-guard",
+          "headquarters-position"
+        ],
+        "outgoing": [
+          "side-control"
+        ],
+        "related": [
+          "knee-slide",
+          "leg-weave",
+          "long-step",
+          "toreando-pass",
+          "leg-drag"
+        ]
+      }
+    },
+    {
+      "slug": "leg-drag",
+      "name": "레그 드래그",
+      "source_category": "가드 패스",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/leg-drag",
+      "kind": "technique",
+      "description": {
+        "summary": "상위에서 상대 다리를 끌어와 몸 반대편으로 넘기는 가드 패스예요. 다리를 가로질러 묶어 두고 옆으로 정리할 때 써요.",
+        "conditions": [],
+        "principles": [
+          "상대 다리를 끌어와 몸 너머로 넘겨요",
+          "다리를 가로지른 채 움직임을 막아요"
+        ],
+        "mistakes": [
+          "다리를 넘긴 뒤 엉덩이를 붙이지 않으면 상대가 다시 돌아와 가드를 세울 수 있어요"
+        ],
+        "mistakes_basis": "coach_general",
+        "next": [
+          "사이드 컨트롤"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "turtle",
+          "wiper"
+        ],
+        "outgoing": [
+          "back-control",
+          "side-control"
+        ],
+        "related": [
+          "toreando-pass",
+          "x-pass",
+          "headquarters-position",
+          "shin-trap"
+        ]
+      }
+    },
+    {
+      "slug": "toreando-pass",
+      "name": "토레안도 패스",
+      "source_category": "가드 패스",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/toreando-pass",
+      "kind": "technique",
+      "description": {
+        "summary": "투우사가 망토를 젖히듯 상대 다리를 옆으로 치우고 돌아가는 상위 가드 패스예요. 빠르게 상위 포지션을 잡고 싶을 때 써요.",
+        "conditions": [],
+        "principles": [
+          "상대 다리를 한쪽으로 밀어내요",
+          "속도와 타이밍이 핵심이에요",
+          "치운 즉시 상위 포지션으로 들어가요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "open-guard"
+        ],
+        "outgoing": [
+          "side-control"
+        ],
+        "related": [
+          "x-pass",
+          "leg-drag",
+          "headquarters-position",
+          "knee-cut",
+          "long-step"
+        ]
+      }
+    },
+    {
+      "slug": "long-step",
+      "name": "롱스텝",
+      "source_category": "가드 패스",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/long-step",
+      "kind": "technique",
+      "description": {
+        "summary": "상위에서 발을 크게 내디뎌 가드 옆으로 돌아가는 패스예요. 빠르고 효율적으로 자리를 바꾸고 싶을 때 써요.",
+        "conditions": [],
+        "principles": [
+          "넓은 스텝으로 가드 옆을 돌아 나가요",
+          "전환을 짧고 빠르게 가져가요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "남북 포지션",
+          "사이드 컨트롤"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "headquarters-position"
+        ],
+        "outgoing": [
+          "north-south-position"
+        ],
+        "related": [
+          "back-step",
+          "knee-cut"
+        ]
+      }
+    },
+    {
+      "slug": "pressure-pass",
+      "name": "압박 패스",
+      "source_category": "가드 패스",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/pressure-pass",
+      "kind": "concept",
+      "description": {
+        "summary": "상위에서 체중을 끊지 않고 실어 가드를 천천히 무너뜨리는 패스 방식이에요. 서두르지 않고 조금씩 눌러 이기고 싶을 때 써요.",
+        "conditions": [],
+        "principles": [
+          "체중 압박을 끊지 않고 이어 가요",
+          "정확한 기술과 끈기가 같이 필요해요",
+          "조금씩 눌러 상대 공간을 줄여요"
+        ],
+        "mistakes": [
+          "압박이 중간에 끊기면 상대가 그 틈에 프레임을 다시 세울 수 있어요"
+        ],
+        "mistakes_basis": "coach_general",
+        "next": [],
+        "next_note": null,
+        "kind_note": "한 기술이 아니라 체중 압박으로 패스하는 스타일을 묶는 말이라 개념으로 분류했어요.",
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "over-under"
+        ],
+        "outgoing": [
+          "side-control"
+        ],
+        "related": [
+          "smash-pass",
+          "stack-pass",
+          "double-under",
+          "crazy-dog-pass"
+        ]
+      }
+    },
+    {
+      "slug": "stack-pass",
+      "name": "스택 패스",
+      "source_category": "가드 패스",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/stack-pass",
+      "kind": "technique",
+      "description": {
+        "summary": "상위에서 상대 다리를 머리 쪽으로 밀어 몸을 접고 그 상태로 눌러 지나가는 가드 패스예요.",
+        "conditions": [],
+        "principles": [
+          "상대 다리를 머리 쪽으로 밀어 몸을 접어요",
+          "접힌 자세로 눌러 움직임을 막아요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "사이드 컨트롤",
+          "마운트"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "double-under"
+        ],
+        "outgoing": [
+          "side-control"
+        ],
+        "related": [
+          "over-under",
+          "pressure-pass",
+          "headquarters-position"
+        ]
+      }
+    },
+    {
+      "slug": "leg-weave",
+      "name": "레그 위브",
+      "source_category": "가드 패스",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/leg-weave",
+      "kind": "technique",
+      "description": {
+        "summary": "상위에서 상대 두 다리를 엮어 가드를 쓰지 못하게 만드는 패스예요. 움직임을 줄여 안정적으로 패스를 끝낼 때 써요.",
+        "conditions": [],
+        "principles": [
+          "두 다리를 엮어 가드를 무력화해요",
+          "움직임을 줄인 상태로 패스를 마무리해요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "사이드 컨트롤"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "headquarters-position"
+        ],
+        "outgoing": [
+          "side-control"
+        ],
+        "related": [
+          "knee-cut",
+          "crazy-dog-pass",
+          "long-step"
+        ]
+      }
+    },
+    {
+      "slug": "over-under",
+      "name": "오버 언더",
+      "source_category": "가드 패스",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/over-under",
+      "kind": "technique",
+      "description": {
+        "summary": "상위에서 한 팔은 상대 다리 아래로, 다른 팔은 반대 다리 위로 감아 엉덩이를 묶고 옆으로 돌아가는 가드 패스예요.",
+        "conditions": [],
+        "principles": [
+          "한쪽 다리는 밑으로, 반대 다리는 위로 팔을 감아요",
+          "강하게 눌러 상대 엉덩이를 고정해요",
+          "고정한 채 옆으로 돌아 나가요"
+        ],
+        "mistakes": [
+          "엉덩이를 고정하기 전에 돌아가면 상대가 엉덩이를 빼서 가드를 다시 만들 수 있어요"
+        ],
+        "mistakes_basis": "coach_general",
+        "next": [
+          "사이드 컨트롤"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "open-guard"
+        ],
+        "outgoing": [
+          "pressure-pass"
+        ],
+        "related": [
+          "double-under",
+          "stack-pass",
+          "body-lock"
+        ]
+      }
+    },
+    {
+      "slug": "smash-pass",
+      "name": "스매시 패스",
+      "source_category": "가드 패스",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/smash-pass",
+      "kind": "concept",
+      "description": {
+        "summary": "상위에서 강한 압박으로 가드를 찌그러뜨려 지나가는 패스 방식이에요. 상대 선택지를 줄이며 유리한 자리로 옮겨 갈 때 써요.",
+        "conditions": [],
+        "principles": [
+          "체중과 압력을 실어요",
+          "상대가 고를 수 있는 수를 줄여요",
+          "눌러 둔 채 유리한 포지션으로 옮겨 가요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": "출처가 '패스 스타일'로 설명해서 개념으로 분류했어요. 특정 동작으로 보는 도장도 있으면 technique로 바꿀 수 있어요.",
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "half-guard"
+        ],
+        "outgoing": [
+          "side-control"
+        ],
+        "related": [
+          "pressure-pass",
+          "stack-pass",
+          "double-under",
+          "knee-shield"
+        ]
+      }
+    },
+    {
+      "slug": "double-under",
+      "name": "더블 언더",
+      "source_category": "가드 패스",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/double-under",
+      "kind": "technique",
+      "description": {
+        "summary": "상위에서 두 팔을 모두 상대 다리 밑으로 넣고 강하게 눌러 지나가는 가드 패스예요.",
+        "conditions": [],
+        "principles": [
+          "양팔을 상대 다리 아래로 넣어요",
+          "강하게 압박해요",
+          "눌러 둔 채 유리한 포지션으로 옮겨 가요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "open-guard"
+        ],
+        "outgoing": [
+          "stack-pass"
+        ],
+        "related": [
+          "over-under",
+          "pressure-pass",
+          "smash-pass"
+        ]
+      }
+    },
+    {
+      "slug": "crazy-dog-pass",
+      "name": "크레이지 독 패스",
+      "source_category": "가드 패스",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/crazy-dog-pass",
+      "kind": "technique",
+      "description": {
+        "summary": "상위에서 상대 다리를 매트에 눌러 묶고 수비를 무력화한 뒤 빠르게 좋은 자리로 옮겨 가는 가드 패스예요.",
+        "conditions": [],
+        "principles": [
+          "상대 다리를 매트에 눌러 고정해요",
+          "자세를 붙잡아 수비를 쓰지 못하게 해요",
+          "빠르게 좋은 포지션으로 옮겨 가요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "사이드 컨트롤"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "knee-shield"
+        ],
+        "outgoing": [
+          "side-control"
+        ],
+        "related": [
+          "half-guard",
+          "leg-weave",
+          "pressure-pass",
+          "smash-pass"
+        ]
+      }
+    },
+    {
+      "slug": "gator-roll",
+      "name": "게이터 롤",
+      "source_category": "가드 패스",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/gator-roll",
+      "kind": "technique",
+      "description": {
+        "summary": "상대의 머리와 팔을 같이 가둔 채 몸을 굴려 조이는 전환 동작이에요. 다스나 아나콘다 같은 초크를 끝내고 싶을 때 써요.",
+        "conditions": [
+          "다스·아나콘다 계열 초크로 이어 가려는 상황"
+        ],
+        "principles": [
+          "머리와 팔을 같이 가둔 채로 굴러요",
+          "구르는 동작 자체가 초크를 조이는 마무리 단계예요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "다스 초크",
+          "아나콘다 초크"
+        ],
+        "next_note": null,
+        "kind_note": "출처 목록 분류는 '가드 패스'지만, 메모상으로는 초크를 마무리하려고 구르는 전환 동작이에요. 분류는 사용자 검토가 필요해요.",
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "turtle"
+        ],
+        "outgoing": [
+          "darce-choke"
+        ],
+        "related": [
+          "front-headlock",
+          "anaconda-choke"
+        ]
+      }
+    },
+    {
+      "slug": "knee-slide",
+      "name": "니슬라이드",
+      "source_category": "가드 패스",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/knee-slide",
+      "kind": "technique",
+      "description": {
+        "summary": "패스하는 쪽에서 무릎을 상대의 두 다리 사이로 밀어 넣어 가드를 뚫는 패스예요.",
+        "conditions": [],
+        "principles": [
+          "무릎이 상대의 두 다리 사이를 지나가요",
+          "누르는 힘을 조절하면서 수비를 뚫어요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "headquarters-position"
+        ],
+        "outgoing": [
+          "under-hook"
+        ],
+        "related": [
+          "knee-cut",
+          "leg-weave",
+          "long-step",
+          "toreando-pass"
+        ]
+      }
+    },
+    {
+      "slug": "back-step",
+      "name": "백 스텝",
+      "source_category": "가드 패스",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/back-step",
+      "kind": "technique",
+      "description": {
+        "summary": "상대 다리 위를 넘어 뒤쪽으로 돌아 나가는 가드 패스예요. 주로 하프 가드처럼 다리가 걸린 상황에서 써요.",
+        "conditions": [
+          "하프 가드나 그와 비슷하게 다리가 걸린 자세"
+        ],
+        "principles": [
+          "상대 다리 위를 지나 뒤쪽으로 움직여요",
+          "빠르게 움직이고 들어가는 순간을 정확히 맞춰야 해요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "사이드 컨트롤",
+          "마운트"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "headquarters-position"
+        ],
+        "outgoing": [
+          "mount"
+        ],
+        "related": [
+          "long-step",
+          "knee-cut",
+          "half-guard"
+        ]
+      }
+    },
+    {
+      "slug": "lapel-pass",
+      "name": "라펠 패스",
+      "source_category": "가드 패스",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/lapel-pass",
+      "kind": "technique",
+      "description": {
+        "summary": "도복을 입고 할 때 상대 깃(라펠)을 이용해 가드를 넘는 패스예요.",
+        "conditions": [
+          "도복(기)을 입은 상황"
+        ],
+        "principles": [
+          "깃을 잡아 상대 움직임을 묶어요",
+          "공간을 만들면서 수비를 묶어 두고 더 좋은 자리로 옮겨 가요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "worm-guard"
+        ],
+        "outgoing": [
+          "side-control"
+        ],
+        "related": [
+          "lapel-guard",
+          "squid-guard",
+          "pressure-pass"
+        ]
+      }
+    },
+    {
+      "slug": "shin-trap",
+      "name": "신 트랩",
+      "source_category": "가드 패스",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/shin-trap",
+      "kind": "technique",
+      "description": {
+        "summary": "가드를 패스하는 도중에 정강이로 상대 다리와 움직임을 묶어 두는 컨트롤이에요.",
+        "conditions": [
+          "가드를 패스하고 있는 중"
+        ],
+        "principles": [
+          "정강이로 상대가 움직일 길을 막아요",
+          "자세를 안정적으로 지키면서 포지션을 옮겨요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "single-leg-takedown"
+        ],
+        "outgoing": [
+          "heel-hook"
+        ],
+        "related": [
+          "leg-drag",
+          "wiper",
+          "shin-to-shin-guard"
+        ]
+      }
+    },
+    {
+      "slug": "surfer-pass",
+      "name": "서퍼 패스",
+      "source_category": "가드 패스",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/surfer-pass",
+      "kind": "technique",
+      "description": {
+        "summary": "상대 다리 위에 올라선 상태로 가드를 넘어가는 패스예요. 포지션이 바뀌는 전환 도중에 나와요.",
+        "conditions": [
+          "포지션이 바뀌는 전환 도중"
+        ],
+        "principles": [
+          "다리 위에서도 균형을 잃지 않아야 해요",
+          "속도보다 안정감과 통제를 먼저 챙겨요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "open-guard"
+        ],
+        "outgoing": [
+          "knee-on-belly"
+        ],
+        "related": [
+          "toreando-pass",
+          "x-pass",
+          "long-step",
+          "headquarters-position"
+        ]
+      }
+    },
+    {
+      "slug": "duck-under",
+      "name": "덕 언더",
+      "source_category": "가드 패스",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/duck-under",
+      "kind": "technique",
+      "description": {
+        "summary": "상대 팔 밑으로 몸을 숙여 등 뒤로 돌아가는 레슬링 동작이에요. 백 테이크나 테이크다운을 준비할 때 써요.",
+        "conditions": [
+          "백 테이크나 테이크다운을 노리는 상황"
+        ],
+        "principles": [
+          "몸을 낮춰 상대 팔 아래로 빠져 등 뒤로 가요",
+          "빠르고 유연하게 움직여야 해요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "백 테이크"
+        ],
+        "next_note": null,
+        "kind_note": "출처 목록 분류는 '가드 패스'지만, 메모상으로는 레슬링에서 온 백 테이크·테이크다운 준비 동작이에요. 분류는 사용자 검토가 필요해요.",
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "standing"
+        ],
+        "outgoing": [
+          "back-control"
+        ],
+        "related": [
+          "two-on-one",
+          "arm-drag",
+          "snap-down",
+          "collar-drag"
+        ]
+      }
+    },
+    {
+      "slug": "wiper",
+      "name": "와이퍼",
+      "source_category": "가드 패스",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/wiper",
+      "kind": "technique",
+      "description": {
+        "summary": "가드를 패스하는 도중에 상대 다리를 옆으로 쓸어 치우는 동작이에요.",
+        "conditions": [
+          "가드를 패스하고 있는 중"
+        ],
+        "principles": [
+          "자동차 와이퍼처럼 다리를 옆으로 밀어 내요",
+          "다리를 치운 뒤 유리한 자세로 넘어가요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "open-guard"
+        ],
+        "outgoing": [
+          "leg-drag"
+        ],
+        "related": [
+          "shin-trap",
+          "foot-work",
+          "z-guard"
+        ]
+      }
+    },
+    {
+      "slug": "x-pass",
+      "name": "엑스 패스",
+      "source_category": "가드 패스",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/x-pass",
+      "kind": "technique",
+      "description": {
+        "summary": "상대 다리를 X자로 엇갈리게 눌러 놓고 가드를 넘는 패스예요.",
+        "conditions": [],
+        "principles": [
+          "다리를 엇갈리게 눌러 압박해요",
+          "상대 움직임을 막고 탑 자리로 옮겨 가요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "open-guard"
+        ],
+        "outgoing": [
+          "knee-on-belly"
+        ],
+        "related": [
+          "toreando-pass",
+          "leg-drag",
+          "knee-cut",
+          "headquarters-position"
+        ]
+      }
+    },
+    {
+      "slug": "guard-pass",
+      "name": "가드 패스",
+      "source_category": "가드 패스",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/guard-pass",
+      "kind": "concept",
+      "description": {
+        "summary": "상대 가드를 뚫고 더 유리한 자리로 가는 기술들을 묶어 부르는 이름이에요. 사이드나 마운트로 가려면 이 단계를 거쳐야 해요.",
+        "conditions": [],
+        "principles": [
+          "사이드 컨트롤·마운트로 가기 전에 거치는 단계예요",
+          "방식과 변형이 여러 가지예요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "사이드 컨트롤",
+          "마운트"
+        ],
+        "next_note": null,
+        "kind_note": "개별 기술이 아니라 패스 기술 전체를 묶는 이름이에요.",
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [],
+        "outgoing": [],
+        "related": []
+      }
+    },
+    {
+      "slug": "side-control",
+      "name": "사이드 컨트롤",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/side-control",
+      "kind": "position",
+      "description": {
+        "summary": "상대 옆에서 눌러 고정하는 유리한 탑 포지션이에요. 서브미션이나 다른 우세 자세로 가는 출발점이에요.",
+        "conditions": [],
+        "principles": [
+          "상대 어깨와 힙을 같이 고정해 통제해요",
+          "여기서 서브미션이나 다른 우세 자세로 넘어가요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "sweep",
+          "single-leg-takedown",
+          "foot-sweep",
+          "knee-cut",
+          "ankle-pick",
+          "toreando-pass",
+          "stack-pass",
+          "smash-pass",
+          "double-leg-takedown",
+          "leg-weave",
+          "leg-drag",
+          "crazy-dog-pass",
+          "pressure-pass",
+          "lapel-pass",
+          "inside-trip",
+          "outside-trip",
+          "john-wayne-sweep"
+        ],
+        "outgoing": [
+          "kimura",
+          "mount",
+          "americana",
+          "north-south-position",
+          "knee-on-belly",
+          "paper-cutter-choke",
+          "truck",
+          "straight-collar-control",
+          "buggy-choke",
+          "von-flue-choke",
+          "key-lock",
+          "darce-choke"
+        ],
+        "related": [
+          "arm-triangle"
+        ]
+      }
+    },
+    {
+      "slug": "mount",
+      "name": "마운트",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/mount",
+      "kind": "position",
+      "description": {
+        "summary": "상대 몸통 위에 올라앉은 탑 포지션이에요. 여기서 서브미션을 노릴 수 있어요.",
+        "conditions": [],
+        "principles": [
+          "무릎으로 상대 팔을 통제해요",
+          "자리를 지키면서 서브미션 기회를 찾아요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "scissors-sweep",
+          "side-control",
+          "kimura-sweep",
+          "balloon-sweep",
+          "flower-sweep",
+          "sweep",
+          "hip-bump-sweep",
+          "back-step",
+          "under-hook",
+          "knee-on-belly",
+          "lumberjack-sweep",
+          "pendulum-sweep"
+        ],
+        "outgoing": [
+          "high-mount",
+          "armbar",
+          "arm-triangle",
+          "s-mount",
+          "cross-collar-control",
+          "three-quarter-mount",
+          "cross-collar-choke"
+        ],
+        "related": [
+          "ezekiel-choke"
+        ]
+      }
+    },
+    {
+      "slug": "back-take",
+      "name": "백 테이크",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/back-take",
+      "kind": "technique",
+      "description": {
+        "summary": "상대 등 뒤로 돌아가서 백 컨트롤을 따내는 과정이에요. 등을 잡으면 서브미션 기회가 커져요.",
+        "conditions": [],
+        "principles": [
+          "상대 뒤쪽으로 이동해 자리를 잡아요",
+          "등을 잡으면 강한 서브미션으로 이어 갈 수 있어요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "백 컨트롤",
+          "리어 네이키드 초크"
+        ],
+        "next_note": null,
+        "kind_note": "출처 분류는 '포지션 · 컨트롤'이지만 백 컨트롤을 따내는 과정이라 기술로 뒀어요.",
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "kimura",
+          "berimbolo",
+          "turtle",
+          "matrix",
+          "kiss-of-dragon",
+          "worm-guard",
+          "arm-drag",
+          "three-quarter-mount",
+          "octopus-guard"
+        ],
+        "outgoing": [
+          "back-control",
+          "rear-naked-choke",
+          "bow-and-arrow-choke"
+        ],
+        "related": [
+          "seat-belt-grip"
+        ]
+      }
+    },
+    {
+      "slug": "back-control",
+      "name": "백 컨트롤",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/back-control",
+      "kind": "position",
+      "description": {
+        "summary": "상대 등을 잡은 포지션이에요. 출처에서는 가장 유리한 자리로 소개해요.",
+        "conditions": [],
+        "principles": [
+          "등 뒤에서 서브미션을 시도해요",
+          "수비하는 쪽은 뒤가 보이지 않아 막기 어려워요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "back-take",
+          "leg-drag",
+          "darce-choke",
+          "duck-under",
+          "crab-ride"
+        ],
+        "outgoing": [
+          "seat-belt-grip",
+          "bow-and-arrow-choke",
+          "rear-naked-choke",
+          "straight-collar-control"
+        ],
+        "related": [
+          "back-mount",
+          "crucifix",
+          "truck"
+        ]
+      }
+    },
+    {
+      "slug": "turtle",
+      "name": "터틀",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/turtle",
+      "kind": "position",
+      "description": {
+        "summary": "양손과 무릎을 매트에 짚고 웅크린 방어 자세예요. 불리할 때 상대의 다음 공격을 끊으려고 잠깐 쓰는 자세예요.",
+        "conditions": [
+          "불리한 상황에서 상대의 이어지는 공격을 끊어야 할 때",
+          "오래 머무는 자세가 아니에요"
+        ],
+        "principles": [
+          "팔다리를 몸통에 붙여 내주는 부분을 줄여요",
+          "두 손과 두 무릎, 네 점으로 몸을 받쳐요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [],
+        "outgoing": [
+          "back-take",
+          "crucifix",
+          "leg-drag",
+          "darce-choke",
+          "front-headlock",
+          "gator-roll",
+          "truck",
+          "clock-choke"
+        ],
+        "related": [
+          "anaconda-choke"
+        ]
+      }
+    },
+    {
+      "slug": "knee-on-belly",
+      "name": "니온밸리",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/knee-on-belly",
+      "kind": "position",
+      "description": {
+        "summary": "상대 몸통에 한쪽 무릎을 올려 누르는 우위 자세예요. 강하게 압박하면서 통제하고 싶을 때 써요.",
+        "conditions": [
+          "상대를 강하게 누르고 통제하고 싶을 때"
+        ],
+        "principles": [
+          "무릎에 체중을 실어 눌러요",
+          "압박과 통제를 같이 가져가요",
+          "여기서 서브미션이나 다른 자세로 넘어가요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "sweep",
+          "side-control",
+          "tripod-sweep",
+          "x-pass",
+          "surfer-pass"
+        ],
+        "outgoing": [
+          "ezekiel-choke",
+          "armbar",
+          "baseball-bat-choke",
+          "mount"
+        ],
+        "related": [
+          "paper-cutter-choke",
+          "north-south-position"
+        ]
+      }
+    },
+    {
+      "slug": "berimbolo",
+      "name": "베림볼로",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/berimbolo",
+      "kind": "technique",
+      "description": {
+        "summary": "하체를 크게 돌려서 상대 등 뒤로 들어가는 현대식 회전 기술이에요. 유리한 백 위치를 잡으려고 써요.",
+        "conditions": [],
+        "principles": [
+          "하체 움직임으로 몸을 돌려 들어가요",
+          "목표는 등 뒤의 유리한 자리를 잡는 거예요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "백 포지션"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "de-la-riva-guard",
+          "inverted-guard",
+          "deep-de-riva-guard"
+        ],
+        "outgoing": [
+          "back-take",
+          "crab-ride"
+        ],
+        "related": [
+          "reverse-de-riva-guard",
+          "matrix"
+        ]
+      }
+    },
+    {
+      "slug": "headquarters-position",
+      "name": "헤드쿼터 포지션",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/headquarters-position",
+      "kind": "position",
+      "description": {
+        "summary": "위에서 가드를 넘어가려 할 때 자리를 잡고 버티는 컨트롤 자세예요. 여기서 여러 패스로 갈라져 나가요.",
+        "conditions": [
+          "위에서 패스를 시도하는 중"
+        ],
+        "principles": [
+          "먼저 균형을 지켜요",
+          "상대 다리를 묶고 두 다리 사이를 벌려 놓아요",
+          "여러 패스로 이어지는 출발 지점으로 써요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "니컷",
+          "레그 위브",
+          "롱 스텝",
+          "압박 패스"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "open-guard"
+        ],
+        "outgoing": [
+          "knee-cut",
+          "leg-weave",
+          "back-step",
+          "long-step",
+          "knee-slide",
+          "estima-lock"
+        ],
+        "related": [
+          "toreando-pass"
+        ]
+      }
+    },
+    {
+      "slug": "arm-drag",
+      "name": "암 드래그",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/arm-drag",
+      "kind": "technique",
+      "description": {
+        "summary": "상대 팔을 끌어당겨 옆쪽 각도를 만드는 기술이에요. 서서도, 앉은 가드에서도 써요.",
+        "conditions": [
+          "스탠딩",
+          "시티드 가드·버터플라이 가드"
+        ],
+        "principles": [
+          "상대 팔을 몸 중심선 건너편으로 끌어요",
+          "끌어낸 만큼 옆 각도를 차지해요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "백 노출",
+          "테이크다운"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "butterfly-guard",
+          "closed-guard"
+        ],
+        "outgoing": [
+          "back-mount",
+          "back-take",
+          "octopus-guard"
+        ],
+        "related": [
+          "collar-drag",
+          "two-on-one",
+          "single-leg-takedown"
+        ]
+      }
+    },
+    {
+      "slug": "under-hook",
+      "name": "언더훅",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/under-hook",
+      "kind": "position",
+      "description": {
+        "summary": "상대 겨드랑이 밑으로 팔을 넣어 잡는 그립이에요. 상체를 강하게 제어하고 다음 동작의 지렛대로 써요.",
+        "conditions": [],
+        "principles": [
+          "겨드랑이 아래 팔 위치가 지렛대가 돼요",
+          "상체를 단단히 제어해요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "탈출",
+          "포지션 전진",
+          "테이크다운 셋업"
+        ],
+        "next_note": null,
+        "kind_note": "기술이 아니라 겨드랑이 밑으로 넣는 그립(손 위치)이라 position으로 분류했어요.",
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "knee-slide",
+          "standing",
+          "half-guard"
+        ],
+        "outgoing": [
+          "mount",
+          "outside-trip",
+          "john-wayne-sweep"
+        ],
+        "related": [
+          "lockdown",
+          "body-lock",
+          "back-take",
+          "knee-shield"
+        ]
+      }
+    },
+    {
+      "slug": "front-headlock",
+      "name": "프론트 헤드락",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/front-headlock",
+      "kind": "position",
+      "description": {
+        "summary": "상대 정면에서 머리와 한쪽 팔을 같이 감싸 쥐는 컨트롤 자세예요. 초크나 백 공격을 시작하는 자리로 써요.",
+        "conditions": [],
+        "principles": [
+          "머리와 팔을 한 번에 가둬요",
+          "여러 초크·백 공격의 출발점이에요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "길로틴",
+          "다스 초크",
+          "아나콘다 초크",
+          "백 테이크",
+          "스냅다운 공격"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "snap-down",
+          "turtle"
+        ],
+        "outgoing": [
+          "guillotine-choke",
+          "peruvian-necktie",
+          "brabo-choke",
+          "darce-choke"
+        ],
+        "related": [
+          "anaconda-choke"
+        ]
+      }
+    },
+    {
+      "slug": "fifty-fifty-position",
+      "name": "50 대 50 포지션",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/fifty-fifty-position",
+      "kind": "position",
+      "description": {
+        "summary": "두 사람이 다리를 똑같은 모양으로 엮어 조건이 같아지는 자세예요. 서로 다리를 공격할 수 있어서 수 싸움이 돼요.",
+        "conditions": [],
+        "principles": [
+          "다리 엮임이 좌우 대칭이에요",
+          "나도 상대도 하체 공격이 가능해요",
+          "전략 싸움이나 시간 끌기에도 쓰여요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "다리 공격"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "open-guard"
+        ],
+        "outgoing": [
+          "toe-hold",
+          "outside-heel-hook",
+          "knee-bar"
+        ],
+        "related": [
+          "outside-ashi-garami",
+          "backside-fifty-fifty",
+          "straight-ankle-lock"
+        ]
+      }
+    },
+    {
+      "slug": "ashi-garami",
+      "name": "아시 가라미",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/ashi-garami",
+      "kind": "position",
+      "description": {
+        "summary": "상대 다리 하나를 떼어 내 묶어 두는 다리 엮기 자세예요. 하체 관절기를 배울 때 기본이 되는 자리예요.",
+        "conditions": [],
+        "principles": [
+          "한쪽 다리를 고립시켜 통제해요",
+          "하체 관절기의 기초 자세예요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "스트레이트 앵클락",
+          "힐훅",
+          "더 강한 레그 공격 자세"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "k-guard"
+        ],
+        "outgoing": [
+          "saddle-position",
+          "inside-ashi-garami",
+          "foot-lock",
+          "knee-bar"
+        ],
+        "related": [
+          "outside-ashi-garami",
+          "straight-ankle-lock",
+          "single-leg-x-guard"
+        ]
+      }
+    },
+    {
+      "slug": "north-south-position",
+      "name": "남북 포지션",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/north-south-position",
+      "kind": "position",
+      "description": {
+        "summary": "상대 머리 쪽에 자리 잡고 몸을 반대 방향으로 겹쳐 누르는 탑 자세예요. 상대 움직임을 묶어 두고 서브미션을 노려요.",
+        "conditions": [],
+        "principles": [
+          "가슴과 가슴을 붙여요",
+          "내 머리는 상대 배 근처에 둬요",
+          "상대가 움직일 틈을 줄여요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "서브미션"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "side-control",
+          "long-step"
+        ],
+        "outgoing": [
+          "anaconda-choke",
+          "kimura",
+          "north-south-choke"
+        ],
+        "related": [
+          "knee-on-belly"
+        ]
+      }
+    },
+    {
+      "slug": "saddle-position",
+      "name": "새들 포지션",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/saddle-position",
+      "kind": "position",
+      "description": {
+        "summary": "상대 두 다리를 함께 묶으면서 공격할 다리 하나를 떼어 놓는 강한 레그 엔탱글이에요. 인사이드 힐훅으로 이어가요.",
+        "conditions": [],
+        "principles": [
+          "상대 다리 두 개를 한꺼번에 묶어요",
+          "그중 공격할 다리 하나를 분리해요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "인사이드 힐훅"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "ashi-garami"
+        ],
+        "outgoing": [
+          "inside-heel-hook",
+          "knee-bar",
+          "toe-hold"
+        ],
+        "related": [
+          "honey-hole",
+          "inside-ashi-garami",
+          "backside-fifty-fifty"
+        ]
+      }
+    },
+    {
+      "slug": "s-mount",
+      "name": "S 마운트",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/s-mount",
+      "kind": "position",
+      "description": {
+        "summary": "마운트 모양을 바꿔 통제력을 높인 탑 자세예요. 여기서 암바를 노려요.",
+        "conditions": [],
+        "principles": [
+          "한쪽 무릎은 상대 머리 가까이 둬요",
+          "다른 다리는 상대 몸 위에 걸쳐요",
+          "통제력이 높은 자리예요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "암바"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "high-mount",
+          "mount"
+        ],
+        "outgoing": [
+          "armbar",
+          "triangle-choke"
+        ],
+        "related": []
+      }
+    },
+    {
+      "slug": "truck",
+      "name": "트럭",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/truck",
+      "kind": "position",
+      "description": {
+        "summary": "상대 엉덩이를 붙잡아 통제하는 포지션이에요. 스크램블이나 터틀 상황, 롤링 백 테이크 흐름에서 나와요.",
+        "conditions": [
+          "스크램블·터틀 상황",
+          "롤링 백 테이크 흐름"
+        ],
+        "principles": [
+          "상대 힙을 제어하는 게 핵심이에요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "백 노출",
+          "트위스터류 서브미션",
+          "레그 컨트롤"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "side-control",
+          "turtle"
+        ],
+        "outgoing": [
+          "banana-split",
+          "calf-slicer"
+        ],
+        "related": [
+          "twister"
+        ]
+      }
+    },
+    {
+      "slug": "crucifix",
+      "name": "크루시픽스",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/crucifix",
+      "kind": "position",
+      "description": {
+        "summary": "상대 양팔을 묶어 쓰지 못하게 만드는 유리한 자세예요. 팔이 묶인 상태에서 초크나 암록을 노려요.",
+        "conditions": [],
+        "principles": [
+          "내 다리와 팔로 상대 두 팔을 함께 고정해요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "초크",
+          "암록"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "turtle"
+        ],
+        "outgoing": [
+          "cross-collar-choke"
+        ],
+        "related": [
+          "back-control",
+          "armbar",
+          "truck"
+        ]
+      }
+    },
+    {
+      "slug": "body-lock",
+      "name": "바디락",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/body-lock",
+      "kind": "technique",
+      "description": {
+        "summary": "두 팔로 상대 몸통을 감아 상체를 묶는 기본 기술이에요. 테이크다운, 가드 패스, 자리 유지에 두루 써요.",
+        "conditions": [
+          "테이크다운",
+          "가드 패스·포지션 유지"
+        ],
+        "principles": [
+          "몸통을 흔들리지 않게 묶어요",
+          "움직임을 막아 놓고 다음 공격을 준비해요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "테이크다운",
+          "가드 패스"
+        ],
+        "next_note": null,
+        "kind_note": "메모가 '기본 기술'로 소개하지만 몸통을 감는 잡기 형태라 그립(position)으로도 볼 수 있어요.",
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "standing"
+        ],
+        "outgoing": [
+          "inside-trip"
+        ],
+        "related": [
+          "outside-trip",
+          "under-hook",
+          "double-leg-takedown",
+          "smash-pass"
+        ]
+      }
+    },
+    {
+      "slug": "cross-collar-control",
+      "name": "크로스 칼라 컨트롤",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/cross-collar-control",
+      "kind": "position",
+      "description": {
+        "summary": "상대 반대편 깃을 잡아 자세를 다루는 그립이에요. 도복을 입었을 때만 쓸 수 있어요.",
+        "conditions": [
+          "도복 착용"
+        ],
+        "principles": [
+          "반대쪽 칼라를 잡고 자세를 통제해요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "초크",
+          "포지션 전환"
+        ],
+        "next_note": null,
+        "kind_note": "반대편 깃을 잡는 그립이라 position으로 분류했어요.",
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "mount",
+          "closed-guard"
+        ],
+        "outgoing": [
+          "armbar",
+          "loop-choke"
+        ],
+        "related": [
+          "cross-collar-choke",
+          "bow-and-arrow-choke",
+          "straight-collar-control"
+        ]
+      }
+    },
+    {
+      "slug": "outside-ashi-garami",
+      "name": "아웃사이드 아시 가라미",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/outside-ashi-garami",
+      "kind": "position",
+      "description": {
+        "summary": "상대 다리를 바깥쪽 라인에서 묶는 레그 엔탱글이에요. 다른 다리 컨트롤로 옮겨 가는 바탕이 돼요.",
+        "conditions": [],
+        "principles": [
+          "바깥 라인에서 다리를 통제해요",
+          "다른 레그 컨트롤로 넘어가는 기반이에요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "스트레이트 앵클락",
+          "힐훅"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "single-leg-x-guard"
+        ],
+        "outgoing": [
+          "straight-ankle-lock",
+          "aoki-lock"
+        ],
+        "related": [
+          "ashi-garami",
+          "outside-heel-hook",
+          "fifty-fifty-position"
+        ]
+      }
+    },
+    {
+      "slug": "two-on-one",
+      "name": "투 온 원",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/two-on-one",
+      "kind": "position",
+      "description": {
+        "summary": "내 두 손으로 상대 팔 하나를 잡는 타이업이에요. 그립 싸움에서 앞서려고 써요.",
+        "conditions": [],
+        "principles": [
+          "두 손을 상대 팔 하나에 몰아요",
+          "그립 싸움에서 우위를 잡아요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "암 드래그",
+          "테이크다운",
+          "백 노출"
+        ],
+        "next_note": null,
+        "kind_note": "양손으로 팔 하나를 잡는 타이업(그립)이라 position으로 분류했어요.",
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "standing"
+        ],
+        "outgoing": [
+          "flying-armbar"
+        ],
+        "related": [
+          "arm-drag",
+          "collar-drag",
+          "duck-under",
+          "single-leg-takedown",
+          "back-take"
+        ]
+      }
+    },
+    {
+      "slug": "snap-down",
+      "name": "스냅 다운",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/snap-down",
+      "kind": "technique",
+      "description": {
+        "summary": "상대 머리와 자세를 아래로 끌어내려 무너뜨리는 공격이에요. 서 있거나 무릎을 꿇은 상태에서 빈틈을 만들 때 써요.",
+        "conditions": [
+          "스탠딩 또는 무릎 자세"
+        ],
+        "principles": [
+          "머리를 밑으로 당겨 자세를 무너뜨려요",
+          "무너진 틈을 다음 공격에 써요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "프론트 헤드락",
+          "길로틴",
+          "백 테이크",
+          "고 비하인드"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "standing"
+        ],
+        "outgoing": [
+          "front-headlock"
+        ],
+        "related": [
+          "ankle-pick",
+          "guillotine-choke",
+          "two-on-one",
+          "turtle"
+        ]
+      }
+    },
+    {
+      "slug": "straight-collar-control",
+      "name": "스트레이트 칼라 컨트롤",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/straight-collar-control",
+      "kind": "position",
+      "description": {
+        "summary": "같은 쪽 깃 하나를 잡아 상대 자세를 바로 다루는 그립이에요. 도복을 입었을 때만 써요.",
+        "conditions": [
+          "도복 착용"
+        ],
+        "principles": [
+          "한쪽 칼라로 직접 통제해요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "서브미션",
+          "포지션 전진"
+        ],
+        "next_note": null,
+        "kind_note": "같은 쪽 깃을 잡는 그립이라 position으로 분류했어요.",
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "side-control",
+          "back-control"
+        ],
+        "outgoing": [
+          "canto-choke",
+          "bow-and-arrow-choke"
+        ],
+        "related": [
+          "cross-collar-control",
+          "loop-choke",
+          "baseball-bat-choke"
+        ]
+      }
+    },
+    {
+      "slug": "crab-ride",
+      "name": "크랩 라이드",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/crab-ride",
+      "kind": "technique",
+      "description": {
+        "summary": "상대 무릎 뒤에 훅을 걸고 엉덩이를 들어 다음 공격을 여는 전환 기술이에요. 백, 스윕, 패스로 갈라질 수 있어요.",
+        "conditions": [],
+        "principles": [
+          "상대 무릎 뒤에 훅을 걸어요",
+          "엉덩이를 들어 올려요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "백 테이크",
+          "스윕",
+          "패스",
+          "백 컨트롤"
+        ],
+        "next_note": null,
+        "kind_note": "메모가 '전환 기술'로 설명해 technique으로 뒀지만 라이드 자세(position)로 보는 시각도 있어요.",
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "berimbolo"
+        ],
+        "outgoing": [
+          "back-control"
+        ],
+        "related": [
+          "back-take",
+          "truck",
+          "matrix"
+        ]
+      }
+    },
+    {
+      "slug": "sprawl",
+      "name": "스프롤",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/sprawl",
+      "kind": "technique",
+      "description": {
+        "summary": "상대가 테이크다운을 들어올 때 막는 방어 기술이에요. 엉덩이를 뒤로 빼서 다리를 잡히지 않게 해요.",
+        "conditions": [
+          "상대가 테이크다운을 시도할 때"
+        ],
+        "principles": [
+          "엉덩이를 아래·뒤로 뻗어요",
+          "다리가 묶이거나 자리가 바뀌는 걸 막아요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "standing"
+        ],
+        "outgoing": [
+          "loop-choke",
+          "guillotine-choke"
+        ],
+        "related": [
+          "snap-down",
+          "front-headlock",
+          "double-leg-takedown",
+          "single-leg-takedown"
+        ]
+      }
+    },
+    {
+      "slug": "high-mount",
+      "name": "하이 마운트",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/high-mount",
+      "kind": "position",
+      "description": {
+        "summary": "상대 가슴 위쪽까지 올라탄 마운트예요. 상체 위를 차지해 탈출을 어렵게 하고 암바나 초크를 노려요.",
+        "conditions": [],
+        "principles": [
+          "상체 윗부분을 지배해요",
+          "상대가 빠져나가기 어렵게 만들어요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "암바",
+          "초크"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "mount"
+        ],
+        "outgoing": [
+          "s-mount"
+        ],
+        "related": [
+          "armbar",
+          "cross-collar-choke",
+          "ezekiel-choke"
+        ]
+      }
+    },
+    {
+      "slug": "back-mount",
+      "name": "백 마운트",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/back-mount",
+      "kind": "position",
+      "description": {
+        "summary": "상대 등 뒤에 붙어 공격하는 자세예요. 여기서 리어 네이키드 초크를 노려요.",
+        "conditions": [],
+        "principles": [
+          "내 가슴을 상대 등에 붙여요",
+          "다리로 상대 허리·힙을 감아요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "리어 네이키드 초크"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "arm-drag"
+        ],
+        "outgoing": [
+          "bow-and-arrow-choke"
+        ],
+        "related": [
+          "seat-belt-grip",
+          "rear-naked-choke",
+          "crucifix",
+          "back-control"
+        ]
+      }
+    },
+    {
+      "slug": "honey-hole",
+      "name": "허니 홀",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/honey-hole",
+      "kind": "position",
+      "description": {
+        "summary": "상대 다리를 강하게 묶어 두는 레그 포지션이에요. 힐훅으로 이어가요.",
+        "conditions": [],
+        "principles": [
+          "하체를 강하게 제어해요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "힐훅"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "inside-ashi-garami"
+        ],
+        "outgoing": [
+          "inside-heel-hook"
+        ],
+        "related": [
+          "saddle-position",
+          "knee-bar"
+        ]
+      }
+    },
+    {
+      "slug": "backside-fifty-fifty",
+      "name": "백사이드 50/50",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/backside-fifty-fifty",
+      "kind": "position",
+      "description": {
+        "summary": "50/50에서 몸을 돌려 뒤쪽 각도에서 다리를 묶는 자세예요. 힐훅으로 이어가요.",
+        "conditions": [
+          "50/50에서 출발"
+        ],
+        "principles": [
+          "회전해서 뒤쪽 각도를 잡아요",
+          "인버티드·백사이드 각도를 유지해요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "힐훅"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "single-leg-x-guard"
+        ],
+        "outgoing": [
+          "inside-heel-hook"
+        ],
+        "related": [
+          "fifty-fifty-position",
+          "saddle-position",
+          "k-guard"
+        ]
+      }
+    },
+    {
+      "slug": "inside-ashi-garami",
+      "name": "인사이드 아시 가라미",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/inside-ashi-garami",
+      "kind": "position",
+      "description": {
+        "summary": "상대 다리를 안쪽 라인에서 묶는 레그 엔탱글이에요. 새들이나 인사이드 힐훅 같은 더 깊은 다리 공격으로 이어져요.",
+        "conditions": [],
+        "principles": [
+          "안쪽 라인에서 다리를 통제해요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "인사이드 힐훅",
+          "새들",
+          "고급 레그락"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "ashi-garami"
+        ],
+        "outgoing": [
+          "honey-hole"
+        ],
+        "related": [
+          "saddle-position",
+          "inside-heel-hook",
+          "backside-fifty-fifty"
+        ]
+      }
+    },
+    {
+      "slug": "lockdown",
+      "name": "락다운",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/lockdown",
+      "kind": "position",
+      "description": {
+        "summary": "하프 가드 아래에서 다리로 상대 다리를 단단히 묶는 변형이에요. 상대 움직임을 늦춰 놓고 스윕이나 서브미션을 노려요.",
+        "conditions": [
+          "하프 가드 하위"
+        ],
+        "principles": [
+          "다리를 묶어 상대 움직임을 둔하게 만들어요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "스윕",
+          "서브미션"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "half-guard"
+        ],
+        "outgoing": [
+          "sweep"
+        ],
+        "related": [
+          "under-hook",
+          "deep-half-guard",
+          "back-take"
+        ]
+      }
+    },
+    {
+      "slug": "seat-belt-grip",
+      "name": "싯벨트 그립",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/seat-belt-grip",
+      "kind": "position",
+      "description": {
+        "summary": "등 뒤를 잡았을 때 상체를 잠그는 그립이에요. 리어 네이키드 초크로 이어가요.",
+        "conditions": [
+          "백 컨트롤 상황"
+        ],
+        "principles": [
+          "한 팔은 어깨 위로 넘겨요",
+          "다른 팔은 겨드랑이 밑으로 넣어요",
+          "두 팔로 상대 가슴을 잠가요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "리어 네이키드 초크"
+        ],
+        "next_note": null,
+        "kind_note": "백 컨트롤용 상체 그립이라 position으로 분류했어요.",
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "back-control"
+        ],
+        "outgoing": [
+          "rear-naked-choke"
+        ],
+        "related": [
+          "back-mount",
+          "bow-and-arrow-choke"
+        ]
+      }
+    },
+    {
+      "slug": "three-quarter-mount",
+      "name": "3/4 마운트",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/three-quarter-mount",
+      "kind": "position",
+      "description": {
+        "summary": "다리 하나가 걸려서 완전한 마운트까지 못 간 중간 단계의 탑 자세예요. 세밀하게 잡고 있어야 자리를 지켜요.",
+        "conditions": [
+          "위에 있는 사람의 다리 하나가 상대에게 갇혀 있을 때"
+        ],
+        "principles": [
+          "세밀한 컨트롤이 필요해요"
+        ],
+        "mistakes": [
+          "잡는 힘이 느슨해지면 자리를 잃거나 스윕당할 수 있어요"
+        ],
+        "mistakes_basis": "source",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "mount"
+        ],
+        "outgoing": [
+          "back-take"
+        ],
+        "related": [
+          "high-mount",
+          "half-guard",
+          "knee-on-belly"
+        ]
+      }
+    },
+    {
+      "slug": "escape",
+      "name": "이스케이프",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/escape",
+      "kind": "concept",
+      "description": {
+        "summary": "나쁜 포지션이나 서브미션에서 빠져나오는 기술들을 묶어 부르는 이름이에요. 갇혔거나 서브미션을 당하고 있을 때 필요해요.",
+        "conditions": [
+          "불리한 포지션에 갇혔을 때",
+          "서브미션을 당하고 있을 때"
+        ],
+        "principles": [
+          "버티고 되받아치는 데 바탕이 되는 기술이에요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "힙 이스케이프",
+          "그랜비 롤"
+        ],
+        "next_note": null,
+        "kind_note": "개별 기술이 아니라 빠져나오는 기술 전체를 묶는 이름이에요.",
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [],
+        "outgoing": [],
+        "related": [
+          "guard-recovery",
+          "technical-stand-up",
+          "under-hook",
+          "knee-shield"
+        ]
+      }
+    },
+    {
+      "slug": "foot-work",
+      "name": "풋 워크",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/foot-work",
+      "kind": "concept",
+      "description": {
+        "summary": "발을 어디에 두고 어떻게 옮기는지 조절하는 움직임이에요. 균형을 지키거나 스윕·테이크다운·전환을 할 때 바탕이 돼요.",
+        "conditions": [
+          "균형을 지켜야 할 때",
+          "스윕·테이크다운·전환을 시도할 때"
+        ],
+        "principles": [
+          "발 위치로 균형을 확보해요",
+          "발이 제자리에 있어야 기술이 효율적으로 나가요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "스윕",
+          "테이크다운"
+        ],
+        "next_note": null,
+        "kind_note": "특정 기술이 아니라 발 위치·이동을 다루는 기초 개념이에요.",
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [],
+        "outgoing": [],
+        "related": [
+          "wiper",
+          "toreando-pass",
+          "technical-stand-up",
+          "guard-recovery"
+        ]
+      }
+    },
+    {
+      "slug": "entry",
+      "name": "엔트리",
+      "source_category": "포지션 · 컨트롤",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/entry",
+      "kind": "concept",
+      "description": {
+        "summary": "어떤 기술이나 포지션으로 들어가는 과정을 말해요. 공격이든 방어든 시작은 여기서부터예요.",
+        "conditions": [
+          "기술을 시작하는 단계"
+        ],
+        "principles": [
+          "공격과 방어 모두의 출발점이에요",
+          "어떤 기술이든 공통으로 중요해요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": "특정 기술이 아니라 기술·포지션에 들어가는 단계를 가리키는 개념이에요.",
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [],
+        "outgoing": [],
+        "related": [
+          "arm-drag",
+          "snap-down",
+          "headquarters-position",
+          "ashi-garami",
+          "berimbolo"
+        ]
+      }
+    },
+    {
+      "slug": "kimura",
+      "name": "기무라",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/kimura",
+      "kind": "technique",
+      "description": {
+        "summary": "상대 팔을 굽힌 채 손목과 위팔을 함께 붙잡아 두고, 그 고정점을 지렛대 삼아 어깨를 안쪽으로 비트는 관절기예요.",
+        "conditions": [
+          "상대 손목에 그립을 만들 수 있어야 해요",
+          "상대가 팔꿈치와 몸통을 같이 움직여 빠져나갈 길을 막을 수 있어야 해요"
+        ],
+        "principles": [
+          "숫자 4 모양 그립으로 손목을 잡아 어깨에 회전 압력을 줘요",
+          "손목을 세게 당기기보다 팔을 떼어 놓고 내 몸 위치를 지키는 게 먼저예요"
+        ],
+        "mistakes": [
+          "손목만 쥐고 상대 어깨와 몸통을 놓쳐서, 상대가 같이 돌아 빠져나가게 두는 경우예요"
+        ],
+        "mistakes_basis": "existing_coach_draft",
+        "next": [
+          "암바",
+          "스윕",
+          "백 테이크"
+        ],
+        "next_note": "세 연결은 동시에 열리는 게 아니라 상대가 팔을 빼거나 몸을 돌리는 반응에 따라 갈려요. 출발 포지션과 상대 반응을 같이 적어야 해요(기존 관장 초안).",
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft_existing",
+          "basis": "existing_coach_draft+source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "side-control",
+          "half-guard",
+          "closed-guard",
+          "north-south-position",
+          "z-guard"
+        ],
+        "outgoing": [
+          "back-take",
+          "kimura-sweep",
+          "armbar",
+          "tarikoplata",
+          "wrist-lock"
+        ],
+        "related": [
+          "americana",
+          "omoplata"
+        ]
+      }
+    },
+    {
+      "slug": "omoplata",
+      "name": "오모플라타",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/omoplata",
+      "kind": "technique",
+      "description": {
+        "summary": "다리로 상대 어깨 관절을 눌러 꺾는 숄더 락이에요. 상대 손목이나 도복을 잡을 수 있을 때 노려요.",
+        "conditions": [
+          "상대 손목이나 도복을 잡을 수 있을 때"
+        ],
+        "principles": [
+          "손목이나 깃을 내 가슴 쪽으로 끌어당겨요",
+          "다리를 크게 돌려 어깨를 눌러요",
+          "끝내지 못해도 스윕으로 이어 갈 수 있어요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "스윕"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "closed-guard",
+          "lasso-guard",
+          "triangle-choke",
+          "armbar",
+          "rubber-guard",
+          "collar-and-sleeve-guard"
+        ],
+        "outgoing": [
+          "triangle-choke",
+          "baratoplata"
+        ],
+        "related": [
+          "gogoplata",
+          "kimura"
+        ]
+      }
+    },
+    {
+      "slug": "armbar",
+      "name": "암바",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/armbar",
+      "kind": "technique",
+      "description": {
+        "summary": "상대 팔꿈치를 반대 방향으로 펴서 꺾는 관절기예요.",
+        "conditions": [],
+        "principles": [
+          "팔 하나를 먼저 떼어 고립시켜요",
+          "힙을 받침점으로 써서 팔꿈치에 압력을 줘요"
+        ],
+        "mistakes": [
+          "팔이 아직 떼어지지 않았는데 꺾으러 들어가는 경우예요"
+        ],
+        "mistakes_basis": "coach_general",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "s-mount",
+          "mount",
+          "knee-on-belly",
+          "cross-collar-control",
+          "kimura"
+        ],
+        "outgoing": [
+          "triangle-choke",
+          "omoplata"
+        ],
+        "related": [
+          "flying-armbar",
+          "coyote-armbar"
+        ]
+      }
+    },
+    {
+      "slug": "triangle-choke",
+      "name": "트라이앵글 초크",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/triangle-choke",
+      "kind": "technique",
+      "description": {
+        "summary": "다리로 상대의 목과 팔 하나를 같이 감아 삼각형을 만드는 초크예요. 목 옆 혈관을 눌러 조여요.",
+        "conditions": [],
+        "principles": [
+          "목과 팔 하나를 다리 안에 같이 가둬요",
+          "목 옆 혈관을 눌러 피가 흐르는 길을 막아요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "spider-guard",
+          "s-mount",
+          "armbar",
+          "omoplata"
+        ],
+        "outgoing": [
+          "omoplata"
+        ],
+        "related": [
+          "closed-guard",
+          "gogoplata"
+        ]
+      }
+    },
+    {
+      "slug": "darce-choke",
+      "name": "다스 초크",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/darce-choke",
+      "kind": "technique",
+      "description": {
+        "summary": "앞쪽에서 상대의 목과 팔을 함께 감아 조이는 암 트라이앵글 계열 초크예요. 패스나 스크램블처럼 자세가 바뀌는 순간에 노려요.",
+        "conditions": [
+          "가드를 패스하는 도중",
+          "스크램블 상황"
+        ],
+        "principles": [
+          "목과 팔을 한꺼번에 감싸 압박해요",
+          "전환 중에 빠르게 걸 수 있는 선택지예요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "암 트라이앵글"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "turtle",
+          "gator-roll",
+          "front-headlock",
+          "side-control",
+          "half-guard"
+        ],
+        "outgoing": [
+          "back-control"
+        ],
+        "related": [
+          "anaconda-choke",
+          "brabo-choke",
+          "arm-triangle",
+          "peruvian-necktie"
+        ]
+      }
+    },
+    {
+      "slug": "knee-bar",
+      "name": "니바",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/knee-bar",
+      "kind": "technique",
+      "description": {
+        "summary": "상대 무릎을 반대 방향으로 펴서 꺾는 하체 관절기예요. 인대에 바로 부하가 가서 정확히 이해하고 써야 해요.",
+        "conditions": [],
+        "principles": [
+          "다리 하나를 떼어 고립시켜요",
+          "힙을 받침점으로 써서 무릎에 힘을 줘요",
+          "인대에 곧바로 부하가 가니 거는 쪽은 정확히, 당하는 쪽은 제때 탭해야 해요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "toe-hold",
+          "saddle-position",
+          "fifty-fifty-position",
+          "ashi-garami"
+        ],
+        "outgoing": [],
+        "related": [
+          "heel-hook",
+          "armbar",
+          "calf-slicer"
+        ]
+      }
+    },
+    {
+      "slug": "guillotine-choke",
+      "name": "길로틴 초크",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/guillotine-choke",
+      "kind": "technique",
+      "description": {
+        "summary": "앞에서 팔로 상대 목을 감아 조이는 초크예요. 상대가 테이크다운을 들어올 때 받아치는 용도로 많이 써요.",
+        "conditions": [
+          "상대가 테이크다운을 시도할 때 카운터로"
+        ],
+        "principles": [
+          "팔로 목을 감싸 압박해요",
+          "레슬링의 앞목 잡기와 이어져요",
+          "비교적 쉬워서 시도하기 좋아요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "front-headlock",
+          "closed-guard",
+          "sprawl",
+          "half-guard"
+        ],
+        "outgoing": [],
+        "related": [
+          "darce-choke",
+          "anaconda-choke",
+          "peruvian-necktie",
+          "snap-down"
+        ]
+      }
+    },
+    {
+      "slug": "straight-ankle-lock",
+      "name": "스트레이트 앵클락",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/straight-ankle-lock",
+      "kind": "technique",
+      "description": {
+        "summary": "상대 발목을 반대 방향으로 펴서 꺾는 하체 관절기예요. 하체 공격 중 비교적 안전해서 처음 배우는 다리 공격으로 많이 가르쳐요.",
+        "conditions": [],
+        "principles": [
+          "발목이 과하게 펴지도록 압력을 줘요",
+          "하체 공격 가운데 비교적 안전한 편이에요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "single-leg-x-guard",
+          "outside-ashi-garami"
+        ],
+        "outgoing": [
+          "heel-hook"
+        ],
+        "related": [
+          "ashi-garami",
+          "aoki-lock",
+          "foot-lock"
+        ]
+      }
+    },
+    {
+      "slug": "bow-and-arrow-choke",
+      "name": "보우앤로우 초크",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/bow-and-arrow-choke",
+      "kind": "technique",
+      "description": {
+        "summary": "백 컨트롤을 잡았을 때 상대 깃을 써서 조이는 칼라 초크예요(도복 기술). 활시위를 당기는 모양에서 이름이 왔어요.",
+        "conditions": [
+          "백 컨트롤을 잡은 상태",
+          "도복(기)을 입은 상황"
+        ],
+        "principles": [
+          "깃 그립과 다리 컨트롤을 같이 써요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "back-control",
+          "back-mount",
+          "back-take",
+          "straight-collar-control"
+        ],
+        "outgoing": [],
+        "related": [
+          "seat-belt-grip",
+          "rear-naked-choke",
+          "cross-collar-choke",
+          "clock-choke"
+        ]
+      }
+    },
+    {
+      "slug": "heel-hook",
+      "name": "힐훅",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/heel-hook",
+      "kind": "concept",
+      "description": {
+        "summary": "발뒤꿈치를 잡고 비틀어 발목과 무릎 인대를 공격하는 하체 관절기예요. 비트는 방향에 따라 인사이드와 아웃사이드로 나뉘어요.",
+        "conditions": [
+          "입문자 대회에서는 금지되는 경우가 있어요"
+        ],
+        "principles": [
+          "팔로 상대 뒤꿈치를 걸어 잡아요",
+          "발목을 안쪽이나 바깥쪽으로 돌려 압력을 만들어요",
+          "부상 위험이 커서 원리를 정확히 알고 써야 해요"
+        ],
+        "mistakes": [
+          "연습할 땐 천천히 걸고, 상대가 탭하면 바로 풀어요"
+        ],
+        "mistakes_basis": "coach_general",
+        "next": [],
+        "next_note": null,
+        "kind_note": "메모에서 인사이드와 아웃사이드 두 방향으로 나뉘고, 두 변형이 별도 slug(inside-heel-hook, outside-heel-hook)로 있어 상위 묶음으로 분류했어요.",
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "straight-ankle-lock",
+          "shin-trap"
+        ],
+        "outgoing": [],
+        "related": [
+          "inside-heel-hook",
+          "outside-heel-hook",
+          "ashi-garami",
+          "saddle-position",
+          "knee-bar"
+        ]
+      }
+    },
+    {
+      "slug": "rear-naked-choke",
+      "name": "리어 네이키드 초크",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/rear-naked-choke",
+      "kind": "technique",
+      "description": {
+        "summary": "상대 등 뒤를 잡았을 때 거는 초크예요. 백을 잡았다면 먼저 노려 볼 마무리예요.",
+        "conditions": [
+          "백 컨트롤을 잡은 상태여야 해요"
+        ],
+        "principles": [
+          "한 팔로 상대 목을 감아요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "seat-belt-grip",
+          "back-take",
+          "back-control"
+        ],
+        "outgoing": [],
+        "related": [
+          "back-mount",
+          "bow-and-arrow-choke",
+          "crucifix"
+        ]
+      }
+    },
+    {
+      "slug": "toe-hold",
+      "name": "토홀드",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/toe-hold",
+      "kind": "technique",
+      "description": {
+        "summary": "상대 발을 잡고 돌려 발목을 공격하는 풋락 계열 하체 관절기예요. 대회마다 허용 여부가 달라요.",
+        "conditions": [
+          "대회 규정을 먼저 확인해야 해요"
+        ],
+        "principles": [
+          "발을 쥐고 돌려 발목에 압박을 줘요",
+          "비트는 힘이 무릎까지 전달돼요",
+          "통증이 크게 올 수 있어요"
+        ],
+        "mistakes": [
+          "연습할 땐 천천히 걸고, 상대가 탭하면 바로 풀어요"
+        ],
+        "mistakes_basis": "coach_general",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "fifty-fifty-position",
+          "saddle-position"
+        ],
+        "outgoing": [
+          "knee-bar"
+        ],
+        "related": [
+          "estima-lock",
+          "foot-lock",
+          "aoki-lock",
+          "heel-hook"
+        ]
+      }
+    },
+    {
+      "slug": "loop-choke",
+      "name": "루프 초크",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/loop-choke",
+      "kind": "technique",
+      "description": {
+        "summary": "도복 깃으로 목을 감아 조르는 기 초크예요. 상대가 머리를 낮게 숙였을 때 바로 노릴 수 있어요.",
+        "conditions": [
+          "상대가 몸을 낮게 숙였을 때"
+        ],
+        "principles": [
+          "깃을 목 둘레로 감아 넣어요",
+          "시간을 끌지 말고 빠르게 조여요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "cross-collar-control",
+          "butterfly-guard",
+          "sprawl"
+        ],
+        "outgoing": [],
+        "related": [
+          "cross-collar-choke",
+          "closed-guard",
+          "guillotine-choke"
+        ]
+      }
+    },
+    {
+      "slug": "inside-heel-hook",
+      "name": "인사이드 힐훅",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/inside-heel-hook",
+      "kind": "technique",
+      "description": {
+        "summary": "발을 안쪽으로 비트는 힐훅이에요. 무릎에 회전 압력이 걸리는 레그락이에요.",
+        "conditions": [],
+        "principles": [
+          "발을 안쪽으로 돌려 무릎에 회전 압력을 줘요",
+          "부상 위험이 높아서 정확히 익히고 조심해서 써야 해요"
+        ],
+        "mistakes": [
+          "연습할 땐 천천히 걸고, 상대가 탭하면 바로 풀어요"
+        ],
+        "mistakes_basis": "coach_general",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "saddle-position",
+          "backside-fifty-fifty",
+          "honey-hole"
+        ],
+        "outgoing": [],
+        "related": [
+          "inside-ashi-garami",
+          "heel-hook"
+        ]
+      }
+    },
+    {
+      "slug": "arm-triangle",
+      "name": "암 트라이앵글",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/arm-triangle",
+      "kind": "technique",
+      "description": {
+        "summary": "상대 팔과 목을 함께 가둬 조르는 초크예요. 여러 탑 포지션에서 시도할 수 있어요.",
+        "conditions": [
+          "탑 포지션 여러 곳에서 걸 수 있어요"
+        ],
+        "principles": [
+          "상대 한쪽 팔을 넣어 삼각형으로 조여요",
+          "구조는 단순하지만 쓰임새가 넓어요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "mount"
+        ],
+        "outgoing": [],
+        "related": [
+          "darce-choke",
+          "brabo-choke",
+          "north-south-choke",
+          "side-control"
+        ]
+      }
+    },
+    {
+      "slug": "cross-collar-choke",
+      "name": "크로스 칼라 초크",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/cross-collar-choke",
+      "kind": "technique",
+      "description": {
+        "summary": "양손을 엇갈려 상대 양쪽 깃을 잡고 거는 기 초크예요. 클로즈드 가드나 마운트에서 자주 써요.",
+        "conditions": [
+          "클로즈드 가드, 마운트, 깃을 잡은 상황에서 자주 써요"
+        ],
+        "principles": [
+          "두 손을 교차해 양쪽 깃을 잡아요",
+          "목 양옆을 눌러요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "crucifix",
+          "mount"
+        ],
+        "outgoing": [],
+        "related": [
+          "cross-collar-control",
+          "loop-choke",
+          "bow-and-arrow-choke",
+          "closed-guard"
+        ]
+      }
+    },
+    {
+      "slug": "foot-lock",
+      "name": "풋락",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/foot-lock",
+      "kind": "concept",
+      "description": {
+        "summary": "발과 발목 관절을 공격하는 하체 관절기를 묶어 부르는 이름이에요. 하체 서브미션을 배울 때 기본이 돼요.",
+        "conditions": [],
+        "principles": [
+          "발목이나 발을 과하게 펴거나 돌려서 압박해요",
+          "대표 변형으로 스트레이트 풋락과 토홀드가 있어요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": "메모에서 발과 발목을 공격하는 하체 관절기의 총칭으로 설명되고, 스트레이트 풋락과 토홀드가 대표 변형으로 나와요.",
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "ashi-garami"
+        ],
+        "outgoing": [],
+        "related": [
+          "straight-ankle-lock",
+          "toe-hold",
+          "estima-lock"
+        ]
+      }
+    },
+    {
+      "slug": "wrist-lock",
+      "name": "리스트 락",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/wrist-lock",
+      "kind": "technique",
+      "description": {
+        "summary": "손목 관절을 공격하는 관절기예요. 여러 자세에서 빨리 걸 수 있고, 다른 기술로 넘어가는 수단도 돼요.",
+        "conditions": [
+          "여러 자세에서 빠르게 걸 수 있어요"
+        ],
+        "principles": [
+          "작은 관절이라 정밀하게 다뤄야 해요",
+          "상대가 예상하지 못한 순간에 잘 통해요",
+          "다른 기술로 넘어가는 연결 수단이 되기도 해요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "kimura"
+        ],
+        "outgoing": [],
+        "related": [
+          "americana",
+          "key-lock",
+          "closed-guard"
+        ]
+      }
+    },
+    {
+      "slug": "ezekiel-choke",
+      "name": "이제키엘 초크",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/ezekiel-choke",
+      "kind": "technique",
+      "description": {
+        "summary": "내 전완과 소매 그립으로 목을 누르는 초크예요. 기와 노기 모두에서 쓸 수 있어요.",
+        "conditions": [
+          "마운트, 백, 사이드 컨트롤에서 시도해요",
+          "상대 가드 안에 있을 때도 쓸 수 있어요"
+        ],
+        "principles": [
+          "기에서는 한 손을 반대쪽 소매 안에 넣어 잡아요",
+          "노기에서는 소매 대신 내 손목이나 전완을 잡아요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "knee-on-belly"
+        ],
+        "outgoing": [],
+        "related": [
+          "mount",
+          "back-control",
+          "cross-collar-choke",
+          "arm-triangle"
+        ]
+      }
+    },
+    {
+      "slug": "banana-split",
+      "name": "바나나 스플릿",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/banana-split",
+      "kind": "technique",
+      "description": {
+        "summary": "상대 두 다리를 반대로 벌려 사타구니와 고관절을 늘리는 하체 서브미션이에요. 트럭이나 터틀 상대에게 노려요.",
+        "conditions": [
+          "트럭, 트위스터 사이드 컨트롤에서 들어가요",
+          "터틀 자세인 상대의 다리를 공격할 때 써요"
+        ],
+        "principles": [
+          "상대 두 다리를 서로 반대쪽으로 벌려요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "truck"
+        ],
+        "outgoing": [
+          "twister"
+        ],
+        "related": [
+          "crucifix",
+          "calf-slicer"
+        ]
+      }
+    },
+    {
+      "slug": "baseball-bat-choke",
+      "name": "베이스볼 초크",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/baseball-bat-choke",
+      "kind": "technique",
+      "description": {
+        "summary": "야구 배트를 쥐듯 두 손으로 깃을 잡는 크로스 칼라 계열 기 초크예요. 위에서도 아래에서도 걸 수 있어요.",
+        "conditions": [
+          "탑과 바텀 모두에서 걸 수 있어요"
+        ],
+        "principles": [
+          "배트를 쥐는 모양으로 두 손이 깃을 잡아요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "knee-on-belly"
+        ],
+        "outgoing": [],
+        "related": [
+          "side-control",
+          "paper-cutter-choke",
+          "straight-collar-control",
+          "cross-collar-choke"
+        ]
+      }
+    },
+    {
+      "slug": "calf-slicer",
+      "name": "카프 슬라이서",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/calf-slicer",
+      "kind": "technique",
+      "description": {
+        "summary": "종아리를 끼워 눌러 종아리와 무릎을 공격하는 하체 관절기예요. 타이밍이 중요해요.",
+        "conditions": [],
+        "principles": [
+          "종아리를 내 팔뚝과 정강이 사이에 끼워요",
+          "종아리 근육과 무릎에 강한 압력이 걸려요",
+          "타이밍을 정확히 맞춰야 해요"
+        ],
+        "mistakes": [
+          "연습할 땐 천천히 걸고, 상대가 탭하면 바로 풀어요"
+        ],
+        "mistakes_basis": "coach_general",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "truck"
+        ],
+        "outgoing": [],
+        "related": [
+          "twister",
+          "bicep-slicer",
+          "knee-bar"
+        ]
+      }
+    },
+    {
+      "slug": "americana",
+      "name": "아메리카나",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/americana",
+      "kind": "technique",
+      "description": {
+        "summary": "어깨를 바깥쪽으로 돌리는 숄더 락이에요. 사이드 컨트롤이나 마운트에서 주로 써요.",
+        "conditions": [
+          "주로 사이드 컨트롤이나 마운트에서 써요"
+        ],
+        "principles": [
+          "4자 모양 그립을 만들어요",
+          "지렛대로 어깨를 바깥쪽으로 회전시켜요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "side-control"
+        ],
+        "outgoing": [],
+        "related": [
+          "key-lock",
+          "kimura",
+          "mount",
+          "armbar"
+        ]
+      }
+    },
+    {
+      "slug": "flying-armbar",
+      "name": "플라잉 암바",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/flying-armbar",
+      "kind": "technique",
+      "description": {
+        "summary": "서 있는 상태에서 뛰어올라 들어가는 암바예요. 스탠딩에서 상대 팔을 먼저 고립시켰을 때 써요.",
+        "conditions": [
+          "스탠딩에서 상대 팔을 먼저 고립시킨 상태여야 해요"
+        ],
+        "principles": [
+          "점프하면서 암바 자세로 들어가요",
+          "몸을 돌리며 체중을 실어 상대를 바닥으로 끌어내리고 마무리해요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "two-on-one"
+        ],
+        "outgoing": [],
+        "related": [
+          "armbar",
+          "choi-bar",
+          "triangle-choke",
+          "collar-and-sleeve-guard"
+        ]
+      }
+    },
+    {
+      "slug": "tarikoplata",
+      "name": "타리코플라타",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/tarikoplata",
+      "kind": "technique",
+      "description": {
+        "summary": "기무라 계열의 숄더 락 변형이에요. 다리와 팔로 상대 팔을 가두고 어깨를 돌려요.",
+        "conditions": [],
+        "principles": [
+          "다리와 팔로 틀을 만들어 상대 팔을 고립시켜요",
+          "어깨에 회전 압력을 줘요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "kimura"
+        ],
+        "outgoing": [],
+        "related": [
+          "baratoplata",
+          "omoplata",
+          "armbar"
+        ]
+      }
+    },
+    {
+      "slug": "anaconda-choke",
+      "name": "아나콘다 초크",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/anaconda-choke",
+      "kind": "technique",
+      "description": {
+        "summary": "상대 목과 팔을 함께 감아 조르는 암 트라이앵글 계열 초크예요. 터틀 상대에게 특히 잘 통해요.",
+        "conditions": [
+          "상대가 터틀 자세일 때 특히 잘 통해요"
+        ],
+        "principles": [
+          "상대 목과 팔을 한 번에 팔로 감아요",
+          "게이터 롤과 연결해서 쓰기도 해요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "게이터 롤"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "north-south-position"
+        ],
+        "outgoing": [],
+        "related": [
+          "darce-choke",
+          "brabo-choke",
+          "front-headlock",
+          "gator-roll",
+          "turtle"
+        ]
+      }
+    },
+    {
+      "slug": "baratoplata",
+      "name": "바라토플라타",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/baratoplata",
+      "kind": "technique",
+      "description": {
+        "summary": "오모플라타와 암바의 요소를 섞은 숄더 락이에요. 다리로 팔을 묶고 어깨를 눌러요.",
+        "conditions": [],
+        "principles": [
+          "다리로 상대 팔을 묶어 고정해요",
+          "어깨에 압박을 줘요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "omoplata"
+        ],
+        "outgoing": [],
+        "related": [
+          "tarikoplata",
+          "kimura",
+          "gogoplata"
+        ]
+      }
+    },
+    {
+      "slug": "brabo-choke",
+      "name": "브라보 초크",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/brabo-choke",
+      "kind": "technique",
+      "description": {
+        "summary": "목과 상대 팔을 함께 가두는 암 트라이앵글 형태의 초크예요. 프론트 헤드락이나 하프 가드에서 주로 노려요.",
+        "conditions": [
+          "프론트 헤드락, 하프 가드, 위에서 누르는 포지션에서 주로 시도해요"
+        ],
+        "principles": [
+          "목을 감으면서 상대 팔도 같이 가둬요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "front-headlock"
+        ],
+        "outgoing": [],
+        "related": [
+          "darce-choke",
+          "anaconda-choke",
+          "arm-triangle"
+        ]
+      }
+    },
+    {
+      "slug": "clock-choke",
+      "name": "클락 초크",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/clock-choke",
+      "kind": "technique",
+      "description": {
+        "summary": "상대 깃을 잡고 다리를 시계 방향처럼 옮기며 조르는 기 초크예요. 터틀 상대에게 써요.",
+        "conditions": [
+          "상대가 터틀 자세일 때 써요"
+        ],
+        "principles": [
+          "상대 깃을 잡아 목을 조여요",
+          "시곗바늘처럼 다리를 옮기며 압박을 키워요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "turtle"
+        ],
+        "outgoing": [],
+        "related": [
+          "bow-and-arrow-choke",
+          "paper-cutter-choke",
+          "crucifix",
+          "back-take"
+        ]
+      }
+    },
+    {
+      "slug": "gogoplata",
+      "name": "고고플라타",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/gogoplata",
+      "kind": "technique",
+      "description": {
+        "summary": "정강이를 상대 목에 대고 누르는 고급 초크예요. 주로 가드에서 걸고 유연성이 많이 필요해요.",
+        "conditions": [
+          "주로 가드에서 시도해요",
+          "유연성이 꽤 필요해요"
+        ],
+        "principles": [
+          "정강이를 상대 목에 대고 눌러요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "rubber-guard"
+        ],
+        "outgoing": [],
+        "related": [
+          "omoplata",
+          "closed-guard",
+          "triangle-choke",
+          "baratoplata"
+        ]
+      }
+    },
+    {
+      "slug": "north-south-choke",
+      "name": "노스 사우스 초크",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/north-south-choke",
+      "kind": "technique",
+      "description": {
+        "summary": "노스 사우스 포지션에서 팔로 목을 감고 가슴으로 눌러 거는 초크예요.",
+        "conditions": [
+          "노스 사우스 포지션을 잡은 상태여야 해요"
+        ],
+        "principles": [
+          "팔로 상대 목을 감아요",
+          "가슴으로 누르고 힙 위치를 맞춰 빈틈을 없애요",
+          "상대 팔까지 함께 넣는 암인 변형도 있어요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "north-south-position"
+        ],
+        "outgoing": [],
+        "related": [
+          "side-control",
+          "arm-triangle",
+          "darce-choke"
+        ]
+      }
+    },
+    {
+      "slug": "buggy-choke",
+      "name": "버기 초크",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/buggy-choke",
+      "kind": "technique",
+      "description": {
+        "summary": "아래에 깔린 상태에서 거는 변칙 초크예요. 사이드 컨트롤이나 마운트를 당했을 때 반격으로 써요.",
+        "conditions": [
+          "사이드 컨트롤이나 마운트에 깔렸을 때 써요"
+        ],
+        "principles": [
+          "팔로 삼각형 구조를 만들어요",
+          "불리한 자리에서도 목을 압박할 수 있어요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "side-control"
+        ],
+        "outgoing": [],
+        "related": [
+          "triangle-choke",
+          "guard-recovery",
+          "mount"
+        ]
+      }
+    },
+    {
+      "slug": "canto-choke",
+      "name": "칸토 초크",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/canto-choke",
+      "kind": "technique",
+      "description": {
+        "summary": "상대 라펠을 목 앞으로 넘겨 거는 기 초크예요. 탑에서도, 가드에서 셋업해서도 써요.",
+        "conditions": [
+          "사이드 컨트롤 같은 탑 포지션에서 걸 수 있어요",
+          "가드나 하프 가드에서 셋업하는 경우도 많아요"
+        ],
+        "principles": [
+          "라펠을 목 앞쪽으로 넘겨 걸어요",
+          "지렛대와 라펠 컨트롤을 같이 써서 단단히 조여요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "straight-collar-control"
+        ],
+        "outgoing": [],
+        "related": [
+          "side-control",
+          "paper-cutter-choke",
+          "baseball-bat-choke"
+        ]
+      }
+    },
+    {
+      "slug": "key-lock",
+      "name": "키락",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/key-lock",
+      "kind": "technique",
+      "description": {
+        "summary": "상대 팔을 바깥으로 돌려 어깨를 공격하는 숄더 락이에요. 사이드 컨트롤이나 마운트에서 주로 써요.",
+        "conditions": [
+          "주로 사이드 컨트롤이나 마운트에서 써요"
+        ],
+        "principles": [
+          "팔을 바깥쪽으로 돌려 어깨 관절을 압박해요",
+          "구조는 단순하지만 효과가 강해요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "side-control"
+        ],
+        "outgoing": [],
+        "related": [
+          "americana",
+          "kimura",
+          "mount"
+        ]
+      }
+    },
+    {
+      "slug": "twister",
+      "name": "트위스터",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/twister",
+      "kind": "technique",
+      "description": {
+        "summary": "상체와 하체를 반대로 비틀어 척추를 압박하는 고난도 서브미션이에요. 노기에서 많이 써요.",
+        "conditions": [],
+        "principles": [
+          "상체와 하체를 서로 반대 방향으로 비틀어요",
+          "척추에 압력이 걸려요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "banana-split"
+        ],
+        "outgoing": [],
+        "related": [
+          "truck",
+          "calf-slicer",
+          "back-control"
+        ]
+      }
+    },
+    {
+      "slug": "aoki-lock",
+      "name": "아오키 락",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/aoki-lock",
+      "kind": "technique",
+      "description": {
+        "summary": "스트레이트 앵클락과 토홀드를 섞은 풋락 변형이에요.",
+        "conditions": [],
+        "principles": [
+          "스트레이트 앵클락과 토홀드의 요소를 합쳐요",
+          "회전 압력으로 발목을 고정해요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "outside-ashi-garami"
+        ],
+        "outgoing": [],
+        "related": [
+          "straight-ankle-lock",
+          "toe-hold",
+          "estima-lock",
+          "heel-hook"
+        ]
+      }
+    },
+    {
+      "slug": "estima-lock",
+      "name": "에스티마 락",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/estima-lock",
+      "kind": "technique",
+      "description": {
+        "summary": "다리를 통제하면서 상대 발을 누르고 비트는 풋락이에요. 다리가 엉킨 상황에서 주로 노려요.",
+        "conditions": [
+          "가드를 주고받는 중이나 다리가 엉킨 상황, 50/50 형태에서 주로 시도해요"
+        ],
+        "principles": [
+          "다리를 통제한 채 상대 발을 누르고 돌려요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "headquarters-position"
+        ],
+        "outgoing": [],
+        "related": [
+          "toe-hold",
+          "foot-lock",
+          "straight-ankle-lock",
+          "aoki-lock"
+        ]
+      }
+    },
+    {
+      "slug": "paper-cutter-choke",
+      "name": "페이퍼 커터 초크",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/paper-cutter-choke",
+      "kind": "technique",
+      "description": {
+        "summary": "사이드 컨트롤 위에서 깃 그립과 어깨 압박으로 거는 기 초크예요.",
+        "conditions": [
+          "사이드 컨트롤 위에 있을 때 써요"
+        ],
+        "principles": [
+          "한쪽 깃 그립과 어깨 압박을 같이 써요",
+          "상대를 고정한 채 팔을 목 위로 가로질러 눌러 마무리해요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "side-control"
+        ],
+        "outgoing": [],
+        "related": [
+          "knee-on-belly",
+          "baseball-bat-choke",
+          "clock-choke",
+          "bow-and-arrow-choke"
+        ]
+      }
+    },
+    {
+      "slug": "peruvian-necktie",
+      "name": "페루비안 넥타이",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/peruvian-necktie",
+      "kind": "technique",
+      "description": {
+        "summary": "프론트 헤드락에서 이어지는 초크예요. 팔로 목을 감고 다리를 등이나 머리 위에 올려 눌러요.",
+        "conditions": [
+          "프론트 헤드락을 잡은 상태여야 해요"
+        ],
+        "principles": [
+          "팔로 상대 목을 감아요",
+          "다리를 상대 등이나 머리 위에 걸쳐 올려요",
+          "목 압박과 아래로 누르는 힘을 함께 써요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "front-headlock"
+        ],
+        "outgoing": [],
+        "related": [
+          "guillotine-choke",
+          "anaconda-choke",
+          "darce-choke",
+          "turtle"
+        ]
+      }
+    },
+    {
+      "slug": "z-lock",
+      "name": "Z 락",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/z-lock",
+      "kind": "technique",
+      "description": {
+        "summary": "상대 다리를 Z 모양으로 접어 무릎 옆을 압박하는 니 락이에요. 다리가 엉킨 포지션에서 들어가요.",
+        "conditions": [
+          "50/50, 싱글 레그 X, 새들, 다이아고널 아시 가라미 같은 다리 엉킴에서 들어가요"
+        ],
+        "principles": [
+          "상대 다리를 Z 모양으로 접어요",
+          "무릎 옆쪽에 압력을 줘요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "k-guard"
+        ],
+        "outgoing": [],
+        "related": [
+          "heel-hook",
+          "toe-hold",
+          "ashi-garami"
+        ]
+      }
+    },
+    {
+      "slug": "bicep-slicer",
+      "name": "바이셉 슬라이서",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/bicep-slicer",
+      "kind": "technique",
+      "description": {
+        "summary": "이두근을 팔뚝과 정강이 사이에 끼워 누르는 서브미션이에요.",
+        "conditions": [],
+        "principles": [
+          "이두근을 내 팔뚝과 정강이 사이에 끼워요",
+          "바로 풀지 않으면 큰 통증과 부상으로 이어질 수 있어요"
+        ],
+        "mistakes": [
+          "연습할 땐 천천히 걸고, 상대가 탭하면 바로 풀어요"
+        ],
+        "mistakes_basis": "coach_general",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "lasso-guard"
+        ],
+        "outgoing": [],
+        "related": [
+          "calf-slicer",
+          "kimura",
+          "armbar",
+          "closed-guard"
+        ]
+      }
+    },
+    {
+      "slug": "choi-bar",
+      "name": "초이바",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/choi-bar",
+      "kind": "technique",
+      "description": {
+        "summary": "상대 팔꿈치를 고립시켜 잠그는 서브미션이에요. 여러 포지션에서 쓸 수 있어요.",
+        "conditions": [
+          "여러 포지션에서 쓸 수 있어요"
+        ],
+        "principles": [
+          "상대 팔꿈치를 고립시켜 관절을 잠가요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "z-guard"
+        ],
+        "outgoing": [],
+        "related": [
+          "armbar",
+          "flying-armbar",
+          "coyote-armbar",
+          "closed-guard"
+        ]
+      }
+    },
+    {
+      "slug": "outside-heel-hook",
+      "name": "아웃사이드 힐훅",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/outside-heel-hook",
+      "kind": "technique",
+      "description": {
+        "summary": "발을 바깥쪽으로 비트는 힐훅 변형이에요. 무릎에 회전 압력이 걸려 위험이 커요.",
+        "conditions": [],
+        "principles": [
+          "발을 바깥쪽으로 돌려 무릎에 회전 압력을 줘요",
+          "인사이드 힐훅만큼 강해서 부상 위험이 크니 조심해야 해요"
+        ],
+        "mistakes": [
+          "연습할 땐 천천히 걸고, 상대가 탭하면 바로 풀어요"
+        ],
+        "mistakes_basis": "coach_general",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "fifty-fifty-position"
+        ],
+        "outgoing": [],
+        "related": [
+          "outside-ashi-garami",
+          "heel-hook",
+          "straight-ankle-lock"
+        ]
+      }
+    },
+    {
+      "slug": "von-flue-choke",
+      "name": "폰 플루 초크",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/von-flue-choke",
+      "kind": "technique",
+      "description": {
+        "summary": "상대가 길로틴을 잡고 있을 때 위에서 되받아 거는 카운터 초크예요. 주로 사이드 컨트롤에서 써요.",
+        "conditions": [
+          "상대가 길로틴 그립을 잡고 있어요",
+          "주로 사이드 컨트롤 자리예요"
+        ],
+        "principles": [
+          "내 어깨로 상대 목을 눌러요",
+          "머리 위치로 압박을 더해요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "길로틴",
+          "사이드 컨트롤"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "side-control"
+        ],
+        "outgoing": [],
+        "related": [
+          "guillotine-choke",
+          "arm-triangle",
+          "darce-choke"
+        ]
+      }
+    },
+    {
+      "slug": "coyote-armbar",
+      "name": "코요테 암바",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/coyote-armbar",
+      "kind": "technique",
+      "description": {
+        "summary": "코요테 하프 가드에서 상대 팔 하나를 떼어 내 거는 암바예요.",
+        "conditions": [
+          "코요테 하프 가드 자세에 있어요"
+        ],
+        "principles": [
+          "언더훅과 다리 배치로 상대 팔 하나를 몸에서 떼어 내요",
+          "몸을 돌려서 암바를 끝내요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "코요테 하프 가드"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [
+          "coyote-guard"
+        ],
+        "outgoing": [],
+        "related": [
+          "armbar",
+          "half-guard",
+          "choi-bar"
+        ]
+      }
+    },
+    {
+      "slug": "choke",
+      "name": "초크",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/choke",
+      "kind": "concept",
+      "description": {
+        "summary": "목을 졸라 탭을 받는 조르기 기술 전체를 묶는 말이에요. 개별 기술이 아니라 상위 분류예요.",
+        "conditions": [],
+        "principles": [
+          "혈류나 숨길을 막아서 탭을 받아요",
+          "체격이나 힘에 덜 좌우되는 공격으로 소개돼요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [],
+        "outgoing": [],
+        "related": [
+          "arm-triangle"
+        ]
+      }
+    },
+    {
+      "slug": "counter",
+      "name": "카운터",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/counter",
+      "kind": "concept",
+      "description": {
+        "summary": "상대가 먼저 공격할 때 그 움직임을 이용해 되받아치는 기술 묶음이에요.",
+        "conditions": [
+          "상대가 먼저 공격해 오고 있어요"
+        ],
+        "principles": [
+          "상대 공격의 힘과 방향을 내 이득으로 바꿔요",
+          "움직임을 읽고 대응해요",
+          "되받아치면서 주도권을 가져와요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [],
+        "next_note": null,
+        "kind_note": "원본 분류는 서브미션이지만 특정 기술이 아니라 대응 방식 전체를 가리켜요.",
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [],
+        "outgoing": [],
+        "related": [
+          "von-flue-choke",
+          "sprawl",
+          "guard-recovery",
+          "technical-stand-up"
+        ]
+      }
+    },
+    {
+      "slug": "submission",
+      "name": "서브미션",
+      "source_category": "서브미션",
+      "source_url": "https://labs.quartz.best/ko-KR/pbb/techniques/submission",
+      "kind": "concept",
+      "description": {
+        "summary": "조르기나 관절기로 상대 항복을 받는 기술 전체를 묶는 말이에요. 주짓수에서 노리는 주요 목표 중 하나예요.",
+        "conditions": [],
+        "principles": [
+          "조르기나 관절 공격으로 탭을 받아요"
+        ],
+        "mistakes": [],
+        "mistakes_basis": "none",
+        "next": [
+          "암바",
+          "트라이앵글 초크",
+          "오모플라타"
+        ],
+        "next_note": null,
+        "kind_note": null,
+        "review": {
+          "reviewer": "gym-master",
+          "status": "coach_draft",
+          "basis": "source_notes"
+        }
+      },
+      "relations": {
+        "incoming": [],
+        "outgoing": [],
+        "related": []
+      }
+    }
+  ]
+}

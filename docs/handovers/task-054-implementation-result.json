@@ -1,0 +1,57 @@
+{
+  "task_id": "task-054",
+  "status": "db_applied_deploy_pending",
+  "task_complete": false,
+  "scope": {
+    "catalog": 159,
+    "coach_descriptions": 159,
+    "reuse": 28,
+    "new": 110,
+    "deferred": 21,
+    "champions": "structure review only"
+  },
+  "verification": {
+    "reviewer": "PASS",
+    "independent_qa": {
+      "backend_passed": 49,
+      "web_passed": 15
+    },
+    "official_c2": {
+      "status": "done",
+      "findings": 0
+    },
+    "latest_origin_build": {
+      "base_ref": "55f8ad4e73db44377b5c60abccbcb988b66179b2",
+      "modules": 224,
+      "status": "PASS",
+      "js": "index-C6IJ6MBR.js"
+    }
+  },
+  "data_preservation": {
+    "existing_rows_unchanged": 60,
+    "video_rows_unchanged": 177,
+    "other_account_counts_unchanged": true
+  },
+  "private_inputs": "not committed; operator supplies private snapshot/candidates/decisions explicitly",
+  "source_hashes": {
+    "backend/src/routes/techniques.js": "a3e8c64b898147e12b2605f4fae90b5118f161b189b72a391ff59f2b4e4e282e",
+    "web/src/api/techniques.js": "59b32ddee8c4fbc08427d858f04cf95dfabb754b704f5d7c9427849797a93c05",
+    "web/src/pages/TechPlanPage.jsx": "b29378ecfd8552574b6606174127305aaeaf9d452447c6c4ce91aa7e50f3e4b2",
+    "web/src/styles/app.css": "8e08be549d57c10e397cff5dd4a7b5129a346b5e5f35e9282bc1bd6bcf1a9c20",
+    "backend/scripts/task-054-build-reference-catalog.js": "63744fc60e4c8aea91f5caa9861c7de1df1ed5bbedbaddb6d9a94f99651a7b4d",
+    "backend/scripts/task-054-reference-apply.js": "ff7070042a449d3898cacbb6764a6272cb6a85ab431fe40395869f0a3a280ca3",
+    "backend/scripts/task-054-reference-links-schema.js": "6d4a20c00e3e4b519c8ed4c64ce515bc371ac5b5c1ad61b742d322965d906ef2",
+    "backend/src/data/techniqueReference/catalog.json": "18062834faaa09e477accb6d11f72225afe10743530bd7da8f3de620a2e8ddca",
+    "backend/src/data/techniqueReference/descriptions.json": "be49ff3555ed334ce4f268081456d438773a948d6e33e7f11796916cad614f24",
+    "backend/src/services/techniqueReference.js": "420572b345bbca7881f4a5b3821fa3ab78f8a55c144e803fb5511750b47001e5",
+    "backend/src/services/techniqueReferenceApply.js": "615a311cab4153401435b9729c4c31893a2bed9bed04d8a2e8a544a0ef8ebfe1",
+    "backend/test/task-054-reference.test.js": "79226841a4c0ead8e55dc622ec563dc4baee8f7d02a0b47dff27a4189bb572e2",
+    "backend/test/task-054-reference-apply.test.js": "b544217b09dd700680f55d0e87dbb276a04e2c9bdb0b4e6e86f64a9e2f39c590",
+    "backend/test/task-054-route.test.js": "11412034219cc95b0ae33f156d9178797e746b678f091fbd14ad28cb840fd759",
+    "web/src/components/TechReferenceSection.jsx": "17e6fdd3988ace665f39edb19ff5da66ddaaa29a33dea4884623f6e061a2f4a6",
+    "web/src/utils/techReferenceModel.js": "f02a78941924d0cdfb8a54110f41ad1e0c34371ef81456e309d27b94e3ad249e",
+    "web/src/utils/techReferenceModel.test.mjs": "8f4ceae920266e0d9d3ad71d9ee891c9187ec85f36cf50b6dee25686d9c552ce",
+    "backend/test/task-054-backup.test.js": "e84342cc0547bb38b7ad7e9d13c5f606cb8068d39ca579d6eae6cf4873371fc3",
+    "backend/test/task-054-db-adapter.test.js": "78b0987235daeb56385c83fab9133783703b61646194743227fcc8d7415e021a"
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "kind": "optional_coach_candidates",
+  "items": [],
+  "note": "개인 기술 대응 원자료는 저장소에 배포하지 않습니다. 필요한 운영자는 --coach-candidates로 비공개 파일을 지정합니다."
+}
