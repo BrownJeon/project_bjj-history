@@ -15,5 +15,11 @@
   "unauthenticated_reference_http": 401,
   "pm2": "online; restart0 unstable0",
   "authenticated_ui": "not verified; login page rendered",
-  "physical_android": "not verified"
+  "physical_android": "not verified",
+  "documentation_commit": "a4c100e417539e041175a14dc7aa5d002c367b1d",
+  "final_documentation_release": "20261108-231510-a4c100e4",
+  "final_status": "ok",
+  "same_source_and_asset_as_code_release": true,
+  "final_data_preservation_recheck": "PASS 170 total; existing60 and video177 unchanged",
+  "confirmed_mapping_followup": "docs/handovers/task-054-followup-result.json"
 }

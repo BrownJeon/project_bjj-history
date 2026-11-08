@@ -71,5 +71,9 @@
     "physical Android",
     "restore execution"
   ],
-  "documentation_commit": "completion records only; subsequent same-code release recorded separately"
+  "documentation_commit": "completion records only; subsequent same-code release recorded separately",
+  "final_documentation_commit": "a4c100e417539e041175a14dc7aa5d002c367b1d",
+  "final_documentation_release": "20261108-231510-a4c100e4",
+  "final_operating_status": "verified_ok",
+  "confirmed_mapping_followup": "docs/handovers/task-054-followup-result.json"
 }

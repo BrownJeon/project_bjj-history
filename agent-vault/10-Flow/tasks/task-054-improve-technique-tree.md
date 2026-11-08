@@ -22,10 +22,10 @@ execution_context:
   origin_tool: codex
   current_tool: codex
   current_procedure: codex_scoped
-  current_scope: "사용자 task별 예외 승인: Codex가 관장분류채택·연결테이블1개·기술110/연결110 반영·이번변경만커밋/push·웹배포 수행. 기존60보존·21후속·챔피언구현제외"
-  last_event_id: exec-054-012
+  current_scope: "사용자 승인 후속21개 확정: 기존19재사용·기술명1건변경·신규2/연결21 운영반영·호환별칭배포·검증완료. 챔피언구현제외"
+  last_event_id: exec-054-015
 created: 2026-11-08
-updated: 2026-11-08
+updated: 2026-11-09
 demo_gate:
   required: true
   level: "delta"
@@ -102,3 +102,19 @@ demo_gate:
 | exec-054-012 | 2026-11-08 23:10 | completed | codex / codex_scoped | 승인범위 DB·선택push·코드배포·사후검증완료 | 실제tool/집계결과 |
 
 이후완료기록commit의webhook은기능코드가같은문서릴리스로구분한다.
+
+| exec-054-013 | 2026-11-08 23:22 | documentation_release_verified | codex / codex_scoped | 완료기록commit a4c100e의후속릴리스 `20261108-231510-a4c100e4` 정상,기능source/asset이코드릴리스와동일. 최종DB170/기존60·영상177보존 재확인. 새push없음 | RELEASE_RESULT ok,health/HTML/asset200,pm2online0 |
+
+최종문서릴리스는기능commit09b82c2의코드와동일하다. 이관측은추가배포를만들지않도록운영기록에보존하며새commit/push하지않는다.
+
+
+## 후속 21개 사용자 확정 반영 (2026-11-08)
+
+- 사용자 지시: “기존 백포지션 -> 백 컨트롤로 변경해주고 백마운트를 신규로 추가”, “앵클락, 싯팅가드,싱글언더패스,깃쵸크은 그대로 사용”, “그외는 권고대로 처리”.
+- 범위: 기존 19개 재사용·연결, 백 컨트롤 이름 변경 1건, 백 마운트·풋락 신규 2건, 참고 연결 21건. 기존 ID·메모·영상 내용 보존, 기술명으로 연결된 영상 참조만 정확 대응 변경. 챔피언 구현 제외 유지.
+- 결과: 2026-11-09 00:03 운영 반영·검증 완료. 기존170행은 승인된 이름1건 외 모든 필드 보존, 신규2/연결21로 총172개·참고연결131개. 영상177개 유지, 정확 기술명 참조2건 외 영상 필드 보존. 과거 수업·스파링 기록과 숙련도 집계 전후 동일. 0600 백업·커밋 전/후 상태비교·실제 기본서비스 상세21건·타계정404 확인. 이전 110개 반영/배포도 완료된 사실로 보존.
+
+| exec-054-014 | 사용자 후속 지시 수신 | followup_user_confirmed | codex / codex_scoped | 사용자가 보류21개의 이름변경·재사용·신규권고를확정 | 본대화지시 |
+| exec-054-015 | 2026-11-09 00:03 | followup_completed | codex / codex_scoped | 단일트랜잭션반영·총172/연결131·기존기록/집계보존·웹호환별칭배포완료 | Reviewer재감사PASS/QA11+기존49PASS/RELEASE_RESULT ok/실제SQL검증 |
+
+후속 기능릴리스 `20261109-000243-78d3ac9c` / commit `78d3ac9c2b2332a0ab6e8d936d61ff62d6946b23`. 과거 이름 호환 별칭을 먼저 배포한 뒤 운영 이름·연결을 반영했다. QA가 발견한 과거이름 경쟁은 적용 전 정규화 충돌 차단으로 보완하고 재감사·재실행을 통과했다. 인증 후 상세화면·실기기 확인은 이번에 수행하지 않았다. 후속 완료기록 push의 자동 문서릴리스는 동일 기능코드로 별도 관측한다.
