@@ -1,0 +1,19 @@
+{
+  "task_id": "task-054",
+  "code_release": "20261108-225820-09b82c2f",
+  "code_commit": "09b82c2fef81d6d9a354354af01a57abd0bc58a6",
+  "release_result_status": "ok",
+  "migrated_by_deployer": false,
+  "database_applied_separately_with_user_approval": true,
+  "runtime19_source_hashes_match": true,
+  "https_health": 200,
+  "https_html": 200,
+  "served_asset_matches_release": true,
+  "served_asset": "index-C6IJ6MBR.js",
+  "source_asset_sha256": "e45a3f4d63fc4e704b4498ba0b024c59556f5b5d1ad0878ced5efd41ba6ca44a",
+  "reference_sql": "description present, 3/2/5 relationships, other-account404",
+  "unauthenticated_reference_http": 401,
+  "pm2": "online; restart0 unstable0",
+  "authenticated_ui": "not verified; login page rendered",
+  "physical_android": "not verified"
+}

@@ -1,8 +1,8 @@
 ---
 task_id: task-054
 title: 기술트리 목록·상세 개선과 챔피언 백데이터 검토
-status: doing
-phase: deploy_ready
+status: done
+phase: completed
 waiting: ""
 roles_involved: [leader, gym-master, judge, designer, developer, reviewer, qa, deployer]
 related_tasks:
@@ -23,7 +23,7 @@ execution_context:
   current_tool: codex
   current_procedure: codex_scoped
   current_scope: "사용자 task별 예외 승인: Codex가 관장분류채택·연결테이블1개·기술110/연결110 반영·이번변경만커밋/push·웹배포 수행. 기존60보존·21후속·챔피언구현제외"
-  last_event_id: exec-054-011
+  last_event_id: exec-054-012
 created: 2026-11-08
 updated: 2026-11-08
 demo_gate:
@@ -92,3 +92,13 @@ demo_gate:
 ## 제한
 
 자동restore는신규기술/그연결을삭제하지않고기존기술에추가한미변경연결만되돌린다. 이름표기변경으로사용자지정연결이보류될수있고후속21개결정에서같은slug복수확정은별도검토한다. 실제restore/물리Android는실행하지않았다.
+
+## 배포 완료·검증 (2026-11-08 23:10, Codex)
+
+코드릴리스 `20261108-225820-09b82c2f`, commit `09b82c2fef81d6d9a354354af01a57abd0bc58a6`. webhook RELEASE_RESULT statusok/sha일치·중복수동배포없음. 외부health/HTML/asset200,서빙JS와release파일일치,runtime19source검토판hash일치·default참고서비스실제SQL/3·2·5·타계정404/외부미인증401,pm2online/restart0확인.
+
+운영SPA로그인화면렌더확인. 인증세션없어로그인후상세/물리Android는미확인. 임시토큰·인증우회·새계정은만들지않았다. 기존개인원자료는비공개보관하고본완료기록은집계만포함한다. 위이력표의수신영수증등제외경로는비공개원본이력경로를뜻하며이저장소에는배포하지않는다.
+
+| exec-054-012 | 2026-11-08 23:10 | completed | codex / codex_scoped | 승인범위 DB·선택push·코드배포·사후검증완료 | 실제tool/집계결과 |
+
+이후완료기록commit의webhook은기능코드가같은문서릴리스로구분한다.
