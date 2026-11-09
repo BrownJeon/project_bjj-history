@@ -8,7 +8,7 @@ tags:
 
 ## 지금 상태
 
-🟡 **task-056(수업 상세 관련 영상 상세 진입) — 사용자 커밋/push·운영배포 승인, 배포 진행 중 (2026-11-09).** 직접 구현·build/브라우저검증 완료,기능코드1파일. 최신원격기준 위에 이번수정/기록만 반영,DB변경없음. 참고영상 수집 보류 유지. 상세 [[task-056-class-related-video-detail]].
+✅ **task-056(수업 상세 관련 영상 상세 진입) — 커밋/push·운영배포 검증 완료 (2026-11-09).** commitbd516af/기능릴리스`20261109-191914-bd516afd`,RELEASE_RESULT ok·pm2online·health/HTML/asset200·서빙JS/테스트source일치·미인증401. 직접build/브라우저검증 완료(영상상세/다운로드0/복귀/키보드/360·390·412),데모없음·DB변경없음. 인증후실상세/실기기미확인. 참고영상 수집 보류 유지. 상세 [[task-056-class-related-video-detail]].
 
 🟡 **task-055(캐릭터 베이스 DB 등록·스킨 교체 준비) — DB 등록 완료 후 사용자 추가 승인으로 커밋·push·운영배포 준비 (2026-11-09, doing / commit_ready).** 실제base8·skins16/17·assets11~16 BLOB1/2/6·해시/복원/멱등성·Reviewer/단위14/실DB13/독립읽기PASS 보존. 원본 체크아웃의 병행변경99건·origin/main분기를 보존하며 최신origin/main 기반에 T-55만 반영한다. T55 전용 DDL/DML 재실행 없음(기존 앱 기동 동작 유지). 상세 [[task-055-character-concept-sheet]].
 

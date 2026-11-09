@@ -1,0 +1,26 @@
+{
+  "task_id": "task-056",
+  "status": "verified_complete",
+  "code_commit": "bd516afdb021ea4482a8864fe32ddaa38b55671a",
+  "code_release": "20261109-191914-bd516afd",
+  "release_result": "ok",
+  "migrated": false,
+  "database_manual_changes": false,
+  "pm2": "online",
+  "health": 200,
+  "html": 200,
+  "asset": 200,
+  "asset_name": "index-DKo3fQMf.js",
+  "asset_sha256": "f462e6ef79351b031862637a012b6af22c9a4f4f3edf235f632f4991a1451c2b",
+  "source_sha256": "eb5a28ccca5f6d231105bd495960569748e7826be38785243e9851db38d3b6b3",
+  "source_matches_browser_tested": true,
+  "served_asset_matches_release": true,
+  "unauthenticated_classes_http": 401,
+  "browser_checks": "local saved video and external URL open shared detail; no downloads; close/Escape restores class scroll/focus; Enter/Space; 360/390/412 no overflow; no console errors",
+  "demo": "not created; user instructed direct fix/test",
+  "not_verified": [
+    "authenticated production class detail",
+    "physical Android"
+  ],
+  "excluded": "Deferred common reference-video collection work, attachments and unrelated local changes"
+}

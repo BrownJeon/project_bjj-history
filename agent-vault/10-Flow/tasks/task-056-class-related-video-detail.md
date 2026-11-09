@@ -1,8 +1,8 @@
 ---
 task_id: task-056
 title: 수업 상세 관련 영상에서 공용 영상 상세 열기
-status: doing
-phase: deployment_in_progress
+status: done
+phase: deployed_verified
 waiting: ""
 created: 2026-11-09
 updated: 2026-11-09
@@ -58,3 +58,9 @@ Codex 직접 실제 앱 production build 및 합성 API 브라우저 검증 PASS
 ## 운영 배포 승인·착수
 
 2026-11-09 19:18 — 사용자 “커밋 밒 푸시해서 운영에 배포작업까지 진행해줘” 수신. 이번 수정·작업056 기록만 선택 커밋/push·웹 배포한다. 보류한 참고영상 수집/절차서와 첨부이미지·개인자료는 포함하지 않는다. 최신 운영/원격 기준을 유지하고 테스트한 기능코드와 동일성을 확인했다. 운영DB 수동 변경·마이그레이션은 없다.
+
+## 운영 배포 완료·검증
+
+2026-11-09 19:20 — 기능 commit `bd516afdb021ea4482a8864fe32ddaa38b55671a`, 릴리스 `20261109-191914-bd516afd`. main 선택push와 webhook RELEASE_RESULT status=ok/sha일치,공식status current/pm2online/health200 확인. 중복 수동배포 없음.
+
+운영 ClassDetailModal source SHA가 실제앱 브라우저검증판과 일치한다. 외부 health/HTML/asset200,서빙asset가release파일과동일,JS는 `index-DKo3fQMf.js`/SHA256 `f462e6ef79351b031862637a012b6af22c9a4f4f3edf235f632f4991a1451c2b`,미인증 classes API401 확인. DB마이그레이션/직접데이터변경 없음. 인증후실수업상세/실기기Android는 이번에 확인하지 않았다. 보류한 참고영상 수집·절차서/첨부이미지/다른미커밋변경은 커밋에서 제외했다. 완료기록push의자동문서릴리스는기능코드와분리해관측한다.
