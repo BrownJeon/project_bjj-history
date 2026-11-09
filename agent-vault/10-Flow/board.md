@@ -64,6 +64,7 @@ tags:
 ## Todo
 
 ## Doing
+- [[task-056-class-related-video-detail]] — 구현·직접브라우저검증완료,사용자선택커밋/push·운영배포승인으로배포진행중. DB변경없음 (2026-11-09).
 
 - [[task-055-character-concept-sheet]] — DB1/2/6 등록·기술검증 완료 유지. 사용자 추가 승인으로 T-55 선택커밋/push/운영배포 준비(`commit_ready`), origin/main 기반 격리 반영·기존99변경 보존. T55 전용 DDL/DML재실행없음 (2026-11-09).
 

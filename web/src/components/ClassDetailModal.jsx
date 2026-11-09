@@ -4,6 +4,7 @@ import Modal from './Modal';
 import Button from './Button';
 import Icon from './Icon';
 import Tag from './Tag';
+import ClipDetailModal from './ClipDetailModal';
 import { getClipThumb, getPlatformIcon } from '../utils/videoThumb';
 import { generateVideo, getVideoStatus, deleteVideo } from '../api/classVideo';
 
@@ -176,6 +177,7 @@ function VideoSection({ classId }) {
 
 export default function ClassDetailModal({ initial, onClose, onEdit }) {
   const { clips } = useCache();
+  const [detailClip, setDetailClip] = useState(null);
   const c = initial || {};
 
   const drill = c.drill || {};
@@ -271,8 +273,10 @@ export default function ClassDetailModal({ initial, onClose, onEdit }) {
             {linkedClips.map(clip => {
               const thumb = getClipThumb(clip);
               return (
-                <a key={clip.id} href={clip.video_file || clip.url} target="_blank" rel="noreferrer"
-                  style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none',
+                <button key={clip.id} type="button" onClick={() => setDetailClip(clip)}
+                  aria-label={`${clip.title} 상세 보기`}
+                  style={{ display: 'flex', alignItems: 'center', gap: 8, width: '100%',
+                           textAlign: 'left', font: 'inherit', cursor: 'pointer',
                            padding: '6px 8px', background: 'var(--surface-up)',
                            border: '1px solid var(--border)', borderRadius: 10 }}>
                   <div style={{
@@ -294,8 +298,8 @@ export default function ClassDetailModal({ initial, onClose, onEdit }) {
                       </div>
                     )}
                   </div>
-                  {clip.video_file && <span style={{ fontSize: 10, color: 'var(--accent)', flexShrink: 0 }}>📥</span>}
-                </a>
+                  <Icon name="chevR" size={16} color="var(--text3)" />
+                </button>
               );
             })}
           </div>
@@ -346,6 +350,13 @@ export default function ClassDetailModal({ initial, onClose, onEdit }) {
         <Button variant="primary" size="sm" onClick={onEdit}>수정</Button>
         <Button variant="outline" size="sm" onClick={onClose}>닫기</Button>
       </div>
+      {detailClip && (
+        <ClipDetailModal
+          key={detailClip.id}
+          c={clips.find(clip => clip.id === detailClip.id) || detailClip}
+          onClose={() => setDetailClip(null)}
+        />
+      )}
     </Modal>
   );
 }
