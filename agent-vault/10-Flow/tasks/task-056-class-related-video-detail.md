@@ -1,8 +1,8 @@
 ---
 task_id: task-056
 title: 수업 상세·캘린더 관련 영상에서 공용 영상 상세 열기
-status: doing
-phase: calendar_deployment_in_progress
+status: done
+phase: calendar_deployed_verified
 waiting: ""
 app_version: "1.1.0"
 version_source: "package.json.version"
@@ -24,7 +24,7 @@ execution_context:
   origin_tool: codex
   current_tool: codex
   current_procedure: codex_scoped
-  current_scope: "사용자 직접수정·테스트·데모생략 지시 및 이번변경 커밋/push/운영배포 승인. 보류한 참고영상 수집 제외"
+  current_scope: "수업상세·캘린더 수동/기술연계 영상 공용상세 직접수정/검증 및 앱1.1.0 운영배포완료. 같은릴리스버전유지·참고영상수집보류"
 ---
 
 # 수업 상세 관련 영상 상세 진입 수정
@@ -84,3 +84,9 @@ Codex 직접 실제 앱 production build 및 합성 API 브라우저 검증 PASS
 캘린더후속 UI검증: 저장/외부/기술연계3경로,다운로드이벤트0,부모수업상세미열림(대화상자1개),닫기후초점/스크롤보존,Enter/Space,360/390/412가로넘침0,이전수업상세→영상상세2중모달회귀PASS,console오류0. 변경기능코드CalendarPage1파일. 버전메타정보변경후동일버전으로최종build확인예정.
 
 2026-11-09 22:14 — 캘린더 후속 최종확인: production build PASS,버전검증1.1.0/root lock일치,정책적용후재빌드JS가브라우저검증JS와byte동일. UI detector[]·diff check PASS. 이번코드/버전·작업056기록만선택push/운영배포진행.
+
+### 캘린더 후속 1.1.0 운영 배포 완료
+
+2026-11-09 22:17 — 사용자배포버전 **1.1.0**, 기능commit `0f8c8e995e08ae683f892cd5ad2180f24c2410a8`, 내부릴리스 `20261109-221605-0f8c8e99`. root package/lock1.1.0일치·RELEASE_RESULT ok/sha일치·공식status current/pm2online/health200,외부HTML/asset200·서빙asset와release파일동일·미인증classes401 확인. CalendarPage source가직접브라우저검증판과동일하고기존ClassDetailModal source도보존했다. JS `index-BWICSII6.js` SHA256 `d8b69d2f052df77b0a44b92dcbc81b48b449e2c99439760b321ad5e964ce5c04`.
+
+버전은minor1회증가로고정했고완료문서배포도동일1.1.0릴리스단위다. APK생성/전달·versionCode변경·DB직접변경·마이그레이션없음. 실기기Android/인증후실수업UI는미확인. 합성API만사용한브라우저검증과실운영source/asset확인을구분한다. 보류한수집/절차서·첨부이미지·다른작업변경제외.
