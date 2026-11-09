@@ -6,6 +6,7 @@ import * as voiceApi from '../api/voice';
 import ClassEditor from './ClassEditPage';
 import SparEditor from './SparEditPage';
 import ClassDetailModal from '../components/ClassDetailModal';
+import ClipDetailModal from '../components/ClipDetailModal';
 import Card from '../components/Card';
 import Tag from '../components/Tag';
 import Icon from '../components/Icon';
@@ -32,6 +33,7 @@ export default function CalendarPage() {
   const [editingClass, setEditingClass] = useState(null);
   const [editingSpar, setEditingSpar]   = useState(null);
   const [detailClass, setDetailClass]   = useState(null);
+  const [detailClip, setDetailClip]     = useState(null);
   const [pendingVoice, setPendingVoice] = useState(new Map()); // classId → {transcriptLen}
   const [viewMode, setViewMode] = useState(() => localStorage.getItem('bjj_cal_view') || 'calendar');
   const [listSearch, setListSearch] = useState('');
@@ -390,9 +392,11 @@ export default function CalendarPage() {
                             {linked.map(clip => {
                               const thumb = getClipThumb(clip);
                               return (
-                                <a key={clip.id} href={clip.video_file || clip.url} target="_blank" rel="noreferrer"
-                                  onClick={e => e.stopPropagation()}
-                                  style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none',
+                                <button key={clip.id} type="button"
+                                  aria-label={`${clip.title} 상세 보기`}
+                                  onClick={e => { e.stopPropagation(); setDetailClip(clip); }}
+                                  style={{ display: 'flex', alignItems: 'center', gap: 8, width: '100%',
+                                           textAlign: 'left', font: 'inherit', cursor: 'pointer',
                                            padding: '6px 8px', background: 'var(--surface-up)',
                                            border: '1px solid var(--border)', borderRadius: 10 }}>
                                   <div style={{
@@ -414,10 +418,8 @@ export default function CalendarPage() {
                                       </div>
                                     )}
                                   </div>
-                                  {clip.video_file && (
-                                    <span style={{ fontSize: 10, color: 'var(--accent)', flexShrink: 0 }}>📥</span>
-                                  )}
-                                </a>
+                                  <Icon name="chevR" size={16} color="var(--text3)" />
+                                </button>
                               );
                             })}
                           </div>
@@ -447,9 +449,11 @@ export default function CalendarPage() {
                             {matched.map(clip => {
                               const thumb = getClipThumb(clip);
                               return (
-                                <a key={clip.id} href={clip.video_file || clip.url} target="_blank" rel="noreferrer"
-                                  onClick={e => e.stopPropagation()}
-                                  style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none',
+                                <button key={clip.id} type="button"
+                                  aria-label={`${clip.title} 상세 보기`}
+                                  onClick={e => { e.stopPropagation(); setDetailClip(clip); }}
+                                  style={{ display: 'flex', alignItems: 'center', gap: 8, width: '100%',
+                                           textAlign: 'left', font: 'inherit', cursor: 'pointer',
                                            padding: '6px 8px', background: 'var(--surface-up)',
                                            border: '1px solid var(--border)', borderRadius: 10 }}>
                                   <div style={{
@@ -465,9 +469,10 @@ export default function CalendarPage() {
                                                   overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                                       {clip.title}
                                     </div>
-                                    {clip.video_file && <span style={{ fontSize: 10, color: 'var(--accent)' }}>📥 오프라인</span>}
+                                    {clip.video_file && <span style={{ fontSize: 10, color: 'var(--accent)' }}>저장된 영상</span>}
                                   </div>
-                                </a>
+                                  <Icon name="chevR" size={16} color="var(--text3)" />
+                                </button>
                               );
                             })}
                           </div>
@@ -558,6 +563,13 @@ export default function CalendarPage() {
           initial={detailClass}
           onClose={() => setDetailClass(null)}
           onEdit={() => { setEditingClass(detailClass); setDetailClass(null); }}
+        />
+      )}
+      {detailClip && (
+        <ClipDetailModal
+          key={detailClip.id}
+          c={clips.find(clip => clip.id === detailClip.id) || detailClip}
+          onClose={() => setDetailClip(null)}
         />
       )}
       {editingClass && (

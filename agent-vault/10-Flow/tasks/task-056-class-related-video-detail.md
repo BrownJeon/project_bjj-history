@@ -1,9 +1,11 @@
 ---
 task_id: task-056
-title: 수업 상세 관련 영상에서 공용 영상 상세 열기
-status: done
-phase: deployed_verified
+title: 수업 상세·캘린더 관련 영상에서 공용 영상 상세 열기
+status: doing
+phase: calendar_deployment_in_progress
 waiting: ""
+app_version: "1.1.0"
+version_source: "package.json.version"
 created: 2026-11-09
 updated: 2026-11-09
 related_tasks:
@@ -64,3 +66,21 @@ Codex 직접 실제 앱 production build 및 합성 API 브라우저 검증 PASS
 2026-11-09 19:20 — 기능 commit `bd516afdb021ea4482a8864fe32ddaa38b55671a`, 릴리스 `20261109-191914-bd516afd`. main 선택push와 webhook RELEASE_RESULT status=ok/sha일치,공식status current/pm2online/health200 확인. 중복 수동배포 없음.
 
 운영 ClassDetailModal source SHA가 실제앱 브라우저검증판과 일치한다. 외부 health/HTML/asset200,서빙asset가release파일과동일,JS는 `index-DKo3fQMf.js`/SHA256 `f462e6ef79351b031862637a012b6af22c9a4f4f3edf235f632f4991a1451c2b`,미인증 classes API401 확인. DB마이그레이션/직접데이터변경 없음. 인증후실수업상세/실기기Android는 이번에 확인하지 않았다. 보류한 참고영상 수집·절차서/첨부이미지/다른미커밋변경은 커밋에서 제외했다. 완료기록push의자동문서릴리스는기능코드와분리해관측한다.
+
+최종 완료문서 릴리스 `20261109-192111-10f52e48` / commit `10f52e4836b942c9adc9ca89166b8ad8138e4360`도 RELEASE_RESULT ok·공식current/pm2online·외부health/HTML/asset200 확인. 기능릴리스와 source/서빙JS가 동일하다. 최종 관측은 추가배포를 만들지 않도록 운영기록에 보존한다. 실기기 확인 여부는 미확인으로 유지한다.
+
+## 캘린더 수업 카드 후속 범위
+
+2026-11-09 22:09 — 사용자 “상세화면 외에도 캘린더화면에서의 수업화면에있는 것도 동일하게 변경해줘” 수신. 같은 작업056의 후속 범위로 직접 수정·테스트·선택커밋/push·웹배포까지 이어간다. 앞선 상세모달 수정/배포는 보존하며 참고영상 수집 보류를 유지한다.
+
+- CalendarPage의 수동 연결 관련 영상과 기술명 자동 연결 영상 모두 공용 ClipDetailModal로 연다.
+- 부모 수업 카드 onClick으로 전파하지 않도록 stopPropagation을 유지하고 닫기 후 날짜/화면/스크롤/초점 보존을 검증한다.
+- 상태: 실제 앱 build와 합성 API 브라우저 검증 준비. 새 데모/DB 변경 없음.
+
+### 새 앱 버전 정책 적용
+
+운영코드정본 root package.json=1.0.0,root lock=1.0.0,마지막운영릴리스10f52e4에서도같음을확인했다. root앱버전을 이번웹배포의단일정본으로사용해기본minor `1.0.0 → 1.1.0`을한번확정하고 root package/lock을맞춘다. 같은릴리스검사·재빌드·문서릴리스는1.1.0을유지한다. backend/web/mobile의패키지메타정보는기존내부컴포넌트버전이며이번에APK를생성/재전달하지않으므로기존Android versionName1.0/versionCode1과과거기록을수정하지않는다. 날짜·커밋릴리스ID는내부폴더/영수증식별자로보존하고사용자배포버전은숫자1.1.0으로표시한다.
+
+캘린더후속 UI검증: 저장/외부/기술연계3경로,다운로드이벤트0,부모수업상세미열림(대화상자1개),닫기후초점/스크롤보존,Enter/Space,360/390/412가로넘침0,이전수업상세→영상상세2중모달회귀PASS,console오류0. 변경기능코드CalendarPage1파일. 버전메타정보변경후동일버전으로최종build확인예정.
+
+2026-11-09 22:14 — 캘린더 후속 최종확인: production build PASS,버전검증1.1.0/root lock일치,정책적용후재빌드JS가브라우저검증JS와byte동일. UI detector[]·diff check PASS. 이번코드/버전·작업056기록만선택push/운영배포진행.

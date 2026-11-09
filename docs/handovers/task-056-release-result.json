@@ -22,5 +22,40 @@
     "authenticated production class detail",
     "physical Android"
   ],
-  "excluded": "Deferred common reference-video collection work, attachments and unrelated local changes"
+  "excluded": "Deferred common reference-video collection work, attachments and unrelated local changes",
+  "final_documentation_commit": "10f52e4836b942c9adc9ca89166b8ad8138e4360",
+  "final_documentation_release": "20261109-192111-10f52e48",
+  "final_verification": {
+    "release_result": "ok",
+    "pm2": "online",
+    "health": 200,
+    "html": 200,
+    "asset": 200,
+    "same_tested_source_and_feature_asset": true
+  },
+  "calendar_followup": {
+    "status": "verified_ready_for_deploy",
+    "app_version": "1.1.0",
+    "previous_app_version": "1.0.0",
+    "version_source": "package.json.version",
+    "bump": "minor",
+    "bump_count": 1,
+    "apk_delivery": false,
+    "database_changes": false,
+    "source_file": "web/src/pages/CalendarPage.jsx",
+    "source_sha256": "efda264d83f05b160352b0015df316787b049228ff3cb7395ee5305998c5ce2e",
+    "browser_cases": 3,
+    "download_events": 0,
+    "class_modal_opened_by_clip_click": false,
+    "return_focus_scroll_preserved": true,
+    "prior_detail_regression": "PASS",
+    "widths": [
+      360,
+      390,
+      412
+    ],
+    "console_errors": 0,
+    "build": "PASS",
+    "same_tested_bundle_after_version_rebuild": true
+  }
 }

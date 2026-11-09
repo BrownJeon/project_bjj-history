@@ -64,6 +64,7 @@ tags:
 ## Todo
 
 ## Doing
+- [[task-056-class-related-video-detail]] — 캘린더 수업카드 후속 직접구현·브라우저/build PASS,앱버전1.1.0(minor1회) 선택push/배포진행중. 기존상세수정유지·DB/APK변경없음 (2026-11-09).
 
 - [[task-055-character-concept-sheet]] — DB1/2/6 등록·기술검증 완료 유지. 사용자 추가 승인으로 T-55 선택커밋/push/운영배포 준비(`commit_ready`), origin/main 기반 격리 반영·기존99변경 보존. T55 전용 DDL/DML재실행없음 (2026-11-09).
 
@@ -71,7 +72,6 @@ tags:
 ## Review
 
 ## Done
-- [[task-056-class-related-video-detail]] — 완료: commitbd516af/릴리스`20261109-191914-bd516afd`,관련영상→공용상세 직접검증/다운로드0,운영health·HTML·asset200/source동일. 데모·DB변경없음,실기기미확인 (2026-11-09).
 
 - [[task-054-improve-technique-tree]] — 완료: 코드릴리스20261108-225820-09b82c2f, 신규110+연결110/총170·기존60/영상177보존,QA64/C2done·실SQL/runtime/health/asset검증. 21후속·챔피언검토만, 인증후실상세/실기기미확인 (2026-11-08).
 - [[task-049-study-video-player-poster]] — 영상분석 저장본 플레이어에 목록과 같은 썸네일(poster) 표시: 재생 전 cover, 재생·seek 후 contain, 썸네일을 먼저 불러 성공했을 때만 붙임(유튜브에서 지워져 404 가 되면 깨진 poster 가 칸을 검게 만드는 실측 퇴보 방지). 프론트 한 파일. 배포 완료 `18ce9ef`(릴리스 `20261008-122836-18ce9ef0`, RELEASE_RESULT ok). 🟡 사용자 폰 확인 대기 · 💡 썸네일도 서버에 저장(목록 썸네일은 유튜브 삭제 시 사라짐)은 영상 백필과 함께 제안 (2026-10-08)
