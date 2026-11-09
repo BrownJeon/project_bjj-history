@@ -238,6 +238,10 @@ tags: [type/roadmap]
 - [x] (3) 한글 자모분리(NFD) 저장 차단 [[task-014-nfd-encoding-audit]]
 - [x] (6) 외부 도구(yt-dlp·whisper)를 PATH에 의존하지 않고 실행 [[task-043-whisper-path-resolution]] [[task-044-video-whisper-path-and-visibility]]
 
+### character-registry | 기술 설명 캐릭터 원본·스킨 버전 (단독 도구)
+- [x] (7) 공통베이스1·스킨2·원본6 BLOB 저장과 해시복원·멱등 등록 (앱 API 미연결) [[task-055-character-concept-sheet]]
+- [x] (7) 스킨 새버전 추가와 과거 자산·두 역할의 버전 연결 보존 [[task-055-character-concept-sheet]]
+
 ## 배치 · batch
 ### coach-cron | 주간 코치 리포트
 - [x] (1) 주간 자동 리포트 생성

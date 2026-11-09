@@ -1,0 +1,791 @@
+{
+  "schema_version": 1,
+  "task_id": "task-055",
+  "recorded_at_kst": "2026-11-09T09:51:15+09:00",
+  "implementation_files": [
+    {
+      "path": "backend/src/models/CharacterBase.js",
+      "sha256": "f94f129b1eac2973800c19ecedd56b0196f8654d5b289bdc35137fae6059913f"
+    },
+    {
+      "path": "backend/src/models/CharacterSkin.js",
+      "sha256": "3178b20843227f5d339fc0ea79bfb8de940a8ff71762f102de69a2653a007f9c"
+    },
+    {
+      "path": "backend/src/models/CharacterAsset.js",
+      "sha256": "aac8cb80f1056e8c49ee8c2c40cc33f531becf3fe853ec92971cbb267b98d7c2"
+    },
+    {
+      "path": "backend/src/models/index.js",
+      "sha256": "f3d71a9766cc6382cc5da5be1059998e9a75080fbfd52de3a95d8c14fb63942d"
+    },
+    {
+      "path": "backend/src/services/characterRegistry.js",
+      "sha256": "2a0658781221512d3a918f630f4eaea3ffee0aa5eafc8b9f42945bc000b3608e"
+    },
+    {
+      "path": "backend/scripts/task-055-character-schema.js",
+      "sha256": "1ae3e692818661442fb0969c8385574a03690389803b20ba53501a94b4a0453b"
+    },
+    {
+      "path": "backend/scripts/task-055-character-register.js",
+      "sha256": "9bb95bb36d0bab6f67b2e5b2aa5b06f2961d08135bbf9f226fe9ed7a920ec3dc"
+    },
+    {
+      "path": "backend/scripts/task-055-character-check.js",
+      "sha256": "9a72609e8690103a64213a3d0f6918e36f5d31de2c07165d4dad119b87e905cc"
+    },
+    {
+      "path": "backend/test/character-registry.test.js",
+      "sha256": "9b72e930a123c30a54c7b3839fc332b6f6f44882dc8c5edb7ed3c75875f89f3d"
+    }
+  ],
+  "execution_tool": "codex",
+  "base_ref": "2e3575de773927471bdda9b9b03e3dd7be0e9842",
+  "database": "bjj",
+  "database_version": "10.11.11-MariaDB-log",
+  "runtime_node": "v24.22.2",
+  "schema": {
+    "created_tables": [
+      "character_bases",
+      "character_skins",
+      "character_assets"
+    ],
+    "resume": {
+      "created": [],
+      "state": {
+        "database": "bjj",
+        "max_allowed_packet": 16777216,
+        "checks_enabled": true,
+        "fks_enabled": true,
+        "tables": [
+          {
+            "table": "character_bases",
+            "exists": true,
+            "errors": []
+          },
+          {
+            "table": "character_skins",
+            "exists": true,
+            "errors": []
+          },
+          {
+            "table": "character_assets",
+            "exists": true,
+            "errors": []
+          }
+        ]
+      }
+    },
+    "notes": "Post-CREATE metadata comparison initially rejected MariaDB redundant-parenthesis rendering; fixed and reviewed without DROP/recreation."
+  },
+  "qa": {
+    "unit_tests_passed": 14,
+    "real_database_checks_passed": 13,
+    "test_rows_persisted": 0,
+    "before_test_counts": [
+      0,
+      0,
+      0
+    ],
+    "after_test_counts": [
+      0,
+      0,
+      0
+    ],
+    "reviewer": "REV-055-04 + latest strict follow-up PASS",
+    "final_independent_read": {
+      "status": "pass",
+      "execution_tool": "codex",
+      "base_id": 8,
+      "skin_ids": [
+        16,
+        17
+      ],
+      "asset_ids": [
+        11,
+        12,
+        13,
+        14,
+        15,
+        16
+      ],
+      "dataset_counts": {
+        "character_bases": 1,
+        "character_skins": 2,
+        "character_assets": 6
+      },
+      "total_counts": {
+        "character_bases": 1,
+        "character_skins": 2,
+        "character_assets": 6
+      },
+      "total_bytes": 5175998
+    },
+    "external_claude": {
+      "status": "skipped",
+      "reason": "Selected implementation files are uncommitted; official broker requires committed selected files. No bypass/commit performed."
+    }
+  },
+  "initial_registration": {
+    "mode": "applied",
+    "base_id": 8,
+    "skins": [
+      {
+        "id": 16,
+        "skin_key": "blue-gi-brown-belt",
+        "version_no": 1
+      },
+      {
+        "id": 17,
+        "skin_key": "white-gi-brown-belt",
+        "version_no": 1
+      }
+    ],
+    "assets": [
+      {
+        "id": 11,
+        "base_id": 8,
+        "asset_key": "set-01/blue-gi-brown-belt.png",
+        "binding_kind": "skin",
+        "skin_id": 16,
+        "actor_a_skin_id": null,
+        "actor_b_skin_id": null,
+        "kind": "character_turnaround",
+        "mime_type": "image/png",
+        "byte_length": 1434974,
+        "sha256": "b53b8055020ae83c23e8926fcf42dc9dddb48ad05d13893bfc5933f34635ce8a",
+        "source_path": "reference/characters/set-01/blue-gi-brown-belt.png",
+        "context": {
+          "actors": [
+            {
+              "slot": "character",
+              "skin_id": 16,
+              "skin_key": "blue-gi-brown-belt",
+              "version_no": 1
+            }
+          ],
+          "prompt_asset_key": "set-01/blue-gi-brown-belt.prompt.txt"
+        }
+      },
+      {
+        "id": 12,
+        "base_id": 8,
+        "asset_key": "set-01/blue-gi-brown-belt.prompt.txt",
+        "binding_kind": "skin",
+        "skin_id": 16,
+        "actor_a_skin_id": null,
+        "actor_b_skin_id": null,
+        "kind": "generation_prompt",
+        "mime_type": "text/plain; charset=utf-8",
+        "byte_length": 2458,
+        "sha256": "3eb3f562244c735669c416b7821ee9dffcaef010a297f8f3e9e12cf7859ddbf9",
+        "source_path": "reference/characters/set-01/blue-gi-brown-belt.prompt.txt",
+        "context": {
+          "actors": [
+            {
+              "slot": "character",
+              "skin_id": 16,
+              "skin_key": "blue-gi-brown-belt",
+              "version_no": 1
+            }
+          ],
+          "prompt_asset_key": "set-01/blue-gi-brown-belt.prompt.txt"
+        }
+      },
+      {
+        "id": 13,
+        "base_id": 8,
+        "asset_key": "set-01/white-gi-brown-belt.png",
+        "binding_kind": "skin",
+        "skin_id": 17,
+        "actor_a_skin_id": null,
+        "actor_b_skin_id": null,
+        "kind": "character_turnaround",
+        "mime_type": "image/png",
+        "byte_length": 1733575,
+        "sha256": "ab83010155438952c6a9bb211f35bb283880201553b2f52f090d5e62d0b2d271",
+        "source_path": "reference/characters/set-01/white-gi-brown-belt.png",
+        "context": {
+          "actors": [
+            {
+              "slot": "character",
+              "skin_id": 17,
+              "skin_key": "white-gi-brown-belt",
+              "version_no": 1
+            }
+          ],
+          "prompt_asset_key": "set-01/white-gi-brown-belt.prompt.txt"
+        }
+      },
+      {
+        "id": 14,
+        "base_id": 8,
+        "asset_key": "set-01/white-gi-brown-belt.prompt.txt",
+        "binding_kind": "skin",
+        "skin_id": 17,
+        "actor_a_skin_id": null,
+        "actor_b_skin_id": null,
+        "kind": "generation_prompt",
+        "mime_type": "text/plain; charset=utf-8",
+        "byte_length": 3547,
+        "sha256": "fc4a5a8671c6b09a3dd71ae9455df4670d527d42f61d2d8498621ed3fc70a867",
+        "source_path": "reference/characters/set-01/white-gi-brown-belt.prompt.txt",
+        "context": {
+          "actors": [
+            {
+              "slot": "character",
+              "skin_id": 17,
+              "skin_key": "white-gi-brown-belt",
+              "version_no": 1
+            }
+          ],
+          "prompt_asset_key": "set-01/white-gi-brown-belt.prompt.txt"
+        }
+      },
+      {
+        "id": 15,
+        "base_id": 8,
+        "asset_key": "set-01/samples/single-x-guard-v1.png",
+        "binding_kind": "pair",
+        "skin_id": null,
+        "actor_a_skin_id": 16,
+        "actor_b_skin_id": 17,
+        "kind": "pose_sample",
+        "mime_type": "image/png",
+        "byte_length": 1997310,
+        "sha256": "346d5bed0ed00e0cbed1d8f6c8780ddaaf08792a8c6fd4c6b9e6ccf41956714e",
+        "source_path": "reference/characters/set-01/samples/single-x-guard-v1.png",
+        "context": {
+          "technique": "single_x_guard",
+          "actors": [
+            {
+              "slot": "standing",
+              "skin_id": 16,
+              "skin_key": "blue-gi-brown-belt",
+              "version_no": 1
+            },
+            {
+              "slot": "guard",
+              "skin_id": 17,
+              "skin_key": "white-gi-brown-belt",
+              "version_no": 1
+            }
+          ],
+          "prompt_asset_key": "set-01/samples/single-x-guard-v1.prompt.txt"
+        }
+      },
+      {
+        "id": 16,
+        "base_id": 8,
+        "asset_key": "set-01/samples/single-x-guard-v1.prompt.txt",
+        "binding_kind": "pair",
+        "skin_id": null,
+        "actor_a_skin_id": 16,
+        "actor_b_skin_id": 17,
+        "kind": "generation_prompt",
+        "mime_type": "text/plain; charset=utf-8",
+        "byte_length": 4134,
+        "sha256": "5002257fd5c5291dafeeb4b11bcd6d67221864df063aff0766a821d0ca69738c",
+        "source_path": "reference/characters/set-01/samples/single-x-guard-v1.prompt.txt",
+        "context": {
+          "technique": "single_x_guard",
+          "actors": [
+            {
+              "slot": "standing",
+              "skin_id": 16,
+              "skin_key": "blue-gi-brown-belt",
+              "version_no": 1
+            },
+            {
+              "slot": "guard",
+              "skin_id": 17,
+              "skin_key": "white-gi-brown-belt",
+              "version_no": 1
+            }
+          ],
+          "prompt_asset_key": "set-01/samples/single-x-guard-v1.prompt.txt"
+        }
+      }
+    ],
+    "created": {
+      "character_bases": 1,
+      "character_skins": 2,
+      "character_assets": 6
+    },
+    "dataset_counts": {
+      "character_bases": 1,
+      "character_skins": 2,
+      "character_assets": 6
+    }
+  },
+  "repeat_registration": {
+    "mode": "applied",
+    "base_id": 8,
+    "skins": [
+      {
+        "id": 16,
+        "skin_key": "blue-gi-brown-belt",
+        "version_no": 1
+      },
+      {
+        "id": 17,
+        "skin_key": "white-gi-brown-belt",
+        "version_no": 1
+      }
+    ],
+    "assets": [
+      {
+        "id": 11,
+        "base_id": 8,
+        "asset_key": "set-01/blue-gi-brown-belt.png",
+        "binding_kind": "skin",
+        "skin_id": 16,
+        "actor_a_skin_id": null,
+        "actor_b_skin_id": null,
+        "kind": "character_turnaround",
+        "mime_type": "image/png",
+        "byte_length": 1434974,
+        "sha256": "b53b8055020ae83c23e8926fcf42dc9dddb48ad05d13893bfc5933f34635ce8a",
+        "source_path": "reference/characters/set-01/blue-gi-brown-belt.png",
+        "context": {
+          "actors": [
+            {
+              "slot": "character",
+              "skin_id": 16,
+              "skin_key": "blue-gi-brown-belt",
+              "version_no": 1
+            }
+          ],
+          "prompt_asset_key": "set-01/blue-gi-brown-belt.prompt.txt"
+        }
+      },
+      {
+        "id": 12,
+        "base_id": 8,
+        "asset_key": "set-01/blue-gi-brown-belt.prompt.txt",
+        "binding_kind": "skin",
+        "skin_id": 16,
+        "actor_a_skin_id": null,
+        "actor_b_skin_id": null,
+        "kind": "generation_prompt",
+        "mime_type": "text/plain; charset=utf-8",
+        "byte_length": 2458,
+        "sha256": "3eb3f562244c735669c416b7821ee9dffcaef010a297f8f3e9e12cf7859ddbf9",
+        "source_path": "reference/characters/set-01/blue-gi-brown-belt.prompt.txt",
+        "context": {
+          "actors": [
+            {
+              "slot": "character",
+              "skin_id": 16,
+              "skin_key": "blue-gi-brown-belt",
+              "version_no": 1
+            }
+          ],
+          "prompt_asset_key": "set-01/blue-gi-brown-belt.prompt.txt"
+        }
+      },
+      {
+        "id": 13,
+        "base_id": 8,
+        "asset_key": "set-01/white-gi-brown-belt.png",
+        "binding_kind": "skin",
+        "skin_id": 17,
+        "actor_a_skin_id": null,
+        "actor_b_skin_id": null,
+        "kind": "character_turnaround",
+        "mime_type": "image/png",
+        "byte_length": 1733575,
+        "sha256": "ab83010155438952c6a9bb211f35bb283880201553b2f52f090d5e62d0b2d271",
+        "source_path": "reference/characters/set-01/white-gi-brown-belt.png",
+        "context": {
+          "actors": [
+            {
+              "slot": "character",
+              "skin_id": 17,
+              "skin_key": "white-gi-brown-belt",
+              "version_no": 1
+            }
+          ],
+          "prompt_asset_key": "set-01/white-gi-brown-belt.prompt.txt"
+        }
+      },
+      {
+        "id": 14,
+        "base_id": 8,
+        "asset_key": "set-01/white-gi-brown-belt.prompt.txt",
+        "binding_kind": "skin",
+        "skin_id": 17,
+        "actor_a_skin_id": null,
+        "actor_b_skin_id": null,
+        "kind": "generation_prompt",
+        "mime_type": "text/plain; charset=utf-8",
+        "byte_length": 3547,
+        "sha256": "fc4a5a8671c6b09a3dd71ae9455df4670d527d42f61d2d8498621ed3fc70a867",
+        "source_path": "reference/characters/set-01/white-gi-brown-belt.prompt.txt",
+        "context": {
+          "actors": [
+            {
+              "slot": "character",
+              "skin_id": 17,
+              "skin_key": "white-gi-brown-belt",
+              "version_no": 1
+            }
+          ],
+          "prompt_asset_key": "set-01/white-gi-brown-belt.prompt.txt"
+        }
+      },
+      {
+        "id": 15,
+        "base_id": 8,
+        "asset_key": "set-01/samples/single-x-guard-v1.png",
+        "binding_kind": "pair",
+        "skin_id": null,
+        "actor_a_skin_id": 16,
+        "actor_b_skin_id": 17,
+        "kind": "pose_sample",
+        "mime_type": "image/png",
+        "byte_length": 1997310,
+        "sha256": "346d5bed0ed00e0cbed1d8f6c8780ddaaf08792a8c6fd4c6b9e6ccf41956714e",
+        "source_path": "reference/characters/set-01/samples/single-x-guard-v1.png",
+        "context": {
+          "technique": "single_x_guard",
+          "actors": [
+            {
+              "slot": "standing",
+              "skin_id": 16,
+              "skin_key": "blue-gi-brown-belt",
+              "version_no": 1
+            },
+            {
+              "slot": "guard",
+              "skin_id": 17,
+              "skin_key": "white-gi-brown-belt",
+              "version_no": 1
+            }
+          ],
+          "prompt_asset_key": "set-01/samples/single-x-guard-v1.prompt.txt"
+        }
+      },
+      {
+        "id": 16,
+        "base_id": 8,
+        "asset_key": "set-01/samples/single-x-guard-v1.prompt.txt",
+        "binding_kind": "pair",
+        "skin_id": null,
+        "actor_a_skin_id": 16,
+        "actor_b_skin_id": 17,
+        "kind": "generation_prompt",
+        "mime_type": "text/plain; charset=utf-8",
+        "byte_length": 4134,
+        "sha256": "5002257fd5c5291dafeeb4b11bcd6d67221864df063aff0766a821d0ca69738c",
+        "source_path": "reference/characters/set-01/samples/single-x-guard-v1.prompt.txt",
+        "context": {
+          "technique": "single_x_guard",
+          "actors": [
+            {
+              "slot": "standing",
+              "skin_id": 16,
+              "skin_key": "blue-gi-brown-belt",
+              "version_no": 1
+            },
+            {
+              "slot": "guard",
+              "skin_id": 17,
+              "skin_key": "white-gi-brown-belt",
+              "version_no": 1
+            }
+          ],
+          "prompt_asset_key": "set-01/samples/single-x-guard-v1.prompt.txt"
+        }
+      }
+    ],
+    "created": {
+      "character_bases": 0,
+      "character_skins": 0,
+      "character_assets": 0
+    },
+    "dataset_counts": {
+      "character_bases": 1,
+      "character_skins": 2,
+      "character_assets": 6
+    }
+  },
+  "verification": {
+    "mode": "verified",
+    "verified": true,
+    "base_id": 8,
+    "skins": [
+      {
+        "id": 16,
+        "skin_key": "blue-gi-brown-belt",
+        "version_no": 1
+      },
+      {
+        "id": 17,
+        "skin_key": "white-gi-brown-belt",
+        "version_no": 1
+      }
+    ],
+    "assets": [
+      {
+        "id": 11,
+        "base_id": 8,
+        "asset_key": "set-01/blue-gi-brown-belt.png",
+        "binding_kind": "skin",
+        "skin_id": 16,
+        "actor_a_skin_id": null,
+        "actor_b_skin_id": null,
+        "kind": "character_turnaround",
+        "mime_type": "image/png",
+        "byte_length": 1434974,
+        "sha256": "b53b8055020ae83c23e8926fcf42dc9dddb48ad05d13893bfc5933f34635ce8a",
+        "source_path": "reference/characters/set-01/blue-gi-brown-belt.png",
+        "context": {
+          "actors": [
+            {
+              "slot": "character",
+              "skin_id": 16,
+              "skin_key": "blue-gi-brown-belt",
+              "version_no": 1
+            }
+          ],
+          "prompt_asset_key": "set-01/blue-gi-brown-belt.prompt.txt"
+        }
+      },
+      {
+        "id": 12,
+        "base_id": 8,
+        "asset_key": "set-01/blue-gi-brown-belt.prompt.txt",
+        "binding_kind": "skin",
+        "skin_id": 16,
+        "actor_a_skin_id": null,
+        "actor_b_skin_id": null,
+        "kind": "generation_prompt",
+        "mime_type": "text/plain; charset=utf-8",
+        "byte_length": 2458,
+        "sha256": "3eb3f562244c735669c416b7821ee9dffcaef010a297f8f3e9e12cf7859ddbf9",
+        "source_path": "reference/characters/set-01/blue-gi-brown-belt.prompt.txt",
+        "context": {
+          "actors": [
+            {
+              "slot": "character",
+              "skin_id": 16,
+              "skin_key": "blue-gi-brown-belt",
+              "version_no": 1
+            }
+          ],
+          "prompt_asset_key": "set-01/blue-gi-brown-belt.prompt.txt"
+        }
+      },
+      {
+        "id": 13,
+        "base_id": 8,
+        "asset_key": "set-01/white-gi-brown-belt.png",
+        "binding_kind": "skin",
+        "skin_id": 17,
+        "actor_a_skin_id": null,
+        "actor_b_skin_id": null,
+        "kind": "character_turnaround",
+        "mime_type": "image/png",
+        "byte_length": 1733575,
+        "sha256": "ab83010155438952c6a9bb211f35bb283880201553b2f52f090d5e62d0b2d271",
+        "source_path": "reference/characters/set-01/white-gi-brown-belt.png",
+        "context": {
+          "actors": [
+            {
+              "slot": "character",
+              "skin_id": 17,
+              "skin_key": "white-gi-brown-belt",
+              "version_no": 1
+            }
+          ],
+          "prompt_asset_key": "set-01/white-gi-brown-belt.prompt.txt"
+        }
+      },
+      {
+        "id": 14,
+        "base_id": 8,
+        "asset_key": "set-01/white-gi-brown-belt.prompt.txt",
+        "binding_kind": "skin",
+        "skin_id": 17,
+        "actor_a_skin_id": null,
+        "actor_b_skin_id": null,
+        "kind": "generation_prompt",
+        "mime_type": "text/plain; charset=utf-8",
+        "byte_length": 3547,
+        "sha256": "fc4a5a8671c6b09a3dd71ae9455df4670d527d42f61d2d8498621ed3fc70a867",
+        "source_path": "reference/characters/set-01/white-gi-brown-belt.prompt.txt",
+        "context": {
+          "actors": [
+            {
+              "slot": "character",
+              "skin_id": 17,
+              "skin_key": "white-gi-brown-belt",
+              "version_no": 1
+            }
+          ],
+          "prompt_asset_key": "set-01/white-gi-brown-belt.prompt.txt"
+        }
+      },
+      {
+        "id": 15,
+        "base_id": 8,
+        "asset_key": "set-01/samples/single-x-guard-v1.png",
+        "binding_kind": "pair",
+        "skin_id": null,
+        "actor_a_skin_id": 16,
+        "actor_b_skin_id": 17,
+        "kind": "pose_sample",
+        "mime_type": "image/png",
+        "byte_length": 1997310,
+        "sha256": "346d5bed0ed00e0cbed1d8f6c8780ddaaf08792a8c6fd4c6b9e6ccf41956714e",
+        "source_path": "reference/characters/set-01/samples/single-x-guard-v1.png",
+        "context": {
+          "technique": "single_x_guard",
+          "actors": [
+            {
+              "slot": "standing",
+              "skin_id": 16,
+              "skin_key": "blue-gi-brown-belt",
+              "version_no": 1
+            },
+            {
+              "slot": "guard",
+              "skin_id": 17,
+              "skin_key": "white-gi-brown-belt",
+              "version_no": 1
+            }
+          ],
+          "prompt_asset_key": "set-01/samples/single-x-guard-v1.prompt.txt"
+        }
+      },
+      {
+        "id": 16,
+        "base_id": 8,
+        "asset_key": "set-01/samples/single-x-guard-v1.prompt.txt",
+        "binding_kind": "pair",
+        "skin_id": null,
+        "actor_a_skin_id": 16,
+        "actor_b_skin_id": 17,
+        "kind": "generation_prompt",
+        "mime_type": "text/plain; charset=utf-8",
+        "byte_length": 4134,
+        "sha256": "5002257fd5c5291dafeeb4b11bcd6d67221864df063aff0766a821d0ca69738c",
+        "source_path": "reference/characters/set-01/samples/single-x-guard-v1.prompt.txt",
+        "context": {
+          "technique": "single_x_guard",
+          "actors": [
+            {
+              "slot": "standing",
+              "skin_id": 16,
+              "skin_key": "blue-gi-brown-belt",
+              "version_no": 1
+            },
+            {
+              "slot": "guard",
+              "skin_id": 17,
+              "skin_key": "white-gi-brown-belt",
+              "version_no": 1
+            }
+          ],
+          "prompt_asset_key": "set-01/samples/single-x-guard-v1.prompt.txt"
+        }
+      }
+    ],
+    "dataset_counts": {
+      "character_bases": 1,
+      "character_skins": 2,
+      "character_assets": 6
+    },
+    "total_counts": {
+      "character_bases": 1,
+      "character_skins": 2,
+      "character_assets": 6
+    },
+    "total_bytes": 5175998
+  },
+  "restored_files": [
+    {
+      "id": 11,
+      "file": "/tmp/task-055-db-restored-aSzUOB/11-blue-gi-brown-belt.png",
+      "bytes": 1434974,
+      "sha256": "b53b8055020ae83c23e8926fcf42dc9dddb48ad05d13893bfc5933f34635ce8a"
+    },
+    {
+      "id": 12,
+      "file": "/tmp/task-055-db-restored-aSzUOB/12-blue-gi-brown-belt.prompt.txt",
+      "bytes": 2458,
+      "sha256": "3eb3f562244c735669c416b7821ee9dffcaef010a297f8f3e9e12cf7859ddbf9"
+    },
+    {
+      "id": 13,
+      "file": "/tmp/task-055-db-restored-aSzUOB/13-white-gi-brown-belt.png",
+      "bytes": 1733575,
+      "sha256": "ab83010155438952c6a9bb211f35bb283880201553b2f52f090d5e62d0b2d271"
+    },
+    {
+      "id": 14,
+      "file": "/tmp/task-055-db-restored-aSzUOB/14-white-gi-brown-belt.prompt.txt",
+      "bytes": 3547,
+      "sha256": "fc4a5a8671c6b09a3dd71ae9455df4670d527d42f61d2d8498621ed3fc70a867"
+    },
+    {
+      "id": 15,
+      "file": "/tmp/task-055-db-restored-aSzUOB/15-single-x-guard-v1.png",
+      "bytes": 1997310,
+      "sha256": "346d5bed0ed00e0cbed1d8f6c8780ddaaf08792a8c6fd4c6b9e6ccf41956714e"
+    },
+    {
+      "id": 16,
+      "file": "/tmp/task-055-db-restored-aSzUOB/16-single-x-guard-v1.prompt.txt",
+      "bytes": 4134,
+      "sha256": "5002257fd5c5291dafeeb4b11bcd6d67221864df063aff0766a821d0ca69738c"
+    }
+  ],
+  "scope": {
+    "nas_originals_preserved": true,
+    "blender_model": null,
+    "rig": null,
+    "committed": false,
+    "pushed": false,
+    "deployed": false
+  },
+  "completed_at_kst": "2026-11-09T09:54:05+09:00",
+  "post_recording_checks": {
+    "database_verify_after_manifest_metadata_update": "pass",
+    "original_source_files_verified": 6,
+    "implementation_snapshots_verified": 9,
+    "task_active_board_consistent": true,
+    "roadmap_lint": {
+      "runtime": "existing Ubuntu TheAdmin local mirror",
+      "status": "pass",
+      "errors": 0,
+      "warnings": 0,
+      "local_mac_attempt": "tsx unavailable; no installation performed"
+    }
+  },
+  "deployment": {
+    "status": "prepared_for_commit",
+    "authorized_by": "커밋 및 푸시해서 운영에 배포해줘",
+    "base_ref": "0aef8e1159d0dd0b40ec30b6b5f14fdd81ba3da4",
+    "branch": "codex/bjj-t055-release",
+    "selected_file_count": 24,
+    "isolated_code_hashes_match": 9,
+    "isolated_unit_tests_passed": 14,
+    "reviewer": "REV-055-05 PASS issues0",
+    "t055_schema_or_registration_apply_on_deploy": false,
+    "existing_startup_unchanged": true,
+    "deployed_startup_sha256": "f85704ea577af0456cc65ef1a6b3a7e45dbfc91b3509b5d823e95c922caa0138",
+    "active_jobs_before_deploy": {
+      "voice_jobs": 0,
+      "class_video_jobs": 0,
+      "chain_video_jobs": 0,
+      "long_video_jobs": 0,
+      "master_messages": 0
+    },
+    "external_claude": "skipped: shared-Git worktree boundary; original workspace checkout preserved",
+    "webhook_deploy": true,
+    "manual_duplicate_deploy": false
+  }
+}

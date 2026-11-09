@@ -1,0 +1,20 @@
+Tool: built-in image_gen (CLI/API fallback not used)
+Output: single-x-guard-v1.png
+Inputs: user SLX pose + blue character sheet + white character sheet
+
+Use case: scientific-educational.
+Asset: ONE high-quality sample technique illustration for a Brazilian jiu-jitsu training app, using the two existing character designs. This is a static SINGLE-LEG X GUARD (single X / SLX) demonstration matched to the uploaded pose reference.
+
+Input image 1 is the PRIMARY POSE AND COMPOSITION reference. It is a small orange-background rendering of a blue-gi standing person and a white-gi person lying underneath in single-leg X guard. Reproduce its actual full-body arrangement, camera angle, limb entanglement, roles, and contact points faithfully. Use the reference itself to resolve the position of each limb; do not replace it with a generic grappling pose.
+Input image 2 is the IDENTITY / COSTUME / BODY DESIGN reference for the standing BLUE-GI character: white spiky hair, vivid light blue eyes, youthful adult Gojo-type face, royal-blue gi and BROWN belt, adult moderate athletic seven-head proportions.
+Input image 3 is the IDENTITY / COSTUME / BODY DESIGN reference for the bottom WHITE-GI character: jet-black spiky hair, brown/amber eyes, youthful adult Kamui-type face, white gi and BROWN belt, same adult moderate athletic proportions.
+Keep these two characters distinct and recognizable, preserving their gi colors, hair colors, facial types and brown belts from the sheets.
+
+Pose requirements: the white-gi black-haired adult lies supine/on his upper back on the mat, head at the lower-left of the image, hips lifted close underneath one of the standing blue character's thighs, as in image 1. The blue-gi white-haired adult stands above him in a balanced grappling stance, knees naturally flexed, his free foot planted toward camera-right. The white character's TWO bent legs control the SAME one captured leg of the blue character: one white-gi leg goes around the outside of that leg and places the sole of the foot on the blue character's near hip, while the other leg threads between the blue character's legs and hooks behind/inside the captured thigh near the knee. Keep the two knees drawing toward that one trapped thigh, not a closed guard around the waist, and not a full X guard spread between both blue legs. The bottom player's hands control the captured lower leg / ankle near his torso, matching the supplied pose reference. Reproduce the reference's leg-weave and hip-foot connection with continuous anatomically plausible limbs. Exactly two arms and two legs per character, with every limb belonging to the right body. Correct knees, ankles, and soles. Do not add or duplicate feet to solve occlusion. No floating feet or limbs passing through bodies.
+
+Scene and framing: use the orange floor and seamless orange backdrop of image 1, with soft grounded contact shadows; no scenery or props. Single square composition, slight elevated front three-quarter camera matching the pose reference, complete bodies visible including all hair, hands, feet and the hip/leg connection, no cropped toes. Let the pair occupy most of the frame while keeping breathing room. Show the entangled legs clearly; prioritize faithful reference pose and correct contacts over showing both faces straight-on.
+
+Style: polished dimensional cartoon illustration with clean simple forms and soft studio shading consistent with the two character sheets. Smooth skin, crisp cloth edges, modest gi fabric folds, natural adult anatomy, no exaggerated musculature or chibi proportions. Gi sleeves and pants stay on the correct person; white cloth and blue cloth stay visually distinct around the leg entanglement. Brown belt fabric and tied knots remain brown wherever visible.
+
+Output constraints: one coherent image, exactly these two adult characters in the single-leg X guard reference pose. No turnaround sheet, no alternate panels, no arrows, no text or labels, no logos, no watermark, no weapons, no dramatic effects, no spectators. This is a clean readable technique sample for evaluating the designed characters in a grappling pose.
+

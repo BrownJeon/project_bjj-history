@@ -1,0 +1,20 @@
+Tool: built-in image_gen (CLI/API fallback not used)
+Set: BJJ character set-01
+
+Use case: stylized-concept.
+Asset: a standalone character turnaround sheet, second file of a matched two-character Brazilian jiu-jitsu instructional set.
+
+Input image 1: the just-created BLUE-GI / BROWN-BELT turnaround sheet. This is a BODY PROPORTION, ART STYLE, GARMENT CUT, POSE, LIGHTING and SHEET LAYOUT reference ONLY. Match this character's adult body scale, moderate athletic seven-head build, natural arm and leg lengths, height, gi design, relaxed stance, hands, bare feet, and softly shaded dimensional cartoon surface treatment. Do not copy its white hair or blue-eyed facial identity.
+
+Input image 2: uploaded Kamui from CLAMP's X. This is the FACE AND HAIR REFERENCE ONLY. The user explicitly asks for a NEW distinct character with this facial type. Render a youthful ADULT man with a narrow oval/angular face, a finely tapered chin, large expressive slightly sharp almond-shaped DARK AMBER / BROWN eyes, fine brows, fair skin, and dense tousled spiky JET-BLACK hair with layered pointed bangs as in the uploaded face. A calm slightly serious neutral expression, clean-shaven. Adapt that facial type to the SAME dimensional cartoon treatment as image 1; keep the face recognizable as Kamui's type rather than turning the first white-haired character's hair black. This is an adult athlete, not a child or chibi.
+
+Primary request: create exactly ONE WHITE-GI character on his own sheet, shown in exactly THREE full-body orthographic-like views, FRONT, true 90-degree SIDE facing right, true 180-degree BACK. This is the distinct black-haired partner of the blue-gi white-haired character. No other characters on the sheet.
+
+Clothing: plain WHITE long-sleeve Brazilian jiu-jitsu gi jacket and matching white pants, same cut and understated folds as the blue outfit reference, with a clearly BROWN Brazilian jiu-jitsu belt. Match the first character's warm medium-dark chocolate-brown belt fabric, knot and hanging ends. No degree stripes, no white belt, no black belt, no badges or logos. Bare feet, no shoes or socks. Do NOT copy any cloak, red collar, black uniform, armor or weapons from the Kamui face reference.
+
+Composition and consistency: one landscape board, one horizontal row of three evenly spaced full-body figures, exactly like image 1. Match the visual size of the figures, head tops, waist/knee/sole alignment, relaxed slightly arms-out posture, and background. Entire black hair and toes visible in every view. Five natural fingers per hand. Neutral orthographic front, pure side, pure back, not cinematic perspective and not 3/4 substitutes. The three views must describe the SAME consistent black-haired face, haircut, adult anatomy and garments from different rotations.
+
+Sheet design: the same pale light-gray studio background, restrained horizontal alignment guides, quiet header treatment and clear Korean labels as image 1. Exact labels above the views: "정면", "측면", "후면". Small title: "흰색 도복 · 브라운 벨트". Maintain soft diffuse studio lighting with white fabric readable against the neutral gray background.
+
+Constraints: one black-haired brown-eyed adult character, white gi, brown belt, three views only. No white-haired or blue-eyed face, no blue gi, no second row, no fight scene, no magical effects, no cape, no watermarks, no cropped feet, no oversized anime-child proportions. Produce a single standalone 2D concept-sheet raster file, matching the first character's sheet as one coherent pair.
+

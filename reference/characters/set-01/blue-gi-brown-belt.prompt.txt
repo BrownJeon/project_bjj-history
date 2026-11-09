@@ -1,0 +1,16 @@
+Tool: built-in image_gen (CLI/API fallback not used)
+Set: BJJ character set-01
+
+Use case: identity-preserve.
+Asset: a standalone character turnaround sheet, first file of a matched two-character Brazilian jiu-jitsu instructional set.
+
+Input image 1 is the existing approved concept sheet and EDIT TARGET. It contains white and blue outfits of the SAME white-haired, blue-eyed adult character. Work ONLY from its BLUE-GI character in the bottom row. Preserve that exact facial identity, white spiky hair and fringe, blue eyes, skin tone, adult seven-head body proportions, athletic but moderate build, gi cut, bare feet, neutral stance, and softly shaded dimensional cartoon rendering. Do not redesign the character.
+
+Requested edit: keep only this BLUE-GI character, remove all appearances of the old white-gi version, change his white belt to a clearly BROWN Brazilian jiu-jitsu belt in every view, and recompose as an independent single-row sheet with FRONT, TRUE SIDE facing right, and TRUE BACK of this one character. The belt should have a warm medium-dark chocolate-brown fabric body, tied knot and brown hanging ends; no white belt, no red belt, no degree stripes. The character wears the same clean royal-blue long-sleeve gi jacket and matching blue pants.
+
+Composition: exactly THREE full-body views, one horizontal row of equal-sized figures, neutral orthographic model-sheet front / 90-degree profile / 180-degree back. Landscape canvas, fill most of the height with the figures, full white hair and bare toes visible, generous clean spacing, aligned head tops and soles. Same mild arms-out relaxed stance and same head/body ratio across views. Relaxed natural hands, five fingers each, readable ankles. No action or fighting pose and no additional person.
+
+Sheet design: preserve the previous sheet's pale light-gray studio background, restrained horizontal alignment guides, clean Korean view labels and unobtrusive model-reference typography. Exact labels above the three views: "정면", "측면", "후면". Small title: "파란색 도복 · 브라운 벨트". Do not include a second row or a white-gi comparison.
+
+Invariants: the supplied character's identity and body must remain recognizable and unchanged; only the belt color and sheet re-layout change. No mask, blindfold, sunglasses, logos, patches, weapons, shoes, watermarks, cropped feet or extra limbs. The result is one standalone 2D concept-sheet raster file for this character.
+

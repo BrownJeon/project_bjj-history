@@ -32,6 +32,9 @@ const MasterChat           = require('./MasterChat');
 const MasterMessage        = require('./MasterMessage');
 const MasterAction         = require('./MasterAction');
 const ClipUsageLog         = require('./ClipUsageLog');
+const CharacterBase        = require('./CharacterBase');
+const CharacterSkin        = require('./CharacterSkin');
+const CharacterAsset       = require('./CharacterAsset');
 
 // User 관계 정의 (1:N, 1:1)
 User.hasMany(Class,             { foreignKey: 'user_id', as: 'classes' });
@@ -130,6 +133,16 @@ MasterAction.belongsTo(MasterMessage, { foreignKey: 'message_id' });
 VideoClip.hasMany(ClipUsageLog,   { foreignKey: 'clip_id', as: 'usageLogs' });
 ClipUsageLog.belongsTo(VideoClip, { foreignKey: 'clip_id' });
 
+// Character history is append-only. Composite base/skin FKs are defined by the
+// task-055 DDL (Sequelize associations alone cannot express composite FKs).
+CharacterBase.hasMany(CharacterSkin, { foreignKey: 'base_id', as: 'skins', onDelete: 'RESTRICT', onUpdate: 'RESTRICT' });
+CharacterSkin.belongsTo(CharacterBase, { foreignKey: 'base_id', onDelete: 'RESTRICT', onUpdate: 'RESTRICT' });
+CharacterBase.hasMany(CharacterAsset, { foreignKey: 'base_id', as: 'assets', onDelete: 'RESTRICT', onUpdate: 'RESTRICT' });
+CharacterAsset.belongsTo(CharacterBase, { foreignKey: 'base_id', onDelete: 'RESTRICT', onUpdate: 'RESTRICT' });
+for (const [foreignKey, as] of [['skin_id', 'skin'], ['actor_a_skin_id', 'actorA'], ['actor_b_skin_id', 'actorB']]) {
+  CharacterAsset.belongsTo(CharacterSkin, { foreignKey: foreignKey, as, constraints: false });
+}
+
 module.exports = {
   sequelize,
   User, Feedback,
@@ -142,4 +155,5 @@ module.exports = {
   PickHistory, MembershipPayment,
   LongVideo, LongVideoChapter,
   MasterChat, MasterMessage, MasterAction,
+  CharacterBase, CharacterSkin, CharacterAsset,
 };

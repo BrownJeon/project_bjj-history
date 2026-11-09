@@ -1,0 +1,215 @@
+{
+  "schema_version": 1,
+  "project": "bjj-trainning",
+  "task_id": "task-055",
+  "set_label": "set-01",
+  "recorded_at_kst": "2026-11-08T20:17:13+09:00",
+  "user_validation": {
+    "status": "complete",
+    "source": "current_user_message",
+    "quote": "캐릭터 검증은 끝났고",
+    "scope": "character_validation",
+    "independent_technical_validation_claimed": false
+  },
+  "requested_next_work": [
+    "DB에 캐릭터 베이스 저장",
+    "추후 스킨 교체 지원",
+    "다음 제작 단계 준비"
+  ],
+  "representation": {
+    "current": "2d_reference_sheets_and_pose_sample",
+    "blender_model_file": null,
+    "rig_file": null
+  },
+  "characters": [
+    {
+      "label": "파란 도복 캐릭터",
+      "face_reference": "사용자 첨부 고죠 사토루 얼굴 유형",
+      "hair_color": "white",
+      "eye_color": "blue",
+      "gi_color": "blue",
+      "belt_color": "brown",
+      "turnaround_asset": "reference/characters/set-01/blue-gi-brown-belt.png",
+      "prompt_asset": "reference/characters/set-01/blue-gi-brown-belt.prompt.txt"
+    },
+    {
+      "label": "흰 도복 캐릭터",
+      "face_reference": "사용자 첨부 CLAMP X 카무이 얼굴 유형",
+      "hair_color": "black",
+      "eye_color": "brown",
+      "gi_color": "white",
+      "belt_color": "brown",
+      "turnaround_asset": "reference/characters/set-01/white-gi-brown-belt.png",
+      "prompt_asset": "reference/characters/set-01/white-gi-brown-belt.prompt.txt"
+    }
+  ],
+  "sample": {
+    "technique": "single_x_guard",
+    "image_asset": "reference/characters/set-01/samples/single-x-guard-v1.png",
+    "prompt_asset": "reference/characters/set-01/samples/single-x-guard-v1.prompt.txt"
+  },
+  "assets": [
+    {
+      "path": "reference/characters/set-01/blue-gi-brown-belt.png",
+      "kind": "character_turnaround",
+      "bytes": 1434974,
+      "sha256": "b53b8055020ae83c23e8926fcf42dc9dddb48ad05d13893bfc5933f34635ce8a"
+    },
+    {
+      "path": "reference/characters/set-01/blue-gi-brown-belt.prompt.txt",
+      "kind": "generation_prompt",
+      "bytes": 2458,
+      "sha256": "3eb3f562244c735669c416b7821ee9dffcaef010a297f8f3e9e12cf7859ddbf9"
+    },
+    {
+      "path": "reference/characters/set-01/white-gi-brown-belt.png",
+      "kind": "character_turnaround",
+      "bytes": 1733575,
+      "sha256": "ab83010155438952c6a9bb211f35bb283880201553b2f52f090d5e62d0b2d271"
+    },
+    {
+      "path": "reference/characters/set-01/white-gi-brown-belt.prompt.txt",
+      "kind": "generation_prompt",
+      "bytes": 3547,
+      "sha256": "fc4a5a8671c6b09a3dd71ae9455df4670d527d42f61d2d8498621ed3fc70a867"
+    },
+    {
+      "path": "reference/characters/set-01/samples/single-x-guard-v1.png",
+      "kind": "pose_sample",
+      "bytes": 1997310,
+      "sha256": "346d5bed0ed00e0cbed1d8f6c8780ddaaf08792a8c6fd4c6b9e6ccf41956714e"
+    },
+    {
+      "path": "reference/characters/set-01/samples/single-x-guard-v1.prompt.txt",
+      "kind": "generation_prompt",
+      "bytes": 4134,
+      "sha256": "5002257fd5c5291dafeeb4b11bcd6d67221864df063aff0766a821d0ca69738c"
+    }
+  ],
+  "database_registration": {
+    "status": "applied_and_verified",
+    "database": "bjj",
+    "record_ids": [
+      {
+        "table": "character_bases",
+        "id": 8
+      },
+      {
+        "table": "character_skins",
+        "id": 16,
+        "skin_key": "blue-gi-brown-belt",
+        "version_no": 1
+      },
+      {
+        "table": "character_skins",
+        "id": 17,
+        "skin_key": "white-gi-brown-belt",
+        "version_no": 1
+      },
+      {
+        "table": "character_assets",
+        "id": 11,
+        "source_path": "reference/characters/set-01/blue-gi-brown-belt.png",
+        "bytes": 1434974,
+        "sha256": "b53b8055020ae83c23e8926fcf42dc9dddb48ad05d13893bfc5933f34635ce8a"
+      },
+      {
+        "table": "character_assets",
+        "id": 12,
+        "source_path": "reference/characters/set-01/blue-gi-brown-belt.prompt.txt",
+        "bytes": 2458,
+        "sha256": "3eb3f562244c735669c416b7821ee9dffcaef010a297f8f3e9e12cf7859ddbf9"
+      },
+      {
+        "table": "character_assets",
+        "id": 13,
+        "source_path": "reference/characters/set-01/white-gi-brown-belt.png",
+        "bytes": 1733575,
+        "sha256": "ab83010155438952c6a9bb211f35bb283880201553b2f52f090d5e62d0b2d271"
+      },
+      {
+        "table": "character_assets",
+        "id": 14,
+        "source_path": "reference/characters/set-01/white-gi-brown-belt.prompt.txt",
+        "bytes": 3547,
+        "sha256": "fc4a5a8671c6b09a3dd71ae9455df4670d527d42f61d2d8498621ed3fc70a867"
+      },
+      {
+        "table": "character_assets",
+        "id": 15,
+        "source_path": "reference/characters/set-01/samples/single-x-guard-v1.png",
+        "bytes": 1997310,
+        "sha256": "346d5bed0ed00e0cbed1d8f6c8780ddaaf08792a8c6fd4c6b9e6ccf41956714e"
+      },
+      {
+        "table": "character_assets",
+        "id": 16,
+        "source_path": "reference/characters/set-01/samples/single-x-guard-v1.prompt.txt",
+        "bytes": 4134,
+        "sha256": "5002257fd5c5291dafeeb4b11bcd6d67221864df063aff0766a821d0ca69738c"
+      }
+    ],
+    "initial_write_counts": {
+      "character_bases": 1,
+      "character_skins": 2,
+      "character_assets": 6
+    },
+    "repeat_write_counts": {
+      "character_bases": 0,
+      "character_skins": 0,
+      "character_assets": 0
+    },
+    "dataset_counts": {
+      "character_bases": 1,
+      "character_skins": 2,
+      "character_assets": 6
+    },
+    "total_counts": {
+      "character_bases": 1,
+      "character_skins": 2,
+      "character_assets": 6
+    },
+    "total_bytes": 5175998,
+    "verified_at_kst": "2026-11-09T09:54:05+09:00",
+    "verification_file": "docs/verification/task-055-character-registry.json",
+    "verification": {
+      "database_payload_hashes": "6/6 match",
+      "restored_files_hashes": "6/6 match",
+      "unit_tests": "14 pass",
+      "real_database_checks": "13 pass",
+      "independent_read": "pass",
+      "test_rows_persisted": 0
+    },
+    "pending": [],
+    "this_manifest_is_not_a_database_record": true,
+    "current_session_execution": "2026-11-09 사용자 명시 지시로 Codex가 직접 구현·검증·승인된3테이블 생성·1베이스/2스킨/6BLOB 초기등록. NAS 원본 보존. commit/push/배포 없음."
+  },
+  "updated_at_kst": "2026-11-09T09:54:05+09:00",
+  "storage_contract": {
+    "option": "B",
+    "status": "user_approved",
+    "payload_storage": "database_blob",
+    "schema_tables": [
+      "character_bases",
+      "character_skins",
+      "character_assets"
+    ],
+    "initial_records": {
+      "character_bases": 1,
+      "character_skins": 2,
+      "character_assets": 6
+    },
+    "asset_payload_rule": "원본 6파일의 바이트와 MIME·크기·SHA256을 DB에 보존한다. PNG 원본의 경로만 저장하는 것으로 완료 처리하지 않는다.",
+    "approval": {
+      "source": "task-055 current user message",
+      "quote": "B안으로 결정하고 신규 테이블 3개 생성과 초기 등록까지 승인할게. 실제작업은 다른 세션에서 진행할 예정이니 작업인계서작성해서 알려주면 이어서 진행하도록 할께",
+      "recorded_at_kst": "2026-11-08T20:26:58+09:00",
+      "scope": [
+        "create_three_tables",
+        "initial_registration"
+      ],
+      "execution_location": "another_session"
+    },
+    "originals_policy": "기존 NAS 원본은 보존하며 DB 저장 원본과 바이트 단위로 대조한다."
+  }
+}
