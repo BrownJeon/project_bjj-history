@@ -1,9 +1,9 @@
 ---
 task_id: task-058
 title: 승인 캐릭터 기술 이미지 전체 생성 및 기술트리 적용
-status: doing
-phase: commit_ready
-waiting: none
+status: done
+phase: production_deployed
+waiting: user_device_confirmation
 created: 2026-11-10
 updated: 2026-11-11
 related_tasks:
@@ -158,3 +158,29 @@ ResizeObserver 미지원 환경의 이미지 오류 복구를 슬롯 가용성 �
 ## 릴리스 범위 판정 (2026-11-11)
 
 QA가 회귀32건·171/172완전성·실제Chrome 360/390/412/1280 목록/상세48/224·차콜·행높이동일·넘침0·연결/복귀·XSS리터럴·관련읽기API를 직접 실행하여 변경프론트범위 PASS·결함0으로 보고했다. QA의 일반 전체앱 체크리스트 판정은 기존backend CRUD/배열/연쇄삭제/star 미실행으로 NOT_VERIFIED이며 그 원본보고를 보존한다. 이번 index의 backend/server/배포설정/마이그레이션 변경0·검사코드SHA일치를 확인한 메인Codex는 사용자승인한 변경범위의 릴리스준비를 PASS로 판정한다. 전체앱 미실행항목을 PASS로 바꾸거나 운영DB쓰기/새DB시험환경을 새필수목표로 확대하지 않는다. 상세 task-058-release-qa/readiness.json.
+
+- [01:37][Codex] 기능commit `21900f584764021918d4cf4e3cd0aeb8c164fef1` 작성·origin/main push진행중。1.2.0,공개171WebP/172기술행、backend/DBマイグレーション/새APK변경없음。
+
+- [01:44][Codex] `21900f5`의 origin/main fast-forward push 성공. webhook blue/green 배포 결과를 확인 중이며 중복 수동배포는 하지 않는다.
+
+## 배포 기록
+
+| 시각(KST) | 릴리스 | 커밋 | 결과 | 비고 |
+|------|--------|------|------|------|
+| 2026-11-11 01:44 | 20261111-014423-21900f58 | 21900f5 | ✅ ok | push webhook blue/green, 앱1.2.0, 이전20261109-221832-a8476e10, migrated=false |
+
+배포 원문은 외부 작업 증거 `task-058-production-art/release-prep/feature-deployment.json`에 기록했다. 웹훅 START 2026-11-10 16:44:10 UTC에서 대상 SHA `21900f584764021918d4cf4e3cd0aeb8c164fef1`, RELEASE_RESULT `status=ok`·동일 SHA·`20261111-014423-21900f58`, END 16:44:35 UTC `exit=0`을 확인했다. 공식 `deploy.sh --status` 재확인에서 current 릴리스·PM2 cwd가 같은 릴리스이며 `bjj online`, `/health 200`이다. 사전 `--dry-run`의 repo/ref/build/shared 경로도 올바른 `project_bjj-history.git`/main, web build로 확인했다. 마이그레이션은 실행되지 않았다. 인증 운영 화면·기기 확인 및 공개 이미지 171개 개별 해시는 Leader 후속 확인 범위다.
+
+- [01:46][Codex] 기능릴리스 `20261111-014423-21900f58`/앱1.2.0·RELEASE_RESULT ok·current/PM2/health200·공개171WebP200/승인SHA전부일치·HTML/JS/CSS200 확인. 실제배포JS가 로컬검증번들과 빌드해시가 달라 배포된 정확한HTML/JS/CSS를 GET-only합성데이터로 추가화면확인 중이다. 인증운영화면은 로그인세션없음·실기기미확인.
+
+## 운영 1.2.0 배포·검증 완료 (2026-11-11 01:48)
+
+- 기능commit `21900f584764021918d4cf4e3cd0aeb8c164fef1`의 origin/main push와 webhook START→RELEASE_RESULT ok→END exit0를 확인했다. 기능릴리스 `20261111-014423-21900f58`, 이전릴리스 `20261109-221832-a8476e10`, migrated=false. 배포자가 공식 --dry-run/--status로 current·PM2 online/cwd·health200을 독립 확인했으며 중복 수동배포는 하지 않았다.
+- 운영 root/lock1.2.0·공개171이미지 HTTP200/image-webp/승인SHA전부일치(9,356,290bytes)·HTML/JS/CSS200·서빙번들=current파일해시 일치·검사코드/테스트/버전15파일=QA index SHA 일치. 172기술행은 승인 동일기술2행만 이미지공유한다.
+- 실제 운영 공개HTML/JS/CSS를 별도 GET-only 합성API로 렌더했다. 390/1280px 목록48·상세224·차콜rgb(21,23,30)·원본512·넘침0·니컷→사이드→복귀→닫기·콘솔경고/오류0 확인. 이는 인증운영UI 시험을 대신했다고 주장하지 않는다. 운영IAB는 로그인세션없음(로그인화면렌더/공개니컷512이미지직접표시확인),실제Android기기미확인.
+- DB마이그레이션/새APK/수집보류 참고영상 변경없음. 다른작업 미커밋변경은 보존했다. task058 배포완료/사용자실기기확인대기로 task와ACTIVE를 함께갱신한다.
+- 이번 완료기록만 추가문서commit/push한다. 이 push도 webhook으로 별도릴리스를 만들므로 버전1.2.0·코드/공개자산동일을 유지하며 최종문서SHA의 RELEASE_RESULT/current/health를 다시확인한다. 문서배포를 새로운실기기확인으로 기록하지 않는다.
+
+근거: `docs/handovers/task-058-release-result.json`, `task-058-production-verification.json`, `task-058-release-qa.json`, `task-058-release-readiness.json`. 최종문서commit/SHA상세영수증은 외부 release-prep/final-release-verification.json에 보관한다.
+
+[최종 문서배포 SHA·릴리스·헬스·동일자산 검증 영수증](/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/release-prep/final-release-verification.json)은 이번 완료기록commit을 식별하며, 동일버전 문서배포 검증 뒤 작성한다. 이후 이력서/ACTIVE의 배포완료·기기확인대기 상태는 유지한다. 이 기록이 인용하는 014423 릴리스는 기능배포 관측이며 최종 current와 혼동하지 않는다.

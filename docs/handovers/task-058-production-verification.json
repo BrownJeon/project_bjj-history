@@ -1,0 +1,1515 @@
+{
+  "task": "task-058",
+  "status": "PASS",
+  "checkedAt": "2026-11-11T01:48:48.263321+09:00",
+  "release": {
+    "events": [
+      "========== 2026-11-10 16:44:10 START project_bjj-history sha=21900f5 ref=refs/heads/main ==========",
+      "✓ 230 modules transformed.",
+      "✓ built in 1.49s",
+      "RELEASE_RESULT {\"status\":\"ok\",\"release\":\"20261111-014423-21900f58\",\"sha\":\"21900f584764021918d4cf4e3cd0aeb8c164fef1\",\"previous\":\"/home/brownjeon/apps/bjj/releases/20261109-221832-a8476e10\",\"migrated\":false}",
+      "========== 2026-11-10 16:44:35 END project_bjj-history exit=0 =========="
+    ],
+    "current": "/home/brownjeon/apps/bjj/releases/20261111-014423-21900f58",
+    "version": "1.2.0",
+    "pm2": [
+      {
+        "name": "bjj",
+        "status": "online",
+        "cwd": "/home/brownjeon/apps/bjj/releases/20261111-014423-21900f58",
+        "restarts": 0
+      }
+    ],
+    "frontend": [
+      {
+        "name": "index-DxT222zH.js",
+        "sha256": "849532f2800bedb6aba7811327812b04064cf04a763207fa9cfa5d40dca64551"
+      },
+      {
+        "name": "index-DxT222zH.js.map",
+        "sha256": "bed215bf3dc3c115b671f2d6015a4329b4fac27e37fe05694d47b116e1812305"
+      },
+      {
+        "name": "index-BpmKz8Zg.css",
+        "sha256": "619ef17bf403dd9b47c03889c49a5c751b1533891ceb03b6e8dd402a925d6fd6"
+      }
+    ],
+    "publicWebP": 171
+  },
+  "publicHTTP": {
+    "at": "2026-11-10T16:45:03Z",
+    "base": "https://bjj.xn--lh0b87pnudm10a4vd.com",
+    "status": "PASS",
+    "assets": 171,
+    "totalBytes": 9356290,
+    "failures": [],
+    "html": {
+      "status": 200,
+      "type": "text/html; charset=UTF-8",
+      "bytes": 7113,
+      "sha256": "d2d115322172e7d77623ad41226cf5dead1f3d692217e73500026eff57f25d28"
+    },
+    "health": {
+      "http": {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "bytes": 61,
+        "sha256": "e37a2c7a9279220994b0aa623f1ecf1433f3f1361fde301abab83b5acd05efe6"
+      },
+      "body": {
+        "success": true,
+        "data": {
+          "status": "ok",
+          "uptime": 30.001095582
+        }
+      }
+    },
+    "frontend": [
+      {
+        "url": "/assets/index-DxT222zH.js",
+        "status": 200,
+        "type": "application/javascript; charset=UTF-8",
+        "bytes": 837783,
+        "sha256": "849532f2800bedb6aba7811327812b04064cf04a763207fa9cfa5d40dca64551"
+      },
+      {
+        "url": "/assets/index-BpmKz8Zg.css",
+        "status": 200,
+        "type": "text/css; charset=UTF-8",
+        "bytes": 19345,
+        "sha256": "619ef17bf403dd9b47c03889c49a5c751b1533891ceb03b6e8dd402a925d6fd6"
+      }
+    ],
+    "items": [
+      {
+        "url": "/technique-illustrations/set-01/tripod-sweep.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 75566,
+        "sha256": "3573e134c46eb31b5131a21d14d357519bfd19af9a23a81ed5504d24672833ff",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/de-la-riva-guard.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 54022,
+        "sha256": "ce65879cad4bdb2c0bd8216b037002045fa0cc8921b178faa587b2f37a15dbd8",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/knee-slide.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 50494,
+        "sha256": "64b530ed8e3ac5b535ff69cebb42afcf7af10eeee580175fc8e5053a45fe3688",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/toreando-pass.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 63908,
+        "sha256": "0423ed734978bb0969cce8251693a9d9f0be151680615a6f996e081819f99b72",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/lasso-guard.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 60448,
+        "sha256": "84b6afd373578f5fd58260dc6fd47d0440ad4268fe5b0f2f190c3016a295aa93",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/spider-guard.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 59246,
+        "sha256": "6b68db2a38458c5763c6150478092e3eec1ac1145492ab73f2134f649be83fb1",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/rear-naked-choke.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 61972,
+        "sha256": "1152245587b5ca6e052f4d86e852951a29c0cba6d586b28fbe0c3894ccc61dd5",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/x-guard.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 67534,
+        "sha256": "95142dc4b52d159778a52059f6b14fcef61ac5e95769a0c4a2daf3623a9a51ef",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/straight-ankle-lock.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 60390,
+        "sha256": "29dbcbf7134d046ef4081e60c74900d02de6849e70f8f8d04eff16197fbd5a06",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/reverse-x-guard.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 45872,
+        "sha256": "1b55cf624bb58616c7053c4371211957ad19483c07c44514e1ea18dc15c08a4a",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/x-guard-sweep.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 63194,
+        "sha256": "84e65833ea0be13b9d490ad37190fe2bb518c64192b17647456e91ada08905df",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/back-take.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 48886,
+        "sha256": "9fdb6df4b23d548db4af89cdc8a9edb61eae49f1b2f1e3d5341f6ef866cc1233",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/scissors-sweep.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 62838,
+        "sha256": "b236cf4809a1f319c3e4a6615cab471b5b913d3e3500f7c132762e96489150b4",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/triangle-choke.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 42844,
+        "sha256": "acdb5afa9f82e373701d69bdf0ea3f9645b262418dd9525439b692fa83590418",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/single-leg-x-guard.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 58640,
+        "sha256": "a012bb6a6211b14574a76121c689312621714ae2c6a9808f4fc8619cd7c8f043",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/double-leg-takedown.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 55870,
+        "sha256": "90a2bf132246d7aa17ea1243fd34163745cc48b47f1ebdf0aed6376f57711895",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/sweep.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 67316,
+        "sha256": "18b397379e73987c3fbf61784fe560b5a587b3b0f926c67a5f090f168da94002",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/takedown.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 61084,
+        "sha256": "83e96bb5f8e842c45d5b24bdc1ed80b2996773a76cb39f5199ee0379ec28ad1a",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/k-guard.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 55784,
+        "sha256": "72225023c04c6972faaf5611606adf4f0e6fac0997e36ce89eeb77afeab9f666",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/choi-bar.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 45026,
+        "sha256": "52a8531332cf087968f3ba5dfd35c13842997e321f8daedbf202a4474ce14bf0",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/back-control.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 55460,
+        "sha256": "d23682a2b94275f6e15076e50fa3de381b5e5d57ec37e045fcc9a534c0215cc0",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/guard-pass.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 48774,
+        "sha256": "8e123ee068c1d52df88d8c2f03858ed46e7cf90fe36c0b8e975021432d149219",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/deep-half-guard.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 49142,
+        "sha256": "8d020875bf94f65ac1bb10ed860f701450ea4a51e9729c2d5a68580f9ebb1b1b",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/open-guard.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 53806,
+        "sha256": "f034ccf22c2699dfb2a4070c495561978758ee4dce6514e6de4f4ae712cc8cac",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/half-guard.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 46122,
+        "sha256": "7ff899b4675154b3959983906c9749a173fff5c80776d2395149ba47fe2f0c1c",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/combat-guard.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 58612,
+        "sha256": "cbaf4ea846184b26b10717dee931e35ae133078f2daa66f9836e02cce2bfb320",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/armbar.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 62200,
+        "sha256": "fe8afcf162dcbdad8125aaa5e5d7820291b1fd82e308f807ba484aff6c2300f5",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/mount.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 52802,
+        "sha256": "b8ae55b16cf078322b5968ec0a28b35c13de9fc9ae1dbdc0e002de82ced02d5f",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/waiter-guard.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 57986,
+        "sha256": "d4b249451f4820923494019c7706b9809b979240555f324140a63579fa3e3ae3",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/loop-choke.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 38160,
+        "sha256": "94df5eb2ee94558bfe32102b8ddfa385448cf231508be258c0e7e22c7160d105",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/sit-up-guard.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 70526,
+        "sha256": "2203fd8437f6ee8c6540f37c1a331d1a1a339f659dc09dd7a1279b0887677e28",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/escape.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 59882,
+        "sha256": "5d2246ef850d8783fa53c911dcd7463079c6d3231ff4336684405f00cb56b227",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/canto-choke.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 51540,
+        "sha256": "607a142dd78a2f114568269edc025f572716339596165addf9640de841171cc3",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/cross-collar-choke.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 58590,
+        "sha256": "ee51e6b071ccf45a3e63f6d18d80ac35dd37bab151f7a119dccdc00549bad72a",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/kimura.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 50080,
+        "sha256": "76e9c1ea9d3063a6d30a72d84211645c672ae9f44119e01975c9d23beab3743b",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/scarf-hold.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 59622,
+        "sha256": "e7ceef9ef634cd1782bf3d8db50e11c79e1d3fbe33f7e5898124917347bb0609",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/side-control.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 40062,
+        "sha256": "741ff78945bc81104b52ad42c7fbb814a8ff8022326bb60364194edfed2a3787",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/baratoplata.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 53574,
+        "sha256": "fb5c8212eede41a807094c4417c40c30e3daf20dfa2b5322f3c1e958aa0c4cad",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/over-under.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 48966,
+        "sha256": "a942f57511bded96d7c10500deb299774292f775a3a2e39dc0fe75e193d11d6e",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/keymaster-guard.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 54326,
+        "sha256": "09114f631f1e800f885fee7f399ef7221afadab281d43ccba2bfe3efd4fc0bb1",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/berimbolo.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 57550,
+        "sha256": "0f5b665c702027e41315cf655e0ea525325bc3961018d38261ecc196a1330414",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/matrix.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 50362,
+        "sha256": "48c125c9869d93d3e8712f3882306328eb744fc6c76abc143280ab7ce3fb71d7",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/butterfly-sweep.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 60094,
+        "sha256": "fe914ef332c1d56e2a7775cd45a59be6a50dc710e3a51fa3f2b84cecbc6fb988",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/omoplata.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 55940,
+        "sha256": "b15a2e8534a256c036de6352495be1a1ec6561b98b3b6c7c433311e9c4d661b2",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/sagi-oro-sweep.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 54428,
+        "sha256": "d3b068a7df1df9954ecd7ed98a79aa092fe3a7022040471877b43fdca52453e7",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/bow-and-arrow-choke.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 62248,
+        "sha256": "a9bf88d3227d5d980e0ffa0c5c933de45eee9eccdef8cad91cda4c6140d47099",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/x-pass.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 46492,
+        "sha256": "cea1fbf5a8ffb86014a4c653ca31ad26acb580f3d3fc04c0531e2529f8e5d804",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/crazy-dog-pass.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 41476,
+        "sha256": "682bf34c968e6dee6dd0e2ce2811fd528e7f482a80a627d7f7a3c94ff4797f85",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/knee-cut.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 44400,
+        "sha256": "c56b7371382b24c9e66d6fee93473edee81fddd61a7b3cae2c4ad312fcca3163",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/belly-down-armbar.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 57404,
+        "sha256": "6a63815070af2b96d3e9a4b4759a3dcb817595f6955f5e63492b544a371e0337",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/100-percent-sweep.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 43296,
+        "sha256": "dffd139f5198dbfeaaa03433693f2a5b1354462575f5e2b16ccbb6537a86a475",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/williams-guard.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 52258,
+        "sha256": "1fecd7cbb488a8bea8b6beddae6e3ade4fa18131a51c61726836dc69db89acc1",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/worm-guard.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 62196,
+        "sha256": "ae0b413f8ef7547ce45758df7e98ffa30d0f3561dee2b888060be20f15c78b89",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/long-step.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 41564,
+        "sha256": "ac115433c1ca9c47da7f65d0b319df45c83865dc8f59724299b4fd38caf91cda",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/hugo-lock.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 58744,
+        "sha256": "e56f2df2142f5cfdcc5fca6bbb026b8ba216ab0daac07efc5fd3c5491145b476",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/quick-armbar.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 53390,
+        "sha256": "e8c3885fa11665ebab70ea6196f4169d2679f57814a0235300a1ba06e3deb05a",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/peterson-roll.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 57438,
+        "sha256": "c842e9f68d6780d6cd54a980ae27fcd611f975f0077f960b81f2763c584851ad",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/kiss-of-dragon.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 64350,
+        "sha256": "39cdc73a02e9dda72440ffff9f198daad055d91c7c5d1dc482d0d7a81ca19aad",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/americana.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 51794,
+        "sha256": "980442a32ed4d90c19e05535e7979bea5c27555670652c024eab7437a4ad5431",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/standing.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 67934,
+        "sha256": "7c15595a157050da9f59dfd0a172dd41c56b0526b52cd546bb4f2a1404156233",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/single-leg-takedown.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 53168,
+        "sha256": "a76a4fa958459bf9dc2f1d5f26dd17b4bad728592052f88bf782de6b6bbc9c6b",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/collar-drag.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 65344,
+        "sha256": "a1b2dd7c34764ef44ea2a179186361f597aebd2d1afde98d545197ba81590666",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/ankle-pick.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 61788,
+        "sha256": "1c4b224e9f5884c253f0d6902eb8d454f19392dcd4b1c76809a5e45fa36cd550",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/inside-trip.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 48862,
+        "sha256": "92d57107768bc5ad8eafe52988a97f67f5cb23ddb9510ce313114bb92cf40570",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/outside-trip.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 49232,
+        "sha256": "4155f8873fc167ed232063e21d0cef411eb449c2e92ac201a21a92dffea8dfc1",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/break-fall.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 55986,
+        "sha256": "a8059a9d7d9d9dba8822fdad2b6b6af6bf6a95b60be9e0f630d9d9ac0a4c82c4",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/closed-guard.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 55774,
+        "sha256": "97d8c8acd03d065a606170d3933162bf4c2d5403e2e1cf4746411c603f256442",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/knee-shield.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 54666,
+        "sha256": "e5516920559bc9dfd4965b604d7c05fd1be5772c74f71147b048764f1d7b357c",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/butterfly-guard.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 59832,
+        "sha256": "3aa25ed0e270b4a15bc494f40f9e2387147390ef5d011d8d8b6c382850abf7f2",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/reverse-de-riva-guard.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 61698,
+        "sha256": "6fd47de27756e7b71f326b6b7788edbd40011cf1e3e2052fcf9218c058a1a86c",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/balloon-sweep.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 55562,
+        "sha256": "90a3d9ce50f82b864d32a1cb41a3056ccebb25fec734018133ff9a2eb260d7c8",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/coyote-guard.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 56278,
+        "sha256": "8d25f2a0f705ae0989fb8e4db0ce84bd240406f1a9898f80fa3821b0297acf93",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/kimura-sweep.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 59832,
+        "sha256": "a47f4d70122efa96bd7de23b4cf765dc772d48c56a61aa3caa61a501f4b527bd",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/flower-sweep.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 47286,
+        "sha256": "6c463be243171b1939e79f7d2fa08837e68c094300f0dc7f2999d87b8fb9730d",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/rubber-guard.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 58274,
+        "sha256": "40723c6e2edf6cd0be4cd8a6494b9b9335b58720591c1a831fadf5f79df3603d",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/foot-sweep.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 64320,
+        "sha256": "68998a7d7e8c16d0197bcb2b996615f35b54ecf76fc28cc8642cb237c15b2bba",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/z-guard.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 48870,
+        "sha256": "6ff007095c0c59992dbe3797b035b63e8230479daa16fcf1b5242a9cbe50ce93",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/collar-and-sleeve-guard.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 52424,
+        "sha256": "28a4984036d03bfa40ff609251ebe0ecbd0956a6aeddd003e5199e802ae842e8",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/deep-de-riva-guard.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 61310,
+        "sha256": "7a54c32d386d746073d6fd55d44e47524026dd6365d331d019f48e569551ad83",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/lapel-guard.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 59126,
+        "sha256": "4ee982592051065b971af319ab99f9d2c69d70806bf7fb6b7b2b65ac063b3f5b",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/octopus-guard.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 61540,
+        "sha256": "152f5030702250efca9017aaf59fa6bc25e6648c985837e5f93b029bc2dae1ef",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/wrestle-up.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 52232,
+        "sha256": "c8e648581577c7ee56a3a8d3ea01cd62cd4cb7f076cec5c272590576d798afdd",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/inverted-guard.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 52722,
+        "sha256": "56baba3cfcf7b8d2221f76a4222bbc50fd48fea85c4af5eefb6efc384d59d9cd",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/john-wayne-sweep.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 48286,
+        "sha256": "07b4b72d1a9faba1eaac0cf287fa3832b6039c2fd30f983cb33c25dd5edc98e8",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/lumberjack-sweep.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 58884,
+        "sha256": "7291eb30260093f31452536a71df37eca200ea0b17cddf2cc24143ddaad87733",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/guard-recovery.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 60702,
+        "sha256": "2aee77422592158b5ff73f7dd5d7a7b3c1d379cbadc01f51758ef42a9addb43e",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/hip-bump-sweep.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 47736,
+        "sha256": "95997c30240da401694a5ff666e15f716ee1f0d870a4eece3c99b6549090048e",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/pendulum-sweep.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 60994,
+        "sha256": "4af2a5d5e7d92ee5da616c6237732e0fa4bffddeee7f2b611dbfe7b7743b16cd",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/technical-stand-up.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 62854,
+        "sha256": "ed535de60f3373bceafdd76befa6f8add0a826948132971ecc223f3e7111aa0e",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/waiter-sweep.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 49966,
+        "sha256": "66088f9b82ae44770b4a275f455b477b4d05d30a7aecc4c3f176ecf256276271",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/shin-to-shin-guard.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 61926,
+        "sha256": "4c53e71fca7188afdcf729cfe39d37313aeb77596c28003adcef8c84fb6b382f",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/squid-guard.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 60850,
+        "sha256": "d355d5afab3330523a338b400d85d8da7723c35cbc81f193a658229e5f0f9c5f",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/guard.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 54916,
+        "sha256": "d65bcca06dccfac60c40ca078831fae789640f638fa7116b535ef0ed9be843c7",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/leg-drag.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 48284,
+        "sha256": "54e9124c354dc7eca95fd66cc23eef322626510155fd71771cd3ed5ba4dd28e1",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/pressure-pass.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 43616,
+        "sha256": "9e10e6c9a83e63a83a316dd742e7f75fcfbad3984d3aa8ef508de9e101c34f85",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/stack-pass.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 52514,
+        "sha256": "7f5c4de7d50110f9118bdfb63e0d44f7bcdb5399ad7adfd0cb091410aedb6caa",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/leg-weave.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 50468,
+        "sha256": "4575c908270358222bca1f704b2e729632b78b166083ad7cdddaa6cd6b460848",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/smash-pass.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 36956,
+        "sha256": "51aefb3e09ac85a50033fb2f0026c291afc38c46391e1bbee3dd53e04b076fbd",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/double-under.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 54210,
+        "sha256": "4432f1dbe9df25480364e469a0ba79deb4d4dcce30fa6ae887549305a8165257",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/gator-roll.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 51518,
+        "sha256": "60031b598401e869913c664aecc64112668f2ce2c647205020c3afb8dc053d36",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/back-step.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 40078,
+        "sha256": "d7df62efb0c6ed42262b2c49d45a2c841a44a8c470a511dbfe13ce9acf183de9",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/lapel-pass.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 45514,
+        "sha256": "69afda67fd352b1d0457915c4e151bf3fc2d72eaab177a4d415fa8b9be51a62c",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/shin-trap.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 55766,
+        "sha256": "1bf4639364d9611aca3437258482c2d282c997d22f10058b9e523872ca6dbf9d",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/surfer-pass.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 64198,
+        "sha256": "5599c7b6d1fc174ff44040340bdd50147cbbdc43324429005d715d26a7e37ca4",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/duck-under.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 59840,
+        "sha256": "2ee091e4aae008b88c5483b31a27248722b5fe02740a7ac075640dd61b8b92ea",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/wiper.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 40112,
+        "sha256": "5c8817e19793f3b35c8d728811681fa97f694669da7a5dea80f554f1de414293",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/turtle.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 49488,
+        "sha256": "f2311fbe1d7ce3a8f53c111da7010d9e0c208bd4101215f62b1bc738ac863fd6",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/knee-on-belly.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 59006,
+        "sha256": "868673d116b92bf25d8393ca5438de6b36f768ca32807d73cfb16de9f27b3989",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/headquarters-position.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 63322,
+        "sha256": "49d8ebaf0fd4ef8897c4a4e15ad188d5f7ff9905e3a5b7ce3ecbfd481555634b",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/arm-drag.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 67124,
+        "sha256": "ada098d8eda9bfc7de61b0835c923177e4406db70d56bc4e5630382e0d61bf3c",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/under-hook.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 67522,
+        "sha256": "d75a3a6bda0ae6c5ab0cfa9de2392a0325e46afeb06c46e512acb9d06b3523d7",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/front-headlock.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 60136,
+        "sha256": "162b6a30e3e8fe9adebd1e006d5a7c2ffe90b6552f406e00ca59fa4dced53968",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/fifty-fifty-position.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 52780,
+        "sha256": "15aef97e553336796728b8202e8da03ef1ab33cf57e4fdc1bf4871ca28efe08c",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/ashi-garami.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 45348,
+        "sha256": "dff61cb584eda8f2202ab60eddf73bc93da27189b7c9babd0896395df5c9adc6",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/north-south-position.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 39752,
+        "sha256": "bb0ece8c77eea5392a63ddf1ae24c9a19050095510f3a2741fde016819d93745",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/saddle-position.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 49218,
+        "sha256": "3d9907f017c07850e86cb0dca61a56953461eef27dacbedc88a76b260bc302b5",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/s-mount.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 51078,
+        "sha256": "f6ba5f48ec2b96000925c381ef03423efbf5c01ff794a61cb0d18571c5850adb",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/truck.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 54326,
+        "sha256": "fe82940b7e2eba62720ca237648a1129e48533de4bd9ebd13d1d05b440eacbb5",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/crucifix.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 57510,
+        "sha256": "c9061500d2fe6dbce98f7a5c761c428e47abcc941acab9fdee592696b6a168f8",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/body-lock.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 48992,
+        "sha256": "6567eeba09e5b0fc06f779a6c6d6e764d3158fad0391e73f800bee681709ec24",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/cross-collar-control.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 64520,
+        "sha256": "541354c430a159c783dacfac10fd13dd62f1010f8300f0463cce2e925bac5c53",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/outside-ashi-garami.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 53190,
+        "sha256": "04eead725c613a30d6822b0a8b7a210784be98ab2339b0cd66ac6f81763c6200",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/two-on-one.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 68932,
+        "sha256": "c4feed98cdc50d21d94bc2b4cbe6be3e35dc1a7ad25e3f65beadaa8584294532",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/snap-down.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 58082,
+        "sha256": "a6b4be22a1f18265b0d4efb9238f2c627b719402d65f91e4a6ea6c1cfac67a9b",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/straight-collar-control.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 57922,
+        "sha256": "5cf9ddc73102ac6eaad4720cd2d1c445e65fd33522bc35f6d68049a7467b6a0b",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/crab-ride.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 45848,
+        "sha256": "9d9d231aed96e44695132fd156b93b58342d32592c010c02eebb16992158438f",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/sprawl.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 38950,
+        "sha256": "ceb230913f22d34c3091364f5512deb48dbfe46e5dabbced8e056f1a1d542402",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/high-mount.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 95898,
+        "sha256": "cbc6a76b38fb4e80ba7f06352c695eef943ad4f18ce42c212163882b8e150ba1",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/honey-hole.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 54898,
+        "sha256": "e8d153e7b51f7a8f63b18d42762404fecf6ca8a2ffb03e331fe11c5b1a470f0e",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/backside-fifty-fifty.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 65244,
+        "sha256": "f2cf5995c5df2f8bc62f0c3eecae7cf5b8a1b39ea57d7ed151ab37f6de5b69b3",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/inside-ashi-garami.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 52538,
+        "sha256": "828f1fa32624003f5e76e7c3fdba790bc7b3a9a1c6b53933a8aa3ced1bd39e10",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/lockdown.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 38758,
+        "sha256": "cf1a671886e1ea8fe3778015af0f9a50edd753db8909357a683742ed6a91cf74",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/seat-belt-grip.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 62866,
+        "sha256": "073d55684aea4037b2b57f722524b606b40aa5a85fab63d00c7b1f7c3762087f",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/three-quarter-mount.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 43484,
+        "sha256": "0961618a1c1bc95043c28324e016a4e5b386cf8f3c831ac7ebdd6c81b88c0ba4",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/foot-work.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 67958,
+        "sha256": "36ed424216c0854bf7b3c5796e58d453cc531fd00a7c87f97c5ef49b1ae73167",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/entry.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 71628,
+        "sha256": "f08513a6e01ab394b0a05b2f0fd111ab70252bfd1c45649033ebae10f6c15241",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/darce-choke.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 47564,
+        "sha256": "7e38578f417d37047a265d164314bb32266982063a560581dbd8a09f1115e566",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/knee-bar.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 45494,
+        "sha256": "7945fc8bfcb5656047e8c3eeb5c2bedd04ab668cfd4e41a5f2dc18779a7c7753",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/guillotine-choke.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 61210,
+        "sha256": "73807f0ebef6aeb93f9cb342778d26032727e1f3c94ff75a14cfadf2b9ce7f99",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/heel-hook.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 56872,
+        "sha256": "4cb73a4abff1c5ceec52f12e2a2ee32628389c94599ce6dc55f47562c90303cc",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/toe-hold.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 68236,
+        "sha256": "2248540f86796f41e1a59e9e4f813013a733d25e22d51b1a6a3b06a9c59418f4",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/inside-heel-hook.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 54904,
+        "sha256": "6539229ab4bc30585f53c3f1c59d40d3fd07f2098bea6dfc6e86bd270f11fce7",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/arm-triangle.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 40774,
+        "sha256": "9d936892c22d75a919c186ea8f74b89bfe13e34cba8ea70f2cd48feedb67fc60",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/wrist-lock.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 73000,
+        "sha256": "c2b1c63ff579cb84965e7da3ba6e8c27cd595c1f44894d71b823a78ea871d1cd",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/ezekiel-choke.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 44100,
+        "sha256": "49bae46c7a492992a2d986e4ef4e50a1458a3b836a6541e472681f7ad02707be",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/banana-split.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 57048,
+        "sha256": "eda0d8bf416a64f9e9728709a12d741a9168ee26f3c2222398690cdb263177ec",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/baseball-bat-choke.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 50712,
+        "sha256": "84faeac271e9034e7b845b263a5e05219e422e69cf1d720c504008a1b2888d52",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/calf-slicer.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 59708,
+        "sha256": "4ce04072bc368fc3d83759e4e817f9a66493221eccf267dac64d6bb19f7ad243",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/flying-armbar.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 41846,
+        "sha256": "4a61b1d47404a95f3ae730977c18ad36c8d56b977c4ce7f981b2e6d480b2bbe7",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/tarikoplata.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 51802,
+        "sha256": "a5d2292f07c5f0b67b4d4ff18a38665a12463cf9631ea4fc8e988b3d6621b972",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/anaconda-choke.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 64108,
+        "sha256": "676e71a8c467bf77cc407da6d6914b1974be589251d8cdcf280e1dff90f10b16",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/brabo-choke.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 44518,
+        "sha256": "473b9159a456113affe62de6d1c372abd35bdf7b461312416df2bdcbffbb2b84",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/clock-choke.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 41184,
+        "sha256": "581ec8c1d768d775f2ea976769e55beafe9ef447c8f58ee6740932fb5de05f3f",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/gogoplata.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 49496,
+        "sha256": "179aff92487a697139a0c5f36f390a65bb6f386ce106273e9b303bf6fab2d6d1",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/north-south-choke.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 32216,
+        "sha256": "d2e4349ae5dd9f24432cc1aef61d630ea0a5afdbd5d9d6da30584ce65ca65b47",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/buggy-choke.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 50876,
+        "sha256": "78b3295e640cb5792367b9bdd11632ab8fb05bd854846ff384d4ba8ad604cd24",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/twister.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 56740,
+        "sha256": "b65372ab81806262d9cfb9d1af8b69c5508c690ee206c6cee1ccb123cb163fac",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/aoki-lock.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 56018,
+        "sha256": "248fdf6ce3705ff4565bc2a34d11b4cfaea13609f51f58d0f26a52e760a714d3",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/estima-lock.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 52810,
+        "sha256": "3be320021a848a52642ddeb9ca79714e8e144c73dc9bd77fac71d7630e34f437",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/paper-cutter-choke.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 45128,
+        "sha256": "b2f8c0c5e2979bb5fa61b42a2f5b6496f8cfa0202199ed056b1c490de0cbb5d6",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/peruvian-necktie.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 56310,
+        "sha256": "098eac4bb1e5f35702018a949036b26b33ecae992700c5549f94826f6893ad93",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/z-lock.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 42572,
+        "sha256": "b64524d354d7b99c71722efb7cea10ddf1bd13e5ba22e4b401f85c1835e7ac84",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/bicep-slicer.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 64234,
+        "sha256": "3c803a6dd323130dd371ad1efe769d79d93263f5434d64def81363f23b2e78e9",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/outside-heel-hook.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 60660,
+        "sha256": "508a760543a8c1f202df291dc3e9c0116c096ce4b92d90bf94aca7cbe4a83a61",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/von-flue-choke.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 44188,
+        "sha256": "80d6b1de7779176fc7f0aef493dff0c241000565accc9155d7e91a96f4c079bf",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/coyote-armbar.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 46446,
+        "sha256": "558ae1bd001202b400a922f0ba272aaa7fe9f8ea21378afaf90cc1bbc87e2dd7",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/choke.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 55524,
+        "sha256": "536f4dea2d71deb0ef02cf4deec4c5dc86691557d9c22badfd966982d779bcb5",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/counter.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 67294,
+        "sha256": "83406be6d31f15347a91bfccd3bab14fb9f31a026a43968e890ed97bd31dfe08",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/submission.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 47594,
+        "sha256": "ebfb3370007947ffaa916ca2fd05ebaebd5743d822f3c832c1c0a252679f4233",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/back-mount.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 41176,
+        "sha256": "9d475c1e821a912a4be443cddaba39f2567d8558962103bb1aa2c6c13f7b4a5d",
+        "matches": true
+      },
+      {
+        "url": "/technique-illustrations/set-01/foot-lock.webp",
+        "status": 200,
+        "type": "image/webp",
+        "bytes": 56772,
+        "sha256": "d29035a289af5055e0429d78fea2b215e34c4797d2ea3f5057b590afef80a315",
+        "matches": true
+      }
+    ]
+  },
+  "source": {
+    "comparedFiles": 15,
+    "mismatches": [],
+    "allMatch": true,
+    "sha256": {
+      "web/src/pages/TechPlanPage.jsx": "ecb9a7a57476813049b99a40d347c6b5b3ffc06b76e789d331794b5b57d381e5",
+      "web/src/components/TechniqueCard.jsx": "0fdb834a46b7afea41584f7f41d18ff0addb6f5b36ea3dea9553e95b14f8fad3",
+      "web/src/components/TechniqueIllustration.jsx": "acd0f193e9b12765f323f1b5cd404b72120236f7bcc00cf98dda5b8b6e450640",
+      "web/src/styles/techniqueIllustration.css": "0453c3ebfeaabfd5957756130ef691bd71e3e122031418abc0e55645a6c44f58",
+      "web/src/utils/techniqueCardLayout.js": "2dd30b87976d634df30f5776f1517309a95d875cf735c59a72b513627e479287",
+      "web/src/utils/techniqueIllustrationModel.js": "b12c36c452291966851fc4a3c56e067c0ba3ea903e8283db75b4d7ccf5059907",
+      "web/src/data/techniqueIllustrations.json": "e63fdb1ddd0f85e5ce704aecbc02236d5d2c519492edd0818c0718cc4cf7c918",
+      "web/src/utils/techniqueIllustrationModel.test.mjs": "e9f39b5685a76d7f95ad5ebd8e796861c30225f84a32e49f3f62186456c41f99",
+      "web/src/utils/techniqueCardLayout.test.mjs": "63e8c329fa7ff5689f5cb2c86dfaf893107dc383bc41a98527f3447c26818d17",
+      "web/src/components/TechniqueIllustration.test.mjs": "8e10c7407fb89f1f0942395408e2bf49369dc9871ee1e1e8a39bac79d7513b5e",
+      "scripts/task-058-image-assets.cjs": "52e04de98908c3b1f05d2afba0d716c3a2a1fefbc5fe21126fbb3c3dda4878fe",
+      "scripts/task-058-image-assets.test.cjs": "455c50080852b21f7104cbb7e7d8786e4ce2ecf3b06c2e13f683e517d9218e7f",
+      "package.json": "3f898f7a6ccd2e9305d2802d3de8b1d8d592ab486f5c69e52ed3c0973c211340",
+      "package-lock.json": "0ef63dc82a93ad158b5fe52b463192d49052bc97c07bb5efa4ec6a0c1245fd49",
+      "web/package.json": "0cd35d3509c4fd32be459bc983b0846c40482d1d65a92d1f16c31eff2ab0ad77"
+    }
+  },
+  "renderedProductionBundle": {
+    "status": "PASS",
+    "scope": "Exact public production HTML/JS/CSS with read-only local synthetic API; not authenticated production UI",
+    "widths": [
+      390,
+      1280
+    ],
+    "mobileList": [
+      48,
+      48
+    ],
+    "mobileDetail": [
+      224,
+      224
+    ],
+    "detailBackground": "rgb(21, 23, 30)",
+    "detailNaturalWidth": 512,
+    "connection": "knee-cut -> side-control -> back knee-cut -> close list PASS",
+    "desktop": {
+      "list": [
+        {
+          "height": 48,
+          "loaded": true,
+          "width": 48
+        }
+      ],
+      "overflow": false,
+      "viewport": 1280
+    },
+    "authenticatedProductionUI": "login screen only",
+    "physicalDevice": "not_checked"
+  },
+  "scopeLimitations": [
+    "Authenticated production technique UI not checked: no signed-in browser session",
+    "Physical Android device not checked",
+    "Existing unchanged whole-backend CRUD regression not executed"
+  ],
+  "databaseMigration": false,
+  "apkChanged": false
+}

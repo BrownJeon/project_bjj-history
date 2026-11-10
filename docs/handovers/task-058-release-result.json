@@ -1,23 +1,70 @@
 {
   "task": "task-058",
-  "status": "preparing",
+  "status": "deployed_verified_device_confirmation_pending",
   "authorizedBy": "user: 커밋 및 푸시하여 운영에 배포해줘",
   "appVersion": "1.2.0",
   "previousVersion": "1.1.0",
   "previousRelease": "20261109-221832-a8476e10",
   "baseCommit": "a8476e1",
   "targetRef": "origin/main",
-  "featureCommit": null,
-  "finalCommit": null,
-  "release": null,
+  "featureCommit": "21900f584764021918d4cf4e3cd0aeb8c164fef1",
+  "finalCommit": "See finalDocumentationReceipt for exact SHA; this receipt belongs to the documentation commit",
+  "release": "20261111-014423-21900f58",
   "migrationRequested": false,
   "apkRequested": false,
   "qa": "PASS for changed frontend/assets/package scope; generic whole-application API regression NOT_VERIFIED (unchanged and out of scope)",
   "artifactQA": "PASS: 171 images / 172 rows / 516 geometry / 171 HTTP / 32 regressions",
   "deploymentPath": "bluegreen release.sh via existing webhook or workspace scripts/deploy.sh",
   "manualRollback": false,
-  "authenticatedProductionUI": "not_checked",
-  "physicalDevice": "not_checked",
+  "authenticatedProductionUI": "NOT_VERIFIED: browser has no authenticated session; login screen renders",
+  "physicalDevice": "NOT_VERIFIED",
   "createdAt": "2026-11-11T01:10:51.374072+09:00",
-  "readinessEvidence": "task-058-release-readiness.json"
+  "readinessEvidence": "task-058-release-readiness.json",
+  "updatedAt": "2026-11-11T01:48:48.263321+09:00",
+  "pushedAt": "2026-11-11T01:44:19.125697+09:00",
+  "releaseResult": {
+    "status": "ok",
+    "release": "20261111-014423-21900f58",
+    "sha": "21900f584764021918d4cf4e3cd0aeb8c164fef1",
+    "previous": "/home/brownjeon/apps/bjj/releases/20261109-221832-a8476e10",
+    "migrated": false
+  },
+  "currentVersion": "1.2.0",
+  "pm2": [
+    {
+      "name": "bjj",
+      "status": "online",
+      "cwd": "/home/brownjeon/apps/bjj/releases/20261111-014423-21900f58",
+      "restarts": 0
+    }
+  ],
+  "publicHTTP": {
+    "assets": 171,
+    "shaMatches": 171,
+    "failures": [],
+    "health": 200,
+    "frontend": [
+      {
+        "url": "/assets/index-DxT222zH.js",
+        "status": 200,
+        "type": "application/javascript; charset=UTF-8",
+        "bytes": 837783,
+        "sha256": "849532f2800bedb6aba7811327812b04064cf04a763207fa9cfa5d40dca64551"
+      },
+      {
+        "url": "/assets/index-BpmKz8Zg.css",
+        "status": 200,
+        "type": "text/css; charset=UTF-8",
+        "bytes": 19345,
+        "sha256": "619ef17bf403dd9b47c03889c49a5c751b1533891ceb03b6e8dd402a925d6fd6"
+      }
+    ]
+  },
+  "featureRelease": "20261111-014423-21900f58",
+  "finalDocumentationDeployment": "Same 1.2.0 release unit; unchanged runtime code/assets. SHA-specific final webhook/current/health/artifact result is recorded separately to avoid recursive documentation deployments.",
+  "productionVerification": "task-058-production-verification.json",
+  "productionBundleUI": "PASS exact public production HTML/JS/CSS on local GET-only fixture at 390/1280; list48/detail224/charcoal/navigation/overflow/console",
+  "deployedSourceSHA": "15/15 match tested index",
+  "finalDocumentationReceipt": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/release-prep/final-release-verification.json",
+  "releaseMeaning": "Feature deployment observed at 20261111-014423-21900f58; final documentation deployment is tracked by finalDocumentationReceipt"
 }
