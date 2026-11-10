@@ -1,0 +1,12 @@
+{
+  "name": "bjj-technique-image-assets",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Task-058 local asset optimization tool; no image generation API",
+  "engines": {
+    "node": ">=20.9.0"
+  },
+  "dependencies": {
+    "sharp": "0.35.4"
+  }
+}

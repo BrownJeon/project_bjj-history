@@ -1,0 +1,89 @@
+{
+  "reviewId": "REV-058-STATIC-01",
+  "status": "PASS",
+  "scope": "최종 파일·매핑 정적 검토와 전달된 로컬 검증 증거에 한정. 운영 배포·인증 운영 UI·실기기는 확인하지 않았음.",
+  "snapshot": {
+    "observedAt": "2026-11-10T15:44:17.240Z",
+    "registrySHA256": "21cf952847de3a54858b938ad9a7ef9277a18ec6e647f18a95a352709e0eb7b1",
+    "appManifestSHA256": "e63fdb1ddd0f85e5ce704aecbc02236d5d2c519492edd0818c0718cc4cf7c918",
+    "registryAndAppUnchangedDuringRead": true,
+    "atomicSnapshot": false,
+    "techniqueRows": 172,
+    "uniqueTargets": 171,
+    "approvedAssets": 171,
+    "coveredRows": 172,
+    "pendingUniqueAssets": 0,
+    "publicFiles": 171,
+    "publicHashMismatches": 0,
+    "unexpectedPublicFiles": 0,
+    "normalizedNameTargetCollisions": 0,
+    "manifestMatchesRegistry": true,
+    "missingApprovalNotes": 0,
+    "rowHeightPolicy": "preserve_existing_same_content",
+    "webPBytesTotal": 9356290,
+    "webPBytesMin": 32216,
+    "webPBytesMax": 95898
+  },
+  "findings": [
+    {
+      "area": "기존 기술과 명시 이름 연결",
+      "result": "PASS_WITH_SCOPE",
+      "evidence": "web/src/utils/techniqueIllustrationModel.js:3-28 NFC·공백 정규화 후 등록된 이름만 검색, 다른 URL에 같은 이름이면 null, 미매칭·이미지 오류시 이미지 생략. TechPlanPage diff는 기존 t.id와 기술 데이터를 카드/상세에 전달하며 이미지 표시만 추가. 이 변경에서 DB API/모델/기록 갱신 코드는 발견되지 않음.",
+      "limitation": "전달된 최종 검증 기록은 운영 읽기 전용 172개 ID·이름 및 131개 링크의 전후 불변을 보고. 개인 메모·영상 전체 바이트 전후 비교는 본 감사 범위 밖."
+    },
+    {
+      "area": "명시된 이미지 공유",
+      "result": "PASS",
+      "evidence": "registry near-naked-choke(니어네이키트 쵸크)는 sharedAssetSlug rear-naked-choke(리어네이키드 초크) 하나만 지정. 사용자가 같은 기술로 확인한 결정을 따르며 기술 DB 레코드를 병합하지 않음."
+    },
+    {
+      "area": "승인 캐릭터 정본",
+      "result": "PASS",
+      "evidence": "reference/characters/set-01/approved-base-manifest.json의 승인 6파일(시트 2, 프롬프트 2, 샘플 1, 프롬프트 1)은 저장 크기 및 SHA256과 각각 일치. 생성한 모든 기술 이미지의 자세·외형 품질이 일치한다는 뜻은 아님."
+    },
+    {
+      "area": "공개 및 비공개 경계",
+      "result": "PASS_WITH_SCOPE",
+      "evidence": "scripts/task-058-image-assets.cjs:73-76,101-145에서 원본·프롬프트·후보는 reference/ 아래, 승인 자산만 web/public으로 승격. 최종 171개 공개 파일 SHA가 승인 자산과 일치하고 추가 파일·승인 메모 누락 0. 앱 manifest는 최종 registry 기준 기대 산출물과 일치.",
+      "limitation": "backend/src/index.js:41-54의 앱 정적 경로는 dist이나 외부 서버 설정·배포 패키지 노출 여부는 확인하지 않음. registry/manifest는 읽기 전후 변화 없었으나 전체 파일 동시 원자 스냅샷은 아님."
+    },
+    {
+      "area": "자산 크기",
+      "result": "PASS_WITH_SCOPE",
+      "evidence": "공개 WebP 171개 실측 합계 9,356,290 bytes, 개별 32,216~95,898 bytes. 컴포넌트 img는 lazy loading 및 async decoding.",
+      "limitation": "웹 빌드 전체 크기·모바일 네트워크/캐시 성능·APK 포함 여부와 최종 전송량은 미측정."
+    },
+    {
+      "area": "최종 목록 높이 정책",
+      "result": "PASS",
+      "evidence": "registry metadata rowHeightPolicy=preserve_existing_same_content. 부모가 남긴 최종 로컬 실제 React 앱 검증 증거에서 172행×360/390/412px=516건 높이·제목·태그 차이 0, 이미지 오류·행/페이지 넘침 0."
+    }
+  ],
+  "remaining": [
+    "운영 배포 및 인증된 운영 앱·실기기 화면 확인은 미수행.",
+    "실제 배포 패키지에서 원본/후보 노출 경계, 전체 빌드 크기 및 모바일 네트워크·캐시·APK 전달 영향은 별도 확인.",
+    "개인 메모·영상 전체의 전후 DB 바이트 비교는 수행하지 않음."
+  ],
+  "tests": "이번 재감사에서는 테스트 재실행 없이 파일 해시/정적 집계 및 부모가 남긴 검증 기록 읽기만 수행.",
+  "previousSnapshot": {
+    "observedAt": "2026-11-10T12:28:45.955Z",
+    "registrySHA256": "8c9b5cd400fb91421b94867ce218e76818dec5001cceb1565a5aea0bcb644e7b",
+    "appManifestSHA256": "5a86273f4999e194b5813ceeacbc364ff8b8612c56b5e976f7f213851bb07f41",
+    "registryAndAppUnchangedDuringRead": true,
+    "atomicSnapshot": false,
+    "techniqueRows": 172,
+    "uniqueTargets": 171,
+    "approvedAssets": 134,
+    "coveredRows": 135,
+    "pendingUniqueAssets": 37,
+    "publicFiles": 134,
+    "publicHashMismatches": 0,
+    "unexpectedPublicFiles": 0,
+    "normalizedNameTargetCollisions": 0
+  },
+  "externalEvidence": {
+    "path": "docs/handovers/task-058-final-verification.json",
+    "scope": "부모가 수행한 로컬 실제 앱 GET 전용 합성 데이터 및 운영 읽기 전용 ID/이름/링크 inventory. reviewer는 브라우저/HTTP/회귀 테스트를 재실행하지 않음.",
+    "result": "171개 HTTP 200 image/webp 및 해시 일치, 172개 이름 누락 0, 516건 geometry 차이 0, 상세 224px 차콜·앞뒤 이동·ESC·console 0, 회귀 UI 19/자산 13, 최신 격리 build 230 modules. verify --complete PASS는 부모 전달 결과."
+  }
+}

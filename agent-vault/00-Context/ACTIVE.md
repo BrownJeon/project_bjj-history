@@ -1,12 +1,14 @@
 ---
 project: bjj-trainning
-updated: 2026-11-09
+updated: 2026-11-11
 tags:
   - type/context
 ---
 # 현재 상태
 
 ## 지금 상태
+
+🟡 **task-058(캐릭터 기술 이미지) — 사용자 승인 운영1.2.0 커밋·push 준비, 변경범위 릴리스QA PASS (2026-11-11).** 171종/172행·관장/코드/정적감사·516건UI/171HTTP·새회귀32/실제화면4폭/XSS/GET검증PASS. 현재운영1.1.0·전체기존backend CRUD회귀미실행(변경0)·DB마이그레이션/새APK없음·타작업보존. push후bluegreen결과/운영확인예정. 상세 [[task-058-technique-image-samples]].
 
 ✅ **task-056(수업·캘린더 관련 영상 상세 진입) — 앱 1.1.0 운영배포·검증 완료 (2026-11-09).** commit0f8c8e9,수동/기술연계 영상 공용상세·다운로드0·부모수업동시열림0·복귀/키보드/360·390·412/기존상세회귀PASS. root/lock1.1.0·RELEASE_RESULT ok·pm2online·health/HTML/asset200·테스트source/서빙JS일치·미인증401. minor1회·동일릴리스재빌드유지,DB/APK변경없음·실기기미확인. 참고영상 수집 보류 유지. 상세 [[task-056-class-related-video-detail]].
 

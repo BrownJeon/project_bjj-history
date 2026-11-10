@@ -1,0 +1,319 @@
+{
+  "schema_version": 1,
+  "task_id": "task-058",
+  "review_batch": "regeneration-07",
+  "status": "independent_v6_review_complete_static_pass",
+  "execution_tool": "Codex; built-in view_image",
+  "reviewer_role": "gym-master",
+  "is_user_approval": false,
+  "updatedAt": "2026-11-10T15:06:01.998Z",
+  "scope": {
+    "expectedCandidates": 1,
+    "directlyViewedCandidatePNGs": 3,
+    "directlyViewedOfficialSourceFrames": 1,
+    "specPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/docs/handovers/task-058-final-four-correction-jobs.json",
+    "excluded": "No other candidates, code, DB, registry/public, task logs, generation or promotion modified.",
+    "candidatePNGsDirectlyViewed": 3,
+    "v4EvidencePreserved": true,
+    "v5EvidencePreserved": true,
+    "v6DirectlyViewedSourceFrames": 2
+  },
+  "summary": {
+    "reviewed": 1,
+    "counts": {
+      "KEY_CONTACT_UNCONFIRMED": 1
+    },
+    "clothingOwnershipPass": 1,
+    "definiteAnatomicalErrorsIdentified": 0,
+    "requiresContactClarification": [
+      "buggy-choke"
+    ],
+    "notReviewed": [],
+    "revisionReviewed": 2,
+    "revisionCounts": {
+      "KEY_CONTACT_UNCONFIRMED": 1,
+      "PASS": 1
+    },
+    "latestCandidateVersion": 6,
+    "latestCandidateCounts": {
+      "PASS": 1
+    },
+    "latestRequiresContactClarification": [],
+    "latestNotReviewed": []
+  },
+  "items": [
+    {
+      "slug": "buggy-choke",
+      "version": 4,
+      "inputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/buggy-choke-v4.png",
+      "inputSHA256": "7a220f8ff3782342be3754e3c7966af844c443e021d7d373d5b8b393eb5d28b2",
+      "manifestSHA256": "7a220f8ff3782342be3754e3c7966af844c443e021d7d373d5b8b393eb5d28b2",
+      "manifestHashMatch": true,
+      "promptPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/prompts/buggy-choke-v4.txt",
+      "promptSHA256": "1aea10679c651a0ea4fedba3a1f5b3c7824e2a90769b55a8098607c349dd8b72",
+      "manifestPromptHashMatch": true,
+      "sourcePath": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/buggy-choke-ruotolo-00m25s.jpg",
+      "sourceSHA256": "6a795195f55665877f3ca8ae8025c35b527b5074d4ab2bcca16deb625fd0a35a",
+      "name": "버기 초크",
+      "result": "KEY_CONTACT_UNCONFIRMED",
+      "requires_regeneration": true,
+      "directRawImageViewed": true,
+      "actualPNGDirectlyInspected": true,
+      "directlyViewed": true,
+      "viewedWithViewImage": true,
+      "reviewTool": "Codex / built-in view_image",
+      "independentSecondReview": true,
+      "reason": "상부 흰 사이드 컨트롤·하부 파란 raised-leg 소속과 두 사람의 연속 사지는 원본 대표 자세에 맞게 교정됐습니다. 명백한 추가 사지나 끊어진 관절은 확인하지 못했습니다. 다만 흰 앞전완 아래·파란 얼굴 오른쪽의 파란 소매와 접힌 파란 다리 윤곽이 합쳐져, 같은 파란 팔이 어느 자기 다리 고리를 통과해 닫히는지 정지 그림에서 확정하기 어렵습니다. 이는 비핵심 가림을 모두 드러내라는 요구가 아니라 버기를 구별하는 한 접점의 표현 불명확입니다.",
+      "keyChecks": [
+        "Bottom raised thighs, knees, shins and cuffs are BLUE; top independent base is WHITE.",
+        "Perpendicular top side-control/bottom folded-body relationship matches the selected Ruotolo representative frame.",
+        "No definite extra limb, detached joint or self-collar-fist substitution is proven from the visible image.",
+        "The defining BLUE own-arm/own-leg closure remains visually ambiguous at one central junction; it is not promoted to PASS by inferring the hidden route."
+      ],
+      "clothingOwnershipResult": "PASS",
+      "visibleAnatomyResult": "NO_DEFINITE_ERROR_FOUND",
+      "definiteExtraLimb": false,
+      "definiteBrokenJoint": false,
+      "definiteWrongContact": false,
+      "selfCollarFistDefinite": false,
+      "essentialJunctionReadable": false,
+      "renderedActor": "blue",
+      "wholeRoleSwap": false,
+      "sourceReference": {
+        "inputPath": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/buggy-choke-ruotolo-00m25s.jpg",
+        "inputSHA256": "6a795195f55665877f3ca8ae8025c35b527b5074d4ab2bcca16deb625fd0a35a",
+        "directRawImageViewed": true,
+        "sourceURL": "https://www.youtube.com/watch?v=yIbU62-LQqQ",
+        "timestamp": "00:25",
+        "sourceAuthor": "Ruotolo Brothers / BJJ Fanatics direct demonstration",
+        "sourceLimit": "The source still also has naturally overlapping arm/leg contacts and partly hidden terminal grips. It supports the chosen body arrangement, not proof of every finishing detail. No demand is made to expose all source-hidden hands, feet or grip depth."
+      },
+      "targetRegion": {
+        "imageWidth": 1254,
+        "imageHeight": 1254,
+        "xMin": 560,
+        "yMin": 580,
+        "xMax": 960,
+        "yMax": 955,
+        "description": "Compact blue forearm/cuff versus bent blue own-leg junction under the near white forearm/hand, beside the blue face.",
+        "singleIssue": "Render the existing own-arm/own-leg boundary clearly enough to distinguish the closure without inventing a new contact."
+      },
+      "nextEditMode": "local_contour_clarification",
+      "nextEditInputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/buggy-choke-v4.png",
+      "nextEditInputSHA256": "7a220f8ff3782342be3754e3c7966af844c443e021d7d373d5b8b393eb5d28b2",
+      "singleChangeEnglish": "Use this exact v4 as the edit base. Clarify ONLY the compact BLUE arm-to-own-leg junction directly beneath the WHITE near forearm/hand and immediately to the right of the BLUE face, approximately x=560–960, y=580–955 on this 1254-pixel square. Separate the EXISTING BLUE forearm/cuff contour from the adjacent bent BLUE leg with a small occlusion boundary or minimal local cloth-fold separation, so one existing blue arm can be followed into the same own-leg closure. Preserve the actual contact, hand locations, WHITE overlying forearm, faces, all four leg routes and full gi colors. Do not invent an exposed terminal grip, add a limb, reopen the compact loop, or reveal unrelated hidden anatomy.",
+      "regenerationGuidanceEnglish": "Use this exact v4 as the edit base. Clarify ONLY the compact BLUE arm-to-own-leg junction directly beneath the WHITE near forearm/hand and immediately to the right of the BLUE face, approximately x=560–960, y=580–955 on this 1254-pixel square. Separate the EXISTING BLUE forearm/cuff contour from the adjacent bent BLUE leg with a small occlusion boundary or minimal local cloth-fold separation, so one existing blue arm can be followed into the same own-leg closure. Preserve the actual contact, hand locations, WHITE overlying forearm, faces, all four leg routes and full gi colors. Do not invent an exposed terminal grip, add a limb, reopen the compact loop, or reveal unrelated hidden anatomy.",
+      "recommendedGenerationReferencePaths": [
+        "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/buggy-choke-v4.png"
+      ],
+      "optionalPoseComparisonPath": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/buggy-choke-ruotolo-00m25s.jpg",
+      "recommendedInputExplanation": "Keep current v4 as the single positive edit base; use the already verified Ruotolo still only if needed to compare this same junction. A full-body pose rebuild or new public video search is not requested by this review.",
+      "priorIndependentReview": {
+        "path": "docs/handovers/task-058-image-review-regeneration-04.json",
+        "version": 4,
+        "inputSHA256": "7a220f8ff3782342be3754e3c7966af844c443e021d7d373d5b8b393eb5d28b2",
+        "result": "KEY_CONTACT_UNCONFIRMED",
+        "modified": false
+      },
+      "technicalPassMeaning": "A PASS would mean recognizable static technique identity with plausible visible closure, not proof of dynamic success or every hidden contact. The present candidate does not receive that PASS.",
+      "is_user_approval": false,
+      "reviewedAt": "2026-11-10T14:27:40.219Z"
+    }
+  ],
+  "validation": {
+    "candidateSHA256Matched": true,
+    "promptSHA256Matched": true,
+    "sourceSHA256Matched": true,
+    "exactNextEditBaseRecorded": true,
+    "errors": [],
+    "checkedAt": "2026-11-10T15:06:01.998Z",
+    "candidateHashesMatched": 3,
+    "promptHashesMatched": 3,
+    "v4EvidencePreserved": true,
+    "promptObjectiveNotTreatedAsProof": true,
+    "v5EvidencePreserved": true,
+    "v6PNGAndPromptHashesMatched": true,
+    "v6SourceHashesMatched": 2,
+    "v6ActualPNGDirectlyViewed": true
+  },
+  "revisionReviews": [
+    {
+      "status": "V5_READY",
+      "slug": "buggy-choke",
+      "version": 5,
+      "inputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/buggy-choke-v5.png",
+      "inputSHA256": "0be04c3d4bba20f8750de350e5545cc598e215fe4c2e10bf6f410cffa0c973a9",
+      "manifestSHA256": "0be04c3d4bba20f8750de350e5545cc598e215fe4c2e10bf6f410cffa0c973a9",
+      "manifestHashMatch": true,
+      "promptPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/prompts/buggy-choke-v5.txt",
+      "promptSHA256": "60e278f99e7511578469031e43ccb0c6306dea807a28fcaef2717bbba48c258a",
+      "manifestPromptHashMatch": true,
+      "name": "버기 초크",
+      "result": "KEY_CONTACT_UNCONFIRMED",
+      "requires_regeneration": true,
+      "directRawImageViewed": true,
+      "actualPNGDirectlyInspected": true,
+      "directlyViewed": true,
+      "viewedWithViewImage": true,
+      "reviewTool": "Codex / built-in view_image",
+      "reason": "v5에서도 교정된 하체색과 두 사람의 전체 자세·사지 소속은 유지됩니다. 그러나 흰 앞전완·손 아래와 파란 얼굴 오른쪽에서 파란 전완/커프와 자기 다리의 윤곽을 계속 구분하기 어려워, 같은 팔이 한 자기 다리 고리를 통과해 닫히는 경로를 실제 PNG만으로 확정하지 못했습니다. prompt의 correct enclosure라는 제작 목표는 PASS 근거로 사용하지 않았습니다.",
+      "keyChecks": [
+        "Corrected BLUE bottom raised-leg ownership and WHITE independent top base are preserved.",
+        "No definite added limb, detached joint or visibly proven new wrong contact is identified.",
+        "The defining compact own-arm/own-leg closure remains unreadable at the same local region.",
+        "The rest of the pose and natural nonessential occlusion are not required to change."
+      ],
+      "clothingOwnershipResult": "PASS",
+      "visibleAnatomyResult": "NO_DEFINITE_ERROR_FOUND",
+      "essentialJunctionReadable": false,
+      "definiteExtraLimb": false,
+      "definiteBrokenJoint": false,
+      "definiteWrongContact": false,
+      "promptGoalUsedAsEvidence": false,
+      "renderedActor": "blue",
+      "wholeRoleSwap": false,
+      "comparison": {
+        "inputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/buggy-choke-v4.png",
+        "inputSHA256": "7a220f8ff3782342be3754e3c7966af844c443e021d7d373d5b8b393eb5d28b2",
+        "directRawImageViewed": true
+      },
+      "sourceReference": {
+        "inputPath": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/buggy-choke-ruotolo-00m25s.jpg",
+        "inputSHA256": "6a795195f55665877f3ca8ae8025c35b527b5074d4ab2bcca16deb625fd0a35a",
+        "directRawImageViewed": true,
+        "sourceURL": "https://www.youtube.com/watch?v=yIbU62-LQqQ",
+        "timestamp": "00:25",
+        "sourceAuthor": "Ruotolo Brothers / BJJ Fanatics direct demonstration",
+        "sourceLimit": "The source still also has naturally overlapping arm/leg contacts and partly hidden terminal grips. It supports the chosen body arrangement, not proof of every finishing detail. No demand is made to expose all source-hidden hands, feet or grip depth.",
+        "previousStageDirectViewReused": true,
+        "openedInThisRevisionReview": false
+      },
+      "targetRegion": {
+        "imageWidth": 1254,
+        "imageHeight": 1254,
+        "xMin": 560,
+        "yMin": 580,
+        "xMax": 960,
+        "yMax": 955,
+        "description": "Compact blue forearm/cuff versus bent blue own-leg junction under the near white forearm/hand, beside the blue face.",
+        "singleIssue": "Render the existing own-arm/own-leg boundary clearly enough to distinguish the closure without inventing a new contact."
+      },
+      "sourceLimit": "The Ruotolo still itself naturally occludes terminal grip depth. This review does not demand that all hands, feet or grips be exposed; it does not assert the hidden anatomy is wrong. The only unresolved point is the technique-defining arm-through-own-leg connection.",
+      "nextEditInputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/buggy-choke-v5.png",
+      "nextEditInputSHA256": "0be04c3d4bba20f8750de350e5545cc598e215fe4c2e10bf6f410cffa0c973a9",
+      "nextEditMode": "hold_for_clearer_same-junction_evidence_before_another_edit",
+      "singleChangeEnglish": null,
+      "nextEditNotSpecifiedReason": "No definite wrong connection or confidently reconstructable hidden hand route was found. Another near-identical contour-only instruction would repeat the unresolved v4 edit rather than add grounded information.",
+      "nextStepRecommendation": {
+        "status": "proposal_only_not_executed",
+        "recommendation": "If a further candidate is required, first identify a direct teaching still of this same buggy variant that distinguishes the own forearm from the bent own leg at this one junction. Then make only that grounded local connection readable while preserving current v5 whole-body geometry. Do not invent a grip or require exposure of unrelated hidden anatomy.",
+        "currentImageToPreserve": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/buggy-choke-v5.png",
+        "currentImageSHA256": "0be04c3d4bba20f8750de350e5545cc598e215fe4c2e10bf6f410cffa0c973a9",
+        "avoid": "Do not commission another full pose or another identical contour-only edit solely because the prompt calls the existing enclosure correct."
+      },
+      "technicalPassMeaning": "Static recognizable technique identity requires the defining closure to be readable without relying on the generation objective. This v5 remains unconfirmed, not proven anatomically invalid.",
+      "is_user_approval": false,
+      "reviewedAt": "2026-11-10T14:38:32.827Z"
+    },
+    {
+      "slug": "buggy-choke",
+      "name": "버기 초크",
+      "version": 6,
+      "inputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/buggy-choke-v6.png",
+      "inputSHA256": "634022382e3a9989d0457b5a2ac37732752119bc3019ac2eb3cfbb2aa776d26b",
+      "manifestSHA256": "634022382e3a9989d0457b5a2ac37732752119bc3019ac2eb3cfbb2aa776d26b",
+      "manifestHashMatch": true,
+      "promptPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/prompts/buggy-choke-v6.txt",
+      "promptSHA256": "136e896995234f55bb434c90ed6fff5589a99f89971a74c251312da01ae73278",
+      "manifestPromptHashMatch": true,
+      "groundingPromptIncludedExactly": true,
+      "result": "PASS",
+      "requires_regeneration": false,
+      "directRawImageViewed": true,
+      "actualPNGDirectlyInspected": true,
+      "directlyViewed": true,
+      "viewedWithViewImage": true,
+      "reviewTool": "Codex / built-in view_image",
+      "reason": "v6 실제 PNG에서는 파란 공격자의 소매·커프가 같은 파란 접힌 다리 안쪽으로 들어가는 경로를 따라갈 수 있고, 중앙의 피부/커프 틈과 서로 다른 천 윤곽으로 팔과 바지가 구분됩니다. v4·v5에서 흰 앞전완 아래 합쳐 보였던 한 접점이 이번에는 읽힙니다. 파란 바텀·흰 탑 배역과 전신 도복 소속이 일관되며, 보이는 범위에서 명백한 추가 사지·관절 단절·다른 사람 다리로 바뀐 폐쇄는 확인되지 않습니다. 이는 대표 OG 버기의 정지 기술 식별 PASS이며 가린 최종 손가락 그립이나 실제 조임 성공을 확인한 판정은 아닙니다.",
+      "keyChecks": [
+        "BLUE forearm/sleeve can be followed into the inside of the SAME BLUE bent own-leg hook; cuff and trouser contours remain distinguishable at the essential junction.",
+        "The WHITE top partner and BLUE bottom attacker remain separate bodies; visible WHITE base legs and BLUE attacking leg routes do not exchange ownership.",
+        "No definite additional limb, disconnected visible joint, self-collar-fist substitution or contradictory contact is identified. Natural occlusion of the far hand and leg is retained."
+      ],
+      "clothingOwnershipResult": "PASS",
+      "visibleAnatomyResult": "NO_DEFINITE_ERROR_FOUND",
+      "staticTechniqueIdentityResult": "PASS",
+      "essentialJunctionReadable": true,
+      "terminalGripFullyVerified": false,
+      "allHiddenContactsVisible": false,
+      "definiteExtraLimb": false,
+      "definiteBrokenJoint": false,
+      "definiteWrongContact": false,
+      "selfCollarFistDefinite": false,
+      "promptGoalUsedAsEvidence": false,
+      "renderedActor": "blue",
+      "topActor": "white",
+      "wholeRoleSwap": false,
+      "roleMappingRecorded": true,
+      "sourceRoleMapping": {
+        "partneredFrame": "Curly black/yellow bottom demonstrator -> BLUE attacker; striped-rashguard top partner -> WHITE defender.",
+        "detailFrame": "Striped-rashguard solo arm/leg demonstrator -> BLUE mechanical detail only; kneeling instructor is not added."
+      },
+      "essentialRegion": {
+        "imageWidth": 1254,
+        "imageHeight": 1254,
+        "xMin": 585,
+        "yMin": 510,
+        "xMax": 825,
+        "yMax": 775,
+        "description": "BLUE sleeved forearm/cuff and exposed small wrist/hand boundary underneath the folded BLUE leg; the same-actor sleeve-versus-trouser route is readable here."
+      },
+      "sourceReferences": [
+        {
+          "inputPath": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/buggy-final-own-arm-leg-01m30s.jpg",
+          "inputSHA256": "e637fb9581805e034c56c651f24f0a11eacc1d5de48ba14d39cef5a4120ecc69",
+          "expectedSHA256": "e637fb9581805e034c56c651f24f0a11eacc1d5de48ba14d39cef5a4120ecc69",
+          "timestamp": "01:30.013",
+          "sourceURL": "https://www.youtube.com/watch?v=0_3YYrWEGoU",
+          "directRawImageViewed": true,
+          "sourceLimit": "The far wrist/finger contact is partly behind the raised leg. This image does not prove an exact ankle-grip or a final two-hand finish. It supplies the arm-through-own-leg route only.",
+          "viewedWithViewImage": true
+        },
+        {
+          "inputPath": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/buggy-final-partner-02m36s.jpg",
+          "inputSHA256": "819ead2e6eff3fb6df9719d2b952600361a414dc8729215ca56c2006e1437b10",
+          "expectedSHA256": "819ead2e6eff3fb6df9719d2b952600361a414dc8729215ca56c2006e1437b10",
+          "timestamp": "02:36.652",
+          "sourceURL": "https://www.youtube.com/watch?v=0_3YYrWEGoU",
+          "directRawImageViewed": true,
+          "sourceLimit": "This overall view is not an x-ray of every hand. No claim is made that all terminal grip depth or pressure effect is visible. The photographed top arm/camera may replace v5's obscuring support-arm position.",
+          "viewedWithViewImage": true
+        }
+      ],
+      "sourceGroundingReport": "docs/handovers/task-058-buggy-closure-grounding.json",
+      "sourceComparison": {
+        "sameRepresentativeOGMechanism": true,
+        "exactPhotographicCameraClaimed": false,
+        "note": "The generated view is a near-side three-quarter illustration rather than a pixel match to the partnered photo. The new visible sleeve/own-leg hook is compared with the isolated teaching detail; camera or top support-arm differences are not used to infer hidden anatomy."
+      },
+      "sourceLimit": "Both official frames naturally hide some terminal finger/wrist depth. This static illustration is not claimed to demonstrate a fully audited finishing grip or dynamic successful choke. Nonessential hidden contacts are not required to become visible.",
+      "priorCandidateEvidence": {
+        "version": 5,
+        "inputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/buggy-choke-v5.png",
+        "inputSHA256": "0be04c3d4bba20f8750de350e5545cc598e215fe4c2e10bf6f410cffa0c973a9",
+        "result": "KEY_CONTACT_UNCONFIRMED",
+        "preserved": true,
+        "directViewFromPriorReviewReused": true,
+        "openedInThisRevisionReview": false
+      },
+      "nextEditMode": null,
+      "nextEditInputPath": null,
+      "nextEditInputSHA256": null,
+      "singleChangeEnglish": null,
+      "technicalPassMeaning": "Recognizable static representative OG buggy identity, plausible continuous visible limbs, consistent character/gi ownership and a readable defining own-arm/own-leg junction. This is not user approval, promotion, exact hidden-grip verification or proof of dynamic success.",
+      "is_user_approval": false,
+      "reviewedAt": "2026-11-10T15:06:01.998Z",
+      "reviewedDateKST": "2026-11-11"
+    }
+  ]
+}

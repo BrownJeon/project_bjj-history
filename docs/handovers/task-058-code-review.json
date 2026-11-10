@@ -1,0 +1,82 @@
+{
+  "reviewId": "REV-058-01",
+  "status": "PASS",
+  "scope": "Independent code review of current task-058 frontend and image asset importer. PASS applies only to code review at these source hashes; image generation, final manifest coverage, full-app QA and deployment remain unfinished.",
+  "issues": [],
+  "summary": {
+    "critical": 0,
+    "high": 0,
+    "medium": 0,
+    "low": 0
+  },
+  "coverage": {
+    "architecture": "Frontend plus offline asset importer only; no server route, Sequelize model, response helper or AI gateway change in reviewed diff.",
+    "maintainability": "Read JSON registry/manifest transformations, explicit common-name matching, input validation and tests; scoped-link concern withdrawn as an unsupported expansion, sharp dependency remains.",
+    "stability": "Code review confirms per-URL error state, explicit availability callback when ResizeObserver is absent, hidden measurement clone cleanup, candidate/approved asset separation and documented interrupted-write recovery. No DB migration or cascade change.",
+    "operations": "No outstanding defect found in current reviewed asset importer; package/lock pin sharp, candidate promotion and verify/sync provide interrupted-operation recovery. Final verify must run after asset producer and approvals quiesce.",
+    "performance": "No new runtime data fetch or SQL N+1; static index built once and image requests are lazy. Final asset payload and build verification remain for QA.",
+    "security": "No new SQL or credential exposure in frontend diff. Manifest URL is constrained to a same-origin slug path; private operating IDs and source clips must remain out of publishable artifacts."
+  },
+  "high_risk_areas": [
+    "web/src/components/TechniqueCard.jsx:22 — 새 source에서 전체앱 360/390/412, 실제 여러 태그/사용 합계, 폰트 및 이미지 로드 실패와 ResizeObserver 부재를 재확인",
+    "scripts/task-058-image-assets.cjs:56 — 기존 ready 이미지에 대한 재import·승격·중단·재시도에서 기존 승인 파일/manifest 보존",
+    "web/src/utils/techniqueIllustrationModel.js:14 — 명시 이름 충돌·전역 인덱스 fail-closed 및 현 172개 항목의 최종 매핑 커버리지",
+    "backend/src/index.js:50 — 누락된 WebP는 SPA fallback에서 HTML 200일 수 있으므로 이미지 Content-Type/디코드/실제 해시를 확인",
+    "web/src/components/TechniqueIllustration.jsx:8 — 느린 이미지·에러·상세 관계 이동·이전 이미지 늦은 오류",
+    "scripts/task-058-image-assets.cjs:249 — 모든 실제 승인에 검토한 원본 PNG SHA를 여섯 번째 인자로 전달하고 후보 변경 시 거절 확인; 생략은 기존 호환 경로"
+  ],
+  "handoff": "코드 감사 PASS, 전체 기능 완료나 QA PASS가 아니다. 516건 기존 기하 증거는 availability 콜백 추가 전 컴포넌트 SHA이며 현재 소스로 재검증 필요. 전체 이미지·기술 매핑·모든 공개 WebP/content type/해시·verify --complete 및 인증 앱/실기기는 별도 확인한다.",
+  "reassessments": [
+    {
+      "issue": "사용자별 confirmed/rejected 및 중복 기술 모호성을 전역 이름 매칭이 반영하지 않음",
+      "status": "withdrawn_as_current_defect",
+      "basis": "공통 교육 이미지의 명시 이름 매핑이 승인된 범위이다. 개인 참고링크 rejected를 이미지 opt-out으로 보는 요구나 실제 사용자 오매칭 근거는 확인되지 않았다. 개인별 이미지/참고링크 연동은 향후 별도 설계 사항이다."
+    },
+    {
+      "issue": "이미지 없는 단일 텍스트 행과 이미지 행의 높이가 다름",
+      "status": "common_cases_fixed; multi_tag_edge_pending",
+      "basis": "수정된 span 슬롯·absolute 이미지 소스 SHA가 360/390/412 합성 실제컴포넌트 geometry 증거와 일치. 무태그52/52·태그72/72·강제 긴문장126/126·실패52/52를 읽기확인. 실제 다중태그 가용폭 감소에 따른 추가 줄바꿈은 미검증.",
+      "evidence": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-ui-row-height-validation/ui-height-check.json"
+    },
+    {
+      "issue": "기존 승인 이미지의 재생성 후보가 검토 전에 정식 공개 파일을 덮어씀",
+      "status": "resolved_by_code_review",
+      "basis": "import stores immutable versioned candidate outside public; existing approvedAsset stays authoritative until explicit approve; transaction snapshots and sync/verify enable failure and SIGKILL recovery. Parent reports isolated regression 11/11; reviewer did not rerun tests."
+    },
+    {
+      "issue": "이미지 최적화 도구 sharp의 설치·버전이 프로젝트에 선언되지 않음",
+      "status": "resolved_by_code_review",
+      "basis": "tools/technique-image-assets package and lockfile pin sharp 0.35.4; createRequire resolves dedicated tool dependency with documented npm ci."
+    },
+    {
+      "issue": "비정상 종료 후 등록 잠금의 소유자 확인 및 복구 정보 부재",
+      "status": "resolved_by_code_review",
+      "basis": "Lock owner records pid/host/token/time, refuses live or foreign owners, provides recover-lock followed by sync and verify. An ownerless crash still requires manual process audit as documented."
+    },
+    {
+      "issue": "이미지 슬롯이 텍스트 가용폭을 줄여 다중 태그 행의 높이가 기존보다 커짐",
+      "status": "resolved_for_516_fixture_cases",
+      "basis": "이미지48px을 유지한 채 기존 콘텐츠 폭에서 숨은 복제본을 측정해 초과 높이만 상하 패딩으로 흡수. 작업자 증거의 172개 합성 메타데이터 × 360/390/412 = 516건에서 높이 불일치·미흡수·텍스트변경·크기오류·클론잔류 0. Google Noto Sans KR 실제 로드 확인. 코드 SHA 일치. 모든 실제 pose, 인증 운영앱 또는 실제 영상사용 횟수와 동일한 테스트는 아님.",
+      "evidence": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-ui-adaptive-padding-validation/adaptive-padding-check.json"
+    },
+    {
+      "issue": "ResizeObserver 미지원 환경에서 이미지 오류 후 행 패딩이 자동 복구되지 않음",
+      "status": "resolved_by_code_review",
+      "basis": "TechniqueIllustration은 슬롯 mount/오류/미매칭을 useLayoutEffect로 부모에 통보하고 TechniqueCard의 안정적 콜백이 false면 패딩14px로 복원, true면 즉시 재측정한다. 새 회귀 테스트는 ResizeObserver를 제거한 StrictMode 환경에서 외부 observer/resize 없이 오류 후 복구와 URL교체를 확인하고 이전 이미지의 늦은 오류도 점검한다. 부모가 현재 소스로 독립 19/19 PASS를 보고했고 reviewer는 테스트를 재실행하지 않았다.",
+      "sourceSHA256": {
+        "web/src/components/TechniqueIllustration.jsx": "acd0f193e9b12765f323f1b5cd404b72120236f7bcc00cf98dda5b8b6e450640",
+        "web/src/components/TechniqueCard.jsx": "0fdb834a46b7afea41584f7f41d18ff0addb6f5b36ea3dea9553e95b14f8fad3",
+        "web/src/utils/techniqueCardLayout.js": "2dd30b87976d634df30f5776f1517309a95d875cf735c59a72b513627e479287"
+      }
+    },
+    {
+      "issue": "검토 직후 다른 후보가 import될 때 승격되는 이미지와 검토한 PNG가 달라질 위험",
+      "status": "resolved_by_code_review_when_expected_SHA_supplied",
+      "basis": "approve의 선택적 여섯 번째 인자는 registry lock 획득 및 최신 registry 로드 후, asset 쓰기 전 현재 원본 SHA와 비교한다. 불일치 또는 잘못된 값은 오류로 종료하고 lock을 해제하며 승인 자산, manifest, registry는 쓰지 않는다. 이후 검증 단계에서 보존 원본 바이트 SHA를 다시 확인한다. 인자를 생략하는 기존 5인자 호출은 호환되므로 검토 연계 보호는 해당 인자를 전달한 경우에만 적용된다. fixture 테스트 소스는 이전 SHA 거절 시 전체 파일 트리 보존, 잘못된 SHA 거절, 대문자 SHA 허용 및 정확한 승격을 확인하며 부모가 독립 13/13 PASS를 보고했다. reviewer는 테스트를 재실행하지 않았다.",
+      "sourceSHA256": {
+        "scripts/task-058-image-assets.cjs": "52e04de98908c3b1f05d2afba0d716c3a2a1fefbc5fe21126fbb3c3dda4878fe",
+        "scripts/task-058-image-assets.test.cjs": "455c50080852b21f7104cbb7e7d8786e4ce2ecf3b06c2e13f683e517d9218e7f"
+      }
+    }
+  ]
+}

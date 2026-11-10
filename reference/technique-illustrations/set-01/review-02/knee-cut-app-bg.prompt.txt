@@ -1,0 +1,8 @@
+Tool: built-in image_gen (no API/CLI fallback)
+Edit target: ../review-01/knee-cut.png
+App background source: web/src/styles/tokens.css --bg = #0C0D12
+Scope: first sample only; background/floor edit; preserve both characters and pose
+Status: user review sample, not approved for bulk generation
+
+Use case: precise-object-edit. Edit the supplied knee-cut illustration, changing ONLY its orange background and orange floor to the app's exact solid background color #0C0D12 (RGB 12,13,18). The backdrop and floor should form a seamless matte near-black field matching that color, especially all four corners. No gradients, vignette, texture, new scenery, borders, text or transparency. Retain only a subtle dark contact shadow immediately beneath the athletes and planted foot.
+STRICT INVARIANTS: preserve the exact two adult characters, faces, hairstyles, eye colors, brown belts, white gi, royal-blue gi, cloth folds, skin colors, limb connections, hand grips, knee-cut pose, camera angle, composition, scale and full-body framing. Do not redraw, re-pose, move, crop or redesign either character. Keep their existing clear foreground lighting; do not darken their clothes or skin to match the dark backdrop. Remove the orange backdrop right up to the natural silhouette edges without adding a white stroke or halo. Return exactly one edited image.

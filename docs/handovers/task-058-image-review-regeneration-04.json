@@ -1,0 +1,1123 @@
+{
+  "schemaVersion": 1,
+  "task": "task-058",
+  "batch": "regeneration-04",
+  "status": "complete",
+  "scope": {
+    "expectedCount": 19,
+    "slugs": [
+      "heel-hook",
+      "loop-choke",
+      "arm-triangle",
+      "ezekiel-choke",
+      "anaconda-choke",
+      "clock-choke",
+      "butterfly-sweep",
+      "belly-down-armbar",
+      "inside-heel-hook",
+      "lapel-pass",
+      "squid-guard",
+      "pendulum-sweep",
+      "gator-roll",
+      "100-percent-sweep",
+      "x-guard-sweep",
+      "buggy-choke",
+      "gogoplata",
+      "peruvian-necktie",
+      "twister"
+    ],
+    "excludes": "First eight jobs belong to independent regeneration-05 review."
+  },
+  "reviewedCount": 19,
+  "items": [
+    {
+      "slug": "heel-hook",
+      "name": "힐훅",
+      "isNew": true,
+      "expectedAfterVersion": 1,
+      "version": 2,
+      "inputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/heel-hook-v2.png",
+      "inputSHA256": "b0341e6aff1cf9ca9c2c1ee7c0625a175952ec5fc6ea51c779442f46231e7830",
+      "manifestAssetSHA256": "b0341e6aff1cf9ca9c2c1ee7c0625a175952ec5fc6ea51c779442f46231e7830",
+      "promptPath": "reference/technique-illustrations/set-01/production/prompts/heel-hook-v2.txt",
+      "promptSHA256": "8a581db0a27413770ae27850482ce939df487464052763bfa3dd52887064183a",
+      "mode": "targeted_edit",
+      "generationReferences": [
+        {
+          "role": "current_image_to_edit",
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/heel-hook-v1.png",
+          "sha256": "31e083bb336377289bb39c4e1712681ebd08e74cd3c099f5d5d17ef73631bb32"
+        }
+      ],
+      "inputVersion": 2,
+      "shaMatchesManifestAsset": true,
+      "actualPromptRead": true,
+      "result": "PASS",
+      "reason": "흰 발 앞부분이 파란 겨드랑이에 모이고 노출된 뒤꿈치가 파란 훅 전완 위에 놓인다. 반대 파란 손은 자기 초킹 팔을 보강하며, 기존 무릎선·하체 얽힘이 유지돼 발 전체를 두 손으로 감싸던 형태가 교정됐다.",
+      "keyChecks": [
+        "흰 뒤꿈치의 파란 전완 걸림",
+        "발 앞부분의 겨드랑이 수집",
+        "자기 초킹 팔 보강·무릎선 유지"
+      ],
+      "regenerationGuidance": null,
+      "requires_regeneration": false,
+      "directRawImageViewed": true,
+      "technicalReview": [
+        "흰 뒤꿈치의 파란 전완 걸림",
+        "발 앞부분의 겨드랑이 수집",
+        "자기 초킹 팔 보강·무릎선 유지"
+      ],
+      "clothingOwnershipReview": "두 승인 캐릭터·브라운벨트·전신 도복과 사지 소속을 실제 PNG에서 검토했다. 자연스러운 비핵심 가림은 허용했고, 혼합 소속·핵심 연결의 미확인은 각 reason/keyChecks에 구분했다.",
+      "verificationLimit": "실제 교정 prompt·기존 직접 검토한 정지 자세·새 primary 프레임을 기준으로 대표 접점만 판정했다. 전체 영상·실제 피니시 효과·비핵심 가려진 말단의 모든 깊이는 검증하지 않았다."
+    },
+    {
+      "slug": "loop-choke",
+      "name": "루프 초크",
+      "isNew": true,
+      "expectedAfterVersion": 1,
+      "version": 2,
+      "inputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/loop-choke-v2.png",
+      "inputSHA256": "e34dc78481429a616dab1f56d4b76a387f662ef3510ae61e26b837f544e5ffff",
+      "manifestAssetSHA256": "e34dc78481429a616dab1f56d4b76a387f662ef3510ae61e26b837f544e5ffff",
+      "promptPath": "reference/technique-illustrations/set-01/production/prompts/loop-choke-v2.txt",
+      "promptSHA256": "7c016b6976574a06aa06e0383fd0baf9e9bc0d571104dbc2ca14b85ecdd62f76",
+      "mode": "targeted_edit",
+      "generationReferences": [
+        {
+          "role": "current_image_to_edit",
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/loop-choke-v1.png",
+          "sha256": "4cefbc19e0eb0a0d0cdcbfaa83c513663908cdce401ed448ef687b5eae84fcc5"
+        }
+      ],
+      "inputVersion": 2,
+      "shaMatchesManifestAsset": true,
+      "actualPromptRead": true,
+      "result": "MODIFICATION_REQUIRED",
+      "reason": "파란 두 손이 흰 뒤깃과 흰 전면 소매를 각각 잡고, 머리를 감싼 큰 루프는 흰 소매로 남아 있다. 깃을 잡은 같은 파란 팔이 흰 머리를 둘러 형성해야 하는 초킹 루프가 구현되지 않았다.",
+      "keyChecks": [
+        "실제 흰 뒤깃 그립",
+        "머리 루프가 흰 방어 소매로 표현됨",
+        "같은 파란 깃 그립 팔의 초킹 루프 없음"
+      ],
+      "regenerationGuidance": "Repair the single collar-gripping BLUE arm only: retain its grip on the WHITE collar, then curve that SAME BLUE elbow and BLUE forearm around the bowed WHITE head so the head sits inside BLUE's collar-gripping elbow loop. Do not use the WHITE defender's own sleeve as the choke loop or have two blue hands separately hold collar and white sleeve. Keep the bottom guard, bodies and other limbs unchanged.",
+      "nextEditMode": "pose_first_regeneration",
+      "singleChangeEnglish": "Rebuild the selected loop-choke head-and-arm relationship with WHITE as the BOTTOM attacker and BLUE as the TOP kneeling partner. The SAME WHITE arm must grip the BLUE collar and curve its WHITE elbow/forearm around the bowed BLUE head. Place the BLUE head INSIDE that WHITE collar-gripping elbow loop, while the bottom WHITE head stays outside and clearly separate.",
+      "nextEdit": {
+        "mode": "pose_first_regeneration",
+        "reason": "기존 카탈로그는 WHITE bottom 공격자·BLUE top 파트너다. 현 v2는 BLUE top이 WHITE bottom 깃을 잡고 WHITE 팔 루프에는 WHITE 자신의 머리가 들어가, 포획 머리와 공격 팔의 관계 자체가 달라졌다. 같은 잘못된 머리·팔 배치를 다시 국소 편집하기보다 정확한 기존 포즈와 중립 스타일로 재구성한다.",
+        "singleChangeEnglish": "Rebuild the selected loop-choke head-and-arm relationship with WHITE as the BOTTOM attacker and BLUE as the TOP kneeling partner. The SAME WHITE arm must grip the BLUE collar and curve its WHITE elbow/forearm around the bowed BLUE head. Place the BLUE head INSIDE that WHITE collar-gripping elbow loop, while the bottom WHITE head stays outside and clearly separate.",
+        "preserve": [
+          "Existing catalog's top BLUE kneeling base and bottom WHITE closed/angled guard geometry",
+          "Bottom WHITE guard legs and separate top BLUE base legs",
+          "Neutral portraits' exact fictional faces, hair, complete white/blue gis, brown belts and 2.5D style"
+        ],
+        "references": [
+          {
+            "role": "primary_pose",
+            "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/references/loop-choke.webp",
+            "sha256": "97cdd4f2f0c88f245f3217ab7e6c7a344e1a9c8fb84481f45bde3e44f5323eea",
+            "sourceURL": "https://labs.quartz.best/ko-KR/pbb/techniques",
+            "sourceType": "existing_public_catalog_pose_illustration",
+            "timestamp": null,
+            "directImageViewed": true,
+            "observed": "WHITE below grips BLUE collar with the arm encircling the bowed BLUE head. The bottom WHITE head lies outside this loop on the right.",
+            "limitation": "기존 카탈로그 정지 그림만 대조했다. 강사의 직접 영상이나 실제 피니시 효과를 검증한 근거로 취급하지 않는다."
+          },
+          {
+            "role": "neutral_character_style_only",
+            "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/style-guides/neutral-portraits-v1.png",
+            "sha256": "861ad8775f2697dc451d5f764a49655e5c78ddb2ada79d3f44a6f2905fa1ba16",
+            "directImageViewed": true
+          }
+        ],
+        "generationReferencePaths": [
+          "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/references/loop-choke.webp",
+          "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/style-guides/neutral-portraits-v1.png"
+        ],
+        "correctionPromptEnglish": "Reference 1 is the PRIMARY POSE. The final neutral portrait is for fictional identities and rendering only. Faithfully redraw the catalog's complete body relationship and camera with WHITE as the bottom attacker at viewer right and BLUE as the top kneeling partner at viewer left. WHITE retains the BLUE collar with ONE WHITE hand. That SAME collar-gripping WHITE arm curves its elbow and forearm around the bowed BLUE head so the BLUE head sits INSIDE the WHITE elbow loop. WHITE's other arm supports this same loop connection. Keep WHITE's own head outside the loop, clearly separate at viewer right. Do not put WHITE's own head inside WHITE's sleeve loop, and do not make BLUE's top hands hold the white collar as the choke. Keep exactly two WHITE guard legs attached to the bottom WHITE hips and exactly two BLUE base legs attached to the top BLUE hips. Output one square 1:1 raster image at 1024×1024 or larger with a true transparent alpha background. Preserve these same two fictional adult male characters, their faces and hair, the approved detailed 2.5D anime rendering and brown belts. Black-haired adult owns a complete WHITE gi; white-haired adult owns a complete BLUE gi. Exactly two arms and two legs per person. No text, labels, arrows, panels, floor, matte, checkerboard or watermark.",
+        "nextVersion": 3,
+        "independentDirectImageReviewRequired": true
+      },
+      "requires_regeneration": true,
+      "directRawImageViewed": true,
+      "technicalReview": [
+        "실제 흰 뒤깃 그립",
+        "머리 루프가 흰 방어 소매로 표현됨",
+        "같은 파란 깃 그립 팔의 초킹 루프 없음"
+      ],
+      "clothingOwnershipReview": "두 승인 캐릭터·브라운벨트·전신 도복과 사지 소속을 실제 PNG에서 검토했다. 자연스러운 비핵심 가림은 허용했고, 혼합 소속·핵심 연결의 미확인은 각 reason/keyChecks에 구분했다.",
+      "verificationLimit": "실제 교정 prompt·기존 직접 검토한 정지 자세·새 primary 프레임을 기준으로 대표 접점만 판정했다. 전체 영상·실제 피니시 효과·비핵심 가려진 말단의 모든 깊이는 검증하지 않았다."
+    },
+    {
+      "slug": "arm-triangle",
+      "name": "암 트라이앵글",
+      "isNew": true,
+      "expectedAfterVersion": 1,
+      "version": 2,
+      "inputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/arm-triangle-v2.png",
+      "inputSHA256": "43ac71604eb91cfa3c1f4f364e3d05f589c0223d27983cca52c45d8f33fc9832",
+      "manifestAssetSHA256": "43ac71604eb91cfa3c1f4f364e3d05f589c0223d27983cca52c45d8f33fc9832",
+      "promptPath": "reference/technique-illustrations/set-01/production/prompts/arm-triangle-v2.txt",
+      "promptSHA256": "81a799c5d4e99771fa9a189694a10d1f38a273d8f4a110549fbc76da45e58d3e",
+      "mode": "targeted_edit",
+      "generationReferences": [
+        {
+          "role": "current_image_to_edit",
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/arm-triangle-v1.png",
+          "sha256": "2f860b6e03f94629da4bea94d687c600311076690009b0678c0cecc6e54c320f"
+        }
+      ],
+      "inputVersion": 2,
+      "shaMatchesManifestAsset": true,
+      "actualPromptRead": true,
+      "result": "PASS",
+      "reason": "한 흰 상완이 자기 목 옆에 모이고 파란 머리가 포획 어깨 옆에 놓인다. 파란 팔이 머리·상완을 같은 루프로 감싸 자기 팔에 연결되고, 포획된 흰 팔은 팔꿈치에서 손까지 별도로 이어져 기존 말단 혼동이 교정됐다.",
+      "keyChecks": [
+        "목 옆에 모인 한 흰 상완",
+        "파란 머리의 포획 어깨 고정",
+        "파란 자기 팔 결속·흰 팔꿈치→손 구분"
+      ],
+      "regenerationGuidance": null,
+      "requires_regeneration": false,
+      "directRawImageViewed": true,
+      "technicalReview": [
+        "목 옆에 모인 한 흰 상완",
+        "파란 머리의 포획 어깨 고정",
+        "파란 자기 팔 결속·흰 팔꿈치→손 구분"
+      ],
+      "clothingOwnershipReview": "두 승인 캐릭터·브라운벨트·전신 도복과 사지 소속을 실제 PNG에서 검토했다. 자연스러운 비핵심 가림은 허용했고, 혼합 소속·핵심 연결의 미확인은 각 reason/keyChecks에 구분했다.",
+      "verificationLimit": "실제 교정 prompt·기존 직접 검토한 정지 자세·새 primary 프레임을 기준으로 대표 접점만 판정했다. 전체 영상·실제 피니시 효과·비핵심 가려진 말단의 모든 깊이는 검증하지 않았다."
+    },
+    {
+      "slug": "ezekiel-choke",
+      "name": "이제키엘 초크",
+      "isNew": true,
+      "expectedAfterVersion": 1,
+      "version": 2,
+      "inputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/ezekiel-choke-v2.png",
+      "inputSHA256": "5471f9fb6c3d4822df5a8413fe45e7b9118d366d95dbed7dccdd63f9a3ce6515",
+      "manifestAssetSHA256": "5471f9fb6c3d4822df5a8413fe45e7b9118d366d95dbed7dccdd63f9a3ce6515",
+      "promptPath": "reference/technique-illustrations/set-01/production/prompts/ezekiel-choke-v2.txt",
+      "promptSHA256": "c79725f3f504e7f0da368315f18613bdb7e3595f0dfb3bd55249c08be69e7c87",
+      "mode": "targeted_edit",
+      "generationReferences": [
+        {
+          "role": "current_image_to_edit",
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/ezekiel-choke-v1.png",
+          "sha256": "c68279462a7a97bc5e0cbcf3d4ffce4da33bd4a3c6bee400f903f778d61d8af6"
+        }
+      ],
+      "inputVersion": 2,
+      "shaMatchesManifestAsset": true,
+      "actualPromptRead": true,
+      "result": "PASS",
+      "reason": "흰 손가락이 자기 반대 흰 커프의 입구·접힌 소매를 잡고, 그 소매 팔과 반대 전완이 파란 목 앞뒤에 연결된다. 자기 깃을 잡는 형태가 아니라 자기 소매 연결이 드러나 기존 핵심 그립의 가림이 보완됐다.",
+      "keyChecks": [
+        "자기 반대 흰 커프 입구의 손가락 그립",
+        "목 앞뒤의 별도 흰 전완",
+        "인물·소매의 일관된 소속"
+      ],
+      "regenerationGuidance": null,
+      "requires_regeneration": false,
+      "directRawImageViewed": true,
+      "technicalReview": [
+        "자기 반대 흰 커프 입구의 손가락 그립",
+        "목 앞뒤의 별도 흰 전완",
+        "인물·소매의 일관된 소속"
+      ],
+      "clothingOwnershipReview": "두 승인 캐릭터·브라운벨트·전신 도복과 사지 소속을 실제 PNG에서 검토했다. 자연스러운 비핵심 가림은 허용했고, 혼합 소속·핵심 연결의 미확인은 각 reason/keyChecks에 구분했다.",
+      "verificationLimit": "실제 교정 prompt·기존 직접 검토한 정지 자세·새 primary 프레임을 기준으로 대표 접점만 판정했다. 전체 영상·실제 피니시 효과·비핵심 가려진 말단의 모든 깊이는 검증하지 않았다."
+    },
+    {
+      "slug": "anaconda-choke",
+      "name": "아나콘다 초크",
+      "isNew": true,
+      "expectedAfterVersion": 1,
+      "version": 2,
+      "inputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/anaconda-choke-v2.png",
+      "inputSHA256": "e85f917c74097784e12ed228fee20a9e54171ba59f21be66166f79d41fc02216",
+      "manifestAssetSHA256": "e85f917c74097784e12ed228fee20a9e54171ba59f21be66166f79d41fc02216",
+      "promptPath": "reference/technique-illustrations/set-01/production/prompts/anaconda-choke-v2.txt",
+      "promptSHA256": "f1e64fcdec1a78f1795ae9acb0c29086489aedebfd682e0b83763d7d44c20dd2",
+      "mode": "targeted_edit",
+      "generationReferences": [
+        {
+          "role": "current_image_to_edit",
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/anaconda-choke-v1.png",
+          "sha256": "634940bb5a7a2f77755c036adedbbcb2cfa0f9de9485e4b28be3b39a0130f510"
+        }
+      ],
+      "inputVersion": 2,
+      "shaMatchesManifestAsset": true,
+      "actualPromptRead": true,
+      "result": "PASS",
+      "reason": "흰 초킹 팔이 파란 목 앞을 먼저 지나고 옆 겨드랑이 밑의 흰 팔 경로와 연결돼 파란 머리·한 상완을 같은 루프에 둔다. 자기 흰 상완 그립과 별도 파란 자유 팔이 구별되며, 파란 말단 손의 매트 접지는 포획 상완의 소속 오류로 보지 않는다.",
+      "keyChecks": [
+        "목 앞→한 겨드랑이의 연결 경로",
+        "같은 루프 안 머리·한 파란 상완",
+        "흰 자기 상완 결속·별도 자유 팔"
+      ],
+      "regenerationGuidance": null,
+      "requires_regeneration": false,
+      "directRawImageViewed": true,
+      "technicalReview": [
+        "목 앞→한 겨드랑이의 연결 경로",
+        "같은 루프 안 머리·한 파란 상완",
+        "흰 자기 상완 결속·별도 자유 팔"
+      ],
+      "clothingOwnershipReview": "두 승인 캐릭터·브라운벨트·전신 도복과 사지 소속을 실제 PNG에서 검토했다. 자연스러운 비핵심 가림은 허용했고, 혼합 소속·핵심 연결의 미확인은 각 reason/keyChecks에 구분했다.",
+      "verificationLimit": "실제 교정 prompt·기존 직접 검토한 정지 자세·새 primary 프레임을 기준으로 대표 접점만 판정했다. 전체 영상·실제 피니시 효과·비핵심 가려진 말단의 모든 깊이는 검증하지 않았다."
+    },
+    {
+      "slug": "clock-choke",
+      "name": "클락 초크",
+      "isNew": true,
+      "expectedAfterVersion": 1,
+      "version": 2,
+      "inputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/clock-choke-v2.png",
+      "inputSHA256": "6827db5947ca5bbb45d04e9eb2e34f3576e2be0bd1b60d72d1c60aa2b813c0bc",
+      "manifestAssetSHA256": "6827db5947ca5bbb45d04e9eb2e34f3576e2be0bd1b60d72d1c60aa2b813c0bc",
+      "promptPath": "reference/technique-illustrations/set-01/production/prompts/clock-choke-v2.txt",
+      "promptSHA256": "58db608077ed2db38e9ace1d5be52651004f6c2468e7f89827ec8f92df8892c2",
+      "mode": "targeted_edit",
+      "generationReferences": [
+        {
+          "role": "current_image_to_edit",
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/clock-choke-v1.png",
+          "sha256": "478a1f40c938ffa5984468671b730d8bd6eccc9d99ee03a27bfdd3e6b457a9e3"
+        }
+      ],
+      "inputVersion": 2,
+      "shaMatchesManifestAsset": true,
+      "actualPromptRead": true,
+      "result": "PASS",
+      "reason": "흰 초킹 전완이 파란 턱 밑을 지나 실제 파란 먼 깃에 연결된다. 반대 흰 손은 어깨를 고정하고, 옆으로 편 다리의 베이스가 유지돼 뒤깃만 잡던 터틀 제어가 교정됐다.",
+      "keyChecks": [
+        "턱 아래 흰 전완",
+        "연속된 파란 먼 깃 그립",
+        "어깨 앵커·옆으로 편 흰 베이스"
+      ],
+      "regenerationGuidance": null,
+      "requires_regeneration": false,
+      "directRawImageViewed": true,
+      "technicalReview": [
+        "턱 아래 흰 전완",
+        "연속된 파란 먼 깃 그립",
+        "어깨 앵커·옆으로 편 흰 베이스"
+      ],
+      "clothingOwnershipReview": "두 승인 캐릭터·브라운벨트·전신 도복과 사지 소속을 실제 PNG에서 검토했다. 자연스러운 비핵심 가림은 허용했고, 혼합 소속·핵심 연결의 미확인은 각 reason/keyChecks에 구분했다.",
+      "verificationLimit": "실제 교정 prompt·기존 직접 검토한 정지 자세·새 primary 프레임을 기준으로 대표 접점만 판정했다. 전체 영상·실제 피니시 효과·비핵심 가려진 말단의 모든 깊이는 검증하지 않았다."
+    },
+    {
+      "slug": "butterfly-sweep",
+      "name": "버터플라이 스윕",
+      "isNew": true,
+      "expectedAfterVersion": 1,
+      "version": 2,
+      "inputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/butterfly-sweep-v2.png",
+      "inputSHA256": "52bd0f5f75cde3e7c2d9ebad5c06a0e1b10074c17dc7f2be985897bf0d63d515",
+      "manifestAssetSHA256": "52bd0f5f75cde3e7c2d9ebad5c06a0e1b10074c17dc7f2be985897bf0d63d515",
+      "promptPath": "reference/technique-illustrations/set-01/production/prompts/butterfly-sweep-v2.txt",
+      "promptSHA256": "2183248ecaa938276753a07fbf86fccf12cd0f2b438e0a5697d463b19f1dd1d6",
+      "mode": "targeted_edit",
+      "generationReferences": [
+        {
+          "role": "current_image_to_edit",
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/butterfly-sweep-v1.png",
+          "sha256": "eb64c96eac4fceb36699fbca58b0977f34c33b779c0c35cfd316db8c37ccad92"
+        }
+      ],
+      "inputVersion": 2,
+      "shaMatchesManifestAsset": true,
+      "actualPromptRead": true,
+      "result": "PASS",
+      "reason": "파란 인물이 한 힙으로 돌아가고 한 안쪽 발등이 흰 허벅지를 수집해 올리는 방향을 만든다. 선택한 흰 포스팅 팔은 파란 손의 팔꿈치 제어로 바닥에서 분리돼 기존의 넓은 손바닥 포스트가 제거됐다.",
+      "keyChecks": [
+        "각각 분리된 두 안쪽 훅",
+        "한 힙으로 돌아간 파란 몸통과 허벅지 리프트",
+        "선택된 흰 포스팅 팔의 바닥 분리"
+      ],
+      "regenerationGuidance": null,
+      "requires_regeneration": false,
+      "directRawImageViewed": true,
+      "technicalReview": [
+        "각각 분리된 두 안쪽 훅",
+        "한 힙으로 돌아간 파란 몸통과 허벅지 리프트",
+        "선택된 흰 포스팅 팔의 바닥 분리"
+      ],
+      "clothingOwnershipReview": "두 승인 캐릭터·브라운벨트·전신 도복과 사지 소속을 실제 PNG에서 검토했다. 자연스러운 비핵심 가림은 허용했고, 혼합 소속·핵심 연결의 미확인은 각 reason/keyChecks에 구분했다.",
+      "verificationLimit": "실제 교정 prompt·기존 직접 검토한 정지 자세·새 primary 프레임을 기준으로 대표 접점만 판정했다. 전체 영상·실제 피니시 효과·비핵심 가려진 말단의 모든 깊이는 검증하지 않았다."
+    },
+    {
+      "slug": "belly-down-armbar",
+      "name": "밸리다운",
+      "isNew": true,
+      "expectedAfterVersion": 1,
+      "version": 2,
+      "inputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/belly-down-armbar-v2.png",
+      "inputSHA256": "ffc6bf891d4d6d49e7a32ccb8dc852041e66f28e3deb2ea51d7be298cb4ab05b",
+      "manifestAssetSHA256": "ffc6bf891d4d6d49e7a32ccb8dc852041e66f28e3deb2ea51d7be298cb4ab05b",
+      "promptPath": "reference/technique-illustrations/set-01/production/prompts/belly-down-armbar-v2.txt",
+      "promptSHA256": "a05f967a451b534bb6c4077e81ed7cc236c9ac8e0cf0757d4bf6821352d6d303",
+      "mode": "targeted_edit",
+      "generationReferences": [
+        {
+          "role": "current_image_to_edit",
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/belly-down-armbar-v1.png",
+          "sha256": "80ceca53631c0832e8441e78909c53578f9a1015eede2a9dec532d50b4bdfdd8"
+        }
+      ],
+      "inputVersion": 2,
+      "shaMatchesManifestAsset": true,
+      "actualPromptRead": true,
+      "result": "PASS",
+      "reason": "같은 흰 커프에서 이어진 한 손목을 기존 두 파란 손이 함께 잡고, 흰 팔꿈치가 파란 힙 부근에 모인다. 파란 몸통이 바닥을 향하고 두 다리의 머리·상체 연결이 유지돼 자기 손목 그립으로 보이던 혼동이 교정됐다.",
+      "keyChecks": [
+        "한 흰 커프→한 손목의 연속 경로",
+        "같은 손목을 잡은 두 파란 손",
+        "바닥 방향 몸통·팔꿈치와 힙 연결"
+      ],
+      "regenerationGuidance": null,
+      "requires_regeneration": false,
+      "directRawImageViewed": true,
+      "technicalReview": [
+        "한 흰 커프→한 손목의 연속 경로",
+        "같은 손목을 잡은 두 파란 손",
+        "바닥 방향 몸통·팔꿈치와 힙 연결"
+      ],
+      "clothingOwnershipReview": "두 승인 캐릭터·브라운벨트·전신 도복과 사지 소속을 실제 PNG에서 검토했다. 자연스러운 비핵심 가림은 허용했고, 혼합 소속·핵심 연결의 미확인은 각 reason/keyChecks에 구분했다.",
+      "verificationLimit": "실제 교정 prompt·기존 직접 검토한 정지 자세·새 primary 프레임을 기준으로 대표 접점만 판정했다. 전체 영상·실제 피니시 효과·비핵심 가려진 말단의 모든 깊이는 검증하지 않았다."
+    },
+    {
+      "slug": "inside-heel-hook",
+      "name": "인사이드 힐훅",
+      "isNew": true,
+      "expectedAfterVersion": 2,
+      "version": 3,
+      "inputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/inside-heel-hook-v3.png",
+      "inputSHA256": "5914313b6941773c451c903f1c197c18ef08b0f759c26f43cac66e039cc6b952",
+      "manifestAssetSHA256": "5914313b6941773c451c903f1c197c18ef08b0f759c26f43cac66e039cc6b952",
+      "promptPath": "reference/technique-illustrations/set-01/production/prompts/inside-heel-hook-v3.txt",
+      "promptSHA256": "3bb9ae7a5d6c19a48de3d38da8f7522699a8f7011305e7562069df85b1566a10",
+      "mode": "targeted_edit",
+      "generationReferences": [
+        {
+          "role": "current_image_to_edit",
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/inside-heel-hook-v2.png",
+          "sha256": "c815ff0b37464d64e036d759b801d08f9df0e81c7dd7c9501dd647fdf186a67a"
+        }
+      ],
+      "inputVersion": 3,
+      "shaMatchesManifestAsset": true,
+      "actualPromptRead": true,
+      "result": "PASS",
+      "reason": "포획된 파란 뒤꿈치의 둥근 말단이 흰 훅 전완·커프 위에 분리돼 드러나고, 흰 반대손이 자기 초킹 손목에 연결된다. 기존 다리 얽힘과 전신 배역은 유지돼 일반 발목을 양손으로 감싼 모습과 구별된다.",
+      "keyChecks": [
+        "흰 전완 위에 분리 노출된 파란 뒤꿈치",
+        "흰 자기 손목 보강 연결",
+        "기존 무릎선·다리 얽힘·전신 색 배역 유지"
+      ],
+      "regenerationGuidance": null,
+      "requires_regeneration": false,
+      "directRawImageViewed": true,
+      "technicalReview": [
+        "흰 전완 위에 분리 노출된 파란 뒤꿈치",
+        "흰 자기 손목 보강 연결",
+        "기존 무릎선·다리 얽힘·전신 색 배역 유지"
+      ],
+      "clothingOwnershipReview": "두 승인 캐릭터·브라운벨트·전신 도복과 사지 소속을 실제 PNG에서 검토했다. 자연스러운 비핵심 가림은 허용했고, 혼합 소속·핵심 연결의 미확인은 각 reason/keyChecks에 구분했다.",
+      "verificationLimit": "실제 교정 prompt·기존 직접 검토한 정지 자세·새 primary 프레임을 기준으로 대표 접점만 판정했다. 전체 영상·실제 피니시 효과·비핵심 가려진 말단의 모든 깊이는 검증하지 않았다."
+    },
+    {
+      "slug": "lapel-pass",
+      "name": "라펠 패스",
+      "isNew": true,
+      "expectedAfterVersion": 2,
+      "version": 3,
+      "inputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/lapel-pass-v3.png",
+      "inputSHA256": "43def692516d15f7f18e997cd92d053767201ecea95f1e061c4a563cc27070bb",
+      "manifestAssetSHA256": "43def692516d15f7f18e997cd92d053767201ecea95f1e061c4a563cc27070bb",
+      "promptPath": "reference/technique-illustrations/set-01/production/prompts/lapel-pass-v3.txt",
+      "promptSHA256": "e2590f683fc997ac123bf11479ccd98c63617b0402bbcd7d8105755903d6aae7",
+      "mode": "targeted_edit",
+      "generationReferences": [
+        {
+          "role": "current_image_to_edit",
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/lapel-pass-v2.png",
+          "sha256": "10b0108338ec90ba521cb2117c7fc48965d3499f752157f2cfb7d055fe29559d"
+        }
+      ],
+      "inputVersion": 3,
+      "shaMatchesManifestAsset": true,
+      "actualPromptRead": true,
+      "result": "PASS",
+      "reason": "파란 재킷에서 나온 긴 라펠이 들린 파란 하체 아래와 무릎 둘레를 지나 한 흰 수신 손으로 돌아온다. 흰 수신 전완이 다리 사이에 놓이고 반대 손이 바닥에 분리돼, 앞 허리 옷감만 잡던 연결이 교정됐다.",
+      "keyChecks": [
+        "파란 재킷과 연속된 해제 라펠",
+        "다리 밑·무릎 둘레의 반환 경로",
+        "한 흰 수신 손·별도 포스팅 손"
+      ],
+      "regenerationGuidance": null,
+      "requires_regeneration": false,
+      "directRawImageViewed": true,
+      "technicalReview": [
+        "파란 재킷과 연속된 해제 라펠",
+        "다리 밑·무릎 둘레의 반환 경로",
+        "한 흰 수신 손·별도 포스팅 손"
+      ],
+      "clothingOwnershipReview": "두 승인 캐릭터·브라운벨트·전신 도복과 사지 소속을 실제 PNG에서 검토했다. 자연스러운 비핵심 가림은 허용했고, 혼합 소속·핵심 연결의 미확인은 각 reason/keyChecks에 구분했다.",
+      "verificationLimit": "실제 교정 prompt·기존 직접 검토한 정지 자세·새 primary 프레임을 기준으로 대표 접점만 판정했다. 전체 영상·실제 피니시 효과·비핵심 가려진 말단의 모든 깊이는 검증하지 않았다."
+    },
+    {
+      "slug": "squid-guard",
+      "name": "스퀴드 가드",
+      "isNew": true,
+      "expectedAfterVersion": 2,
+      "version": 3,
+      "inputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/squid-guard-v3.png",
+      "inputSHA256": "b6d987eb79d54b72a9f9b1382db25e4d6c9353159d9d5d794a2d978b6d6152c1",
+      "manifestAssetSHA256": "b6d987eb79d54b72a9f9b1382db25e4d6c9353159d9d5d794a2d978b6d6152c1",
+      "promptPath": "reference/technique-illustrations/set-01/production/prompts/squid-guard-v3.txt",
+      "promptSHA256": "450cf040759854c81a434ddcf4feb934cd5c7c4f22d569965784c40eb1caedcc",
+      "mode": "targeted_edit",
+      "generationReferences": [
+        {
+          "role": "current_image_to_edit",
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/squid-guard-v2.png",
+          "sha256": "cbb24d6ccf9375e3d650aede231a3dd6c108012ebd01f09a6be13d4a795d5ae4"
+        }
+      ],
+      "inputVersion": 3,
+      "shaMatchesManifestAsset": true,
+      "actualPromptRead": true,
+      "result": "PASS",
+      "reason": "흰 재킷에서 풀린 라펠이 선 다리를 돌아 파란 수신 손으로 이어지고, 같은 천의 긴장 구간이 파란 통제 발목·커프 아래를 받친다. 파란 언더훅과 두 번째 다리도 분리돼 일반 발의 힙 프레임과 구별된다.",
+      "keyChecks": [
+        "연속된 흰 라펠 반환",
+        "파란 통제 발목·커프 아래 라펠 지지",
+        "선 다리 언더훅·별도 두 번째 다리"
+      ],
+      "regenerationGuidance": null,
+      "requires_regeneration": false,
+      "directRawImageViewed": true,
+      "technicalReview": [
+        "연속된 흰 라펠 반환",
+        "파란 통제 발목·커프 아래 라펠 지지",
+        "선 다리 언더훅·별도 두 번째 다리"
+      ],
+      "clothingOwnershipReview": "두 승인 캐릭터·브라운벨트·전신 도복과 사지 소속을 실제 PNG에서 검토했다. 자연스러운 비핵심 가림은 허용했고, 혼합 소속·핵심 연결의 미확인은 각 reason/keyChecks에 구분했다.",
+      "verificationLimit": "실제 교정 prompt·기존 직접 검토한 정지 자세·새 primary 프레임을 기준으로 대표 접점만 판정했다. 전체 영상·실제 피니시 효과·비핵심 가려진 말단의 모든 깊이는 검증하지 않았다."
+    },
+    {
+      "slug": "pendulum-sweep",
+      "name": "펜듈럼 스윕",
+      "isNew": true,
+      "expectedAfterVersion": 2,
+      "version": 3,
+      "inputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/pendulum-sweep-v3.png",
+      "inputSHA256": "a46ecf90ba2fdf6c9f4a496e9b32b714677d5e557ef05448cdb1d662efbf4f61",
+      "manifestAssetSHA256": "a46ecf90ba2fdf6c9f4a496e9b32b714677d5e557ef05448cdb1d662efbf4f61",
+      "promptPath": "reference/technique-illustrations/set-01/production/prompts/pendulum-sweep-v3.txt",
+      "promptSHA256": "29901b58a1cfeab66bee8f1a0e3de7527b70d836c288e6eb2fc6c2349b9a8c3b",
+      "mode": "targeted_edit",
+      "generationReferences": [
+        {
+          "role": "current_image_to_edit",
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/pendulum-sweep-v2.png",
+          "sha256": "29271144e3d11f6af05e6c1a643926f6ae09387556ad070d1c40291fa1071380"
+        }
+      ],
+      "inputVersion": 3,
+      "shaMatchesManifestAsset": true,
+      "actualPromptRead": true,
+      "result": "PASS",
+      "reason": "전면 파란 손의 흰 포스팅 소매 제어를 유지하면서 반대 파란 팔이 흰 햄스트링 밑으로 들어가 뒤 허벅지 바깥에 손을 드러낸다. 열린 두 다리와 옆으로 각도 낸 힙이 유지돼 팔꿈치만 잡던 수집 기반이 교정됐다.",
+      "keyChecks": [
+        "한 흰 햄스트링 밑의 파란 팔",
+        "뒤 허벅지에 드러난 같은 파란 손",
+        "반대 소매 제어·두 개의 열린 다리 경로"
+      ],
+      "regenerationGuidance": null,
+      "requires_regeneration": false,
+      "directRawImageViewed": true,
+      "technicalReview": [
+        "한 흰 햄스트링 밑의 파란 팔",
+        "뒤 허벅지에 드러난 같은 파란 손",
+        "반대 소매 제어·두 개의 열린 다리 경로"
+      ],
+      "clothingOwnershipReview": "두 승인 캐릭터·브라운벨트·전신 도복과 사지 소속을 실제 PNG에서 검토했다. 자연스러운 비핵심 가림은 허용했고, 혼합 소속·핵심 연결의 미확인은 각 reason/keyChecks에 구분했다.",
+      "verificationLimit": "실제 교정 prompt·기존 직접 검토한 정지 자세·새 primary 프레임을 기준으로 대표 접점만 판정했다. 전체 영상·실제 피니시 효과·비핵심 가려진 말단의 모든 깊이는 검증하지 않았다."
+    },
+    {
+      "slug": "gator-roll",
+      "name": "게이터 롤",
+      "isNew": true,
+      "expectedAfterVersion": 2,
+      "version": 3,
+      "inputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/gator-roll-v3.png",
+      "inputSHA256": "ebe541f92f7aeefe4f3703b6487a0028608161e5b3500ccbbcd188c390dd0a75",
+      "manifestAssetSHA256": "ebe541f92f7aeefe4f3703b6487a0028608161e5b3500ccbbcd188c390dd0a75",
+      "promptPath": "reference/technique-illustrations/set-01/production/prompts/gator-roll-v3.txt",
+      "promptSHA256": "cbdd128b5e4871207891df3dc5a45d425edf8143d9df6413cfcb79a0caab25a3",
+      "mode": "targeted_edit",
+      "generationReferences": [
+        {
+          "role": "current_image_to_edit",
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/gator-roll-v2.png",
+          "sha256": "1c89ccf4f7f123b14971be1f176adcf8815fe5b4f765e9d742babd43af0c0238"
+        }
+      ],
+      "inputVersion": 3,
+      "shaMatchesManifestAsset": true,
+      "actualPromptRead": true,
+      "result": "PASS",
+      "reason": "파란 한 상완이 자기 머리 옆으로 접혀 머리와 함께 같은 흰 루프 안에 놓이고, 흰 손이 자기 반대 상완에 연결된다. 파란 자유 팔은 바깥으로 분리되며 옆으로 누운 어깨·몸통 지지를 유지해 머리만 감던 모양이 교정됐다.",
+      "keyChecks": [
+        "한 루프 안 파란 머리·접힌 상완",
+        "흰 자기 상완 결속",
+        "별도 자유 팔·옆으로 누운 지지"
+      ],
+      "regenerationGuidance": null,
+      "requires_regeneration": false,
+      "directRawImageViewed": true,
+      "technicalReview": [
+        "한 루프 안 파란 머리·접힌 상완",
+        "흰 자기 상완 결속",
+        "별도 자유 팔·옆으로 누운 지지"
+      ],
+      "clothingOwnershipReview": "두 승인 캐릭터·브라운벨트·전신 도복과 사지 소속을 실제 PNG에서 검토했다. 자연스러운 비핵심 가림은 허용했고, 혼합 소속·핵심 연결의 미확인은 각 reason/keyChecks에 구분했다.",
+      "verificationLimit": "실제 교정 prompt·기존 직접 검토한 정지 자세·새 primary 프레임을 기준으로 대표 접점만 판정했다. 전체 영상·실제 피니시 효과·비핵심 가려진 말단의 모든 깊이는 검증하지 않았다."
+    },
+    {
+      "slug": "100-percent-sweep",
+      "name": "100퍼스윕",
+      "isNew": true,
+      "expectedAfterVersion": 2,
+      "version": 3,
+      "inputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/100-percent-sweep-v3.png",
+      "inputSHA256": "17597e621fd344fc076e922ee0a23c2d6618d9df657f15ddfae16994a62e4111",
+      "manifestAssetSHA256": "17597e621fd344fc076e922ee0a23c2d6618d9df657f15ddfae16994a62e4111",
+      "promptPath": "reference/technique-illustrations/set-01/production/prompts/100-percent-sweep-v3.txt",
+      "promptSHA256": "002c4d93f3dfbade5f7bca22c4cb3b9207f34c9e782c9d7203d57d62cf04626b",
+      "mode": "targeted_edit",
+      "generationReferences": [
+        {
+          "role": "current_image_to_edit",
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/100-percent-sweep-v2.png",
+          "sha256": "5b1d7f4765a89c54880482a00fe6fc5cf8c9faab0a60270576fc4435efbf04a0"
+        }
+      ],
+      "inputVersion": 3,
+      "shaMatchesManifestAsset": true,
+      "actualPromptRead": true,
+      "result": "PASS",
+      "reason": "파란 머리를 흰 겨드랑이에 둔 상태에서 반대 흰 팔이 파란 상완 밑을 지나 자기 초킹 손목으로 연결된다. 정확히 두 흰 손의 자기 팔 결속과 분리된 파란 커프가 드러나 기존 소매·손 겹침이 교정됐다.",
+      "keyChecks": [
+        "흰 겨드랑이 안 파란 머리",
+        "파란 상완 밑의 반대 흰 팔",
+        "흰 자기 손목 결속·가까운 앉은 힙"
+      ],
+      "regenerationGuidance": null,
+      "requires_regeneration": false,
+      "directRawImageViewed": true,
+      "technicalReview": [
+        "흰 겨드랑이 안 파란 머리",
+        "파란 상완 밑의 반대 흰 팔",
+        "흰 자기 손목 결속·가까운 앉은 힙"
+      ],
+      "clothingOwnershipReview": "두 승인 캐릭터·브라운벨트·전신 도복과 사지 소속을 실제 PNG에서 검토했다. 자연스러운 비핵심 가림은 허용했고, 혼합 소속·핵심 연결의 미확인은 각 reason/keyChecks에 구분했다.",
+      "verificationLimit": "실제 교정 prompt·기존 직접 검토한 정지 자세·새 primary 프레임을 기준으로 대표 접점만 판정했다. 전체 영상·실제 피니시 효과·비핵심 가려진 말단의 모든 깊이는 검증하지 않았다."
+    },
+    {
+      "slug": "x-guard-sweep",
+      "name": "엑스가드 스윕",
+      "isNew": true,
+      "expectedAfterVersion": 1,
+      "version": 2,
+      "inputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/x-guard-sweep-v2.png",
+      "inputSHA256": "cab1a3b6b8a3b93a9b84d0f98a415f2572b204f0536e7150853d4b0a45def43f",
+      "manifestAssetSHA256": "cab1a3b6b8a3b93a9b84d0f98a415f2572b204f0536e7150853d4b0a45def43f",
+      "promptPath": "reference/technique-illustrations/set-01/production/prompts/x-guard-sweep-v2.txt",
+      "promptSHA256": "364cbe5b2086f848a78a8b82ea8e6a319e7cfa800926831a6af5b38432ccdf96",
+      "mode": "targeted_edit",
+      "generationReferences": [
+        {
+          "role": "current_image_to_edit",
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/x-guard-sweep-v1.png",
+          "sha256": "21f578cb868ae586b49bfc014e6ec2a4fa5fcf0b5f336b965f2f18168981f556"
+        }
+      ],
+      "inputVersion": 2,
+      "shaMatchesManifestAsset": true,
+      "actualPromptRead": true,
+      "result": "MODIFICATION_REQUIRED",
+      "reason": "포획해야 할 흰 다리가 여전히 파란 어깨·상체에서 떨어져 흰 힙 옆으로 접혀 있다. 파란 두 훅의 다른 다리 제어는 남아 있지만, 별도 흰 다리의 어깨 수집이 구현되지 않아 X 가드의 출발 구조가 계속 빠져 있다.",
+      "keyChecks": [
+        "다른 흰 다리의 파란 훅 제어",
+        "어깨에서 떨어진 별도 흰 다리",
+        "파란 어깨 수집 연결 미교정"
+      ],
+      "regenerationGuidance": "Use the already verified Chewjitsu conventional-X frame and neutral portraits for a pose-first rebuild. Collect ONE WHITE leg at BLUE's shoulder and upper-body connection; place BOTH BLUE feet as opposed upper/lower hooks on the OTHER WHITE leg. Keep the shoulder-supported white leg distinct from those two blue hook legs. Do not fold the collected white foot up beside white's own hip or substitute single-leg open guard.",
+      "requires_regeneration": true,
+      "directRawImageViewed": true,
+      "technicalReview": [
+        "다른 흰 다리의 파란 훅 제어",
+        "어깨에서 떨어진 별도 흰 다리",
+        "파란 어깨 수집 연결 미교정"
+      ],
+      "clothingOwnershipReview": "두 승인 캐릭터·브라운벨트·전신 도복과 사지 소속을 실제 PNG에서 검토했다. 자연스러운 비핵심 가림은 허용했고, 혼합 소속·핵심 연결의 미확인은 각 reason/keyChecks에 구분했다.",
+      "verificationLimit": "실제 교정 prompt·기존 직접 검토한 정지 자세·새 primary 프레임을 기준으로 대표 접점만 판정했다. 전체 영상·실제 피니시 효과·비핵심 가려진 말단의 모든 깊이는 검증하지 않았다."
+    },
+    {
+      "slug": "buggy-choke",
+      "name": "버기 초크",
+      "isNew": true,
+      "expectedAfterVersion": 2,
+      "version": 3,
+      "inputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/buggy-choke-v3.png",
+      "inputSHA256": "301b8da24fe2b3c173832a14cb94fb3830ca7ccdf4ba2ab9ce2eb5aca7e9def4",
+      "manifestAssetSHA256": "301b8da24fe2b3c173832a14cb94fb3830ca7ccdf4ba2ab9ce2eb5aca7e9def4",
+      "promptPath": "reference/technique-illustrations/set-01/production/prompts/buggy-choke-v3.txt",
+      "promptSHA256": "23b1b9b991e61cc92125c139cdc8d0b63d3a4779df6eb646dbfb6900c1ca8906",
+      "mode": "targeted_edit",
+      "generationReferences": [
+        {
+          "role": "current_image_to_edit",
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/buggy-choke-v2.png",
+          "sha256": "7ce3715dd11819302eb5a8470e904881258642f219c42b539fb7bd754df09205"
+        }
+      ],
+      "inputVersion": 3,
+      "shaMatchesManifestAsset": true,
+      "actualPromptRead": true,
+      "result": "MODIFICATION_REQUIRED",
+      "reason": "아래 파란 인물 뒤로 올라온 두 무릎·바지 부분이 여전히 흰색이고, 파란 팔은 자기 깃 부근에서 끝난다. 파란 자기 다리를 통과해 흰 머리·상완을 둘러야 하는 닫힌 버기 연결과 하체 소속이 교정되지 않았다.",
+      "keyChecks": [
+        "위 흰 사이드·아래 파란 배치",
+        "아래 raised-leg 영역의 흰 바지 잔존",
+        "파란 own-arm/own-leg 폐쇄 루프 미구현"
+      ],
+      "regenerationGuidance": "Rebuild the bottom BLUE arm-and-own-leg closure from the existing verified Ruotolo pose, using neutral portraits only for style. All raised BOTTOM knees, thighs and cuffs must be BLUE from the BLUE pelvis. Thread ONE BLUE arm through the SAME bent BLUE leg and close the loop around WHITE's head-and-upper-arm region. Keep the separate top WHITE base as exactly two WHITE legs. A blue self-collar fist and four apparent white trouser routes do not pass.",
+      "requires_regeneration": true,
+      "directRawImageViewed": true,
+      "technicalReview": [
+        "위 흰 사이드·아래 파란 배치",
+        "아래 raised-leg 영역의 흰 바지 잔존",
+        "파란 own-arm/own-leg 폐쇄 루프 미구현"
+      ],
+      "clothingOwnershipReview": "두 승인 캐릭터·브라운벨트·전신 도복과 사지 소속을 실제 PNG에서 검토했다. 자연스러운 비핵심 가림은 허용했고, 혼합 소속·핵심 연결의 미확인은 각 reason/keyChecks에 구분했다.",
+      "verificationLimit": "실제 교정 prompt·기존 직접 검토한 정지 자세·새 primary 프레임을 기준으로 대표 접점만 판정했다. 전체 영상·실제 피니시 효과·비핵심 가려진 말단의 모든 깊이는 검증하지 않았다."
+    },
+    {
+      "slug": "gogoplata",
+      "name": "고고플라타",
+      "isNew": true,
+      "expectedAfterVersion": 1,
+      "version": 2,
+      "inputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/gogoplata-v2.png",
+      "inputSHA256": "dd070f15a95417985c7b65fa5dcc00269caf5c13d7f52407bca7b4207765883a",
+      "manifestAssetSHA256": "dd070f15a95417985c7b65fa5dcc00269caf5c13d7f52407bca7b4207765883a",
+      "promptPath": "reference/technique-illustrations/set-01/production/prompts/gogoplata-v2.txt",
+      "promptSHA256": "498d51c71f2207ec4b2dd9f8409a95dfa4eb29b65198339d859c98d01432a920",
+      "mode": "pose_first_regeneration",
+      "generationReferences": [
+        {
+          "role": "primary_pose",
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/correction04-gogoplata-mccaghren-02m45s.png",
+          "sha256": "1939134d43413b91b7e56d7fb3c3039286475679b1d9f828673ccc477a9a8c88",
+          "sourceURL": "https://www.youtube.com/watch?v=wn39-wrfsbs",
+          "publicFrameURL": "https://www.youtube.com/watch?v=wn39-wrfsbs&t=165s",
+          "timestamp": "02:45",
+          "observedVideoTimeSeconds": 165.73976,
+          "sourceAuthor": "Brandon Mccaghren, demonstrated on Bernardo Faria BJJ Fanatics",
+          "sourceType": "public_direct_instructor_demonstration",
+          "captureMethod": "CUA public player screenshot, video-only native crop; no external CDP/Playwright client",
+          "directViewImageConfirmed": true,
+          "poseVerifiedForSelectedContacts": true,
+          "keyChecks": [
+            "중간 정강이가 턱 아래 목 앞에 연결됨",
+            "같은 자기 발의 손 제어",
+            "두 다리·팔의 전신 색 소속 유지"
+          ],
+          "limitations": "선택된 고각 시범에서 앞목 일부는 머리·전완에 가린다. 같은 시범의 02:26~02:37 설명과 두 정지 시점으로 경로를 대조했으며 전체 영상·피니시 효과는 검증하지 않았다."
+        },
+        {
+          "role": "neutral_character_style_only",
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/style-guides/neutral-portraits-v1.png",
+          "sha256": "861ad8775f2697dc451d5f764a49655e5c78ddb2ada79d3f44a6f2905fa1ba16",
+          "directViewImageConfirmed": true
+        }
+      ],
+      "inputVersion": 2,
+      "shaMatchesManifestAsset": true,
+      "actualPromptRead": true,
+      "result": "KEY_CONTACT_UNCONFIRMED",
+      "reason": "턱 아래 파란 정강이와 자기 발·발가락 제어는 새로 구현됐다. 다만 반대 가드 다리가 흰 힙 뒤를 지나 올라오는 경로에서 흰 커프·발이 함께 보여, 원본처럼 아래 공격자의 별도 파란 다리인지 위 인물의 흰 다리인지 구별하기 어렵다. 이 핵심 하체 소속은 새 시점으로 명확히 해야 한다.",
+      "keyChecks": [
+        "턱 아래 목 앞의 파란 정강이",
+        "같은 자기 발·발가락의 파란 손 제어",
+        "반대 가드 다리와 올라온 흰 커프·발 소속 미확인"
+      ],
+      "regenerationGuidance": "Preserve the new under-chin BLUE shin and BLUE own-toes grip exactly. Clarify ONLY the second BLUE guard leg behind WHITE's hip: trace its thigh, cuff and bare foot continuously from the bottom BLUE pelvis, using BLUE trousers throughout. Keep the WHITE partner's two kneeling base legs separate and entirely WHITE. Do not add a third blue foot or recolor a real white base leg. Open that hip-side overlap enough that the raised far foot's ownership is readable.",
+      "requires_regeneration": true,
+      "directRawImageViewed": true,
+      "technicalReview": [
+        "턱 아래 목 앞의 파란 정강이",
+        "같은 자기 발·발가락의 파란 손 제어",
+        "반대 가드 다리와 올라온 흰 커프·발 소속 미확인"
+      ],
+      "clothingOwnershipReview": "두 승인 캐릭터·브라운벨트·전신 도복과 사지 소속을 실제 PNG에서 검토했다. 자연스러운 비핵심 가림은 허용했고, 혼합 소속·핵심 연결의 미확인은 각 reason/keyChecks에 구분했다.",
+      "verificationLimit": "실제 교정 prompt·기존 직접 검토한 정지 자세·새 primary 프레임을 기준으로 대표 접점만 판정했다. 전체 영상·실제 피니시 효과·비핵심 가려진 말단의 모든 깊이는 검증하지 않았다."
+    },
+    {
+      "slug": "peruvian-necktie",
+      "name": "페루비안 넥타이",
+      "isNew": true,
+      "expectedAfterVersion": 1,
+      "version": 2,
+      "inputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/peruvian-necktie-v2.png",
+      "inputSHA256": "2bf6e5d334d44b4cc84760905426c98ddae3b7500eda3d096ac21242e1ae1ce6",
+      "manifestAssetSHA256": "2bf6e5d334d44b4cc84760905426c98ddae3b7500eda3d096ac21242e1ae1ce6",
+      "promptPath": "reference/technique-illustrations/set-01/production/prompts/peruvian-necktie-v2.txt",
+      "promptSHA256": "3445edec1e4b23d4a739c2fc03d84421ea572d4460b652f2dbe8dd612f42144a",
+      "mode": "pose_first_regeneration",
+      "generationReferences": [
+        {
+          "role": "primary_pose",
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/correction04-peruvian-keenan-05m21s.png",
+          "sha256": "a880b9fa8e6d81ea2dd08a88c8a1cbdf3e9e7348547e8c7c9a4c8391de6ab9a2",
+          "sourceURL": "https://www.youtube.com/watch?v=kxCCrUACAwM",
+          "publicFrameURL": "https://www.youtube.com/watch?v=kxCCrUACAwM&t=321s",
+          "timestamp": "05:21",
+          "observedVideoTimeSeconds": 321.718506,
+          "sourceAuthor": "Keenan Cornelius, own official channel",
+          "sourceType": "public_direct_instructor_demonstration",
+          "captureMethod": "CUA public player screenshot, video-only native crop; no external CDP/Playwright client",
+          "directViewImageConfirmed": true,
+          "poseVerifiedForSelectedContacts": true,
+          "keyChecks": [
+            "머리·한 상완의 연결된 전면 잠금",
+            "머리선 뒤를 지나는 한 다리",
+            "상부 등을 지나는 별도의 두 번째 다리"
+          ],
+          "limitations": "공식 시범의 05:21 정지 자세와 설명을 확인했다. 목 아래 손끝 일부는 가리므로 새 그림에서 같은 결속의 경계를 분리해야 한다. 실제 압박 효과나 통증·성공은 평가하지 않는다."
+        },
+        {
+          "role": "neutral_character_style_only",
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/style-guides/neutral-portraits-v1.png",
+          "sha256": "861ad8775f2697dc451d5f764a49655e5c78ddb2ada79d3f44a6f2905fa1ba16",
+          "directViewImageConfirmed": true
+        }
+      ],
+      "inputVersion": 2,
+      "shaMatchesManifestAsset": true,
+      "actualPromptRead": true,
+      "result": "KEY_CONTACT_UNCONFIRMED",
+      "reason": "머리선과 상부 등을 지나는 두 흰 다리 및 앉은 몸통은 실제 시범에 가깝게 교정됐다. 그러나 흰 두 손의 연결된 전면 헤드앤암 그립은 머리·앞다리 뒤에 묻혀 보이지 않고, 아래에 드러난 맞잡은 손은 파란 소매에 이어져 초킹 주체의 결속을 확정하기 어렵다.",
+      "keyChecks": [
+        "머리선·상부 등의 서로 다른 흰 두 다리",
+        "흰 앉은 힙과 파란 터틀",
+        "흰 손-손 전면 잠금 경로 미확인"
+      ],
+      "regenerationGuidance": "Preserve the current WHITE two-leg necktie contacts and seated hip position. Expose ONLY the WHITE attacker's two joined hands beneath the BLUE neck, enclosing the blue head and ONE upper arm. Show WHITE cuffs continuing into those two hands at the same shallow front head-and-arm junction. Keep the BLUE defensive hands separate below, and do not mistake the blue hands clasping each other for the choking grip. Shift the grip-side overlap minimally without moving the legs or adding hands.",
+      "requires_regeneration": true,
+      "directRawImageViewed": true,
+      "technicalReview": [
+        "머리선·상부 등의 서로 다른 흰 두 다리",
+        "흰 앉은 힙과 파란 터틀",
+        "흰 손-손 전면 잠금 경로 미확인"
+      ],
+      "clothingOwnershipReview": "두 승인 캐릭터·브라운벨트·전신 도복과 사지 소속을 실제 PNG에서 검토했다. 자연스러운 비핵심 가림은 허용했고, 혼합 소속·핵심 연결의 미확인은 각 reason/keyChecks에 구분했다.",
+      "verificationLimit": "실제 교정 prompt·기존 직접 검토한 정지 자세·새 primary 프레임을 기준으로 대표 접점만 판정했다. 전체 영상·실제 피니시 효과·비핵심 가려진 말단의 모든 깊이는 검증하지 않았다."
+    },
+    {
+      "slug": "twister",
+      "name": "트위스터",
+      "isNew": true,
+      "expectedAfterVersion": 1,
+      "version": 2,
+      "inputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/twister-v2.png",
+      "inputSHA256": "6374163c4210bb960646f42c56fe02acf73d8f2ef9ff38c26ff2103a4088f22e",
+      "manifestAssetSHA256": "6374163c4210bb960646f42c56fe02acf73d8f2ef9ff38c26ff2103a4088f22e",
+      "promptPath": "reference/technique-illustrations/set-01/production/prompts/twister-v2.txt",
+      "promptSHA256": "ae8d094b10de6c5b3ae5ae432a29a3bd3edcd429568a2ac69a5c85045d3dc183",
+      "mode": "pose_first_regeneration",
+      "generationReferences": [
+        {
+          "role": "primary_pose",
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/correction04-twister-eddie-03m23s.png",
+          "sha256": "2f337429168614070b56f366cc73d87a36cb86da005bcbd2748e4dfa0c6f5c25",
+          "sourceURL": "https://www.youtube.com/watch?v=rHDUl07-2HA",
+          "publicFrameURL": "https://www.youtube.com/watch?v=rHDUl07-2HA&t=203s",
+          "timestamp": "03:23",
+          "observedVideoTimeSeconds": 203.43672,
+          "sourceAuthor": "Eddie Bravo direct demonstration, published by JiuJitsuMania",
+          "sourceType": "public_direct_instructor_demonstration",
+          "captureMethod": "CUA public player screenshot, video-only native crop; no external CDP/Playwright client",
+          "directViewImageConfirmed": true,
+          "poseVerifiedForSelectedContacts": true,
+          "keyChecks": [
+            "한 다리의 트럭 제어",
+            "분리된 상대 팔이 공격자 머리 너머로 이동",
+            "자기 두 손의 상대 머리 제어"
+          ],
+          "limitations": "직접 강의의 02:54~03:23 전통 트위스터 비교 구간에서 팔 분리·머리 제어를 확인했다. 제목은 Swedish Twister지만 선택 프레임은 강사가 명시적으로 비교한 traditional branch다. 생성물은 압박 전 중립 정렬로 제한한다."
+        },
+        {
+          "role": "neutral_character_style_only",
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/style-guides/neutral-portraits-v1.png",
+          "sha256": "861ad8775f2697dc451d5f764a49655e5c78ddb2ada79d3f44a6f2905fa1ba16",
+          "directViewImageConfirmed": true
+        }
+      ],
+      "inputVersion": 2,
+      "shaMatchesManifestAsset": true,
+      "actualPromptRead": true,
+      "result": "PASS",
+      "reason": "파란 두 다리의 트럭 제어가 한 흰 다리에 연결되고, 흰 한 팔이 파란 머리 너머로 분리된다. 파란 두 손이 흰 머리를 실제로 모으고 기존 시트벨트·깃 제어가 제거돼 강사의 전통 트위스터 비교 구간과 핵심 접점이 대응한다.",
+      "keyChecks": [
+        "한 흰 다리의 파란 트럭 제어",
+        "파란 머리 너머로 분리된 흰 팔",
+        "파란 두 손의 흰 머리 제어·중립 정렬"
+      ],
+      "regenerationGuidance": null,
+      "requires_regeneration": false,
+      "directRawImageViewed": true,
+      "technicalReview": [
+        "한 흰 다리의 파란 트럭 제어",
+        "파란 머리 너머로 분리된 흰 팔",
+        "파란 두 손의 흰 머리 제어·중립 정렬"
+      ],
+      "clothingOwnershipReview": "두 승인 캐릭터·브라운벨트·전신 도복과 사지 소속을 실제 PNG에서 검토했다. 자연스러운 비핵심 가림은 허용했고, 혼합 소속·핵심 연결의 미확인은 각 reason/keyChecks에 구분했다.",
+      "verificationLimit": "실제 교정 prompt·기존 직접 검토한 정지 자세·새 primary 프레임을 기준으로 대표 접점만 판정했다. 전체 영상·실제 피니시 효과·비핵심 가려진 말단의 모든 깊이는 검증하지 않았다."
+    }
+  ],
+  "resultCounts": {
+    "PASS": 14,
+    "MODIFICATION_REQUIRED": 3,
+    "KEY_CONTACT_UNCONFIRMED": 2
+  },
+  "requiresRegeneration": [
+    "loop-choke",
+    "x-guard-sweep",
+    "buggy-choke",
+    "gogoplata",
+    "peruvian-necktie"
+  ],
+  "registryModified": false,
+  "publicAssetsModified": false,
+  "uiOrTaskHistoryModified": false,
+  "pending": [],
+  "inputVerification": "All 19 recorded original PNG and prompt SHA256 values are checked against actual files; registry matching is revision-specific and PASS promotion must still compare the current asset SHA.",
+  "completedAt": "2026-11-10T13:38:28.718Z",
+  "revisionStatus": "complete",
+  "revisionScope": {
+    "expectedCount": 4,
+    "slugs": [
+      "x-guard-sweep",
+      "buggy-choke",
+      "gogoplata",
+      "peruvian-necktie"
+    ],
+    "preservedOriginalReviews": 19
+  },
+  "revisionReviewedCount": 4,
+  "revisionReviews": [
+    {
+      "slug": "x-guard-sweep",
+      "name": "엑스가드 스윕",
+      "revisionBatch": "final-four-correction",
+      "inputVersion": 3,
+      "previousVersion": 2,
+      "inputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/x-guard-sweep-v3.png",
+      "inputSHA256": "1fecdc4706419a6c349d749709cf0200a17d039db8fde0d21cb4482b92c10466",
+      "manifestAssetSHA256": "1fecdc4706419a6c349d749709cf0200a17d039db8fde0d21cb4482b92c10466",
+      "shaMatchesManifestAsset": true,
+      "promptPath": "reference/technique-illustrations/set-01/production/prompts/x-guard-sweep-v3.txt",
+      "promptSHA256": "1679657c73971993b4714411e45d895d8331a1a1bb265acf5b36b15be6e79ea4",
+      "actualPromptRead": true,
+      "directRawImageViewed": true,
+      "correctionSpec": "docs/handovers/task-058-final-four-correction-jobs.json",
+      "generationReferences": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/regen-x-guard-chewjitsu-00m58s.jpg",
+          "sha256": "371c30901270fac1ac12bfb2c626065871fb3276730787ab126a2bb0e508edd8",
+          "role": "primary_pose",
+          "sourceURL": "https://www.youtube.com/watch?v=503YYSO8tM0",
+          "timestamp": "00:58",
+          "sourceAuthor": "Chewjitsu",
+          "directViewImageConfirmed": true,
+          "inspectionReusedFrom": "task-058-regeneration-pose-references.json and direct view in correction-jobs-04 preparation",
+          "limitation": "Selected static established-X frame supports the starting shoulder collection and opposed hooks; it is not proof of a completed dynamic sweep."
+        },
+        {
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/style-guides/neutral-portraits-v1.png",
+          "sha256": "861ad8775f2697dc451d5f764a49655e5c78ddb2ada79d3f44a6f2905fa1ba16",
+          "role": "neutral_character_style_only",
+          "directViewImageConfirmed": true
+        }
+      ],
+      "result": "PASS",
+      "reason": "한 흰 다리가 파란 어깨·상체에 수집되고 반대 흰 다리에는 서로 다른 높이의 파란 두 훅이 연결된다. 수집한 다리를 자기 힙 쪽으로 접던 오류가 교정돼 검증된 Chewjitsu의 conventional-X 출발 구조가 읽힌다.",
+      "keyChecks": [
+        "흰 한 다리의 파란 어깨 수집",
+        "다른 흰 다리의 상·하 두 파란 훅",
+        "포획 다리와 두 훅 다리의 별도 소속"
+      ],
+      "regenerationGuidance": null,
+      "requires_regeneration": false,
+      "technicalReview": [
+        "흰 한 다리의 파란 어깨 수집",
+        "다른 흰 다리의 상·하 두 파란 훅",
+        "포획 다리와 두 훅 다리의 별도 소속"
+      ],
+      "clothingOwnershipReview": "두 승인 캐릭터의 전신 흰/파란 도복·브라운벨트·사지 소속을 직접 확인했다. 자연스러운 비핵심 가림은 허용했다.",
+      "verificationLimit": "실제 새 PNG·저장된 prompt와 이미 직접 확인한 primary 또는 이전 입력을 대조한 정지 자세 판정이다. 전체 동작·실제 피니시 효과와 가린 비핵심 말단 모두를 검증한 것은 아니다.",
+      "registryModified": false
+    },
+    {
+      "slug": "buggy-choke",
+      "name": "버기 초크",
+      "revisionBatch": "final-four-correction",
+      "inputVersion": 4,
+      "previousVersion": 3,
+      "inputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/buggy-choke-v4.png",
+      "inputSHA256": "7a220f8ff3782342be3754e3c7966af844c443e021d7d373d5b8b393eb5d28b2",
+      "manifestAssetSHA256": "7a220f8ff3782342be3754e3c7966af844c443e021d7d373d5b8b393eb5d28b2",
+      "shaMatchesManifestAsset": true,
+      "promptPath": "reference/technique-illustrations/set-01/production/prompts/buggy-choke-v4.txt",
+      "promptSHA256": "1aea10679c651a0ea4fedba3a1f5b3c7824e2a90769b55a8098607c349dd8b72",
+      "actualPromptRead": true,
+      "directRawImageViewed": true,
+      "correctionSpec": "docs/handovers/task-058-final-four-correction-jobs.json",
+      "generationReferences": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/buggy-choke-ruotolo-00m25s.jpg",
+          "sha256": "6a795195f55665877f3ca8ae8025c35b527b5074d4ab2bcca16deb625fd0a35a",
+          "role": "primary_pose",
+          "sourceURL": "https://www.youtube.com/watch?v=yIbU62-LQqQ",
+          "timestamp": "00:25",
+          "sourceAuthor": "Ruotolo Brothers, BJJ Fanatics direct demonstration",
+          "directViewImageConfirmed": true,
+          "inspectionReusedFrom": "task-058-primary-pose-references.json and direct view in correction-jobs-04 preparation",
+          "limitation": "Selected compact side-control frame has naturally overlapping arm/leg contacts. It supports the chosen body arrangement; do not claim all terminal grip depth or finishing effect is visible."
+        },
+        {
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/style-guides/neutral-portraits-v1.png",
+          "sha256": "861ad8775f2697dc451d5f764a49655e5c78ddb2ada79d3f44a6f2905fa1ba16",
+          "role": "neutral_character_style_only",
+          "directViewImageConfirmed": true
+        }
+      ],
+      "result": "KEY_CONTACT_UNCONFIRMED",
+      "reason": "아래에서 들린 두 무릎·바지 영역이 파란색으로 교정돼 기존 흰 하체 혼합은 해결됐다. 다만 흰 전완과 파란 앞쪽 접힌 옷감 아래에서 파란 팔이 어느 자기 다리를 통과해 닫히는지 구별되지 않아, 버기의 핵심 own-arm/own-leg 폐쇄 연결은 확정하기 어렵다. 비핵심 가린 말단의 노출을 요구하는 판정은 아니다.",
+      "keyChecks": [
+        "아래 두 raised-knee 영역의 파란색 교정",
+        "위 흰 두 다리의 독립 베이스",
+        "한 자기 다리를 통과한 파란 팔의 폐쇄 연결 미확인"
+      ],
+      "regenerationGuidance": "Preserve the corrected BLUE raised-knee ownership and the current perpendicular side-control layout. Clarify ONLY the defining junction where one existing BLUE arm passes through ONE existing bent BLUE own leg and closes around WHITE's head-and-upper-arm unit. Distinguish that BLUE forearm from the neighboring BLUE thigh/cuff with a small contour gap or local angle adjustment; do not add a limb, expose unrelated hidden contacts, or replace the junction with a self-collar fist. Consider an independent read of this exact v4 before commissioning another full pose regeneration.",
+      "requires_regeneration": true,
+      "technicalReview": [
+        "아래 두 raised-knee 영역의 파란색 교정",
+        "위 흰 두 다리의 독립 베이스",
+        "한 자기 다리를 통과한 파란 팔의 폐쇄 연결 미확인"
+      ],
+      "clothingOwnershipReview": "기존 아래 인물의 흰 하체 혼합은 파란색으로 교정됐다. 나머지 두 인물의 전신 도복·브라운벨트·추가 사지 여부를 확인했다. 남은 판정은 색이 아닌 기술 핵심 연결에 한정한다.",
+      "verificationLimit": "실제 새 PNG·저장된 prompt와 이미 직접 확인한 primary 또는 이전 입력을 대조한 정지 자세 판정이다. 전체 동작·실제 피니시 효과와 가린 비핵심 말단 모두를 검증한 것은 아니다.",
+      "registryModified": false
+    },
+    {
+      "slug": "gogoplata",
+      "name": "고고플라타",
+      "revisionBatch": "final-four-correction",
+      "inputVersion": 3,
+      "previousVersion": 2,
+      "inputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/gogoplata-v3.png",
+      "inputSHA256": "3bdc0ddad251d7f0b3dd6a16fe8730cde5104f8ecc3c39a7446bb64824fe56a9",
+      "manifestAssetSHA256": "3bdc0ddad251d7f0b3dd6a16fe8730cde5104f8ecc3c39a7446bb64824fe56a9",
+      "shaMatchesManifestAsset": true,
+      "promptPath": "reference/technique-illustrations/set-01/production/prompts/gogoplata-v3.txt",
+      "promptSHA256": "2bf37bf9f47fca03bacf1291098046c163a1f0126543056dc9309f9d1297deb4",
+      "actualPromptRead": true,
+      "directRawImageViewed": true,
+      "correctionSpec": "docs/handovers/task-058-final-four-correction-jobs.json",
+      "generationReferences": [
+        {
+          "role": "current_image_to_edit",
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/gogoplata-v2.png",
+          "sha256": "dd070f15a95417985c7b65fa5dcc00269caf5c13d7f52407bca7b4207765883a",
+          "directViewImageConfirmed": true,
+          "inspectionReusedFrom": "task-058-image-review-regeneration-04.json exact inputPath/inputSHA256"
+        }
+      ],
+      "result": "PASS",
+      "reason": "흰 힙 뒤로 나온 두 번째 가드 다리의 커프가 파란색으로 바뀌어 아래 파란 인물의 하체 소속이 구별된다. 기존 턱 아래 파란 정강이와 자기 발가락 제어는 유지되고 흰 베이스 다리는 흰색으로 남았다.",
+      "keyChecks": [
+        "반대 가드 다리의 파란 커프 소속",
+        "턱 아래 파란 정강이 유지",
+        "자기 발 제어·별도 흰 베이스 보존"
+      ],
+      "regenerationGuidance": null,
+      "requires_regeneration": false,
+      "technicalReview": [
+        "반대 가드 다리의 파란 커프 소속",
+        "턱 아래 파란 정강이 유지",
+        "자기 발 제어·별도 흰 베이스 보존"
+      ],
+      "clothingOwnershipReview": "두 승인 캐릭터의 전신 흰/파란 도복·브라운벨트·사지 소속을 직접 확인했다. 자연스러운 비핵심 가림은 허용했다.",
+      "verificationLimit": "실제 새 PNG·저장된 prompt와 이미 직접 확인한 primary 또는 이전 입력을 대조한 정지 자세 판정이다. 전체 동작·실제 피니시 효과와 가린 비핵심 말단 모두를 검증한 것은 아니다.",
+      "registryModified": false
+    },
+    {
+      "slug": "peruvian-necktie",
+      "name": "페루비안 넥타이",
+      "revisionBatch": "final-four-correction",
+      "inputVersion": 3,
+      "previousVersion": 2,
+      "inputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/peruvian-necktie-v3.png",
+      "inputSHA256": "a63e823bf26dc3ecf047a75b4ca3521f612c38eb94e52f24281161ee5f083bf0",
+      "manifestAssetSHA256": "a63e823bf26dc3ecf047a75b4ca3521f612c38eb94e52f24281161ee5f083bf0",
+      "shaMatchesManifestAsset": true,
+      "promptPath": "reference/technique-illustrations/set-01/production/prompts/peruvian-necktie-v3.txt",
+      "promptSHA256": "092cd39dc51c7221f3bae2c97d4f4f9bebc30ef8a0c976b2607796a8edd08b87",
+      "actualPromptRead": true,
+      "directRawImageViewed": true,
+      "correctionSpec": "docs/handovers/task-058-final-four-correction-jobs.json",
+      "generationReferences": [
+        {
+          "role": "current_image_to_edit",
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/peruvian-necktie-v2.png",
+          "sha256": "2bf6e5d334d44b4cc84760905426c98ddae3b7500eda3d096ac21242e1ae1ce6",
+          "directViewImageConfirmed": true,
+          "inspectionReusedFrom": "task-058-image-review-regeneration-04.json exact inputPath/inputSHA256"
+        }
+      ],
+      "result": "PASS",
+      "reason": "흰 공격자의 두 커프와 손-손 결속이 파란 목 아래 전면으로 드러나고, 아래의 파란 방어 손과 별도로 구별된다. 머리선·상부 등에 놓인 흰 두 다리와 기존 앉은 자세를 유지해 지정한 핵심 결속만 보완됐다.",
+      "keyChecks": [
+        "연속된 흰 커프 두 개와 전면 손 결속",
+        "파란 방어 손의 별도 소속",
+        "두 흰 다리 접점·앉은 자세 보존"
+      ],
+      "regenerationGuidance": null,
+      "requires_regeneration": false,
+      "technicalReview": [
+        "연속된 흰 커프 두 개와 전면 손 결속",
+        "파란 방어 손의 별도 소속",
+        "두 흰 다리 접점·앉은 자세 보존"
+      ],
+      "clothingOwnershipReview": "두 승인 캐릭터의 전신 흰/파란 도복·브라운벨트·사지 소속을 직접 확인했다. 자연스러운 비핵심 가림은 허용했다.",
+      "verificationLimit": "실제 새 PNG·저장된 prompt와 이미 직접 확인한 primary 또는 이전 입력을 대조한 정지 자세 판정이다. 전체 동작·실제 피니시 효과와 가린 비핵심 말단 모두를 검증한 것은 아니다.",
+      "registryModified": false
+    }
+  ],
+  "revisionResultCounts": {
+    "PASS": 3,
+    "KEY_CONTACT_UNCONFIRMED": 1
+  },
+  "revisionRequiresRegeneration": [
+    "buggy-choke"
+  ],
+  "revisionCompletedAt": "2026-11-10T14:15:42.808Z"
+}

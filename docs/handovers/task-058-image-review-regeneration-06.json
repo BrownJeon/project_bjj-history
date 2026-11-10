@@ -1,0 +1,160 @@
+{
+  "schema_version": 1,
+  "task_id": "task-058",
+  "review_batch": "regeneration-06",
+  "status": "review_complete_v4_pass",
+  "execution_tool": "Codex; built-in view_image",
+  "reviewer_role": "gym-master",
+  "updatedAt": "2026-11-10T14:14:28.318Z",
+  "is_user_approval": false,
+  "scope": {
+    "expectedCandidates": 1,
+    "candidatePNGsDirectlyViewed": 2,
+    "sourcePosesDirectlyViewed": 1,
+    "sourceSpec": "docs/handovers/task-058-image-review-regeneration-04.json loop-choke nextEdit",
+    "excluded": "No other candidates, code, DB, registry/public, history or promotion changes.",
+    "v3StructurePassClothingFailEvidencePreserved": true
+  },
+  "reviewBasis": "Static visible technique identity, connected limbs and whole-person garment ownership. A correct head-and-arm relationship is distinguished from the remaining collar color defect; no dynamic outcome or hidden contact is claimed.",
+  "summary": {
+    "reviewed": 1,
+    "counts": {
+      "REGENERATE": 1
+    },
+    "technicalStructurePass": 1,
+    "requiresRegeneration": [
+      "loop-choke"
+    ],
+    "notReviewed": [],
+    "primaryV3EvidencePreserved": true,
+    "revisionReviewed": 1,
+    "revisionCounts": {
+      "PASS": 1
+    },
+    "latestCandidateVersion": 4,
+    "latestCandidateCounts": {
+      "PASS": 1
+    },
+    "latestRequiresRegeneration": [],
+    "latestNotReviewed": []
+  },
+  "items": [
+    {
+      "slug": "loop-choke",
+      "name": "루프 초크",
+      "version": 3,
+      "inputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/loop-choke-v3.png",
+      "inputSHA256": "2c7f43cdda5d576f56d468cb63e089e30b529a8c8826add8e3db600360511bad",
+      "manifestSHA256": "2c7f43cdda5d576f56d468cb63e089e30b529a8c8826add8e3db600360511bad",
+      "manifestHashMatch": true,
+      "promptPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/prompts/loop-choke-v3.txt",
+      "promptSHA256": "398430c288429911a9573bc19aade7e4e52bd7d429d54d993aa077656fa5113c",
+      "manifestPromptHashMatch": true,
+      "result": "REGENERATE",
+      "requires_regeneration": true,
+      "directRawImageViewed": true,
+      "actualPNGDirectlyInspected": true,
+      "directlyViewed": true,
+      "viewedWithViewImage": true,
+      "reviewTool": "Codex / built-in view_image",
+      "technicalStructureResult": "PASS",
+      "clothingOwnershipResult": "REGENERATE",
+      "reason": "흰 bottom 공격자가 파란 top 깃을 잡은 같은 흰 팔로 파란 머리를 고리 안에 두고, 흰 자신의 머리는 고리 밖에 분리하는 핵심 관계가 교정됐습니다. 그러나 검은 머리 흰 공격자 본인의 목둘레·가슴 깃띠가 파란색으로 남아 흰 재킷 소속과 섞입니다. 파란 상대 목 옆에서 실제로 잡힌 파란 깃과는 별개의 구간입니다.",
+      "keyChecks": [
+        "WHITE bottom hand retains the actual BLUE top collar beside the bowed BLUE head.",
+        "The SAME WHITE elbow/forearm loop encloses BLUE head; WHITE own head remains separate outside.",
+        "Visible guard/base limb routes remain coherent without an obvious additional limb.",
+        "The bottom WHITE attacker OWN neckline/lapel band is BLUE and needs WHITE continuity."
+      ],
+      "renderedActor": "white",
+      "wholeRoleSwap": false,
+      "headSeparationVerified": true,
+      "sameCollarArmLoopVerified": true,
+      "definiteExtraLimb": false,
+      "sourceReference": {
+        "inputPath": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/references/loop-choke.webp",
+        "inputSHA256": "97cdd4f2f0c88f245f3217ab7e6c7a344e1a9c8fb84481f45bde3e44f5323eea",
+        "directRawImageViewed": true,
+        "sourceKind": "cached source-catalog 3D pose, directly compared this review"
+      },
+      "sourceLimit": "The source clay pose supports the visible bottom-white/top-blue head-and-arm relationship, not detailed choke pressure. Blue hands and some limb portions are naturally occluded and were not invented into view.",
+      "nextEditMode": "color_only_local_edit",
+      "nextEditInputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/loop-choke-v3.png",
+      "nextEditInputSHA256": "2c7f43cdda5d576f56d468cb63e089e30b529a8c8826add8e3db600360511bad",
+      "singleChangeEnglish": "Make a COLOR-ONLY edit to the bottom black-haired WHITE attacker own gi collar and short lapel band immediately beneath his neck and across his upper chest: recolor that BLUE band WHITE, continuously matching his white jacket. Keep the TOP blue partner actual BLUE collar held by the existing white choking hand beside the blue head BLUE. Freeze both separated heads, the same white collar-gripping elbow loop around the blue head, all hands, sleeve routes, guard legs, blue base legs, bodies, cloth folds, camera and identities. Do not recolor the gripped partner collar or change the repaired choke geometry.",
+      "regenerationGuidanceEnglish": "Make a COLOR-ONLY edit to the bottom black-haired WHITE attacker own gi collar and short lapel band immediately beneath his neck and across his upper chest: recolor that BLUE band WHITE, continuously matching his white jacket. Keep the TOP blue partner actual BLUE collar held by the existing white choking hand beside the blue head BLUE. Freeze both separated heads, the same white collar-gripping elbow loop around the blue head, all hands, sleeve routes, guard legs, blue base legs, bodies, cloth folds, camera and identities. Do not recolor the gripped partner collar or change the repaired choke geometry.",
+      "recommendedGenerationReferencePaths": [
+        "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/loop-choke-v3.png"
+      ],
+      "referenceRecommendation": "Use the current v3 as the single edit base because its head-and-arm geometry is repaired. Do not reuse the v2 pose or perform another pose-first rebuild for this collar color defect.",
+      "is_user_approval": false,
+      "reviewedAt": "2026-11-10T13:51:34.535Z"
+    }
+  ],
+  "validation": {
+    "candidateSHA256Matched": true,
+    "promptSHA256Matched": true,
+    "sourceSHA256Matched": true,
+    "nextEditUsesExactCurrentV3": true,
+    "errors": [],
+    "checkedAt": "2026-11-10T14:14:28.320Z",
+    "candidateHashesMatched": 2,
+    "promptHashesMatched": 2,
+    "v3EvidencePreserved": true
+  },
+  "revisionReviews": [
+    {
+      "status": "V4_READY",
+      "version": 4,
+      "inputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/loop-choke-v4.png",
+      "inputSHA256": "faafe5ffd7db00e170ddc56c7deea1405a9826de04da5dd8029b72d4df7c1183",
+      "manifestSHA256": "faafe5ffd7db00e170ddc56c7deea1405a9826de04da5dd8029b72d4df7c1183",
+      "manifestHashMatch": true,
+      "promptPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/prompts/loop-choke-v4.txt",
+      "promptSHA256": "eed0b9d8b204a7b3512aaf381e3f7f093c423bc07d75af30d701713b1223158f",
+      "manifestPromptHashMatch": true,
+      "slug": "loop-choke",
+      "name": "루프 초크",
+      "result": "PASS",
+      "requires_regeneration": false,
+      "directRawImageViewed": true,
+      "actualPNGDirectlyInspected": true,
+      "directlyViewed": true,
+      "viewedWithViewImage": true,
+      "reviewTool": "Codex / built-in view_image",
+      "technicalStructureResult": "PASS",
+      "clothingOwnershipResult": "PASS",
+      "reason": "검은 머리 흰 bottom 공격자 본인 목둘레·가슴 깃띠가 흰색으로 바뀌어 흰 재킷과 연속됩니다. 파란 머리 옆에서 실제로 잡힌 파란 partner collar는 파란색으로 유지됐고, 같은 흰 칼라 팔 고리 안의 파란 머리와 고리 밖 흰 머리의 분리도 보존됐습니다.",
+      "keyChecks": [
+        "WHITE own neckline/lapel band is now continuously WHITE.",
+        "The actual BLUE partner collar gripped beside BLUE head remains BLUE.",
+        "The SAME WHITE collar-gripping elbow loop encloses BLUE head while WHITE own head remains separate outside.",
+        "Visible sleeves, guard/base legs and hands preserve continuous two-person ownership with no obvious added limb."
+      ],
+      "headSeparationVerified": true,
+      "sameCollarArmLoopVerified": true,
+      "definiteExtraLimb": false,
+      "renderedActor": "white",
+      "wholeRoleSwap": false,
+      "comparison": {
+        "inputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/loop-choke-v3.png",
+        "inputSHA256": "2c7f43cdda5d576f56d468cb63e089e30b529a8c8826add8e3db600360511bad",
+        "directRawImageViewed": true
+      },
+      "sourceReference": {
+        "inputPath": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/references/loop-choke.webp",
+        "inputSHA256": "97cdd4f2f0c88f245f3217ab7e6c7a344e1a9c8fb84481f45bde3e44f5323eea",
+        "directRawImageViewed": true,
+        "sourceKind": "cached source-catalog 3D pose, directly compared this review",
+        "previousStageDirectViewReused": true,
+        "openedInThisRevisionReview": false
+      },
+      "sourceLimit": "Static visible structure and own-gi color continuity only. Naturally occluded blue hands and other nonessential limb portions remain unexposed; finishing pressure and dynamic outcome are not claimed.",
+      "nextEditInputPath": null,
+      "nextEditInputSHA256": null,
+      "singleChangeEnglish": null,
+      "is_user_approval": false,
+      "reviewedAt": "2026-11-10T14:14:28.318Z"
+    }
+  ]
+}

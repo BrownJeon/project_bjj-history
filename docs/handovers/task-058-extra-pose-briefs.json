@@ -1,0 +1,237 @@
+{
+  "schema_version": 1,
+  "task_id": "task-058",
+  "status": "11_briefs_prepared_2_pending_reference",
+  "execution_tool": "codex",
+  "reviewer_role": "gym-master",
+  "expected_count": 13,
+  "completed_count": 11,
+  "characters": {
+    "white": "Approved set-01 neutral adult with black hair, white gi, brown belt",
+    "blue": "Approved set-01 neutral adult with white hair, blue gi, brown belt"
+  },
+  "style": {
+    "rendering": "Approved set-01 2.5D anime illustration",
+    "background": "#15171E",
+    "faces": "Neutral adult expressions",
+    "layout": "Two anatomically separate partners, readable decisive contacts, no text or logos",
+    "approved_display_sizes": {
+      "list_image_px": 48,
+      "equal_information_row_px": 72,
+      "detail_image_px": 224
+    }
+  },
+  "scope_note": "Extra personal technique image briefs only. Existing 159 catalog briefs and all records are preserved. Names do not merge records.",
+  "items": [
+    {
+      "slug": "reverse-x-guard",
+      "name": "리버스 엑스가드",
+      "kind": "position",
+      "actor": "blue",
+      "poseBrief": "Show blue underneath white's standing base in the reverse X guard configuration selected by the pose reference. Preserve the reversed hook orientation, the controlled knee line, and blue's upper body leg connection. Keep white's free leg separate and do not merely relabel an ordinary X guard or single leg X picture.",
+      "keyChecks": [
+        "The reversed X hook orientation matches the reference",
+        "Blue's hands and legs control the intended white leg line",
+        "All four legs remain traceable without merging"
+      ],
+      "representative": true,
+      "uncertainty": "The name identifies the guard family but does not settle hook handedness; confirm the exact reverse X reference.",
+      "requiresPoseReference": true,
+      "poseBriefWordCount": 51
+    },
+    {
+      "slug": "x-guard-sweep",
+      "name": "엑스가드 스윕",
+      "kind": "technique",
+      "actor": "blue",
+      "poseBrief": "Show blue beginning a representative sweep from an established X guard beneath white. Blue's crossing leg hooks extend in a coherent direction while the hands retain the leg connection and white's remaining support foot loses balance. Freeze the upward reversal before the landing, preserving the starting X structure.",
+      "keyChecks": [
+        "The starting guard is recognizably X guard",
+        "Blue's leg extension removes white's remaining base",
+        "The sweep follows one connected direction rather than an airborne throw"
+      ],
+      "representative": true,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 48
+    },
+    {
+      "slug": "combat-guard",
+      "name": "컴뱃가드",
+      "kind": "position",
+      "actor": "white",
+      "poseBrief": "Show white in a combat base inside blue's open guard, one white knee grounded and the other foot planted forward with the knee raised. White's spine stays naturally upright while blue's legs remain between the bodies. Keep the grounded knee and posted foot distinct, before any named pass begins.",
+      "keyChecks": [
+        "One white knee is grounded",
+        "The opposite white foot is posted with its knee raised",
+        "Blue's legs remain in front as an open guard barrier"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 49
+    },
+    {
+      "slug": "scarf-hold",
+      "name": "스카프홀드",
+      "kind": "position",
+      "actor": "white",
+      "poseBrief": "Show white seated beside blue in scarf hold, with the torso angled across blue's upper chest, one white arm encircling the head and the other controlling the near blue arm. White's legs form a staggered seated base. Keep the hip on the floor and distinguish this from ordinary chest down side control.",
+      "keyChecks": [
+        "White sits beside blue with a grounded hip",
+        "Head and near arm are separately controlled",
+        "White's two legs form a stable staggered base"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 52
+    },
+    {
+      "slug": "keymaster-guard",
+      "name": "키마스터",
+      "kind": "position",
+      "actor": "blue",
+      "poseBrief": "Show blue in the exact Keymaster guard arrangement provided by the selected pose reference, maintaining its distinctive leg frame and controlling connection to white's base. Keep the defining knee, hip, and grip route visible. Preserve this named entry without guessing that it is simply K guard or an ordinary knee shield.",
+      "keyChecks": [
+        "The Keymaster leg frame follows the selected reference",
+        "The defining grip and controlled white leg remain visible",
+        "Do not substitute K guard solely because the names sound related"
+      ],
+      "representative": true,
+      "uncertainty": "The catalog name alone does not establish the Keymaster guard topology; an exact reference is needed.",
+      "requiresPoseReference": true,
+      "poseBriefWordCount": 51
+    },
+    {
+      "slug": "butterfly-sweep",
+      "name": "버터플라이 스윕",
+      "kind": "technique",
+      "actor": "blue",
+      "poseBrief": "Show blue seated in butterfly guard beneath kneeling white, retaining an upper body connection and controlling white's posting arm on the chosen sweeping side. One blue instep elevates the inner thigh while blue turns onto the opposite hip. Keep the second hook and the blocked posting hand visible during the reversal.",
+      "keyChecks": [
+        "The lifting hook is inside white's thigh",
+        "White cannot freely post on the swept side",
+        "Blue turns onto a hip while keeping the upper body connection"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 51
+    },
+    {
+      "slug": "belly-down-armbar",
+      "name": "밸리다운",
+      "kind": "technique",
+      "actor": "blue",
+      "poseBrief": "Show blue in a belly down armbar with blue's torso facing the floor while one white arm remains isolated between blue's thighs. Blue's hands control the corresponding wrist and the elbow aligns with blue's hip line. Keep the legs controlling the head and upper body without turning the wrist or elbow into a broken angle.",
+      "keyChecks": [
+        "Blue's torso faces downward rather than upward",
+        "The controlled white elbow aligns with blue's hip line",
+        "Both blue hands retain the same white wrist"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 55
+    },
+    {
+      "slug": "100-percent-sweep",
+      "name": "100퍼스윕",
+      "kind": "technique",
+      "actor": "blue",
+      "poseBrief": "Show blue underneath white using the combined head and arm control of the selected one hundred percent sweep reference. Blue turns the hips to remove white's blocked posting base and begin the reversal. Expose the exact clasp and trapped arm, without replacing the named control with a generic kimura or hip bump grip.",
+      "keyChecks": [
+        "The head and arm clasp matches the named reference",
+        "Blue begins below white",
+        "White's blocked posting side matches the direction of reversal"
+      ],
+      "representative": true,
+      "uncertainty": "The name alone does not fix the exact one hundred percent grip and turning direction; verify the pose reference.",
+      "requiresPoseReference": true,
+      "poseBriefWordCount": 53
+    },
+    {
+      "slug": "williams-guard",
+      "name": "윌리엄 가드",
+      "kind": "position",
+      "actor": "blue",
+      "poseBrief": "Show blue in the selected Williams guard configuration with one blue leg high across white's upper back and a connected upper body arm frame retaining posture control. Keep the raised knee, blue hands, and white shoulder route visible. Do not substitute a generic ankle held rubber guard merely because both use a high leg.",
+      "keyChecks": [
+        "The Williams arm frame follows the selected reference",
+        "The high blue leg controls white's upper back and shoulder line",
+        "The hands are not automatically changed to an ankle pulling rubber guard grip"
+      ],
+      "representative": true,
+      "uncertainty": "Exact hand interlock and raised leg routing must be confirmed against the Williams guard reference.",
+      "requiresPoseReference": true,
+      "poseBriefWordCount": 54
+    },
+    {
+      "slug": "quick-armbar",
+      "name": "퀵암바",
+      "kind": "technique",
+      "actor": "blue",
+      "poseBrief": "Show a representative quick armbar entry with blue rotating the hips from guard and bringing one leg across white's head while retaining control of a single white wrist. The elbow approaches blue's hip line as the second leg controls the upper body. Depict a clear transition without inventing new joint mechanics solely to suggest speed.",
+      "keyChecks": [
+        "Both blue hands retain one white arm",
+        "The entering leg crosses the head line coherently",
+        "The elbow and hip relationship remains that of an ordinary straight armbar"
+      ],
+      "representative": true,
+      "uncertainty": "Quick armbar describes timing or an entry rather than one universally fixed pose; select the intended entry from the reference.",
+      "requiresPoseReference": true,
+      "poseBriefWordCount": 55
+    },
+    {
+      "slug": "peterson-roll",
+      "name": "피터슨 롤",
+      "kind": "technique",
+      "actor": "blue",
+      "poseBrief": "Show blue beginning a Peterson roll from beneath a rear riding white partner, retaining the wrist and leg connections specified by the supplied reference. Blue rotates across the supported shoulder and hip to overturn white's base. Keep the trapped arm route visible and avoid substituting an unconnected forward somersault.",
+      "keyChecks": [
+        "Blue begins below a rear riding partner",
+        "The selected wrist and leg connections remain continuous",
+        "The shoulder and hip rotation carries white's controlled base"
+      ],
+      "representative": true,
+      "uncertainty": "The precise wrist trap and leg collection depend on the chosen Peterson roll reference and need confirmation.",
+      "requiresPoseReference": true,
+      "poseBriefWordCount": 49
+    }
+  ],
+  "unresolved_items": [
+    {
+      "slug": "sagi-oro-sweep",
+      "name": "사지오로",
+      "status": "unresolved",
+      "reason": "Awaiting main supplied original frames and confirmed contact topology; no pose is guessed."
+    },
+    {
+      "slug": "hugo-lock",
+      "name": "휴고락",
+      "status": "unresolved",
+      "reason": "Awaiting main supplied original frames for the back control shoulder and arm lock; no pose is guessed."
+    }
+  ],
+  "reuse_mappings": [
+    {
+      "slug": "near-naked-choke",
+      "name": "니어네이키트 쵸크",
+      "reuse_image_slug": "rear-naked-choke",
+      "basis": "User confirmed same technique; image reuse only, without merging or renaming records."
+    }
+  ],
+  "summary": {
+    "prepared": 11,
+    "unresolved": 2,
+    "reuse_only": 1,
+    "word_count_range": {
+      "min": 48,
+      "max": 55
+    },
+    "reference_check_required_count": 6
+  },
+  "image_generation_performed": false,
+  "db_or_deployment_changed": false
+}

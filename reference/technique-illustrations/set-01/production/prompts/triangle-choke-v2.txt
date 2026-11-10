@@ -1,0 +1,10 @@
+Canvas: exactly 1:1 SQUARE, 1024 by 1024 pixels or larger square, genuine transparent alpha background. Keep whole scene within the square.
+Use case: precise-object-edit. Reference 1 is the existing production illustration to EDIT. Preserve the exact same two fictional adult men, facial designs, hair, brown belts, rendering style, canvas, calm expressions and transparent alpha background. Only correct the specified technical or garment defect.
+Technique: 트라이앵글 초크 (triangle-choke).
+Required edit: Show the blue choking-leg ankle seated directly in the BACK OF the opposite blue knee crease, with that locking knee folded over the ankle. Do not merely cross the blue calves high above the head. Use a three-quarter view that exposes this single ankle-to-knee junction while keeping exactly one white arm and the neck inside the triangle and the other white arm outside. Preserve neutral posture and avoid adding another foot.
+Preserve: Blue supine and white kneeling roles; One white arm inside and one outside the leg enclosure; Same two legs; no extra foot to fabricate the closure
+Technical checks: Exactly one white arm is inside the leg triangle; Blue's ankle locks behind the opposite blue knee; White's trapped shoulder and neck share the enclosed space
+Additional references, if supplied, clarify the corrected contact or neutral fictional identity only; do not import their clothes, people, backgrounds or a different technique. The black-haired adult keeps a white jacket and white trousers on both legs; the white-haired adult keeps blue jacket and blue trousers on both legs. Exactly two arms and two legs each; no additional limbs or color-swapped parts.
+Maintain naturally occluded nonessential limbs. Actual transparent alpha background; no floor, matte, checkerboard, broad ground shadow, fringe, text, arrows, labels, panels, collage, logo or watermark. The app composites the asset on charcoal #15171E.
+
+Mandatory output: SQUARE with genuine transparency, no backdrop, no glow or vignette.

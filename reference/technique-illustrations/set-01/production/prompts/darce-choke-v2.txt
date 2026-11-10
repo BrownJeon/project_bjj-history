@@ -1,0 +1,10 @@
+Canvas: exactly 1:1 SQUARE, 1024 by 1024 pixels or larger square, genuine transparent alpha background. Keep whole scene within the square.
+Use case: precise-object-edit. Reference 1 is the existing production illustration to EDIT. Preserve the exact same two fictional adult men, facial designs, hair, brown belts, rendering style, canvas, calm expressions and transparent alpha background. Only correct the specified technical or garment defect.
+Technique: 다스 초크 (darce-choke).
+Required edit: Use an armpit-side three-quarter camera. Show the white choking arm entering UNDER the near blue armpit before crossing the neck, with the same blue upper arm enclosed against the neck line. Show the choking hand emerging to grasp white own opposite biceps and the free forearm closing behind the head. Preserve natural occlusion elsewhere, but keep the armpit-first entry readable; do not replace it with a neck-first anaconda route.
+Preserve: White above/beside kneeling blue; The same near blue upper arm within the head-arm enclosure; White own-biceps lock and natural distant occlusion
+Technical checks: The attacking arm enters beneath blue's armpit first; One blue arm remains trapped against the neck line; The biceps lock belongs entirely to white
+Additional references, if supplied, clarify the corrected contact or neutral fictional identity only; do not import their clothes, people, backgrounds or a different technique. The black-haired adult keeps a white jacket and white trousers on both legs; the white-haired adult keeps blue jacket and blue trousers on both legs. Exactly two arms and two legs each; no additional limbs or color-swapped parts.
+Maintain naturally occluded nonessential limbs. Actual transparent alpha background; no floor, matte, checkerboard, broad ground shadow, fringe, text, arrows, labels, panels, collage, logo or watermark. The app composites the asset on charcoal #15171E.
+
+Mandatory output: SQUARE with genuine transparency, no backdrop, no glow or vignette.

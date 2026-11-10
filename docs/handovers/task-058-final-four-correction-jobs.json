@@ -1,0 +1,195 @@
+{
+  "schemaVersion": 1,
+  "task": "task-058",
+  "status": "complete",
+  "expectedCount": 4,
+  "readyCount": 4,
+  "scopeSlugs": [
+    "x-guard-sweep",
+    "buggy-choke",
+    "gogoplata",
+    "peruvian-necktie"
+  ],
+  "sourceReview": "docs/handovers/task-058-image-review-regeneration-04.json",
+  "items": [
+    {
+      "slug": "x-guard-sweep",
+      "name": "엑스가드 스윕",
+      "status": "ready",
+      "mode": "pose_first_regeneration",
+      "current": {
+        "version": 2,
+        "png": "reference/technique-illustrations/set-01/production/raw/x-guard-sweep-v2.png",
+        "absolutePNG": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/x-guard-sweep-v2.png",
+        "sha256": "cab1a3b6b8a3b93a9b84d0f98a415f2572b204f0536e7150853d4b0a45def43f",
+        "promptPath": "reference/technique-illustrations/set-01/production/prompts/x-guard-sweep-v2.txt",
+        "promptSHA256": "364cbe5b2086f848a78a8b82ea8e6a319e7cfa800926831a6af5b38432ccdf96",
+        "directViewImageConfirmed": true,
+        "inspectionReusedFrom": "task-058-image-review-regeneration-04.json"
+      },
+      "nextVersion": 3,
+      "singleError": "The selected WHITE leg remains away from BLUE's shoulder, so conventional X structure is absent.",
+      "singleChange": "Rebuild the established conventional-X sweep initiation from the verified Chewjitsu frame.",
+      "preserve": [
+        "Primary frame's coherent camera and opposed-hook arrangement",
+        "Same approved characters, full-person gi ownership and brown belts",
+        "Representative controlled initiation rather than an invented completed throw"
+      ],
+      "correctionPromptEnglish": "Reference 1 is PRIMARY POSE geometry and the final neutral portrait is style/identity ONLY. Faithfully redraw the verified Chewjitsu conventional-X frame. Map the lower demonstrator to BLUE and the standing partner to WHITE. Collect ONE WHITE leg against BLUE's SHOULDER and upper-body connection, with the same white hip-to-knee-to-foot route continuous. BOTH BLUE feet hook the OTHER WHITE leg at different heights: one near the hip/groin and one behind the knee, in opposed directions. Preserve the source ankle/leg control and compact bottom hips; depict the connected initiation before the partner fully falls. Keep the shoulder-supported WHITE leg distinct from the two BLUE hooking legs. Do not fold the collected white foot up by white's own hip or replace this with single-leg X. Create one 1:1 SQUARE image at 1024×1024 or larger, with genuine transparent alpha and safe contour margins. Keep the exact approved two fictional adult male characters, neutral-portrait faces and hair, brown belts, detailed gi cloth and 2.5D anime shading. The black-haired adult owns WHITE jacket, sleeves and trousers on BOTH legs; the white-haired adult owns BLUE jacket, sleeves and trousers on BOTH legs. Exactly two arms and two legs per person; natural nonessential occlusion is allowed. No floor, matte, checkerboard, shadow field, text, arrows, panels, logos or watermark. The app composites on charcoal #15171E.",
+      "references": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/regen-x-guard-chewjitsu-00m58s.jpg",
+          "sha256": "371c30901270fac1ac12bfb2c626065871fb3276730787ab126a2bb0e508edd8",
+          "role": "primary_pose",
+          "sourceURL": "https://www.youtube.com/watch?v=503YYSO8tM0",
+          "timestamp": "00:58",
+          "sourceAuthor": "Chewjitsu",
+          "directViewImageConfirmed": true,
+          "inspectionReusedFrom": "task-058-regeneration-pose-references.json and direct view in correction-jobs-04 preparation",
+          "limitation": "Selected static established-X frame supports the starting shoulder collection and opposed hooks; it is not proof of a completed dynamic sweep."
+        },
+        {
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/style-guides/neutral-portraits-v1.png",
+          "sha256": "861ad8775f2697dc451d5f764a49655e5c78ddb2ada79d3f44a6f2905fa1ba16",
+          "role": "neutral_character_style_only",
+          "directViewImageConfirmed": true
+        }
+      ],
+      "generationReferencePaths": [
+        "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/regen-x-guard-chewjitsu-00m58s.jpg",
+        "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/style-guides/neutral-portraits-v1.png"
+      ],
+      "independentDirectPNGReviewRequired": true
+    },
+    {
+      "slug": "buggy-choke",
+      "name": "버기 초크",
+      "status": "ready",
+      "mode": "pose_first_regeneration",
+      "current": {
+        "version": 3,
+        "png": "reference/technique-illustrations/set-01/production/raw/buggy-choke-v3.png",
+        "absolutePNG": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/buggy-choke-v3.png",
+        "sha256": "301b8da24fe2b3c173832a14cb94fb3830ca7ccdf4ba2ab9ce2eb5aca7e9def4",
+        "promptPath": "reference/technique-illustrations/set-01/production/prompts/buggy-choke-v3.txt",
+        "promptSHA256": "23b1b9b991e61cc92125c139cdc8d0b63d3a4779df6eb646dbfb6900c1ca8906",
+        "directViewImageConfirmed": true,
+        "inspectionReusedFrom": "task-058-image-review-regeneration-04.json"
+      },
+      "nextVersion": 4,
+      "singleError": "The bottom BLUE own-arm/own-leg loop is unclosed and its raised knees remain WHITE.",
+      "singleChange": "Rebuild the single compact bottom-attacker arm-leg loop from the verified Ruotolo frame with continuous BLUE ownership.",
+      "preserve": [
+        "Ruotolo frame's perpendicular top side-control/bottom connection and camera",
+        "Top player's independent two-leg base",
+        "Same approved neutral-portrait character style"
+      ],
+      "correctionPromptEnglish": "Reference 1 is PRIMARY POSE geometry and the final neutral portrait is style/identity ONLY. Redraw the selected Ruotolo OG buggy position with the BOTTOM curly-haired demonstrator mapped to the white-haired BLUE-gi character and the TOP demonstrator mapped to the black-haired WHITE-gi character. Keep WHITE perpendicular in top side control. From the BOTTOM BLUE pelvis, both raised thighs, knees, shins and cuffs remain BLUE. ONE BLUE arm threads through that SAME bent BLUE own-leg loop and closes the compact arm-leg connection around WHITE's head-and-upper-arm region. Make that defining closure distinguishable without inventing extra limbs or demanding unrelated hidden contacts. Keep the top WHITE player's two independent WHITE base legs separate. Do not copy the source's dark clothing indiscriminately onto both athletes; do not leave bottom BLUE raised knees WHITE or replace the closure with a blue self-collar fist. Create one 1:1 SQUARE image at 1024×1024 or larger, with genuine transparent alpha and safe contour margins. Keep the exact approved two fictional adult male characters, neutral-portrait faces and hair, brown belts, detailed gi cloth and 2.5D anime shading. The black-haired adult owns WHITE jacket, sleeves and trousers on BOTH legs; the white-haired adult owns BLUE jacket, sleeves and trousers on BOTH legs. Exactly two arms and two legs per person; natural nonessential occlusion is allowed. No floor, matte, checkerboard, shadow field, text, arrows, panels, logos or watermark. The app composites on charcoal #15171E.",
+      "references": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/buggy-choke-ruotolo-00m25s.jpg",
+          "sha256": "6a795195f55665877f3ca8ae8025c35b527b5074d4ab2bcca16deb625fd0a35a",
+          "role": "primary_pose",
+          "sourceURL": "https://www.youtube.com/watch?v=yIbU62-LQqQ",
+          "timestamp": "00:25",
+          "sourceAuthor": "Ruotolo Brothers, BJJ Fanatics direct demonstration",
+          "directViewImageConfirmed": true,
+          "inspectionReusedFrom": "task-058-primary-pose-references.json and direct view in correction-jobs-04 preparation",
+          "limitation": "Selected compact side-control frame has naturally overlapping arm/leg contacts. It supports the chosen body arrangement; do not claim all terminal grip depth or finishing effect is visible."
+        },
+        {
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/style-guides/neutral-portraits-v1.png",
+          "sha256": "861ad8775f2697dc451d5f764a49655e5c78ddb2ada79d3f44a6f2905fa1ba16",
+          "role": "neutral_character_style_only",
+          "directViewImageConfirmed": true
+        }
+      ],
+      "generationReferencePaths": [
+        "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/buggy-choke-ruotolo-00m25s.jpg",
+        "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/style-guides/neutral-portraits-v1.png"
+      ],
+      "independentDirectPNGReviewRequired": true
+    },
+    {
+      "slug": "gogoplata",
+      "name": "고고플라타",
+      "status": "ready",
+      "mode": "targeted_edit",
+      "current": {
+        "version": 2,
+        "png": "reference/technique-illustrations/set-01/production/raw/gogoplata-v2.png",
+        "absolutePNG": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/gogoplata-v2.png",
+        "sha256": "dd070f15a95417985c7b65fa5dcc00269caf5c13d7f52407bca7b4207765883a",
+        "promptPath": "reference/technique-illustrations/set-01/production/prompts/gogoplata-v2.txt",
+        "promptSHA256": "498d51c71f2207ec4b2dd9f8409a95dfa4eb29b65198339d859c98d01432a920",
+        "directViewImageConfirmed": true,
+        "inspectionReusedFrom": "task-058-image-review-regeneration-04.json"
+      },
+      "nextVersion": 3,
+      "singleError": "The second BLUE guard leg behind WHITE's hip has a WHITE trouser/cuff segment.",
+      "singleChange": "Recolor ONLY that existing second bottom-player guard-leg trouser/cuff segment BLUE, continuous with the same BLUE hip.",
+      "preserve": [
+        "Existing under-chin BLUE shin and BLUE own-toes grip exactly",
+        "Current bodies, camera, two leg routes per athlete and every hand position",
+        "WHITE partner's actual two kneeling base legs remain WHITE"
+      ],
+      "correctionPromptEnglish": "Edit the supplied CURRENT PNG only. Change ONLY garment ownership on the second bottom BLUE guard leg emerging behind the WHITE hip: recolor its existing WHITE trouser/cuff segment BLUE, continuous with the same bottom BLUE pelvis. Keep its exact silhouette, joint positions, bare foot and overlap. Do not move the leg, add a foot or recolor either of the WHITE partner's real kneeling base legs. Preserve the established BLUE shin beneath the WHITE chin and BLUE hand gripping the own toes exactly. Do not redraw any other contact. Create one 1:1 SQUARE image at 1024×1024 or larger, with genuine transparent alpha and safe contour margins. Keep the exact approved two fictional adult male characters, neutral-portrait faces and hair, brown belts, detailed gi cloth and 2.5D anime shading. The black-haired adult owns WHITE jacket, sleeves and trousers on BOTH legs; the white-haired adult owns BLUE jacket, sleeves and trousers on BOTH legs. Exactly two arms and two legs per person; natural nonessential occlusion is allowed. No floor, matte, checkerboard, shadow field, text, arrows, panels, logos or watermark. The app composites on charcoal #15171E.",
+      "references": [
+        {
+          "role": "current_image_to_edit",
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/gogoplata-v2.png",
+          "sha256": "dd070f15a95417985c7b65fa5dcc00269caf5c13d7f52407bca7b4207765883a",
+          "directViewImageConfirmed": true,
+          "inspectionReusedFrom": "task-058-image-review-regeneration-04.json exact inputPath/inputSHA256"
+        }
+      ],
+      "generationReferencePaths": [
+        "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/gogoplata-v2.png"
+      ],
+      "independentDirectPNGReviewRequired": true
+    },
+    {
+      "slug": "peruvian-necktie",
+      "name": "페루비안 넥타이",
+      "status": "ready",
+      "mode": "targeted_edit",
+      "current": {
+        "version": 2,
+        "png": "reference/technique-illustrations/set-01/production/raw/peruvian-necktie-v2.png",
+        "absolutePNG": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/peruvian-necktie-v2.png",
+        "sha256": "2bf6e5d334d44b4cc84760905426c98ddae3b7500eda3d096ac21242e1ae1ce6",
+        "promptPath": "reference/technique-illustrations/set-01/production/prompts/peruvian-necktie-v2.txt",
+        "promptSHA256": "3445edec1e4b23d4a739c2fc03d84421ea572d4460b652f2dbe8dd612f42144a",
+        "directViewImageConfirmed": true,
+        "inspectionReusedFrom": "task-058-image-review-regeneration-04.json"
+      },
+      "nextVersion": 3,
+      "singleError": "The WHITE attacker's two-cuff hand-to-hand front closure is hidden behind the head/leg overlap.",
+      "singleChange": "Minimally expose and connect ONLY the existing WHITE attacker forearms/cuffs and two hands at the shallow front head-and-arm junction.",
+      "preserve": [
+        "Current two WHITE leg contacts at the head line and upper back exactly",
+        "Seated WHITE hips, BLUE turtle, bodies and camera",
+        "BLUE defensive hands remain separate below; no extra limbs"
+      ],
+      "correctionPromptEnglish": "Edit the supplied CURRENT PNG only. Preserve BOTH current WHITE leg contacts and the entire seated-WHITE/BLUE-turtle body arrangement. Minimally bring the existing WHITE forearms and WHITE cuffs into view at the shallow junction beneath the BLUE chin, joining the WHITE attacker's TWO WHITE hands to each other around the BLUE head and ONE upper arm. Keep those cuffs continuously attached to the same WHITE shoulders. Separate this choking connection from the existing BLUE defensive hands clasped below. Use only the two existing white hands; do not add hands, move the legs, change the camera or expose unrelated naturally hidden contacts. Create one 1:1 SQUARE image at 1024×1024 or larger, with genuine transparent alpha and safe contour margins. Keep the exact approved two fictional adult male characters, neutral-portrait faces and hair, brown belts, detailed gi cloth and 2.5D anime shading. The black-haired adult owns WHITE jacket, sleeves and trousers on BOTH legs; the white-haired adult owns BLUE jacket, sleeves and trousers on BOTH legs. Exactly two arms and two legs per person; natural nonessential occlusion is allowed. No floor, matte, checkerboard, shadow field, text, arrows, panels, logos or watermark. The app composites on charcoal #15171E.",
+      "references": [
+        {
+          "role": "current_image_to_edit",
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/peruvian-necktie-v2.png",
+          "sha256": "2bf6e5d334d44b4cc84760905426c98ddae3b7500eda3d096ac21242e1ae1ce6",
+          "directViewImageConfirmed": true,
+          "inspectionReusedFrom": "task-058-image-review-regeneration-04.json exact inputPath/inputSHA256"
+        }
+      ],
+      "generationReferencePaths": [
+        "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/peruvian-necktie-v2.png"
+      ],
+      "independentDirectPNGReviewRequired": true
+    }
+  ],
+  "reviewDestination": "task-058-image-review-regeneration-04.json revisionReviews",
+  "scopeLimit": "Only these four actual remaining defects. Do not require all naturally hidden contacts to be exposed. Loop-choke belongs to another independent reviewer.",
+  "registryModified": false,
+  "publicAssetsModified": false,
+  "uiOrTaskHistoryModified": false
+}

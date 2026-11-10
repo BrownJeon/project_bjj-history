@@ -1,0 +1,23 @@
+{
+  "task": "task-058",
+  "status": "preparing",
+  "authorizedBy": "user: 커밋 및 푸시하여 운영에 배포해줘",
+  "appVersion": "1.2.0",
+  "previousVersion": "1.1.0",
+  "previousRelease": "20261109-221832-a8476e10",
+  "baseCommit": "a8476e1",
+  "targetRef": "origin/main",
+  "featureCommit": null,
+  "finalCommit": null,
+  "release": null,
+  "migrationRequested": false,
+  "apkRequested": false,
+  "qa": "PASS for changed frontend/assets/package scope; generic whole-application API regression NOT_VERIFIED (unchanged and out of scope)",
+  "artifactQA": "PASS: 171 images / 172 rows / 516 geometry / 171 HTTP / 32 regressions",
+  "deploymentPath": "bluegreen release.sh via existing webhook or workspace scripts/deploy.sh",
+  "manualRollback": false,
+  "authenticatedProductionUI": "not_checked",
+  "physicalDevice": "not_checked",
+  "createdAt": "2026-11-11T01:10:51.374072+09:00",
+  "readinessEvidence": "task-058-release-readiness.json"
+}

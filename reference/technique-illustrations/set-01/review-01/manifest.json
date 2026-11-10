@@ -1,0 +1,61 @@
+{
+  "task_id": "task-058",
+  "status": "sample_awaiting_user_review",
+  "character_set": "set-01",
+  "generation_tool": "built-in image_gen",
+  "background": "opaque orange; matches existing approved single-X sample",
+  "count": 3,
+  "items": [
+    {
+      "slug": "knee-cut",
+      "image": "reference/technique-illustrations/set-01/review-01/knee-cut.png",
+      "prompt": "reference/technique-illustrations/set-01/review-01/knee-cut.prompt.txt",
+      "bytes": 2084311,
+      "width": 1254,
+      "height": 1254,
+      "sha256": "a48008830d45a23887b1c9dd95becef526988fda2a2bc3cad695b92be286c321",
+      "source_page": "https://labs.quartz.best/ko-KR/pbb/techniques/knee-cut",
+      "status": "sample_awaiting_user_review",
+      "coach_visual_review": {
+        "status": "pass",
+        "note": "상체 압박·허벅지 횡단 무릎·바깥지지발과 사지 연결 유지"
+      }
+    },
+    {
+      "slug": "armbar",
+      "image": "reference/technique-illustrations/set-01/review-01/armbar.png",
+      "prompt": "reference/technique-illustrations/set-01/review-01/armbar.prompt.txt",
+      "bytes": 2040627,
+      "width": 1254,
+      "height": 1254,
+      "sha256": "e21bbae7a5ddbd0a799f97bf141e3302117da281e867e3ea065b7085fec010db",
+      "source_page": "https://labs.quartz.best/ko-KR/pbb/techniques/armbar",
+      "status": "sample_awaiting_user_review",
+      "coach_visual_review": {
+        "status": "conditional",
+        "note": "손목/다리 제어는 식별되나 팔꿈치-골반 접점이 무릎에 가려 확인 제한"
+      }
+    },
+    {
+      "slug": "back-control",
+      "image": "reference/technique-illustrations/set-01/review-01/back-control.png",
+      "prompt": "reference/technique-illustrations/set-01/review-01/back-control.prompt.txt",
+      "bytes": 2117740,
+      "width": 1254,
+      "height": 1254,
+      "sha256": "1bb7eede549c82174ed3d608c60043bea765aee16fd4c91ba488ac0a7f772434",
+      "source_page": "https://labs.quartz.best/ko-KR/pbb/techniques/back-control",
+      "status": "sample_awaiting_user_review",
+      "coach_visual_review": {
+        "status": "pass",
+        "note": "등 밀착·상체 잠금·양쪽 안쪽 훅과 사지 연결 유지"
+      }
+    }
+  ],
+  "user_approved": false,
+  "full_catalog_generation": "not started; after sample review",
+  "application_changes": false,
+  "database_registration": false,
+  "app_version_bump": false,
+  "coach_review_scope": "visual sample inspection only, not user approval"
+}

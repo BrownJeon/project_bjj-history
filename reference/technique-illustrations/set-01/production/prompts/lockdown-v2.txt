@@ -1,0 +1,10 @@
+Canvas: exactly 1:1 SQUARE, 1024 by 1024 pixels or larger square. Keep the whole scene inside the square with clear transparent margins. No rectangular output.
+Use case: precise-object-edit. Reference 1 is the existing production illustration to EDIT. Preserve the exact same two fictional adult men, facial designs, hair, brown belts, rendering style, canvas, calm expressions and transparent alpha background. Only correct the specified technical or garment defect.
+Technique: 락다운 (lockdown).
+Required edit: Keep blue in bottom half guard around one white lower leg. Show one blue instep scooping under the corresponding white ankle or instep, while the opposite blue foot locks the leg weave around that SAME white calf. Use a low rear three-quarter view of the ankles so the lockdown differs from merely crossing the blue ankles in half guard. Preserve white knee alignment and natural upper-body occlusion; do not add another foot or depict forced knee hyperextension.
+Preserve: Bottom blue half guard and white upper-body balance; Same captured white lower leg; Neutral trapped knee and natural upper-body occlusion
+Technical checks: Two blue legs lace around one white lower leg; Crossing feet can be traced to blue's hips; The trapped knee is not forced into an unnatural angle
+Additional references, if supplied, clarify the corrected contact or neutral fictional identity only; do not import their clothes, people, backgrounds or a different technique. The black-haired adult keeps a white jacket and white trousers on both legs; the white-haired adult keeps blue jacket and blue trousers on both legs. Exactly two arms and two legs each; no additional limbs or color-swapped parts.
+Maintain naturally occluded nonessential limbs. Actual transparent alpha background; no floor, matte, checkerboard, broad ground shadow, fringe, text, arrows, labels, panels, collage, logo or watermark. The app composites the asset on charcoal #15171E.
+
+Output must have genuine transparent alpha, no dark or colored backdrop, no glow, no broad shadow. Both full bodies and feet fit within the SQUARE canvas.

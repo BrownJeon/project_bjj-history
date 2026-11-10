@@ -1,0 +1,72 @@
+{
+  "task": "task-058",
+  "prototype": "background-comparison-v2",
+  "type": "isolated actual-app source copy with offline synthetic fixture",
+  "originalSource": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/web/src",
+  "sourceSHA256": {
+    "pages/TechPlanPage.jsx": "b29378ecfd8552574b6606174127305aaeaf9d452447c6c4ce91aa7e50f3e4b2",
+    "components/Layout.jsx": "2e091a59b975bc85dca8cf1468b51d0d1cf55024ff88279cc16cc99f7cb55d75",
+    "components/Card.jsx": "b2350a8719a76c19c8e4a35fe9fab13c264ca0e3267a6e2044ee22e1cc3d51eb",
+    "components/Modal.jsx": "c607c311fbad52180e019013bdfc89c5257b33192130da2501566acf5b8bc8e5",
+    "components/TechReferenceSection.jsx": "17e6fdd3988ace665f39edb19ff5da66ddaaa29a33dea4884623f6e061a2f4a6",
+    "styles/tokens.css": "ad70437353d579260848e5c0d4440221782e2242f1b84bb2c5cb7504cb4fef48",
+    "styles/app.css": "8e08be549d57c10e397cff5dd4a7b5129a346b5e5f35e9282bc1bd6bcf1a9c20"
+  },
+  "images": [
+    {
+      "source": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/review-01/knee-cut.png",
+      "sha256": "a48008830d45a23887b1c9dd95becef526988fda2a2bc3cad695b92be286c321"
+    },
+    {
+      "source": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/review-02/knee-cut-app-bg.png",
+      "sha256": "0ab2f4c1882f4183e60e7b45c88cca9d6f70f4ebdaa724c9453605f288191837"
+    }
+  ],
+  "productionCodeChanged": false,
+  "dbChanged": false,
+  "releaseVersionChanged": false,
+  "userApproval": "pending",
+  "demoURL": "http://127.0.0.1:63684/",
+  "limitations": [
+    "Synthetic in-memory demo data (4 techniques), not a production account.",
+    "Only the knee-cut list item and detail show the proposed images.",
+    "Other tabs and save/edit/AI are not this demo scope; requests are refused and CSP blocks network.",
+    "Dark image was generated toward #0C0D12 and has slight raster color variations; original unchanged.",
+    "Inline PNGs make this review-only HTML about 5.4 MB; production loading optimization is not implemented."
+  ],
+  "basedOn": "background-comparison-v1",
+  "userRequest": "목록50%,상세70%로축소",
+  "sizes": {
+    "list": {
+      "before": 96,
+      "after": 48,
+      "ratio": 0.5
+    },
+    "detailMax": {
+      "before": 320,
+      "after": 224,
+      "ratio": 0.7
+    }
+  },
+  "demoHTMLSHA256": "190bb0c429df1c4a5c6d4a1c31c55c6066f2ec4c64d01d12fa30f9599e8711a0",
+  "demoBytes": 5432936,
+  "validation": {
+    "changedDemoFiles": [
+      "demo.css"
+    ],
+    "originalDemoPreserved": true,
+    "originalSourceAndImageHashesUnchanged": true,
+    "CSSViewportWidths": [
+      360,
+      390,
+      412
+    ],
+    "listCSSSize": 48,
+    "detailCSSMaxSize": 224,
+    "backgroundSwitch": "both variants verified in list and detail",
+    "overflow": false,
+    "consoleErrors": [],
+    "impeccableCSSFindings": [],
+    "evidence": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-background-demo-v2/ui-verification.json"
+  }
+}

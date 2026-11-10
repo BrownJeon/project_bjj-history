@@ -1,0 +1,10 @@
+Canvas: exactly 1:1 SQUARE, 1024 by 1024 pixels or larger square, genuine transparent alpha background. Keep whole scene within the square.
+Use case: precise-object-edit. Reference 1 is the existing production illustration to EDIT. Preserve the exact same two fictional adult men, facial designs, hair, brown belts, rendering style, canvas, calm expressions and transparent alpha background. Only correct the specified technical or garment defect.
+Technique: 암바 (armbar).
+Required edit: Keep blue seated perpendicular to supine white, controlling the same white wrist with both hands. Move the head-side blue thigh clearly ACROSS the front head/face line, rather than only cradling the back of the head. Place the other blue leg across the upper torso. Use an oblique side view that exposes the captured white elbow resting over the blue hip fulcrum instead of hiding it behind a raised blue knee. Show neutral pre-extension alignment.
+Preserve: Blue perpendicular seated controller and supine white defender; Both blue hands controlling the same white wrist; White free arm and legs remain naturally separate
+Technical checks: Blue's hands control the same white wrist; White's elbow is visibly aligned over blue's hips; The two blue legs separately control head and upper torso
+Additional references, if supplied, clarify the corrected contact or neutral fictional identity only; do not import their clothes, people, backgrounds or a different technique. The black-haired adult keeps a white jacket and white trousers on both legs; the white-haired adult keeps blue jacket and blue trousers on both legs. Exactly two arms and two legs each; no additional limbs or color-swapped parts.
+Maintain naturally occluded nonessential limbs. Actual transparent alpha background; no floor, matte, checkerboard, broad ground shadow, fringe, text, arrows, labels, panels, collage, logo or watermark. The app composites the asset on charcoal #15171E.
+
+Mandatory output: SQUARE with genuine transparency, no backdrop, no glow or vignette.

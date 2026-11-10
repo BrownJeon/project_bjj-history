@@ -31,6 +31,8 @@ import * as labApi from '../api/lab';
 import { usageOf, sumUsage } from '../utils/clipUsage';
 import { TechDescriptionSection, TechRelationSections } from '../components/TechReferenceSection';
 import { toSections, historyReducer, initHistory, createLatestGuard } from '../utils/techReferenceModel';
+import TechniqueIllustration from '../components/TechniqueIllustration';
+import TechniqueCard from '../components/TechniqueCard';
 
 const PAGE_SIZE = 10;
 
@@ -212,31 +214,7 @@ function TechTab() {
         <>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             {paged.map(t => (
-              <Card key={t.id} onClick={() => setDetail(t)}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <span
-                    onClick={(e) => { e.stopPropagation(); handleStar(t.id); }}
-                    style={{ display: 'inline-flex', cursor: 'pointer', padding: 2 }}
-                  >
-                    <Icon name="star" size={18} color={t.starred ? 'var(--amber)' : 'var(--text3)'} filled={!!t.starred} />
-                  </span>
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 4 }}>{t.name}</div>
-                    <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
-                      {(t.positions?.length ? t.positions : (t.pos ? [t.pos] : [])).map((p, i) => (
-                        <Tag key={i} tone="blue">{p}</Tag>
-                      ))}
-                      {(t.clips || []).length > 0 && <Tag tone="purple">영상 {t.clips.length}</Tag>}
-                      {(t.clips || []).length > 0 && (() => {
-                        // task-035 — 관련 영상들의 사용 기록 합계(스파링 성공 수는 상세 팝업에서만)
-                        const s = sumUsage(t.clips);
-                        return <Tag tone="neutral">👁 {s.view} · 🥋 {s.used}</Tag>;
-                      })()}
-                    </div>
-                  </div>
-                  <Icon name="chevR" size={18} color="var(--text3)" />
-                </div>
-              </Card>
+              <TechniqueCard key={t.id} technique={t} onOpen={setDetail} onStar={handleStar} />
             ))}
           </div>
           <Pagination total={list.length} page={page} pageSize={PAGE_SIZE} onPageChange={setPage} />
@@ -427,6 +405,7 @@ function TechDetailModal({ t: tProp, onClose, onEdit, onDelete }) {
           ← 이전 기술로 돌아가기
         </button>
       )}
+      <TechniqueIllustration name={t.name} large />
       <div style={{ display: 'flex', gap: 6, marginBottom: 12, flexWrap: 'wrap' }}>
         {(t.positions?.length ? t.positions : (t.pos ? [t.pos] : [])).map((p, i) => (
           <Tag key={i} tone="blue">{p}</Tag>

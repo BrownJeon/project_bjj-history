@@ -1,0 +1,30 @@
+{
+  "task": "task-058",
+  "verdict": "PASS",
+  "scope": "Release readiness of task-058 frontend illustration, image assets and version package only",
+  "assessedBy": "Codex root, authorized remaining implementation/verification and deployment",
+  "checkedAt": "2026-11-11T01:35:12.300214+09:00",
+  "qaEvidence": "task-058-release-qa.json",
+  "qaFrontendScopeVerdict": "PASS",
+  "qaGenericWholeApplicationVerdict": "NOT_VERIFIED",
+  "checks": {
+    "freshRegressionTests": "32/32 PASS",
+    "freshAssetCompleteness": "171/172 PASS",
+    "freshBrowser": "360/390/412/1280 list/detail, navigation, overflow, XSS PASS",
+    "freshReadOnlyFixtureAPI": "172 rows, reference arrays, image 200/missing 404 PASS",
+    "testedIndexSHA256": "all match",
+    "backendServerDeploymentManifestChanges": []
+  },
+  "scopeAssessment": "Generic whole-application backend CRUD/array/cascade/star checklist is not applicable to this frontend-only change. It was not executed and is not being represented as PASS. No new database/test infrastructure or production mutations are made a requirement of this user-approved release.",
+  "findings": [],
+  "postDeployChecks": [
+    "1.2.0 release and deployed SHA match",
+    "health endpoint and process status",
+    "deployed application technique tree list and detail image rendering; 171 asset availability",
+    "record whether authenticated and mobile-device checks were possible"
+  ],
+  "notVerified": [
+    "Whole-application backend CRUD regression (unchanged code)",
+    "Authenticated production UI and physical Android device (post-deploy status to be reported)"
+  ]
+}

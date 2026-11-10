@@ -1,0 +1,1749 @@
+{
+  "version": 1,
+  "background": "#15171E",
+  "items": [
+    {
+      "slug": "tripod-sweep",
+      "names": [
+        "트라이포드",
+        "트라이팟 스윕"
+      ],
+      "url": "/technique-illustrations/set-01/tripod-sweep.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "de-la-riva-guard",
+      "names": [
+        "델라리바",
+        "델라히바 가드"
+      ],
+      "url": "/technique-illustrations/set-01/de-la-riva-guard.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "knee-slide",
+      "names": [
+        "니슬라이드"
+      ],
+      "url": "/technique-illustrations/set-01/knee-slide.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "toreando-pass",
+      "names": [
+        "토레안도",
+        "토레안도 패스"
+      ],
+      "url": "/technique-illustrations/set-01/toreando-pass.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "lasso-guard",
+      "names": [
+        "라쏘",
+        "라쏘 가드"
+      ],
+      "url": "/technique-illustrations/set-01/lasso-guard.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "spider-guard",
+      "names": [
+        "스파이더",
+        "스파이더 가드"
+      ],
+      "url": "/technique-illustrations/set-01/spider-guard.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "rear-naked-choke",
+      "names": [
+        "리어네이키드 초크",
+        "리어 네이키드 초크",
+        "니어네이키트 쵸크"
+      ],
+      "url": "/technique-illustrations/set-01/rear-naked-choke.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "x-guard",
+      "names": [
+        "엑스가드",
+        "X 가드"
+      ],
+      "url": "/technique-illustrations/set-01/x-guard.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "straight-ankle-lock",
+      "names": [
+        "앵클락",
+        "스트레이트 앵클락"
+      ],
+      "url": "/technique-illustrations/set-01/straight-ankle-lock.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "reverse-x-guard",
+      "names": [
+        "리버스 엑스가드"
+      ],
+      "url": "/technique-illustrations/set-01/reverse-x-guard.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "x-guard-sweep",
+      "names": [
+        "엑스가드 스윕"
+      ],
+      "url": "/technique-illustrations/set-01/x-guard-sweep.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "back-take",
+      "names": [
+        "백테이크",
+        "백 테이크"
+      ],
+      "url": "/technique-illustrations/set-01/back-take.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "scissors-sweep",
+      "names": [
+        "시저스 스윕"
+      ],
+      "url": "/technique-illustrations/set-01/scissors-sweep.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "triangle-choke",
+      "names": [
+        "트라이앵글 쵸크",
+        "트라이앵글 초크"
+      ],
+      "url": "/technique-illustrations/set-01/triangle-choke.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "single-leg-x-guard",
+      "names": [
+        "싱글엑스",
+        "싱글 레그 X 가드"
+      ],
+      "url": "/technique-illustrations/set-01/single-leg-x-guard.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "double-leg-takedown",
+      "names": [
+        "더블렉",
+        "더블 레그 테이크다운"
+      ],
+      "url": "/technique-illustrations/set-01/double-leg-takedown.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "sweep",
+      "names": [
+        "스윕"
+      ],
+      "url": "/technique-illustrations/set-01/sweep.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "takedown",
+      "names": [
+        "테이크다운"
+      ],
+      "url": "/technique-illustrations/set-01/takedown.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "k-guard",
+      "names": [
+        "k가드",
+        "K 가드"
+      ],
+      "url": "/technique-illustrations/set-01/k-guard.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "choi-bar",
+      "names": [
+        "초이(choi) 바",
+        "초이바"
+      ],
+      "url": "/technique-illustrations/set-01/choi-bar.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "back-control",
+      "names": [
+        "백 컨트롤"
+      ],
+      "url": "/technique-illustrations/set-01/back-control.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "guard-pass",
+      "names": [
+        "가드패스",
+        "가드 패스"
+      ],
+      "url": "/technique-illustrations/set-01/guard-pass.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "deep-half-guard",
+      "names": [
+        "딥 하프가드",
+        "딥 하프 가드"
+      ],
+      "url": "/technique-illustrations/set-01/deep-half-guard.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "open-guard",
+      "names": [
+        "오픈가드",
+        "오픈 가드"
+      ],
+      "url": "/technique-illustrations/set-01/open-guard.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "half-guard",
+      "names": [
+        "하프가드",
+        "하프 가드"
+      ],
+      "url": "/technique-illustrations/set-01/half-guard.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "combat-guard",
+      "names": [
+        "컴뱃가드"
+      ],
+      "url": "/technique-illustrations/set-01/combat-guard.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "armbar",
+      "names": [
+        "암바"
+      ],
+      "url": "/technique-illustrations/set-01/armbar.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "mount",
+      "names": [
+        "마운트"
+      ],
+      "url": "/technique-illustrations/set-01/mount.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "waiter-guard",
+      "names": [
+        "웨이터 가드"
+      ],
+      "url": "/technique-illustrations/set-01/waiter-guard.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "loop-choke",
+      "names": [
+        "루프 쵸크",
+        "루프 초크"
+      ],
+      "url": "/technique-illustrations/set-01/loop-choke.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "sit-up-guard",
+      "names": [
+        "싯팅 가드",
+        "싯업 가드"
+      ],
+      "url": "/technique-illustrations/set-01/sit-up-guard.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "escape",
+      "names": [
+        "탈출",
+        "이스케이프"
+      ],
+      "url": "/technique-illustrations/set-01/escape.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "canto-choke",
+      "names": [
+        "칸토 쵸크",
+        "칸토 초크"
+      ],
+      "url": "/technique-illustrations/set-01/canto-choke.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "cross-collar-choke",
+      "names": [
+        "깃 쵸크",
+        "크로스 칼라 초크"
+      ],
+      "url": "/technique-illustrations/set-01/cross-collar-choke.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "kimura",
+      "names": [
+        "기무라"
+      ],
+      "url": "/technique-illustrations/set-01/kimura.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "scarf-hold",
+      "names": [
+        "스카프홀드"
+      ],
+      "url": "/technique-illustrations/set-01/scarf-hold.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "side-control",
+      "names": [
+        "사이드",
+        "사이드 컨트롤"
+      ],
+      "url": "/technique-illustrations/set-01/side-control.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "baratoplata",
+      "names": [
+        "바라토플라타"
+      ],
+      "url": "/technique-illustrations/set-01/baratoplata.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "over-under",
+      "names": [
+        "싱글언더 패스",
+        "오버 언더"
+      ],
+      "url": "/technique-illustrations/set-01/over-under.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "keymaster-guard",
+      "names": [
+        "키마스터"
+      ],
+      "url": "/technique-illustrations/set-01/keymaster-guard.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "berimbolo",
+      "names": [
+        "베림보로",
+        "베림볼로"
+      ],
+      "url": "/technique-illustrations/set-01/berimbolo.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "matrix",
+      "names": [
+        "매트릭스"
+      ],
+      "url": "/technique-illustrations/set-01/matrix.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "butterfly-sweep",
+      "names": [
+        "버터플라이 스윕"
+      ],
+      "url": "/technique-illustrations/set-01/butterfly-sweep.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "omoplata",
+      "names": [
+        "오모플라타"
+      ],
+      "url": "/technique-illustrations/set-01/omoplata.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "sagi-oro-sweep",
+      "names": [
+        "사지오로"
+      ],
+      "url": "/technique-illustrations/set-01/sagi-oro-sweep.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "bow-and-arrow-choke",
+      "names": [
+        "보우 앤 애로우",
+        "보우앤로우 초크"
+      ],
+      "url": "/technique-illustrations/set-01/bow-and-arrow-choke.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "x-pass",
+      "names": [
+        "엑스패스",
+        "엑스 패스"
+      ],
+      "url": "/technique-illustrations/set-01/x-pass.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "crazy-dog-pass",
+      "names": [
+        "크레이지독 패스",
+        "크레이지 독 패스"
+      ],
+      "url": "/technique-illustrations/set-01/crazy-dog-pass.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "knee-cut",
+      "names": [
+        "니컷"
+      ],
+      "url": "/technique-illustrations/set-01/knee-cut.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "belly-down-armbar",
+      "names": [
+        "밸리다운"
+      ],
+      "url": "/technique-illustrations/set-01/belly-down-armbar.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "100-percent-sweep",
+      "names": [
+        "100퍼스윕"
+      ],
+      "url": "/technique-illustrations/set-01/100-percent-sweep.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "williams-guard",
+      "names": [
+        "윌리엄 가드"
+      ],
+      "url": "/technique-illustrations/set-01/williams-guard.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "worm-guard",
+      "names": [
+        "웜가드",
+        "웜 가드"
+      ],
+      "url": "/technique-illustrations/set-01/worm-guard.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "long-step",
+      "names": [
+        "롱스탭",
+        "롱스텝"
+      ],
+      "url": "/technique-illustrations/set-01/long-step.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "hugo-lock",
+      "names": [
+        "휴고락"
+      ],
+      "url": "/technique-illustrations/set-01/hugo-lock.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "quick-armbar",
+      "names": [
+        "퀵암바"
+      ],
+      "url": "/technique-illustrations/set-01/quick-armbar.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "peterson-roll",
+      "names": [
+        "피터슨 롤"
+      ],
+      "url": "/technique-illustrations/set-01/peterson-roll.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "kiss-of-dragon",
+      "names": [
+        "키스 오브 드래곤"
+      ],
+      "url": "/technique-illustrations/set-01/kiss-of-dragon.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "americana",
+      "names": [
+        "키락",
+        "아메리카나"
+      ],
+      "url": "/technique-illustrations/set-01/americana.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "standing",
+      "names": [
+        "스탠딩"
+      ],
+      "url": "/technique-illustrations/set-01/standing.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "single-leg-takedown",
+      "names": [
+        "싱글 레그 테이크다운"
+      ],
+      "url": "/technique-illustrations/set-01/single-leg-takedown.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "collar-drag",
+      "names": [
+        "칼라 드래그"
+      ],
+      "url": "/technique-illustrations/set-01/collar-drag.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "ankle-pick",
+      "names": [
+        "앵클 픽"
+      ],
+      "url": "/technique-illustrations/set-01/ankle-pick.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "inside-trip",
+      "names": [
+        "인사이드 트립"
+      ],
+      "url": "/technique-illustrations/set-01/inside-trip.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "outside-trip",
+      "names": [
+        "아웃사이드 트립"
+      ],
+      "url": "/technique-illustrations/set-01/outside-trip.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "break-fall",
+      "names": [
+        "낙법"
+      ],
+      "url": "/technique-illustrations/set-01/break-fall.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "closed-guard",
+      "names": [
+        "클로즈 가드"
+      ],
+      "url": "/technique-illustrations/set-01/closed-guard.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "knee-shield",
+      "names": [
+        "니실드"
+      ],
+      "url": "/technique-illustrations/set-01/knee-shield.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "butterfly-guard",
+      "names": [
+        "버터플라이 가드"
+      ],
+      "url": "/technique-illustrations/set-01/butterfly-guard.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "reverse-de-riva-guard",
+      "names": [
+        "리버스 델라히바 가드"
+      ],
+      "url": "/technique-illustrations/set-01/reverse-de-riva-guard.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "balloon-sweep",
+      "names": [
+        "벌룬 스윕"
+      ],
+      "url": "/technique-illustrations/set-01/balloon-sweep.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "coyote-guard",
+      "names": [
+        "코요테 가드"
+      ],
+      "url": "/technique-illustrations/set-01/coyote-guard.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "kimura-sweep",
+      "names": [
+        "기무라 스윕"
+      ],
+      "url": "/technique-illustrations/set-01/kimura-sweep.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "flower-sweep",
+      "names": [
+        "플라워 스윕"
+      ],
+      "url": "/technique-illustrations/set-01/flower-sweep.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "rubber-guard",
+      "names": [
+        "러버 가드"
+      ],
+      "url": "/technique-illustrations/set-01/rubber-guard.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "foot-sweep",
+      "names": [
+        "풋 스윕"
+      ],
+      "url": "/technique-illustrations/set-01/foot-sweep.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "z-guard",
+      "names": [
+        "Z 가드"
+      ],
+      "url": "/technique-illustrations/set-01/z-guard.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "collar-and-sleeve-guard",
+      "names": [
+        "칼라 앤 슬리브 가드"
+      ],
+      "url": "/technique-illustrations/set-01/collar-and-sleeve-guard.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "deep-de-riva-guard",
+      "names": [
+        "딥 델라히바 가드"
+      ],
+      "url": "/technique-illustrations/set-01/deep-de-riva-guard.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "lapel-guard",
+      "names": [
+        "라펠 가드"
+      ],
+      "url": "/technique-illustrations/set-01/lapel-guard.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "octopus-guard",
+      "names": [
+        "옥토퍼스 가드"
+      ],
+      "url": "/technique-illustrations/set-01/octopus-guard.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "wrestle-up",
+      "names": [
+        "레슬업"
+      ],
+      "url": "/technique-illustrations/set-01/wrestle-up.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "inverted-guard",
+      "names": [
+        "인버티드 가드"
+      ],
+      "url": "/technique-illustrations/set-01/inverted-guard.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "john-wayne-sweep",
+      "names": [
+        "존 웨인 스윕"
+      ],
+      "url": "/technique-illustrations/set-01/john-wayne-sweep.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "lumberjack-sweep",
+      "names": [
+        "럼버잭스윕"
+      ],
+      "url": "/technique-illustrations/set-01/lumberjack-sweep.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "guard-recovery",
+      "names": [
+        "가드 리커버리"
+      ],
+      "url": "/technique-illustrations/set-01/guard-recovery.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "hip-bump-sweep",
+      "names": [
+        "힙 범프 스윕"
+      ],
+      "url": "/technique-illustrations/set-01/hip-bump-sweep.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "pendulum-sweep",
+      "names": [
+        "펜듈럼 스윕"
+      ],
+      "url": "/technique-illustrations/set-01/pendulum-sweep.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "technical-stand-up",
+      "names": [
+        "테크니컬 스탠드업"
+      ],
+      "url": "/technique-illustrations/set-01/technical-stand-up.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "waiter-sweep",
+      "names": [
+        "웨이터 스윕"
+      ],
+      "url": "/technique-illustrations/set-01/waiter-sweep.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "shin-to-shin-guard",
+      "names": [
+        "신투신 가드"
+      ],
+      "url": "/technique-illustrations/set-01/shin-to-shin-guard.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "squid-guard",
+      "names": [
+        "스퀴드 가드"
+      ],
+      "url": "/technique-illustrations/set-01/squid-guard.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "guard",
+      "names": [
+        "가드"
+      ],
+      "url": "/technique-illustrations/set-01/guard.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "leg-drag",
+      "names": [
+        "레그 드래그"
+      ],
+      "url": "/technique-illustrations/set-01/leg-drag.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "pressure-pass",
+      "names": [
+        "압박 패스"
+      ],
+      "url": "/technique-illustrations/set-01/pressure-pass.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "stack-pass",
+      "names": [
+        "스택 패스"
+      ],
+      "url": "/technique-illustrations/set-01/stack-pass.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "leg-weave",
+      "names": [
+        "레그 위브"
+      ],
+      "url": "/technique-illustrations/set-01/leg-weave.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "smash-pass",
+      "names": [
+        "스매시 패스"
+      ],
+      "url": "/technique-illustrations/set-01/smash-pass.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "double-under",
+      "names": [
+        "더블 언더"
+      ],
+      "url": "/technique-illustrations/set-01/double-under.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "gator-roll",
+      "names": [
+        "게이터 롤"
+      ],
+      "url": "/technique-illustrations/set-01/gator-roll.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "back-step",
+      "names": [
+        "백 스텝"
+      ],
+      "url": "/technique-illustrations/set-01/back-step.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "lapel-pass",
+      "names": [
+        "라펠 패스"
+      ],
+      "url": "/technique-illustrations/set-01/lapel-pass.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "shin-trap",
+      "names": [
+        "신 트랩"
+      ],
+      "url": "/technique-illustrations/set-01/shin-trap.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "surfer-pass",
+      "names": [
+        "서퍼 패스"
+      ],
+      "url": "/technique-illustrations/set-01/surfer-pass.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "duck-under",
+      "names": [
+        "덕 언더"
+      ],
+      "url": "/technique-illustrations/set-01/duck-under.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "wiper",
+      "names": [
+        "와이퍼"
+      ],
+      "url": "/technique-illustrations/set-01/wiper.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "turtle",
+      "names": [
+        "터틀"
+      ],
+      "url": "/technique-illustrations/set-01/turtle.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "knee-on-belly",
+      "names": [
+        "니온밸리"
+      ],
+      "url": "/technique-illustrations/set-01/knee-on-belly.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "headquarters-position",
+      "names": [
+        "헤드쿼터 포지션"
+      ],
+      "url": "/technique-illustrations/set-01/headquarters-position.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "arm-drag",
+      "names": [
+        "암 드래그"
+      ],
+      "url": "/technique-illustrations/set-01/arm-drag.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "under-hook",
+      "names": [
+        "언더훅"
+      ],
+      "url": "/technique-illustrations/set-01/under-hook.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "front-headlock",
+      "names": [
+        "프론트 헤드락"
+      ],
+      "url": "/technique-illustrations/set-01/front-headlock.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "fifty-fifty-position",
+      "names": [
+        "50 대 50 포지션"
+      ],
+      "url": "/technique-illustrations/set-01/fifty-fifty-position.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "ashi-garami",
+      "names": [
+        "아시 가라미"
+      ],
+      "url": "/technique-illustrations/set-01/ashi-garami.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "north-south-position",
+      "names": [
+        "남북 포지션"
+      ],
+      "url": "/technique-illustrations/set-01/north-south-position.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "saddle-position",
+      "names": [
+        "새들 포지션"
+      ],
+      "url": "/technique-illustrations/set-01/saddle-position.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "s-mount",
+      "names": [
+        "S 마운트"
+      ],
+      "url": "/technique-illustrations/set-01/s-mount.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "truck",
+      "names": [
+        "트럭"
+      ],
+      "url": "/technique-illustrations/set-01/truck.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "crucifix",
+      "names": [
+        "크루시픽스"
+      ],
+      "url": "/technique-illustrations/set-01/crucifix.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "body-lock",
+      "names": [
+        "바디락"
+      ],
+      "url": "/technique-illustrations/set-01/body-lock.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "cross-collar-control",
+      "names": [
+        "크로스 칼라 컨트롤"
+      ],
+      "url": "/technique-illustrations/set-01/cross-collar-control.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "outside-ashi-garami",
+      "names": [
+        "아웃사이드 아시 가라미"
+      ],
+      "url": "/technique-illustrations/set-01/outside-ashi-garami.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "two-on-one",
+      "names": [
+        "투 온 원"
+      ],
+      "url": "/technique-illustrations/set-01/two-on-one.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "snap-down",
+      "names": [
+        "스냅 다운"
+      ],
+      "url": "/technique-illustrations/set-01/snap-down.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "straight-collar-control",
+      "names": [
+        "스트레이트 칼라 컨트롤"
+      ],
+      "url": "/technique-illustrations/set-01/straight-collar-control.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "crab-ride",
+      "names": [
+        "크랩 라이드"
+      ],
+      "url": "/technique-illustrations/set-01/crab-ride.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "sprawl",
+      "names": [
+        "스프롤"
+      ],
+      "url": "/technique-illustrations/set-01/sprawl.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "high-mount",
+      "names": [
+        "하이 마운트"
+      ],
+      "url": "/technique-illustrations/set-01/high-mount.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "honey-hole",
+      "names": [
+        "허니 홀"
+      ],
+      "url": "/technique-illustrations/set-01/honey-hole.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "backside-fifty-fifty",
+      "names": [
+        "백사이드 50/50"
+      ],
+      "url": "/technique-illustrations/set-01/backside-fifty-fifty.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "inside-ashi-garami",
+      "names": [
+        "인사이드 아시 가라미"
+      ],
+      "url": "/technique-illustrations/set-01/inside-ashi-garami.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "lockdown",
+      "names": [
+        "락다운"
+      ],
+      "url": "/technique-illustrations/set-01/lockdown.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "seat-belt-grip",
+      "names": [
+        "싯벨트 그립"
+      ],
+      "url": "/technique-illustrations/set-01/seat-belt-grip.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "three-quarter-mount",
+      "names": [
+        "3/4 마운트"
+      ],
+      "url": "/technique-illustrations/set-01/three-quarter-mount.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "foot-work",
+      "names": [
+        "풋 워크"
+      ],
+      "url": "/technique-illustrations/set-01/foot-work.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "entry",
+      "names": [
+        "엔트리"
+      ],
+      "url": "/technique-illustrations/set-01/entry.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "darce-choke",
+      "names": [
+        "다스 초크"
+      ],
+      "url": "/technique-illustrations/set-01/darce-choke.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "knee-bar",
+      "names": [
+        "니바"
+      ],
+      "url": "/technique-illustrations/set-01/knee-bar.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "guillotine-choke",
+      "names": [
+        "길로틴 초크"
+      ],
+      "url": "/technique-illustrations/set-01/guillotine-choke.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "heel-hook",
+      "names": [
+        "힐훅"
+      ],
+      "url": "/technique-illustrations/set-01/heel-hook.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "toe-hold",
+      "names": [
+        "토홀드"
+      ],
+      "url": "/technique-illustrations/set-01/toe-hold.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "inside-heel-hook",
+      "names": [
+        "인사이드 힐훅"
+      ],
+      "url": "/technique-illustrations/set-01/inside-heel-hook.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "arm-triangle",
+      "names": [
+        "암 트라이앵글"
+      ],
+      "url": "/technique-illustrations/set-01/arm-triangle.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "wrist-lock",
+      "names": [
+        "리스트 락"
+      ],
+      "url": "/technique-illustrations/set-01/wrist-lock.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "ezekiel-choke",
+      "names": [
+        "이제키엘 초크"
+      ],
+      "url": "/technique-illustrations/set-01/ezekiel-choke.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "banana-split",
+      "names": [
+        "바나나 스플릿"
+      ],
+      "url": "/technique-illustrations/set-01/banana-split.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "baseball-bat-choke",
+      "names": [
+        "베이스볼 초크"
+      ],
+      "url": "/technique-illustrations/set-01/baseball-bat-choke.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "calf-slicer",
+      "names": [
+        "카프 슬라이서"
+      ],
+      "url": "/technique-illustrations/set-01/calf-slicer.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "flying-armbar",
+      "names": [
+        "플라잉 암바"
+      ],
+      "url": "/technique-illustrations/set-01/flying-armbar.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "tarikoplata",
+      "names": [
+        "타리코플라타"
+      ],
+      "url": "/technique-illustrations/set-01/tarikoplata.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "anaconda-choke",
+      "names": [
+        "아나콘다 초크"
+      ],
+      "url": "/technique-illustrations/set-01/anaconda-choke.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "brabo-choke",
+      "names": [
+        "브라보 초크"
+      ],
+      "url": "/technique-illustrations/set-01/brabo-choke.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "clock-choke",
+      "names": [
+        "클락 초크"
+      ],
+      "url": "/technique-illustrations/set-01/clock-choke.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "gogoplata",
+      "names": [
+        "고고플라타"
+      ],
+      "url": "/technique-illustrations/set-01/gogoplata.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "north-south-choke",
+      "names": [
+        "노스 사우스 초크"
+      ],
+      "url": "/technique-illustrations/set-01/north-south-choke.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "buggy-choke",
+      "names": [
+        "버기 초크"
+      ],
+      "url": "/technique-illustrations/set-01/buggy-choke.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "twister",
+      "names": [
+        "트위스터"
+      ],
+      "url": "/technique-illustrations/set-01/twister.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "aoki-lock",
+      "names": [
+        "아오키 락"
+      ],
+      "url": "/technique-illustrations/set-01/aoki-lock.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "estima-lock",
+      "names": [
+        "에스티마 락"
+      ],
+      "url": "/technique-illustrations/set-01/estima-lock.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "paper-cutter-choke",
+      "names": [
+        "페이퍼 커터 초크"
+      ],
+      "url": "/technique-illustrations/set-01/paper-cutter-choke.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "peruvian-necktie",
+      "names": [
+        "페루비안 넥타이"
+      ],
+      "url": "/technique-illustrations/set-01/peruvian-necktie.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "z-lock",
+      "names": [
+        "Z 락"
+      ],
+      "url": "/technique-illustrations/set-01/z-lock.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "bicep-slicer",
+      "names": [
+        "바이셉 슬라이서"
+      ],
+      "url": "/technique-illustrations/set-01/bicep-slicer.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "outside-heel-hook",
+      "names": [
+        "아웃사이드 힐훅"
+      ],
+      "url": "/technique-illustrations/set-01/outside-heel-hook.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "von-flue-choke",
+      "names": [
+        "폰 플루 초크"
+      ],
+      "url": "/technique-illustrations/set-01/von-flue-choke.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "coyote-armbar",
+      "names": [
+        "코요테 암바"
+      ],
+      "url": "/technique-illustrations/set-01/coyote-armbar.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "choke",
+      "names": [
+        "초크"
+      ],
+      "url": "/technique-illustrations/set-01/choke.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "counter",
+      "names": [
+        "카운터"
+      ],
+      "url": "/technique-illustrations/set-01/counter.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "submission",
+      "names": [
+        "서브미션"
+      ],
+      "url": "/technique-illustrations/set-01/submission.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "back-mount",
+      "names": [
+        "백 마운트"
+      ],
+      "url": "/technique-illustrations/set-01/back-mount.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    },
+    {
+      "slug": "foot-lock",
+      "names": [
+        "풋락"
+      ],
+      "url": "/technique-illustrations/set-01/foot-lock.webp",
+      "width": 512,
+      "height": 512,
+      "status": "ready"
+    }
+  ]
+}

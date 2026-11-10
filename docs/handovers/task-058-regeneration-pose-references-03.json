@@ -1,0 +1,724 @@
+{
+  "schema_version": 1,
+  "task_id": "task-058",
+  "status": "all_10_job_specs_ready",
+  "execution_tool": "Codex; built-in view_image in batch04; CUA public YouTube discovery",
+  "updatedAt": "2026-11-10T12:17:37.752Z",
+  "ownedFile": "docs/handovers/task-058-regeneration-pose-references-03.json",
+  "sourceReview": "docs/handovers/task-058-image-review-batch-04.json",
+  "expected_count": 10,
+  "summary": {
+    "jobSpecEntries": 10,
+    "readyForGeneration": 10,
+    "requiresOfficialFrames": [],
+    "selectedOfficialFrames": 4,
+    "officialFramesOpenedWithViewImage": 4,
+    "unusedTrialFramesExcluded": true,
+    "existingRawHashesVerified": 10,
+    "existingPoseHashesPreviouslyVerified": 7
+  },
+  "globalConstraints": [
+    "Exactly two neutral adult fictional characters: black hair and brown eyes with WHITE jacket and both WHITE trouser legs; white hair and blue eyes with BLUE jacket and both BLUE trouser legs. Both brown belts.",
+    "Whole-actor color-role swaps are allowed only when continuous across torso, sleeves, both trouser legs and hair identity.",
+    "Neutral portrait is STYLE ONLY and must not dictate the technical pose.",
+    "A ready job spec is preparation for a candidate, not proof that a new corrected PNG is technically verified or user approved.",
+    "No image generation, image editing, registry/public/code/DB/history edits or approval performed.",
+    "For missing official frames use CUA-visible public player stills only; no media download or access-limit bypass."
+  ],
+  "items": [
+    {
+      "slug": "s-mount",
+      "name": "S 마운트",
+      "reviewResult": "REGENERATE",
+      "reviewPNG_SHA256": "5d96409f5d4d3999b52868ae063a927571abe8dd9550cfd199810360ea4c5ac9",
+      "mode": "single_local_edit",
+      "readyForGeneration": true,
+      "editTarget": {
+        "localFile": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/s-mount-v1.png",
+        "sha256": "5d96409f5d4d3999b52868ae063a927571abe8dd9550cfd199810360ea4c5ac9",
+        "version": 1
+      },
+      "singleError": true,
+      "singleChange": "Recolor ONLY the horizontal forearm sleeve of the blue defender arm crossing the white controller chest from white to blue. Trace it from the already-blue upper arm to the same hand touching the white upper arm. Preserve the exact arm geometry, hands, asymmetric S-mount legs, faces, framing, shadows, neutral expressions and transparent background. Do not add or remove a limb. Keep the two white controller arms white.",
+      "preserve": [
+        "Existing asymmetric S-mount legs and white knee beside the head",
+        "All joint geometry, hands, faces and framing",
+        "Blue defender sleeve continuity; white controller arms remain white"
+      ],
+      "failure": "S마운트의 비대칭 다리 배치는 보이지만 파랑이 흰 상완을 잡는 팔의 가로 전완이 흰 소매로 이어져, 같은 수비자 팔의 소속이 섞입니다.",
+      "keyChecks": [
+        "The two white legs have an asymmetric S arrangement",
+        "One white knee is high beside blue's head",
+        "The image remains a control position before an armbar finish"
+      ],
+      "correctionPromptEnglish": "Recolor ONLY the horizontal forearm sleeve of the blue defender arm crossing the white controller chest from white to blue. Trace it from the already-blue upper arm to the same hand touching the white upper arm. Preserve the exact arm geometry, hands, asymmetric S-mount legs, faces, framing, shadows, neutral expressions and transparent background. Do not add or remove a limb. Keep the two white controller arms white.",
+      "existingPoseReferences": [
+        {
+          "localFile": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/references/s-mount.webp",
+          "sha256": "840684052d6dcc0afc0341527b065dc1b9006b66adc4690af615e85782e305b5",
+          "sourceKind": "previously supplied source-site clay pose",
+          "sourceURL": null,
+          "timestamp": null,
+          "previouslyDirectlyInspectedIn": "docs/handovers/task-058-image-review-batch-04.json",
+          "newImageCopy": false,
+          "mechanicalLimit": "The cached clay pose is not proof of a correct hidden contact; do not reproduce the reviewed defect."
+        }
+      ],
+      "styleReference": {
+        "localFile": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/style-guides/neutral-portraits-v1.png",
+        "sha256": "861ad8775f2697dc451d5f764a49655e5c78ddb2ada79d3f44a6f2905fa1ba16",
+        "purpose": "Fictional identities and rendering only; no technical pose"
+      },
+      "actualOfficialFrame": null,
+      "poseVerified": false,
+      "poseVerificationMeaning": "No new corrected pose or new official frame is claimed verified by this job-spec draft. Existing raw and clay references were directly inspected in batch04.",
+      "hiddenLimits": "Preserve natural occlusion outside the defining correction. Do not force every limb into view.",
+      "postGenerationChecks": [
+        "Directly inspect the actual new PNG at the recorded SHA",
+        "Verify the defining corrected contact and continuous limb/garment ownership",
+        "Preserve neutral faces and the same approved 2.5D character identities",
+        "Parent alone handles registry promotion; this file is not approval"
+      ],
+      "holdReason": null,
+      "recommendedInputOrder": [
+        "editTarget",
+        "styleReference"
+      ]
+    },
+    {
+      "slug": "truck",
+      "name": "트럭",
+      "reviewResult": "KEY_CONTACT_UNCONFIRMED",
+      "reviewPNG_SHA256": "02acca9705e635265dc7fa7262bd565e0902e9ba40139426f3d7d20d13f230d9",
+      "mode": "official_frame_pose_rebuild",
+      "readyForGeneration": true,
+      "editTarget": {
+        "localFile": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/truck-v1.png",
+        "sha256": "02acca9705e635265dc7fa7262bd565e0902e9ba40139426f3d7d20d13f230d9",
+        "version": 1
+      },
+      "singleError": false,
+      "singleChange": null,
+      "preserve": [
+        "Exact selected source body relationship, camera and visible key contacts",
+        "Only the approved two adult characters with complete continuous gi-color ownership",
+        "Natural occlusion not involved in the defining contact"
+      ],
+      "failure": "흰색의 뒤·옆 골반 위치와 벨트 접점은 보이지만, 트럭을 구별하는 포획 다리의 얽힘과 반대 다리 통제는 이 장면에서 충분히 읽히지 않습니다. 느슨한 뒤쪽 힙 라이드와 구분이 약합니다.",
+      "keyChecks": [
+        "The controller remains behind and beside the partner hip line with connected hips.",
+        "The controller two legs lace and close around the SAME partner leg; the second partner leg remains distinct.",
+        "Preserve the actual free/partly occluded hand positions and neutral neck; no invented far-ankle grip or twister finish."
+      ],
+      "correctionPromptEnglish": "Redraw the supplied 1:45 official truck still as one calm practice scene. Map the camouflage-clad reclining instructor to white gi and the other athlete to blue gi, preserving both complete bodies and every leg route. White stays behind the blue hips; the white legs lace and close around the same blue leg as shown, while the other blue leg remains separate. Preserve the source elevated-hip camera and the naturally gesturing or obscured hands. Do not invent a far-ankle grip, belt-only hip ride, neck twist, or a different seated back-control pose.",
+      "existingPoseReferences": [],
+      "styleReference": {
+        "localFile": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/style-guides/neutral-portraits-v1.png",
+        "sha256": "861ad8775f2697dc451d5f764a49655e5c78ddb2ada79d3f44a6f2905fa1ba16",
+        "purpose": "Fictional identities and rendering only; no technical pose"
+      },
+      "actualOfficialFrame": {
+        "sourceURL": "https://www.youtube.com/watch?v=YqlKl-La88s",
+        "timestampSeconds": 105,
+        "timestampedURL": "https://www.youtube.com/watch?v=YqlKl-La88s&t=105s",
+        "playerEntryURL": "https://www.youtube.com/watch?v=YqlKl-La88s&t=105s",
+        "title": "Mastering the Truck",
+        "channel": "10th Planet Newport",
+        "channelURL": "https://www.youtube.com/@10PSharks",
+        "presenter": "Nathan Wallner",
+        "localFile": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/regen03-truck-newport-final.jpg",
+        "sha256": "38c0217fdc22425e1750013ad56321abc5aa29effa6a670f90dba665038025d3",
+        "width": 866,
+        "height": 487,
+        "captureMethod": "CUA visible public-player JPEG screenshot, native Pause-button click, player in viewport; no media download",
+        "videoPaused": true,
+        "videoReadyState": 4,
+        "directlyOpenedWithViewImage": true,
+        "copiedToRepository": false
+      },
+      "poseVerified": true,
+      "poseVerificationMeaning": "The selected official still was visibly captured in CUA with video paused and readyState 4, then opened directly with built-in view_image. Verification covers the visible representative geometry and the limits below, not a new generated output or hidden contacts.",
+      "hiddenLimits": "The instructor gestures with the near hand and the other hand is partly occluded. This still verifies the hip and leg-lacing structure, not a visible far-ankle hand grip or the complete submission sequence.",
+      "postGenerationChecks": [
+        "Directly inspect the actual new PNG at the recorded SHA",
+        "Verify the defining corrected contact and continuous limb/garment ownership",
+        "Preserve neutral faces and the same approved 2.5D character identities",
+        "Parent alone handles registry promotion; this file is not approval"
+      ],
+      "holdReason": null,
+      "correctedOutputPoseVerified": false,
+      "actor": "white",
+      "representative": true,
+      "representativeVariant": "Supine elevated-hips truck control demonstrated while the instructor gestures.",
+      "recommendedInputOrder": [
+        "actualOfficialFrame.localFile as authoritative visible POSE input",
+        "styleReference.localFile as identities/rendering ONLY"
+      ],
+      "editTargetUsage": "Previous failed PNG is a failure counterexample only; do not feed it as the positive pose to a full rebuild.",
+      "priorGuidanceClarification": "관장 보완안의 far-leg hand control을 이 프레임에 보인다고 주장하지 않습니다. 공식 시범의 설명 중 트럭 대표 자세는 다리 얽힘으로 정체성을 보존하며 손은 원본처럼 자유/가림 상태로 둡니다."
+    },
+    {
+      "slug": "outside-ashi-garami",
+      "name": "아웃사이드 아시 가라미",
+      "reviewResult": "KEY_CONTACT_UNCONFIRMED",
+      "reviewPNG_SHA256": "4546c1d0ebd8e4b259436c6321183f2321877ce2d97e205a35d5fc9b81583431",
+      "mode": "official_frame_pose_rebuild",
+      "readyForGeneration": true,
+      "editTarget": {
+        "localFile": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/outside-ashi-garami-v1.png",
+        "sha256": "4546c1d0ebd8e4b259436c6321183f2321877ce2d97e205a35d5fc9b81583431",
+        "version": 1
+      },
+      "singleError": false,
+      "singleChange": null,
+      "preserve": [
+        "Exact selected source body relationship, camera and visible key contacts",
+        "Only the approved two adult characters with complete continuous gi-color ownership",
+        "Natural occlusion not involved in the defining contact"
+      ],
+      "failure": "파랑이 같은 흰 다리를 잡은 것은 보이지만 두 다리가 모두 포획 허벅지의 바깥 라인에 놓였는지 충분히 구별되지 않아 기본 아시와의 차이가 약합니다. 실제 입력에는 포즈 원본이 없어 지침의 selected reference 확인을 수행했다고 할 수 없습니다.",
+      "keyChecks": [
+        "Map the red-shirt bottom leg controller to blue and the white-shirt standing partner to white, with full gi-color ownership.",
+        "Both blue leg routes remain around the OUTSIDE of the same captured white thigh, preserving the source ankle crossing and raised hip angle.",
+        "The other white leg stays grounded and outside; white may touch the blue feet defensively, without adding a heel-hook finish."
+      ],
+      "correctionPromptEnglish": "Reproduce the actual outside-ashi arrangement in the supplied Giancarlo Bodoni frame at 2:01.208. Map the red-shirt athlete on the back to blue gi and the upright white-shirt athlete to white gi. Keep the blue hips raised as shown and trace both blue legs around the OUTSIDE of the same white thigh, retaining the source ankle crossing and its partly covered junction. Keep the other white leg separately grounded. White may hold the blue feet as demonstrated defensively. Do not substitute ordinary straight ashi, reverse the captured leg, or invent a heel-hook grip.",
+      "existingPoseReferences": [],
+      "styleReference": {
+        "localFile": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/style-guides/neutral-portraits-v1.png",
+        "sha256": "861ad8775f2697dc451d5f764a49655e5c78ddb2ada79d3f44a6f2905fa1ba16",
+        "purpose": "Fictional identities and rendering only; no technical pose"
+      },
+      "actualOfficialFrame": {
+        "sourceURL": "https://www.youtube.com/watch?v=teDSp8uxRps",
+        "timestampSeconds": 121.208195,
+        "timestampedURL": "https://www.youtube.com/watch?v=teDSp8uxRps&t=121.208195s",
+        "playerEntryURL": "https://www.youtube.com/watch?v=teDSp8uxRps&t=20s",
+        "title": "Outside Ashi Stack Standing by Giancarlo Bodoni",
+        "channel": "BJJ Fanatics",
+        "channelURL": "https://www.youtube.com/@BJJ.Fanatics",
+        "presenter": "Giancarlo Bodoni",
+        "localFile": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/regen03-outside-ashi-bodoni-final.jpg",
+        "sha256": "d21f8261dee7b4495f63ac9b399b97a3df2ed2fb40cfdcbd1a7e876912715005",
+        "width": 866,
+        "height": 487,
+        "captureMethod": "CUA visible public-player JPEG screenshot, native Pause-button click, player in viewport; no media download",
+        "videoPaused": true,
+        "videoReadyState": 4,
+        "directlyOpenedWithViewImage": true,
+        "copiedToRepository": false
+      },
+      "poseVerified": true,
+      "poseVerificationMeaning": "The selected official still was visibly captured in CUA with video paused and readyState 4, then opened directly with built-in view_image. Verification covers the visible representative geometry and the limits below, not a new generated output or hidden contacts.",
+      "hiddenLimits": "This is the entanglement shown during an outside-ashi escape lesson, not a promise of a secured finish. Hand overlap partly obscures one ankle; preserve that overlap. The actual captured time is 121.208195 seconds although the browser entry URL originally contained t=20s.",
+      "postGenerationChecks": [
+        "Directly inspect the actual new PNG at the recorded SHA",
+        "Verify the defining corrected contact and continuous limb/garment ownership",
+        "Preserve neutral faces and the same approved 2.5D character identities",
+        "Parent alone handles registry promotion; this file is not approval"
+      ],
+      "holdReason": null,
+      "correctedOutputPoseVerified": false,
+      "actor": "blue",
+      "representative": true,
+      "representativeVariant": "Outside-ashi held against an upright partner during a standing stack-defense demonstration.",
+      "recommendedInputOrder": [
+        "actualOfficialFrame.localFile as authoritative visible POSE input",
+        "styleReference.localFile as identities/rendering ONLY"
+      ],
+      "editTargetUsage": "Previous failed PNG is a failure counterexample only; do not feed it as the positive pose to a full rebuild."
+    },
+    {
+      "slug": "crab-ride",
+      "name": "크랩 라이드",
+      "reviewResult": "REGENERATE",
+      "reviewPNG_SHA256": "2936cec976e54453cca023288cd6c8f339ec8569fdeb0333e3747c9e692ea118",
+      "mode": "official_frame_pose_rebuild",
+      "readyForGeneration": true,
+      "editTarget": {
+        "localFile": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/crab-ride-v1.png",
+        "sha256": "2936cec976e54453cca023288cd6c8f339ec8569fdeb0333e3747c9e692ea118",
+        "version": 1
+      },
+      "singleError": false,
+      "singleChange": null,
+      "preserve": [
+        "Exact selected source body relationship, camera and visible key contacts",
+        "Only the approved two adult characters with complete continuous gi-color ownership",
+        "Natural occlusion not involved in the defining contact"
+      ],
+      "failure": "뒤쪽 힙 위치는 있으나 흰 발이 파란 무릎 뒤를 걸지 않고 앞 정강이에 놓여, 크랩 라이드의 낮은 뒤무릎 훅 대신 일반 백 컨트롤에 가까운 접점이 됩니다.",
+      "keyChecks": [
+        "White remains behind the blue hip line in the same tripoded body arrangement as the source.",
+        "The visible white instep supports behind the corresponding blue knee; retain the second hook route and its natural overlap.",
+        "Do not place white soles on the FRONT of blue shins; source background athletes, signs and floor are not part of the two-person illustration."
+      ],
+      "correctionPromptEnglish": "Match the supplied Espen Mathiesen crab-ride still at 3:00.203. Keep the white-gi athlete as the white controller and replace the dark-gi partner with the blue character. Preserve the controlled tripoded, inverted relationship rather than converting it to a seated back mount. Trace the visible white instep behind the matching blue knee and preserve the second low hook route under the naturally overlapping legs. Keep both white sleeves and trouser legs white and all blue limbs blue. Never rest the white soles on the fronts of the blue shins. Remove background athletes and all lettering.",
+      "existingPoseReferences": [],
+      "styleReference": {
+        "localFile": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/style-guides/neutral-portraits-v1.png",
+        "sha256": "861ad8775f2697dc451d5f764a49655e5c78ddb2ada79d3f44a6f2905fa1ba16",
+        "purpose": "Fictional identities and rendering only; no technical pose"
+      },
+      "actualOfficialFrame": {
+        "sourceURL": "https://www.youtube.com/watch?v=bbgHv3Awzkg",
+        "timestampSeconds": 180.202527,
+        "timestampedURL": "https://www.youtube.com/watch?v=bbgHv3Awzkg&t=180.202527s",
+        "playerEntryURL": "https://www.youtube.com/watch?v=bbgHv3Awzkg&t=180s",
+        "title": "Learn the Crab Ride w Espen Mathiesen",
+        "channel": "JonThomasBJJ",
+        "channelURL": "https://www.youtube.com/@JonThomasBJJ",
+        "presenter": "Espen Mathiesen",
+        "localFile": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/regen03-crab-espen-final.jpg",
+        "sha256": "66dfb6b7e71131b951723827272d2aab6ad8ae85e297e92e42c1da880e59ca9b",
+        "width": 866,
+        "height": 487,
+        "captureMethod": "CUA visible public-player JPEG screenshot, native Pause-button click, player in viewport; no media download",
+        "videoPaused": true,
+        "videoReadyState": 4,
+        "directlyOpenedWithViewImage": true,
+        "copiedToRepository": false
+      },
+      "poseVerified": true,
+      "poseVerificationMeaning": "The selected official still was visibly captured in CUA with video paused and readyState 4, then opened directly with built-in view_image. Verification covers the visible representative geometry and the limits below, not a new generated output or hidden contacts.",
+      "hiddenLimits": "The far hook is partly covered by the overlapping thighs. Verify its route only to the extent visible; do not claim both ankle contacts are exposed. The still establishes one demonstrated tripod variant and does not define every crab ride.",
+      "postGenerationChecks": [
+        "Directly inspect the actual new PNG at the recorded SHA",
+        "Verify the defining corrected contact and continuous limb/garment ownership",
+        "Preserve neutral faces and the same approved 2.5D character identities",
+        "Parent alone handles registry promotion; this file is not approval"
+      ],
+      "holdReason": null,
+      "correctedOutputPoseVerified": false,
+      "actor": "white",
+      "representative": true,
+      "representativeVariant": "Tripoded/inverted crab-ride demonstration; not ordinary seated back-control hooks.",
+      "recommendedInputOrder": [
+        "actualOfficialFrame.localFile as authoritative visible POSE input",
+        "styleReference.localFile as identities/rendering ONLY"
+      ],
+      "editTargetUsage": "Previous failed PNG is a failure counterexample only; do not feed it as the positive pose to a full rebuild."
+    },
+    {
+      "slug": "back-mount",
+      "name": "백 마운트",
+      "reviewResult": "KEY_CONTACT_UNCONFIRMED",
+      "reviewPNG_SHA256": "2fc99c6343ba9e250be002cf109a17f60aad579a5412ac32d8bf853e2cb30e95",
+      "mode": "targeted_contact_edit",
+      "readyForGeneration": true,
+      "editTarget": {
+        "localFile": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/back-mount-v1.png",
+        "sha256": "2fc99c6343ba9e250be002cf109a17f60aad579a5412ac32d8bf853e2cb30e95",
+        "version": 1
+      },
+      "singleError": false,
+      "singleChange": null,
+      "preserve": [
+        "Existing chest-to-back prone relationship",
+        "Whole white controller and blue defender identities",
+        "Natural far-side occlusion"
+      ],
+      "failure": "등 뒤 밀착과 엎드린 몸 관계는 맞지만, 드러난 흰 발이 파란 바깥 발목 가까이에 있어 요구된 힙·허벅지 안쪽 훅의 실제 연결은 충분히 읽히지 않습니다.",
+      "keyChecks": [
+        "White's chest remains behind blue's back",
+        "White's hooks control beside blue's hips",
+        "The different view does not invent a false distinction from back control"
+      ],
+      "correctionPromptEnglish": "Keep white chest-to-back behind the low prone or turtle blue partner. Make the near white instep hook visibly enter inside the blue hip or upper-thigh line, instead of leaving both white feet beside the OUTSIDE of the blue ankles. Retain a plausible far hook with natural occlusion; do not force every leg into view. Use a rear three-quarter hip-side camera so the defining back-mount leg attachment is clear without changing the torso relationship.",
+      "existingPoseReferences": [
+        {
+          "localFile": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/references/back-mount.webp",
+          "sha256": "144e8b92b56ee2daf32c25ec3c9596b452261391dc83045de90dec6e95c6dcb6",
+          "sourceKind": "previously supplied source-site clay pose",
+          "sourceURL": null,
+          "timestamp": null,
+          "previouslyDirectlyInspectedIn": "docs/handovers/task-058-image-review-batch-04.json",
+          "newImageCopy": false,
+          "mechanicalLimit": "The cached clay pose is not proof of a correct hidden contact; do not reproduce the reviewed defect."
+        }
+      ],
+      "styleReference": {
+        "localFile": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/style-guides/neutral-portraits-v1.png",
+        "sha256": "861ad8775f2697dc451d5f764a49655e5c78ddb2ada79d3f44a6f2905fa1ba16",
+        "purpose": "Fictional identities and rendering only; no technical pose"
+      },
+      "actualOfficialFrame": null,
+      "poseVerified": false,
+      "poseVerificationMeaning": "No new corrected pose or new official frame is claimed verified by this job-spec draft. Existing raw and clay references were directly inspected in batch04.",
+      "hiddenLimits": "Preserve natural occlusion outside the defining correction. Do not force every limb into view.",
+      "postGenerationChecks": [
+        "Directly inspect the actual new PNG at the recorded SHA",
+        "Verify the defining corrected contact and continuous limb/garment ownership",
+        "Preserve neutral faces and the same approved 2.5D character identities",
+        "Parent alone handles registry promotion; this file is not approval"
+      ],
+      "holdReason": null,
+      "recommendedInputOrder": [
+        "editTarget",
+        "existingPoseReferences only for preserved broad geometry; correction prompt overrides known defects",
+        "styleReference"
+      ]
+    },
+    {
+      "slug": "lockdown",
+      "name": "락다운",
+      "reviewResult": "KEY_CONTACT_UNCONFIRMED",
+      "reviewPNG_SHA256": "8cd668558d49bc9de3006796f84de39925c102a2a947cef29ce0bb502d0b48b4",
+      "mode": "targeted_contact_edit",
+      "readyForGeneration": true,
+      "editTarget": {
+        "localFile": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/lockdown-v1.png",
+        "sha256": "8cd668558d49bc9de3006796f84de39925c102a2a947cef29ce0bb502d0b48b4",
+        "version": 1
+      },
+      "singleError": false,
+      "singleChange": null,
+      "preserve": [
+        "Bottom blue half guard and white upper-body balance",
+        "Same captured white lower leg",
+        "Neutral trapped knee and natural upper-body occlusion"
+      ],
+      "failure": "하프 가드에서 같은 흰 하퇴를 두 파란 다리가 둘러싼 관계는 보이지만, 파란 발이 흰 발목·발등 아래를 받치고 반대 파란 발과 잠기는 락다운의 결정 접점이 겹침으로 충분히 읽히지 않습니다.",
+      "keyChecks": [
+        "Two blue legs lace around one white lower leg",
+        "Crossing feet can be traced to blue's hips",
+        "The trapped knee is not forced into an unnatural angle"
+      ],
+      "correctionPromptEnglish": "Keep blue in bottom half guard around one white lower leg. Show one blue instep scooping under the corresponding white ankle or instep, while the opposite blue foot locks the leg weave around that SAME white calf. Use a low rear three-quarter view of the ankles so the lockdown differs from merely crossing the blue ankles in half guard. Preserve white knee alignment and natural upper-body occlusion; do not add another foot or depict forced knee hyperextension.",
+      "existingPoseReferences": [
+        {
+          "localFile": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/references/lockdown.webp",
+          "sha256": "3449ffc7d90fd289140e3e8ce7e7af2e47537bf44f9ba58cfad0da603e8b982a",
+          "sourceKind": "previously supplied source-site clay pose",
+          "sourceURL": null,
+          "timestamp": null,
+          "previouslyDirectlyInspectedIn": "docs/handovers/task-058-image-review-batch-04.json",
+          "newImageCopy": false,
+          "mechanicalLimit": "The cached clay pose is not proof of a correct hidden contact; do not reproduce the reviewed defect."
+        }
+      ],
+      "styleReference": {
+        "localFile": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/style-guides/neutral-portraits-v1.png",
+        "sha256": "861ad8775f2697dc451d5f764a49655e5c78ddb2ada79d3f44a6f2905fa1ba16",
+        "purpose": "Fictional identities and rendering only; no technical pose"
+      },
+      "actualOfficialFrame": null,
+      "poseVerified": false,
+      "poseVerificationMeaning": "No new corrected pose or new official frame is claimed verified by this job-spec draft. Existing raw and clay references were directly inspected in batch04.",
+      "hiddenLimits": "Preserve natural occlusion outside the defining correction. Do not force every limb into view.",
+      "postGenerationChecks": [
+        "Directly inspect the actual new PNG at the recorded SHA",
+        "Verify the defining corrected contact and continuous limb/garment ownership",
+        "Preserve neutral faces and the same approved 2.5D character identities",
+        "Parent alone handles registry promotion; this file is not approval"
+      ],
+      "holdReason": null,
+      "recommendedInputOrder": [
+        "editTarget",
+        "existingPoseReferences only for preserved broad geometry; correction prompt overrides known defects",
+        "styleReference"
+      ]
+    },
+    {
+      "slug": "armbar",
+      "name": "암바",
+      "reviewResult": "REGENERATE",
+      "reviewPNG_SHA256": "ce1a69da114318561bd1e91895023ab3a7c718986a527d81e995d62afe1b71ab",
+      "mode": "targeted_pose_edit",
+      "readyForGeneration": true,
+      "editTarget": {
+        "localFile": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/armbar-v1.png",
+        "sha256": "ce1a69da114318561bd1e91895023ab3a7c718986a527d81e995d62afe1b71ab",
+        "version": 1
+      },
+      "singleError": false,
+      "singleChange": null,
+      "preserve": [
+        "Blue perpendicular seated controller and supine white defender",
+        "Both blue hands controlling the same white wrist",
+        "White free arm and legs remain naturally separate"
+      ],
+      "failure": "머리 쪽 파란 다리가 흰 얼굴 앞을 가로질러 고정하기보다 머리 뒤 받침처럼 놓이고, 제어한 팔꿈치는 파란 무릎에 가려 골반 받침 접점이 확인되지 않습니다. 입력 클레이와 닮았다는 것만으로 이 핵심 접점을 PASS로 볼 수 없습니다.",
+      "keyChecks": [
+        "Blue's hands control the same white wrist",
+        "White's elbow is visibly aligned over blue's hips",
+        "The two blue legs separately control head and upper torso"
+      ],
+      "correctionPromptEnglish": "Keep blue seated perpendicular to supine white, controlling the same white wrist with both hands. Move the head-side blue thigh clearly ACROSS the front head/face line, rather than only cradling the back of the head. Place the other blue leg across the upper torso. Use an oblique side view that exposes the captured white elbow resting over the blue hip fulcrum instead of hiding it behind a raised blue knee. Show neutral pre-extension alignment.",
+      "existingPoseReferences": [
+        {
+          "localFile": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/references/armbar.webp",
+          "sha256": "2ab9089cca4613cec076d3f02bbbd799bba4808d74d61be557f3e2a80c28900e",
+          "sourceKind": "previously supplied source-site clay pose",
+          "sourceURL": null,
+          "timestamp": null,
+          "previouslyDirectlyInspectedIn": "docs/handovers/task-058-image-review-batch-04.json",
+          "newImageCopy": false,
+          "mechanicalLimit": "The cached clay pose is not proof of a correct hidden contact; do not reproduce the reviewed defect."
+        }
+      ],
+      "styleReference": {
+        "localFile": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/style-guides/neutral-portraits-v1.png",
+        "sha256": "861ad8775f2697dc451d5f764a49655e5c78ddb2ada79d3f44a6f2905fa1ba16",
+        "purpose": "Fictional identities and rendering only; no technical pose"
+      },
+      "actualOfficialFrame": null,
+      "poseVerified": false,
+      "poseVerificationMeaning": "No new corrected pose or new official frame is claimed verified by this job-spec draft. Existing raw and clay references were directly inspected in batch04.",
+      "hiddenLimits": "Preserve natural occlusion outside the defining correction. Do not force every limb into view.",
+      "postGenerationChecks": [
+        "Directly inspect the actual new PNG at the recorded SHA",
+        "Verify the defining corrected contact and continuous limb/garment ownership",
+        "Preserve neutral faces and the same approved 2.5D character identities",
+        "Parent alone handles registry promotion; this file is not approval"
+      ],
+      "holdReason": null,
+      "recommendedInputOrder": [
+        "editTarget",
+        "existingPoseReferences only for preserved broad geometry; correction prompt overrides known defects",
+        "styleReference"
+      ]
+    },
+    {
+      "slug": "triangle-choke",
+      "name": "트라이앵글 초크",
+      "reviewResult": "KEY_CONTACT_UNCONFIRMED",
+      "reviewPNG_SHA256": "6a1724a7732cbc7273d741c348cbc57483613a350b56ca97d91bb5de14a58600",
+      "mode": "targeted_contact_edit",
+      "readyForGeneration": true,
+      "editTarget": {
+        "localFile": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/triangle-choke-v1.png",
+        "sha256": "6a1724a7732cbc7273d741c348cbc57483613a350b56ca97d91bb5de14a58600",
+        "version": 1
+      },
+      "singleError": false,
+      "singleChange": null,
+      "preserve": [
+        "Blue supine and white kneeling roles",
+        "One white arm inside and one outside the leg enclosure",
+        "Same two legs; no extra foot to fabricate the closure"
+      ],
+      "failure": "목과 한 팔을 다리 안에 두는 관계는 보이지만, 파란 잠금 발목이 반대 무릎 뒤에 들어가 닫힌 figure-four가 되는 접점은 높게 겹친 종아리·발로 인해 충분히 읽히지 않습니다.",
+      "keyChecks": [
+        "Exactly one white arm is inside the leg triangle",
+        "Blue's ankle locks behind the opposite blue knee",
+        "White's trapped shoulder and neck share the enclosed space"
+      ],
+      "correctionPromptEnglish": "Show the blue choking-leg ankle seated directly in the BACK OF the opposite blue knee crease, with that locking knee folded over the ankle. Do not merely cross the blue calves high above the head. Use a three-quarter view that exposes this single ankle-to-knee junction while keeping exactly one white arm and the neck inside the triangle and the other white arm outside. Preserve neutral posture and avoid adding another foot.",
+      "existingPoseReferences": [
+        {
+          "localFile": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/references/triangle-choke.webp",
+          "sha256": "7018e0d57e3aa5866f386fb6aa221d1e5c7c4945216a9284ff90bcb028253c5a",
+          "sourceKind": "previously supplied source-site clay pose",
+          "sourceURL": null,
+          "timestamp": null,
+          "previouslyDirectlyInspectedIn": "docs/handovers/task-058-image-review-batch-04.json",
+          "newImageCopy": false,
+          "mechanicalLimit": "The cached clay pose is not proof of a correct hidden contact; do not reproduce the reviewed defect."
+        }
+      ],
+      "styleReference": {
+        "localFile": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/style-guides/neutral-portraits-v1.png",
+        "sha256": "861ad8775f2697dc451d5f764a49655e5c78ddb2ada79d3f44a6f2905fa1ba16",
+        "purpose": "Fictional identities and rendering only; no technical pose"
+      },
+      "actualOfficialFrame": null,
+      "poseVerified": false,
+      "poseVerificationMeaning": "No new corrected pose or new official frame is claimed verified by this job-spec draft. Existing raw and clay references were directly inspected in batch04.",
+      "hiddenLimits": "Preserve natural occlusion outside the defining correction. Do not force every limb into view.",
+      "postGenerationChecks": [
+        "Directly inspect the actual new PNG at the recorded SHA",
+        "Verify the defining corrected contact and continuous limb/garment ownership",
+        "Preserve neutral faces and the same approved 2.5D character identities",
+        "Parent alone handles registry promotion; this file is not approval"
+      ],
+      "holdReason": null,
+      "recommendedInputOrder": [
+        "editTarget",
+        "existingPoseReferences only for preserved broad geometry; correction prompt overrides known defects",
+        "styleReference"
+      ]
+    },
+    {
+      "slug": "darce-choke",
+      "name": "다스 초크",
+      "reviewResult": "KEY_CONTACT_UNCONFIRMED",
+      "reviewPNG_SHA256": "e1b1c1d0a809ee7baad8e2258e60cce79863978d173c4f1c5e8f06e2ff7be27d",
+      "mode": "targeted_route_edit",
+      "readyForGeneration": true,
+      "editTarget": {
+        "localFile": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/darce-choke-v1.png",
+        "sha256": "e1b1c1d0a809ee7baad8e2258e60cce79863978d173c4f1c5e8f06e2ff7be27d",
+        "version": 1
+      },
+      "singleError": false,
+      "singleChange": null,
+      "preserve": [
+        "White above/beside kneeling blue",
+        "The same near blue upper arm within the head-arm enclosure",
+        "White own-biceps lock and natural distant occlusion"
+      ],
+      "failure": "흰색의 자기 상완 잠금은 보이나, 가까운 파란 겨드랑이를 먼저 통과하는 흰 팔 경로와 파란 상완이 목 쪽에 묶이는 결정 접점이 충분히 드러나지 않습니다. 정지 화면에서 다스와 일반 헤드락·아나콘다 경로를 확실히 구별하기 어렵습니다.",
+      "keyChecks": [
+        "The attacking arm enters beneath blue's armpit first",
+        "One blue arm remains trapped against the neck line",
+        "The biceps lock belongs entirely to white"
+      ],
+      "correctionPromptEnglish": "Use an armpit-side three-quarter camera. Show the white choking arm entering UNDER the near blue armpit before crossing the neck, with the same blue upper arm enclosed against the neck line. Show the choking hand emerging to grasp white own opposite biceps and the free forearm closing behind the head. Preserve natural occlusion elsewhere, but keep the armpit-first entry readable; do not replace it with a neck-first anaconda route.",
+      "existingPoseReferences": [
+        {
+          "localFile": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/references/darce-choke.webp",
+          "sha256": "11c08197bfe9a75bba3f180fdb1d0451c993c6f486cc1136315702e2f7b86465",
+          "sourceKind": "previously supplied source-site clay pose",
+          "sourceURL": null,
+          "timestamp": null,
+          "previouslyDirectlyInspectedIn": "docs/handovers/task-058-image-review-batch-04.json",
+          "newImageCopy": false,
+          "mechanicalLimit": "The cached clay pose is not proof of a correct hidden contact; do not reproduce the reviewed defect."
+        }
+      ],
+      "styleReference": {
+        "localFile": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/style-guides/neutral-portraits-v1.png",
+        "sha256": "861ad8775f2697dc451d5f764a49655e5c78ddb2ada79d3f44a6f2905fa1ba16",
+        "purpose": "Fictional identities and rendering only; no technical pose"
+      },
+      "actualOfficialFrame": null,
+      "poseVerified": false,
+      "poseVerificationMeaning": "No new corrected pose or new official frame is claimed verified by this job-spec draft. Existing raw and clay references were directly inspected in batch04.",
+      "hiddenLimits": "Preserve natural occlusion outside the defining correction. Do not force every limb into view.",
+      "postGenerationChecks": [
+        "Directly inspect the actual new PNG at the recorded SHA",
+        "Verify the defining corrected contact and continuous limb/garment ownership",
+        "Preserve neutral faces and the same approved 2.5D character identities",
+        "Parent alone handles registry promotion; this file is not approval"
+      ],
+      "holdReason": null,
+      "recommendedInputOrder": [
+        "editTarget",
+        "existingPoseReferences only for preserved broad geometry; correction prompt overrides known defects",
+        "styleReference"
+      ]
+    },
+    {
+      "slug": "knee-bar",
+      "name": "니바",
+      "reviewResult": "REGENERATE",
+      "reviewPNG_SHA256": "5aeb374294197d9daa257c370bcee4809154531d31d5b527c34fdda76eb1ab5c",
+      "mode": "official_frame_pose_rebuild",
+      "readyForGeneration": true,
+      "editTarget": {
+        "localFile": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/knee-bar-v1.png",
+        "sha256": "5aeb374294197d9daa257c370bcee4809154531d31d5b527c34fdda76eb1ab5c",
+        "version": 1
+      },
+      "singleError": false,
+      "singleChange": null,
+      "preserve": [
+        "Exact selected source body relationship, camera and visible key contacts",
+        "Only the approved two adult characters with complete continuous gi-color ownership",
+        "Natural occlusion not involved in the defining contact"
+      ],
+      "failure": "파랑은 흰 발을 자기 골반 가까이 한 손으로 잡고 자기 다리를 흰 가슴 앞으로 뻗으며, 흰색도 그 파란 발을 잡습니다. 니바의 같은 흰 발목-가슴 연결과 흰 무릎-파란 골반 받침 대신 상호 발 잡기에 가까운 배치입니다.",
+      "keyChecks": [
+        "Map the dark-gi ankle-holding athlete to blue and the white-gi defender to white with complete garment ownership.",
+        "Both blue hands retain the SAME white ankle/foot near the blue chest/shoulder and the corresponding white knee lies over the blue hip support.",
+        "Blue legs contain that white thigh; keep the other white leg distinct and do not depict white holding a blue foot."
+      ],
+      "correctionPromptEnglish": "Rebuild the kneebar using the supplied Dean Lister teaching frame at 0:12.184, not the earlier reciprocal-foot-holding clay image. Map the dark-gi leg-locking athlete to blue gi and the white-gi defender to white. Blue reclines along one captured white leg, retaining its corresponding ankle near the blue chest and shoulder with both hands. Keep the same white knee over blue hip support and the same thigh contained by the blue legs. Preserve the distinct, naturally bent white free leg, rendering motion blur cleanly. Do not show white attacking a blue foot or any forced knee extension.",
+      "existingPoseReferences": [
+        {
+          "localFile": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/references/knee-bar.webp",
+          "sha256": "8e2132af0208265ff93cdc73ecb7b915b42033c89b7db829db653cccd72636b3",
+          "sourceKind": "previously supplied source-site clay pose",
+          "sourceURL": null,
+          "timestamp": null,
+          "previouslyDirectlyInspectedIn": "docs/handovers/task-058-image-review-batch-04.json",
+          "newImageCopy": false,
+          "mechanicalLimit": "The cached clay pose is not proof of a correct hidden contact; do not reproduce the reviewed defect."
+        }
+      ],
+      "styleReference": {
+        "localFile": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/style-guides/neutral-portraits-v1.png",
+        "sha256": "861ad8775f2697dc451d5f764a49655e5c78ddb2ada79d3f44a6f2905fa1ba16",
+        "purpose": "Fictional identities and rendering only; no technical pose"
+      },
+      "actualOfficialFrame": {
+        "sourceURL": "https://www.youtube.com/watch?v=eoFrZfJBlvw",
+        "timestampSeconds": 12.184261,
+        "timestampedURL": "https://www.youtube.com/watch?v=eoFrZfJBlvw&t=12.184261s",
+        "playerEntryURL": "https://www.youtube.com/watch?v=eoFrZfJBlvw&t=12s",
+        "title": "Kneebar Escapes by Dean Lister",
+        "channel": "BJJ Fanatics",
+        "channelURL": "https://www.youtube.com/@BJJ.Fanatics",
+        "presenter": "Dean Lister; partner demonstrates the initial captured kneebar setup",
+        "localFile": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/regen03-kneebar-dean-final.jpg",
+        "sha256": "5d00917a299a0ee49ec71ac5ec67370ae9cedb5f913c3ee31d69ba3f7f4f089d",
+        "width": 866,
+        "height": 487,
+        "captureMethod": "CUA visible public-player JPEG screenshot, native Pause-button click, player in viewport; no media download",
+        "videoPaused": true,
+        "videoReadyState": 4,
+        "directlyOpenedWithViewImage": true,
+        "copiedToRepository": false
+      },
+      "poseVerified": true,
+      "poseVerificationMeaning": "The selected official still was visibly captured in CUA with video paused and readyState 4, then opened directly with built-in view_image. Verification covers the visible representative geometry and the limits below, not a new generated output or hidden contacts.",
+      "hiddenLimits": "The free white leg is moving in the source and has some motion blur; render a clean naturally bent free leg without inventing a new contact. This selected setup is from an escape demonstration and does not verify the escape outcome or extension pressure.",
+      "postGenerationChecks": [
+        "Directly inspect the actual new PNG at the recorded SHA",
+        "Verify the defining corrected contact and continuous limb/garment ownership",
+        "Preserve neutral faces and the same approved 2.5D character identities",
+        "Parent alone handles registry promotion; this file is not approval"
+      ],
+      "holdReason": null,
+      "existingSourceUsage": "Counterexample and broad role context only; do not use the reciprocal foot-holding clay as an authoritative positive pose input.",
+      "correctedOutputPoseVerified": false,
+      "actor": "blue",
+      "representative": true,
+      "representativeVariant": "Initial kneebar setup used in an escape lesson; ignore subsequent escape motion.",
+      "recommendedInputOrder": [
+        "actualOfficialFrame.localFile as authoritative visible POSE input",
+        "styleReference.localFile as identities/rendering ONLY"
+      ],
+      "editTargetUsage": "Previous failed PNG is a failure counterexample only; do not feed it as the positive pose to a full rebuild."
+    }
+  ],
+  "is_user_approval": false,
+  "is_generation_complete": false,
+  "captureAttemptsAndLimits": [
+    "The first Eddie Bravo truck excerpt was a leg-cropped close-up and was not selected. The official 10th Planet Newport full-body teaching still replaces it.",
+    "Initial buffering or stale pre-seek frames with readyState 0/1 were not selected. Native visible Pause-button clicks and a decoded paused frame were required.",
+    "Read-only browser media wrappers do not support addEventListener; that attempted readiness wait raised TypeError and was replaced by visible player/loading observations and direct state checks.",
+    "Keyboard K actions were not used as proof of pause; the selected four were verified paused via the actual native Pause button and media state.",
+    "Outside-ashi source player started from a t=20 URL and advanced before native pause; the selected actual 121.208195-second timestamp is recorded explicitly.",
+    "Only the four actualOfficialFrame paths are positive official pose inputs. Other regen03 candidate/seek trial cache files are excluded from the generation job specs."
+  ],
+  "validation": {
+    "selectedFrameHashesCheckedAt": "2026-11-10T12:17:37.752Z",
+    "selectedFrames": [
+      {
+        "slug": "truck",
+        "sha256": "38c0217fdc22425e1750013ad56321abc5aa29effa6a670f90dba665038025d3",
+        "timestampSeconds": 105
+      },
+      {
+        "slug": "outside-ashi-garami",
+        "sha256": "d21f8261dee7b4495f63ac9b399b97a3df2ed2fb40cfdcbd1a7e876912715005",
+        "timestampSeconds": 121.208195
+      },
+      {
+        "slug": "crab-ride",
+        "sha256": "66dfb6b7e71131b951723827272d2aab6ad8ae85e297e92e42c1da880e59ca9b",
+        "timestampSeconds": 180.202527
+      },
+      {
+        "slug": "knee-bar",
+        "sha256": "5d00917a299a0ee49ec71ac5ec67370ae9cedb5f913c3ee31d69ba3f7f4f089d",
+        "timestampSeconds": 12.184261
+      }
+    ],
+    "errors": [],
+    "registryOrPublicEdited": false,
+    "newImagesGenerated": false
+  }
+}

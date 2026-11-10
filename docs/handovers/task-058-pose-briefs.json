@@ -1,0 +1,2755 @@
+{
+  "schema_version": 1,
+  "task_id": "task-058",
+  "status": "pose_briefs_complete",
+  "execution_tool": "codex",
+  "reviewer_role": "gym-master",
+  "expected_count": 159,
+  "completed_count": 159,
+  "catalog_source": "backend/src/data/techniqueReference/catalog.json",
+  "characters": {
+    "white": "Approved set-01 neutral adult with black hair, white gi, brown belt",
+    "blue": "Approved set-01 neutral adult with white hair, blue gi, brown belt"
+  },
+  "style": {
+    "rendering": "Approved set-01 2.5D anime illustration",
+    "background": "#15171E",
+    "faces": "Neutral adult expressions",
+    "layout": "Two anatomically separate partners, readable decisive contacts, no text or logos",
+    "approved_display_sizes": {
+      "list_image_px": 48,
+      "equal_information_row_px": 72,
+      "detail_image_px": 224
+    }
+  },
+  "scope_note": "Pose drafting only. This file does not record image generation, final image review, DB changes, or deployment.",
+  "items": [
+    {
+      "slug": "standing",
+      "name": "스탠딩",
+      "kind": "position",
+      "actor": "white",
+      "poseBrief": "Show both adults standing face to face in a balanced grappling stance, knees softly bent and feet staggered. White establishes a light collar and sleeve contact while blue maintains posture and realistic distance. Show an ordinary starting position before any takedown is committed.",
+      "keyChecks": [
+        "Both athletes remain standing with grounded feet",
+        "Collar and sleeve contacts connect to the correct hands",
+        "No completed throw or fixed takedown is implied"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 43
+    },
+    {
+      "slug": "single-leg-takedown",
+      "name": "싱글 레그 테이크다운",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Show white lowering level beside blue and collecting one of blue's legs with both arms. White stays connected at the hip while blue balances on the other foot. Freeze the controlled entry before the finish, making the captured leg and supporting leg unmistakably separate.",
+      "keyChecks": [
+        "Exactly one blue leg is collected",
+        "White's torso remains beside the captured hip",
+        "Blue's free foot provides the remaining base"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 44
+    },
+    {
+      "slug": "collar-drag",
+      "name": "칼라 드래그",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Show a standing collar drag with white stepping off the centerline while drawing blue forward through a genuine lapel grip. Blue's shoulders turn and balance shifts toward the planted hands or forward foot. Preserve the opening toward blue's flank rather than depicting a straight backward shove.",
+      "keyChecks": [
+        "A visible white hand actually holds blue's collar",
+        "Pull and lateral step open an angle",
+        "Blue's forward imbalance follows the collar connection"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 46
+    },
+    {
+      "slug": "ankle-pick",
+      "name": "앵클 픽",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Show white maintaining an upper body connection while lowering to collect blue's near ankle. Blue is beginning to lose balance over the opposite supporting leg. Keep white's reaching hand at the ankle, not the knee, and show a controlled setup rather than a violent airborne fall.",
+      "keyChecks": [
+        "One hand connects to the selected ankle",
+        "Upper body control and ankle collection act together",
+        "Blue retains one recognizable supporting leg"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 46
+    },
+    {
+      "slug": "double-leg-takedown",
+      "name": "더블 레그 테이크다운",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Show white entering at a lowered level with both arms collecting blue's thighs near the knees. White's chest connects to the hips and the spine stays naturally aligned. Blue's legs remain distinct as the drive begins; neither athlete floats above the floor without support.",
+      "keyChecks": [
+        "Both blue legs are captured rather than one",
+        "White's head and torso stay beside the hips",
+        "The drive has a visible grounded base"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 44
+    },
+    {
+      "slug": "inside-trip",
+      "name": "인사이드 트립",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Show white and blue connected in a standing clinch. White controls blue's upper body while an attacking leg enters between blue's legs to obstruct the inside of one leg. Freeze the off balancing moment, with the support foot visibly grounded and the hooking leg anatomically continuous.",
+      "keyChecks": [
+        "The attacking leg approaches the inside of blue's leg",
+        "Upper body clinch remains connected",
+        "White has a separate grounded support leg"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 46
+    },
+    {
+      "slug": "outside-trip",
+      "name": "아웃사이드 트립",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Show white controlling blue in a standing clinch and placing an attacking leg outside blue's supporting leg. The upper body pull and outside obstruction guide blue off balance together. Keep the two hips and all four legs readable so this cannot be mistaken for an inside trip.",
+      "keyChecks": [
+        "The obstruction is outside the chosen blue leg",
+        "Clinch pressure and leg action share one direction",
+        "Four legs remain visibly separate"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 47
+    },
+    {
+      "slug": "break-fall",
+      "name": "낙법",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Show white demonstrating a controlled backward breakfall on the floor with a rounded back, chin gently tucked, and arms spreading to contact the mat. Blue kneels nearby as an observing partner, not an attacker. Emphasize the falling posture rather than a submission or a completed throw.",
+      "keyChecks": [
+        "White's head does not strike the floor",
+        "Arms belong naturally to the falling torso",
+        "Blue is a separate observing partner"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 46
+    },
+    {
+      "slug": "takedown",
+      "name": "테이크다운",
+      "kind": "concept",
+      "actor": "white",
+      "poseBrief": "Illustrate the broad takedown concept using a representative standing clinch where white has broken blue's balance and is beginning to guide blue toward the floor. Keep the scene generic and connected, without locking the composition to a named wrestling shot or a particular judo throw.",
+      "keyChecks": [
+        "The action begins with both athletes standing",
+        "Blue's balance is visibly disrupted through contact",
+        "This is one representative example, not the entire definition"
+      ],
+      "representative": true,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 45
+    },
+    {
+      "slug": "open-guard",
+      "name": "오픈 가드",
+      "kind": "position",
+      "actor": "blue",
+      "poseBrief": "Show blue on the back facing a standing or kneeling white partner, with knees between the torsos and uncrossed feet controlling distance. Use a simple open leg barrier without a distinctive lasso, spider, or leg entanglement. White stays outside the hips, making the open structure clear.",
+      "keyChecks": [
+        "Blue's ankles are not locked behind white",
+        "Both knees remain useful distance barriers",
+        "No specialized guard is presented as the only open guard"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 46
+    },
+    {
+      "slug": "closed-guard",
+      "name": "클로즈 가드",
+      "kind": "position",
+      "actor": "blue",
+      "poseBrief": "Show blue lying comfortably beneath a kneeling white partner, with both legs wrapping white's waist and ankles visibly crossed behind the back. Blue controls the upper body without beginning a specific submission. Keep the closed leg loop continuous and clearly distinct from both athletes' arms.",
+      "keyChecks": [
+        "Blue's legs surround white's waist",
+        "The crossed ankles belong to blue",
+        "White remains between the closed legs"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 45
+    },
+    {
+      "slug": "half-guard",
+      "name": "하프 가드",
+      "kind": "position",
+      "actor": "blue",
+      "poseBrief": "Show blue on one side beneath white, trapping exactly one of white's legs between blue's two legs. White's other leg remains outside and free for balance. Keep the upper bodies connected without converting the position into closed guard or a completed side control pin.",
+      "keyChecks": [
+        "Exactly one white leg is trapped",
+        "White's other leg is visibly free",
+        "Blue's two legs form the trapping structure"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 44
+    },
+    {
+      "slug": "de-la-riva-guard",
+      "name": "델라히바 가드",
+      "kind": "position",
+      "actor": "blue",
+      "poseBrief": "Show blue supine beside white's standing base, using an outside leg hook around one white leg. Blue also controls that ankle and a sleeve or collar. The other blue foot manages distance, while the hooked knee and foot remain visible enough to distinguish the outside hook.",
+      "keyChecks": [
+        "The defining hook enters from outside white's leg",
+        "Ankle and upper body grips stay connected",
+        "The free blue leg is not confused with the hooking leg"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 46
+    },
+    {
+      "slug": "single-leg-x-guard",
+      "name": "싱글 레그 X 가드",
+      "kind": "position",
+      "actor": "blue",
+      "poseBrief": "Show blue under one of white's standing legs in single leg X, with blue's hips lifted close to that leg. One blue foot frames at the hip while the other leg hooks the same controlled leg. Preserve the approved single X geometry and leave white's opposite leg visibly separate.",
+      "keyChecks": [
+        "Both blue legs focus on one white leg",
+        "The hip frame belongs to blue",
+        "White's opposite leg remains outside the entanglement"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 49
+    },
+    {
+      "slug": "sweep",
+      "name": "스윕",
+      "kind": "concept",
+      "actor": "blue",
+      "poseBrief": "Illustrate sweeping with blue transitioning from a recognizable bottom guard toward the top as white loses balance. Keep one grounded support and a visible leg or upper body connection explaining the reversal. This is a representative change of top and bottom, not a fixed named sweep.",
+      "keyChecks": [
+        "The action clearly starts from blue's guard",
+        "A connected lever explains white's loss of balance",
+        "The picture represents the broader sweep concept"
+      ],
+      "representative": true,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 46
+    },
+    {
+      "slug": "knee-shield",
+      "name": "니실드",
+      "kind": "position",
+      "actor": "blue",
+      "poseBrief": "Show blue on the side in half guard, trapping one white leg while the upper blue shin forms a clear diagonal shield across white's torso. White applies controlled forward pressure into that frame. Keep the shielding knee between the bodies instead of hiding it beneath the chest.",
+      "keyChecks": [
+        "One white leg remains in half guard",
+        "The upper blue shin visibly separates the torsos",
+        "The shield is a blue leg rather than an extra arm"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 47
+    },
+    {
+      "slug": "butterfly-guard",
+      "name": "버터플라이 가드",
+      "kind": "position",
+      "actor": "blue",
+      "poseBrief": "Show blue seated upright close to kneeling white, placing both feet inside white's thighs as butterfly hooks. Blue maintains a natural upper body connection and balanced seated hips. Display both inside hooks clearly without crossed ankles behind white or an already completed lifting sweep.",
+      "keyChecks": [
+        "Both blue feet hook inside white's thighs",
+        "Blue remains seated rather than flattened",
+        "No closed guard ankle lock appears behind white"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 44
+    },
+    {
+      "slug": "lasso-guard",
+      "name": "라쏘 가드",
+      "kind": "position",
+      "actor": "blue",
+      "poseBrief": "Show blue supine holding a white sleeve while the corresponding blue leg circles around that arm to create a lasso. The foot and sleeve grip must form a coherent continuous route. The other blue leg manages distance without accidentally creating a second identical wrapping limb.",
+      "keyChecks": [
+        "One blue leg wraps the sleeve controlled white arm",
+        "The sleeve grip and wrapped arm match",
+        "All feet and hands belong to distinct limbs"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 45
+    },
+    {
+      "slug": "k-guard",
+      "name": "K 가드",
+      "kind": "position",
+      "actor": "blue",
+      "poseBrief": "Show blue angled on the back beside white's base, with one blue knee high near the armpit and the legs framing around a controlled white thigh. Blue's hands secure that leg while the hips turn underneath. Depict a preparatory K guard position, not a finished kneebar.",
+      "keyChecks": [
+        "Blue is angled beside the controlled white leg",
+        "The high knee and lower hook belong to blue",
+        "No submission finish replaces the guard position"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 46
+    },
+    {
+      "slug": "x-guard",
+      "name": "X 가드",
+      "kind": "position",
+      "actor": "blue",
+      "poseBrief": "Show blue underneath white's standing base with two blue legs crossing in an X around a controlled white leg. One white leg is elevated or supported by blue's upper body while the remaining white leg provides balance. Keep the two leg systems readable and unlike single leg X.",
+      "keyChecks": [
+        "The blue leg hooks visibly form the X structure",
+        "White's balancing leg remains identifiable",
+        "The pose is not substituted with single leg X"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 48
+    },
+    {
+      "slug": "tripod-sweep",
+      "name": "트라이팟 스윕",
+      "kind": "technique",
+      "actor": "blue",
+      "poseBrief": "Show blue in open guard holding one white ankle, placing one foot at white's hip and the other behind the opposite ankle. White is beginning to tip backward as those three contacts work together. Freeze before impact, keeping both blue legs and both white ankles visible.",
+      "keyChecks": [
+        "One white ankle is held by a blue hand",
+        "One blue foot frames the hip",
+        "The other blue foot obstructs the opposite ankle"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 46
+    },
+    {
+      "slug": "deep-half-guard",
+      "name": "딥 하프 가드",
+      "kind": "position",
+      "actor": "blue",
+      "poseBrief": "Show blue underneath white's center of mass, with the head close beside white's hip and both blue legs controlling one white leg. Blue's torso is deep under the thigh rather than extended outside. White balances above without an impossible knee bend or a merged pair of legs.",
+      "keyChecks": [
+        "Blue's torso is underneath the controlled white thigh",
+        "The head is near the hip, not beyond the foot",
+        "Only one white leg is trapped"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 47
+    },
+    {
+      "slug": "reverse-de-riva-guard",
+      "name": "리버스 델라히바 가드",
+      "kind": "position",
+      "actor": "blue",
+      "poseBrief": "Show blue on the side facing white's lead leg, using an inside reverse De La Riva hook rather than wrapping around the outside. Blue controls the near ankle while the other leg frames against white. Turn the camera to expose the hook's path and the two distinct hips.",
+      "keyChecks": [
+        "The defining hook approaches from inside",
+        "Blue's ankle grip matches the hooked white leg",
+        "The pose remains distinct from ordinary outside De La Riva"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 48
+    },
+    {
+      "slug": "spider-guard",
+      "name": "스파이더 가드",
+      "kind": "position",
+      "actor": "blue",
+      "poseBrief": "Show blue supine gripping both white sleeves and placing the soles of both blue feet against the inner elbows or biceps. White remains standing or crouched at a natural distance. Keep the sleeve grips, straightened framing leg, and slightly bent balancing leg distinct and anatomically connected.",
+      "keyChecks": [
+        "Both blue hands hold white sleeves",
+        "Both blue soles contact the controlled arms",
+        "The feet do not merge into white's elbows"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 46
+    },
+    {
+      "slug": "worm-guard",
+      "name": "웜 가드",
+      "kind": "position",
+      "actor": "blue",
+      "poseBrief": "Show blue on the side using a released white lapel routed around a blue leg and a controlled white standing leg. Preserve the exact lapel path from the supplied pose reference, with the cloth visibly returning to blue's gripping hand. Treat this as one representative worm guard setup.",
+      "keyChecks": [
+        "The lapel is continuous from white's jacket to blue's hand",
+        "The cloth loops around the intended leg structures",
+        "The setup follows the selected reference rather than an invented knot"
+      ],
+      "representative": true,
+      "uncertainty": "Lapel routing varies; the main pose reference must determine the exact wrap and grip.",
+      "requiresPoseReference": true,
+      "poseBriefWordCount": 48
+    },
+    {
+      "slug": "balloon-sweep",
+      "name": "벌룬 스윕",
+      "kind": "technique",
+      "actor": "blue",
+      "poseBrief": "Show blue beneath white with both feet supporting white's hips or lower torso, arms maintaining a genuine upper body connection. Blue rolls back as white begins a controlled forward lift over blue's body. Keep the bodies connected and all limbs readable, without an unsupported flying throw.",
+      "keyChecks": [
+        "Blue's feet supply the lifting contact",
+        "White tips forward over blue rather than sideways",
+        "Upper body grips remain connected during the lift"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 46
+    },
+    {
+      "slug": "coyote-guard",
+      "name": "코요테 가드",
+      "kind": "position",
+      "actor": "blue",
+      "poseBrief": "Show blue rising onto the side from half guard with a deep underhook around white's upper body. Blue turns toward a dogfight style base while still controlling a white leg. White posts naturally against the change of angle; avoid drawing this as a flat ordinary half guard.",
+      "keyChecks": [
+        "Blue's underhook reaches around white's torso",
+        "Blue has risen onto a lateral base",
+        "The half guard leg connection is still identifiable"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 47
+    },
+    {
+      "slug": "kimura-sweep",
+      "name": "기무라 스윕",
+      "kind": "technique",
+      "actor": "blue",
+      "poseBrief": "Show blue in bottom guard retaining a figure four kimura grip on one white arm while turning the hips to tip white over. The controlled wrist and elbow remain connected to the same shoulder. Freeze during the reversal so the grip drives a sweep rather than an isolated standing shoulder lock.",
+      "keyChecks": [
+        "A genuine kimura figure four controls one white arm",
+        "Blue begins from bottom guard",
+        "White's loss of balance follows blue's hip turn"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 51
+    },
+    {
+      "slug": "kiss-of-dragon",
+      "name": "키스 오브 드래곤",
+      "kind": "technique",
+      "actor": "blue",
+      "poseBrief": "Show blue inverting underneath white from reverse De La Riva, keeping an inside leg hook and a continuous ankle connection while turning toward white's back. White maintains a realistic standing base. Capture the transition between guard and rear access, with blue supported on the upper back rather than the neck.",
+      "keyChecks": [
+        "The entry retains the reverse De La Riva connection",
+        "Blue rotates underneath toward white's back",
+        "The inversion is supported through shoulders and upper back"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 50
+    },
+    {
+      "slug": "scissors-sweep",
+      "name": "시저스 스윕",
+      "kind": "technique",
+      "actor": "blue",
+      "poseBrief": "Show blue on the side in guard with one shin across white's torso and the other leg low near white's supporting knee. Blue keeps an upper body grip while opening the legs in opposing directions. White tips sideways into the cleared space, with no extra scissoring legs.",
+      "keyChecks": [
+        "One blue leg is high and the other low",
+        "Upper body control prevents a free white post",
+        "White's imbalance matches the scissoring direction"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 47
+    },
+    {
+      "slug": "sit-up-guard",
+      "name": "싯업 가드",
+      "kind": "position",
+      "actor": "blue",
+      "poseBrief": "Show blue seated upright in front of white's standing or kneeling base, spine naturally tall and one hand maintaining an ankle or upper body connection. The legs stay in front as an open guard barrier. Depict a versatile seated starting position, without committing to a named sweep.",
+      "keyChecks": [
+        "Blue's torso is upright rather than supine",
+        "The legs remain between the athletes",
+        "No specific sweep is treated as the guard's complete definition"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 47
+    },
+    {
+      "slug": "flower-sweep",
+      "name": "플라워 스윕",
+      "kind": "technique",
+      "actor": "blue",
+      "poseBrief": "Show blue beginning a flower sweep from closed guard, controlling one white sleeve and the same side white leg. Blue turns the hips and swings a free leg to remove white's base. White is tipping toward the trapped side, while the controlled hand cannot simply post.",
+      "keyChecks": [
+        "The controlled sleeve and leg are on the intended side",
+        "Blue's hip angle creates the reversal",
+        "White's blocked posting side matches the fall"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 46
+    },
+    {
+      "slug": "matrix",
+      "name": "매트릭스",
+      "kind": "technique",
+      "actor": "blue",
+      "poseBrief": "Show blue beside and slightly behind white's standing leg, using the leg entanglement shown in the supplied reference to control the hip line. Blue turns around that connection toward white's back. Keep the knee and ankle alignment natural and treat this as a representative transition, not a completed leg lock.",
+      "keyChecks": [
+        "The leg connection leads toward white's hip and back",
+        "Neither knee is twisted into an impossible angle",
+        "The selected matrix reference governs the exact hook path"
+      ],
+      "representative": true,
+      "uncertainty": "Matrix entries and leg routes vary; verify the exact photographed variant before generation.",
+      "requiresPoseReference": true,
+      "poseBriefWordCount": 50
+    },
+    {
+      "slug": "rubber-guard",
+      "name": "러버 가드",
+      "kind": "position",
+      "actor": "blue",
+      "poseBrief": "Show blue on the back pulling one blue leg high over white's upper back while maintaining the ankle or shin control specified by the reference. White stays low between blue's legs. Preserve a plausible bent hip and knee, and show posture control rather than inventing a neck crank.",
+      "keyChecks": [
+        "The elevated leg clearly belongs to blue",
+        "The ankle or shin grip is anatomically reachable",
+        "White remains inside blue's guard"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 48
+    },
+    {
+      "slug": "foot-sweep",
+      "name": "풋 스윕",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Show both athletes standing with connected collar and sleeve or clinch grips. White sweeps an unweighted blue foot just above the floor while directing blue's upper body into the same imbalance. Keep the sweeping leg low and distinct from white's grounded support leg; this is a standing takedown.",
+      "keyChecks": [
+        "The attacking foot sweeps low along the floor",
+        "The targeted blue foot is losing weight",
+        "White's supporting foot stays separate and grounded"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 48
+    },
+    {
+      "slug": "z-guard",
+      "name": "Z 가드",
+      "kind": "position",
+      "actor": "blue",
+      "poseBrief": "Show blue on the side in half guard with a diagonal upper knee shield separating the torsos. Make the bent legs form a readable Z shaped structure while one white leg remains trapped. Preserve its close relationship to knee shield without inventing a different joint arrangement for the separate catalog entry.",
+      "keyChecks": [
+        "The diagonal blue shin acts as a shield",
+        "One white leg remains trapped",
+        "Do not invent a false mechanical distinction from knee shield"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 51
+    },
+    {
+      "slug": "collar-and-sleeve-guard",
+      "name": "칼라 앤 슬리브 가드",
+      "kind": "position",
+      "actor": "blue",
+      "poseBrief": "Show blue in open guard with one hand holding a white collar and the other holding a sleeve. Blue's feet frame against the hip and arm at a natural distance. Expose the two different grips and avoid converting both hands into identical sleeve holds associated with spider guard.",
+      "keyChecks": [
+        "One collar grip and one sleeve grip are visible",
+        "Blue's legs remain open rather than locked",
+        "The sleeve and collar contacts connect to distinct hands"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 48
+    },
+    {
+      "slug": "deep-de-riva-guard",
+      "name": "딥 델라히바 가드",
+      "kind": "position",
+      "actor": "blue",
+      "poseBrief": "Show blue in an outside De La Riva configuration with the hips moving deeper under white's center of mass. Maintain a clear ankle grip and the outside wrapping hook from the supplied reference. Use a tighter hip angle than the basic entry while keeping the leg anatomy natural.",
+      "keyChecks": [
+        "The outside De La Riva hook remains identifiable",
+        "Blue's hips are deeper under white's base",
+        "The pose is not replaced by reverse De La Riva"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 48
+    },
+    {
+      "slug": "lapel-guard",
+      "name": "라펠 가드",
+      "kind": "position",
+      "actor": "blue",
+      "poseBrief": "Illustrate a representative lapel based guard with blue controlling a released white lapel around the lower body while the legs maintain an open guard barrier. Keep the cloth continuous and the gripping hand visible. Do not imply that this single routing defines every lapel guard variation.",
+      "keyChecks": [
+        "A released white lapel has a continuous cloth path",
+        "Blue's legs still form a guard barrier",
+        "The image is marked as a representative lapel configuration"
+      ],
+      "representative": true,
+      "uncertainty": "The catalog describes a family of lapel guards; select the exact cloth route from the main reference.",
+      "requiresPoseReference": true,
+      "poseBriefWordCount": 46
+    },
+    {
+      "slug": "octopus-guard",
+      "name": "옥토퍼스 가드",
+      "kind": "position",
+      "actor": "blue",
+      "poseBrief": "Show blue sitting up beside white from a bottom half guard or side position, wrapping one blue arm across white's back. Blue's head rises behind white's shoulder line while the hips remain connected low. Emphasize the off center back wrap rather than a conventional face to face underhook.",
+      "keyChecks": [
+        "Blue sits beside white rather than flat underneath",
+        "A blue arm visibly wraps across white's back",
+        "The low hip connection remains anatomically continuous"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 48
+    },
+    {
+      "slug": "waiter-guard",
+      "name": "웨이터 가드",
+      "kind": "position",
+      "actor": "blue",
+      "poseBrief": "Show blue underneath white's hip, supporting a bent white leg in a tray carrying configuration while the other blue limbs maintain the lower body connection. Keep the supported knee, ankle, and blue supporting arm visible. Use the supplied waiter guard reference to settle the exact leg arrangement.",
+      "keyChecks": [
+        "The supported white leg creates the tray carrying silhouette",
+        "The supporting arm belongs to blue",
+        "The reference determines the exact secondary leg hook"
+      ],
+      "representative": true,
+      "uncertainty": "The written description does not fix the precise waiter guard leg topology; a pose reference is required.",
+      "requiresPoseReference": true,
+      "poseBriefWordCount": 47
+    },
+    {
+      "slug": "wrestle-up",
+      "name": "레슬업",
+      "kind": "technique",
+      "actor": "blue",
+      "poseBrief": "Show blue rising from seated guard onto a knee while maintaining control of one white leg. White is still partly standing and adjusting the base. Capture the transition from bottom guard into a wrestling stance, rather than a finished takedown or a simple unsupported attempt to stand.",
+      "keyChecks": [
+        "Blue starts from a recognizable seated guard connection",
+        "At least one hand or arm controls a white leg",
+        "The rising body has a grounded knee or foot"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 47
+    },
+    {
+      "slug": "inverted-guard",
+      "name": "인버티드 가드",
+      "kind": "position",
+      "actor": "blue",
+      "poseBrief": "Show blue rolled onto the shoulders and upper back beneath white's base, with the hips elevated and both blue legs framing between the athletes. Keep the head free of weight and the spine naturally curved. The image should read as an inverted guard state rather than an airborne flip.",
+      "keyChecks": [
+        "Blue is supported on shoulders and upper back",
+        "The blue legs remain useful guard frames",
+        "The head is not the sole contact with the floor"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 49
+    },
+    {
+      "slug": "john-wayne-sweep",
+      "name": "존 웨인 스윕",
+      "kind": "technique",
+      "actor": "blue",
+      "poseBrief": "Show blue on the side in half guard, retaining a trapped white leg while turning the hips to knock white across the blocked base. White is beginning to tip rather than already lying on top of blue. Keep the lower leg trap and upper body connection readable in one controlled reversal.",
+      "keyChecks": [
+        "A white leg remains trapped in half guard",
+        "Blue's hip action disrupts the blocked base",
+        "White's fall follows the controlled side"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 51
+    },
+    {
+      "slug": "lumberjack-sweep",
+      "name": "럼버잭스윕",
+      "kind": "technique",
+      "actor": "blue",
+      "poseBrief": "Show blue beneath a white partner who has stood up inside the former closed guard. Blue holds both white ankles or heels while placing the hips and knees to guide white backward. Freeze before the landing, keeping the two ankle grips and blue's lower body leverage plainly visible.",
+      "keyChecks": [
+        "Blue controls both white ankles or heels",
+        "White is standing within blue's guard line",
+        "The reversal travels backward rather than overhead"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 48
+    },
+    {
+      "slug": "guard-recovery",
+      "name": "가드 리커버리",
+      "kind": "concept",
+      "actor": "blue",
+      "poseBrief": "Illustrate recovery with blue on the side under partial passing pressure, using a forearm frame and bringing a knee back between the bodies. White has not settled a complete pin. Treat this as one representative return to guard, without suggesting that all recovery uses the same escape sequence.",
+      "keyChecks": [
+        "A blue frame creates visible space",
+        "A blue knee is returning between the torsos",
+        "The scene represents a recovery process rather than one exclusive method"
+      ],
+      "representative": true,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 48
+    },
+    {
+      "slug": "hip-bump-sweep",
+      "name": "힙 범프 스윕",
+      "kind": "technique",
+      "actor": "blue",
+      "poseBrief": "Show blue sitting up from closed guard and posting one hand behind the hips while the other arm controls white's upper body. Blue's hips rise into white as the knees open for a sideways reversal. Keep the rear posting arm connected and white's blocked base visible.",
+      "keyChecks": [
+        "Blue's torso has risen from closed guard",
+        "One blue hand provides a rear post",
+        "Hip contact explains white's sideways imbalance"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 46
+    },
+    {
+      "slug": "pendulum-sweep",
+      "name": "펜듈럼 스윕",
+      "kind": "technique",
+      "actor": "blue",
+      "poseBrief": "Show blue angled beneath white from closed guard, using an underhook or leg control while one blue leg swings in a broad pendulum arc. The other leg guides white across the off balanced base. Keep the near hand trapped by blue's upper body control and avoid depicting extra swinging limbs.",
+      "keyChecks": [
+        "A single blue leg provides the visible pendulum action",
+        "The opposite leg guides the reversal",
+        "White cannot freely post on the controlled side"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 50
+    },
+    {
+      "slug": "technical-stand-up",
+      "name": "테크니컬 스탠드업",
+      "kind": "technique",
+      "actor": "blue",
+      "poseBrief": "Show blue in a technical stand up transition with one hand and the opposite foot firmly grounded, the other arm framing toward white, and the free leg withdrawing underneath. White stands at controlled distance. Keep blue's hips lifted and the support triangle clear rather than drawing an ordinary squat.",
+      "keyChecks": [
+        "One hand and the opposite foot provide support",
+        "The free leg retracts underneath the hips",
+        "The framing arm faces the standing partner"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 49
+    },
+    {
+      "slug": "waiter-sweep",
+      "name": "웨이터 스윕",
+      "kind": "technique",
+      "actor": "blue",
+      "poseBrief": "Show blue underneath white in the selected waiter guard configuration, retaining the tray like support of a white leg while tilting white toward the missing base. Blue is beginning to rise toward top position. Keep the supported leg continuous and follow the supplied reference for the final turning direction.",
+      "keyChecks": [
+        "The starting leg support matches waiter guard",
+        "White's loss of balance follows the controlled leg",
+        "Blue is transitioning upward rather than finishing a leg lock"
+      ],
+      "representative": true,
+      "uncertainty": "The sweep direction depends on the chosen waiter guard variant; main reference confirmation is required.",
+      "requiresPoseReference": true,
+      "poseBriefWordCount": 49
+    },
+    {
+      "slug": "shin-to-shin-guard",
+      "name": "신투신 가드",
+      "kind": "position",
+      "actor": "blue",
+      "poseBrief": "Show blue seated in front of white's standing base with one blue shin directly connected to the front of a white shin. Blue controls the same ankle or knee while the free leg remains in front. Emphasize the matching shin contact before entry into single leg X.",
+      "keyChecks": [
+        "One blue shin is directly connected to one white shin",
+        "The hand grip controls that same white leg",
+        "The free blue leg remains anatomically separate"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 47
+    },
+    {
+      "slug": "squid-guard",
+      "name": "스퀴드 가드",
+      "kind": "position",
+      "actor": "blue",
+      "poseBrief": "Show blue using a representative squid guard configuration selected from the supplied pose reference, with a released white lapel and multiple lower body control contacts. Expose the cloth route, gripping hand, and captured white leg. Do not invent a generic tangle or substitute the worm guard picture without checking the reference.",
+      "keyChecks": [
+        "The selected squid guard lapel route is continuous",
+        "The captured leg matches the chosen reference",
+        "No cloth knot or extra wrapping limb is invented"
+      ],
+      "representative": true,
+      "uncertainty": "The catalog summary does not define the squid guard wrap; the exact reference must determine the pose.",
+      "requiresPoseReference": true,
+      "poseBriefWordCount": 51
+    },
+    {
+      "slug": "guard",
+      "name": "가드",
+      "kind": "concept",
+      "actor": "blue",
+      "poseBrief": "Illustrate the general guard concept with blue below white, using the legs as a clear barrier to control distance and preserve attacking space. Keep the feet uncrossed and the grips simple so the picture remains broadly representative. Do not treat one specialized guard as the universal definition of guard.",
+      "keyChecks": [
+        "Blue's legs visibly separate or control white",
+        "The scene communicates bottom guard rather than a pin",
+        "The image is representative rather than a fixed guard variant"
+      ],
+      "representative": true,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 49
+    },
+    {
+      "slug": "knee-cut",
+      "name": "니컷",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Preserve the approved knee cut composition: white controls blue from above, one white knee travels diagonally across a blue thigh, and the outside white foot provides a wide grounded base. Blue remains on the side beneath the pressure. Keep the cutting knee and the controlled thigh visibly connected.",
+      "keyChecks": [
+        "White is the top passer and blue the bottom partner",
+        "The cutting knee crosses a blue thigh rather than the abdomen",
+        "The outside white foot provides a separate grounded base"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 48
+    },
+    {
+      "slug": "leg-drag",
+      "name": "레그 드래그",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Show white passing from above by drawing both blue legs across blue's centerline toward one side. White advances beside the pinned hips with the chest facing the upper body. Keep the dragged knees grouped coherently and expose the hip control that prevents blue from turning back into guard.",
+      "keyChecks": [
+        "Blue's legs are dragged across the centerline",
+        "White advances beside the controlled hips",
+        "The dragged legs remain distinct and anatomically connected"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 48
+    },
+    {
+      "slug": "toreando-pass",
+      "name": "토레안도 패스",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Show white standing outside blue's open guard, gripping near the knees or pant legs and steering the legs to one side. White steps around the opposite flank like a bullfighter. Keep white's feet on the floor and blue's hips below, without turning the maneuver into a kneeling pressure pass.",
+      "keyChecks": [
+        "Both pant controls connect to blue's legs",
+        "White circles outside the legs",
+        "The pass remains standing and mobile"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 49
+    },
+    {
+      "slug": "long-step",
+      "name": "롱스텝",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Show white rotating around blue's guard while extending the free leg in a long backward and outward step. The upper body connection keeps blue's shoulders controlled as white's hips turn past the leg line. Make the extended stepping leg clearly separate from the knee that stays close to blue.",
+      "keyChecks": [
+        "One white leg makes a visibly long outward step",
+        "Upper body control persists during the hip turn",
+        "The step goes around the guard rather than straight through it"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 49
+    },
+    {
+      "slug": "pressure-pass",
+      "name": "압박 패스",
+      "kind": "concept",
+      "actor": "white",
+      "poseBrief": "Illustrate a representative pressure passing moment with white low over blue's guard, maintaining chest and hip connection while gradually reducing leg space. Blue's knees are being moved aside but the pass is not yet complete. Avoid defining the broad style exclusively through an over under grip or one named pass.",
+      "keyChecks": [
+        "White maintains continuous low body pressure",
+        "Blue's leg space is progressively reduced",
+        "This is a representative passing style rather than one fixed technique"
+      ],
+      "representative": true,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 50
+    },
+    {
+      "slug": "stack-pass",
+      "name": "스택 패스",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Show white above blue, lifting and folding blue's legs toward the upper torso while moving around the hip line. Blue's weight is supported across the shoulders and upper back with the head free. Keep the folded knees, hips, and white's gripping arms continuous without creating an extreme neck bend.",
+      "keyChecks": [
+        "Blue is folded through the hips rather than the neck",
+        "The shoulders and upper back carry the contact",
+        "White moves around the leg barrier"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 49
+    },
+    {
+      "slug": "leg-weave",
+      "name": "레그 위브",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Show white beside blue's bent knees with one white arm weaving between and around the legs to bind them together. White applies low shoulder pressure while approaching the side. Display the arm's entry and exit clearly so it cannot look like an extra limb emerging from between blue's knees.",
+      "keyChecks": [
+        "A single white arm follows a readable weaving path",
+        "Blue's bent knees are controlled together",
+        "White's upper body advances around the bound legs"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 49
+    },
+    {
+      "slug": "over-under",
+      "name": "오버 언더",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Show white low over blue's guard with one arm under one blue thigh and the other arm over the opposite thigh. White controls the hips while circling to the side. Make the asymmetric arm routes unmistakable and keep the head naturally beside the body rather than buried inside a leg.",
+      "keyChecks": [
+        "Exactly one white arm passes under a blue thigh",
+        "The other white arm passes over the opposite thigh",
+        "White controls the hips while moving laterally"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 50
+    },
+    {
+      "slug": "smash-pass",
+      "name": "스매시 패스",
+      "kind": "concept",
+      "actor": "white",
+      "poseBrief": "Illustrate a representative smash passing configuration with white compressing blue's knees toward one side and following with low body pressure. Blue's hips and shoulders remain anatomically aligned as the leg barrier collapses. Present a broad pressure based passing idea without inventing one mandatory grip for all smash passes.",
+      "keyChecks": [
+        "Blue's knees are compressed toward a coherent side",
+        "White follows with low connected pressure",
+        "The scene represents a family of smash passes"
+      ],
+      "representative": true,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 48
+    },
+    {
+      "slug": "double-under",
+      "name": "더블 언더",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Show white kneeling above blue with both white arms passing underneath the two blue thighs. White controls the hips and begins lifting the leg barrier while blue's shoulders remain supported. Keep both underhooking forearms visible and do not accidentally route one arm over a thigh as in over under.",
+      "keyChecks": [
+        "Both white arms travel underneath blue's thighs",
+        "Blue's hips are controlled by the same two arms",
+        "No over under asymmetry replaces the double under structure"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 49
+    },
+    {
+      "slug": "crazy-dog-pass",
+      "name": "크레이지 독 패스",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Show white pinning blue's legs toward the mat with a low connected torso, then turning around the restrained hip line as specified by the supplied crazy dog pass reference. Keep the precise hand grips and knee placement visible. Treat the scene as the chosen named variant rather than a generic scramble.",
+      "keyChecks": [
+        "Blue's legs are visibly pinned rather than floating",
+        "White's body follows the controlled hip line",
+        "The exact hand and knee arrangement matches the selected reference"
+      ],
+      "representative": true,
+      "uncertainty": "The catalog summary does not fix the crazy dog pass variant; verify the exact reference before generation.",
+      "requiresPoseReference": true,
+      "poseBriefWordCount": 51
+    },
+    {
+      "slug": "gator-roll",
+      "name": "게이터 롤",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Show white holding blue in a connected head and arm front headlock while both bodies begin rolling toward one side. White retains the same locked arm structure throughout the turn. Freeze before a final squeeze, with shoulders supporting the roll and without twisting blue's head independently from the torso.",
+      "keyChecks": [
+        "The same head and arm connection survives the roll",
+        "Both bodies rotate together around a coherent axis",
+        "No isolated neck twist substitutes for the rolling transition"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 49
+    },
+    {
+      "slug": "knee-slide",
+      "name": "니슬라이드",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Show white in an earlier sliding phase of the knee pass, with one knee progressing through blue's leg line while the torso controls the upper body. Blue remains on the side with the trapped lower leg still visible. Preserve the shared knee cut family without inventing a different anatomical mechanism.",
+      "keyChecks": [
+        "White's sliding knee follows blue's thigh line",
+        "The torso connection remains continuous",
+        "Keep this separate catalog entry without inventing a false distinction from knee cut"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 50
+    },
+    {
+      "slug": "back-step",
+      "name": "백 스텝",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Show white above blue's half guard, turning the hips and stepping the free white leg backward across the controlled leg line. The upper body stays connected while blue retains the lower leg momentarily. Make the stepping foot's arc readable and avoid drawing white simply retreating away from the guard.",
+      "keyChecks": [
+        "A free white leg steps backward across the leg line",
+        "Upper body contact remains during the turn",
+        "Blue's temporary lower leg control is visible"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 49
+    },
+    {
+      "slug": "lapel-pass",
+      "name": "라펠 패스",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Show a representative lapel assisted pass with white gripping a released blue lapel to control the hips or leg line while circling the guard. Keep the fabric connected to blue's jacket and the white gripping hand visible. The exact wrap must follow the supplied reference, not an invented cloth knot.",
+      "keyChecks": [
+        "The lapel belongs continuously to blue's jacket",
+        "White's cloth grip has a visible purpose in controlling the pass",
+        "The selected reference determines the wrap"
+      ],
+      "representative": true,
+      "uncertainty": "Lapel pass is a broad label; exact cloth routing requires the main reference.",
+      "requiresPoseReference": true,
+      "poseBriefWordCount": 50
+    },
+    {
+      "slug": "shin-trap",
+      "name": "신 트랩",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Show white above blue's guard using a white shin to immobilize a blue lower leg against the floor while the upper body controls distance. Make the shin contact and blue's trapped ankle clearly visible. Depict the control within passing, rather than a foot stamping on the knee joint.",
+      "keyChecks": [
+        "A white shin supplies the trapping contact",
+        "The trapped blue leg stays anatomically aligned",
+        "The control does not become a stomp on the knee"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 48
+    },
+    {
+      "slug": "surfer-pass",
+      "name": "서퍼 패스",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Show the surfer pass configuration selected in the supplied reference, with white balanced above blue's leg barrier and advancing around the hips. Expose the exact supporting foot and hand contacts that make the position stable. Do not guess a foot placement directly on a knee or substitute an ordinary standing pass.",
+      "keyChecks": [
+        "White's balance has visible support contacts",
+        "The supporting foot location follows the reference",
+        "The leg barrier is being passed rather than stood on arbitrarily"
+      ],
+      "representative": true,
+      "uncertainty": "Surfer pass has variant specific foot placements that the written summary does not establish.",
+      "requiresPoseReference": true,
+      "poseBriefWordCount": 51
+    },
+    {
+      "slug": "duck-under",
+      "name": "덕 언더",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Show a standing clinch where white lowers beneath one of blue's arms and steps toward blue's back. White's head and shoulder pass under that arm while the free hand maintains genuine upper body contact. Freeze the angle change before a takedown, keeping the arm overhead attached to blue's shoulder.",
+      "keyChecks": [
+        "White passes under a real blue arm",
+        "The step creates access toward blue's back",
+        "Blue's overhead arm remains connected to the correct shoulder"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 49
+    },
+    {
+      "slug": "wiper",
+      "name": "와이퍼",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Show white passing above blue while a white lower leg sweeps across blue's leg barrier in a windshield wiper style movement. Keep the upper body connection stable and show the changing shin angle clearly. This is a representative passing movement whose exact leg route must match the selected reference.",
+      "keyChecks": [
+        "A single white lower leg performs the wiper motion",
+        "White's upper body remains connected",
+        "The shin route follows the intended passing variant"
+      ],
+      "representative": true,
+      "uncertainty": "Windshield wiper names several leg movements; the main reference must fix the intended variant.",
+      "requiresPoseReference": true,
+      "poseBriefWordCount": 49
+    },
+    {
+      "slug": "x-pass",
+      "name": "엑스 패스",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Show white standing over blue's open guard, using the hands to manage the upper body and one knee while kicking the free white leg backward to clear the guard. The other white foot remains grounded as white moves laterally. Keep the passer's crossed directional action clear rather than forcibly crossing blue's knees.",
+      "keyChecks": [
+        "White's free leg kicks back while the other foot supports",
+        "Hands control blue's upper body and leg barrier",
+        "Do not invent an X by twisting blue's knees together"
+      ],
+      "representative": true,
+      "uncertainty": "The catalog wording about crossing legs is ambiguous; confirm the classic kickback X pass against the supplied reference.",
+      "requiresPoseReference": true,
+      "poseBriefWordCount": 52
+    },
+    {
+      "slug": "guard-pass",
+      "name": "가드 패스",
+      "kind": "concept",
+      "actor": "white",
+      "poseBrief": "Illustrate passing with white moving beyond blue's leg barrier toward side control, while blue's feet no longer separate the torsos. Show an intermediate transition rather than a submission. Use this as one representative outcome of the general passing process, without treating the chosen route as its sole definition.",
+      "keyChecks": [
+        "White is moving beyond blue's legs",
+        "Blue's feet no longer form the main torso barrier",
+        "The scene represents passing broadly"
+      ],
+      "representative": true,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 48
+    },
+    {
+      "slug": "side-control",
+      "name": "사이드 컨트롤",
+      "kind": "position",
+      "actor": "white",
+      "poseBrief": "Show white perpendicular across blue's upper torso in a conventional side control pin, with chest connection and knees or feet providing a grounded base. Blue's arms form natural frames near the shoulder and hip. Keep white's hips beside blue rather than astride the abdomen as in mount.",
+      "keyChecks": [
+        "White's torso lies perpendicular to blue's torso",
+        "The chest and hip control have grounded support",
+        "White is beside blue rather than in mount"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 47
+    },
+    {
+      "slug": "mount",
+      "name": "마운트",
+      "kind": "position",
+      "actor": "white",
+      "poseBrief": "Show white seated above blue's torso with a knee on each side and both hips centered over blue. Blue lies on the back using natural forearm frames near the hips. Keep white's two legs on opposite sides of blue, without a third knee or a misplaced foot crossing the neck.",
+      "keyChecks": [
+        "White straddles blue's torso",
+        "One white knee is visible on each side",
+        "Blue remains face up beneath the mounted hips"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 50
+    },
+    {
+      "slug": "back-take",
+      "name": "백 테이크",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Show white moving from blue's side toward the back, securing an upper body connection while beginning to insert a hook beside blue's hip. Blue is turning or supported on hands and knees. Capture the transition into rear control rather than a fully settled seated back control portrait.",
+      "keyChecks": [
+        "White is visibly gaining the rear angle",
+        "A genuine upper body connection leads the movement",
+        "The entering hook belongs to white"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 47
+    },
+    {
+      "slug": "back-control",
+      "name": "백 컨트롤",
+      "kind": "position",
+      "actor": "white",
+      "poseBrief": "Preserve the approved seated back control arrangement with white behind blue, chest connected to blue's back, and both white legs controlling inside blue's thighs. White establishes a seatbelt style upper body connection while blue may hold the wrists. Keep the faces neutral and the four hands distinctly connected.",
+      "keyChecks": [
+        "White's chest stays behind blue's back",
+        "The two inside hooks belong to white",
+        "Seatbelt arms and defensive hands remain distinct"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 48
+    },
+    {
+      "slug": "turtle",
+      "name": "터틀",
+      "kind": "position",
+      "actor": "blue",
+      "poseBrief": "Show blue supported on both knees and hands or forearms in a compact turtle posture, with elbows close to the ribs. White kneels beside the hips without already completing a choke or back mount. Keep the head naturally aligned and make the defensive closed silhouette clear.",
+      "keyChecks": [
+        "Blue has a compact four point defensive base",
+        "Elbows remain close to the torso",
+        "White is a separate nearby partner rather than an extra blue limb"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 46
+    },
+    {
+      "slug": "knee-on-belly",
+      "name": "니온밸리",
+      "kind": "position",
+      "actor": "white",
+      "poseBrief": "Show white beside blue's supine torso with one bent knee contacting the abdomen and the opposite foot posted widely on the floor. White maintains upper body control with natural hand grips. Keep the elevated hips and distinct outside base visible so the scene reads as knee on belly, not full mount.",
+      "keyChecks": [
+        "One white knee contacts the torso",
+        "The opposite white foot is clearly posted outside",
+        "White's hips are elevated rather than seated in mount"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 51
+    },
+    {
+      "slug": "berimbolo",
+      "name": "베림볼로",
+      "kind": "technique",
+      "actor": "blue",
+      "poseBrief": "Show blue inverting from an outside guard connection around white's hips, rotating toward rear access while retaining leg control. White remains seated or balanced according to the supplied reference. Keep blue's shoulder support and the continuous leg route visible, distinguishing the back taking rotation from a generic somersault.",
+      "keyChecks": [
+        "The inversion leads around white's hips toward the back",
+        "Blue maintains a genuine leg connection",
+        "The shoulders support the turn rather than the head"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 48
+    },
+    {
+      "slug": "headquarters-position",
+      "name": "헤드쿼터 포지션",
+      "kind": "position",
+      "actor": "white",
+      "poseBrief": "Show white in a compact passing headquarters stance between blue's open guard legs, managing one blue leg inside the stance and the other outside. White controls the knees while keeping a stable staggered base. Emphasize the intermediate hip and leg alignment rather than a completed knee cut or side pin.",
+      "keyChecks": [
+        "White has a stable staggered passing base",
+        "One blue leg is managed inside and the other outside",
+        "The picture remains an intermediate headquarters position"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 50
+    },
+    {
+      "slug": "arm-drag",
+      "name": "암 드래그",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Show white gripping blue's wrist and upper arm to draw that arm across blue's centerline while white steps toward the exposed flank. Both athletes may remain standing. Keep the wrist and elbow aligned on the same blue arm and make the new back facing angle evident without completing a throw.",
+      "keyChecks": [
+        "Both white grips act on the same blue arm",
+        "The dragged arm crosses blue's centerline",
+        "White moves toward the exposed flank"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 50
+    },
+    {
+      "slug": "under-hook",
+      "name": "언더훅",
+      "kind": "position",
+      "actor": "white",
+      "poseBrief": "Show white and blue in a close clinch, with one white arm passing beneath blue's armpit and reaching around the upper back. The free white hand maintains balance or a neutral frame. Expose the shoulder and elbow route so the underhook cannot be mistaken for an overhook or neck wrap.",
+      "keyChecks": [
+        "The white arm enters beneath blue's armpit",
+        "The arm continues around the same blue shoulder line",
+        "No neck wrap replaces the underhook"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 50
+    },
+    {
+      "slug": "front-headlock",
+      "name": "프론트 헤드락",
+      "kind": "position",
+      "actor": "white",
+      "poseBrief": "Show white in front of a kneeling blue partner, controlling blue's head and one nearby arm with a connected front headlock. White's hips remain behind the shoulder line with a stable base. Show a holding position before any choke finish, without bending the neck into an extreme angle.",
+      "keyChecks": [
+        "White is in front rather than behind blue",
+        "Head and adjacent arm are controlled together",
+        "The neck remains naturally aligned with the torso"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 48
+    },
+    {
+      "slug": "fifty-fifty-position",
+      "name": "50 대 50 포지션",
+      "kind": "position",
+      "actor": "blue",
+      "poseBrief": "Show both athletes seated in a symmetric leg entanglement, each controlling the other's corresponding leg in a mirrored fifty fifty structure. Keep both hips visible and expose the crossing thighs without merging the feet. Present the shared positional arrangement, not a finished heel hook or a forced knee rotation.",
+      "keyChecks": [
+        "The leg entanglement is visibly reciprocal and symmetric",
+        "Each foot can be traced to the correct hip",
+        "No submission finish replaces the positional structure"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 49
+    },
+    {
+      "slug": "ashi-garami",
+      "name": "아시 가라미",
+      "kind": "position",
+      "actor": "blue",
+      "poseBrief": "Show blue seated facing white with both blue legs isolating a single white leg in a basic straight ashi arrangement. One blue foot frames near the hip while the other leg controls the knee line. White's free leg remains outside; no ankle lock needs to be finished.",
+      "keyChecks": [
+        "Both blue legs isolate one white leg",
+        "The controlled knee line and hip frame are visible",
+        "White's free leg remains outside the entanglement"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 47
+    },
+    {
+      "slug": "north-south-position",
+      "name": "남북 포지션",
+      "kind": "position",
+      "actor": "white",
+      "poseBrief": "Show white above blue's upper body with the athletes facing opposite directions along the same lengthwise axis. White's chest controls the shoulders while white's head points toward blue's hips. Blue lies supine with natural frames, and white's hips remain near blue's head rather than beside the waist.",
+      "keyChecks": [
+        "The two torsos face opposite lengthwise directions",
+        "White's hips are near blue's head",
+        "The pose is not ordinary perpendicular side control"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 47
+    },
+    {
+      "slug": "saddle-position",
+      "name": "새들 포지션",
+      "kind": "position",
+      "actor": "blue",
+      "poseBrief": "Show blue seated beside white's hips, using the triangular inside leg entanglement in the selected saddle reference to isolate one white thigh. Keep the controlled knee line visible while white's second leg remains separate. Depict positional control before any heel rotation, without inventing differences from closely related inside entanglement names.",
+      "keyChecks": [
+        "Blue's leg triangle controls the selected white thigh",
+        "The controlled knee line remains inside the entanglement",
+        "No rotational submission finish is applied"
+      ],
+      "representative": true,
+      "uncertainty": "Saddle, honey hole, and inside ashi names overlap; preserve the selected reference and separate slug without inventing anatomy.",
+      "requiresPoseReference": true,
+      "poseBriefWordCount": 50
+    },
+    {
+      "slug": "s-mount",
+      "name": "S 마운트",
+      "kind": "position",
+      "actor": "white",
+      "poseBrief": "Show white in an asymmetric high mount with one knee close beside blue's head and the opposite bent leg curled across the upper torso. White's hips sit at an angle while controlling an arm. Keep the S shaped leg arrangement clear, without already extending blue's elbow into an armbar.",
+      "keyChecks": [
+        "The two white legs have an asymmetric S arrangement",
+        "One white knee is high beside blue's head",
+        "The image remains a control position before an armbar finish"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 49
+    },
+    {
+      "slug": "truck",
+      "name": "트럭",
+      "kind": "position",
+      "actor": "white",
+      "poseBrief": "Show white behind and beside blue's hips in a truck control, with white's legs entangling a blue leg and the hands controlling the lower body. Expose the hip connection and far leg control while blue lies partly on the side. Keep this a holding position rather than a completed twister.",
+      "keyChecks": [
+        "White controls blue's hip line from behind and beside",
+        "The leg entanglement can be traced without merged limbs",
+        "No spinal twisting finish replaces the truck position"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 50
+    },
+    {
+      "slug": "crucifix",
+      "name": "크루시픽스",
+      "kind": "position",
+      "actor": "white",
+      "poseBrief": "Show white beside a kneeling or side lying blue partner, trapping one blue arm between white's legs while the other blue arm is controlled by white's upper body. Keep blue's shoulders and both captured arms visible. Depict arm immobilization without adding a simultaneous choke that obscures the defining structure.",
+      "keyChecks": [
+        "One blue arm is trapped by white's legs",
+        "The other blue arm is separately controlled",
+        "Both blue arms remain connected to their own shoulders"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 49
+    },
+    {
+      "slug": "body-lock",
+      "name": "바디락",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Show white and blue standing in a close clinch, with white's two arms wrapping blue's torso and the hands clasping behind the waist. White's head stays naturally beside blue's chest. Keep the body lock grip visible while both athletes maintain grounded feet, before any trip or lift.",
+      "keyChecks": [
+        "Both white arms encircle blue's torso",
+        "The clasped hands belong to white",
+        "Both athletes remain grounded before a takedown"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 47
+    },
+    {
+      "slug": "cross-collar-control",
+      "name": "크로스 칼라 컨트롤",
+      "kind": "position",
+      "actor": "white",
+      "poseBrief": "Show white facing blue and reaching across with one hand to grip blue's opposite lapel. Both athletes remain upright or kneeling with natural distance. Expose the crossing forearm and the actual collar fold in the gripping hand, while the second white arm remains a neutral support rather than a choke.",
+      "keyChecks": [
+        "The grip reaches the opposite blue lapel",
+        "The gripping hand visibly encloses jacket fabric",
+        "One control grip is not misrepresented as a completed choke"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 50
+    },
+    {
+      "slug": "outside-ashi-garami",
+      "name": "아웃사이드 아시 가라미",
+      "kind": "position",
+      "actor": "blue",
+      "poseBrief": "Show blue isolating one white leg with both blue legs positioned on the outside line of that thigh, following the supplied outside ashi reference. The controlled foot remains near blue's upper body while white's free leg stays separate. Keep the position neutral without applying a heel hook finish.",
+      "keyChecks": [
+        "Both blue legs use the outside line of the controlled thigh",
+        "White's free leg remains identifiable",
+        "The selected reference fixes the exact knee and ankle crossing"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 48
+    },
+    {
+      "slug": "two-on-one",
+      "name": "투 온 원",
+      "kind": "position",
+      "actor": "white",
+      "poseBrief": "Show white using both hands to control a single blue arm, one grip near the wrist and the other above the elbow. White stands at a slight outside angle while blue maintains a balanced stance. Expose both grips and the controlled shoulder so no extra blue arm appears between the hands.",
+      "keyChecks": [
+        "Two white hands control one blue arm",
+        "Wrist and upper arm belong to the same limb",
+        "White has a slight outside angle"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 51
+    },
+    {
+      "slug": "snap-down",
+      "name": "스냅 다운",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Show white in a standing or low clinch drawing blue's head and shoulder line downward while stepping to preserve balance. Blue is beginning to bend at the hips with the hands preparing to post. Keep the head aligned with the spine and show posture breaking rather than an isolated neck wrench.",
+      "keyChecks": [
+        "Head and shoulder line move downward together",
+        "White retains a grounded balanced base",
+        "Blue bends through the hips rather than an extreme neck angle"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 51
+    },
+    {
+      "slug": "straight-collar-control",
+      "name": "스트레이트 칼라 컨트롤",
+      "kind": "position",
+      "actor": "white",
+      "poseBrief": "Show white and blue facing each other with white holding the directly aligned blue lapel on the same side, rather than crossing to the opposite collar. Keep the elbow relaxed and the jacket fold visible in the grip. The other hand remains neutral so this reads as a single collar control.",
+      "keyChecks": [
+        "The grip follows a direct same side line",
+        "The held lapel belongs to blue's jacket",
+        "No second crossing grip turns it into a choke"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 51
+    },
+    {
+      "slug": "crab-ride",
+      "name": "크랩 라이드",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Show white behind blue's hips with both white insteps hooking behind blue's knees in a crab ride. White lifts and follows the hip line while blue's hands or feet provide a realistic base. Keep the hooks low behind the knees, distinct from back control hooks placed inside the thighs.",
+      "keyChecks": [
+        "The hooks contact behind blue's knees",
+        "White controls the hip line from behind",
+        "The lower hook placement distinguishes the ride from settled back control"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 49
+    },
+    {
+      "slug": "sprawl",
+      "name": "스프롤",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Show white responding to blue's low leg attack by extending the white legs backward and dropping the hips onto blue's shoulder line. Blue remains supported on knees and hands with a naturally aligned head. Keep both white feet separate and grounded or lightly extended, showing an immediate takedown defense.",
+      "keyChecks": [
+        "White's hips move backward over the attacking shoulder line",
+        "Both white legs extend away from blue's grips",
+        "Blue's head stays aligned with the torso"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 49
+    },
+    {
+      "slug": "high-mount",
+      "name": "하이 마운트",
+      "kind": "position",
+      "actor": "white",
+      "poseBrief": "Show white mounted high on blue's upper torso, with white's knees close to blue's shoulders and the hips above the chest rather than the lower abdomen. Blue's arms remain naturally framed near the head. Keep the two white knees distinct and avoid changing the scene into a completed armbar.",
+      "keyChecks": [
+        "White's hips sit high above blue's chest",
+        "The knees are near the shoulder line",
+        "The scene remains mount rather than an armbar finish"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 49
+    },
+    {
+      "slug": "back-mount",
+      "name": "백 마운트",
+      "kind": "position",
+      "actor": "white",
+      "poseBrief": "Show white attached chest to back behind a blue partner who is supported low on hands and knees or slightly prone. White's legs control beside the hips with hooks following the reference. Use a rear oblique camera view, preserving the same back control family without inventing a different body relationship.",
+      "keyChecks": [
+        "White's chest remains behind blue's back",
+        "White's hooks control beside blue's hips",
+        "The different view does not invent a false distinction from back control"
+      ],
+      "representative": true,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 50
+    },
+    {
+      "slug": "honey-hole",
+      "name": "허니 홀",
+      "kind": "position",
+      "actor": "blue",
+      "poseBrief": "Show the honey hole leg entanglement from a clear side angle using the same inside triangular control family as the selected reference. Blue isolates one white thigh while keeping white's second leg distinct. Expose the controlled knee line and present positional containment before any heel hook finish.",
+      "keyChecks": [
+        "One white thigh is contained by blue's inside leg triangle",
+        "The second white leg remains separate",
+        "No invented anatomical distinction from saddle is introduced"
+      ],
+      "representative": true,
+      "uncertainty": "Honey hole and saddle terminology may overlap; keep the exact selected pose and separate catalog slug.",
+      "requiresPoseReference": true,
+      "poseBriefWordCount": 47
+    },
+    {
+      "slug": "backside-fifty-fifty",
+      "name": "백사이드 50/50",
+      "kind": "position",
+      "actor": "blue",
+      "poseBrief": "Show blue rotated toward the backside angle of white's hip while retaining the leg relationship of a fifty fifty entry. Expose blue's position behind the controlled knee line and white's separate free leg. Keep the feet aligned naturally, showing the backside angle rather than an ordinary face to face entanglement.",
+      "keyChecks": [
+        "Blue has rotated behind the controlled hip and knee line",
+        "The starting fifty fifty leg relationship is still readable",
+        "No heel rotation or impossible knee bend is added"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 50
+    },
+    {
+      "slug": "inside-ashi-garami",
+      "name": "인사이드 아시 가라미",
+      "kind": "position",
+      "actor": "blue",
+      "poseBrief": "Show blue controlling a white thigh from the inside leg line in the configuration selected by the pose reference. Blue's hips stay close and the knee line remains contained, while white's second leg stays visible. Keep this a neutral positional diagram and do not invent unique anatomy solely to distinguish related inside entanglement names.",
+      "keyChecks": [
+        "The entanglement controls from the inside line",
+        "The captured knee remains contained",
+        "The reference governs overlap with saddle and honey hole"
+      ],
+      "representative": true,
+      "uncertainty": "Inside ashi labels vary across systems and may overlap saddle; the pose reference must select the intended variant.",
+      "requiresPoseReference": true,
+      "poseBriefWordCount": 54
+    },
+    {
+      "slug": "lockdown",
+      "name": "락다운",
+      "kind": "position",
+      "actor": "blue",
+      "poseBrief": "Show blue in bottom half guard with both blue legs laced around one white lower leg in a recognizable lockdown structure. Keep the crossing feet and captured ankle visible from a low side angle. White remains balanced above, and the trapped knee stays naturally aligned without a forced extension.",
+      "keyChecks": [
+        "Two blue legs lace around one white lower leg",
+        "Crossing feet can be traced to blue's hips",
+        "The trapped knee is not forced into an unnatural angle"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 49
+    },
+    {
+      "slug": "seat-belt-grip",
+      "name": "싯벨트 그립",
+      "kind": "position",
+      "actor": "white",
+      "poseBrief": "Show white seated behind blue with one white arm over a shoulder and the other under the opposite armpit, the hands connected in front of blue's chest. Blue may touch the clasp defensively. Focus the composition on the over under seatbelt routes rather than placing both white arms around the neck.",
+      "keyChecks": [
+        "One white arm goes over and the other under",
+        "White's hands connect in front of the chest",
+        "Both arms are not converted into a neck choke"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 51
+    },
+    {
+      "slug": "three-quarter-mount",
+      "name": "3/4 마운트",
+      "kind": "position",
+      "actor": "white",
+      "poseBrief": "Show white nearly mounted above blue, with the upper body controlled but one white lower leg still caught between blue's legs. White's opposite knee is beyond the hip line. Expose the trapped foot and blue's remaining leg connection, distinguishing the intermediate position from both full mount and ordinary half guard.",
+      "keyChecks": [
+        "One white lower leg remains trapped",
+        "White's opposite knee has crossed beyond the hip line",
+        "The pose is not fully settled mount"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 50
+    },
+    {
+      "slug": "escape",
+      "name": "이스케이프",
+      "kind": "concept",
+      "actor": "blue",
+      "poseBrief": "Illustrate an escape concept with blue underneath a partial white pin, using frames and a hip turn to create a visible gap before returning a knee inside. Keep the action controlled and generic. This is one representative escape route, not the fixed definition of escaping every position or submission.",
+      "keyChecks": [
+        "Blue creates space through connected frames",
+        "A hip turn changes the trapped body alignment",
+        "The scene represents one example of a broad escape concept"
+      ],
+      "representative": true,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 49
+    },
+    {
+      "slug": "foot-work",
+      "name": "풋 워크",
+      "kind": "concept",
+      "actor": "white",
+      "poseBrief": "Show white and blue standing at grappling distance while white makes a small lateral step from a balanced staggered stance. Keep the torso facing the partner and both feet clearly grounded at different stages of the step. This is representative footwork, without implying one compulsory movement for every technique.",
+      "keyChecks": [
+        "White's feet show a balanced staggered base",
+        "The lateral step preserves a realistic torso alignment",
+        "The image is a representative movement rather than a named attack"
+      ],
+      "representative": true,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 49
+    },
+    {
+      "slug": "entry",
+      "name": "엔트리",
+      "kind": "concept",
+      "actor": "white",
+      "poseBrief": "Illustrate an entry concept with white closing the distance from a balanced standing stance and establishing an initial sleeve or upper body connection to blue. Freeze before a throw, guard pull, or submission becomes identifiable. The image should communicate beginning a technical engagement rather than defining one mandatory entry.",
+      "keyChecks": [
+        "White is establishing the first genuine contact",
+        "The stance and approach remain balanced",
+        "No specific completed technique replaces the broad entry concept"
+      ],
+      "representative": true,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 49
+    },
+    {
+      "slug": "kimura",
+      "name": "기무라",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Show white in side control isolating one bent blue arm with a true figure four kimura grip. One white hand holds blue's wrist while the other threads beneath the upper arm and grasps white's own wrist. Keep blue's elbow and shoulder connected and show the grip before rotational pressure is applied.",
+      "keyChecks": [
+        "One white hand controls the blue wrist",
+        "The other white hand grips white's own wrist",
+        "The bent elbow remains linked to the controlled blue shoulder"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 51
+    },
+    {
+      "slug": "omoplata",
+      "name": "오모플라타",
+      "kind": "technique",
+      "actor": "blue",
+      "poseBrief": "Show blue sitting beside white after threading a blue leg over one white shoulder, using the legs to trap that arm. Both athletes face generally toward white's feet while blue controls the hip or wrist. Expose the shoulder trapped beneath blue's thigh without turning the position into an ordinary armbar.",
+      "keyChecks": [
+        "A blue thigh controls the trapped white shoulder",
+        "The same white arm remains caught beneath the leg",
+        "Blue sits alongside white rather than across an extended elbow"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 50
+    },
+    {
+      "slug": "armbar",
+      "name": "암바",
+      "kind": "technique",
+      "actor": "blue",
+      "poseBrief": "Preserve the approved armbar roles with blue seated perpendicular to supine white, both blue hands controlling one white wrist. One blue leg crosses the head line and the other controls the upper torso. Use a camera angle that exposes white's elbow above blue's hip line rather than hiding this decisive contact behind a knee.",
+      "keyChecks": [
+        "Blue's hands control the same white wrist",
+        "White's elbow is visibly aligned over blue's hips",
+        "The two blue legs separately control head and upper torso"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 54
+    },
+    {
+      "slug": "triangle-choke",
+      "name": "트라이앵글 초크",
+      "kind": "technique",
+      "actor": "blue",
+      "poseBrief": "Show blue on the back enclosing white's neck and exactly one white arm between the blue thighs. One blue ankle locks behind the opposite knee to form the triangle. White remains kneeling with neutral posture while the trapped shoulder and locking leg connection remain visible, without an impossible second ankle or extra arm.",
+      "keyChecks": [
+        "Exactly one white arm is inside the leg triangle",
+        "Blue's ankle locks behind the opposite blue knee",
+        "White's trapped shoulder and neck share the enclosed space"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 53
+    },
+    {
+      "slug": "darce-choke",
+      "name": "다스 초크",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Show white above and beside a kneeling blue partner, threading one white arm under blue's near armpit and then across the neck. White completes a connected biceps based lock with the free arm. Expose the armpit first route and the trapped blue arm so the setup differs from an anaconda entry.",
+      "keyChecks": [
+        "The attacking arm enters beneath blue's armpit first",
+        "One blue arm remains trapped against the neck line",
+        "The biceps lock belongs entirely to white"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 51
+    },
+    {
+      "slug": "knee-bar",
+      "name": "니바",
+      "kind": "technique",
+      "actor": "blue",
+      "poseBrief": "Show blue aligned along one isolated white leg, holding the ankle near blue's chest while the blue hips support the knee line. Blue's legs keep the thigh contained and white's free leg remains outside. Depict the straight joint alignment before extension, with no backward broken knee or detached foot.",
+      "keyChecks": [
+        "The controlled white knee aligns over blue's hip support",
+        "Blue holds the corresponding ankle",
+        "White's free leg remains separate and naturally bent"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 49
+    },
+    {
+      "slug": "guillotine-choke",
+      "name": "길로틴 초크",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Show white in front of a kneeling blue partner, placing one white forearm beneath blue's chin while the other hand supports the choking hand or wrist. Blue's head stays in front of white's torso. Keep the connection low and coherent without moving white behind blue as in a rear naked choke.",
+      "keyChecks": [
+        "White remains in front of blue",
+        "A single forearm passes beneath the chin",
+        "The supporting hand connects to white's own choking hand or wrist"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 51
+    },
+    {
+      "slug": "straight-ankle-lock",
+      "name": "스트레이트 앵클락",
+      "kind": "technique",
+      "actor": "blue",
+      "poseBrief": "Show blue seated in a basic ashi arrangement isolating one white leg, with a blue forearm beneath the Achilles area and the controlled foot tucked near blue's armpit. Blue's other hand supports the grip. Keep the ankle line straight and neutral, illustrating the setup before extension rather than a heel hook twist.",
+      "keyChecks": [
+        "The blue forearm supports the Achilles area",
+        "White's foot stays close to blue's armpit",
+        "No heel rotation replaces the straight ankle configuration"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 52
+    },
+    {
+      "slug": "bow-and-arrow-choke",
+      "name": "보우앤로우 초크",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Show white behind a seated blue partner, one white hand holding a blue collar while the other controls the far trouser leg near the knee. White's torso opens diagonally away from the collar connection. Keep the fabric path, opposing grips, and leg support visible without inventing a detached lapel or a second trapped neck.",
+      "keyChecks": [
+        "White controls a blue collar and a far trouser leg",
+        "The grips create opposing directional tension",
+        "The lapel remains continuous with blue's jacket"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 54
+    },
+    {
+      "slug": "heel-hook",
+      "name": "힐훅",
+      "kind": "concept",
+      "actor": "blue",
+      "poseBrief": "Illustrate the heel hook family with blue controlling a white leg in a simple seated entanglement and collecting the exposed heel with the forearms. Keep the knee and ankle naturally aligned without applying rotation. This is a representative pre finish heel capture, not the exclusive definition of every inside and outside heel hook.",
+      "keyChecks": [
+        "A genuine white heel is captured by blue's forearms",
+        "The knee line is controlled by blue's legs",
+        "The image represents a family rather than fixing one universal rotational direction"
+      ],
+      "representative": true,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 53
+    },
+    {
+      "slug": "rear-naked-choke",
+      "name": "리어 네이키드 초크",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Show white attached behind seated blue with chest to back contact and a white forearm beneath the chin. White's choking hand holds the opposite white biceps while the other hand supports behind the head. Keep the arms connected and the legs controlling the hips without using a lapel grip.",
+      "keyChecks": [
+        "White's choking arm wraps from behind blue",
+        "The choking hand holds white's opposite biceps",
+        "No jacket grip substitutes for the arm based choke"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 49
+    },
+    {
+      "slug": "toe-hold",
+      "name": "토홀드",
+      "kind": "technique",
+      "actor": "blue",
+      "poseBrief": "Show blue controlling a naturally bent white leg and holding the forefoot with one hand while the other arm supports a figure four wrist connection. Keep the white toes, heel, and knee visible in a coherent line. Depict a stable pre pressure foot grip rather than a foot twisted unnaturally away from its shin.",
+      "keyChecks": [
+        "One blue hand controls the forefoot",
+        "The supporting hand forms a figure four wrist connection",
+        "White's knee and foot remain naturally aligned"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 54
+    },
+    {
+      "slug": "loop-choke",
+      "name": "루프 초크",
+      "kind": "technique",
+      "actor": "blue",
+      "poseBrief": "Show blue facing a low white partner, maintaining a genuine white collar grip while the corresponding blue forearm loops around white's bowed head. The free blue arm supports the setup without becoming a second neck. Expose the lapel connection and curved elbow route, keeping white's neck naturally aligned.",
+      "keyChecks": [
+        "The collar grip holds actual white jacket fabric",
+        "The blue elbow loops around the lowered white head",
+        "The neck and shoulder line remain anatomically coherent"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 48
+    },
+    {
+      "slug": "inside-heel-hook",
+      "name": "인사이드 힐훅",
+      "kind": "technique",
+      "actor": "blue",
+      "poseBrief": "Show blue in the inside leg entanglement selected for the supplied inside heel hook reference, controlling white's knee line while bracing the foot near blue's upper body and collecting the exposed heel. Freeze before rotation. Keep the exact heel orientation and all four leg routes visible instead of guessing direction from the technique name.",
+      "keyChecks": [
+        "The inside entanglement matches the selected reference",
+        "The exposed heel is collected by blue's real forearms",
+        "The knee remains contained without an applied twist"
+      ],
+      "representative": true,
+      "uncertainty": "Exact heel orientation and camera handedness must match the inside heel hook reference.",
+      "requiresPoseReference": true,
+      "poseBriefWordCount": 54
+    },
+    {
+      "slug": "arm-triangle",
+      "name": "암 트라이앵글",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Show white low beside blue from a top position, trapping one blue arm across the neck while white's head and arm close the space on either side. White's torso remains grounded and the blue shoulder is visible beside the face. Keep the trapped arm distinct from white's own locking arms.",
+      "keyChecks": [
+        "Exactly one blue arm is trapped against the neck",
+        "White's head reinforces the trapped shoulder side",
+        "White's locking arms remain separate from blue's arm"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 50
+    },
+    {
+      "slug": "cross-collar-choke",
+      "name": "크로스 칼라 초크",
+      "kind": "technique",
+      "actor": "blue",
+      "poseBrief": "Show blue in closed guard gripping both white collars with the blue forearms crossing in front of white's chest and neck. White remains kneeling inside the guard with a neutral head position. Make both collar folds visible in the two hands, distinguishing a completed pair of grips from single collar control.",
+      "keyChecks": [
+        "Both blue hands hold white collars",
+        "The blue forearms form a readable crossing",
+        "White remains inside blue's closed guard"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 51
+    },
+    {
+      "slug": "foot-lock",
+      "name": "풋락",
+      "kind": "concept",
+      "actor": "blue",
+      "poseBrief": "Illustrate the broad foot lock concept using a representative straight ankle style setup: blue isolates a white leg and controls the foot close to blue's upper body. Keep the knee naturally aligned and both blue hands connected to the same foot. Present one family example without combining incompatible heel and toe grips.",
+      "keyChecks": [
+        "Both blue hands control the same white foot",
+        "The leg remains anatomically aligned",
+        "This example does not define every type of foot lock"
+      ],
+      "representative": true,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 52
+    },
+    {
+      "slug": "wrist-lock",
+      "name": "리스트 락",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Show white controlling a bent blue arm at a stable standing or kneeling distance, one white hand supporting the elbow while the other folds the blue hand gently toward the forearm. Keep the fingers separate and the wrist bend modest. The defining elbow support and hand control must both remain visible.",
+      "keyChecks": [
+        "One white hand stabilizes the corresponding blue elbow",
+        "The other hand controls blue's hand rather than loose fingers",
+        "The wrist bend stays within a plausible demonstrative range"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 51
+    },
+    {
+      "slug": "ezekiel-choke",
+      "name": "이제키엘 초크",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Show white mounted above blue with one white forearm behind blue's neck and the opposite forearm across the front. One white hand grips inside the opposite white sleeve to connect the structure. Expose the sleeve based grip and keep the blue head neutral rather than depicting extreme pressure.",
+      "keyChecks": [
+        "The sleeve grip uses white's own opposite sleeve",
+        "The two forearms frame blue's neck",
+        "White remains connected in a grounded top position"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 48
+    },
+    {
+      "slug": "banana-split",
+      "name": "바나나 스플릿",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Show white behind blue's hips in a truck style setup, controlling one blue leg with white's legs and holding the other blue ankle with the hands. Keep blue's legs moderately separated and the hips supported. Depict the opposing leg controls before a stretch, without excessive splits or an impossible hip angle.",
+      "keyChecks": [
+        "One blue leg is controlled by white's legs",
+        "The other blue ankle is controlled by white's hands",
+        "Blue's hips and knees remain naturally aligned"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 51
+    },
+    {
+      "slug": "baseball-bat-choke",
+      "name": "베이스볼 초크",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Show white beside supine blue with two adjacent collar grips resembling hands stacked on a bat. White's forearms frame the neck while the body begins turning toward the head side. Keep the two gripping hands close but separate, distinguishing the adjacent grip pattern from crossed collar forearms.",
+      "keyChecks": [
+        "Two adjacent white hands hold blue's collar fabric",
+        "The grips are stacked rather than widely crossed",
+        "White's body angle follows the collar connection"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 47
+    },
+    {
+      "slug": "calf-slicer",
+      "name": "카프 슬라이서",
+      "kind": "technique",
+      "actor": "blue",
+      "poseBrief": "Show blue trapping a bent white leg with a blue shin or forearm acting as a visible wedge behind the calf and knee crease. Blue controls the ankle while the white leg folds naturally around that wedge. Depict the compression setup before pressure, keeping the fulcrum connected to blue's own limb.",
+      "keyChecks": [
+        "A real blue limb supplies the wedge",
+        "The selected white leg folds around that wedge",
+        "The controlled ankle belongs to the same white knee"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 51
+    },
+    {
+      "slug": "americana",
+      "name": "아메리카나",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Show white in side control pinning one blue wrist near the head with blue's elbow bent at a right angle. White's other arm threads beneath the upper arm and grips white's own wrist. Keep the wrist grounded and the shoulder intact, showing the external shoulder lock setup before the elbow is lifted.",
+      "keyChecks": [
+        "Blue's elbow is bent near a right angle",
+        "White pins the corresponding blue wrist",
+        "White forms a real figure four beneath the upper arm"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 52
+    },
+    {
+      "slug": "flying-armbar",
+      "name": "플라잉 암바",
+      "kind": "technique",
+      "actor": "blue",
+      "poseBrief": "Show a controlled flying armbar entry with white's feet firmly grounded while blue is attached around one white arm, legs reaching across the head and upper chest. Blue's two hands hold that same wrist and the hips stay close to the elbow line. Freeze the entry with genuine body contacts rather than unsupported floating figures.",
+      "keyChecks": [
+        "White's feet provide the standing base",
+        "Blue's hands and hips control the same white arm",
+        "Blue has exactly two connected legs around head and upper torso"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 55
+    },
+    {
+      "slug": "tarikoplata",
+      "name": "타리코플라타",
+      "kind": "technique",
+      "actor": "blue",
+      "poseBrief": "Show blue beside white's upper body using the precise leg threaded arm trap in the supplied Tarikoplata reference. White's selected arm remains bent and connected to the shoulder while blue's hip turn organizes the shoulder lock setup. Expose the leg and arm frame rather than substituting a standard kimura or omoplata.",
+      "keyChecks": [
+        "The named leg threaded arm trap matches the reference",
+        "The controlled wrist and elbow belong to one white arm",
+        "The blue hip turn preserves a natural shoulder alignment"
+      ],
+      "representative": true,
+      "uncertainty": "The exact Tarikoplata leg and forearm route is not established by the summary; reference confirmation is required.",
+      "requiresPoseReference": true,
+      "poseBriefWordCount": 51
+    },
+    {
+      "slug": "anaconda-choke",
+      "name": "아나콘다 초크",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Show white in front of a kneeling blue partner, threading an attacking arm around the neck first and then beneath the nearby armpit to trap the head and arm together. White closes a biceps based lock before a roll. Make this neck first route visible to distinguish the entry from D'Arce.",
+      "keyChecks": [
+        "The attacking arm enters around the neck before the armpit",
+        "One blue arm is included in the loop",
+        "White's locking hands and forearms form one connected structure"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 51
+    },
+    {
+      "slug": "baratoplata",
+      "name": "바라토플라타",
+      "kind": "technique",
+      "actor": "blue",
+      "poseBrief": "Show blue controlling one bent white arm with the leg based shoulder trap illustrated in the supplied Baratoplata reference. Blue's hips turn beside the controlled shoulder while the hands maintain the intended arm connection. Keep the exact leg routing visible and do not replace the named trap with a generic armbar or omoplata.",
+      "keyChecks": [
+        "The Baratoplata arm and leg trap matches the reference",
+        "The controlled elbow remains bent and attached to the shoulder",
+        "No ordinary armbar is substituted for the shoulder lock"
+      ],
+      "representative": true,
+      "uncertainty": "The written description is too broad to fix the exact Baratoplata trap; use the selected pose reference.",
+      "requiresPoseReference": true,
+      "poseBriefWordCount": 53
+    },
+    {
+      "slug": "brabo-choke",
+      "name": "브라보 초크",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Show white controlling blue's head and one arm in the Brabo configuration selected by the supplied reference. If the reference uses a lapel, keep that cloth route continuous; if it uses an arm lock, preserve the actual forearm path. Freeze the connected setup rather than inventing a hybrid of incompatible grips.",
+      "keyChecks": [
+        "The selected Brabo variant determines the grip system",
+        "The trapped blue arm and neck remain connected",
+        "Lapel and arm based routes are not mixed into a hybrid"
+      ],
+      "representative": true,
+      "uncertainty": "Brabo can denote different gi and arm based variants; select the reference before generation.",
+      "requiresPoseReference": true,
+      "poseBriefWordCount": 51
+    },
+    {
+      "slug": "clock-choke",
+      "name": "클락 초크",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Show blue compact in turtle while white kneels or stands beside the head, holding a genuine blue collar grip and controlling the near shoulder or hip. White's legs begin circling around the head while the upper body stays connected. Keep the collar route clear without adding a clock graphic or a twisted neck.",
+      "keyChecks": [
+        "Blue remains in a recognizable turtle posture",
+        "White maintains a real blue collar grip",
+        "White's body circles around the head rather than pulling it independently"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 53
+    },
+    {
+      "slug": "gogoplata",
+      "name": "고고플라타",
+      "kind": "technique",
+      "actor": "blue",
+      "poseBrief": "Show blue on the back with one blue shin positioned beneath white's chin and the corresponding foot controlled close to the upper body. The other blue leg helps contain white while the hands maintain posture control. Keep the shin contact visible, distinguishing the setup from a conventional triangle around one arm.",
+      "keyChecks": [
+        "A blue shin supplies the contact beneath white's chin",
+        "The corresponding blue foot remains anatomically connected",
+        "The setup is not replaced by an ordinary leg triangle"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 51
+    },
+    {
+      "slug": "north-south-choke",
+      "name": "노스 사우스 초크",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Show white in north south above blue's upper body, with a white arm wrapping the neck and the chest low beside the head. White's hips stay grounded near blue's head while white faces toward blue's feet. Keep the neck loop visible and avoid inserting a trapped blue arm unless the reference specifically includes it.",
+      "keyChecks": [
+        "The two bodies face opposite lengthwise directions",
+        "A white arm visibly loops blue's neck",
+        "The upper body contact remains low and connected"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 54
+    },
+    {
+      "slug": "buggy-choke",
+      "name": "버기 초크",
+      "kind": "technique",
+      "actor": "blue",
+      "poseBrief": "Show blue underneath white's side control, connecting a blue arm with a bent blue leg around white's upper body in the precise buggy choke route shown by the reference. White remains on top. Expose blue's own hand to leg connection and avoid merging a blue thigh into white's shoulder.",
+      "keyChecks": [
+        "Blue remains the bottom athlete",
+        "Blue's hand connects to blue's own bent leg",
+        "The chosen reference fixes the arm path around white's upper body"
+      ],
+      "representative": true,
+      "uncertainty": "The compact arm to leg route is easy to misconnect; the exact buggy choke reference must be checked.",
+      "requiresPoseReference": true,
+      "poseBriefWordCount": 49
+    },
+    {
+      "slug": "canto-choke",
+      "name": "칸토 초크",
+      "kind": "technique",
+      "actor": "blue",
+      "poseBrief": "Show blue setting up the Canto choke from a bottom guard configuration selected by the pose reference, maintaining a genuine collar grip while a blue leg assists the head and shoulder control. Keep the lapel continuous and the leg route visible. Do not substitute a generic loop choke solely because a collar is held.",
+      "keyChecks": [
+        "The collar grip remains attached to white's jacket",
+        "The assisting blue leg follows the Canto reference",
+        "The named setup is not replaced by a generic collar loop"
+      ],
+      "representative": true,
+      "uncertainty": "Canto entries and assisting leg routes vary; confirm the selected bottom guard reference.",
+      "requiresPoseReference": true,
+      "poseBriefWordCount": 54
+    },
+    {
+      "slug": "key-lock",
+      "name": "키락",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Show the external shoulder lock family commonly called a key lock from a reverse oblique view of white's top pin. Blue's elbow is bent beside the head, the wrist is pinned, and white's second arm completes a figure four under the upper arm. Preserve the Americana mechanics without inventing a new joint target.",
+      "keyChecks": [
+        "The pinned blue wrist and bent elbow stay visible",
+        "White's second arm threads under the upper arm",
+        "Do not invent a false anatomical distinction from Americana"
+      ],
+      "representative": true,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 53
+    },
+    {
+      "slug": "twister",
+      "name": "트위스터",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Show white behind and beside blue in a truck based control, isolating the lower body with the legs while the hands organize the upper body control. Keep the torso and head near neutral alignment. Depict the recognizable pre finish restraint without applying a dramatic spinal twist or showing pain.",
+      "keyChecks": [
+        "Lower body and upper body controls belong to white",
+        "The truck style leg isolation remains visible",
+        "Blue's spine is not bent into an exaggerated twist"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 49
+    },
+    {
+      "slug": "aoki-lock",
+      "name": "아오키 락",
+      "kind": "technique",
+      "actor": "blue",
+      "poseBrief": "Show blue isolating a white leg and establishing the precise Aoki lock foot placement shown in the supplied reference. The controlled foot stays close to blue's armpit while the forearms support the ankle connection. Expose the heel and toe orientation without inventing a generic toe hold or finishing with visible knee rotation.",
+      "keyChecks": [
+        "The exact heel and toe placement follows the Aoki reference",
+        "The foot remains connected to a naturally aligned shin",
+        "The grip is not replaced with an unrelated generic foot lock"
+      ],
+      "representative": true,
+      "uncertainty": "The short catalog description does not establish the defining Aoki foot placement; reference confirmation is required.",
+      "requiresPoseReference": true,
+      "poseBriefWordCount": 52
+    },
+    {
+      "slug": "estima-lock",
+      "name": "에스티마 락",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Show white leaning over blue's open guard and collecting a blue foot close to white's lower torso in the Estima configuration selected by the reference. Keep both white hands, the captured sole, and the connected blue knee visible. Freeze the stable foot capture before rotation rather than drawing an arbitrary twisted ankle.",
+      "keyChecks": [
+        "The captured foot stays near white's torso",
+        "Both white hand contacts follow the Estima reference",
+        "The foot and knee belong to the same blue leg"
+      ],
+      "representative": true,
+      "uncertainty": "Exact hand interlock and foot orientation must follow the named Estima reference.",
+      "requiresPoseReference": true,
+      "poseBriefWordCount": 52
+    },
+    {
+      "slug": "paper-cutter-choke",
+      "name": "페이퍼 커터 초크",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Show white in top side control beside blue's head, one hand securing collar fabric behind the neck and the opposite forearm crossing the front toward the far collar. Keep the two collar connections visible while white maintains chest control. Blue's head stays naturally aligned with the shoulders.",
+      "keyChecks": [
+        "One white hand anchors collar fabric behind the neck",
+        "The opposite forearm crosses toward the far collar",
+        "White maintains side control while both arms remain separate"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 47
+    },
+    {
+      "slug": "peruvian-necktie",
+      "name": "페루비안 넥타이",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Show white beginning a Peruvian necktie from front headlock, keeping blue's head and one arm connected while one white leg passes over the head line and the other over the upper back. White sits at an angle with genuine supporting contacts. Keep both white legs traceable and the neck naturally aligned.",
+      "keyChecks": [
+        "A front head and arm connection remains intact",
+        "One white leg crosses the head line and the other the upper back",
+        "Both legs can be traced to white's hips"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 51
+    },
+    {
+      "slug": "z-lock",
+      "name": "Z 락",
+      "kind": "technique",
+      "actor": "blue",
+      "poseBrief": "Show blue controlling a white leg in the Z lock arrangement selected by the reference, with the leg folded into the characteristic angular shape and supported at multiple points. Keep the controlled knee and ankle visible before pressure. Do not invent the configuration by bending a knee sideways into an impossible angle.",
+      "keyChecks": [
+        "The Z configuration follows the named reference",
+        "Both the knee and ankle remain anatomically continuous",
+        "The pose shows a supported setup rather than a deformed joint"
+      ],
+      "representative": true,
+      "uncertainty": "The exact Z lock leg topology is not established by the summary; a verified pose reference is required.",
+      "requiresPoseReference": true,
+      "poseBriefWordCount": 52
+    },
+    {
+      "slug": "bicep-slicer",
+      "name": "바이셉 슬라이서",
+      "kind": "technique",
+      "actor": "blue",
+      "poseBrief": "Show blue isolating a bent white arm with a blue forearm acting as a visible wedge in the elbow crease. Blue's remaining limbs secure the upper arm while the white forearm folds around that wedge. Keep the controlled wrist connected to the same elbow and depict the setup before compression.",
+      "keyChecks": [
+        "A real blue forearm supplies the elbow crease wedge",
+        "The white forearm folds around the same elbow",
+        "Blue controls the arm without inventing an extra hand"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 50
+    },
+    {
+      "slug": "choi-bar",
+      "name": "초이바",
+      "kind": "technique",
+      "actor": "blue",
+      "poseBrief": "Show blue beside white from the selected half guard or seated Choi bar entry, isolating a white arm across blue's upper body while controlling its elbow line. The blue leg and arm frames must match the supplied reference. Keep the named arm trap visible instead of substituting a standard supine armbar.",
+      "keyChecks": [
+        "The Choi bar arm trap matches the selected reference",
+        "The controlled elbow stays attached to the same white shoulder",
+        "The pose is not replaced by a generic armbar"
+      ],
+      "representative": true,
+      "uncertainty": "The Choi bar entry and leg frame require the exact source pose; the catalog description alone is insufficient.",
+      "requiresPoseReference": true,
+      "poseBriefWordCount": 51
+    },
+    {
+      "slug": "outside-heel-hook",
+      "name": "아웃사이드 힐훅",
+      "kind": "technique",
+      "actor": "blue",
+      "poseBrief": "Show blue using the outside heel hook entry selected by the supplied reference, containing white's knee line with the legs while collecting the exposed heel near blue's upper body. Freeze before rotational pressure. Expose the heel orientation and distinguish the position from the inside heel hook without guessing from camera handedness.",
+      "keyChecks": [
+        "The outside heel hook configuration matches the selected reference",
+        "The heel catch belongs to blue's real forearms",
+        "White's knee and ankle stay naturally aligned"
+      ],
+      "representative": true,
+      "uncertainty": "Exact heel orientation and leg line must follow the outside heel hook reference.",
+      "requiresPoseReference": true,
+      "poseBriefWordCount": 51
+    },
+    {
+      "slug": "von-flue-choke",
+      "name": "폰 플루 초크",
+      "kind": "technique",
+      "actor": "white",
+      "poseBrief": "Show white in side control while blue retains a guillotine style arm around white's neck. White's shoulder settles beside blue's neck and the body stays perpendicular across the torso. Expose the retained blue arm and white's shoulder contact, distinguishing the counter setup from an ordinary north south or arm triangle choke.",
+      "keyChecks": [
+        "Blue retains an arm around white's neck",
+        "White remains in top side control",
+        "The decisive contact is white's shoulder beside blue's neck"
+      ],
+      "representative": false,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 51
+    },
+    {
+      "slug": "coyote-armbar",
+      "name": "코요테 암바",
+      "kind": "technique",
+      "actor": "blue",
+      "poseBrief": "Show blue coming from a coyote half guard underhook configuration and isolating a white arm for the coyote armbar transition selected by the reference. Preserve the exact shoulder, elbow, and leg relationships in that source. Freeze the transition before extension rather than substituting the approved standard supine armbar.",
+      "keyChecks": [
+        "The entry retains the coyote half guard context",
+        "The isolated white arm follows the selected reference",
+        "No unrelated standard armbar entry is substituted"
+      ],
+      "representative": true,
+      "uncertainty": "The named coyote armbar entry must be confirmed from the pose reference rather than inferred from the brief catalog text.",
+      "requiresPoseReference": true,
+      "poseBriefWordCount": 48
+    },
+    {
+      "slug": "choke",
+      "name": "초크",
+      "kind": "concept",
+      "actor": "white",
+      "poseBrief": "Illustrate the broad choking concept with a representative rear control setup where white encircles blue's neck using an arm based connection. Keep both faces calm and the neck naturally aligned before any squeeze. Present this as one example of a large family, not the universal shape of every collar or leg choke.",
+      "keyChecks": [
+        "The neck connection is anatomically coherent",
+        "The scene contains no visible distress or injury",
+        "The image is representative of a family rather than one fixed definition"
+      ],
+      "representative": true,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 52
+    },
+    {
+      "slug": "counter",
+      "name": "카운터",
+      "kind": "concept",
+      "actor": "white",
+      "poseBrief": "Illustrate a counter with blue initiating a low leg entry while white frames against the shoulders and moves toward an outside angle. Preserve blue's original attacking line so the response is understandable. Freeze before a finish and treat this as one representative reaction, without defining every counter as a sprawl or a particular throw.",
+      "keyChecks": [
+        "Blue's initiating attack remains visible",
+        "White's response uses the opening created by that attack",
+        "The scene represents one counter example rather than the entire concept"
+      ],
+      "representative": true,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 54
+    },
+    {
+      "slug": "submission",
+      "name": "서브미션",
+      "kind": "concept",
+      "actor": "blue",
+      "poseBrief": "Illustrate the general submission concept with a representative controlled straight arm lock setup, blue maintaining an aligned wrist and elbow connection while white remains calm. Show the decisive joint control before extension. Do not combine a choke and several leg locks into one impossible pose or imply that this single example defines every submission.",
+      "keyChecks": [
+        "The example uses one coherent controlled joint",
+        "Both athletes remain calm with natural anatomy",
+        "The image represents a broad family rather than a single exclusive definition"
+      ],
+      "representative": true,
+      "uncertainty": null,
+      "requiresPoseReference": false,
+      "poseBriefWordCount": 54
+    }
+  ],
+  "summary": {
+    "total": 159,
+    "kind_counts": {
+      "position": 54,
+      "technique": 90,
+      "concept": 15
+    },
+    "actor_counts": {
+      "white": 80,
+      "blue": 79
+    },
+    "word_count_range": {
+      "min": 43,
+      "max": 55
+    },
+    "reference_check_required_count": 26
+  },
+  "representation_policy": "All concept items use representative=true. A chosen scene illustrates a broader concept and must not be presented as its exclusive definition. Separate synonymous catalog slugs retain their own entries without fabricated anatomical differences.",
+  "reference_policy": "The main agent supplies source pose images separately. Items with requiresPoseReference=true require exact grip, lapel, or leg topology confirmation before generation. These text briefs do not override the actual pose reference.",
+  "generation_scope": "User approved the remaining catalog image generation and application with charcoal #15171E and the existing v3 display sizes. This handover performs text preparation only and does not record generated images, image approval, DB changes, or deployment.",
+  "global_key_checks": [
+    "Exactly two approved adult characters: black hair with white gi, white hair with blue gi; both brown belts and neutral expressions.",
+    "Trace every hand, foot, and wrapping fabric path to its real origin; do not add or fuse limbs.",
+    "Preserve named technical contacts, support points, and natural joint alignment in one readable static pose."
+  ],
+  "uncertain_items": [
+    {
+      "slug": "worm-guard",
+      "name": "웜 가드",
+      "kind": "position",
+      "uncertainty": "Lapel routing varies; the main pose reference must determine the exact wrap and grip."
+    },
+    {
+      "slug": "matrix",
+      "name": "매트릭스",
+      "kind": "technique",
+      "uncertainty": "Matrix entries and leg routes vary; verify the exact photographed variant before generation."
+    },
+    {
+      "slug": "lapel-guard",
+      "name": "라펠 가드",
+      "kind": "position",
+      "uncertainty": "The catalog describes a family of lapel guards; select the exact cloth route from the main reference."
+    },
+    {
+      "slug": "waiter-guard",
+      "name": "웨이터 가드",
+      "kind": "position",
+      "uncertainty": "The written description does not fix the precise waiter guard leg topology; a pose reference is required."
+    },
+    {
+      "slug": "waiter-sweep",
+      "name": "웨이터 스윕",
+      "kind": "technique",
+      "uncertainty": "The sweep direction depends on the chosen waiter guard variant; main reference confirmation is required."
+    },
+    {
+      "slug": "squid-guard",
+      "name": "스퀴드 가드",
+      "kind": "position",
+      "uncertainty": "The catalog summary does not define the squid guard wrap; the exact reference must determine the pose."
+    },
+    {
+      "slug": "crazy-dog-pass",
+      "name": "크레이지 독 패스",
+      "kind": "technique",
+      "uncertainty": "The catalog summary does not fix the crazy dog pass variant; verify the exact reference before generation."
+    },
+    {
+      "slug": "lapel-pass",
+      "name": "라펠 패스",
+      "kind": "technique",
+      "uncertainty": "Lapel pass is a broad label; exact cloth routing requires the main reference."
+    },
+    {
+      "slug": "surfer-pass",
+      "name": "서퍼 패스",
+      "kind": "technique",
+      "uncertainty": "Surfer pass has variant specific foot placements that the written summary does not establish."
+    },
+    {
+      "slug": "wiper",
+      "name": "와이퍼",
+      "kind": "technique",
+      "uncertainty": "Windshield wiper names several leg movements; the main reference must fix the intended variant."
+    },
+    {
+      "slug": "x-pass",
+      "name": "엑스 패스",
+      "kind": "technique",
+      "uncertainty": "The catalog wording about crossing legs is ambiguous; confirm the classic kickback X pass against the supplied reference."
+    },
+    {
+      "slug": "saddle-position",
+      "name": "새들 포지션",
+      "kind": "position",
+      "uncertainty": "Saddle, honey hole, and inside ashi names overlap; preserve the selected reference and separate slug without inventing anatomy."
+    },
+    {
+      "slug": "honey-hole",
+      "name": "허니 홀",
+      "kind": "position",
+      "uncertainty": "Honey hole and saddle terminology may overlap; keep the exact selected pose and separate catalog slug."
+    },
+    {
+      "slug": "inside-ashi-garami",
+      "name": "인사이드 아시 가라미",
+      "kind": "position",
+      "uncertainty": "Inside ashi labels vary across systems and may overlap saddle; the pose reference must select the intended variant."
+    },
+    {
+      "slug": "inside-heel-hook",
+      "name": "인사이드 힐훅",
+      "kind": "technique",
+      "uncertainty": "Exact heel orientation and camera handedness must match the inside heel hook reference."
+    },
+    {
+      "slug": "tarikoplata",
+      "name": "타리코플라타",
+      "kind": "technique",
+      "uncertainty": "The exact Tarikoplata leg and forearm route is not established by the summary; reference confirmation is required."
+    },
+    {
+      "slug": "baratoplata",
+      "name": "바라토플라타",
+      "kind": "technique",
+      "uncertainty": "The written description is too broad to fix the exact Baratoplata trap; use the selected pose reference."
+    },
+    {
+      "slug": "brabo-choke",
+      "name": "브라보 초크",
+      "kind": "technique",
+      "uncertainty": "Brabo can denote different gi and arm based variants; select the reference before generation."
+    },
+    {
+      "slug": "buggy-choke",
+      "name": "버기 초크",
+      "kind": "technique",
+      "uncertainty": "The compact arm to leg route is easy to misconnect; the exact buggy choke reference must be checked."
+    },
+    {
+      "slug": "canto-choke",
+      "name": "칸토 초크",
+      "kind": "technique",
+      "uncertainty": "Canto entries and assisting leg routes vary; confirm the selected bottom guard reference."
+    },
+    {
+      "slug": "aoki-lock",
+      "name": "아오키 락",
+      "kind": "technique",
+      "uncertainty": "The short catalog description does not establish the defining Aoki foot placement; reference confirmation is required."
+    },
+    {
+      "slug": "estima-lock",
+      "name": "에스티마 락",
+      "kind": "technique",
+      "uncertainty": "Exact hand interlock and foot orientation must follow the named Estima reference."
+    },
+    {
+      "slug": "z-lock",
+      "name": "Z 락",
+      "kind": "technique",
+      "uncertainty": "The exact Z lock leg topology is not established by the summary; a verified pose reference is required."
+    },
+    {
+      "slug": "choi-bar",
+      "name": "초이바",
+      "kind": "technique",
+      "uncertainty": "The Choi bar entry and leg frame require the exact source pose; the catalog description alone is insufficient."
+    },
+    {
+      "slug": "outside-heel-hook",
+      "name": "아웃사이드 힐훅",
+      "kind": "technique",
+      "uncertainty": "Exact heel orientation and leg line must follow the outside heel hook reference."
+    },
+    {
+      "slug": "coyote-armbar",
+      "name": "코요테 암바",
+      "kind": "technique",
+      "uncertainty": "The named coyote armbar entry must be confirmed from the pose reference rather than inferred from the brief catalog text."
+    }
+  ]
+}

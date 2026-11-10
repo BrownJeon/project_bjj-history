@@ -1,0 +1,7 @@
+Use case: scientific-educational. Asset: one square jiu-jitsu technique illustration, displayed at 224px and 48px.
+Reference roles: image 1 shows the approved two character identities and exact illustration style ONLY (replace the knee-cut pose). Image 2 is the public technique pose reference ONLY; replace its characters with black-haired white-gi and white-haired blue-gi brown-belt adults. No text, panels or collage.
+Technique: 아웃사이드 트립 (outside-trip).
+Precise pose: Show white controlling blue in a standing clinch and placing an attacking leg outside blue's supporting leg. The upper body pull and outside obstruction guide blue off balance together. Keep the two hips and all four legs readable so this cannot be mistaken for an inside trip.
+Key checks: The obstruction is outside the chosen blue leg; Clinch pressure and leg action share one direction; Four legs remain visibly separate.
+Render exactly one readable 2.5D anime scene matching the approved knee-cut lighting, natural fabric folds, faces and proportions. Two distinct adult men, anatomically separate realistic limbs and genuine grips. Full bodies fit with a small border, centered, three-quarter educational camera; don't crop decisive contacts, hands or bare feet. Calm practice without injury, pain expression, weapons or extra objects.
+Background is truly transparent alpha, not a solid matte or checkerboard drawing. No floor, broad ground shadow, text or watermark. This cutout will be shown on exact charcoal #15171E. Clean silhouette edges without color fringe. Square canvas. Single scene only.

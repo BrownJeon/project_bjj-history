@@ -1,0 +1,31 @@
+.technique-illustration {
+  display: block;
+  object-fit: contain;
+  background: #15171E;
+}
+
+.technique-illustration-slot {
+  flex: 0 0 48px;
+  position: relative;
+  align-self: stretch;
+  width: 48px;
+}
+
+.technique-illustration--list {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  margin: 0;
+  border-radius: 10px;
+}
+
+.technique-illustration--detail {
+  width: 100%;
+  height: auto;
+  max-width: 224px;
+  aspect-ratio: 1;
+  margin: 0 auto 16px;
+  border-radius: 12px;
+}

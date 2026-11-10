@@ -1,0 +1,1153 @@
+{
+  "schemaVersion": 1,
+  "task": "task-058",
+  "status": "complete",
+  "scope": {
+    "expectedCount": 27,
+    "sourceReviews": [
+      "task-058-image-review-batch-05.json",
+      "task-058-image-review-regeneration-02.json"
+    ]
+  },
+  "readyCount": 27,
+  "pendingCount": 0,
+  "items": [
+    {
+      "slug": "flying-armbar",
+      "name": "플라잉 암바",
+      "status": "ready",
+      "mode": "targeted_edit",
+      "current": {
+        "version": 1,
+        "png": "reference/technique-illustrations/set-01/production/raw/flying-armbar-v1.png",
+        "absolutePNG": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/flying-armbar-v1.png",
+        "sha256": "843db45c0932fa41be43afdbd1c4514fdcbb340d378078f502cc5f280d34864c",
+        "promptPath": "reference/technique-illustrations/set-01/production/prompts/flying-armbar-v1.txt",
+        "promptSHA256": "12a2d0376f1a4647749de7bcff50f168f0d5d02c50e5f2c0e43e18540d1ab8d5"
+      },
+      "nextVersion": 2,
+      "sourceReview": "task-058-image-review-batch-05.json",
+      "singleError": "The attacking BLUE hands hold the WHITE elbow/upper arm instead of the same WHITE wrist.",
+      "singleChange": "Move ONLY the two existing BLUE hands to enclose the SAME dangling WHITE wrist and lower forearm. Keep that one controlled WHITE arm collected between the existing blue thighs, with its elbow at the blue hip line; do not add another hand or arm.",
+      "preserve": [
+        "Standing WHITE two-foot base",
+        "Exactly two attached BLUE legs crossing the head and upper chest",
+        "Airborne body angle, camera, faces, brown belts and rendering"
+      ],
+      "correctionPromptEnglish": "Edit the supplied CURRENT PNG only. Move ONLY the two existing BLUE hands to enclose the SAME dangling WHITE wrist and lower forearm. Keep that one controlled WHITE arm collected between the existing blue thighs, with its elbow at the blue hip line; do not add another hand or arm. Preserve Standing WHITE two-foot base; Exactly two attached BLUE legs crossing the head and upper chest; Airborne body angle, camera, faces, brown belts and rendering. Output one square 1:1 raster image at 1024×1024 or larger with a true transparent alpha background. Preserve these same two fictional adult male characters, their faces and hair, the approved detailed 2.5D anime rendering and brown belts. Black-haired adult owns a complete WHITE gi; white-haired adult owns a complete BLUE gi. Exactly two arms and two legs per person. No text, labels, arrows, panels, floor, matte, checkerboard or watermark.",
+      "references": [
+        {
+          "role": "current_image_to_edit",
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/flying-armbar-v1.png",
+          "sha256": "843db45c0932fa41be43afdbd1c4514fdcbb340d378078f502cc5f280d34864c"
+        }
+      ],
+      "generationReferencePaths": [
+        "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/flying-armbar-v1.png"
+      ],
+      "primaryPoseReferenceRequired": false,
+      "independentReviewRequired": true,
+      "scopeLimit": "This targeted correction is not a PASS claim. Recheck remaining technical contacts after generation; preserve prior review failures until a fresh direct-image review."
+    },
+    {
+      "slug": "brabo-choke",
+      "name": "브라보 초크",
+      "status": "ready",
+      "mode": "targeted_edit",
+      "current": {
+        "version": 1,
+        "png": "reference/technique-illustrations/set-01/production/raw/brabo-choke-v1.png",
+        "absolutePNG": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/brabo-choke-v1.png",
+        "sha256": "12d949f7370eec13f7c8d6779d72cb6fc6df46bb4427f95057be9701ffd67316",
+        "promptPath": "reference/technique-illustrations/set-01/production/prompts/brabo-choke-v1.txt",
+        "promptSHA256": "f96d9d1ac53f174b84b5e48dd46e531e79af81442c33e450fb9bb5c0f9be3682"
+      },
+      "nextVersion": 2,
+      "sourceReview": "task-058-image-review-batch-05.json",
+      "singleError": "The bottom blue athlete's released jacket panel remains WHITE, obscuring its ownership.",
+      "singleChange": "Recolor ONLY the large released jacket/lapel panel surrounding the lower BLUE torso to the same BLUE as that athlete's jacket, keeping its current folds, grip and continuous jacket origin.",
+      "preserve": [
+        "Exact bodies, camera and lapel-based Brabo arrangement",
+        "All four arm and leg routes",
+        "White top athlete and existing gripping hand positions"
+      ],
+      "correctionPromptEnglish": "Edit the supplied CURRENT PNG only. Recolor ONLY the large released jacket/lapel panel surrounding the lower BLUE torso to the same BLUE as that athlete's jacket, keeping its current folds, grip and continuous jacket origin. Preserve Exact bodies, camera and lapel-based Brabo arrangement; All four arm and leg routes; White top athlete and existing gripping hand positions. Output one square 1:1 raster image at 1024×1024 or larger with a true transparent alpha background. Preserve these same two fictional adult male characters, their faces and hair, the approved detailed 2.5D anime rendering and brown belts. Black-haired adult owns a complete WHITE gi; white-haired adult owns a complete BLUE gi. Exactly two arms and two legs per person. No text, labels, arrows, panels, floor, matte, checkerboard or watermark.",
+      "references": [
+        {
+          "role": "current_image_to_edit",
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/brabo-choke-v1.png",
+          "sha256": "12d949f7370eec13f7c8d6779d72cb6fc6df46bb4427f95057be9701ffd67316"
+        }
+      ],
+      "generationReferencePaths": [
+        "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/brabo-choke-v1.png"
+      ],
+      "primaryPoseReferenceRequired": false,
+      "independentReviewRequired": true,
+      "scopeLimit": "This targeted correction is not a PASS claim. Recheck remaining technical contacts after generation; preserve prior review failures until a fresh direct-image review."
+    },
+    {
+      "slug": "north-south-choke",
+      "name": "노스 사우스 초크",
+      "status": "ready",
+      "mode": "targeted_edit",
+      "current": {
+        "version": 1,
+        "png": "reference/technique-illustrations/set-01/production/raw/north-south-choke-v1.png",
+        "absolutePNG": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/north-south-choke-v1.png",
+        "sha256": "c91faf884d2af388b5c07a000d3801d8bf9ad7a69998872cf0b67d971fdbc3c8",
+        "promptPath": "reference/technique-illustrations/set-01/production/prompts/north-south-choke-v1.txt",
+        "promptSHA256": "1e4e752d451d778e8b08c87e62da72b491ef9374cc3aaa53399a39b21901e551"
+      },
+      "nextVersion": 2,
+      "sourceReview": "task-058-image-review-batch-05.json",
+      "singleError": "The two athletes' trouser colors are swapped relative to their torsos.",
+      "singleChange": "Recolor ONLY both trouser legs of the black-haired top athlete WHITE and both trouser legs of the white-haired bottom athlete BLUE, tracing each existing hip-to-foot route without moving it.",
+      "preserve": [
+        "Exact north-south geometry and camera",
+        "Neck loop and every hand placement",
+        "Faces, hair, brown belts, cloth shading and existing two-leg silhouettes"
+      ],
+      "correctionPromptEnglish": "Edit the supplied CURRENT PNG only. Recolor ONLY both trouser legs of the black-haired top athlete WHITE and both trouser legs of the white-haired bottom athlete BLUE, tracing each existing hip-to-foot route without moving it. Preserve Exact north-south geometry and camera; Neck loop and every hand placement; Faces, hair, brown belts, cloth shading and existing two-leg silhouettes. Output one square 1:1 raster image at 1024×1024 or larger with a true transparent alpha background. Preserve these same two fictional adult male characters, their faces and hair, the approved detailed 2.5D anime rendering and brown belts. Black-haired adult owns a complete WHITE gi; white-haired adult owns a complete BLUE gi. Exactly two arms and two legs per person. No text, labels, arrows, panels, floor, matte, checkerboard or watermark.",
+      "references": [
+        {
+          "role": "current_image_to_edit",
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/north-south-choke-v1.png",
+          "sha256": "c91faf884d2af388b5c07a000d3801d8bf9ad7a69998872cf0b67d971fdbc3c8"
+        }
+      ],
+      "generationReferencePaths": [
+        "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/north-south-choke-v1.png"
+      ],
+      "primaryPoseReferenceRequired": false,
+      "independentReviewRequired": true,
+      "scopeLimit": "This targeted correction is not a PASS claim. Recheck remaining technical contacts after generation; preserve prior review failures until a fresh direct-image review."
+    },
+    {
+      "slug": "bicep-slicer",
+      "name": "바이셉 슬라이서",
+      "status": "ready",
+      "mode": "targeted_edit",
+      "current": {
+        "version": 1,
+        "png": "reference/technique-illustrations/set-01/production/raw/bicep-slicer-v1.png",
+        "absolutePNG": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/bicep-slicer-v1.png",
+        "sha256": "7b003918f19ada1721a74da02ed20ca4a82ea46a3e605aaa9d6e3fc35fccf8f7",
+        "promptPath": "reference/technique-illustrations/set-01/production/prompts/bicep-slicer-v1.txt",
+        "promptSHA256": "3162c1ab36fa581e43b1326137f3edcddfff7ad7719653fe0a25edf19635a81c"
+      },
+      "nextVersion": 2,
+      "sourceReview": "task-058-image-review-batch-05.json",
+      "singleError": "The trapped WHITE arm has a duplicated sleeve-to-hand endpoint.",
+      "singleChange": "Remove ONLY the duplicated WHITE sleeve/hand endpoint in the central folded-arm loop. Redraw that target as one continuous WHITE upper arm, ONE elbow crease, ONE forearm and ONE hand, folded around the existing BLUE forearm wedge. Keep the white athlete's separate other arm posted on the mat.",
+      "preserve": [
+        "Both torso and lower-body positions and camera",
+        "One continuous BLUE forearm as elbow-crease wedge and BLUE securing hand",
+        "Faces, hair, brown belts and clothing style"
+      ],
+      "correctionPromptEnglish": "Edit the supplied CURRENT PNG only. Remove ONLY the duplicated WHITE sleeve/hand endpoint in the central folded-arm loop. Redraw that target as one continuous WHITE upper arm, ONE elbow crease, ONE forearm and ONE hand, folded around the existing BLUE forearm wedge. Keep the white athlete's separate other arm posted on the mat. Preserve Both torso and lower-body positions and camera; One continuous BLUE forearm as elbow-crease wedge and BLUE securing hand; Faces, hair, brown belts and clothing style. Output one square 1:1 raster image at 1024×1024 or larger with a true transparent alpha background. Preserve these same two fictional adult male characters, their faces and hair, the approved detailed 2.5D anime rendering and brown belts. Black-haired adult owns a complete WHITE gi; white-haired adult owns a complete BLUE gi. Exactly two arms and two legs per person. No text, labels, arrows, panels, floor, matte, checkerboard or watermark.",
+      "references": [
+        {
+          "role": "current_image_to_edit",
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/bicep-slicer-v1.png",
+          "sha256": "7b003918f19ada1721a74da02ed20ca4a82ea46a3e605aaa9d6e3fc35fccf8f7"
+        }
+      ],
+      "generationReferencePaths": [
+        "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/bicep-slicer-v1.png"
+      ],
+      "primaryPoseReferenceRequired": false,
+      "independentReviewRequired": true,
+      "scopeLimit": "This targeted correction is not a PASS claim. Recheck remaining technical contacts after generation; preserve prior review failures until a fresh direct-image review."
+    },
+    {
+      "slug": "saddle-position",
+      "name": "새들 포지션",
+      "status": "ready",
+      "mode": "targeted_edit",
+      "current": {
+        "version": 2,
+        "png": "reference/technique-illustrations/set-01/production/raw/saddle-position-v2.png",
+        "absolutePNG": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/saddle-position-v2.png",
+        "sha256": "b47cb468e996e54964b8399a8a4ee27f2474993c942fec9c5dc4f91006b10e85",
+        "promptPath": "reference/technique-illustrations/set-01/production/prompts/saddle-position-v2.txt",
+        "promptSHA256": "f93100e3165c3331ea1b8f7ba2b64d473b00c2316675c51954173eec5cea0135"
+      },
+      "nextVersion": 3,
+      "sourceReview": "task-058-image-review-regeneration-02.json",
+      "singleError": "A central trouser segment changes color between its own hip and cuff.",
+      "singleChange": "Repair ONLY trouser ownership in the central entanglement: follow each existing hip-knee-cuff-foot route, recoloring each segment entirely WHITE for the black-haired athlete and entirely BLUE for the white-haired athlete. In particular, a BLUE cuff must continue into a BLUE shin and thigh. Do not alter the existing inside-triangle route or add a leg.",
+      "preserve": [
+        "Exact reclined body layout, camera and existing four-leg geometry",
+        "Inside saddle connection around one partner thigh",
+        "Partner's separate far leg, all hands, faces and brown belts"
+      ],
+      "correctionPromptEnglish": "Edit the supplied CURRENT PNG only. Repair ONLY trouser ownership in the central entanglement: follow each existing hip-knee-cuff-foot route, recoloring each segment entirely WHITE for the black-haired athlete and entirely BLUE for the white-haired athlete. In particular, a BLUE cuff must continue into a BLUE shin and thigh. Do not alter the existing inside-triangle route or add a leg. Preserve Exact reclined body layout, camera and existing four-leg geometry; Inside saddle connection around one partner thigh; Partner's separate far leg, all hands, faces and brown belts. Output one square 1:1 raster image at 1024×1024 or larger with a true transparent alpha background. Preserve these same two fictional adult male characters, their faces and hair, the approved detailed 2.5D anime rendering and brown belts. Black-haired adult owns a complete WHITE gi; white-haired adult owns a complete BLUE gi. Exactly two arms and two legs per person. No text, labels, arrows, panels, floor, matte, checkerboard or watermark.",
+      "references": [
+        {
+          "role": "current_image_to_edit",
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/saddle-position-v2.png",
+          "sha256": "b47cb468e996e54964b8399a8a4ee27f2474993c942fec9c5dc4f91006b10e85"
+        }
+      ],
+      "generationReferencePaths": [
+        "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/saddle-position-v2.png"
+      ],
+      "primaryPoseReferenceRequired": false,
+      "independentReviewRequired": true,
+      "scopeLimit": "This targeted correction is not a PASS claim. Recheck remaining technical contacts after generation; preserve prior review failures until a fresh direct-image review."
+    },
+    {
+      "slug": "waiter-sweep",
+      "name": "웨이터 스윕",
+      "status": "ready",
+      "mode": "targeted_edit",
+      "current": {
+        "version": 2,
+        "png": "reference/technique-illustrations/set-01/production/raw/waiter-sweep-v2.png",
+        "absolutePNG": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/waiter-sweep-v2.png",
+        "sha256": "4e9e17b3e05c144c2fcb649fc67abe6f90c92171a2659166eb9964c628796c07",
+        "promptPath": "reference/technique-illustrations/set-01/production/prompts/waiter-sweep-v2.txt",
+        "promptSHA256": "45aca83a6bde40174626df06095991dbe75c62538536b8e8ad0017f1ed6275fa"
+      },
+      "nextVersion": 3,
+      "sourceReview": "task-058-image-review-regeneration-02.json",
+      "singleError": "The bottom blue athlete's upward lifting trouser leg is WHITE.",
+      "singleChange": "Recolor the vertically raised lifting leg that comes from the BOTTOM BLUE pelvis to BLUE continuously through its thigh, knee and cuff. Keep the upper partner's two own legs WHITE. Do not move or duplicate a leg.",
+      "preserve": [
+        "Loaded waiter body arrangement and exact camera",
+        "Captured WHITE partner leg and the remaining WHITE base",
+        "Sleeve block, hand placement, faces, brown belts and cloth texture"
+      ],
+      "correctionPromptEnglish": "Edit the supplied CURRENT PNG only. Recolor the vertically raised lifting leg that comes from the BOTTOM BLUE pelvis to BLUE continuously through its thigh, knee and cuff. Keep the upper partner's two own legs WHITE. Do not move or duplicate a leg. Preserve Loaded waiter body arrangement and exact camera; Captured WHITE partner leg and the remaining WHITE base; Sleeve block, hand placement, faces, brown belts and cloth texture. Output one square 1:1 raster image at 1024×1024 or larger with a true transparent alpha background. Preserve these same two fictional adult male characters, their faces and hair, the approved detailed 2.5D anime rendering and brown belts. Black-haired adult owns a complete WHITE gi; white-haired adult owns a complete BLUE gi. Exactly two arms and two legs per person. No text, labels, arrows, panels, floor, matte, checkerboard or watermark.",
+      "references": [
+        {
+          "role": "current_image_to_edit",
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/waiter-sweep-v2.png",
+          "sha256": "4e9e17b3e05c144c2fcb649fc67abe6f90c92171a2659166eb9964c628796c07"
+        }
+      ],
+      "generationReferencePaths": [
+        "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/waiter-sweep-v2.png"
+      ],
+      "primaryPoseReferenceRequired": false,
+      "independentReviewRequired": true,
+      "scopeLimit": "This targeted correction is not a PASS claim. Recheck remaining technical contacts after generation; preserve prior review failures until a fresh direct-image review."
+    },
+    {
+      "slug": "wiper",
+      "name": "와이퍼",
+      "status": "ready",
+      "mode": "targeted_edit",
+      "current": {
+        "version": 2,
+        "png": "reference/technique-illustrations/set-01/production/raw/wiper-v2.png",
+        "absolutePNG": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/wiper-v2.png",
+        "sha256": "c6fad81ce6fe2c1f8a1f9580180f3ee5d4b5650beeeab4c648db437f27d5442a",
+        "promptPath": "reference/technique-illustrations/set-01/production/prompts/wiper-v2.txt",
+        "promptSHA256": "ffc9192c104e173c56a795dbc6ec6a6aeb236236c727cd880ea0e2c617b1cb80"
+      },
+      "nextVersion": 3,
+      "sourceReview": "task-058-image-review-regeneration-02.json",
+      "singleError": "WHITE sleeve cloth remains on the bottom BLUE athlete's two arm routes.",
+      "singleChange": "Correct ONLY sleeve ownership: recolor the bottom athlete's bent foreground sleeve/cuff BLUE and continue the over-back BLUE sleeve to the same bottom BLUE shoulder; keep the top athlete's separate arms WHITE. Do not add or reposition a hand.",
+      "preserve": [
+        "Wiper folded-leg geometry and camera",
+        "White clearing shin and separate white base leg",
+        "Both faces, brown belts and every existing hand position"
+      ],
+      "correctionPromptEnglish": "Edit the supplied CURRENT PNG only. Correct ONLY sleeve ownership: recolor the bottom athlete's bent foreground sleeve/cuff BLUE and continue the over-back BLUE sleeve to the same bottom BLUE shoulder; keep the top athlete's separate arms WHITE. Do not add or reposition a hand. Preserve Wiper folded-leg geometry and camera; White clearing shin and separate white base leg; Both faces, brown belts and every existing hand position. Output one square 1:1 raster image at 1024×1024 or larger with a true transparent alpha background. Preserve these same two fictional adult male characters, their faces and hair, the approved detailed 2.5D anime rendering and brown belts. Black-haired adult owns a complete WHITE gi; white-haired adult owns a complete BLUE gi. Exactly two arms and two legs per person. No text, labels, arrows, panels, floor, matte, checkerboard or watermark.",
+      "references": [
+        {
+          "role": "current_image_to_edit",
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/wiper-v2.png",
+          "sha256": "c6fad81ce6fe2c1f8a1f9580180f3ee5d4b5650beeeab4c648db437f27d5442a"
+        }
+      ],
+      "generationReferencePaths": [
+        "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/wiper-v2.png"
+      ],
+      "primaryPoseReferenceRequired": false,
+      "independentReviewRequired": true,
+      "scopeLimit": "This targeted correction is not a PASS claim. Recheck remaining technical contacts after generation; preserve prior review failures until a fresh direct-image review."
+    },
+    {
+      "slug": "rubber-guard",
+      "name": "러버 가드",
+      "status": "ready",
+      "mode": "targeted_edit",
+      "current": {
+        "version": 3,
+        "png": "reference/technique-illustrations/set-01/production/raw/rubber-guard-v3.png",
+        "absolutePNG": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/rubber-guard-v3.png",
+        "sha256": "6166e86bd3de9d385ed8a9cc5d8f8f7d04955a1e79491ce7826c4268b9397372",
+        "promptPath": "reference/technique-illustrations/set-01/production/prompts/rubber-guard-v3.txt",
+        "promptSHA256": "513051886e2526bddc0b2c0776a330d053d49defee0ef32909fe4b2a80d64cdf"
+      },
+      "nextVersion": 4,
+      "sourceReview": "task-058-image-review-regeneration-02.json",
+      "singleError": "The controlling shin around the top blue partner belongs to the bottom WHITE attacker but is colored BLUE.",
+      "singleChange": "Recolor ONLY the bent controlling leg over the BACK of the BLUE neck WHITE, tracing it from the bottom WHITE pelvis through the existing thigh, knee and shin cuff to its same bare foot. Keep the white hand supporting that OWN white ankle.",
+      "preserve": [
+        "Existing behind-neck shin placement, head-lowered camera and Mission Control geometry",
+        "White cross-body ankle-support hand and separate knee hug",
+        "Top BLUE torso and two BLUE base legs, faces and belts"
+      ],
+      "correctionPromptEnglish": "Edit the supplied CURRENT PNG only. Recolor ONLY the bent controlling leg over the BACK of the BLUE neck WHITE, tracing it from the bottom WHITE pelvis through the existing thigh, knee and shin cuff to its same bare foot. Keep the white hand supporting that OWN white ankle. Preserve Existing behind-neck shin placement, head-lowered camera and Mission Control geometry; White cross-body ankle-support hand and separate knee hug; Top BLUE torso and two BLUE base legs, faces and belts. Output one square 1:1 raster image at 1024×1024 or larger with a true transparent alpha background. Preserve these same two fictional adult male characters, their faces and hair, the approved detailed 2.5D anime rendering and brown belts. Black-haired adult owns a complete WHITE gi; white-haired adult owns a complete BLUE gi. Exactly two arms and two legs per person. No text, labels, arrows, panels, floor, matte, checkerboard or watermark.",
+      "references": [
+        {
+          "role": "current_image_to_edit",
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/rubber-guard-v3.png",
+          "sha256": "6166e86bd3de9d385ed8a9cc5d8f8f7d04955a1e79491ce7826c4268b9397372"
+        }
+      ],
+      "generationReferencePaths": [
+        "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/rubber-guard-v3.png"
+      ],
+      "primaryPoseReferenceRequired": false,
+      "independentReviewRequired": true,
+      "scopeLimit": "This targeted correction is not a PASS claim. Recheck remaining technical contacts after generation; preserve prior review failures until a fresh direct-image review."
+    },
+    {
+      "slug": "heel-hook",
+      "name": "힐훅",
+      "status": "ready",
+      "mode": "targeted_edit",
+      "current": {
+        "version": 1,
+        "png": "reference/technique-illustrations/set-01/production/raw/heel-hook-v1.png",
+        "absolutePNG": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/heel-hook-v1.png",
+        "sha256": "31e083bb336377289bb39c4e1712681ebd08e74cd3c099f5d5d17ef73631bb32",
+        "promptPath": "reference/technique-illustrations/set-01/production/prompts/heel-hook-v1.txt",
+        "promptSHA256": "84630fa63edfd5c33dc89241f7ac62616af6e6de9f7965fdaf703b5f803b9d3e"
+      },
+      "nextVersion": 2,
+      "sourceReview": "task-058-image-review-batch-05.json",
+      "singleError": "The captured heel is hidden inside two cupping hands, so the heel-catching forearm is not readable.",
+      "singleChange": "Expose the white heel above a blue forearm that clearly hooks beneath it, with the toes and forefoot retained under blue's armpit. Show the other blue hand reinforcing the heel-catching arm rather than two hands simply cupping the whole foot. Keep the knee line inside the same blue leg entanglement, and preserve neutral knee and ankle alignment before any rotation.",
+      "preserve": [
+        "Current leg entanglement, knee line and neutral alignment",
+        "Blue seated attacker and white partner roles",
+        "Same two fictional adult characters, faces, hair, brown belts, detailed 2.5D cloth shading and all unrelated limbs"
+      ],
+      "correctionPromptEnglish": "Edit only the supplied CURRENT PNG. Correct this ONE local contact assembly: Expose the white heel above a blue forearm that clearly hooks beneath it, with the toes and forefoot retained under blue's armpit. Show the other blue hand reinforcing the heel-catching arm rather than two hands simply cupping the whole foot. Keep the knee line inside the same blue leg entanglement, and preserve neutral knee and ankle alignment before any rotation. Keep all unrelated anatomy, silhouettes, camera, base and clothing unchanged. Preserve Current leg entanglement, knee line and neutral alignment; Blue seated attacker and white partner roles; Same two fictional adult characters, faces, hair, brown belts, detailed 2.5D cloth shading and all unrelated limbs. Output one square 1:1 raster image at 1024×1024 or larger with a true transparent alpha background. Preserve these same two fictional adult male characters, their faces and hair, the approved detailed 2.5D anime rendering and brown belts. Black-haired adult owns a complete WHITE gi; white-haired adult owns a complete BLUE gi. Exactly two arms and two legs per person. No text, labels, arrows, panels, floor, matte, checkerboard or watermark.",
+      "references": [
+        {
+          "role": "current_image_to_edit",
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/heel-hook-v1.png",
+          "sha256": "31e083bb336377289bb39c4e1712681ebd08e74cd3c099f5d5d17ef73631bb32"
+        }
+      ],
+      "generationReferencePaths": [
+        "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/heel-hook-v1.png"
+      ],
+      "primaryPoseReferenceRequired": false,
+      "evidence": {
+        "priorDirectReview": "task-058-image-review-batch-05.json",
+        "inputMatchedReviewedSHA": true,
+        "limitations": "Existing verified pose or representative brief was already directly reviewed. This is a local contact edit, not a claim that every source-hidden contact has been verified."
+      },
+      "independentReviewRequired": true,
+      "readyForProduction": true
+    },
+    {
+      "slug": "loop-choke",
+      "name": "루프 초크",
+      "status": "ready",
+      "mode": "targeted_edit",
+      "current": {
+        "version": 1,
+        "png": "reference/technique-illustrations/set-01/production/raw/loop-choke-v1.png",
+        "absolutePNG": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/loop-choke-v1.png",
+        "sha256": "4cefbc19e0eb0a0d0cdcbfaa83c513663908cdce401ed448ef687b5eae84fcc5",
+        "promptPath": "reference/technique-illustrations/set-01/production/prompts/loop-choke-v1.txt",
+        "promptSHA256": "fc4801a27138cf514bca4cc69809f518a8065e4b54334e76ac7962f8d428014b"
+      },
+      "nextVersion": 2,
+      "sourceReview": "task-058-image-review-batch-05.json",
+      "singleError": "The collar-gripping arm and the bowed-head loop are disconnected.",
+      "singleChange": "Recreate the catalog's bottom-attacker loop-choke geometry. Make the SAME attacking arm retain the white collar grip and curve its elbow and forearm around the bowed white head; the head must sit inside that collar-gripping elbow loop. Use the free arm only to support that same choke connection. Do not show one arm merely gripping the rear collar while an unrelated opposite forearm forms a generic top headlock. A consistent full-person color swap is acceptable.",
+      "preserve": [
+        "Existing bottom-attacker guard and bowed top partner",
+        "Exact camera, lower body and the real collar-gripping hand",
+        "Same two fictional adult characters, faces, hair, brown belts, detailed 2.5D cloth shading and all unrelated limbs"
+      ],
+      "correctionPromptEnglish": "Edit only the supplied CURRENT PNG. Correct this ONE local contact assembly: Recreate the catalog's bottom-attacker loop-choke geometry. Make the SAME attacking arm retain the white collar grip and curve its elbow and forearm around the bowed white head; the head must sit inside that collar-gripping elbow loop. Use the free arm only to support that same choke connection. Do not show one arm merely gripping the rear collar while an unrelated opposite forearm forms a generic top headlock. A consistent full-person color swap is acceptable. Keep all unrelated anatomy, silhouettes, camera, base and clothing unchanged. Preserve Existing bottom-attacker guard and bowed top partner; Exact camera, lower body and the real collar-gripping hand; Same two fictional adult characters, faces, hair, brown belts, detailed 2.5D cloth shading and all unrelated limbs. Output one square 1:1 raster image at 1024×1024 or larger with a true transparent alpha background. Preserve these same two fictional adult male characters, their faces and hair, the approved detailed 2.5D anime rendering and brown belts. Black-haired adult owns a complete WHITE gi; white-haired adult owns a complete BLUE gi. Exactly two arms and two legs per person. No text, labels, arrows, panels, floor, matte, checkerboard or watermark.",
+      "references": [
+        {
+          "role": "current_image_to_edit",
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/loop-choke-v1.png",
+          "sha256": "4cefbc19e0eb0a0d0cdcbfaa83c513663908cdce401ed448ef687b5eae84fcc5"
+        }
+      ],
+      "generationReferencePaths": [
+        "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/loop-choke-v1.png"
+      ],
+      "primaryPoseReferenceRequired": false,
+      "evidence": {
+        "priorDirectReview": "task-058-image-review-batch-05.json",
+        "inputMatchedReviewedSHA": true,
+        "limitations": "Existing verified pose or representative brief was already directly reviewed. This is a local contact edit, not a claim that every source-hidden contact has been verified."
+      },
+      "independentReviewRequired": true,
+      "readyForProduction": true
+    },
+    {
+      "slug": "arm-triangle",
+      "name": "암 트라이앵글",
+      "status": "ready",
+      "mode": "targeted_edit",
+      "current": {
+        "version": 1,
+        "png": "reference/technique-illustrations/set-01/production/raw/arm-triangle-v1.png",
+        "absolutePNG": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/arm-triangle-v1.png",
+        "sha256": "2f860b6e03f94629da4bea94d687c600311076690009b0678c0cecc6e54c320f",
+        "promptPath": "reference/technique-illustrations/set-01/production/prompts/arm-triangle-v1.txt",
+        "promptSHA256": "a10aad399528cb7cd44c2f497c365f0042398e840c45e00cec0aa0c4f309e6b4"
+      },
+      "nextVersion": 2,
+      "sourceReview": "task-058-image-review-batch-05.json",
+      "singleError": "The single trapped upper arm and the attacker's self-lock are not traceable as one head-and-arm unit.",
+      "singleChange": "Keep blue as the top attacker and white below. Clearly trap exactly ONE white upper arm across white's own neck, with blue's head beside that trapped shoulder. Show the trapped arm continuing through a real elbow to a HAND, not a foot-shaped end. Close blue's own choking arms around the head-and-arm unit; do not replace that lock with a blue hand holding white's free wrist. Move unrelated white feet away from the choking-arm silhouette while retaining natural body alignment.",
+      "preserve": [
+        "BLUE top attacker and WHITE bottom partner",
+        "Grounded torso/base and existing camera",
+        "Same two fictional adult characters, faces, hair, brown belts, detailed 2.5D cloth shading and all unrelated limbs"
+      ],
+      "correctionPromptEnglish": "Edit only the supplied CURRENT PNG. Correct this ONE local contact assembly: Keep blue as the top attacker and white below. Clearly trap exactly ONE white upper arm across white's own neck, with blue's head beside that trapped shoulder. Show the trapped arm continuing through a real elbow to a HAND, not a foot-shaped end. Close blue's own choking arms around the head-and-arm unit; do not replace that lock with a blue hand holding white's free wrist. Move unrelated white feet away from the choking-arm silhouette while retaining natural body alignment. Keep all unrelated anatomy, silhouettes, camera, base and clothing unchanged. Preserve BLUE top attacker and WHITE bottom partner; Grounded torso/base and existing camera; Same two fictional adult characters, faces, hair, brown belts, detailed 2.5D cloth shading and all unrelated limbs. Output one square 1:1 raster image at 1024×1024 or larger with a true transparent alpha background. Preserve these same two fictional adult male characters, their faces and hair, the approved detailed 2.5D anime rendering and brown belts. Black-haired adult owns a complete WHITE gi; white-haired adult owns a complete BLUE gi. Exactly two arms and two legs per person. No text, labels, arrows, panels, floor, matte, checkerboard or watermark.",
+      "references": [
+        {
+          "role": "current_image_to_edit",
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/arm-triangle-v1.png",
+          "sha256": "2f860b6e03f94629da4bea94d687c600311076690009b0678c0cecc6e54c320f"
+        }
+      ],
+      "generationReferencePaths": [
+        "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/arm-triangle-v1.png"
+      ],
+      "primaryPoseReferenceRequired": false,
+      "evidence": {
+        "priorDirectReview": "task-058-image-review-batch-05.json",
+        "inputMatchedReviewedSHA": true,
+        "limitations": "Existing verified pose or representative brief was already directly reviewed. This is a local contact edit, not a claim that every source-hidden contact has been verified."
+      },
+      "independentReviewRequired": true,
+      "readyForProduction": true
+    },
+    {
+      "slug": "ezekiel-choke",
+      "name": "이제키엘 초크",
+      "status": "ready",
+      "mode": "targeted_edit",
+      "current": {
+        "version": 1,
+        "png": "reference/technique-illustrations/set-01/production/raw/ezekiel-choke-v1.png",
+        "absolutePNG": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/ezekiel-choke-v1.png",
+        "sha256": "c68279462a7a97bc5e0cbcf3d4ffce4da33bd4a3c6bee400f903f778d61d8af6",
+        "promptPath": "reference/technique-illustrations/set-01/production/prompts/ezekiel-choke-v1.txt",
+        "promptSHA256": "f4f8577bb94d9fde7e65e5c4bb4f12fa25ca472493f95450e130eafe7617cafc"
+      },
+      "nextVersion": 2,
+      "sourceReview": "task-058-image-review-batch-05.json",
+      "singleError": "The attacker's own opposite sleeve-cuff grip is hidden or absent.",
+      "singleChange": "Expose one white hand gripping INSIDE WHITE'S OWN opposite sleeve cuff behind blue's neck. Keep that exact sleeve connection while the other white forearm crosses the front of the neck. Use an open shoulder-side angle that shows the cuff and gripping fingers together; do not replace it with a self-collar grip or a generic fist-and-head squeeze.",
+      "preserve": [
+        "WHITE top attacker, BLUE lower partner and their head positions",
+        "Existing front/back neck forearms and lower-body geometry",
+        "Same two fictional adult characters, faces, hair, brown belts, detailed 2.5D cloth shading and all unrelated limbs"
+      ],
+      "correctionPromptEnglish": "Edit only the supplied CURRENT PNG. Correct this ONE local contact assembly: Expose one white hand gripping INSIDE WHITE'S OWN opposite sleeve cuff behind blue's neck. Keep that exact sleeve connection while the other white forearm crosses the front of the neck. Use an open shoulder-side angle that shows the cuff and gripping fingers together; do not replace it with a self-collar grip or a generic fist-and-head squeeze. Keep all unrelated anatomy, silhouettes, camera, base and clothing unchanged. Preserve WHITE top attacker, BLUE lower partner and their head positions; Existing front/back neck forearms and lower-body geometry; Same two fictional adult characters, faces, hair, brown belts, detailed 2.5D cloth shading and all unrelated limbs. Output one square 1:1 raster image at 1024×1024 or larger with a true transparent alpha background. Preserve these same two fictional adult male characters, their faces and hair, the approved detailed 2.5D anime rendering and brown belts. Black-haired adult owns a complete WHITE gi; white-haired adult owns a complete BLUE gi. Exactly two arms and two legs per person. No text, labels, arrows, panels, floor, matte, checkerboard or watermark.",
+      "references": [
+        {
+          "role": "current_image_to_edit",
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/ezekiel-choke-v1.png",
+          "sha256": "c68279462a7a97bc5e0cbcf3d4ffce4da33bd4a3c6bee400f903f778d61d8af6"
+        }
+      ],
+      "generationReferencePaths": [
+        "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/ezekiel-choke-v1.png"
+      ],
+      "primaryPoseReferenceRequired": false,
+      "evidence": {
+        "priorDirectReview": "task-058-image-review-batch-05.json",
+        "inputMatchedReviewedSHA": true,
+        "limitations": "Existing verified pose or representative brief was already directly reviewed. This is a local contact edit, not a claim that every source-hidden contact has been verified."
+      },
+      "independentReviewRequired": true,
+      "readyForProduction": true
+    },
+    {
+      "slug": "anaconda-choke",
+      "name": "아나콘다 초크",
+      "status": "ready",
+      "mode": "targeted_edit",
+      "current": {
+        "version": 1,
+        "png": "reference/technique-illustrations/set-01/production/raw/anaconda-choke-v1.png",
+        "absolutePNG": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/anaconda-choke-v1.png",
+        "sha256": "634940bb5a7a2f77755c036adedbbcb2cfa0f9de9485e4b28be3b39a0130f510",
+        "promptPath": "reference/technique-illustrations/set-01/production/prompts/anaconda-choke-v1.txt",
+        "promptSHA256": "39ec5356a8a86d726c7216e6dacd5240d418846cbd43a433b4456602b0dcdf1a"
+      },
+      "nextVersion": 2,
+      "sourceReview": "task-058-image-review-batch-05.json",
+      "singleError": "ONE partner upper arm is not enclosed in the same neck-first choke loop.",
+      "singleChange": "Show the white attacking arm traveling around the FRONT OF BLUE'S NECK FIRST and then exiting beneath ONE blue armpit. Visibly enclose blue's head and that same blue upper arm inside a single connected loop before closing white's own biceps lock. Keep the other blue arm outside and separate. Use a front-side angle that exposes the neck-to-armpit route; a head-only rear-naked-style clasp does not pass.",
+      "preserve": [
+        "WHITE attacking torso over BLUE turtle",
+        "Existing grounded bases, camera and own-biceps finishing connection",
+        "Same two fictional adult characters, faces, hair, brown belts, detailed 2.5D cloth shading and all unrelated limbs"
+      ],
+      "correctionPromptEnglish": "Edit only the supplied CURRENT PNG. Correct this ONE local contact assembly: Show the white attacking arm traveling around the FRONT OF BLUE'S NECK FIRST and then exiting beneath ONE blue armpit. Visibly enclose blue's head and that same blue upper arm inside a single connected loop before closing white's own biceps lock. Keep the other blue arm outside and separate. Use a front-side angle that exposes the neck-to-armpit route; a head-only rear-naked-style clasp does not pass. Keep all unrelated anatomy, silhouettes, camera, base and clothing unchanged. Preserve WHITE attacking torso over BLUE turtle; Existing grounded bases, camera and own-biceps finishing connection; Same two fictional adult characters, faces, hair, brown belts, detailed 2.5D cloth shading and all unrelated limbs. Output one square 1:1 raster image at 1024×1024 or larger with a true transparent alpha background. Preserve these same two fictional adult male characters, their faces and hair, the approved detailed 2.5D anime rendering and brown belts. Black-haired adult owns a complete WHITE gi; white-haired adult owns a complete BLUE gi. Exactly two arms and two legs per person. No text, labels, arrows, panels, floor, matte, checkerboard or watermark.",
+      "references": [
+        {
+          "role": "current_image_to_edit",
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/anaconda-choke-v1.png",
+          "sha256": "634940bb5a7a2f77755c036adedbbcb2cfa0f9de9485e4b28be3b39a0130f510"
+        }
+      ],
+      "generationReferencePaths": [
+        "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/anaconda-choke-v1.png"
+      ],
+      "primaryPoseReferenceRequired": false,
+      "evidence": {
+        "priorDirectReview": "task-058-image-review-batch-05.json",
+        "inputMatchedReviewedSHA": true,
+        "limitations": "Existing verified pose or representative brief was already directly reviewed. This is a local contact edit, not a claim that every source-hidden contact has been verified."
+      },
+      "independentReviewRequired": true,
+      "readyForProduction": true
+    },
+    {
+      "slug": "clock-choke",
+      "name": "클락 초크",
+      "status": "ready",
+      "mode": "targeted_edit",
+      "current": {
+        "version": 1,
+        "png": "reference/technique-illustrations/set-01/production/raw/clock-choke-v1.png",
+        "absolutePNG": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/clock-choke-v1.png",
+        "sha256": "478a1f40c938ffa5984468671b730d8bd6eccc9d99ee03a27bfdd3e6b457a9e3",
+        "promptPath": "reference/technique-illustrations/set-01/production/prompts/clock-choke-v1.txt",
+        "promptSHA256": "ebaaed8a35007070f4e537d76b48aadf283836ee5cb47d4ec2bc4f9a2d083c80"
+      },
+      "nextVersion": 2,
+      "sourceReview": "task-058-image-review-batch-05.json",
+      "singleError": "The choking forearm stops at the rear collar instead of passing under the chin to the far collar.",
+      "singleChange": "Keep blue in turtle and white circling beside the head. Make the white choking forearm pass visibly UNDER blue's chin to a real far-collar grip, with the fabric continuous to blue's jacket. The other white arm anchors the shoulder or hip. Use a low front-side angle that exposes the neck-and-collar connection rather than showing only a rear-collar pinch and hands resting on the back.",
+      "preserve": [
+        "BLUE turtle, WHITE circling side base",
+        "Bodies, hip connection and separate anchoring arm",
+        "Same two fictional adult characters, faces, hair, brown belts, detailed 2.5D cloth shading and all unrelated limbs"
+      ],
+      "correctionPromptEnglish": "Edit only the supplied CURRENT PNG. Correct this ONE local contact assembly: Keep blue in turtle and white circling beside the head. Make the white choking forearm pass visibly UNDER blue's chin to a real far-collar grip, with the fabric continuous to blue's jacket. The other white arm anchors the shoulder or hip. Use a low front-side angle that exposes the neck-and-collar connection rather than showing only a rear-collar pinch and hands resting on the back. Keep all unrelated anatomy, silhouettes, camera, base and clothing unchanged. Preserve BLUE turtle, WHITE circling side base; Bodies, hip connection and separate anchoring arm; Same two fictional adult characters, faces, hair, brown belts, detailed 2.5D cloth shading and all unrelated limbs. Output one square 1:1 raster image at 1024×1024 or larger with a true transparent alpha background. Preserve these same two fictional adult male characters, their faces and hair, the approved detailed 2.5D anime rendering and brown belts. Black-haired adult owns a complete WHITE gi; white-haired adult owns a complete BLUE gi. Exactly two arms and two legs per person. No text, labels, arrows, panels, floor, matte, checkerboard or watermark.",
+      "references": [
+        {
+          "role": "current_image_to_edit",
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/clock-choke-v1.png",
+          "sha256": "478a1f40c938ffa5984468671b730d8bd6eccc9d99ee03a27bfdd3e6b457a9e3"
+        }
+      ],
+      "generationReferencePaths": [
+        "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/clock-choke-v1.png"
+      ],
+      "primaryPoseReferenceRequired": false,
+      "evidence": {
+        "priorDirectReview": "task-058-image-review-batch-05.json",
+        "inputMatchedReviewedSHA": true,
+        "limitations": "Existing verified pose or representative brief was already directly reviewed. This is a local contact edit, not a claim that every source-hidden contact has been verified."
+      },
+      "independentReviewRequired": true,
+      "readyForProduction": true
+    },
+    {
+      "slug": "butterfly-sweep",
+      "name": "버터플라이 스윕",
+      "status": "ready",
+      "mode": "targeted_edit",
+      "current": {
+        "version": 1,
+        "png": "reference/technique-illustrations/set-01/production/raw/butterfly-sweep-v1.png",
+        "absolutePNG": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/butterfly-sweep-v1.png",
+        "sha256": "eb64c96eac4fceb36699fbca58b0977f34c33b779c0c35cfd316db8c37ccad92",
+        "promptPath": "reference/technique-illustrations/set-01/production/prompts/butterfly-sweep-v1.txt",
+        "promptSHA256": "12faa3533dccdbd0b26c39143fcdb8e048db63bbf3e566db52887da7c6de88bb"
+      },
+      "nextVersion": 2,
+      "sourceReview": "task-058-image-review-batch-05.json",
+      "singleError": "The selected butterfly hook has not visibly transferred weight into a blocked-post sideways lift.",
+      "singleChange": "Keep blue's butterfly hooks inside the white thighs and retain the upper-body connection. Clearly lift ONE white inner thigh with the blue instep while blue turns onto a hip. Pull the selected white posting wrist or elbow off its supporting line so that hand cannot remain broadly planted on the mat. Keep the second hook separately traceable; show a connected sideways reversal rather than an unchanged seated guard portrait.",
+      "preserve": [
+        "BLUE inner hooks under WHITE thighs and current body roles",
+        "Same two legs, upper-body grips and existing camera",
+        "Same two fictional adult characters, faces, hair, brown belts, detailed 2.5D cloth shading and all unrelated limbs"
+      ],
+      "correctionPromptEnglish": "Edit only the supplied CURRENT PNG. Correct this ONE local contact assembly: Keep blue's butterfly hooks inside the white thighs and retain the upper-body connection. Clearly lift ONE white inner thigh with the blue instep while blue turns onto a hip. Pull the selected white posting wrist or elbow off its supporting line so that hand cannot remain broadly planted on the mat. Keep the second hook separately traceable; show a connected sideways reversal rather than an unchanged seated guard portrait. Keep all unrelated anatomy, silhouettes, camera, base and clothing unchanged. Preserve BLUE inner hooks under WHITE thighs and current body roles; Same two legs, upper-body grips and existing camera; Same two fictional adult characters, faces, hair, brown belts, detailed 2.5D cloth shading and all unrelated limbs. Output one square 1:1 raster image at 1024×1024 or larger with a true transparent alpha background. Preserve these same two fictional adult male characters, their faces and hair, the approved detailed 2.5D anime rendering and brown belts. Black-haired adult owns a complete WHITE gi; white-haired adult owns a complete BLUE gi. Exactly two arms and two legs per person. No text, labels, arrows, panels, floor, matte, checkerboard or watermark.",
+      "references": [
+        {
+          "role": "current_image_to_edit",
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/butterfly-sweep-v1.png",
+          "sha256": "eb64c96eac4fceb36699fbca58b0977f34c33b779c0c35cfd316db8c37ccad92"
+        }
+      ],
+      "generationReferencePaths": [
+        "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/butterfly-sweep-v1.png"
+      ],
+      "primaryPoseReferenceRequired": false,
+      "evidence": {
+        "priorDirectReview": "task-058-image-review-batch-05.json",
+        "inputMatchedReviewedSHA": true,
+        "limitations": "Existing verified pose or representative brief was already directly reviewed. This is a local contact edit, not a claim that every source-hidden contact has been verified."
+      },
+      "independentReviewRequired": true,
+      "readyForProduction": true
+    },
+    {
+      "slug": "belly-down-armbar",
+      "name": "밸리다운",
+      "status": "ready",
+      "mode": "targeted_edit",
+      "current": {
+        "version": 1,
+        "png": "reference/technique-illustrations/set-01/production/raw/belly-down-armbar-v1.png",
+        "absolutePNG": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/belly-down-armbar-v1.png",
+        "sha256": "80ceca53631c0832e8441e78909c53578f9a1015eede2a9dec532d50b4bdfdd8",
+        "promptPath": "reference/technique-illustrations/set-01/production/prompts/belly-down-armbar-v1.txt",
+        "promptSHA256": "5ac5b313232576185508643a12f3d3acc77eae58d467a48908953e7a70aa0a08"
+      },
+      "nextVersion": 2,
+      "sourceReview": "task-058-image-review-batch-05.json",
+      "singleError": "The isolated WHITE wrist and its control by BOTH BLUE hands cannot be traced.",
+      "singleChange": "Keep blue facing the floor with the selected white arm isolated BETWEEN blue's thighs. Expose the white sleeve cuff continuing into a single white wrist and hand, then show BOTH blue hands gripping that SAME white wrist rather than a blue self-wrist clasp. Place the controlled white elbow clearly at blue's hip fulcrum. Keep the head and upper-body leg controls continuous, without forcing an unnatural elbow bend.",
+      "preserve": [
+        "BLUE face-down torso and existing continuous head/upper-body leg controls",
+        "One WHITE arm between blue thighs, current pelvis and camera",
+        "Same two fictional adult characters, faces, hair, brown belts, detailed 2.5D cloth shading and all unrelated limbs"
+      ],
+      "correctionPromptEnglish": "Edit only the supplied CURRENT PNG. Correct this ONE local contact assembly: Keep blue facing the floor with the selected white arm isolated BETWEEN blue's thighs. Expose the white sleeve cuff continuing into a single white wrist and hand, then show BOTH blue hands gripping that SAME white wrist rather than a blue self-wrist clasp. Place the controlled white elbow clearly at blue's hip fulcrum. Keep the head and upper-body leg controls continuous, without forcing an unnatural elbow bend. Keep all unrelated anatomy, silhouettes, camera, base and clothing unchanged. Preserve BLUE face-down torso and existing continuous head/upper-body leg controls; One WHITE arm between blue thighs, current pelvis and camera; Same two fictional adult characters, faces, hair, brown belts, detailed 2.5D cloth shading and all unrelated limbs. Output one square 1:1 raster image at 1024×1024 or larger with a true transparent alpha background. Preserve these same two fictional adult male characters, their faces and hair, the approved detailed 2.5D anime rendering and brown belts. Black-haired adult owns a complete WHITE gi; white-haired adult owns a complete BLUE gi. Exactly two arms and two legs per person. No text, labels, arrows, panels, floor, matte, checkerboard or watermark.",
+      "references": [
+        {
+          "role": "current_image_to_edit",
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/belly-down-armbar-v1.png",
+          "sha256": "80ceca53631c0832e8441e78909c53578f9a1015eede2a9dec532d50b4bdfdd8"
+        }
+      ],
+      "generationReferencePaths": [
+        "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/belly-down-armbar-v1.png"
+      ],
+      "primaryPoseReferenceRequired": false,
+      "evidence": {
+        "priorDirectReview": "task-058-image-review-batch-05.json",
+        "inputMatchedReviewedSHA": true,
+        "limitations": "Existing verified pose or representative brief was already directly reviewed. This is a local contact edit, not a claim that every source-hidden contact has been verified."
+      },
+      "independentReviewRequired": true,
+      "readyForProduction": true
+    },
+    {
+      "slug": "inside-heel-hook",
+      "name": "인사이드 힐훅",
+      "status": "ready",
+      "mode": "targeted_edit",
+      "current": {
+        "version": 2,
+        "png": "reference/technique-illustrations/set-01/production/raw/inside-heel-hook-v2.png",
+        "absolutePNG": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/inside-heel-hook-v2.png",
+        "sha256": "c815ff0b37464d64e036d759b801d08f9df0e81c7dd7c9501dd647fdf186a67a",
+        "promptPath": "reference/technique-illustrations/set-01/production/prompts/inside-heel-hook-v2.txt",
+        "promptSHA256": "cb3327f6a61bba654eb474033bb91a7da3f4135be2210529a0a0f7ed4be1cd09"
+      },
+      "nextVersion": 3,
+      "sourceReview": "task-058-image-review-regeneration-02.json",
+      "singleError": "The captured heel-to-forearm contact is hidden in a hand/ankle mass.",
+      "singleChange": "Keep the consistent white-attacker/blue-partner assignment. Tuck the captured BLUE toes by white's armpit and expose the BLUE heel as a distinct rounded contact resting ABOVE the hooking WHITE forearm or wrist ridge. Join white's other hand to white's own hand or wrist. Open the grip-side silhouette enough to distinguish heel capture from two hands simply enclosing the ankle, without changing the source foot direction.",
+      "preserve": [
+        "WHITE seated attacker and BLUE partner as a consistent whole-person assignment",
+        "Exact inside leg entanglement, knee line and source foot direction",
+        "Same two fictional adult characters, faces, hair, brown belts, detailed 2.5D cloth shading and all unrelated limbs"
+      ],
+      "correctionPromptEnglish": "Edit only the supplied CURRENT PNG. Correct this ONE local contact assembly: Keep the consistent white-attacker/blue-partner assignment. Tuck the captured BLUE toes by white's armpit and expose the BLUE heel as a distinct rounded contact resting ABOVE the hooking WHITE forearm or wrist ridge. Join white's other hand to white's own hand or wrist. Open the grip-side silhouette enough to distinguish heel capture from two hands simply enclosing the ankle, without changing the source foot direction. Keep all unrelated anatomy, silhouettes, camera, base and clothing unchanged. Preserve WHITE seated attacker and BLUE partner as a consistent whole-person assignment; Exact inside leg entanglement, knee line and source foot direction; Same two fictional adult characters, faces, hair, brown belts, detailed 2.5D cloth shading and all unrelated limbs. Output one square 1:1 raster image at 1024×1024 or larger with a true transparent alpha background. Preserve these same two fictional adult male characters, their faces and hair, the approved detailed 2.5D anime rendering and brown belts. Black-haired adult owns a complete WHITE gi; white-haired adult owns a complete BLUE gi. Exactly two arms and two legs per person. No text, labels, arrows, panels, floor, matte, checkerboard or watermark.",
+      "references": [
+        {
+          "role": "current_image_to_edit",
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/inside-heel-hook-v2.png",
+          "sha256": "c815ff0b37464d64e036d759b801d08f9df0e81c7dd7c9501dd647fdf186a67a"
+        }
+      ],
+      "generationReferencePaths": [
+        "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/inside-heel-hook-v2.png"
+      ],
+      "primaryPoseReferenceRequired": false,
+      "evidence": {
+        "priorDirectReview": "task-058-image-review-regeneration-02.json",
+        "inputMatchedReviewedSHA": true,
+        "limitations": "Existing verified pose or representative brief was already directly reviewed. This is a local contact edit, not a claim that every source-hidden contact has been verified."
+      },
+      "independentReviewRequired": true,
+      "readyForProduction": true
+    },
+    {
+      "slug": "lapel-pass",
+      "name": "라펠 패스",
+      "status": "ready",
+      "mode": "targeted_edit",
+      "current": {
+        "version": 2,
+        "png": "reference/technique-illustrations/set-01/production/raw/lapel-pass-v2.png",
+        "absolutePNG": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/lapel-pass-v2.png",
+        "sha256": "10b0108338ec90ba521cb2117c7fc48965d3499f752157f2cfb7d055fe29559d",
+        "promptPath": "reference/technique-illustrations/set-01/production/prompts/lapel-pass-v2.txt",
+        "promptSHA256": "db26d4b2d5bfe99696cf02fd7635843f6503e6182610bca74b497e2c20c2d27e"
+      },
+      "nextVersion": 3,
+      "sourceReview": "task-058-image-review-regeneration-02.json",
+      "singleError": "The released lapel does not show a continuous under-leg return to the receiving hand.",
+      "singleChange": "Show a released BLUE lapel originating at blue's jacket, traveling UNDER the elevated blue leg line and around the folded thighs before returning to ONE white receiving hand. Keep the other white hand visibly posted. Expose the receiving forearm beneath the legs and the cloth return in a single coherent post-hand-off pose. Do not substitute a front waist pinch or add another receiving hand.",
+      "preserve": [
+        "WHITE top passer, folded BLUE guard and existing camera",
+        "Existing stack, supporting base and posted free hand",
+        "Same two fictional adult characters, faces, hair, brown belts, detailed 2.5D cloth shading and all unrelated limbs"
+      ],
+      "correctionPromptEnglish": "Edit only the supplied CURRENT PNG. Correct this ONE local contact assembly: Show a released BLUE lapel originating at blue's jacket, traveling UNDER the elevated blue leg line and around the folded thighs before returning to ONE white receiving hand. Keep the other white hand visibly posted. Expose the receiving forearm beneath the legs and the cloth return in a single coherent post-hand-off pose. Do not substitute a front waist pinch or add another receiving hand. Keep all unrelated anatomy, silhouettes, camera, base and clothing unchanged. Preserve WHITE top passer, folded BLUE guard and existing camera; Existing stack, supporting base and posted free hand; Same two fictional adult characters, faces, hair, brown belts, detailed 2.5D cloth shading and all unrelated limbs. Output one square 1:1 raster image at 1024×1024 or larger with a true transparent alpha background. Preserve these same two fictional adult male characters, their faces and hair, the approved detailed 2.5D anime rendering and brown belts. Black-haired adult owns a complete WHITE gi; white-haired adult owns a complete BLUE gi. Exactly two arms and two legs per person. No text, labels, arrows, panels, floor, matte, checkerboard or watermark.",
+      "references": [
+        {
+          "role": "current_image_to_edit",
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/lapel-pass-v2.png",
+          "sha256": "10b0108338ec90ba521cb2117c7fc48965d3499f752157f2cfb7d055fe29559d"
+        }
+      ],
+      "generationReferencePaths": [
+        "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/lapel-pass-v2.png"
+      ],
+      "primaryPoseReferenceRequired": false,
+      "evidence": {
+        "priorDirectReview": "task-058-image-review-regeneration-02.json",
+        "inputMatchedReviewedSHA": true,
+        "limitations": "Existing verified pose or representative brief was already directly reviewed. This is a local contact edit, not a claim that every source-hidden contact has been verified."
+      },
+      "independentReviewRequired": true,
+      "readyForProduction": true
+    },
+    {
+      "slug": "squid-guard",
+      "name": "스퀴드 가드",
+      "status": "ready",
+      "mode": "targeted_edit",
+      "current": {
+        "version": 2,
+        "png": "reference/technique-illustrations/set-01/production/raw/squid-guard-v2.png",
+        "absolutePNG": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/squid-guard-v2.png",
+        "sha256": "cbb24d6ccf9375e3d650aede231a3dd6c108012ebd01f09a6be13d4a795d5ae4",
+        "promptPath": "reference/technique-illustrations/set-01/production/prompts/squid-guard-v2.txt",
+        "promptSHA256": "5fed4e45a1ca70e30a3138e857a0cf831c7ee59b592f17ddb7f7fbfe16e55b66"
+      },
+      "nextVersion": 3,
+      "sourceReview": "task-058-image-review-regeneration-02.json",
+      "singleError": "The controlling ankle-to-tensioned-lapel junction is not exposed.",
+      "singleChange": "Retain the regular-squid rotated position, but open the junction at the standing WHITE leg. Trace one BLUE underhook arm around that leg to the lapel receiving hand. Expose the continuous released WHITE lapel from the jacket, through the hand, and beneath the controlling BLUE ankle, with that ankle visibly resting on the tensioned cloth. Keep the other BLUE leg separate and do not substitute a generic foot-on-hip pose.",
+      "preserve": [
+        "Current regular-squid rotated BLUE bottom and WHITE standing base",
+        "Existing leg underhook, two distinct blue legs and source camera",
+        "Same two fictional adult characters, faces, hair, brown belts, detailed 2.5D cloth shading and all unrelated limbs"
+      ],
+      "correctionPromptEnglish": "Edit only the supplied CURRENT PNG. Correct this ONE local contact assembly: Retain the regular-squid rotated position, but open the junction at the standing WHITE leg. Trace one BLUE underhook arm around that leg to the lapel receiving hand. Expose the continuous released WHITE lapel from the jacket, through the hand, and beneath the controlling BLUE ankle, with that ankle visibly resting on the tensioned cloth. Keep the other BLUE leg separate and do not substitute a generic foot-on-hip pose. Keep all unrelated anatomy, silhouettes, camera, base and clothing unchanged. Preserve Current regular-squid rotated BLUE bottom and WHITE standing base; Existing leg underhook, two distinct blue legs and source camera; Same two fictional adult characters, faces, hair, brown belts, detailed 2.5D cloth shading and all unrelated limbs. Output one square 1:1 raster image at 1024×1024 or larger with a true transparent alpha background. Preserve these same two fictional adult male characters, their faces and hair, the approved detailed 2.5D anime rendering and brown belts. Black-haired adult owns a complete WHITE gi; white-haired adult owns a complete BLUE gi. Exactly two arms and two legs per person. No text, labels, arrows, panels, floor, matte, checkerboard or watermark.",
+      "references": [
+        {
+          "role": "current_image_to_edit",
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/squid-guard-v2.png",
+          "sha256": "cbb24d6ccf9375e3d650aede231a3dd6c108012ebd01f09a6be13d4a795d5ae4"
+        }
+      ],
+      "generationReferencePaths": [
+        "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/squid-guard-v2.png"
+      ],
+      "primaryPoseReferenceRequired": false,
+      "evidence": {
+        "priorDirectReview": "task-058-image-review-regeneration-02.json",
+        "inputMatchedReviewedSHA": true,
+        "limitations": "Existing verified pose or representative brief was already directly reviewed. This is a local contact edit, not a claim that every source-hidden contact has been verified."
+      },
+      "independentReviewRequired": true,
+      "readyForProduction": true
+    },
+    {
+      "slug": "pendulum-sweep",
+      "name": "펜듈럼 스윕",
+      "status": "ready",
+      "mode": "targeted_edit",
+      "current": {
+        "version": 2,
+        "png": "reference/technique-illustrations/set-01/production/raw/pendulum-sweep-v2.png",
+        "absolutePNG": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/pendulum-sweep-v2.png",
+        "sha256": "29271144e3d11f6af05e6c1a643926f6ae09387556ad070d1c40291fa1071380",
+        "promptPath": "reference/technique-illustrations/set-01/production/prompts/pendulum-sweep-v2.txt",
+        "promptSHA256": "8a69d48a2bf7e82e3be22e012f4c0bf90f9fe3edcb09a1b700c9ed95ba2c35df"
+      },
+      "nextVersion": 3,
+      "sourceReview": "task-058-image-review-regeneration-02.json",
+      "singleError": "The collecting arm holds the partner elbow instead of scooping beneath the hamstring.",
+      "singleChange": "Keep the near BLUE hand controlling the WHITE posting sleeve or wrist. Move the OTHER BLUE arm away from the white elbow and scoop it underneath the near WHITE HAMSTRING, exposing its BLUE cuff and hand behind that thigh as in Chewjitsu's source. Keep the two blue legs opened along separate pendulum/counterweight paths and angle the blue hips beneath the loaded thigh. Do not use two blue hands on two white arms.",
+      "preserve": [
+        "Current BLUE bottom hips and opened two-leg pendulum paths",
+        "Near BLUE hand controlling the WHITE posting sleeve and WHITE kneeling base",
+        "Same two fictional adult characters, faces, hair, brown belts, detailed 2.5D cloth shading and all unrelated limbs"
+      ],
+      "correctionPromptEnglish": "Edit only the supplied CURRENT PNG. Correct this ONE local contact assembly: Keep the near BLUE hand controlling the WHITE posting sleeve or wrist. Move the OTHER BLUE arm away from the white elbow and scoop it underneath the near WHITE HAMSTRING, exposing its BLUE cuff and hand behind that thigh as in Chewjitsu's source. Keep the two blue legs opened along separate pendulum/counterweight paths and angle the blue hips beneath the loaded thigh. Do not use two blue hands on two white arms. Keep all unrelated anatomy, silhouettes, camera, base and clothing unchanged. Preserve Current BLUE bottom hips and opened two-leg pendulum paths; Near BLUE hand controlling the WHITE posting sleeve and WHITE kneeling base; Same two fictional adult characters, faces, hair, brown belts, detailed 2.5D cloth shading and all unrelated limbs. Output one square 1:1 raster image at 1024×1024 or larger with a true transparent alpha background. Preserve these same two fictional adult male characters, their faces and hair, the approved detailed 2.5D anime rendering and brown belts. Black-haired adult owns a complete WHITE gi; white-haired adult owns a complete BLUE gi. Exactly two arms and two legs per person. No text, labels, arrows, panels, floor, matte, checkerboard or watermark.",
+      "references": [
+        {
+          "role": "current_image_to_edit",
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/pendulum-sweep-v2.png",
+          "sha256": "29271144e3d11f6af05e6c1a643926f6ae09387556ad070d1c40291fa1071380"
+        }
+      ],
+      "generationReferencePaths": [
+        "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/pendulum-sweep-v2.png"
+      ],
+      "primaryPoseReferenceRequired": false,
+      "evidence": {
+        "priorDirectReview": "task-058-image-review-regeneration-02.json",
+        "inputMatchedReviewedSHA": true,
+        "limitations": "Existing verified pose or representative brief was already directly reviewed. This is a local contact edit, not a claim that every source-hidden contact has been verified."
+      },
+      "independentReviewRequired": true,
+      "readyForProduction": true
+    },
+    {
+      "slug": "gator-roll",
+      "name": "게이터 롤",
+      "status": "ready",
+      "mode": "targeted_edit",
+      "current": {
+        "version": 2,
+        "png": "reference/technique-illustrations/set-01/production/raw/gator-roll-v2.png",
+        "absolutePNG": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/gator-roll-v2.png",
+        "sha256": "1c89ccf4f7f123b14971be1f176adcf8815fe5b4f765e9d742babd43af0c0238",
+        "promptPath": "reference/technique-illustrations/set-01/production/prompts/gator-roll-v2.txt",
+        "promptSHA256": "df9d487894b671bdcc86cf68501ce172f39f23f1998dd7e31d8c769f91c5855f"
+      },
+      "nextVersion": 3,
+      "sourceReview": "task-058-image-review-regeneration-02.json",
+      "singleError": "ONE BLUE upper arm is not clearly contained with the head inside the WHITE retained loop.",
+      "singleChange": "Open the front head-and-arm side of the post-roll anaconda-family configuration. Draw ONE BLUE upper arm clearly folded up beside the BLUE head, with BOTH that head and upper arm enclosed inside the SAME continuous WHITE arm loop. Expose the WHITE hand-to-own-arm closure and keep the captured BLUE elbow tucked; place the other BLUE arm outside. Preserve side-lying shoulder/trunk support. Do not replace the front head-and-arm loop with a rear head-only neck clasp.",
+      "preserve": [
+        "Current side-lying shoulder/trunk support and paired torso rotation",
+        "WHITE attacker, BLUE partner and separate free BLUE arm",
+        "Same two fictional adult characters, faces, hair, brown belts, detailed 2.5D cloth shading and all unrelated limbs"
+      ],
+      "correctionPromptEnglish": "Edit only the supplied CURRENT PNG. Correct this ONE local contact assembly: Open the front head-and-arm side of the post-roll anaconda-family configuration. Draw ONE BLUE upper arm clearly folded up beside the BLUE head, with BOTH that head and upper arm enclosed inside the SAME continuous WHITE arm loop. Expose the WHITE hand-to-own-arm closure and keep the captured BLUE elbow tucked; place the other BLUE arm outside. Preserve side-lying shoulder/trunk support. Do not replace the front head-and-arm loop with a rear head-only neck clasp. Keep all unrelated anatomy, silhouettes, camera, base and clothing unchanged. Preserve Current side-lying shoulder/trunk support and paired torso rotation; WHITE attacker, BLUE partner and separate free BLUE arm; Same two fictional adult characters, faces, hair, brown belts, detailed 2.5D cloth shading and all unrelated limbs. Output one square 1:1 raster image at 1024×1024 or larger with a true transparent alpha background. Preserve these same two fictional adult male characters, their faces and hair, the approved detailed 2.5D anime rendering and brown belts. Black-haired adult owns a complete WHITE gi; white-haired adult owns a complete BLUE gi. Exactly two arms and two legs per person. No text, labels, arrows, panels, floor, matte, checkerboard or watermark.",
+      "references": [
+        {
+          "role": "current_image_to_edit",
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/gator-roll-v2.png",
+          "sha256": "1c89ccf4f7f123b14971be1f176adcf8815fe5b4f765e9d742babd43af0c0238"
+        }
+      ],
+      "generationReferencePaths": [
+        "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/gator-roll-v2.png"
+      ],
+      "primaryPoseReferenceRequired": false,
+      "evidence": {
+        "priorDirectReview": "task-058-image-review-regeneration-02.json",
+        "inputMatchedReviewedSHA": true,
+        "limitations": "Existing verified pose or representative brief was already directly reviewed. This is a local contact edit, not a claim that every source-hidden contact has been verified."
+      },
+      "independentReviewRequired": true,
+      "readyForProduction": true
+    },
+    {
+      "slug": "100-percent-sweep",
+      "name": "100퍼스윕",
+      "status": "ready",
+      "mode": "targeted_edit",
+      "current": {
+        "version": 2,
+        "png": "reference/technique-illustrations/set-01/production/raw/100-percent-sweep-v2.png",
+        "absolutePNG": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/100-percent-sweep-v2.png",
+        "sha256": "5b1d7f4765a89c54880482a00fe6fc5cf8c9faab0a60270576fc4435efbf04a0",
+        "promptPath": "reference/technique-illustrations/set-01/production/prompts/100-percent-sweep-v2.txt",
+        "promptSHA256": "7c966f88042bf69b6e265b4217d2985bf30724f99d21c726e1116d69abec670e"
+      },
+      "nextVersion": 3,
+      "sourceReview": "task-058-image-review-regeneration-02.json",
+      "singleError": "The connected head-and-arm closing junction is not readable.",
+      "singleChange": "Keep the consistent seated WHITE attacker and kneeling BLUE partner. Expose the attacker's second WHITE forearm passing UNDER the trapped BLUE upper arm and joining the attacker's own head-wrapping WHITE arm at the actual source closure. Separate the BLUE captured arm and BLUE cuff from the WHITE sleeves at the front shoulder junction. Show exactly two white hands and two blue hands, allowing unrelated far contacts to remain hidden. Do not create two independent biceps holds or a disconnected head-only hug.",
+      "preserve": [
+        "Seated WHITE attacker, kneeling BLUE partner and existing close hips",
+        "Head under white armpit, seated foot base and camera",
+        "Same two fictional adult characters, faces, hair, brown belts, detailed 2.5D cloth shading and all unrelated limbs"
+      ],
+      "correctionPromptEnglish": "Edit only the supplied CURRENT PNG. Correct this ONE local contact assembly: Keep the consistent seated WHITE attacker and kneeling BLUE partner. Expose the attacker's second WHITE forearm passing UNDER the trapped BLUE upper arm and joining the attacker's own head-wrapping WHITE arm at the actual source closure. Separate the BLUE captured arm and BLUE cuff from the WHITE sleeves at the front shoulder junction. Show exactly two white hands and two blue hands, allowing unrelated far contacts to remain hidden. Do not create two independent biceps holds or a disconnected head-only hug. Keep all unrelated anatomy, silhouettes, camera, base and clothing unchanged. Preserve Seated WHITE attacker, kneeling BLUE partner and existing close hips; Head under white armpit, seated foot base and camera; Same two fictional adult characters, faces, hair, brown belts, detailed 2.5D cloth shading and all unrelated limbs. Output one square 1:1 raster image at 1024×1024 or larger with a true transparent alpha background. Preserve these same two fictional adult male characters, their faces and hair, the approved detailed 2.5D anime rendering and brown belts. Black-haired adult owns a complete WHITE gi; white-haired adult owns a complete BLUE gi. Exactly two arms and two legs per person. No text, labels, arrows, panels, floor, matte, checkerboard or watermark.",
+      "references": [
+        {
+          "role": "current_image_to_edit",
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/100-percent-sweep-v2.png",
+          "sha256": "5b1d7f4765a89c54880482a00fe6fc5cf8c9faab0a60270576fc4435efbf04a0"
+        }
+      ],
+      "generationReferencePaths": [
+        "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/100-percent-sweep-v2.png"
+      ],
+      "primaryPoseReferenceRequired": false,
+      "evidence": {
+        "priorDirectReview": "task-058-image-review-regeneration-02.json",
+        "inputMatchedReviewedSHA": true,
+        "limitations": "Existing verified pose or representative brief was already directly reviewed. This is a local contact edit, not a claim that every source-hidden contact has been verified."
+      },
+      "independentReviewRequired": true,
+      "readyForProduction": true
+    },
+    {
+      "slug": "x-guard-sweep",
+      "name": "엑스가드 스윕",
+      "status": "ready",
+      "mode": "targeted_edit",
+      "current": {
+        "version": 1,
+        "png": "reference/technique-illustrations/set-01/production/raw/x-guard-sweep-v1.png",
+        "absolutePNG": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/x-guard-sweep-v1.png",
+        "sha256": "21f578cb868ae586b49bfc014e6ec2a4fa5fcf0b5f336b965f2f18168981f556",
+        "promptPath": "reference/technique-illustrations/set-01/production/prompts/x-guard-sweep-v1.txt",
+        "promptSHA256": "663b41bed04d275953d7fd093c848066874facc6f6dd2fa5dbfa870a5a679b31"
+      },
+      "nextVersion": 2,
+      "sourceReview": "task-058-image-review-batch-05.json",
+      "singleError": "The collected WHITE leg floats away from BLUE's shoulder, disconnecting the X structure.",
+      "singleChange": "Move ONLY the free elevated WHITE leg back onto BLUE's shoulder and upper-body support, keeping that one leg continuously attached to the SAME white hip. Preserve BOTH existing BLUE hooks on the OTHER white leg at different heights and the current sweep tilt. Do not move a blue foot onto the shoulder or invent a third leg.",
+      "preserve": [
+        "Current BLUE bottom and WHITE top character roles",
+        "Current camera, torso tilt, two opposed hooks on the other white leg, faces and brown belts"
+      ],
+      "correctionPromptEnglish": "Edit only the supplied CURRENT PNG. Move ONLY the free elevated WHITE leg back onto BLUE's shoulder and upper-body support, keeping that one leg continuously attached to the SAME white hip. Preserve BOTH existing BLUE hooks on the OTHER white leg at different heights and the current sweep tilt. Do not move a blue foot onto the shoulder or invent a third leg. Preserve Current BLUE bottom and WHITE top character roles; Current camera, torso tilt, two opposed hooks on the other white leg, faces and brown belts. Output one square 1:1 raster image at 1024×1024 or larger with a true transparent alpha background. Preserve these same two fictional adult male characters, their faces and hair, the approved detailed 2.5D anime rendering and brown belts. Black-haired adult owns a complete WHITE gi; white-haired adult owns a complete BLUE gi. Exactly two arms and two legs per person. No text, labels, arrows, panels, floor, matte, checkerboard or watermark.",
+      "references": [
+        {
+          "role": "current_image_to_edit",
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/x-guard-sweep-v1.png",
+          "sha256": "21f578cb868ae586b49bfc014e6ec2a4fa5fcf0b5f336b965f2f18168981f556"
+        }
+      ],
+      "generationReferencePaths": [
+        "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/x-guard-sweep-v1.png"
+      ],
+      "primaryPoseReferenceRequired": false,
+      "independentReviewRequired": true,
+      "readyForProduction": true
+    },
+    {
+      "slug": "buggy-choke",
+      "name": "버기 초크",
+      "status": "ready",
+      "mode": "targeted_edit",
+      "current": {
+        "version": 2,
+        "png": "reference/technique-illustrations/set-01/production/raw/buggy-choke-v2.png",
+        "absolutePNG": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/buggy-choke-v2.png",
+        "sha256": "7ce3715dd11819302eb5a8470e904881258642f219c42b539fb7bd754df09205",
+        "promptPath": "reference/technique-illustrations/set-01/production/prompts/buggy-choke-v2.txt",
+        "promptSHA256": "26ea14acdff37d35ea2117e039cb8d75e3804edfe3f878f971ff7019cd7a0757"
+      },
+      "nextVersion": 3,
+      "sourceReview": "task-058-image-review-regeneration-02.json",
+      "singleError": "The bottom attacker's closed arm-to-own-leg loop has mixed WHITE/BLUE ownership and an unreadable closure.",
+      "singleChange": "Repair ONLY the bottom BLUE own-arm/own-bent-leg loop as one continuous BLUE unit: make its raised thigh, knee and cuff BLUE from the bottom BLUE pelvis, and route the existing BLUE arm through that SAME bent BLUE leg to close the loop around the WHITE head-and-upper-arm area. Move the current self-collar hand into that same arm-leg closure, using no extra hand or leg. Keep the separate top WHITE base legs WHITE.",
+      "preserve": [
+        "Current perpendicular WHITE top/BLUE bottom side-control geometry and camera",
+        "Top WHITE independent base, both faces, hair and brown belts"
+      ],
+      "correctionPromptEnglish": "Edit only the supplied CURRENT PNG. Repair ONLY the bottom BLUE own-arm/own-bent-leg loop as one continuous BLUE unit: make its raised thigh, knee and cuff BLUE from the bottom BLUE pelvis, and route the existing BLUE arm through that SAME bent BLUE leg to close the loop around the WHITE head-and-upper-arm area. Move the current self-collar hand into that same arm-leg closure, using no extra hand or leg. Keep the separate top WHITE base legs WHITE. Preserve Current perpendicular WHITE top/BLUE bottom side-control geometry and camera; Top WHITE independent base, both faces, hair and brown belts. Output one square 1:1 raster image at 1024×1024 or larger with a true transparent alpha background. Preserve these same two fictional adult male characters, their faces and hair, the approved detailed 2.5D anime rendering and brown belts. Black-haired adult owns a complete WHITE gi; white-haired adult owns a complete BLUE gi. Exactly two arms and two legs per person. No text, labels, arrows, panels, floor, matte, checkerboard or watermark.",
+      "references": [
+        {
+          "role": "current_image_to_edit",
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/buggy-choke-v2.png",
+          "sha256": "7ce3715dd11819302eb5a8470e904881258642f219c42b539fb7bd754df09205"
+        }
+      ],
+      "generationReferencePaths": [
+        "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/buggy-choke-v2.png"
+      ],
+      "primaryPoseReferenceRequired": false,
+      "independentReviewRequired": true,
+      "readyForProduction": true
+    },
+    {
+      "slug": "gogoplata",
+      "name": "고고플라타",
+      "status": "ready",
+      "mode": "pose_first_regeneration",
+      "current": {
+        "version": 1,
+        "png": "reference/technique-illustrations/set-01/production/raw/gogoplata-v1.png",
+        "absolutePNG": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/gogoplata-v1.png",
+        "sha256": "4f1e4f30f4a7c6f7a94112e83b950159f8054f2ff1636dfe20c6c9d9a226cf00",
+        "promptPath": "reference/technique-illustrations/set-01/production/prompts/gogoplata-v1.txt",
+        "promptSHA256": "1dcb02305e8ac83c13a581aad6d245bb55bf712715d03529907377b98a6d454c"
+      },
+      "nextVersion": 2,
+      "sourceReview": "task-058-image-review-batch-05.json",
+      "singleError": "The current image substitutes a high knee shield and chest-pushing sole for the shin-under-chin configuration.",
+      "singleChange": "Replace the knee-shield contact with Mccaghren's selected bottom-guard shin-under-chin configuration.",
+      "preserve": [
+        "Approved fictional adult identities, complete WHITE/BLUE gi ownership and brown belts",
+        "Neutral portrait's detailed 2.5D anime rendering",
+        "Selected primary frame's coherent contact arrangement and camera"
+      ],
+      "correctionPromptEnglish": "Reference 1 is PRIMARY POSE geometry; the final reference is NEUTRAL PORTRAITS for fictional identity and rendering ONLY. Faithfully redraw the FIRST demonstration frame with BLUE as the bottom attacker corresponding to Brandon on the viewer's left and WHITE as the low kneeling partner. Keep the bottom hips angled to the side. The attacking BLUE knee stays OUTSIDE the partner's head, while the middle of that SAME BLUE shin passes beneath the WHITE chin across the FRONT of the neck. The BLUE foot emerges beside the white upper body and the upper BLUE hand retains that OWN foot/toes as shown; keep the other BLUE arm and second BLUE guard leg separate. Do not put the sole on the chest or put the shin behind the neck as in Mission Control. Keep calm neutral alignment before pressure. Output one square 1:1 raster image at 1024×1024 or larger with a true transparent alpha background. Preserve these same two fictional adult male characters, their faces and hair, the approved detailed 2.5D anime rendering and brown belts. Black-haired adult owns a complete WHITE gi; white-haired adult owns a complete BLUE gi. Exactly two arms and two legs per person. No text, labels, arrows, panels, floor, matte, checkerboard or watermark.",
+      "references": [
+        {
+          "role": "primary_pose",
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/correction04-gogoplata-mccaghren-02m45s.png",
+          "sha256": "1939134d43413b91b7e56d7fb3c3039286475679b1d9f828673ccc477a9a8c88",
+          "sourceURL": "https://www.youtube.com/watch?v=wn39-wrfsbs",
+          "publicFrameURL": "https://www.youtube.com/watch?v=wn39-wrfsbs&t=165s",
+          "timestamp": "02:45",
+          "observedVideoTimeSeconds": 165.73976,
+          "sourceAuthor": "Brandon Mccaghren, demonstrated on Bernardo Faria BJJ Fanatics",
+          "sourceType": "public_direct_instructor_demonstration",
+          "captureMethod": "CUA public player screenshot, video-only native crop; no external CDP/Playwright client",
+          "directViewImageConfirmed": true,
+          "poseVerifiedForSelectedContacts": true,
+          "keyChecks": [
+            "중간 정강이가 턱 아래 목 앞에 연결됨",
+            "같은 자기 발의 손 제어",
+            "두 다리·팔의 전신 색 소속 유지"
+          ],
+          "limitations": "선택된 고각 시범에서 앞목 일부는 머리·전완에 가린다. 같은 시범의 02:26~02:37 설명과 두 정지 시점으로 경로를 대조했으며 전체 영상·피니시 효과는 검증하지 않았다."
+        },
+        {
+          "role": "neutral_character_style_only",
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/style-guides/neutral-portraits-v1.png",
+          "sha256": "861ad8775f2697dc451d5f764a49655e5c78ddb2ada79d3f44a6f2905fa1ba16",
+          "directViewImageConfirmed": true
+        }
+      ],
+      "generationReferencePaths": [
+        "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/correction04-gogoplata-mccaghren-02m45s.png",
+        "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/style-guides/neutral-portraits-v1.png"
+      ],
+      "primaryPoseReferenceRequired": true,
+      "independentReviewRequired": true,
+      "readyForProduction": true
+    },
+    {
+      "slug": "peruvian-necktie",
+      "name": "페루비안 넥타이",
+      "status": "ready",
+      "mode": "pose_first_regeneration",
+      "current": {
+        "version": 1,
+        "png": "reference/technique-illustrations/set-01/production/raw/peruvian-necktie-v1.png",
+        "absolutePNG": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/peruvian-necktie-v1.png",
+        "sha256": "1878322f91eb79449b74788707b1f56609634df72b8bfb097f9fdaa90cededab",
+        "promptPath": "reference/technique-illustrations/set-01/production/prompts/peruvian-necktie-v1.txt",
+        "promptSHA256": "60f2fa3cde9f98911381ae72dbf0ea6630852656c1a16f694db0366e8a886335"
+      },
+      "nextVersion": 2,
+      "sourceReview": "task-058-image-review-batch-05.json",
+      "singleError": "The current image leaves a leg planted and uses wrist/sleeve holds instead of the connected head-and-arm necktie.",
+      "singleChange": "Replace the incomplete base with Keenan's seated two-leg necktie configuration and its retained connected hand loop.",
+      "preserve": [
+        "Approved fictional adult identities, complete WHITE/BLUE gi ownership and brown belts",
+        "Neutral portrait's detailed 2.5D anime rendering",
+        "Selected primary frame's coherent contact arrangement and camera"
+      ],
+      "correctionPromptEnglish": "Reference 1 is PRIMARY POSE geometry; the final reference is NEUTRAL PORTRAITS for fictional identity and rendering ONLY. Faithfully redraw the FIRST Keenan frame and its side camera. Assign Keenan on the viewer's left to WHITE and the kneeling partner to BLUE. WHITE sits beside the turtle with both hands joined in the shallow front head-and-arm connection beneath the blue neck, enclosing the head and ONE blue upper arm. One continuous WHITE leg crosses the BACK OF THE HEAD/neck line, with the thigh behind the head; WHITE's other leg crosses the UPPER BACK. Keep the visible hand-to-hand connection and both leg contacts together. The front leg is not an unrelated upright planted knee. Preserve a calm pre-pressure illustration, with head/spine near neutral and no forced bend. Output one square 1:1 raster image at 1024×1024 or larger with a true transparent alpha background. Preserve these same two fictional adult male characters, their faces and hair, the approved detailed 2.5D anime rendering and brown belts. Black-haired adult owns a complete WHITE gi; white-haired adult owns a complete BLUE gi. Exactly two arms and two legs per person. No text, labels, arrows, panels, floor, matte, checkerboard or watermark.",
+      "references": [
+        {
+          "role": "primary_pose",
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/correction04-peruvian-keenan-05m21s.png",
+          "sha256": "a880b9fa8e6d81ea2dd08a88c8a1cbdf3e9e7348547e8c7c9a4c8391de6ab9a2",
+          "sourceURL": "https://www.youtube.com/watch?v=kxCCrUACAwM",
+          "publicFrameURL": "https://www.youtube.com/watch?v=kxCCrUACAwM&t=321s",
+          "timestamp": "05:21",
+          "observedVideoTimeSeconds": 321.718506,
+          "sourceAuthor": "Keenan Cornelius, own official channel",
+          "sourceType": "public_direct_instructor_demonstration",
+          "captureMethod": "CUA public player screenshot, video-only native crop; no external CDP/Playwright client",
+          "directViewImageConfirmed": true,
+          "poseVerifiedForSelectedContacts": true,
+          "keyChecks": [
+            "머리·한 상완의 연결된 전면 잠금",
+            "머리선 뒤를 지나는 한 다리",
+            "상부 등을 지나는 별도의 두 번째 다리"
+          ],
+          "limitations": "공식 시범의 05:21 정지 자세와 설명을 확인했다. 목 아래 손끝 일부는 가리므로 새 그림에서 같은 결속의 경계를 분리해야 한다. 실제 압박 효과나 통증·성공은 평가하지 않는다."
+        },
+        {
+          "role": "neutral_character_style_only",
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/style-guides/neutral-portraits-v1.png",
+          "sha256": "861ad8775f2697dc451d5f764a49655e5c78ddb2ada79d3f44a6f2905fa1ba16",
+          "directViewImageConfirmed": true
+        }
+      ],
+      "generationReferencePaths": [
+        "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/correction04-peruvian-keenan-05m21s.png",
+        "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/style-guides/neutral-portraits-v1.png"
+      ],
+      "primaryPoseReferenceRequired": true,
+      "independentReviewRequired": true,
+      "readyForProduction": true
+    },
+    {
+      "slug": "twister",
+      "name": "트위스터",
+      "status": "ready",
+      "mode": "pose_first_regeneration",
+      "current": {
+        "version": 1,
+        "png": "reference/technique-illustrations/set-01/production/raw/twister-v1.png",
+        "absolutePNG": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/twister-v1.png",
+        "sha256": "64b2742b6596e54d19202bb3032c0cf1b9346b1d7b19137d525c964c9ddb2de2",
+        "promptPath": "reference/technique-illustrations/set-01/production/prompts/twister-v1.txt",
+        "promptSHA256": "f461a6b65e72b1e2b22ee53c3f84c21a82296caebf6d8edd831f47cbf14621af"
+      },
+      "nextVersion": 2,
+      "sourceReview": "task-058-image-review-batch-05.json",
+      "singleError": "The current upper body remains an ordinary seatbelt/collar hold instead of isolated-arm and head control from truck.",
+      "singleChange": "Replace that upper-body hold with the traditional-twister branch explicitly shown by Eddie at the end of his Swedish-twister lesson.",
+      "preserve": [
+        "Approved fictional adult identities, complete WHITE/BLUE gi ownership and brown belts",
+        "Neutral portrait's detailed 2.5D anime rendering",
+        "Selected primary frame's coherent contact arrangement and camera"
+      ],
+      "correctionPromptEnglish": "Reference 1 is PRIMARY POSE geometry; the final reference is NEUTRAL PORTRAITS for fictional identity and rendering ONLY. Redraw the FIRST frame's connected truck arrangement and camera with BLUE as Eddie on the viewer's lower right and WHITE as the partner on the upper left. BLUE's two BLUE legs deeply isolate ONE WHITE leg; keep the other WHITE leg separate. Move the selected WHITE arm over and beyond BLUE's head so it is isolated out of the way, then retain BLUE's TWO-HAND cup/control of the WHITE head as shown. Both BLUE trouser legs must originate from the same BLUE pelvis; never copy the source partner's WHITE pants onto the blue athlete. Show the identifiable restraint BEFORE pressure, with head and spine near neutral instead of reproducing the source's final rotation. Do not replace the head control with a seatbelt or collar grips. Output one square 1:1 raster image at 1024×1024 or larger with a true transparent alpha background. Preserve these same two fictional adult male characters, their faces and hair, the approved detailed 2.5D anime rendering and brown belts. Black-haired adult owns a complete WHITE gi; white-haired adult owns a complete BLUE gi. Exactly two arms and two legs per person. No text, labels, arrows, panels, floor, matte, checkerboard or watermark.",
+      "references": [
+        {
+          "role": "primary_pose",
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/correction04-twister-eddie-03m23s.png",
+          "sha256": "2f337429168614070b56f366cc73d87a36cb86da005bcbd2748e4dfa0c6f5c25",
+          "sourceURL": "https://www.youtube.com/watch?v=rHDUl07-2HA",
+          "publicFrameURL": "https://www.youtube.com/watch?v=rHDUl07-2HA&t=203s",
+          "timestamp": "03:23",
+          "observedVideoTimeSeconds": 203.43672,
+          "sourceAuthor": "Eddie Bravo direct demonstration, published by JiuJitsuMania",
+          "sourceType": "public_direct_instructor_demonstration",
+          "captureMethod": "CUA public player screenshot, video-only native crop; no external CDP/Playwright client",
+          "directViewImageConfirmed": true,
+          "poseVerifiedForSelectedContacts": true,
+          "keyChecks": [
+            "한 다리의 트럭 제어",
+            "분리된 상대 팔이 공격자 머리 너머로 이동",
+            "자기 두 손의 상대 머리 제어"
+          ],
+          "limitations": "직접 강의의 02:54~03:23 전통 트위스터 비교 구간에서 팔 분리·머리 제어를 확인했다. 제목은 Swedish Twister지만 선택 프레임은 강사가 명시적으로 비교한 traditional branch다. 생성물은 압박 전 중립 정렬로 제한한다."
+        },
+        {
+          "role": "neutral_character_style_only",
+          "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/style-guides/neutral-portraits-v1.png",
+          "sha256": "861ad8775f2697dc451d5f764a49655e5c78ddb2ada79d3f44a6f2905fa1ba16",
+          "directViewImageConfirmed": true
+        }
+      ],
+      "generationReferencePaths": [
+        "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/correction04-twister-eddie-03m23s.png",
+        "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/style-guides/neutral-portraits-v1.png"
+      ],
+      "primaryPoseReferenceRequired": true,
+      "independentReviewRequired": true,
+      "readyForProduction": true
+    }
+  ],
+  "pending": [],
+  "writeScope": "This file only; no registry, public assets, code or history changed.",
+  "productionNotes": "24 targeted current-PNG edits and 3 source-grounded pose-first regenerations. First 22 jobs preserved. Each output requires fresh independent PNG review; ready never means PASS.",
+  "completedAt": "2026-11-10T13:09:28.888Z"
+}

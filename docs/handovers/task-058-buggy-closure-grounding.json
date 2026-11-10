@@ -1,0 +1,202 @@
+{
+  "schema_version": 1,
+  "task_id": "task-058",
+  "slug": "buggy-choke",
+  "name": "버기 초크",
+  "status": "source_grounding_complete_representative_pose_ready",
+  "execution_tool": "Codex; CUA public YouTube player; built-in view_image; local Node SHA-256",
+  "reviewer_role": "gym-master",
+  "is_user_approval": false,
+  "scope": {
+    "ownedReport": "docs/handovers/task-058-buggy-closure-grounding.json",
+    "selectedNewFrames": 2,
+    "directlyViewedNewLocalFrames": 2,
+    "newVideoSources": 1,
+    "captureMethod": "CUA screenshot of the visible, decoded, paused public player; one contact crop and one full-video crop. No video download, player restriction bypass, image generation, promotion, code, DB, registry/public or task-history edits.",
+    "sourceFilesKeptOutsideRepository": true
+  },
+  "priorCandidate": {
+    "version": 5,
+    "inputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/buggy-choke-v5.png",
+    "inputSHA256": "0be04c3d4bba20f8750de350e5545cc598e215fe4c2e10bf6f410cffa0c973a9",
+    "priorReview": "docs/handovers/task-058-image-review-regeneration-07.json",
+    "preservedResult": "KEY_CONTACT_UNCONFIRMED",
+    "directRawImageViewedInThisGrounding": false,
+    "priorDirectReviewEvidenceReused": true,
+    "useAsPositivePoseInput": false,
+    "reason": "v5 does not prove a wrong hidden connection, but its WHITE foreground forearm obscures the defining BLUE own-arm/own-leg route. Do not repeat another contour-only edit with that arm/camera frozen."
+  },
+  "attempts": [
+    {
+      "sourceURL": "https://www.youtube.com/watch?v=yIbU62-LQqQ",
+      "sourceTitle": "OG BUGGY CHOKE - Ruotolo Brothers",
+      "sourceAuthor": "BJJ Fanatics / Ruotolo Brothers",
+      "durationSeconds": 47.281,
+      "directlyInspectedApproximateSeconds": [
+        12.661,
+        35.59,
+        45.763
+      ],
+      "result": "The later and entry demonstrations still occlude terminal grip depth. No additional frame was cached from this short clip; the existing 00:25 image was not repeated as new evidence.",
+      "inheritedFrame": {
+        "localFile": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/buggy-choke-ruotolo-00m25s.jpg",
+        "sha256": "6a795195f55665877f3ca8ae8025c35b527b5074d4ab2bcca16deb625fd0a35a",
+        "reusedAsNewProof": false
+      }
+    },
+    {
+      "sourceURL": "https://www.youtube.com/watch?v=0_3YYrWEGoU",
+      "sourceTitle": "3 Buggy Choke Concepts by Kade and Tye Ruotolo (localized player title: Kade와 Tye Ruotolo의 3가지 버기 초크 컨셉)",
+      "sourceAuthor": "BJJ Fanatics / Kade and Tye Ruotolo",
+      "discovery": "Opened the directly visible official related-video link from the specified OG clip; this was the only alternate demonstration used.",
+      "result": "A solo own-arm/own-leg teaching position near 01:30 separates the arm route from the bent leg. A partnered position near 02:36 shows the same basic OG buggy structure and a compact joined-hand silhouette from another camera."
+    }
+  ],
+  "references": [
+    {
+      "id": "own-arm-leg-detail",
+      "role": "primary_contact_detail",
+      "localFile": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/buggy-final-own-arm-leg-01m30s.jpg",
+      "inputPath": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/buggy-final-own-arm-leg-01m30s.jpg",
+      "sha256": "e637fb9581805e034c56c651f24f0a11eacc1d5de48ba14d39cef5a4120ecc69",
+      "sourceURL": "https://www.youtube.com/watch?v=0_3YYrWEGoU",
+      "timestampedURL": "https://www.youtube.com/watch?v=0_3YYrWEGoU&t=90s",
+      "playerEntryURL": "https://www.youtube.com/watch?v=0_3YYrWEGoU&t=90s",
+      "timestamp": "01:30.013",
+      "actualMediaTimeSeconds": 90.013258,
+      "sourceAuthor": "Kade and Tye Ruotolo / BJJ Fanatics",
+      "officialOwnerObserved": "BJJ Fanatics",
+      "durationSeconds": 201.001,
+      "paused": true,
+      "readyState": 4,
+      "CUAFrameDirectlyViewed": true,
+      "directRawImageViewed": true,
+      "viewedWithViewImage": true,
+      "width": 470,
+      "height": 235,
+      "captureClip": {
+        "x": 200,
+        "y": 265,
+        "width": 470,
+        "height": 235
+      },
+      "videoRect": {
+        "x": 16,
+        "y": 68,
+        "width": 965,
+        "height": 543
+      },
+      "sourceRoles": "Short-haired striped-rashguard athlete is the SOLO demonstrator of the self-arm/own-leg mechanism; curly-haired black/yellow athlete is the kneeling instructor at frame edge.",
+      "generatedRoleMapping": "The SOLO self-arm/own-leg demonstrator maps mechanically to BLUE bottom regardless of his source rashguard/hair. Do not copy the kneeling instructor into the final picture.",
+      "keyChecks": [
+        "The demonstrator's bent own knee/calf folds around his sleeved arm; the arm occupies the inside of the own-leg bend rather than following a self-collar fist.",
+        "The forearm/cuff and bare bent leg are distinct visible surfaces; this is the exact junction that v5's overlapping BLUE clothes did not make readable.",
+        "This is an isolated teaching hook: the other hand rests by the ribs and no opponent is inside it in this frame."
+      ],
+      "limitations": "The far wrist/finger contact is partly behind the raised leg. This image does not prove an exact ankle-grip or a final two-hand finish. It supplies the arm-through-own-leg route only."
+    },
+    {
+      "id": "partner-body-structure",
+      "role": "supporting_whole_body_and_pose_composition",
+      "localFile": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/buggy-final-partner-02m36s.jpg",
+      "inputPath": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/buggy-final-partner-02m36s.jpg",
+      "sha256": "819ead2e6eff3fb6df9719d2b952600361a414dc8729215ca56c2006e1437b10",
+      "sourceURL": "https://www.youtube.com/watch?v=0_3YYrWEGoU",
+      "timestampedURL": "https://www.youtube.com/watch?v=0_3YYrWEGoU&t=156s",
+      "playerEntryURL": "https://www.youtube.com/watch?v=0_3YYrWEGoU&t=145s",
+      "timestamp": "02:36.652",
+      "actualMediaTimeSeconds": 156.651816,
+      "requestedTimestampNotUsedAsActualTimestamp": true,
+      "sourceAuthor": "Kade and Tye Ruotolo / BJJ Fanatics",
+      "officialOwnerObserved": "BJJ Fanatics",
+      "durationSeconds": 201.001,
+      "paused": true,
+      "readyState": 4,
+      "CUAFrameDirectlyViewed": true,
+      "directRawImageViewed": true,
+      "viewedWithViewImage": true,
+      "width": 965,
+      "height": 543,
+      "captureClip": {
+        "x": 16,
+        "y": 68,
+        "width": 965,
+        "height": 543
+      },
+      "sourceRoles": "Curly-haired BLACK/YELLOW athlete is bottom attacker; striped-rashguard athlete is the top partner with both knees/shins independently based on the mat.",
+      "generatedRoleMapping": "Curly-haired bottom attacker -> white-haired BLUE-gi character; striped-rashguard top partner -> black-haired WHITE-gi character.",
+      "keyChecks": [
+        "Bottom attacker is folded beneath a perpendicular top partner; the source camera shows the attacker's own raised leg and near sleeved arm without the v5 foreground WHITE hand covering that same region.",
+        "The compact arm/leg loop is distinct from the top partner's separate pair of base legs.",
+        "Joined-hand silhouette above the folded leg is visible, while individual fingers and part of the far-side route remain naturally occluded."
+      ],
+      "limitations": "This overall view is not an x-ray of every hand. No claim is made that all terminal grip depth or pressure effect is visible. The photographed top arm/camera may replace v5's obscuring support-arm position."
+    }
+  ],
+  "technicalAssessment": {
+    "result": "USABLE_FOR_REPRESENTATIVE_OG_ARM_LEG_STRUCTURE",
+    "representative": true,
+    "variant": "Basic OG buggy self-arm/own-leg structure; teaching and partnered instants, not a claim that both frames use an identical terminal hand configuration.",
+    "confidence": "medium",
+    "definingOwnArmOwnLegRouteMoreVisibleThanOldFrame": true,
+    "terminalGripFullyVerified": false,
+    "allHiddenContactsRequiredToBeExposed": false,
+    "wholePoseDynamicSuccessVerified": false,
+    "differentiation": "A recognizable same-person forearm inside the bent own-leg hook is the identity check. Clear sleeve-versus-trouser separation at that one route is required; exposing every hidden fingertip, ankle or far arm is not.",
+    "evidenceBoundary": "The 01:30 image isolates the same self-hook; 02:36 supplies the partnered enclosure. Combining them is a source-grounded illustrative synthesis, not one photograph that simultaneously exposes every finish detail.",
+    "prohibitedInference": "Do not turn an occluded wrist into a specific ankle grab, invent a terminal grip, claim that v5 was definitely anatomically wrong, or use the prompt's production goal as evidence that a later candidate passes."
+  },
+  "generationRecommendation": {
+    "readyForGeneration": true,
+    "readinessScope": "One representative static OG buggy illustration using the newly visible arm-through-own-leg route and new partnered camera. This is input readiness, not a generated-image PASS or user approval.",
+    "readyForFinalApproval": false,
+    "mode": "source_pose_first_regeneration_not_old_v5_contour_edit",
+    "actor": "blue",
+    "topActor": "white",
+    "actorDefinition": {
+      "blue": "White-haired neutral adult, entire BLUE jacket/sleeves/both trouser legs, brown belt, BOTTOM attacker.",
+      "white": "Black-haired neutral adult, entire WHITE jacket/sleeves/both trouser legs, brown belt, TOP perpendicular partner."
+    },
+    "primaryInputPaths": [
+      "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/buggy-final-partner-02m36s.jpg",
+      "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/buggy-final-own-arm-leg-01m30s.jpg"
+    ],
+    "generationReferencePaths": [
+      "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/buggy-final-partner-02m36s.jpg",
+      "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/buggy-final-own-arm-leg-01m30s.jpg",
+      "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/style-guides/neutral-portraits-v1.png"
+    ],
+    "referencePriority": "Input 1 determines two-person pose and camera. Input 2 explains only the own-arm/own-leg route; its solo demonstrator maps to BLUE despite different source person. Input 3 is identity/rendering style only.",
+    "styleReference": {
+      "inputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/style-guides/neutral-portraits-v1.png",
+      "inputSHA256": "861ad8775f2697dc451d5f764a49655e5c78ddb2ada79d3f44a6f2905fa1ba16",
+      "role": "neutral_portrait_style_only"
+    },
+    "exactPromptEnglish": "Create one representative OG buggy-choke illustration, using reference 1 for the TWO-PERSON BODY ARRANGEMENT, reference 2 only for the OWN-ARM/OWN-LEG MECHANISM, and the final neutral portrait only for character identity and rendering style. In reference 1 the curly-haired BLACK/YELLOW bottom demonstrator becomes the WHITE-HAIRED man in a complete BLUE gi; the kneeling striped-rashguard top partner becomes the BLACK-HAIRED man in a complete WHITE gi. Preserve this source camera: top WHITE is perpendicular across bottom BLUE, with his two independent knees/shins supporting him; BLUE is folded underneath, with his own bent leg raised beside/above WHITE's upper body. At the defining junction, BLUE's sleeved arm must visibly pass INSIDE the bend of BLUE's OWN folded knee/calf and connect into the compact arm-leg loop. Reference 2 isolates that same self-arm/own-leg hook without the opponent: its striped-rashguard solo demonstrator represents BLUE for this MECHANICAL DETAIL ONLY, not a third person or a different garment assignment. Keep a small readable separation between BLUE sleeve/cuff and BLUE trouser leg at this one junction. Follow reference 1's supported hand silhouette and natural occlusion; do not invent exposed finger placement, ankle grip, or a new finishing grip. Do not retain the previous v5 WHITE near forearm across this junction merely to match the old candidate: use the NEW photographed partner arm placement and camera. Other naturally hidden nonessential contacts may stay hidden. Exactly two adult men, two arms and two legs per person; every WHITE limb belongs to the black-haired WHITE-gi man and every BLUE limb to the white-haired BLUE-gi man, both brown belts and neutral expressions. Match the approved detailed 2.5D anime gi rendering. One square image, 1024x1024 or larger, transparent background, comfortable contour margins, for charcoal #15171E compositing. No floor, matte, diagrams, arrows, panels, lettering, logos or watermark.",
+    "allowedMinimalChanges": [
+      "Use the source 02:36 camera and photographed top partner arm placement instead of freezing old v5's foreground WHITE forearm.",
+      "Separate the existing same-actor BLUE cuff/forearm and bent BLUE trouser-leg silhouette at the defining junction; keep natural nonessential occlusion."
+    ],
+    "independentReviewRequired": true,
+    "keyChecksForNextCandidate": [
+      "BLUE own forearm can be followed into the inside of BLUE own bent knee/calf loop, with sleeve and trouser boundary distinguishable at the essential junction.",
+      "WHITE head/upper-arm region belongs inside the supported buggy enclosure; WHITE's independent base legs stay separate from BLUE's attacking legs.",
+      "Exactly two people with plausible continuous visible limbs and consistent whole-body gi ownership; the reference/prompt itself is not PASS evidence."
+    ]
+  },
+  "cuaCompletion": {
+    "completed": true,
+    "completionSummarySent": true,
+    "viewportOverrideChanged": false,
+    "rootNotified": true
+  },
+  "updatedAt": "2026-11-10T14:57:08.180Z",
+  "validation": {
+    "allFourLocalHashesMatched": true,
+    "newReferences": 2,
+    "newReferencesDirectlyViewedWithViewImage": 2,
+    "selectedSourcesPausedAndReady4": true,
+    "sourceTimesRecordedFromActualMediaNotEntryURL": true,
+    "noGeneratedCandidateApproved": true
+  }
+}

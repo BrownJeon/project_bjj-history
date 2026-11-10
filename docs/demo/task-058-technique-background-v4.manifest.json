@@ -1,0 +1,131 @@
+{
+  "task": "task-058",
+  "prototype": "background-comparison-v4",
+  "type": "isolated actual-app source copy with offline synthetic fixture",
+  "originalSource": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/web/src",
+  "sourceSHA256": {
+    "pages/TechPlanPage.jsx": "b29378ecfd8552574b6606174127305aaeaf9d452447c6c4ce91aa7e50f3e4b2",
+    "components/Layout.jsx": "2e091a59b975bc85dca8cf1468b51d0d1cf55024ff88279cc16cc99f7cb55d75",
+    "components/Card.jsx": "b2350a8719a76c19c8e4a35fe9fab13c264ca0e3267a6e2044ee22e1cc3d51eb",
+    "components/Modal.jsx": "c607c311fbad52180e019013bdfc89c5257b33192130da2501566acf5b8bc8e5",
+    "components/TechReferenceSection.jsx": "17e6fdd3988ace665f39edb19ff5da66ddaaa29a33dea4884623f6e061a2f4a6",
+    "styles/tokens.css": "ad70437353d579260848e5c0d4440221782e2242f1b84bb2c5cb7504cb4fef48",
+    "styles/app.css": "8e08be549d57c10e397cff5dd4a7b5129a346b5e5f35e9282bc1bd6bcf1a9c20"
+  },
+  "images": [
+    {
+      "source": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/review-01/knee-cut.png",
+      "sha256": "a48008830d45a23887b1c9dd95becef526988fda2a2bc3cad695b92be286c321"
+    },
+    {
+      "source": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/review-02/knee-cut-app-bg.png",
+      "sha256": "0ab2f4c1882f4183e60e7b45c88cca9d6f70f4ebdaa724c9453605f288191837"
+    }
+  ],
+  "productionCodeChanged": false,
+  "dbChanged": false,
+  "releaseVersionChanged": false,
+  "userApproval": "pending",
+  "demoURL": "http://127.0.0.1:63686/",
+  "limitations": [
+    "Only the knee-cut illustration in an isolated actual-app demo.",
+    "Synthetic memory data; no production account/API/DB connection.",
+    "Three new backgrounds use one generated alpha cutout and exact CSS colors; they are not three separate recolored PNG files.",
+    "The original orange and app-bg images are preserved; alpha extraction can have slight edge differences.",
+    "All original full-resolution PNGs are inlined for review, not optimized for a production release."
+  ],
+  "basedOn": "background-comparison-v3",
+  "userRequest": "확정한크기유지·추천3색니컷이미지적용비교",
+  "sizes": {
+    "list": {
+      "before": 96,
+      "after": 48,
+      "ratio": 0.5
+    },
+    "detailMax": {
+      "before": 320,
+      "after": 224,
+      "ratio": 0.7
+    }
+  },
+  "listVerticalImageMargin": -3,
+  "sizeApproval": "User confirmed v3 sizes: 48px list / 72px comparable row / 224px detail maximum",
+  "cutout": {
+    "source": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/review-03/knee-cut-cutout.png",
+    "sha256": "4791173047b79e06e96a967f9550fa5dc7998c6996efaa40739da9f3c122d776",
+    "tool": "built-in image_gen",
+    "mode": "background-extraction",
+    "transparent_background": true,
+    "generatedOriginal": "/Users/brownjeon/.codex/generated_images/01a1ba5b-a790-7d40-9736-71d169ab396a/exec-ec0562da-1a87-4294-8bf3-583db0508930.png",
+    "prompt": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/review-03/knee-cut-cutout.prompt.txt"
+  },
+  "variants": [
+    {
+      "id": "charcoal",
+      "label": "차콜",
+      "background": "#15171E",
+      "asset": "shared cutout"
+    },
+    {
+      "id": "slate",
+      "label": "블루그레이",
+      "background": "#242836",
+      "asset": "shared cutout"
+    },
+    {
+      "id": "teal",
+      "label": "짙은 청록",
+      "background": "#18312C",
+      "asset": "shared cutout"
+    },
+    {
+      "id": "orange",
+      "label": "주황색",
+      "asset": "preserved orange original"
+    },
+    {
+      "id": "dark",
+      "label": "앱 배경색",
+      "asset": "preserved app-bg original"
+    }
+  ],
+  "demoHTMLSHA256": "679fbb6145d7c9bac3f5b8869b7a4a223024ba42db5a750d355508b26236507f",
+  "demoBytes": 7061354,
+  "validation": {
+    "changedDemoFiles": [
+      "DemoBackground.jsx",
+      "demo-assets/cutout.png",
+      "demo.css"
+    ],
+    "sizes": {
+      "listImage": 48,
+      "comparableRowHeight": 72,
+      "detailImageMax": 224
+    },
+    "mobileWidths": [
+      360,
+      390,
+      412
+    ],
+    "newBackgroundCSSColors": [
+      "#15171E",
+      "#242836",
+      "#18312C"
+    ],
+    "newVariantsShareSameImage": true,
+    "minimumComparisonButtonHeight": 44,
+    "overflow": false,
+    "consoleErrors": [],
+    "impeccableFindings": [],
+    "originalAppAndImagesHashesUnchanged": true,
+    "evidence": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-background-demo-v4/ui-verification.json",
+    "screenshots": [
+      "list-charcoal-390.jpg",
+      "list-slate-390.jpg",
+      "list-teal-390.jpg",
+      "detail-charcoal-390.jpg",
+      "detail-slate-390.jpg",
+      "detail-teal-390.jpg"
+    ]
+  }
+}

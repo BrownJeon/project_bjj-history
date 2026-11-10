@@ -1,0 +1,824 @@
+{
+  "schema_version": 1,
+  "task_id": "task-058",
+  "reviewer_role": "gym-master",
+  "status": "batch_01_v1_review_complete",
+  "reviewedAt": "2026-11-10T08:58:11.857Z",
+  "is_user_approval": false,
+  "is_catalog_completion": false,
+  "scope": {
+    "targetImages": 32,
+    "kneeCutExcluded": true,
+    "directlyInspectedNewImages": 28,
+    "priorReviewsCarriedForward": 4,
+    "availablePublicReferencesDirectlyOpened": 23
+  },
+  "method": [
+    "Generated v1 PNGs directly inspected using view_image.",
+    "For every available per-slug public reference, that reference image was also opened using view_image.",
+    "Compared pose identity, decisive contacts, visible limb continuity, approved character costume and assigned poseBrief/keyChecks.",
+    "Natural occlusion alone was not treated as a missing limb. A hidden defining hook/grip may still be insufficient for reliable technique illustration.",
+    "No raw image, source frame, registry, application manifest, database, task history or application code was modified."
+  ],
+  "alphaScope": "Raw hidden RGB/alpha fringe is not a pose failure. Actual charcoal composition was not repeated here; the parent and previous four-image review already verified that pipeline. This report makes no additional app-rendering claim.",
+  "summary": {
+    "total": 32,
+    "PASS": 26,
+    "MODIFICATION_REQUIRED": 2,
+    "KEY_CONTACT_UNCONFIRMED": 4,
+    "requiresRegeneration": [
+      "kimura-sweep",
+      "rubber-guard",
+      "x-guard",
+      "reverse-de-riva-guard",
+      "lasso-guard",
+      "scissors-sweep"
+    ],
+    "definiteCorrections": [
+      "kimura-sweep",
+      "lasso-guard"
+    ],
+    "definingContactUnconfirmed": [
+      "rubber-guard",
+      "x-guard",
+      "reverse-de-riva-guard",
+      "scissors-sweep"
+    ]
+  },
+  "items": [
+    {
+      "slug": "standing",
+      "name": "스탠딩",
+      "result": "PASS",
+      "result_ko": "PASS",
+      "requires_regeneration": false,
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/standing-v1.png",
+      "image_sha256": "5bde2b4242a138619c70fb6bd563002b96f78a79def7c9b4d1dabe442df18bd7",
+      "reviewBasis": "carried forward from prior gym-master review; image SHA-256 rechecked, not re-inspected in this batch",
+      "reviewReference": "docs/handovers/task-058-image-review.json",
+      "reason": "두 성인이 선 자세에서 칼라·소매로 연결되고 양쪽 발의 지지가 자연스럽다.",
+      "keyChecks": [
+        "흰 도복의 칼라 접점이 파란 도복에 연결된다.",
+        "흰 도복의 다른 손은 파란 소매를 제어한다.",
+        "무릎과 두 발이 선 자세의 지지 구조를 이룬다."
+      ]
+    },
+    {
+      "slug": "single-leg-takedown",
+      "name": "싱글 레그 테이크다운",
+      "result": "PASS",
+      "result_ko": "PASS",
+      "requires_regeneration": false,
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/single-leg-takedown-v1.png",
+      "image_sha256": "d1f25efbbcf9528e0fb1479770bd051b1db22a7d56b4ab60fe95bd4a04c43ba8",
+      "reviewBasis": "carried forward from prior gym-master review; image SHA-256 rechecked, not re-inspected in this batch",
+      "reviewReference": "docs/handovers/task-058-image-review.json",
+      "reason": "흰 도복이 파랑의 한 다리를 두 팔로 모으고 파랑은 반대 발로 지지하여 싱글레그 정체성이 유지된다.",
+      "keyChecks": [
+        "한쪽 파란 다리만 흰 팔에 잡혀 있다.",
+        "흰 머리·가슴이 잡힌 다리의 힙 가까이에 연결된다.",
+        "파랑의 반대 다리가 별도의 지지 발로 남아 있다."
+      ]
+    },
+    {
+      "slug": "collar-drag",
+      "name": "칼라 드래그",
+      "result": "PASS",
+      "result_ko": "PASS",
+      "requires_regeneration": false,
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/collar-drag-v1.png",
+      "image_sha256": "992504c93d63830ea7545f7dae88f883a75f6c64d1981573045f96bc97a12b64",
+      "reviewBasis": "carried forward from prior gym-master review; image SHA-256 rechecked, not re-inspected in this batch",
+      "reviewReference": "docs/handovers/task-058-image-review.json",
+      "reason": "흰 도복이 앉은 상태에서 파란 깃을 잡아 상체를 앞으로 무너뜨리는 칼라 드래그 변형으로 식별된다.",
+      "keyChecks": [
+        "흰 손이 실제 파란 라펠을 잡고 있다.",
+        "파랑의 상체 기울기가 당겨진 깃 방향과 연결된다.",
+        "흰 도복의 반대 손·접힌 다리가 앉은 지지 구조를 이룬다."
+      ]
+    },
+    {
+      "slug": "ankle-pick",
+      "name": "앵클 픽",
+      "result": "PASS",
+      "result_ko": "PASS",
+      "requires_regeneration": false,
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/ankle-pick-v1.png",
+      "image_sha256": "48c5ddfe2bf995cd8d6e2f37594abc1ad962790f83eca66e45476ba01f12b730",
+      "reviewBasis": "carried forward from prior gym-master review; image SHA-256 rechecked, not re-inspected in this batch",
+      "reviewReference": "docs/handovers/task-058-image-review.json",
+      "reason": "흰 도복이 파랑의 무릎 아래 발목을 집고 상체를 낮춰 발목 픽의 초기 접점을 표현한다.",
+      "keyChecks": [
+        "잡힌 부위는 종아리 윗부분이나 무릎이 아니라 발목이다.",
+        "파랑의 반대 발이 지지점으로 남아 있다.",
+        "흰 도복의 반대 손은 파랑 힙·허리 쪽에 연결된다."
+      ]
+    },
+    {
+      "slug": "kimura-sweep",
+      "result": "MODIFICATION_REQUIRED",
+      "requires_regeneration": true,
+      "reason": "파랑의 두 손이 각각 흰 손목과 흰 전완/소매를 잡는다. 자기 손목을 잡는 킴무라 figure-four 고리가 보이지 않아 스윕의 핵심 그립이 다른 팔 제어로 바뀌었다.",
+      "keyChecks": [
+        "바텀에서의 힙 회전·상대 균형 상실은 표현됨",
+        "흰 손목 제어는 보임",
+        "파랑의 다른 손이 자기 손목을 잡는 figure-four 접점은 없음"
+      ],
+      "regenerationGuidance": "파랑 한 손은 흰 손목을 잡고, 반대 팔은 흰 위팔을 감아 파랑 자신의 손목을 잡는 고리를 명확하게 노출한다. 두 손이 모두 흰 팔을 잡는 구도를 피한다.",
+      "characterReview": "승인된 두 성인 캐릭터의 머리색·도복색·브라운벨트가 유지된다.",
+      "limbReview": "명백한 추가 사지나 관절 단절은 관찰하지 못했다. 자연스러운 가림은 별도로 취급했다.",
+      "name": "기무라 스윕",
+      "result_ko": "수정 필요",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/kimura-sweep-v1.png",
+      "image_sha256": "84728539642eeb83652857a85862b7b7a8b08a3c9d06a0b3a589180f74b5f518",
+      "reviewBasis": "direct view_image inspection of generated v1; pose brief and available public reference image compared",
+      "referenceImagePath": null,
+      "briefKeyChecks": [
+        "A genuine kimura figure four controls one white arm",
+        "Blue begins from bottom guard",
+        "White's loss of balance follows blue's hip turn"
+      ]
+    },
+    {
+      "slug": "rubber-guard",
+      "result": "KEY_CONTACT_UNCONFIRMED",
+      "requires_regeneration": true,
+      "reason": "파랑의 다리가 높이 올라가고 자기 발목 제어는 보이지만, 정강이가 흰 목 뒤·상부 등에 가로질러 얹히는 mission-control 고정이 명확하지 않다. 세워진 고각 다리/하이가드 그림으로도 읽혀 러버가드의 핵심 접점을 확정할 수 없다.",
+      "keyChecks": [
+        "자기 발목을 잡는 파란 손은 보임",
+        "흰 도복은 파랑 다리 사이에 낮게 위치함",
+        "정강이와 목 뒤/상부 등 사이의 눌림·무릎 굽힘 구조는 불명확"
+      ],
+      "regenerationGuidance": "대표 mission-control 변형의 검증된 포즈를 사용한다. 파랑 무릎을 굽히고 정강이가 흰 상부 등을 가로지르며 같은 쪽 손이 자기 발목을 당겨 상체 자세를 묶는 접점을 명확하게 보여 준다.",
+      "characterReview": "승인된 두 성인 캐릭터의 머리색·도복색·브라운벨트가 유지된다.",
+      "limbReview": "명백한 추가 사지나 관절 단절은 관찰하지 못했다. 자연스러운 가림은 별도로 취급했다.",
+      "name": "러버 가드",
+      "result_ko": "핵심 접점 미확인",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/rubber-guard-v1.png",
+      "image_sha256": "f0cf017039494c25d9282dfb860fe9f1e41c9b0c8e6a7021a849a4fd491628dd",
+      "reviewBasis": "direct view_image inspection of generated v1; pose brief and available public reference image compared",
+      "referenceImagePath": null,
+      "briefKeyChecks": [
+        "The elevated leg clearly belongs to blue",
+        "The ankle or shin grip is anatomically reachable",
+        "White remains inside blue's guard"
+      ]
+    },
+    {
+      "slug": "x-guard",
+      "result": "KEY_CONTACT_UNCONFIRMED",
+      "requires_regeneration": true,
+      "reason": "두 파란 발이 흰 한쪽 다리에 닿지만 반대 방향의 위·아래 X 훅과 다른 흰 다리의 어깨 지지가 구분되지 않는다. 자연스러운 가림 때문에 다리 자체 오류라고 단정하지 않지만 X가드의 핵심 구조 확인에 부족하다.",
+      "keyChecks": [
+        "파랑은 흰 선 자세 아래에 위치함",
+        "흰 지지 발은 보임",
+        "파란 두 훅의 반대 방향/교차와 별도 어깨 지지 다리는 명확하지 않음"
+      ],
+      "regenerationGuidance": "흰 한 다리가 파랑 어깨/상체에 지지되고 나머지 흰 다리에 파란 위·아래 훅이 서로 반대 방향으로 걸리는 고전 X가드 대표 자세를 카메라로 노출한다. 단순 양발 프레임이나 SLX로 대체하지 않는다.",
+      "characterReview": "승인된 두 성인 캐릭터의 머리색·도복색·브라운벨트가 유지된다.",
+      "limbReview": "명백한 추가 사지나 관절 단절은 관찰하지 못했다. 자연스러운 가림은 별도로 취급했다.",
+      "name": "엑스가드",
+      "result_ko": "핵심 접점 미확인",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/x-guard-v1.png",
+      "image_sha256": "dfb78f72639167e678a49ed167f4160619fdc371c2a9800d23a561f3be4ec84f",
+      "reviewBasis": "direct view_image inspection of generated v1; pose brief and available public reference image compared",
+      "referenceImagePath": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/references/x-guard.webp",
+      "briefKeyChecks": [
+        "The blue leg hooks visibly form the X structure",
+        "White's balancing leg remains identifiable",
+        "The pose is not substituted with single leg X"
+      ]
+    },
+    {
+      "slug": "reverse-de-riva-guard",
+      "result": "KEY_CONTACT_UNCONFIRMED",
+      "requires_regeneration": true,
+      "reason": "발목 그립과 반대 발의 힙 프레임은 보이나, 안쪽에서 들어가 흰 앞다리 무릎 뒤/바깥으로 감기는 reverse-DLR 훅이 드러나지 않는다. 열린 가드의 발목 제어 그림과 구분이 어렵다.",
+      "keyChecks": [
+        "앞다리 발목 그립은 보임",
+        "상대 힙을 미는 반대 발은 보임",
+        "안쪽 진입 정강이와 앞무릎 뒤를 감는 발등 훅은 확인되지 않음"
+      ],
+      "regenerationGuidance": "흰 앞무릎을 화면 중앙에 드러내고 파랑의 훅 다리가 그 안쪽으로 진입해 발등이 무릎 뒤/바깥을 감는 경로를 명확히 한다. 발목을 잡는 손과 훅이 같은 흰 다리에 연결되게 한다.",
+      "characterReview": "승인된 두 성인 캐릭터의 머리색·도복색·브라운벨트가 유지된다.",
+      "limbReview": "명백한 추가 사지나 관절 단절은 관찰하지 못했다. 자연스러운 가림은 별도로 취급했다.",
+      "name": "리버스 델라히바 가드",
+      "result_ko": "핵심 접점 미확인",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/reverse-de-riva-guard-v1.png",
+      "image_sha256": "1e83a57be0591205649f6c86c39372714d0c9092965999231597d1b8d5ce7ef8",
+      "reviewBasis": "direct view_image inspection of generated v1; pose brief and available public reference image compared",
+      "referenceImagePath": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/references/reverse-de-riva-guard.webp",
+      "briefKeyChecks": [
+        "The defining hook approaches from inside",
+        "Blue's ankle grip matches the hooked white leg",
+        "The pose remains distinct from ordinary outside De La Riva"
+      ]
+    },
+    {
+      "slug": "double-leg-takedown",
+      "result": "PASS",
+      "requires_regeneration": false,
+      "reason": "흰 두 팔이 파랑의 양 무릎 부근을 각각 모으고 머리·가슴이 힙 옆에 연결된다. 싱글레그와 구분되는 두 다리 수집과 지지 자세가 보인다.",
+      "keyChecks": [
+        "양 파란 다리 수집",
+        "머리·가슴의 힙 옆 연결",
+        "흰 뒤 지지발과 낮춘 무게중심"
+      ],
+      "regenerationGuidance": null,
+      "characterReview": "승인된 두 성인 캐릭터의 머리색·도복색·브라운벨트가 유지된다.",
+      "limbReview": "명백한 추가 사지나 관절 단절은 관찰하지 못했다. 자연스러운 가림은 별도로 취급했다.",
+      "name": "더블렉",
+      "result_ko": "PASS",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/double-leg-takedown-v1.png",
+      "image_sha256": "4016b44ea3aac7eddcb52d8a3a65e17c656a85fc8e57c53b0a39a7ad2f162332",
+      "reviewBasis": "direct view_image inspection of generated v1; pose brief and available public reference image compared",
+      "referenceImagePath": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/references/double-leg-takedown.webp",
+      "briefKeyChecks": [
+        "Both blue legs are captured rather than one",
+        "White's head and torso stay beside the hips",
+        "The drive has a visible grounded base"
+      ]
+    },
+    {
+      "slug": "inside-trip",
+      "result": "PASS",
+      "requires_regeneration": false,
+      "reason": "상체 클린치와 흰 안쪽 진입 다리, 별도의 흰 지지발이 연결되어 안쪽 걸기의 정체성이 읽힌다. 파랑의 먼 다리 일부 가림은 자연스러우며 추가 사지로 보이지 않는다.",
+      "keyChecks": [
+        "흰 공격 다리의 안쪽 진입",
+        "상체 클린치 유지",
+        "별도 흰 지지발"
+      ],
+      "regenerationGuidance": null,
+      "characterReview": "승인된 두 성인 캐릭터의 머리색·도복색·브라운벨트가 유지된다.",
+      "limbReview": "명백한 추가 사지나 관절 단절은 관찰하지 못했다. 자연스러운 가림은 별도로 취급했다.",
+      "name": "인사이드 트립",
+      "result_ko": "PASS",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/inside-trip-v1.png",
+      "image_sha256": "d1242e38ee230fdbe22c242e092dc8db4d7307917c60911cfd6170dcbb25358b",
+      "reviewBasis": "direct view_image inspection of generated v1; pose brief and available public reference image compared",
+      "referenceImagePath": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/references/inside-trip.webp",
+      "briefKeyChecks": [
+        "The attacking leg approaches the inside of blue's leg",
+        "Upper body clinch remains connected",
+        "White has a separate grounded support leg"
+      ]
+    },
+    {
+      "slug": "outside-trip",
+      "result": "PASS",
+      "requires_regeneration": false,
+      "reason": "흰 공격 다리가 파랑 지지 다리 바깥을 막고 상체가 같은 방향으로 기울어진다. 들린 파란 반대 다리와 흰 지지 다리가 따로 구분된다.",
+      "keyChecks": [
+        "파랑 지지 다리 바깥의 흰 걸기",
+        "상체 압력과 다리 작용의 일치",
+        "네 다리의 소속 구분"
+      ],
+      "regenerationGuidance": null,
+      "characterReview": "승인된 두 성인 캐릭터의 머리색·도복색·브라운벨트가 유지된다.",
+      "limbReview": "명백한 추가 사지나 관절 단절은 관찰하지 못했다. 자연스러운 가림은 별도로 취급했다.",
+      "name": "아웃사이드 트립",
+      "result_ko": "PASS",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/outside-trip-v1.png",
+      "image_sha256": "0a621fd3dc9886fb84aa85cf2c1468562e80a38ede4bf666602dd5e186f4b871",
+      "reviewBasis": "direct view_image inspection of generated v1; pose brief and available public reference image compared",
+      "referenceImagePath": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/references/outside-trip.webp",
+      "briefKeyChecks": [
+        "The obstruction is outside the chosen blue leg",
+        "Clinch pressure and leg action share one direction",
+        "Four legs remain visibly separate"
+      ]
+    },
+    {
+      "slug": "break-fall",
+      "result": "PASS",
+      "requires_regeneration": false,
+      "reason": "흰 머리가 바닥에서 들리고 둥근 등·펼친 팔·들린 다리가 뒤 낙법의 중간 자세를 이룬다. 파랑은 별도 관찰자로 분리된다.",
+      "keyChecks": [
+        "머리의 직접 바닥 충돌 없음",
+        "팔이 흰 어깨에서 연속적으로 이어짐",
+        "파랑은 접촉하지 않는 관찰자"
+      ],
+      "regenerationGuidance": null,
+      "characterReview": "승인된 두 성인 캐릭터의 머리색·도복색·브라운벨트가 유지된다.",
+      "limbReview": "보이는 사지에 명백한 추가 팔다리·관절 단절은 관찰하지 못했다. 기술을 바꾸지 않는 자연스러운 가림은 허용했다.",
+      "name": "낙법",
+      "result_ko": "PASS",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/break-fall-v1.png",
+      "image_sha256": "1d5f24c1a84231cec4b303a520488e549c6444e84d956e947a4fcd58420abecc",
+      "reviewBasis": "direct view_image inspection of generated v1; pose brief and available public reference image compared",
+      "referenceImagePath": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/references/break-fall.webp",
+      "briefKeyChecks": [
+        "White's head does not strike the floor",
+        "Arms belong naturally to the falling torso",
+        "Blue is a separate observing partner"
+      ]
+    },
+    {
+      "slug": "takedown",
+      "result": "PASS",
+      "requires_regeneration": false,
+      "reason": "흰 상체 클린치가 파랑의 중심을 옆으로 무너뜨리고 파랑 한 발이 들리는 대표 테이크다운 장면이다. 개념 전체를 단일 특정 기술로 오인시키는 기호는 없다.",
+      "keyChecks": [
+        "서 있는 상체 연결",
+        "기울어진 파란 중심과 들린 발",
+        "흰 지지발 유지"
+      ],
+      "regenerationGuidance": null,
+      "characterReview": "승인된 두 성인 캐릭터의 머리색·도복색·브라운벨트가 유지된다.",
+      "limbReview": "보이는 사지에 명백한 추가 팔다리·관절 단절은 관찰하지 못했다. 기술을 바꾸지 않는 자연스러운 가림은 허용했다.",
+      "name": "테이크다운",
+      "result_ko": "PASS",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/takedown-v1.png",
+      "image_sha256": "48f10e73e3b90e980efd942307f263133eb9325ce60a462dbb5c1a6633296877",
+      "reviewBasis": "direct view_image inspection of generated v1; pose brief and available public reference image compared",
+      "referenceImagePath": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/references/takedown.webp",
+      "briefKeyChecks": [
+        "The action begins with both athletes standing",
+        "Blue's balance is visibly disrupted through contact",
+        "This is one representative example, not the entire definition"
+      ]
+    },
+    {
+      "slug": "open-guard",
+      "result": "PASS",
+      "requires_regeneration": false,
+      "reason": "파랑의 벌어진 무릎과 교차하지 않은 발이 흰 하체를 프레임하며 거리 장벽을 만든다. 닫힌 발목·특수 라쏘/스파이더 고리는 없다.",
+      "keyChecks": [
+        "발목이 뒤에서 닫히지 않음",
+        "양 무릎·발의 거리 프레임",
+        "일반 열린 가드로 식별"
+      ],
+      "regenerationGuidance": null,
+      "characterReview": "승인된 두 성인 캐릭터의 머리색·도복색·브라운벨트가 유지된다.",
+      "limbReview": "보이는 사지에 명백한 추가 팔다리·관절 단절은 관찰하지 못했다. 기술을 바꾸지 않는 자연스러운 가림은 허용했다.",
+      "name": "오픈가드",
+      "result_ko": "PASS",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/open-guard-v1.png",
+      "image_sha256": "6ce4886ae6c73664ae74221bbf0200df3b609bc8489af01b16e8689cbcf22af5",
+      "reviewBasis": "direct view_image inspection of generated v1; pose brief and available public reference image compared",
+      "referenceImagePath": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/references/open-guard.webp",
+      "briefKeyChecks": [
+        "Blue's ankles are not locked behind white",
+        "Both knees remain useful distance barriers",
+        "No specialized guard is presented as the only open guard"
+      ]
+    },
+    {
+      "slug": "closed-guard",
+      "result": "PASS",
+      "requires_regeneration": false,
+      "reason": "파란 두 다리가 흰 허리를 감고 등 뒤에서 발목이 교차한다. 흰 도복이 그 다리 사이에서 무릎을 꿇어 클로즈드 가드의 고리가 분명하다.",
+      "keyChecks": [
+        "파란 두 다리의 허리 감싸기",
+        "등 뒤의 파란 교차 발목",
+        "흰 양 무릎이 가드 안에 위치"
+      ],
+      "regenerationGuidance": null,
+      "characterReview": "승인된 두 성인 캐릭터의 머리색·도복색·브라운벨트가 유지된다.",
+      "limbReview": "보이는 사지에 명백한 추가 팔다리·관절 단절은 관찰하지 못했다. 기술을 바꾸지 않는 자연스러운 가림은 허용했다.",
+      "name": "클로즈 가드",
+      "result_ko": "PASS",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/closed-guard-v1.png",
+      "image_sha256": "7ff258f4477a74c348828629d70786ec25f4c3726d58d86119da171b5f398dab",
+      "reviewBasis": "direct view_image inspection of generated v1; pose brief and available public reference image compared",
+      "referenceImagePath": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/references/closed-guard.webp",
+      "briefKeyChecks": [
+        "Blue's legs surround white's waist",
+        "The crossed ankles belong to blue",
+        "White remains between the closed legs"
+      ]
+    },
+    {
+      "slug": "half-guard",
+      "result": "PASS",
+      "requires_regeneration": false,
+      "reason": "파란 두 다리 사이에 흰 한 다리가 갇히고 반대 흰 다리는 바깥으로 자유롭게 지지한다. 전신 클로즈드 가드나 패스 완료 자세로 바뀌지 않았다.",
+      "keyChecks": [
+        "흰 한 다리만 포획",
+        "다른 흰 다리 자유 지지",
+        "파란 두 다리의 포획 구조"
+      ],
+      "regenerationGuidance": null,
+      "characterReview": "승인된 두 성인 캐릭터의 머리색·도복색·브라운벨트가 유지된다.",
+      "limbReview": "보이는 사지에 명백한 추가 팔다리·관절 단절은 관찰하지 못했다. 기술을 바꾸지 않는 자연스러운 가림은 허용했다.",
+      "name": "하프가드",
+      "result_ko": "PASS",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/half-guard-v1.png",
+      "image_sha256": "feaccedc219dd02dfa4155783292a694be52ee147c9079a546f02c251c2ee8fa",
+      "reviewBasis": "direct view_image inspection of generated v1; pose brief and available public reference image compared",
+      "referenceImagePath": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/references/half-guard.webp",
+      "briefKeyChecks": [
+        "Exactly one white leg is trapped",
+        "White's other leg is visibly free",
+        "Blue's two legs form the trapping structure"
+      ]
+    },
+    {
+      "slug": "de-la-riva-guard",
+      "result": "PASS",
+      "requires_regeneration": false,
+      "reason": "파란 훅 다리가 흰 앞다리 바깥으로 감겨 있고 같은 다리 발목과 소매를 제어한다. 자유 다리 일부 가림은 있으나 외측 훅의 정체성은 확인된다.",
+      "keyChecks": [
+        "흰 앞다리 바깥 경로의 파란 훅",
+        "같은 흰 다리 발목 그립",
+        "소매 제어의 상체 연결"
+      ],
+      "regenerationGuidance": null,
+      "characterReview": "승인된 두 성인 캐릭터의 머리색·도복색·브라운벨트가 유지된다.",
+      "limbReview": "보이는 사지에 명백한 추가 팔다리·관절 단절은 관찰하지 못했다. 기술을 바꾸지 않는 자연스러운 가림은 허용했다.",
+      "name": "델라리바",
+      "result_ko": "PASS",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/de-la-riva-guard-v1.png",
+      "image_sha256": "abf347ddc931f59217d2b74d7b4afadfe91260b9193b9f3c3100a121e1513684",
+      "reviewBasis": "direct view_image inspection of generated v1; pose brief and available public reference image compared",
+      "referenceImagePath": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/references/de-la-riva-guard.webp",
+      "briefKeyChecks": [
+        "The defining hook enters from outside white's leg",
+        "Ankle and upper body grips stay connected",
+        "The free blue leg is not confused with the hooking leg"
+      ]
+    },
+    {
+      "slug": "single-leg-x-guard",
+      "result": "PASS",
+      "requires_regeneration": false,
+      "reason": "파란 한 발이 흰 힙을 밀고 다른 파란 다리가 같은 흰 다리를 감싼다. 반대 흰 다리가 별도 지지발로 남아 SLX의 한 다리 중심 구조가 읽힌다.",
+      "keyChecks": [
+        "하나의 흰 다리에 집중된 두 파란 다리",
+        "파란 힙 프레임 발",
+        "가드 밖의 별도 흰 지지 다리"
+      ],
+      "regenerationGuidance": null,
+      "characterReview": "승인된 두 성인 캐릭터의 머리색·도복색·브라운벨트가 유지된다.",
+      "limbReview": "보이는 사지에 명백한 추가 팔다리·관절 단절은 관찰하지 못했다. 기술을 바꾸지 않는 자연스러운 가림은 허용했다.",
+      "name": "싱글엑스",
+      "result_ko": "PASS",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/single-leg-x-guard-v1.png",
+      "image_sha256": "cd6b8085fff60552b6fd43ffd0c67b601ed18b548f59b76e316a628e60f5e12b",
+      "reviewBasis": "direct view_image inspection of generated v1; pose brief and available public reference image compared",
+      "referenceImagePath": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/references/single-leg-x-guard.webp",
+      "briefKeyChecks": [
+        "Both blue legs focus on one white leg",
+        "The hip frame belongs to blue",
+        "White's opposite leg remains outside the entanglement"
+      ]
+    },
+    {
+      "slug": "sweep",
+      "result": "PASS",
+      "requires_regeneration": false,
+      "reason": "파랑이 바텀에서 깃·힙·하체 접점으로 흰 균형을 옆으로 무너뜨리고 지지 손을 유지한다. 넓은 스윕 개념의 대표 장면으로 유효하다.",
+      "keyChecks": [
+        "바텀 가드에서의 시작",
+        "상대 힙·다리를 잇는 레버",
+        "파랑의 지지 손과 흰 균형 상실"
+      ],
+      "regenerationGuidance": null,
+      "characterReview": "승인된 두 성인 캐릭터의 머리색·도복색·브라운벨트가 유지된다.",
+      "limbReview": "보이는 사지에 명백한 추가 팔다리·관절 단절은 관찰하지 못했다. 핵심을 바꾸지 않는 자연스러운 가림은 허용했다.",
+      "name": "스윕",
+      "result_ko": "PASS",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/sweep-v1.png",
+      "image_sha256": "91114caa456fc937b73e90047bc36c1afba61f165481aa0e7175ecbd81d97483",
+      "reviewBasis": "direct view_image inspection of generated v1; pose brief and available public reference image compared",
+      "referenceImagePath": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/references/sweep.webp",
+      "briefKeyChecks": [
+        "The action clearly starts from blue's guard",
+        "A connected lever explains white's loss of balance",
+        "The picture represents the broader sweep concept"
+      ]
+    },
+    {
+      "slug": "knee-shield",
+      "result": "PASS",
+      "requires_regeneration": false,
+      "reason": "파랑의 높은 무릎이 두 몸 사이에 남고 한 흰 다리 포획이 유지되어 낮은 니실드 하프가드 변형으로 식별된다. 정강이 일부는 흰 몸에 가리지만 무릎 장벽 자체는 보인다.",
+      "keyChecks": [
+        "하프가드 한 다리 포획",
+        "두 몸 사이의 파란 무릎/정강이 장벽",
+        "파랑의 사이드 자세 유지"
+      ],
+      "regenerationGuidance": null,
+      "characterReview": "승인된 두 성인 캐릭터의 머리색·도복색·브라운벨트가 유지된다.",
+      "limbReview": "보이는 사지에 명백한 추가 팔다리·관절 단절은 관찰하지 못했다. 핵심을 바꾸지 않는 자연스러운 가림은 허용했다.",
+      "name": "니실드",
+      "result_ko": "PASS",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/knee-shield-v1.png",
+      "image_sha256": "720902da14de13f7f87bc364e031ba1d00d765081f574d05b74c86b6c4930cbd",
+      "reviewBasis": "direct view_image inspection of generated v1; pose brief and available public reference image compared",
+      "referenceImagePath": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/references/knee-shield.webp",
+      "briefKeyChecks": [
+        "One white leg remains in half guard",
+        "The upper blue shin visibly separates the torsos",
+        "The shield is a blue leg rather than an extra arm"
+      ]
+    },
+    {
+      "slug": "butterfly-guard",
+      "result": "PASS",
+      "requires_regeneration": false,
+      "reason": "파랑이 세운 앉은 자세에서 두 무릎을 흰 무릎 사이로 넣고 내측 발등 훅을 만든다. 가까운 훅은 선명하고 먼 훅 일부는 자연스럽게 가리며 닫힌 발목 고리는 없다.",
+      "keyChecks": [
+        "앉은 파란 골반",
+        "흰 허벅지 안쪽의 가까운 발등 훅",
+        "가드 안쪽 두 무릎과 교차하지 않은 발목"
+      ],
+      "regenerationGuidance": null,
+      "characterReview": "승인된 두 성인 캐릭터의 머리색·도복색·브라운벨트가 유지된다.",
+      "limbReview": "보이는 사지에 명백한 추가 팔다리·관절 단절은 관찰하지 못했다. 핵심을 바꾸지 않는 자연스러운 가림은 허용했다.",
+      "name": "버터플라이 가드",
+      "result_ko": "PASS",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/butterfly-guard-v1.png",
+      "image_sha256": "ddf1455ca3386d48a837cea72438faebab81a59e3ca99852f3fc416f8a6de443",
+      "reviewBasis": "direct view_image inspection of generated v1; pose brief and available public reference image compared",
+      "referenceImagePath": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/references/butterfly-guard.webp",
+      "briefKeyChecks": [
+        "Both blue feet hook inside white's thighs",
+        "Blue remains seated rather than flattened",
+        "No closed guard ankle lock appears behind white"
+      ]
+    },
+    {
+      "slug": "lasso-guard",
+      "result": "MODIFICATION_REQUIRED",
+      "requires_regeneration": true,
+      "reason": "팔을 감는 파란 발과 흰 힙을 미는 파란 발 외에 오른쪽 아래로 파란 바짓단과 발이 하나 더 보인다. 세 번째 파란 하체 또는 흰 선수 다리의 도복색/소속 오류로 읽혀 해부학·색 연결을 고쳐야 한다.",
+      "keyChecks": [
+        "소매를 잡는 손과 감긴 흰 팔은 연결됨",
+        "라쏘 발과 힙 프레임 발이 이미 파랑의 두 다리를 사용함",
+        "오른쪽으로 내려가는 별도 파란 바짓단·발이 추가됨"
+      ],
+      "regenerationGuidance": "두 선수의 골반에서 각 두 다리를 먼저 추적한 포즈로 재생성한다. 흰 패서의 두 바짓단을 모두 흰색으로 유지하고 파랑은 라쏘 다리와 힙 프레임 다리만 갖게 한다.",
+      "characterReview": "머리·상의·벨트는 맞지만 오른쪽 파란 바짓단의 소속/색 연결 오류가 있다.",
+      "limbReview": "명백한 추가 파란 하체 또는 흰 하체의 색/소속 연결 오류가 관찰된다. 단순한 자연 가림 문제가 아니다.",
+      "name": "라쏘",
+      "result_ko": "수정 필요",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/lasso-guard-v1.png",
+      "image_sha256": "7dd77bb446291e4de831110c4a75e0ce4c7f23c90aa002b37dd76d9c5d27cbc1",
+      "reviewBasis": "direct view_image inspection of generated v1; pose brief and available public reference image compared",
+      "referenceImagePath": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/references/lasso-guard.webp",
+      "briefKeyChecks": [
+        "One blue leg wraps the sleeve controlled white arm",
+        "The sleeve grip and wrapped arm match",
+        "All feet and hands belong to distinct limbs"
+      ]
+    },
+    {
+      "slug": "k-guard",
+      "result": "PASS",
+      "requires_regeneration": false,
+      "reason": "파랑이 흰 포획 다리 옆으로 돌아 누워 높은 무릎을 겨드랑이 부근에 두고 아래쪽 발·훅과 양손으로 같은 흰 다리를 제어한다. 니바 피니시로 대체되지 않았다.",
+      "keyChecks": [
+        "흰 포획 다리 옆의 파란 골반",
+        "겨드랑이 가까운 높은 파란 무릎",
+        "같은 다리의 양손·아래 훅 제어"
+      ],
+      "regenerationGuidance": null,
+      "characterReview": "승인된 두 성인 캐릭터의 머리색·도복색·브라운벨트가 유지된다.",
+      "limbReview": "보이는 사지에 명백한 추가 팔다리·관절 단절은 관찰하지 못했다. 핵심을 바꾸지 않는 자연스러운 가림은 허용했다.",
+      "name": "k가드",
+      "result_ko": "PASS",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/k-guard-v1.png",
+      "image_sha256": "76fdad08a53ce239721819263ad1c0a9eaefec8b018064c5e724df7bed99900d",
+      "reviewBasis": "direct view_image inspection of generated v1; pose brief and available public reference image compared",
+      "referenceImagePath": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/references/k-guard.webp",
+      "briefKeyChecks": [
+        "Blue is angled beside the controlled white leg",
+        "The high knee and lower hook belong to blue",
+        "No submission finish replaces the guard position"
+      ]
+    },
+    {
+      "slug": "tripod-sweep",
+      "result": "PASS",
+      "requires_regeneration": false,
+      "reason": "한 손의 흰 발목 포획, 파란 힙 프레임 발, 반대 흰 발목 뒤의 파란 발이 세 접점을 만든다. 스윕 직전의 기울어짐이 그 접점과 연결된다.",
+      "keyChecks": [
+        "흰 한 발목의 파란 손",
+        "흰 힙의 파란 발 프레임",
+        "반대 흰 발목을 막는 다른 파란 발"
+      ],
+      "regenerationGuidance": null,
+      "characterReview": "승인된 두 성인 캐릭터의 머리색·도복색·브라운벨트가 유지된다.",
+      "limbReview": "보이는 사지에 명백한 추가 팔다리·관절 단절은 관찰하지 못했다. 핵심을 바꾸지 않는 자연스러운 가림은 허용했다.",
+      "name": "트라이포드",
+      "result_ko": "PASS",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/tripod-sweep-v1.png",
+      "image_sha256": "a6e99ea8eab51254a3d5f53127904d91c22733ef3f55a22d90752c4b9770435d",
+      "reviewBasis": "direct view_image inspection of generated v1; pose brief and available public reference image compared",
+      "referenceImagePath": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/references/tripod-sweep.webp",
+      "briefKeyChecks": [
+        "One white ankle is held by a blue hand",
+        "One blue foot frames the hip",
+        "The other blue foot obstructs the opposite ankle"
+      ]
+    },
+    {
+      "slug": "deep-half-guard",
+      "result": "PASS",
+      "requires_regeneration": false,
+      "reason": "파란 머리·몸통이 흰 힙과 허벅지 아래 깊이 들어가고 한 흰 다리만 두 다리로 모은다. 바깥에 늘어진 일반 하프가드와 구분되는 몸통 위치가 보인다.",
+      "keyChecks": [
+        "흰 허벅지 아래의 파란 몸통",
+        "흰 힙 가까운 파란 머리",
+        "다른 흰 다리의 자유 지지"
+      ],
+      "regenerationGuidance": null,
+      "characterReview": "승인된 두 성인 캐릭터의 머리색·도복색·브라운벨트가 유지된다.",
+      "limbReview": "보이는 사지에 명백한 추가 팔다리·관절 단절은 관찰하지 못했다. 핵심을 바꾸지 않는 자연스러운 가림은 허용했다.",
+      "name": "딥 하프가드",
+      "result_ko": "PASS",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/deep-half-guard-v1.png",
+      "image_sha256": "06067e2992678c0e61e251ccb985b2a607468f56bab167a6f3286496889ac211",
+      "reviewBasis": "direct view_image inspection of generated v1; pose brief and available public reference image compared",
+      "referenceImagePath": null,
+      "briefKeyChecks": [
+        "Blue's torso is underneath the controlled white thigh",
+        "The head is near the hip, not beyond the foot",
+        "Only one white leg is trapped"
+      ]
+    },
+    {
+      "slug": "spider-guard",
+      "result": "PASS",
+      "requires_regeneration": false,
+      "reason": "양 파란 손이 흰 소매를 잡고 양 파란 발바닥이 대응하는 흰 팔꿈치/이두 부근을 민다. 라쏘 고리 없이 길고 짧은 두 팔 프레임이 분리된다.",
+      "keyChecks": [
+        "양 소매 그립",
+        "양 팔 안쪽의 파란 발바닥",
+        "발과 팔꿈치의 분리된 윤곽"
+      ],
+      "regenerationGuidance": null,
+      "characterReview": "승인된 두 성인 캐릭터의 머리색·도복색·브라운벨트가 유지된다.",
+      "limbReview": "보이는 사지에 명백한 추가 팔다리·관절 단절은 관찰하지 못했다. 핵심을 바꾸지 않는 자연스러운 가림은 허용했다.",
+      "name": "스파이더",
+      "result_ko": "PASS",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/spider-guard-v1.png",
+      "image_sha256": "ee2a2aa30647c50419a572280d3da1d8e4a9631eb14ac0a8e77bdd3ba00ca962",
+      "reviewBasis": "direct view_image inspection of generated v1; pose brief and available public reference image compared",
+      "referenceImagePath": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/references/spider-guard.webp",
+      "briefKeyChecks": [
+        "Both blue hands hold white sleeves",
+        "Both blue soles contact the controlled arms",
+        "The feet do not merge into white's elbows"
+      ]
+    },
+    {
+      "slug": "balloon-sweep",
+      "result": "PASS",
+      "requires_regeneration": false,
+      "reason": "파란 두 발이 흰 힙 아래를 들어 올리고 상체 그립이 이어져 흰 몸이 파랑 위로 앞으로 기울어진다. 발의 지지 없이 날아가는 그림이 아니다.",
+      "keyChecks": [
+        "흰 힙 아래의 두 파란 발",
+        "연결된 양 상체 그립",
+        "파랑 위로 향하는 흰 전방 회전"
+      ],
+      "regenerationGuidance": null,
+      "characterReview": "승인된 두 성인 캐릭터의 머리색·도복색·브라운벨트가 유지된다.",
+      "limbReview": "보이는 사지에 명백한 추가 팔다리·관절 단절은 관찰하지 못했다. 핵심을 바꾸지 않는 자연스러운 가림은 허용했다.",
+      "name": "벌룬 스윕",
+      "result_ko": "PASS",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/balloon-sweep-v1.png",
+      "image_sha256": "946f05782134e61fbf1a0c3d4ef222e85377783cef5224138a97ac55f6c6428b",
+      "reviewBasis": "direct view_image inspection of generated v1; pose brief and available public reference image compared",
+      "referenceImagePath": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/references/balloon-sweep.webp",
+      "briefKeyChecks": [
+        "Blue's feet supply the lifting contact",
+        "White tips forward over blue rather than sideways",
+        "Upper body grips remain connected during the lift"
+      ]
+    },
+    {
+      "slug": "coyote-guard",
+      "result": "PASS",
+      "requires_regeneration": false,
+      "reason": "파랑이 옆 지지 자세로 일어나 흰 몸통을 언더훅하고 하프가드 다리 연결을 유지한다. 흰 위저와 포스트도 그 몸싸움에 연결된다.",
+      "keyChecks": [
+        "흰 몸통을 감는 파란 언더훅",
+        "옆으로 올라온 파란 지지 자세",
+        "남아 있는 흰 한 다리 포획"
+      ],
+      "regenerationGuidance": null,
+      "characterReview": "승인된 두 성인 캐릭터의 머리색·도복색·브라운벨트가 유지된다.",
+      "limbReview": "보이는 사지에 명백한 추가 팔다리·관절 단절은 관찰하지 못했다. 핵심을 바꾸지 않는 자연스러운 가림은 허용했다.",
+      "name": "코요테 가드",
+      "result_ko": "PASS",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/coyote-guard-v1.png",
+      "image_sha256": "f194df9ceb1fc39cdfac44bb94ae1e620489b0968e2924e60ef8e93da3efd6e3",
+      "reviewBasis": "direct view_image inspection of generated v1; pose brief and available public reference image compared",
+      "referenceImagePath": null,
+      "briefKeyChecks": [
+        "Blue's underhook reaches around white's torso",
+        "Blue has risen onto a lateral base",
+        "The half guard leg connection is still identifiable"
+      ]
+    },
+    {
+      "slug": "kiss-of-dragon",
+      "result": "PASS",
+      "requires_regeneration": false,
+      "reason": "파랑이 흰 다리 아래로 인버트하면서 같은 발목과 등 쪽 도복 연결을 유지해 후방 접근을 표현한다. 먼 다리 경로 일부는 가리지만 어깨/상부 등 기반의 회전과 후방 방향이 읽힌다.",
+      "keyChecks": [
+        "흰 발목의 지속 제어",
+        "흰 뒤쪽으로 도는 파란 골반·상체",
+        "어깨/상부 등 쪽 인버전 지지"
+      ],
+      "regenerationGuidance": null,
+      "characterReview": "승인된 두 성인 캐릭터의 머리색·도복색·브라운벨트가 유지된다.",
+      "limbReview": "보이는 사지에 명백한 추가 팔다리·관절 단절은 관찰하지 못했다. 핵심을 바꾸지 않는 자연스러운 가림은 허용했다.",
+      "name": "키스 오브 드래곤",
+      "result_ko": "PASS",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/kiss-of-dragon-v1.png",
+      "image_sha256": "80d62ee8d6f2b61ec90575fafd21f3dbc5211a94c7fb248b405618f8840cad90",
+      "reviewBasis": "direct view_image inspection of generated v1; pose brief and available public reference image compared",
+      "referenceImagePath": null,
+      "briefKeyChecks": [
+        "The entry retains the reverse De La Riva connection",
+        "Blue rotates underneath toward white's back",
+        "The inversion is supported through shoulders and upper back"
+      ]
+    },
+    {
+      "slug": "scissors-sweep",
+      "result": "KEY_CONTACT_UNCONFIRMED",
+      "requires_regeneration": true,
+      "reason": "높고 낮은 두 다리는 있으나 높은 다리는 정강이를 몸통에 가로대기보다 발바닥만 흰 힙을 미는 구도로 읽힌다. 고전 시저스 스윕의 상부 정강이 장벽이 명확하지 않아 단순 힙 프레임 스윕과 구분하기 어렵다.",
+      "keyChecks": [
+        "깃·소매 제어는 보임",
+        "낮은 다리의 흰 지지 무릎 부근 제어는 보임",
+        "상부 정강이가 흰 몸통을 가로지르는 접점은 명확하지 않음"
+      ],
+      "regenerationGuidance": "무릎 꿇은 흰 파트너를 상대로 파란 높은 정강이가 흰 몸통을 가로대고, 낮은 다리가 흰 지지 무릎 뒤를 바닥 가까이 막는 대표 시저스 구조를 노출한다. 발바닥 힙 프레임만 있는 구도를 피한다.",
+      "characterReview": "승인된 두 성인 캐릭터의 머리색·도복색·브라운벨트가 유지된다.",
+      "limbReview": "보이는 사지에 명백한 추가 팔다리·관절 단절은 관찰하지 못했다. 핵심을 바꾸지 않는 자연스러운 가림은 허용했다.",
+      "name": "시저스 스윕",
+      "result_ko": "핵심 접점 미확인",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/scissors-sweep-v1.png",
+      "image_sha256": "047dc138a582a55241c802af6d996e8f9d3d314501746589868524eac92afaf4",
+      "reviewBasis": "direct view_image inspection of generated v1; pose brief and available public reference image compared",
+      "referenceImagePath": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/references/scissors-sweep.webp",
+      "briefKeyChecks": [
+        "One blue leg is high and the other low",
+        "Upper body control prevents a free white post",
+        "White's imbalance matches the scissoring direction"
+      ]
+    },
+    {
+      "slug": "sit-up-guard",
+      "result": "PASS",
+      "requires_regeneration": false,
+      "reason": "파랑이 상체를 세워 앉은 상태에서 다리를 전방 장벽으로 유지하고 깃·소매를 연결한다. 특정 스윕 피니시로 바뀌지 않은 앉은 가드 시작 자세다.",
+      "keyChecks": [
+        "세워진 파란 몸통",
+        "두 사람 사이의 열린 다리 장벽",
+        "일반적인 깃·소매 연결"
+      ],
+      "regenerationGuidance": null,
+      "characterReview": "승인된 두 성인 캐릭터의 머리색·도복색·브라운벨트가 유지된다.",
+      "limbReview": "보이는 사지에 명백한 추가 팔다리·관절 단절은 관찰하지 못했다. 핵심을 바꾸지 않는 자연스러운 가림은 허용했다.",
+      "name": "싯팅 가드",
+      "result_ko": "PASS",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/sit-up-guard-v1.png",
+      "image_sha256": "77ecbc448b389553168678b5280cdc2ec158c3df7831331925cd260056b4a9b4",
+      "reviewBasis": "direct view_image inspection of generated v1; pose brief and available public reference image compared",
+      "referenceImagePath": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/references/sit-up-guard.webp",
+      "briefKeyChecks": [
+        "Blue's torso is upright rather than supine",
+        "The legs remain between the athletes",
+        "No specific sweep is treated as the guard's complete definition"
+      ]
+    },
+    {
+      "slug": "flower-sweep",
+      "result": "PASS",
+      "requires_regeneration": false,
+      "reason": "파랑이 흰 소매와 다리 도복을 제어하며 골반을 틀고 다른 다리를 높게 흔든다. 포스팅 팔 제어와 다리 스윙이 함께 있어 플라워 스윕의 진입 장면으로 식별된다.",
+      "keyChecks": [
+        "소매와 흰 다리의 제어",
+        "비틀린 파란 골반",
+        "반대 파란 다리의 높은 스윙"
+      ],
+      "regenerationGuidance": null,
+      "characterReview": "승인된 두 성인 캐릭터의 머리색·도복색·브라운벨트가 유지된다.",
+      "limbReview": "보이는 사지에 명백한 추가 팔다리·관절 단절은 관찰하지 못했다. 핵심을 바꾸지 않는 자연스러운 가림은 허용했다.",
+      "name": "플라워 스윕",
+      "result_ko": "PASS",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/flower-sweep-v1.png",
+      "image_sha256": "fd2bb88b46fb5961a709a8e311f727af8a2dfd8affda919a0afa71a4e0cc828f",
+      "reviewBasis": "direct view_image inspection of generated v1; pose brief and available public reference image compared",
+      "referenceImagePath": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/references/flower-sweep.webp",
+      "briefKeyChecks": [
+        "The controlled sleeve and leg are on the intended side",
+        "Blue's hip angle creates the reversal",
+        "White's blocked posting side matches the fall"
+      ]
+    }
+  ],
+  "limits": [
+    "PASS concerns the representative static illustration, not a complete technical demonstration or efficacy guarantee.",
+    "The four prior results are referenced with matching hashes; they are not counted among the 28 newly viewed images.",
+    "The absence of an exposed defining hook or grip is separated from a definite anatomical or pose substitution error.",
+    "No browser-at-48px/224px validation, production application, user approval or deployment is claimed."
+  ]
+}

@@ -1,0 +1,159 @@
+{
+  "task": "task-058",
+  "at": "2026-11-10T15:38:01.424Z",
+  "status": "PASS",
+  "scope": "Local actual React app and read-only live ID/name/link inventory. No production publication or authenticated device UI.",
+  "assets": {
+    "distinct": 171,
+    "coveredRows": 172,
+    "matchedRows": 172,
+    "missingNames": [],
+    "nearAndRearShareExactlyOneAsset": true,
+    "servedWebP": 171,
+    "totalWebPBytes": 9356290,
+    "maximumWebPBytes": 95898,
+    "allHTTP200AndImageWebP": true,
+    "hashAndSourceCopyErrors": []
+  },
+  "geometry": {
+    "widths": [
+      360,
+      390,
+      412
+    ],
+    "pages": 54,
+    "rows": 516,
+    "differences": [],
+    "imageErrors": 0,
+    "rowOverflow": 0,
+    "pageOverflow": 0
+  },
+  "interactions": {
+    "details": [
+      {
+        "viewport": 360,
+        "background": "rgb(21, 23, 30)",
+        "clipped": false,
+        "complete": true,
+        "height": 224,
+        "name": "니컷 자세",
+        "naturalWidth": 512,
+        "pageOverflow": false,
+        "url": "/technique-illustrations/set-01/knee-cut.webp",
+        "width": 224
+      },
+      {
+        "viewport": 390,
+        "background": "rgb(21, 23, 30)",
+        "clipped": false,
+        "complete": true,
+        "height": 224,
+        "name": "니컷 자세",
+        "naturalWidth": 512,
+        "pageOverflow": false,
+        "url": "/technique-illustrations/set-01/knee-cut.webp",
+        "width": 224
+      },
+      {
+        "viewport": 412,
+        "background": "rgb(21, 23, 30)",
+        "clipped": false,
+        "complete": true,
+        "height": 224,
+        "name": "니컷 자세",
+        "naturalWidth": 512,
+        "pageOverflow": false,
+        "url": "/technique-illustrations/set-01/knee-cut.webp",
+        "width": 224
+      }
+    ],
+    "forward": {
+      "side": {
+        "background": "rgb(21, 23, 30)",
+        "clipped": false,
+        "complete": true,
+        "height": 224,
+        "name": "사이드 자세",
+        "naturalWidth": 512,
+        "pageOverflow": false,
+        "url": "/technique-illustrations/set-01/side-control.webp",
+        "width": 224
+      },
+      "buggy": {
+        "background": "rgb(21, 23, 30)",
+        "clipped": false,
+        "complete": true,
+        "height": 224,
+        "name": "버기 초크 자세",
+        "naturalWidth": 512,
+        "pageOverflow": false,
+        "url": "/technique-illustrations/set-01/buggy-choke.webp",
+        "width": 224
+      }
+    },
+    "back": {
+      "side": {
+        "background": "rgb(21, 23, 30)",
+        "clipped": false,
+        "complete": true,
+        "height": 224,
+        "name": "사이드 자세",
+        "naturalWidth": 512,
+        "pageOverflow": false,
+        "url": "/technique-illustrations/set-01/side-control.webp",
+        "width": 224
+      },
+      "kneeCut": {
+        "background": "rgb(21, 23, 30)",
+        "clipped": false,
+        "complete": true,
+        "height": 224,
+        "name": "니컷 자세",
+        "naturalWidth": 512,
+        "pageOverflow": false,
+        "url": "/technique-illustrations/set-01/knee-cut.webp",
+        "width": 224
+      }
+    },
+    "escape": {
+      "detailImages": 0,
+      "listRows": 10
+    },
+    "console": [],
+    "scope": "Actual current React app; local GET-only synthetic data; no authenticated production or device test",
+    "testHarnessNotes": [
+      "Initial detail selector was corrected to img.technique-illustration--detail before accepted measurements.",
+      "Locator body.press failed; native tab Escape succeeded and closed the modal."
+    ]
+  },
+  "liveRead": {
+    "release": "20261109-221832-a8476e10",
+    "appVersion": "1.1.0",
+    "rows": 172,
+    "links": 131,
+    "IDsAndNamesUnchanged": true,
+    "linksUnchanged": true
+  },
+  "regressions": {
+    "uiTests": 19,
+    "assetTests": 13,
+    "independentCodeReview": "PASS",
+    "freshBuildModules": 230
+  },
+  "harnessNotes": [
+    "Web source intentionally has no package-lock.json; source/copy package manifests and npm prefix matched. Build used the existing isolated validation dependency root with its lockfile."
+  ],
+  "published": false,
+  "finalRegistrySHA256": "0b71a8bab29900a5aef5de2284f8d8ca4ba091b4b3daf6fd6bd55c1b611442c4",
+  "appManifestSHA256": "e63fdb1ddd0f85e5ce704aecbc02236d5d2c519492edd0818c0718cc4cf7c918",
+  "buildSourceTree": {
+    "files": 150,
+    "matchesCurrent": true
+  },
+  "finalStaticAudit": "docs/handovers/task-058-final-static-audit.json",
+  "assetRegistryStatus": "complete",
+  "workingTree": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning",
+  "gitCommitted": false,
+  "pushed": false,
+  "productionDeployed": false
+}

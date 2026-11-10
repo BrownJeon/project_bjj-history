@@ -1,0 +1,44 @@
+{
+  "task_id": "task-058",
+  "status": "background_sample_awaiting_user_review",
+  "technique": "knee-cut",
+  "image": "reference/technique-illustrations/set-01/review-02/knee-cut-app-bg.png",
+  "prompt": "reference/technique-illustrations/set-01/review-02/knee-cut-app-bg.prompt.txt",
+  "background_target": "#0C0D12",
+  "background_source": "web/src/styles/tokens.css --bg",
+  "width": 1254,
+  "height": 1254,
+  "sha256": "0ab2f4c1882f4183e60e7b45c88cca9d6f70f4ebdaa724c9453605f288191837",
+  "original": "reference/technique-illustrations/set-01/review-01/knee-cut.png",
+  "mode": "built-in image_gen edit",
+  "other_samples_edited": false,
+  "user_approved": false,
+  "measured_background_samples_rgb": [
+    [
+      10,
+      12,
+      16
+    ],
+    [
+      10,
+      13,
+      17
+    ],
+    [
+      10,
+      12,
+      17
+    ],
+    [
+      10,
+      13,
+      18
+    ],
+    [
+      10,
+      11,
+      16
+    ]
+  ],
+  "background_note": "앱 --bg #0C0D12를 목표로 image_gen 편집. 생성형 래스터의 미세한 색 편차/접지 그림자는 존재하며 RGB 샘플을 함께 기록."
+}

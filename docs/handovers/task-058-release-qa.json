@@ -1,0 +1,150 @@
+{
+  "taskId": "task-058",
+  "status": "BLOCKED",
+  "verdict": "NOT_VERIFIED",
+  "verdict_scope": "프론트·자산·읽기 fixture API 범위 PASS. QA 역할의 전체 API 체크리스트는 미실행이므로 전체 QA 판정은 NOT_VERIFIED.",
+  "checked_at": "2026-11-11T01:33:33+09:00",
+  "executed_checks": [
+    {
+      "command": "BJJ_ILLUSTRATION_TEST_DEPS=/Users/brownjeon/.node-local/bjj-task-051-validation BJJ_ILLUSTRATION_TEST_JSDOM=/Users/brownjeon/.node-local/voicevault node --test web/src/utils/techniqueIllustrationModel.test.mjs web/src/utils/techniqueCardLayout.test.mjs web/src/components/TechniqueIllustration.test.mjs",
+      "exit_code": 0,
+      "tests": 19,
+      "pass": 19,
+      "fail": 0,
+      "skipped": 0
+    },
+    {
+      "command": "node --test scripts/task-058-image-assets.test.cjs",
+      "exit_code": 0,
+      "tests": 13,
+      "pass": 13,
+      "fail": 0,
+      "skipped": 0
+    },
+    {
+      "command": "node scripts/task-058-image-assets.cjs verify --complete",
+      "exit_code": 0,
+      "output": {
+        "verified": true,
+        "targetRows": 172,
+        "coveredRows": 172,
+        "approvedAssets": 171,
+        "complete": true
+      }
+    },
+    {
+      "command": "curl -sS http://127.0.0.1:54850/api/techniques",
+      "status": 200,
+      "success": true,
+      "data_count": 172,
+      "knee_cut_id": 958048
+    },
+    {
+      "command": "curl -sS http://127.0.0.1:54850/api/techniques/958048/reference",
+      "status": 200,
+      "success": true,
+      "arrays": [
+        "incoming",
+        "outgoing",
+        "related"
+      ]
+    },
+    {
+      "command": "curl -sS -o /dev/null -w \"%{http_code} %{content_type}\" http://127.0.0.1:54850/technique-illustrations/set-01/knee-cut.webp",
+      "output": "200 image/webp"
+    },
+    {
+      "command": "curl -sS -o /dev/null -w \"%{http_code} %{content_type}\" http://127.0.0.1:54850/technique-illustrations/set-01/nonexistent.webp",
+      "output": "404 application/json"
+    }
+  ],
+  "version": {
+    "root_package": "1.2.0",
+    "root_lock": "1.2.0",
+    "lock_root_entry": "1.2.0",
+    "web_internal_package": "0.1.0",
+    "display_version_has_suffix": false
+  },
+  "staged_review": {
+    "files_before_this_qa_record": 1009,
+    "diff_raw_sha256_before_this_qa_record": "d017e4706135696549fd988cb436b63ec3511283a6c5f169cdfcf34741a52163",
+    "public_webp_count": 171,
+    "public_webp_index_vs_worktree_mismatch": [],
+    "required_runtime_files_missing": [],
+    "node_modules_env_attachment_apk_database_other_task_or_private_frame_path_matches": [],
+    "shared_vault_review": "ACTIVE.md date and task-058 entry only; board.md task-058 entry only",
+    "hashed_code_and_tests_match_index": true,
+    "note": "Index digest predates adding this QA record and any subsequent handoff updates.",
+    "backend_server_migration_changes": []
+  },
+  "sha256_of_tested_index_files": {
+    "web/src/pages/TechPlanPage.jsx": "ecb9a7a57476813049b99a40d347c6b5b3ffc06b76e789d331794b5b57d381e5",
+    "web/src/components/TechniqueCard.jsx": "0fdb834a46b7afea41584f7f41d18ff0addb6f5b36ea3dea9553e95b14f8fad3",
+    "web/src/components/TechniqueIllustration.jsx": "acd0f193e9b12765f323f1b5cd404b72120236f7bcc00cf98dda5b8b6e450640",
+    "web/src/styles/techniqueIllustration.css": "0453c3ebfeaabfd5957756130ef691bd71e3e122031418abc0e55645a6c44f58",
+    "web/src/utils/techniqueCardLayout.js": "2dd30b87976d634df30f5776f1517309a95d875cf735c59a72b513627e479287",
+    "web/src/utils/techniqueIllustrationModel.js": "b12c36c452291966851fc4a3c56e067c0ba3ea903e8283db75b4d7ccf5059907",
+    "web/src/data/techniqueIllustrations.json": "e63fdb1ddd0f85e5ce704aecbc02236d5d2c519492edd0818c0718cc4cf7c918",
+    "web/src/utils/techniqueIllustrationModel.test.mjs": "e9f39b5685a76d7f95ad5ebd8e796861c30225f84a32e49f3f62186456c41f99",
+    "web/src/utils/techniqueCardLayout.test.mjs": "63e8c329fa7ff5689f5cb2c86dfaf893107dc383bc41a98527f3447c26818d17",
+    "web/src/components/TechniqueIllustration.test.mjs": "8e10c7407fb89f1f0942395408e2bf49369dc9871ee1e1e8a39bac79d7513b5e",
+    "scripts/task-058-image-assets.cjs": "52e04de98908c3b1f05d2afba0d716c3a2a1fefbc5fe21126fbb3c3dda4878fe",
+    "scripts/task-058-image-assets.test.cjs": "455c50080852b21f7104cbb7e7d8786e4ce2ecf3b06c2e13f683e517d9218e7f",
+    "package.json": "3f898f7a6ccd2e9305d2802d3de8b1d8d592ab486f5c69e52ed3c0973c211340",
+    "package-lock.json": "0ef63dc82a93ad158b5fe52b463192d49052bc97c07bb5efa4ec6a0c1245fd49",
+    "web/package.json": "0cd35d3509c4fd32be459bc983b0846c40482d1d65a92d1f16c31eff2ab0ad77"
+  },
+  "previous_evidence_not_reexecuted_here": {
+    "reported_by": "leader handoff",
+    "scope": "171/172 asset, 516 responsive UI geometry, 171 HTTP, code review, coach review and final static audit",
+    "status": "ATTRIBUTED_ONLY"
+  },
+  "not_verified": [
+    "운영 인증 화면 및 실제 Android 기기",
+    "배포 및 배포 후 정상 동작 (deployer 인계)",
+    "기본 응답·JSON 배열·연쇄 삭제·보안·BJJ 도메인 전체 API 체크리스트: 이 변경에 백엔드와 마이그레이션이 없으며 별도 API 시험환경을 제공받지 못해 미실행"
+  ],
+  "findings": [],
+  "blockers": [
+    "필수 전체 API 체크리스트는 제공된 읽기 전용 프론트 fixture에 존재하지 않아 미검증; 역할 지침상 전체 QA PASS 불가"
+  ],
+  "risk_level": "MEDIUM",
+  "post_deploy_checks": [
+    "1.2.0 release and deployed SHA match",
+    "health endpoint and process status",
+    "deployed application technique tree list and detail image rendering; 171 asset availability",
+    "record whether authenticated and mobile-device checks were possible"
+  ],
+  "frontend_scope_verdict": "PASS",
+  "browser_qa": {
+    "environment": "Chrome, GET-only fixture at 127.0.0.1:54850, baseline 54849, temporary XSS fixture 54581; synthetic user 999999",
+    "widths": [
+      360,
+      390,
+      412,
+      1280
+    ],
+    "overflow_px": 0,
+    "list_image_px": [
+      48,
+      48
+    ],
+    "list_card_height_px": 54,
+    "baseline_card_height_px": 54,
+    "detail_image_px": [
+      224,
+      224
+    ],
+    "detail_image_natural_px": [
+      512,
+      512
+    ],
+    "detail_background": "rgb(21, 23, 30)",
+    "navigation": "니컷 → 사이드 → 버기 초크 → 사이드 → 니컷, 닫기 후 검색 목록 복귀 PASS",
+    "touch": "신규 이미지 자체 별도 클릭 대상 아님; 니컷 카드 높이 54px",
+    "theme": "앱은 다크 단일 테마, 라이트 모드 N/A (leader 인계)",
+    "xss": "임시 GET-only fixture 기술명 <img src=x onerror=alert(1)> 목록·상세 텍스트 표시, img[src=x] 0개",
+    "viewport_reset": true
+  },
+  "temporary_artifacts_deleted": 5
+}

@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "task_id": "task-058",
+  "reviewer_role": "gym-master",
+  "status": "frame_grounded_representative_poses",
+  "method": "Direct view_image inspection of all eight provided local stills; no image alteration, copying, external retrieval, database or app change",
+  "sourceLinkVerification": "Source URLs were provided by the parent; the live Instagram pages were not re-fetched. Findings are limited to the supplied stills.",
+  "characters": {
+    "white": "Approved set-01 black-haired adult, white gi, brown belt",
+    "blue": "Approved set-01 white-haired adult, blue gi, brown belt"
+  },
+  "items": [
+    {
+      "slug": "sagi-oro-sweep",
+      "name": "사지오로",
+      "kind": "technique",
+      "actor": "blue",
+      "actorMapping": {
+        "source": "Black-gi seated/bottom controller in the selected still",
+        "generated": "Approved white-haired blue-gi brown-belt adult; the white-gi partner remains the elevated opponent"
+      },
+      "sourceUrl": "https://www.instagram.com/reel/Dciy-BDykbx/",
+      "referenceFramePath": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/private-pose-evidence/sagi-oro-10.jpg",
+      "supportingFramePaths": [
+        "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/private-pose-evidence/sagi-oro-1.jpg",
+        "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/private-pose-evidence/sagi-oro-4.jpg",
+        "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/private-pose-evidence/sagi-oro-7.jpg"
+      ],
+      "poseVerified": true,
+      "verificationScope": "Visible representative elevation snapshot only; not the complete sweep mechanics or final winner",
+      "completeTechniqueSequenceVerified": false,
+      "poseBrief": "Show blue seated beneath white's center of mass, head close to white's hip, maintaining a visible jacket connection. White folds forward over blue with elevated hips and one leg lifting into a rolling sweep. Blue's knees remain apart as a seated base. Match frame 10, leaving the obscured far-side grip naturally hidden rather than inventing a specific lock or leg entanglement.",
+      "keyChecks": [
+        "Blue is the seated lower controller and white is folded above the lower athlete; do not reverse the visible body relationship.",
+        "Retain the visible jacket connection, elevated white hips and blue's separated seated knees from the reference.",
+        "Do not invent an exact far-side grip, named leg entanglement or final top position that these sampled stills do not establish."
+      ],
+      "observed": [
+        "Frame 1 contains the title Sagi-Oro Sweep; this confirms the clip's displayed label, not an independently standardized technical name.",
+        "Frame 4 shows the black-gi athlete low and seated beside the white-gi athlete's hip, with lower-body and upper-body contact partly obscured.",
+        "Frame 10 clearly shows a seated black-gi athlete below a forward-folded white-gi athlete with elevated hips and a visible jacket grip.",
+        "Frame 7 shows white above black during another sampled moment; the selected four stills do not establish a continuous start-to-finish reversal."
+      ],
+      "uncertainties": [
+        "Exact hidden hand grip and leg-hook routing cannot be confirmed from these four stills.",
+        "Do not claim the lower athlete wins the entire sequence or specify the sweep's complete finishing direction.",
+        "The inherited AI description's underhook/body-lock/leg-entanglement explanation is not independently confirmed and must not override the visible still."
+      ],
+      "generationGuardrails": [
+        "Use the selected still only for body relationships; do not reproduce the original people, purple/orange belts, tiger patch, subtitles, mat or background.",
+        "Use approved set-01 identities, brown belts and the approved illustration style; transparent output is composited over #15171E by the app.",
+        "Treat this as a source-grounded representative image, not a complete instructional diagram."
+      ],
+      "poseBriefWordCount": 61,
+      "frameSHA256": {
+        "sagi-oro-10.jpg": "ed7b5a20ddab44ab34a06a945e33c6d2f79d77941ba91253221e422d4233dd7d",
+        "sagi-oro-1.jpg": "32f55793e26a566e26c93e034c123a6735b724e3a1031f1ba89d9aff6a6ccfaa",
+        "sagi-oro-4.jpg": "70cc4f3d409405f88207cb2808d18ba498ebef687aa4ea2e816be995111c6306",
+        "sagi-oro-7.jpg": "c283d50e057fed1c73e681006c2fb37c9ec419f3c3af9e234e07a1b5408ef3ab"
+      }
+    },
+    {
+      "slug": "hugo-lock",
+      "name": "휴고락",
+      "kind": "technique",
+      "actor": "white",
+      "actorMapping": {
+        "source": "Black-rashguard rear controller",
+        "generated": "Approved black-haired white-gi brown-belt adult; the front maroon/black partner becomes the approved blue-gi athlete"
+      },
+      "sourceUrl": "https://www.instagram.com/reel/DdZI834RKj2/",
+      "referenceFramePath": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/private-pose-evidence/hugo-lock-4.jpg",
+      "supportingFramePaths": [
+        "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/private-pose-evidence/hugo-lock-1.jpg",
+        "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/private-pose-evidence/hugo-lock-7.jpg",
+        "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/private-pose-evidence/hugo-lock-10.jpg"
+      ],
+      "poseVerified": true,
+      "verificationScope": "Visible back-control arm-isolation snapshot only; precise final grip and shoulder-lock finish are not established",
+      "completeTechniqueSequenceVerified": false,
+      "poseBrief": "Show white tightly behind blue in back control, both rolled onto their sides with white's legs retaining hip control. Blue's near elbow is raised beside the head, the forearm folded down toward the chest. White stays connected to that wrist and upper-arm line. Match frame 4; preserve natural occlusion of the second grip rather than inventing a finished choke or extreme shoulder rotation.",
+      "keyChecks": [
+        "White's chest stays behind blue's back and white's legs retain the visible back-control relationship.",
+        "Blue's bent near arm and raised elbow remain beside the head; make arm isolation, rather than a completed neck choke, the readable focus.",
+        "Keep wrist/forearm and upper-arm contacts plausible without fabricating a visible second-hand triceps grip or painful end-range finish."
+      ],
+      "observed": [
+        "Frames 1 and 10 show the rear controller seated behind the front partner with leg control around the hips.",
+        "Frame 4 shows both partners on their sides; the front partner's near elbow is high beside the head while hands and forearms overlap near the chest.",
+        "Frame 7 shows the rear controller indicating an upper-arm/triceps relationship while the other arm maintains contact.",
+        "The sampled stills support back-control arm isolation; they do not independently identify the technique as a Thunder Loop choke."
+      ],
+      "uncertainties": [
+        "Overlapping arms conceal portions of the exact wrist and second-hand grip; avoid asserting a fully visible two-on-one or fixed left/right hand route.",
+        "The final shoulder-lock mechanics and direction of force cannot be verified from these four sampled stills.",
+        "The inherited AI description's Thunder Loop label is not verified and should not be used as a synonym or generation target."
+      ],
+      "generationGuardrails": [
+        "Replace both original people and no-gi clothing with the approved two gi characters and brown belts.",
+        "Do not reproduce gym participants in the background, subtitles, rashguard logos, original mats or original facial identities.",
+        "Generate a calm controlled arm-isolation snapshot without pain, injury, gross shoulder deformation or a falsely completed rear-naked choke."
+      ],
+      "poseBriefWordCount": 63,
+      "frameSHA256": {
+        "hugo-lock-4.jpg": "a639aba8c631f086beb7a94207cc9f2f8523cd92e71d4dd24c0aeaac341dc215",
+        "hugo-lock-1.jpg": "84f49d16722e9bb1313691fa160cc1fde4da89d8ce95edf5987893f48905d72e",
+        "hugo-lock-7.jpg": "0dbbaca805e584b711725f5a6423dd7fe0ab21d246051d133c314c04fe262689",
+        "hugo-lock-10.jpg": "59a502797ccd9dd263820c8ff9832e8fd30fac7ab0bbd240f5afe3e957e44258"
+      }
+    }
+  ]
+}

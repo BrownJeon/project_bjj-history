@@ -1,0 +1,1710 @@
+{
+  "schema_version": 1,
+  "task_id": "task-058",
+  "reviewer_role": "gym-master",
+  "execution_tool": "Codex",
+  "status": "batch_03_review_complete",
+  "reviewedAt": "2026-11-10T10:13:04.259Z",
+  "is_user_approval": false,
+  "is_catalog_completion": false,
+  "scope": {
+    "expectedImages": 28,
+    "directlyInspectedGeneratedPNGs": 30,
+    "currentCandidateReviews": 28,
+    "primaryReferenceImagesDirectlyOpened": 32,
+    "registry": "reference/technique-illustrations/set-01/production/manifest.json",
+    "target": "Latest row.asset.original/raw-vN; approvedAsset is not promoted or substituted.",
+    "excluded": "The six batch-01 regenerations and batch-02 candidate revisions are outside this report.",
+    "v1ReviewsPreserved": true,
+    "originalV1Inspected": 28,
+    "revisionCandidatesInspected": 2,
+    "parentReportedGenerationHaltAfterV1Count": 14,
+    "newGenerationMode": "Neutral portrait style reference with primary pose photographs; original first-14 reviews preserved."
+  },
+  "method": [
+    "Read complete original PNGs with built-in view_image and compare actual cached primary pose frames.",
+    "Compute original PNG SHA-256 and match row.asset.originalSHA256; verify the file remains stable across the review.",
+    "Judge the visible static pose, defining contacts, body/garment ownership, and approved character identity. Do not infer hidden grips or dynamic effectiveness.",
+    "Natural occlusion alone is not a missing-limb defect; only defining contacts must remain readable.",
+    "Not-generated and generated-but-unreviewed items receive no pose result or implicit approval."
+  ],
+  "alphaScope": "Raw hidden RGB/low-alpha fringe is excluded from pose findings. No additional charcoal composition or live app-rendering verification is claimed.",
+  "resultDefinitions": {
+    "PASS": "Visible representative pose and defining contacts accepted for this candidate only; not user approval.",
+    "REGENERATE": "Visible technical, anatomical, garment-ownership, or pose-identity defect; English correction is required.",
+    "KEY_CONTACT_UNCONFIRMED": "No definite anatomy error is asserted, but a defining contact cannot be verified; English correction and a new candidate are required.",
+    "NOT_GENERATED": "No registered original at this snapshot; not judged.",
+    "NOT_REVIEWED": "Registered PNG exists but has not yet been visually judged.",
+    "STALE_REVIEW": "A new registered candidate no longer matches the actually reviewed original."
+  },
+  "summary": {
+    "expectedOriginalQueue": 28,
+    "v1Reviewed": 28,
+    "v1Counts": {
+      "PASS": 17,
+      "KEY_CONTACT_UNCONFIRMED": 7,
+      "REGENERATE": 4
+    },
+    "v1RequiresRegeneration": [
+      "matrix",
+      "waiter-guard",
+      "waiter-sweep",
+      "squid-guard",
+      "lapel-pass",
+      "wiper",
+      "saddle-position",
+      "honey-hole",
+      "inside-heel-hook",
+      "buggy-choke",
+      "100-percent-sweep"
+    ],
+    "notGenerated": [],
+    "revisionReviewed": 2,
+    "revisionCounts": {
+      "PASS": 2
+    },
+    "latestCandidateCounts": {
+      "PASS": 19,
+      "KEY_CONTACT_UNCONFIRMED": 7,
+      "REGENERATE": 2
+    },
+    "latestCandidatesAwaitingReview": [],
+    "latestCandidateOverview": [
+      {
+        "slug": "worm-guard",
+        "version": 1,
+        "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/worm-guard-v1.png",
+        "image_sha256": "216c1f8ac1596a185df0fd16e098c1cd46eb1b836eeaad25a95ffda4bcd0b2a3",
+        "manifest_sha256_match": true,
+        "result": "PASS",
+        "reviewed": true
+      },
+      {
+        "slug": "matrix",
+        "version": 1,
+        "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/matrix-v1.png",
+        "image_sha256": "ad72458d3d9248198f5f1c44eafd866633126e465499c9e97960ce5158fc82fc",
+        "manifest_sha256_match": true,
+        "result": "KEY_CONTACT_UNCONFIRMED",
+        "reviewed": true
+      },
+      {
+        "slug": "waiter-guard",
+        "version": 2,
+        "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/waiter-guard-v2.png",
+        "image_sha256": "3df981884187fcf336b9bfeacf558f43ff18b6d80790bf0a185dd705133f0c2f",
+        "manifest_sha256_match": true,
+        "result": "PASS",
+        "reviewed": true
+      },
+      {
+        "slug": "waiter-sweep",
+        "version": 1,
+        "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/waiter-sweep-v1.png",
+        "image_sha256": "bd5974f1fe960c65b511c578ed1beda303e7db14967d14c8bc54b8de1b8635ef",
+        "manifest_sha256_match": true,
+        "result": "REGENERATE",
+        "reviewed": true
+      },
+      {
+        "slug": "squid-guard",
+        "version": 1,
+        "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/squid-guard-v1.png",
+        "image_sha256": "f03e560eb597fc9d81174a4af0aa4a289c11b22427f4b49afd2f5bea1cf96607",
+        "manifest_sha256_match": true,
+        "result": "KEY_CONTACT_UNCONFIRMED",
+        "reviewed": true
+      },
+      {
+        "slug": "crazy-dog-pass",
+        "version": 1,
+        "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/crazy-dog-pass-v1.png",
+        "image_sha256": "54ed6fe361d29014c201122dde576cce1415d91e0c6b21492273f349b3c19876",
+        "manifest_sha256_match": true,
+        "result": "PASS",
+        "reviewed": true
+      },
+      {
+        "slug": "lapel-pass",
+        "version": 1,
+        "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/lapel-pass-v1.png",
+        "image_sha256": "a24ddd4dbc9d190f2b66a3078056341ba87b1e41b0cefef40aa1ab17bc44d15f",
+        "manifest_sha256_match": true,
+        "result": "KEY_CONTACT_UNCONFIRMED",
+        "reviewed": true
+      },
+      {
+        "slug": "wiper",
+        "version": 1,
+        "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/wiper-v1.png",
+        "image_sha256": "68727aff2ecd3f2a3859000076d577cc1542a73d4cd8c4dcb66d1ffebf98e66c",
+        "manifest_sha256_match": true,
+        "result": "REGENERATE",
+        "reviewed": true
+      },
+      {
+        "slug": "saddle-position",
+        "version": 1,
+        "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/saddle-position-v1.png",
+        "image_sha256": "aef7728d116d83f4ebd0ed40f9d7e415088fef1c6d06e5eb63b6d60b93a44f04",
+        "manifest_sha256_match": true,
+        "result": "KEY_CONTACT_UNCONFIRMED",
+        "reviewed": true
+      },
+      {
+        "slug": "honey-hole",
+        "version": 2,
+        "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/honey-hole-v2.png",
+        "image_sha256": "40866e7def94d951dabda8c0847fbe30741f58719e7efc5052b9e1266820f9a1",
+        "manifest_sha256_match": true,
+        "result": "PASS",
+        "reviewed": true
+      },
+      {
+        "slug": "inside-ashi-garami",
+        "version": 1,
+        "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/inside-ashi-garami-v1.png",
+        "image_sha256": "cf00e01c8d24003f0892c013eb777a1f0aa8e86f11ca8b5f165dd42402676289",
+        "manifest_sha256_match": true,
+        "result": "PASS",
+        "reviewed": true
+      },
+      {
+        "slug": "inside-heel-hook",
+        "version": 1,
+        "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/inside-heel-hook-v1.png",
+        "image_sha256": "f3e28848d47737f715b549138436ef41580fd54b0617d733a76e47f6980ef6e6",
+        "manifest_sha256_match": true,
+        "result": "KEY_CONTACT_UNCONFIRMED",
+        "reviewed": true
+      },
+      {
+        "slug": "baratoplata",
+        "version": 1,
+        "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/baratoplata-v1.png",
+        "image_sha256": "8f7407be34397111ecc3cbe552bd007e9acd53787cceb8af93d20853e1801350",
+        "manifest_sha256_match": true,
+        "result": "PASS",
+        "reviewed": true
+      },
+      {
+        "slug": "buggy-choke",
+        "version": 1,
+        "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/buggy-choke-v1.png",
+        "image_sha256": "28bde95ad2bcb2b6f94e82971153cb53268a98cda7ac59a8e25c8292f22bddae",
+        "manifest_sha256_match": true,
+        "result": "KEY_CONTACT_UNCONFIRMED",
+        "reviewed": true
+      },
+      {
+        "slug": "canto-choke",
+        "version": 1,
+        "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/canto-choke-v1.png",
+        "image_sha256": "7ad6cc3a5fdc8dd6e219457839a6127d56c6d44595019f18d938228a1876a53c",
+        "manifest_sha256_match": true,
+        "result": "PASS",
+        "reviewed": true
+      },
+      {
+        "slug": "aoki-lock",
+        "version": 1,
+        "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/aoki-lock-v1.png",
+        "image_sha256": "02bbc65d19c64c81015ecb9f7f603a36836f569ebc7c0d6b3e8ac7acc7bf8b2d",
+        "manifest_sha256_match": true,
+        "result": "PASS",
+        "reviewed": true
+      },
+      {
+        "slug": "estima-lock",
+        "version": 1,
+        "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/estima-lock-v1.png",
+        "image_sha256": "f6475c97c953c607b373540530f09ef68e26e9864202fd3b67750a57fe8ce9f6",
+        "manifest_sha256_match": true,
+        "result": "PASS",
+        "reviewed": true
+      },
+      {
+        "slug": "z-lock",
+        "version": 1,
+        "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/z-lock-v1.png",
+        "image_sha256": "4407860c8f50f4e7ef2dc974163c12bd0345855e3aef358e8e3a06493c6f4089",
+        "manifest_sha256_match": true,
+        "result": "PASS",
+        "reviewed": true
+      },
+      {
+        "slug": "outside-heel-hook",
+        "version": 1,
+        "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/outside-heel-hook-v1.png",
+        "image_sha256": "79651b954c87df13e7163439009b6bf84f29d33019a319bb44a7fd1e93616cfb",
+        "manifest_sha256_match": true,
+        "result": "PASS",
+        "reviewed": true
+      },
+      {
+        "slug": "coyote-armbar",
+        "version": 1,
+        "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/coyote-armbar-v1.png",
+        "image_sha256": "68d277eec8d790aaf0ed926df131d76c8f98687d5c8f4028926ed1edc7b7d1f4",
+        "manifest_sha256_match": true,
+        "result": "PASS",
+        "reviewed": true
+      },
+      {
+        "slug": "reverse-x-guard",
+        "version": 1,
+        "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/reverse-x-guard-v1.png",
+        "image_sha256": "83dbe09c6b223c4b2f80b8305f9d6d4e26692e424c8dddbd27af926046fb8315",
+        "manifest_sha256_match": true,
+        "result": "PASS",
+        "reviewed": true
+      },
+      {
+        "slug": "keymaster-guard",
+        "version": 1,
+        "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/keymaster-guard-v1.png",
+        "image_sha256": "9f46f28df85fb927292e9fc3373152950e6fe440043586720249521c5aec4ba1",
+        "manifest_sha256_match": true,
+        "result": "PASS",
+        "reviewed": true
+      },
+      {
+        "slug": "100-percent-sweep",
+        "version": 1,
+        "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/100-percent-sweep-v1.png",
+        "image_sha256": "9749407ec7dc1ccc08031d58836d461131adc2dad2097f536cc2609edd09b52d",
+        "manifest_sha256_match": true,
+        "result": "KEY_CONTACT_UNCONFIRMED",
+        "reviewed": true
+      },
+      {
+        "slug": "williams-guard",
+        "version": 1,
+        "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/williams-guard-v1.png",
+        "image_sha256": "8f4af93e0cd24038b608342f7a9a860cfbdc94aee323f0193c75b9da5fdad9fd",
+        "manifest_sha256_match": true,
+        "result": "PASS",
+        "reviewed": true
+      },
+      {
+        "slug": "quick-armbar",
+        "version": 1,
+        "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/quick-armbar-v1.png",
+        "image_sha256": "a25ab5dd55b2ae14ee0a00a3ea2c9d054216040ac3b8e98c6516f674e35b2c00",
+        "manifest_sha256_match": true,
+        "result": "PASS",
+        "reviewed": true
+      },
+      {
+        "slug": "peterson-roll",
+        "version": 1,
+        "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/peterson-roll-v1.png",
+        "image_sha256": "5da8f3b2bf6ff05a5ff6d0f19cfae6a73cfc53c673915cd1bbe1ee564081b681",
+        "manifest_sha256_match": true,
+        "result": "PASS",
+        "reviewed": true
+      },
+      {
+        "slug": "sagi-oro-sweep",
+        "version": 1,
+        "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/sagi-oro-sweep-v1.png",
+        "image_sha256": "5109ed3beef0323e49441647376441033e13e66d1084bad3fd3310ab78ed784f",
+        "manifest_sha256_match": true,
+        "result": "PASS",
+        "reviewed": true
+      },
+      {
+        "slug": "hugo-lock",
+        "version": 1,
+        "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/hugo-lock-v1.png",
+        "image_sha256": "6fbeb0e58b2a30524db8260429eb85ab4621e61941fe5db2e730a2919c115e4b",
+        "manifest_sha256_match": true,
+        "result": "PASS",
+        "reviewed": true
+      }
+    ],
+    "originalQueueReviewComplete": true
+  },
+  "items": [
+    {
+      "slug": "worm-guard",
+      "name": "웜 가드",
+      "availability": "GENERATED",
+      "observedAt": "2026-11-10T09:37:37.936Z",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/worm-guard-v1.png",
+      "image_sha256": "216c1f8ac1596a185df0fd16e098c1cd46eb1b836eeaad25a95ffda4bcd0b2a3",
+      "image_bytes": 1627895,
+      "complete_png": true,
+      "manifest_original_sha256": "216c1f8ac1596a185df0fd16e098c1cd46eb1b836eeaad25a95ffda4bcd0b2a3",
+      "manifest_sha256_match": true,
+      "manifest_candidate": "reference/technique-illustrations/set-01/production/candidates/worm-guard-v1.webp",
+      "manifest_asset_version": 1,
+      "approved_asset_present": false,
+      "review_target": "latest asset.original, not approvedAsset",
+      "result": "PASS",
+      "result_ko": "PASS",
+      "requires_regeneration": false,
+      "reason": "흰 깃에서 이어지는 라펠이 파란 정강이를 감고 흰 앞다리 쪽을 거쳐 낮은 파란 손으로 돌아오는 대표 웜 가드 경로가 읽힌다. 선 흰 베이스와 파란 가드 다리의 소속도 유지된다.",
+      "keyChecks": [
+        "Released white lapel remains continuous with the white jacket.",
+        "The cloth loops around the blue controlling shin and reaches the low blue grip beside the standing leg.",
+        "Blue remains underneath a standing white base with a separate distance-management leg."
+      ],
+      "regenerationGuidanceEnglish": null,
+      "limbReview": "명백한 추가 사지나 끊긴 관절은 관찰하지 못했다. 먼 다리의 자연스러운 가림은 허용했다.",
+      "characterReview": "보이는 머리색·몸통 도복·하체 색과 브라운벨트가 승인 캐릭터 배역에 맞는다.",
+      "primaryReferencesReviewed": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/worm-guard-keenan-05m40s-confirmed.jpg",
+          "sha256": "d89686df3aa58b3a9b413ba218435e89e59e42bd23a3effdbf0e5095af8fccb6",
+          "directly_opened_with_view_image": true
+        }
+      ],
+      "referenceCopyPerformed": false,
+      "actualPNGDirectlyInspected": true,
+      "hashStableAcrossReview": true,
+      "reviewedAt": "2026-11-10T09:41:09.175Z",
+      "current_asset_matches_reviewed": true,
+      "current_manifest_asset_version": 1,
+      "v1ReviewPreserved": true
+    },
+    {
+      "slug": "matrix",
+      "name": "매트릭스",
+      "availability": "GENERATED",
+      "observedAt": "2026-11-10T09:37:37.936Z",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/matrix-v1.png",
+      "image_sha256": "ad72458d3d9248198f5f1c44eafd866633126e465499c9e97960ce5158fc82fc",
+      "image_bytes": 1625423,
+      "complete_png": true,
+      "manifest_original_sha256": "ad72458d3d9248198f5f1c44eafd866633126e465499c9e97960ce5158fc82fc",
+      "manifest_sha256_match": true,
+      "manifest_candidate": "reference/technique-illustrations/set-01/production/candidates/matrix-v1.webp",
+      "manifest_asset_version": 1,
+      "approved_asset_present": false,
+      "review_target": "latest asset.original, not approvedAsset",
+      "result": "KEY_CONTACT_UNCONFIRMED",
+      "result_ko": "접점 불충분",
+      "requires_regeneration": true,
+      "reason": "파랑의 한 발이 흰 힙에 놓이고 흰 다리 근처의 손 제어는 있으나, 기준 하이 매트릭스의 같은 흰 무릎 뒤 heel hook과 안쪽 무릎·언더훅 조합이 식별되지 않는다. 일반 힙 프레임 가드와 구분하기 어렵다.",
+      "keyChecks": [
+        "Blue has a visible hip-side foot frame.",
+        "A hand reaches the white leg but the underhook route is not sufficiently exposed.",
+        "The second blue heel behind that same controlled white knee is unconfirmed."
+      ],
+      "regenerationGuidanceEnglish": "Rebuild the high Matrix using Espen's selected reference. Blue underhooks one clearly identified standing white leg, keeps the controlling knee inside, and places the hooking heel immediately behind THAT white knee. The other blue foot rests on the hip. Turn blue's hips into the back-taking angle while keeping the heel-to-knee connection readable. Choose a view from the hooking side and leave a small gap around the heel. Do not substitute two generic open-guard frames or spread unrelated limbs merely to make them visible.",
+      "limbReview": "교차한 파란 하체의 끝점이 일부 가려져 추가 다리 수를 단정하지 않는다. 문제는 정의적인 heel-behind-knee 접점 확인 부족이다.",
+      "characterReview": "보이는 두 캐릭터의 머리·몸통·도복 배역은 유지된다.",
+      "primaryReferencesReviewed": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/matrix-espen-01m34s.jpg",
+          "sha256": "bcc7fb7ada4fa41a609c2240192c01e5465b80e50d12ff70e804e1fb44c62f5c",
+          "directly_opened_with_view_image": true
+        },
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/matrix-espen-foot-hip-frame.jpg",
+          "sha256": "1f59813f9e8c92b0da580f8fc70e16513461def2de778a3bae656a8461302859",
+          "directly_opened_with_view_image": true
+        }
+      ],
+      "referenceCopyPerformed": false,
+      "actualPNGDirectlyInspected": true,
+      "hashStableAcrossReview": true,
+      "reviewedAt": "2026-11-10T09:41:09.178Z",
+      "current_asset_matches_reviewed": true,
+      "current_manifest_asset_version": 1,
+      "v1ReviewPreserved": true
+    },
+    {
+      "slug": "waiter-guard",
+      "name": "웨이터 가드",
+      "availability": "GENERATED",
+      "observedAt": "2026-11-10T09:37:37.936Z",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/waiter-guard-v1.png",
+      "image_sha256": "627c06e49fef708bc21add8aa70833de69dc6ba0009ac3734816503e4e032429",
+      "image_bytes": 1497653,
+      "complete_png": true,
+      "manifest_original_sha256": "627c06e49fef708bc21add8aa70833de69dc6ba0009ac3734816503e4e032429",
+      "manifest_sha256_match": true,
+      "manifest_candidate": "reference/technique-illustrations/set-01/production/candidates/waiter-guard-v1.webp",
+      "manifest_asset_version": 1,
+      "approved_asset_present": false,
+      "review_target": "latest asset.original, not approvedAsset",
+      "result": "REGENERATE",
+      "result_ko": "재생성",
+      "requires_regeneration": true,
+      "reason": "원본 바텀의 들어 올린 흰 바지 두 다리가 후보에서도 흰색으로 남아 있으나 바텀 머리·몸통은 파란 캐릭터다. 파란 골반에서 이어지는 하체와 상위 흰 선수의 다리 소속이 뒤섞여 웨이터 로딩 구조를 신뢰하기 어렵다.",
+      "keyChecks": [
+        "The bottom guard player must be blue across torso AND both raised trouser legs.",
+        "The white partner captured leg must be separate from the two raised blue legs.",
+        "The controlled white leg should load on the blue shoulder/supporting arm as in Lucas Valle."
+      ],
+      "regenerationGuidanceEnglish": "Rebuild the two athletes by complete hip-to-foot chains before applying style. The source bottom demonstrator wears white, but the assigned bottom character is BLUE: recolor that entire torso AND BOTH raised legs blue. The top partner keeps a white jacket and two white trouser legs. Keep one captured white leg loaded across blue's shoulder and supporting arm, while blue's own raised legs provide the lift. Retain the demonstrated sleeve control. Do not attach the source bottom white cuffs to the blue pelvis or mix a blue leg into the white waist.",
+      "limbReview": "하체의 색·골반 연결 소속이 서로 맞지 않는 명백한 연결/의상 결함이다. 자연스러운 가림 때문에 실패로 처리한 것이 아니다.",
+      "characterReview": "머리와 상의의 캐릭터 구분은 유지됐지만, 양 바지의 전신 도복 배역이 유지되지 않았다.",
+      "primaryReferencesReviewed": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/waiter-guard-lucasvalle-01m17s-confirmed.jpg",
+          "sha256": "7a700370002b54bfa58889cf343dd08e40a8431204d49f1a9381f6d747b5a2b1",
+          "directly_opened_with_view_image": true
+        }
+      ],
+      "referenceCopyPerformed": false,
+      "actualPNGDirectlyInspected": true,
+      "hashStableAcrossReview": true,
+      "reviewedAt": "2026-11-10T09:41:09.179Z",
+      "current_asset_matches_reviewed": false,
+      "current_manifest_asset_version": 2,
+      "v1ReviewPreserved": true
+    },
+    {
+      "slug": "waiter-sweep",
+      "name": "웨이터 스윕",
+      "availability": "GENERATED",
+      "observedAt": "2026-11-10T09:37:37.936Z",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/waiter-sweep-v1.png",
+      "image_sha256": "bd5974f1fe960c65b511c578ed1beda303e7db14967d14c8bc54b8de1b8635ef",
+      "image_bytes": 1525987,
+      "complete_png": true,
+      "manifest_original_sha256": "bd5974f1fe960c65b511c578ed1beda303e7db14967d14c8bc54b8de1b8635ef",
+      "manifest_sha256_match": true,
+      "manifest_candidate": "reference/technique-illustrations/set-01/production/candidates/waiter-sweep-v1.webp",
+      "manifest_asset_version": 1,
+      "approved_asset_present": false,
+      "review_target": "latest asset.original, not approvedAsset",
+      "result": "REGENERATE",
+      "result_ko": "재생성",
+      "requires_regeneration": true,
+      "reason": "웨이터 가드와 같은 하체 배역 혼합이 보인다. 들어 올린 두 흰 바지 다리와 파란 몸통, 흰 상위 허리 근처 파란 하체가 한 장면에서 섞여 다리의 골반 연결과 지지 다리를 구분할 수 없다.",
+      "keyChecks": [
+        "Blue torso and both blue raised legs must belong to one continuous bottom athlete.",
+        "The captured white leg is loaded at the blue shoulder; the other white leg remains the partner base.",
+        "The blue sleeve-control hand limits a white posting arm without changing limb ownership."
+      ],
+      "regenerationGuidanceEnglish": "Use one coherent loaded instant of Lucas Valle's waiter sweep. Assign the bottom athlete a blue jacket and TWO blue trouser legs from the same blue pelvis; the upper athlete has a white jacket and TWO white trouser legs. Blue's raised legs feed one captured white leg onto the blue shoulder and supporting arm. Keep that captured white leg distinct from blue's lifting legs and keep the remaining white leg as the partner base. Retain the sleeve-control hand and begin the tilt without mixing source garment colors between the two bodies.",
+      "limbReview": "명백한 하체 도복색/소속 혼합 때문에 네 다리의 연결을 신뢰하기 어렵다. 추가 다리 개수를 임의로 확정하지는 않는다.",
+      "characterReview": "하체의 배역별 전신 도복색을 다시 맞춰야 한다.",
+      "primaryReferencesReviewed": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/waiter-sweep-lucasvalle-01m22s.jpg",
+          "sha256": "4c72a074d0c013169e2d03a949d26be7148fef6f4c62feea069577147a54c930",
+          "directly_opened_with_view_image": true
+        }
+      ],
+      "referenceCopyPerformed": false,
+      "actualPNGDirectlyInspected": true,
+      "hashStableAcrossReview": true,
+      "reviewedAt": "2026-11-10T09:41:09.181Z",
+      "current_asset_matches_reviewed": true,
+      "current_manifest_asset_version": 1,
+      "v1ReviewPreserved": true
+    },
+    {
+      "slug": "squid-guard",
+      "name": "스퀴드 가드",
+      "availability": "GENERATED",
+      "observedAt": "2026-11-10T09:37:37.936Z",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/squid-guard-v1.png",
+      "image_sha256": "f03e560eb597fc9d81174a4af0aa4a289c11b22427f4b49afd2f5bea1cf96607",
+      "image_bytes": 1557595,
+      "complete_png": true,
+      "manifest_original_sha256": "f03e560eb597fc9d81174a4af0aa4a289c11b22427f4b49afd2f5bea1cf96607",
+      "manifest_sha256_match": true,
+      "manifest_candidate": "reference/technique-illustrations/set-01/production/candidates/squid-guard-v1.webp",
+      "manifest_asset_version": 1,
+      "approved_asset_present": false,
+      "review_target": "latest asset.original, not approvedAsset",
+      "result": "KEY_CONTACT_UNCONFIRMED",
+      "result_ko": "접점 불충분",
+      "requires_regeneration": true,
+      "reason": "라펠이 파란 발목 주변을 감는 접점은 보이나, 선택한 regular squid의 흰 다리 언더훅과 라펠 hand-off를 받은 손의 연결이 확인되지 않는다. 발목 라펠 가드 일반형과 기술 정체성 구분이 부족하다.",
+      "keyChecks": [
+        "White released lapel is visibly looped near the blue ankle.",
+        "The white-leg underhook and receiving blue hand from the hand-off are unconfirmed.",
+        "The selected regular-squid lower-body rotation is not clearly distinguishable."
+      ],
+      "regenerationGuidanceEnglish": "Choose one settled regular-squid instant from Keenan's two reference frames. Rotate blue underneath the controlled white standing leg, preserve the underhook around that leg, and show the blue receiving hand retaining the lapel after the hand-off. Blue's controlling ankle rests on the tensioned lapel section while the other leg stays separate. Keep the white lapel continuous with its jacket. Expose the leg-underhook and lapel-return junction instead of drawing only a generic foot-on-hip ankle loop, and do not combine the regular and backward variants.",
+      "limbReview": "명백한 추가 사지 결함은 관찰하지 못했다. 가려진 언더훅을 있다고 가정해 통과시키지는 않는다.",
+      "characterReview": "두 캐릭터의 보이는 상·하의 색 배역은 유지된다.",
+      "primaryReferencesReviewed": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/squid-guard-keenan-02m29s.jpg",
+          "sha256": "de28495302e899ea2e383ee18b52d8343b07b421140f3e48633fd7086688aca1",
+          "directly_opened_with_view_image": true
+        },
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/squid-guard-keenan-02m44s.jpg",
+          "sha256": "a394da64c0672d0eca5639553fed77c47f26d3aa8dcbcd2eb84c35d7a68c4005",
+          "directly_opened_with_view_image": true
+        }
+      ],
+      "referenceCopyPerformed": false,
+      "actualPNGDirectlyInspected": true,
+      "hashStableAcrossReview": true,
+      "reviewedAt": "2026-11-10T09:41:09.183Z",
+      "current_asset_matches_reviewed": true,
+      "current_manifest_asset_version": 1,
+      "v1ReviewPreserved": true
+    },
+    {
+      "slug": "crazy-dog-pass",
+      "name": "크레이지 독 패스",
+      "availability": "GENERATED",
+      "observedAt": "2026-11-10T09:37:37.936Z",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/crazy-dog-pass-v1.png",
+      "image_sha256": "54ed6fe361d29014c201122dde576cce1415d91e0c6b21492273f349b3c19876",
+      "image_bytes": 1072887,
+      "complete_png": true,
+      "manifest_original_sha256": "54ed6fe361d29014c201122dde576cce1415d91e0c6b21492273f349b3c19876",
+      "manifest_sha256_match": true,
+      "manifest_candidate": "reference/technique-illustrations/set-01/production/candidates/crazy-dog-pass-v1.webp",
+      "manifest_asset_version": 1,
+      "approved_asset_present": false,
+      "review_target": "latest asset.original, not approvedAsset",
+      "result": "PASS",
+      "result_ko": "PASS",
+      "requires_regeneration": false,
+      "reason": "높은 흰 힙과 뒤로 벌린 두 발, 파란 상체에 낮게 밀착한 흰 가슴·어깨, 소매/팔과 칼라 쪽 제어가 Atos 원본의 named pressure stage와 일치한다.",
+      "keyChecks": [
+        "White hips stay high with two separate rear foot supports.",
+        "White chest and shoulder remain connected above the side-lying blue upper body.",
+        "The close forearm/sleeve and collar-side controls remain visible."
+      ],
+      "regenerationGuidanceEnglish": null,
+      "limbReview": "보이는 사지에 추가 팔다리나 관절 단절을 확인하지 못했다. 파랑의 먼 다리 가림은 자연스러운 것으로 처리했다.",
+      "characterReview": "보이는 흰 탑/파란 바텀 의상과 머리색 배역이 유지된다.",
+      "primaryReferencesReviewed": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/candidate-crazy-dog-pass-official.jpg",
+          "sha256": "b908a35dfe80fbbcf0362fe76b286ebc1a4e5744a5977453ac924334064bdbe2",
+          "directly_opened_with_view_image": true
+        }
+      ],
+      "referenceCopyPerformed": false,
+      "actualPNGDirectlyInspected": true,
+      "hashStableAcrossReview": true,
+      "reviewedAt": "2026-11-10T09:41:09.184Z",
+      "current_asset_matches_reviewed": true,
+      "current_manifest_asset_version": 1,
+      "v1ReviewPreserved": true
+    },
+    {
+      "slug": "lapel-pass",
+      "name": "라펠 패스",
+      "availability": "GENERATED",
+      "observedAt": "2026-11-10T09:37:37.936Z",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/lapel-pass-v1.png",
+      "image_sha256": "a24ddd4dbc9d190f2b66a3078056341ba87b1e41b0cefef40aa1ab17bc44d15f",
+      "image_bytes": 1626440,
+      "complete_png": true,
+      "manifest_original_sha256": "a24ddd4dbc9d190f2b66a3078056341ba87b1e41b0cefef40aa1ab17bc44d15f",
+      "manifest_sha256_match": true,
+      "manifest_candidate": "reference/technique-illustrations/set-01/production/candidates/lapel-pass-v1.webp",
+      "manifest_asset_version": 1,
+      "approved_asset_present": false,
+      "review_target": "latest asset.original, not approvedAsset",
+      "result": "KEY_CONTACT_UNCONFIRMED",
+      "result_ko": "접점 불충분",
+      "requires_regeneration": true,
+      "reason": "흰 손이 파란 깃·허리 부근을 잡는 모습은 있으나, 기준 stack pass의 풀린 파란 라펠이 다리 밑을 감아 받는 손으로 전달되는 고리 경로가 읽히지 않는다. 일반 라펠 핀과 구분하기 부족하다.",
+      "keyChecks": [
+        "White retains one posting hand and a blue-jacket grip.",
+        "The released blue lapel route underneath the folded legs is unconfirmed.",
+        "The receiving-hand figure-eight transfer from the selected source is not readable."
+      ],
+      "regenerationGuidanceEnglish": "Use Keenan's post-hand-off lapel-assisted stack configuration as one coherent pose. White keeps one posting hand while the other receiving arm reaches beneath the elevated blue leg line and holds the released BLUE lapel. Make the lapel origin at blue's jacket and its continuous route around the folded legs visible before it returns to the white receiving hand. Preserve the compact stack. Do not replace the wrap with a simple front-collar or belt-area pinch, and do not add a second receiving hand from the earlier setup frame.",
+      "limbReview": "명백한 추가 사지를 단정하지 않는다. 핵심 결함은 라펠의 실제 감김·hand-off 경로가 확인되지 않는 점이다.",
+      "characterReview": "보이는 흰 패서/파란 가드 선수의 상·하의 배역은 유지된다.",
+      "primaryReferencesReviewed": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/lapel-pass-keenan-02m53s.jpg",
+          "sha256": "8ff17773b093c0c295f72f4b4f727eb5fefa112c47fcec8f51200dd2006c980e",
+          "directly_opened_with_view_image": true
+        },
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/lapel-pass-keenan-04m02s.jpg",
+          "sha256": "2dbad7b3f241dbc1ea7688d03fa7e3af13b11be318d2a79c2527268179f8a70d",
+          "directly_opened_with_view_image": true
+        }
+      ],
+      "referenceCopyPerformed": false,
+      "actualPNGDirectlyInspected": true,
+      "hashStableAcrossReview": true,
+      "reviewedAt": "2026-11-10T09:41:09.186Z",
+      "current_asset_matches_reviewed": true,
+      "current_manifest_asset_version": 1,
+      "v1ReviewPreserved": true
+    },
+    {
+      "slug": "wiper",
+      "name": "와이퍼",
+      "availability": "GENERATED",
+      "observedAt": "2026-11-10T09:37:37.936Z",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/wiper-v1.png",
+      "image_sha256": "68727aff2ecd3f2a3859000076d577cc1542a73d4cd8c4dcb66d1ffebf98e66c",
+      "image_bytes": 1217404,
+      "complete_png": true,
+      "manifest_original_sha256": "68727aff2ecd3f2a3859000076d577cc1542a73d4cd8c4dcb66d1ffebf98e66c",
+      "manifest_sha256_match": true,
+      "manifest_candidate": "reference/technique-illustrations/set-01/production/candidates/wiper-v1.webp",
+      "manifest_asset_version": 1,
+      "approved_asset_present": false,
+      "review_target": "latest asset.original, not approvedAsset",
+      "result": "REGENERATE",
+      "result_ko": "재생성",
+      "requires_regeneration": true,
+      "reason": "접힌 파란 다리 위 흰 탑의 와이퍼 마무리 구도는 가깝지만, 상위 등의 뒤를 감아 손을 올린 팔이 흰 소매로 남아 있다. 원본에서 바텀의 팔에 해당하는 경로가 파란 캐릭터로 재매핑되지 않아 팔 소속이 섞인다.",
+      "keyChecks": [
+        "The folded-leg clearance context is recognizable.",
+        "The arm wrapped over the top white back must belong continuously to the bottom BLUE shoulder and blue sleeve.",
+        "White top control arms must remain distinct from the bottom back-hugging arm."
+      ],
+      "regenerationGuidanceEnglish": "Preserve Lachlan's folded-leg wiper setup, but trace every visible arm from its own shoulder before styling. The arm wrapping over the top athlete's back belongs to the BOTTOM athlete and must remain BLUE from shoulder through sleeve and cuff. The white top athlete retains separate upper-body control arms; do not leave a white-sleeved hand resting on the white athlete's own back by copying the source garment colors. Keep one white lower leg covering the blue leg barrier and the other white leg as the base. Natural far-limb occlusion is allowed.",
+      "limbReview": "상위 등을 감는 팔의 소매 색·소속이 원본 역할과 맞지 않는다. 추가 팔의 총개수를 단정하기보다 확인되는 역할/소매 불일치를 결함으로 기록한다.",
+      "characterReview": "원본 바텀 흰 소매를 파란 캐릭터 팔로 바꾸는 재매핑이 필요하다.",
+      "primaryReferencesReviewed": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/wiper-lachlan-03m41s.jpg",
+          "sha256": "491e202621918f9d019fcebcd00fb2aa70b62bb12ed79d8d7358783adcf2c592",
+          "directly_opened_with_view_image": true
+        }
+      ],
+      "referenceCopyPerformed": false,
+      "actualPNGDirectlyInspected": true,
+      "hashStableAcrossReview": true,
+      "reviewedAt": "2026-11-10T09:41:09.189Z",
+      "current_asset_matches_reviewed": true,
+      "current_manifest_asset_version": 1,
+      "v1ReviewPreserved": true
+    },
+    {
+      "slug": "saddle-position",
+      "name": "새들 포지션",
+      "availability": "GENERATED",
+      "observedAt": "2026-11-10T09:37:37.936Z",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/saddle-position-v1.png",
+      "image_sha256": "aef7728d116d83f4ebd0ed40f9d7e415088fef1c6d06e5eb63b6d60b93a44f04",
+      "image_bytes": 1549718,
+      "complete_png": true,
+      "manifest_original_sha256": "aef7728d116d83f4ebd0ed40f9d7e415088fef1c6d06e5eb63b6d60b93a44f04",
+      "manifest_sha256_match": true,
+      "manifest_candidate": "reference/technique-illustrations/set-01/production/candidates/saddle-position-v1.webp",
+      "manifest_asset_version": 1,
+      "approved_asset_present": false,
+      "review_target": "latest asset.original, not approvedAsset",
+      "result": "KEY_CONTACT_UNCONFIRMED",
+      "result_ko": "접점 불충분",
+      "requires_regeneration": true,
+      "reason": "양 선수가 누워 다리를 얽는 구도는 있으나, 파란 양 다리가 같은 흰 허벅지·무릎선을 감싸는 inside triangle과 파란 발 잠김의 소속이 충분히 읽히지 않는다.",
+      "keyChecks": [
+        "Both athletes are reclined in a leg-entanglement context.",
+        "The same captured white thigh and knee line inside a blue leg triangle are unconfirmed.",
+        "The blue locking-foot connection is too ambiguous to distinguish a settled saddle."
+      ],
+      "regenerationGuidanceEnglish": "Retain the two reclined athletes from Craig's selected inside-saddle frame. Blue's two legs must form one inside triangle around ONE clearly identified white thigh, with that white knee line retained. Show enough of the blue heel-to-own-knee closure to establish the triangle, while white's second leg remains separately traceable across the upper-body area. Keep hands relaxed before heel rotation. Select an oblique view that clarifies ownership of the locking foot; do not invent extra hooks or spread every limb just to expose it.",
+      "limbReview": "일부 발과 골반 연결이 가려져 추가 사지나 특정 관절 오류를 단정하지 않는다. 정의적인 삼각 잠김의 식별이 부족하다.",
+      "characterReview": "머리·몸통 배역은 유지되나 얽힌 발·바지의 소속은 핵심 접점과 함께 다시 확인해야 한다.",
+      "primaryReferencesReviewed": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/saddle-craig-02m35s.jpg",
+          "sha256": "ab2ba6e866258a7d01f9b3d850e50b6e7ae13d6c050fbe065ebff2d3d7114759",
+          "directly_opened_with_view_image": true
+        }
+      ],
+      "referenceCopyPerformed": false,
+      "actualPNGDirectlyInspected": true,
+      "hashStableAcrossReview": true,
+      "reviewedAt": "2026-11-10T09:41:09.191Z",
+      "current_asset_matches_reviewed": true,
+      "current_manifest_asset_version": 1,
+      "v1ReviewPreserved": true
+    },
+    {
+      "slug": "honey-hole",
+      "name": "허니 홀",
+      "availability": "GENERATED",
+      "observedAt": "2026-11-10T09:37:37.936Z",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/honey-hole-v1.png",
+      "image_sha256": "25ac59b9dd0976f6c50437f1cf7f92a5f75eeba7fab8a475ac6fa0ebd8b0921f",
+      "image_bytes": 1518332,
+      "complete_png": true,
+      "manifest_original_sha256": "25ac59b9dd0976f6c50437f1cf7f92a5f75eeba7fab8a475ac6fa0ebd8b0921f",
+      "manifest_sha256_match": true,
+      "manifest_candidate": "reference/technique-illustrations/set-01/production/candidates/honey-hole-v1.webp",
+      "manifest_asset_version": 1,
+      "approved_asset_present": false,
+      "review_target": "latest asset.original, not approvedAsset",
+      "result": "REGENERATE",
+      "result_ko": "재생성",
+      "requires_regeneration": true,
+      "reason": "허니홀의 눕거나 앉은 inside triangle이 아니라 흰 선수가 위에서 무릎을 넣고 파란 바텀을 누르는 니컷/상위 패스 구도로 바뀌었다. 같은 원본 근거의 다리 얽힘 정체성이 보존되지 않았다.",
+      "keyChecks": [
+        "The required inside leg triangle around a white thigh is absent.",
+        "White is presented as a kneeling top passer rather than a partner in the selected inside entanglement.",
+        "The source positional control before heel rotation is not preserved."
+      ],
+      "regenerationGuidanceEnglish": "Rebuild the documented honey-hole inside-saddle position from the actual two-reclined-athlete source. Blue sits or reclines beside white's hips and closes an inside leg triangle around one white thigh, retaining the knee line. Keep white's second leg independently readable across the upper-body area. White is a partner in the leg entanglement, not a kneeling top passer with a knee through the guard. Preserve the approved character identities only after the leg topology is correct. Do not reuse the knee-cut style image's body arrangement.",
+      "limbReview": "명백한 추가 사지보다 기술 포지션 자체가 다른 상위 패스로 대체된 결함이다.",
+      "characterReview": "두 캐릭터의 보이는 의상·머리색은 유지되지만 기술 자세 정체성은 보존되지 않았다.",
+      "primaryReferencesReviewed": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/saddle-craig-02m35s.jpg",
+          "sha256": "ab2ba6e866258a7d01f9b3d850e50b6e7ae13d6c050fbe065ebff2d3d7114759",
+          "directly_opened_with_view_image": true
+        }
+      ],
+      "referenceCopyPerformed": false,
+      "actualPNGDirectlyInspected": true,
+      "hashStableAcrossReview": true,
+      "reviewedAt": "2026-11-10T09:41:09.192Z",
+      "current_asset_matches_reviewed": false,
+      "current_manifest_asset_version": 2,
+      "v1ReviewPreserved": true
+    },
+    {
+      "slug": "inside-ashi-garami",
+      "name": "인사이드 아시 가라미",
+      "availability": "GENERATED",
+      "observedAt": "2026-11-10T09:44:56.874Z",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/inside-ashi-garami-v1.png",
+      "image_sha256": "cf00e01c8d24003f0892c013eb777a1f0aa8e86f11ca8b5f165dd42402676289",
+      "image_bytes": 1390670,
+      "complete_png": true,
+      "manifest_original_sha256": "cf00e01c8d24003f0892c013eb777a1f0aa8e86f11ca8b5f165dd42402676289",
+      "manifest_sha256_match": true,
+      "manifest_candidate": "reference/technique-illustrations/set-01/production/candidates/inside-ashi-garami-v1.webp",
+      "manifest_asset_version": 1,
+      "approved_asset_present": false,
+      "review_target": "latest asset.original, not approvedAsset",
+      "result": "PASS",
+      "result_ko": "PASS",
+      "requires_regeneration": false,
+      "reason": "파란 두 무릎이 흰 포획 다리의 허벅지·무릎선을 안쪽에서 제어하고, 흰 정강이가 파란 몸통 앞을 지나 발이 상체 가까이 모인다. 별도의 힙 쪽 발 지지와 흰 반대 다리도 구분되어 선택한 Lachlan inside-ashi 정착 자세가 읽힌다.",
+      "keyChecks": [
+        "Blue bent knees retain the captured white thigh along the inside line.",
+        "The captured white lower leg crosses the blue front with its foot collected near the upper body.",
+        "The hip-side blue foot support and the separate second white leg remain identifiable."
+      ],
+      "regenerationGuidanceEnglish": null,
+      "limbReview": "보이는 사지에 명백한 추가 다리나 관절 단절은 관찰하지 못했다. 먼 파란 발의 가림만으로 실패 처리하지 않았다.",
+      "characterReview": "보이는 흰 상대/파란 제어자의 머리와 전신 도복 배역이 유지된다.",
+      "primaryReferencesReviewed": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/inside-ashi-lachlan-00m49s.jpg",
+          "sha256": "27f7937030bf419826554f97bc57b5a24224e575748a626358e294dbfbe81970",
+          "directly_opened_with_view_image": true
+        }
+      ],
+      "referenceCopyPerformed": false,
+      "actualPNGDirectlyInspected": true,
+      "hashStableAcrossReview": true,
+      "reviewedAt": "2026-11-10T09:44:56.893Z",
+      "current_asset_matches_reviewed": true,
+      "current_manifest_asset_version": 1,
+      "v1ReviewPreserved": true
+    },
+    {
+      "slug": "inside-heel-hook",
+      "name": "인사이드 힐훅",
+      "availability": "GENERATED",
+      "observedAt": "2026-11-10T09:44:56.894Z",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/inside-heel-hook-v1.png",
+      "image_sha256": "f3e28848d47737f715b549138436ef41580fd54b0617d733a76e47f6980ef6e6",
+      "image_bytes": 1499869,
+      "complete_png": true,
+      "manifest_original_sha256": "f3e28848d47737f715b549138436ef41580fd54b0617d733a76e47f6980ef6e6",
+      "manifest_sha256_match": true,
+      "manifest_candidate": "reference/technique-illustrations/set-01/production/candidates/inside-heel-hook-v1.webp",
+      "manifest_asset_version": 1,
+      "approved_asset_present": false,
+      "review_target": "latest asset.original, not approvedAsset",
+      "result": "KEY_CONTACT_UNCONFIRMED",
+      "result_ko": "접점 불충분",
+      "requires_regeneration": true,
+      "reason": "무릎선 얽힘과 흰 발 수집은 있으나, 노출된 뒤꿈치를 파란 전완으로 받는 heel catch와 그립을 닫는 양손 연결이 읽히지 않는다. 두 손으로 발·발목을 직접 모아 쥔 그림으로도 보여 인사이드 힐훅 접점을 확정하기 부족하다.",
+      "keyChecks": [
+        "Blue legs retain a white captured-leg connection.",
+        "The white foot is near blue upper body.",
+        "The exposed inside heel against the hooking forearm and joined-hand closure are unconfirmed."
+      ],
+      "regenerationGuidanceEnglish": "Keep Lachlan's selected inside-heel-hook leg entanglement and foot orientation. Place the white toes close under blue's armpit-side upper body and let the exposed heel rest visibly against the hooking BLUE forearm or wrist ridge. The other blue hand closes the grip on the blue hand or wrist rather than simply adding a second palm around the white ankle. Show that heel-to-forearm junction clearly from the grip side and freeze before rotation. Preserve the controlled knee line without changing the foot direction merely to fit the composition.",
+      "limbReview": "명백한 추가 사지를 단정하지 않는다. 발 수집 자체와 실제 힐 캐치·양손 잠금은 구분해 판정했다.",
+      "characterReview": "보이는 머리·몸통·바지의 흰/파란 배역은 유지된다.",
+      "primaryReferencesReviewed": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/inside-heel-hook-lachlan-03m06s.jpg",
+          "sha256": "5d43d7ede24e12ac6b4d213134ab2fc50b1afb9e95a220023e42929bc5c970cb",
+          "directly_opened_with_view_image": true
+        }
+      ],
+      "referenceCopyPerformed": false,
+      "actualPNGDirectlyInspected": true,
+      "hashStableAcrossReview": true,
+      "reviewedAt": "2026-11-10T09:44:56.912Z",
+      "current_asset_matches_reviewed": true,
+      "current_manifest_asset_version": 1,
+      "v1ReviewPreserved": true
+    },
+    {
+      "slug": "baratoplata",
+      "name": "바라토플라타",
+      "availability": "GENERATED",
+      "observedAt": "2026-11-10T09:47:38.083Z",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/baratoplata-v1.png",
+      "image_sha256": "8f7407be34397111ecc3cbe552bd007e9acd53787cceb8af93d20853e1801350",
+      "image_bytes": 1506650,
+      "complete_png": true,
+      "manifest_original_sha256": "8f7407be34397111ecc3cbe552bd007e9acd53787cceb8af93d20853e1801350",
+      "manifest_sha256_match": true,
+      "manifest_candidate": "reference/technique-illustrations/set-01/production/candidates/baratoplata-v1.webp",
+      "manifest_asset_version": 1,
+      "approved_asset_present": false,
+      "review_target": "latest asset.original, not approvedAsset",
+      "result": "PASS",
+      "result_ko": "PASS",
+      "requires_regeneration": false,
+      "reason": "흰 굽힌 팔이 파란 허벅지·몸통 사이에 모이고, 파란 팔의 자기 허벅지 쪽 연결과 위팔을 막는 다리, 반대 손의 포스트가 Freitas의 top Baratoplata 대표 자세로 읽힌다.",
+      "keyChecks": [
+        "The white elbow remains bent with the forearm trapped against the blue thigh/body.",
+        "Blue arm threads underneath the controlled upper arm toward the own-thigh connection.",
+        "Blue leg blocks the upper arm while the opposite hand posts separately."
+      ],
+      "regenerationGuidanceEnglish": null,
+      "limbReview": "원본과 비슷한 압축된 팔 트랩에서 일부 손가락은 가려진다. 보이는 소속·위팔/허벅지 관계에서 명백한 추가 사지나 관절 단절은 확인하지 못했다.",
+      "characterReview": "보이는 파란 상위/흰 바텀의 전신 도복과 머리색 배역이 유지된다.",
+      "primaryReferencesReviewed": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/candidate-baratoplata-detail4-official.png",
+          "sha256": "724571265b2c54d3a8d281830102472adb717c45a6813155687a7401155ec915",
+          "directly_opened_with_view_image": true
+        }
+      ],
+      "referenceCopyPerformed": false,
+      "actualPNGDirectlyInspected": true,
+      "hashStableAcrossReview": true,
+      "reviewedAt": "2026-11-10T09:47:38.104Z",
+      "current_asset_matches_reviewed": true,
+      "current_manifest_asset_version": 1,
+      "v1ReviewPreserved": true
+    },
+    {
+      "slug": "buggy-choke",
+      "name": "버기 초크",
+      "availability": "GENERATED",
+      "observedAt": "2026-11-10T09:47:38.105Z",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/buggy-choke-v1.png",
+      "image_sha256": "28bde95ad2bcb2b6f94e82971153cb53268a98cda7ac59a8e25c8292f22bddae",
+      "image_bytes": 1390534,
+      "complete_png": true,
+      "manifest_original_sha256": "28bde95ad2bcb2b6f94e82971153cb53268a98cda7ac59a8e25c8292f22bddae",
+      "manifest_sha256_match": true,
+      "manifest_candidate": "reference/technique-illustrations/set-01/production/candidates/buggy-choke-v1.webp",
+      "manifest_asset_version": 1,
+      "approved_asset_present": false,
+      "review_target": "latest asset.original, not approvedAsset",
+      "result": "KEY_CONTACT_UNCONFIRMED",
+      "result_ko": "접점 불충분",
+      "requires_regeneration": true,
+      "reason": "화면 왼쪽 발과 흰 소매 경로가 겹쳐 발의 소속 및 파란 자기 팔·다리 loop의 폐쇄를 충분히 추적하기 어렵다. 이 겹침만으로 추가 발이나 손발 치환을 확정하지 않고, 버기 초크의 정의적인 arm-leg 접점 확인 부족으로 판정한다.",
+      "keyChecks": [
+        "The far white limb ending near the blue head must have coherent shoulder/hip ownership; a foot at an arm-like sleeve endpoint does not pass.",
+        "Blue must connect the own arm through the bent own-leg loop around the white head/upper-arm region.",
+        "White remains perpendicular top side control with two continuous white legs; not a generic knee-through-guard posture."
+      ],
+      "regenerationGuidanceEnglish": "Keep white perpendicular across blue in top side control. Trace blue's bent leg continuously from the blue hip to the raised knee, ankle, and foot, and thread the blue arm through the own-leg loop around white's head and upper-arm region. Make the arm-to-leg closure readable. Where the blue foot overlaps a white sleeve, separate the silhouettes slightly so it does not appear to terminate that sleeve. Do not delete a naturally occluded limb merely because its ownership is unclear; rebuild one coherent two-athlete pose from the Ruotolo frame.",
+      "limbReview": "앞선 추가 발/손발 치환 해석은 가림만으로 확정할 수 없어 좁혔다. 명백한 추가 사지를 단정하지 않고 실제로 읽히지 않는 핵심 loop와 발 소속을 보완 대상으로 남긴다.",
+      "characterReview": "흰 커프/발과 팔 경로 소속이 섞이며, 파란 바텀의 arm-leg loop를 먼저 복원해야 한다.",
+      "primaryReferencesReviewed": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/buggy-choke-ruotolo-00m25s.jpg",
+          "sha256": "6a795195f55665877f3ca8ae8025c35b527b5074d4ab2bcca16deb625fd0a35a",
+          "directly_opened_with_view_image": true
+        }
+      ],
+      "referenceCopyPerformed": false,
+      "actualPNGDirectlyInspected": true,
+      "hashStableAcrossReview": true,
+      "reviewedAt": "2026-11-10T09:47:38.120Z",
+      "originalAssessmentPreserved": {
+        "result": "REGENERATE",
+        "reason": "화면 왼쪽 흰 소매처럼 이어진 경로 끝에 손이 아닌 발 형태가 붙고, 다른 두 흰 커프/발도 보여 사지의 소속·연결이 어긋난다. 파란 바텀의 자기 팔·접힌 다리 loop가 흰 머리/위팔을 감싸는 핵심 고정도 확인하기 어렵다.",
+        "limbReview": "손발 형태/소속의 명백한 불연속이 있다. 정확히 추가 다리인지 손발 치환인지의 원인은 단정하지 않는다."
+      },
+      "reviewClarification": "Natural overlap is not by itself proof of an extra limb. Regeneration remains required because the defining closure cannot be confirmed.",
+      "current_asset_matches_reviewed": true,
+      "current_manifest_asset_version": 1,
+      "v1ReviewPreserved": true
+    },
+    {
+      "slug": "canto-choke",
+      "name": "칸토 초크",
+      "availability": "GENERATED",
+      "observedAt": "2026-11-10T09:59:09.454Z",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/canto-choke-v1.png",
+      "image_sha256": "7ad6cc3a5fdc8dd6e219457839a6127d56c6d44595019f18d938228a1876a53c",
+      "image_bytes": 1497909,
+      "complete_png": true,
+      "manifest_original_sha256": "7ad6cc3a5fdc8dd6e219457839a6127d56c6d44595019f18d938228a1876a53c",
+      "manifest_sha256_match": true,
+      "manifest_candidate": "reference/technique-illustrations/set-01/production/candidates/canto-choke-v1.webp",
+      "manifest_asset_version": 1,
+      "approved_asset_present": false,
+      "review_target": "latest asset.original, not approvedAsset",
+      "result": "PASS",
+      "result_ko": "PASS",
+      "requires_regeneration": false,
+      "reason": "흰 상대의 머리가 낮아진 상태에서 파란 다리가 머리·상부 등 위로 넘어가고, 파란 칼라 제어와 옆으로 튼 힙이 Canto 대표 고정으로 읽힌다. 단순한 하이 가드나 삼각형으로 대체되지 않았다.",
+      "keyChecks": [
+        "The raised blue leg crosses the white head/upper-back line.",
+        "The collar-control connection draws the white posture down while remaining continuous with the gi.",
+        "Blue hips angle beside the kneeling white partner with the other blue leg separately traceable."
+      ],
+      "regenerationGuidanceEnglish": null,
+      "limbReview": "보이는 다리·팔 경로에서 명백한 추가 사지나 단절을 확인하지 못했다. 칼라 안쪽의 작은 손가락 가림을 이유로 실패 처리하지 않았다.",
+      "characterReview": "보이는 검은 머리/흰 도복 상대와 흰 머리/파란 도복 주체, 브라운벨트 및 중립 렌더링이 일관된다.",
+      "primaryReferencesReviewed": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/canto-choke-grapplerstation-01m17s.jpg",
+          "sha256": "f1833914258e9bff5459d4235441b68fa7adff265c349b85894ca4c5b68b0a49",
+          "directly_opened_with_view_image": true
+        }
+      ],
+      "referenceCopyPerformed": false,
+      "actualPNGDirectlyInspected": true,
+      "hashStableAcrossReview": true,
+      "reviewedAt": "2026-11-10T09:59:09.489Z",
+      "promptRequestedActor": "blue",
+      "renderedActor": "blue",
+      "roleRemappingRecorded": false,
+      "current_asset_matches_reviewed": true,
+      "current_manifest_asset_version": 1,
+      "v1ReviewPreserved": true
+    },
+    {
+      "slug": "aoki-lock",
+      "name": "아오키 락",
+      "availability": "GENERATED",
+      "observedAt": "2026-11-10T10:01:35.649Z",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/aoki-lock-v1.png",
+      "image_sha256": "02bbc65d19c64c81015ecb9f7f603a36836f569ebc7c0d6b3e8ac7acc7bf8b2d",
+      "image_bytes": 1646589,
+      "complete_png": true,
+      "manifest_original_sha256": "02bbc65d19c64c81015ecb9f7f603a36836f569ebc7c0d6b3e8ac7acc7bf8b2d",
+      "manifest_sha256_match": true,
+      "manifest_candidate": "reference/technique-illustrations/set-01/production/candidates/aoki-lock-v1.webp",
+      "manifest_asset_version": 1,
+      "approved_asset_present": false,
+      "review_target": "latest asset.original, not approvedAsset",
+      "result": "PASS",
+      "result_ko": "PASS",
+      "requires_regeneration": false,
+      "reason": "Calestine 원본과 같은 한 무릎 상대·리클라인 제어자 배치에서 파란 무릎이 포획 다리를 모으고, 발이 파란 겨드랑이 가까이 수집되며 뒤꿈치가 지지 전완 위에 드러나는 세팅이 보존된다.",
+      "keyChecks": [
+        "Blue knees contain the partner captured leg in the source one-knee context.",
+        "The captured foot stays at the blue armpit-side upper body with the heel above the supporting arm.",
+        "The compact forearm/ankle connection preserves the source foot orientation before rotation."
+      ],
+      "regenerationGuidanceEnglish": null,
+      "limbReview": "무릎 사이 포획 다리 일부는 원본과 같이 가려진다. 보이는 뒤꿈치·지지 팔·무릎 관계에서 명백한 추가 사지나 단절을 관찰하지 못했다.",
+      "characterReview": "파란 제어자와 흰 상대의 머리색·상의·양 바지 소속이 일관된다.",
+      "primaryReferencesReviewed": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/candidate-aoki-lock-calestine-official.jpg",
+          "sha256": "9962919049d077b31a556d4ca96b54aa4d696c849258d2c253c1cf5bbafdf7d2",
+          "directly_opened_with_view_image": true
+        }
+      ],
+      "referenceCopyPerformed": false,
+      "actualPNGDirectlyInspected": true,
+      "hashStableAcrossReview": true,
+      "reviewedAt": "2026-11-10T10:01:35.678Z",
+      "renderedActor": "blue",
+      "promptRequestedActor": "blue",
+      "roleRemappingRecorded": false,
+      "current_asset_matches_reviewed": true,
+      "current_manifest_asset_version": 1,
+      "v1ReviewPreserved": true
+    },
+    {
+      "slug": "estima-lock",
+      "name": "에스티마 락",
+      "availability": "GENERATED",
+      "observedAt": "2026-11-10T10:01:35.679Z",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/estima-lock-v1.png",
+      "image_sha256": "f6475c97c953c607b373540530f09ef68e26e9864202fd3b67750a57fe8ce9f6",
+      "image_bytes": 1594305,
+      "complete_png": true,
+      "manifest_original_sha256": "f6475c97c953c607b373540530f09ef68e26e9864202fd3b67750a57fe8ce9f6",
+      "manifest_sha256_match": true,
+      "manifest_candidate": "reference/technique-illustrations/set-01/production/candidates/estima-lock-v1.webp",
+      "manifest_asset_version": 1,
+      "approved_asset_present": false,
+      "review_target": "latest asset.original, not approvedAsset",
+      "result": "PASS",
+      "result_ko": "PASS",
+      "requires_regeneration": false,
+      "reason": "흰 무릎 베이스 위에서 파란 발을 하복부·겨드랑이 쪽 몸통으로 모으고 전완으로 받는 초기 foot-capture가 Braulio의 0:31 실제 시범과 일치한다. 굽힌 파란 무릎과 반대 발도 분리된다.",
+      "keyChecks": [
+        "White kneels over blue open guard rather than changing to a seated generic leg lock.",
+        "The blue foot is collected against the white lower torso/armpit-side clamp with a supporting forearm.",
+        "The captured blue knee stays bent and connected; the other blue foot remains distinct."
+      ],
+      "regenerationGuidanceEnglish": null,
+      "limbReview": "보이는 사지에 명백한 추가 팔다리나 단절은 확인하지 못했다. 실제 출처처럼 자유 손이 칼라 쪽에 있는 초기 수집 단계로 판정하며 완전한 피니시 그립·회전 성공은 주장하지 않는다.",
+      "characterReview": "흰 기술 주체와 파란 오픈가드 상대의 전신 의상과 중립 캐릭터 식별이 유지된다.",
+      "primaryReferencesReviewed": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/estima-lock-braulio-00m31s.jpg",
+          "sha256": "348c1a4eb5e5d0b510dac656849adc76be48b066be086599c0a6a7fded009d8e",
+          "directly_opened_with_view_image": true
+        },
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/estima-lock-braulio-00m36s.jpg",
+          "sha256": "90066cb09ec1fc951af166e172fd5d53b0070f92cf1cf83656dc70872925c218",
+          "directly_opened_with_view_image": true
+        }
+      ],
+      "referenceCopyPerformed": false,
+      "actualPNGDirectlyInspected": true,
+      "hashStableAcrossReview": true,
+      "reviewedAt": "2026-11-10T10:01:35.697Z",
+      "renderedActor": "white",
+      "promptRequestedActor": "white",
+      "roleRemappingRecorded": false,
+      "posePhase": "Initial foot capture shown at 00:31, before complete finishing closure or rotation.",
+      "current_asset_matches_reviewed": true,
+      "current_manifest_asset_version": 1,
+      "v1ReviewPreserved": true
+    },
+    {
+      "slug": "z-lock",
+      "name": "Z 락",
+      "availability": "GENERATED",
+      "observedAt": "2026-11-10T10:01:35.698Z",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/z-lock-v1.png",
+      "image_sha256": "4407860c8f50f4e7ef2dc974163c12bd0345855e3aef358e8e3a06493c6f4089",
+      "image_bytes": 1186900,
+      "complete_png": true,
+      "manifest_original_sha256": "4407860c8f50f4e7ef2dc974163c12bd0345855e3aef358e8e3a06493c6f4089",
+      "manifest_sha256_match": true,
+      "manifest_candidate": "reference/technique-illustrations/set-01/production/candidates/z-lock-v1.webp",
+      "manifest_asset_version": 1,
+      "approved_asset_present": false,
+      "review_target": "latest asset.original, not approvedAsset",
+      "result": "PASS",
+      "result_ko": "PASS",
+      "requires_regeneration": false,
+      "reason": "파란 다리가 흰 허벅지를 제어하고 굽힌 흰 정강이·무릎을 파란 양 전완이 몸통 앞에서 안으며, 포획 발은 파란 어깨 뒤로 이어진다. Degle의 diagonal-ashi Z-lock 정착 관계가 읽힌다.",
+      "keyChecks": [
+        "Blue leg control contains the white thigh with the captured knee flexed.",
+        "The white bent lower leg crosses blue torso and is hugged at the knee/shin by the forearms.",
+        "The captured white foot remains behind the blue shoulder-side line, separate from the other white leg."
+      ],
+      "regenerationGuidanceEnglish": null,
+      "limbReview": "원본의 압축된 leg fold와 자연스러운 가림을 유지한다. 보이는 발·무릎·팔 소속에서 명백한 추가 사지나 불가능한 무릎 꺾임은 관찰하지 못했다.",
+      "characterReview": "흰 상대/파란 제어자의 머리와 전신 도복 소속이 일관되고 승인된 중립 스타일을 유지한다.",
+      "primaryReferencesReviewed": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/candidate-z-lock-official.png",
+          "sha256": "0cffb346d04a90e95dba6901444b762ea252a1da09c50e58d192da38f5fb467d",
+          "directly_opened_with_view_image": true
+        }
+      ],
+      "referenceCopyPerformed": false,
+      "actualPNGDirectlyInspected": true,
+      "hashStableAcrossReview": true,
+      "reviewedAt": "2026-11-10T10:01:35.717Z",
+      "renderedActor": "blue",
+      "promptRequestedActor": "blue",
+      "roleRemappingRecorded": false,
+      "current_asset_matches_reviewed": true,
+      "current_manifest_asset_version": 1,
+      "v1ReviewPreserved": true
+    },
+    {
+      "slug": "outside-heel-hook",
+      "name": "아웃사이드 힐훅",
+      "availability": "GENERATED",
+      "observedAt": "2026-11-10T10:03:10.613Z",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/outside-heel-hook-v1.png",
+      "image_sha256": "79651b954c87df13e7163439009b6bf84f29d33019a319bb44a7fd1e93616cfb",
+      "image_bytes": 1750739,
+      "complete_png": true,
+      "manifest_original_sha256": "79651b954c87df13e7163439009b6bf84f29d33019a319bb44a7fd1e93616cfb",
+      "manifest_sha256_match": true,
+      "manifest_candidate": "reference/technique-illustrations/set-01/production/candidates/outside-heel-hook-v1.webp",
+      "manifest_asset_version": 1,
+      "approved_asset_present": false,
+      "review_target": "latest asset.original, not approvedAsset",
+      "result": "PASS",
+      "result_ko": "PASS",
+      "requires_regeneration": false,
+      "reason": "흰 상대가 앞으로 돌아 지지하는 동안 파란 무릎선 제어와 상체 가까운 발 수집, 뒤꿈치를 받는 파란 팔의 접점이 원본의 outside-heel control 정지 장면으로 읽힌다.",
+      "keyChecks": [
+        "Blue retains the white thigh/knee line as the partner turns forward.",
+        "The captured foot remains near the blue upper body with an exposed heel against the hooking forearm connection.",
+        "The leg route and heel orientation remain consistent with the full-leg frame and closer grip reference."
+      ],
+      "regenerationGuidanceEnglish": null,
+      "limbReview": "상대의 회전·가림을 원본과 같이 보존한다. 보이는 팔·발 접점에 명백한 추가 사지나 관절 단절을 확인하지 못했다. 실제 회전 피니시의 효과를 판정한 것은 아니다.",
+      "characterReview": "파란 제어자와 흰 상대의 머리·몸통·양 바지 소속 및 중립 렌더링이 유지된다.",
+      "primaryReferencesReviewed": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/outside-heel-hook-lachlan-05m28s.jpg",
+          "sha256": "b926a91fe0e88ee7b8fb7d4896f73d95e1b5d5a3ae552a1626f614dab457dcb7",
+          "directly_opened_with_view_image": true
+        },
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/candidate-outside-heel-hook-2WGoiVMGvrQ.jpg",
+          "sha256": "4b75f739c3bb346a5703aae0aeec27fd6e85ce6770ac1d26a0ae41a4b091ca1f",
+          "directly_opened_with_view_image": true
+        }
+      ],
+      "referenceCopyPerformed": false,
+      "actualPNGDirectlyInspected": true,
+      "hashStableAcrossReview": true,
+      "reviewedAt": "2026-11-10T10:03:10.641Z",
+      "renderedActor": "blue",
+      "promptRequestedActor": "blue",
+      "roleRemappingRecorded": false,
+      "current_asset_matches_reviewed": true,
+      "current_manifest_asset_version": 1,
+      "v1ReviewPreserved": true
+    },
+    {
+      "slug": "coyote-armbar",
+      "name": "코요테 암바",
+      "availability": "GENERATED",
+      "observedAt": "2026-11-10T10:03:10.643Z",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/coyote-armbar-v1.png",
+      "image_sha256": "68d277eec8d790aaf0ed926df131d76c8f98687d5c8f4028926ed1edc7b7d1f4",
+      "image_bytes": 1178434,
+      "complete_png": true,
+      "manifest_original_sha256": "68d277eec8d790aaf0ed926df131d76c8f98687d5c8f4028926ed1edc7b7d1f4",
+      "manifest_sha256_match": true,
+      "manifest_candidate": "reference/technique-illustrations/set-01/production/candidates/coyote-armbar-v1.webp",
+      "manifest_asset_version": 1,
+      "approved_asset_present": false,
+      "review_target": "latest asset.original, not approvedAsset",
+      "result": "PASS",
+      "result_ko": "PASS",
+      "requires_regeneration": false,
+      "reason": "Mica의 실제 후반 고정처럼 파란 주체가 흰 상대 옆에 누워 팔을 힙 쪽으로 모으고, 머리선을 가로지르는 다리와 머리 뒤/아래에 남는 반대 다리 관계가 보존된다.",
+      "keyChecks": [
+        "The isolated white arm remains connected at the blue hip line.",
+        "One blue leg crosses the white head line while the other remains behind/under the head in the demonstrated finish.",
+        "Both athletes are grounded in the selected coyote-to-armbar finish, without an unrelated airborne jump or standard-armbar substitution."
+      ],
+      "regenerationGuidanceEnglish": null,
+      "limbReview": "일부 파란 발끝은 머리 뒤에서 자연스럽게 가려진다. 보이는 무릎·정강이·포획 팔의 관계는 원본과 맞고, 명백한 추가 사지나 단절은 관찰하지 못했다.",
+      "characterReview": "Mica 역할의 파란 캐릭터와 흰 상대의 전신 도복 소속, 머리색·중립 스타일이 유지된다.",
+      "primaryReferencesReviewed": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/coyote-armbar-mica-04m25s.jpg",
+          "sha256": "098f081fd243f0eea6690fad130686011e96d437becd2f257fc8333965425343",
+          "directly_opened_with_view_image": true
+        }
+      ],
+      "referenceCopyPerformed": false,
+      "actualPNGDirectlyInspected": true,
+      "hashStableAcrossReview": true,
+      "reviewedAt": "2026-11-10T10:03:10.665Z",
+      "renderedActor": "blue",
+      "promptRequestedActor": "blue",
+      "roleRemappingRecorded": false,
+      "current_asset_matches_reviewed": true,
+      "current_manifest_asset_version": 1,
+      "v1ReviewPreserved": true
+    },
+    {
+      "slug": "reverse-x-guard",
+      "name": "리버스 엑스가드",
+      "availability": "GENERATED",
+      "observedAt": "2026-11-10T10:05:18.671Z",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/reverse-x-guard-v1.png",
+      "image_sha256": "83dbe09c6b223c4b2f80b8305f9d6d4e26692e424c8dddbd27af926046fb8315",
+      "image_bytes": 1259107,
+      "complete_png": true,
+      "manifest_original_sha256": "83dbe09c6b223c4b2f80b8305f9d6d4e26692e424c8dddbd27af926046fb8315",
+      "manifest_sha256_match": true,
+      "manifest_candidate": "reference/technique-illustrations/set-01/production/candidates/reverse-x-guard-v1.webp",
+      "manifest_asset_version": 1,
+      "approved_asset_present": false,
+      "review_target": "latest asset.original, not approvedAsset",
+      "result": "PASS",
+      "result_ko": "PASS",
+      "requires_regeneration": false,
+      "reason": "흰 선 자세 아래의 파란 상체 다리 제어와 힙 안쪽의 유지 훅, 그 아래로 들어간 반대 발의 교차가 Black Flag의 post-peel reverse-X 정지 배열로 읽힌다.",
+      "keyChecks": [
+        "Blue retains the upper-body connection around the controlled white leg.",
+        "The upper retained hook remains between the white hip/thigh line.",
+        "The other blue foot threads below that hook, preserving the reversed crossing with the other white leg separate."
+      ],
+      "regenerationGuidanceEnglish": null,
+      "limbReview": "원본에서 겹치는 안쪽 훅과 발이 같은 관계로 유지된다. 보이는 사지에 명백한 추가 팔다리나 관절 단절은 확인하지 못했다. 앞선 발 떼기 동작의 실행을 정지 화면으로 판정하지는 않는다.",
+      "characterReview": "파란 가드 주체/흰 선 상대의 전신 도복 배역과 중립 스타일이 유지된다.",
+      "primaryReferencesReviewed": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/reverse-x-guard-blackflag-00m56s.jpg",
+          "sha256": "7a0154e1c6fd3e6bfc7fbfd32ea4b9164848093abf0dd8a417ee7124fdd9c3cc",
+          "directly_opened_with_view_image": true
+        }
+      ],
+      "referenceCopyPerformed": false,
+      "actualPNGDirectlyInspected": true,
+      "hashStableAcrossReview": true,
+      "reviewedAt": "2026-11-10T10:05:18.706Z",
+      "renderedActor": "blue",
+      "promptRequestedActor": "blue",
+      "roleRemappingRecorded": false,
+      "current_asset_matches_reviewed": true,
+      "current_manifest_asset_version": 1,
+      "v1ReviewPreserved": true
+    },
+    {
+      "slug": "keymaster-guard",
+      "name": "키마스터",
+      "availability": "GENERATED",
+      "observedAt": "2026-11-10T10:05:18.707Z",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/keymaster-guard-v1.png",
+      "image_sha256": "9f46f28df85fb927292e9fc3373152950e6fe440043586720249521c5aec4ba1",
+      "image_bytes": 1526132,
+      "complete_png": true,
+      "manifest_original_sha256": "9f46f28df85fb927292e9fc3373152950e6fe440043586720249521c5aec4ba1",
+      "manifest_sha256_match": true,
+      "manifest_candidate": "reference/technique-illustrations/set-01/production/candidates/keymaster-guard-v1.webp",
+      "manifest_asset_version": 1,
+      "approved_asset_present": false,
+      "review_target": "latest asset.original, not approvedAsset",
+      "result": "PASS",
+      "result_ko": "PASS",
+      "requires_regeneration": false,
+      "reason": "흰 앞무릎이 파란 양 다리 사이에 끼어 파란 허벅지 위에 놓이고, 파란 반대 발의 먼 힙/허벅지 훅과 다리를 감싸는 팔이 유지된다. 일반 K가드·니실드와 구분되는 wedged-knee 조건이 보존된다.",
+      "keyChecks": [
+        "The white near knee wedges between blue legs and rests on the blue thigh.",
+        "Blue retains the far-side hip/thigh hook.",
+        "Blue cups the white leg while staying side-angled, rather than changing to unobstructed K guard."
+      ],
+      "regenerationGuidanceEnglish": null,
+      "limbReview": "원본처럼 무릎과 발의 일부가 겹치지만 핵심 wedged-knee 관계는 읽힌다. 명백한 추가 다리나 연결 단절은 관찰하지 못했다.",
+      "characterReview": "두 캐릭터의 머리와 상·하의, 보이는 브라운벨트가 역할별로 일관된다.",
+      "primaryReferencesReviewed": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/keymaster-guard-energia-02m31s.jpg",
+          "sha256": "40e75b8cf3d9a8246556af6870f47ba43633b2c8cbe68de26492fc2cb8c66c22",
+          "directly_opened_with_view_image": true
+        }
+      ],
+      "referenceCopyPerformed": false,
+      "actualPNGDirectlyInspected": true,
+      "hashStableAcrossReview": true,
+      "reviewedAt": "2026-11-10T10:05:18.730Z",
+      "renderedActor": "blue",
+      "promptRequestedActor": "blue",
+      "roleRemappingRecorded": false,
+      "current_asset_matches_reviewed": true,
+      "current_manifest_asset_version": 1,
+      "v1ReviewPreserved": true
+    },
+    {
+      "slug": "100-percent-sweep",
+      "name": "100퍼스윕",
+      "availability": "GENERATED",
+      "observedAt": "2026-11-10T10:08:10.410Z",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/100-percent-sweep-v1.png",
+      "image_sha256": "9749407ec7dc1ccc08031d58836d461131adc2dad2097f536cc2609edd09b52d",
+      "image_bytes": 1888307,
+      "complete_png": true,
+      "manifest_original_sha256": "9749407ec7dc1ccc08031d58836d461131adc2dad2097f536cc2609edd09b52d",
+      "manifest_sha256_match": true,
+      "manifest_candidate": "reference/technique-illustrations/set-01/production/candidates/100-percent-sweep-v1.webp",
+      "manifest_asset_version": 1,
+      "approved_asset_present": false,
+      "review_target": "latest asset.original, not approvedAsset",
+      "result": "KEY_CONTACT_UNCONFIRMED",
+      "result_ko": "접점 불충분",
+      "requires_regeneration": true,
+      "reason": "머리를 겨드랑이에 모으고 흰 팔을 위로 분리하는 전체 배치는 원본에 가깝다. 다만 파란 반대팔이 흰 겨드랑이 밑으로 들어가 머리 제어 팔과 닫히는 연결이 확인되지 않으며 한 손이 흰 위팔만 따로 잡는 모양으로도 읽힌다.",
+      "keyChecks": [
+        "White head is contained near the blue armpit and the seated hip/base relationship is preserved.",
+        "The white upper arm is lifted/trapped.",
+        "The closing junction between the blue head-control arm and the under-arm connection is unconfirmed."
+      ],
+      "regenerationGuidanceEnglish": "Keep the Americana seated 100-percent-sweep loading pose, with white's head contained under blue's armpit. Thread the other blue arm beneath the trapped white upper arm and reproduce the actual closing head-and-arm hand junction from the teaching source. Choose a grip-side view that makes that junction readable rather than showing two independent holds on the white biceps. Preserve the compact hips and seated foot base, and freeze before overturning. Natural far-limb occlusion is acceptable; the connected head-and-arm control is the contact that must be clarified.",
+      "limbReview": "명백한 추가 사지나 의상 소속 오류는 관찰하지 못했다. 손가락 전체 노출을 요구한 것이 아니라 머리·팔 제어의 실제 폐쇄 연결이 확인되지 않는 점을 구분했다.",
+      "characterReview": "흰 상대/파란 주체의 머리색·전신 도복 배역과 중립 스타일은 유지된다.",
+      "primaryReferencesReviewed": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/candidate-100-percent-americana-official.jpg",
+          "sha256": "2f8c884a7a9affdc42f43f71727fffcfc0692a12119a994501f71ba0e9661c8f",
+          "directly_opened_with_view_image": true
+        }
+      ],
+      "referenceCopyPerformed": false,
+      "actualPNGDirectlyInspected": true,
+      "hashStableAcrossReview": true,
+      "reviewedAt": "2026-11-10T10:08:10.451Z",
+      "renderedActor": "blue",
+      "promptRequestedActor": "blue",
+      "roleRemappingRecorded": false,
+      "current_asset_matches_reviewed": true,
+      "current_manifest_asset_version": 1,
+      "v1ReviewPreserved": true
+    },
+    {
+      "slug": "williams-guard",
+      "name": "윌리엄 가드",
+      "availability": "GENERATED",
+      "observedAt": "2026-11-10T10:08:10.453Z",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/williams-guard-v1.png",
+      "image_sha256": "8f4af93e0cd24038b608342f7a9a860cfbdc94aee323f0193c75b9da5fdad9fd",
+      "image_bytes": 1624647,
+      "complete_png": true,
+      "manifest_original_sha256": "8f4af93e0cd24038b608342f7a9a860cfbdc94aee323f0193c75b9da5fdad9fd",
+      "manifest_sha256_match": true,
+      "manifest_candidate": "reference/technique-illustrations/set-01/production/candidates/williams-guard-v1.webp",
+      "manifest_asset_version": 1,
+      "approved_asset_present": false,
+      "review_target": "latest asset.original, not approvedAsset",
+      "result": "PASS",
+      "result_ko": "PASS",
+      "requires_regeneration": false,
+      "reason": "파란 높은 다리가 흰 어깨·상부 등을 가로지르고, 파란 위쪽 팔이 자기 다리 밑으로 들어가 머리·목 앞의 반대 팔과 연결된다. 단순 발목 잡는 러버가드와 다른 Williams 연결이 읽힌다.",
+      "keyChecks": [
+        "Blue stays side-angled with the high leg across the white shoulder/upper-back line.",
+        "The blue top arm threads beneath the own raised leg.",
+        "The connected forearms/hands close near the white head-and-neck frame, rather than simply holding an ankle."
+      ],
+      "regenerationGuidanceEnglish": null,
+      "limbReview": "원본의 압축된 상체·팔·다리 관계를 보존한다. 일부 먼 발과 손가락의 가림은 자연스럽고, 보이는 연결에서 명백한 추가 사지나 단절은 관찰하지 못했다.",
+      "characterReview": "두 캐릭터의 머리색과 전신 도복 소속, 중립적인 얼굴·2.5D 스타일이 일관된다.",
+      "primaryReferencesReviewed": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/candidate-williams-guard-O9yHOpMRgtU.jpg",
+          "sha256": "854f22a51cd980e8c3a17e985a355ea7bbb34adefe10a834572d79a3d0649947",
+          "directly_opened_with_view_image": true
+        }
+      ],
+      "referenceCopyPerformed": false,
+      "actualPNGDirectlyInspected": true,
+      "hashStableAcrossReview": true,
+      "reviewedAt": "2026-11-10T10:08:10.491Z",
+      "renderedActor": "blue",
+      "promptRequestedActor": "blue",
+      "roleRemappingRecorded": false,
+      "current_asset_matches_reviewed": true,
+      "current_manifest_asset_version": 1,
+      "v1ReviewPreserved": true
+    },
+    {
+      "slug": "quick-armbar",
+      "name": "퀵암바",
+      "availability": "GENERATED",
+      "observedAt": "2026-11-10T10:11:50.776Z",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/quick-armbar-v1.png",
+      "image_sha256": "a25ab5dd55b2ae14ee0a00a3ea2c9d054216040ac3b8e98c6516f674e35b2c00",
+      "image_bytes": 1779241,
+      "complete_png": true,
+      "manifest_original_sha256": "a25ab5dd55b2ae14ee0a00a3ea2c9d054216040ac3b8e98c6516f674e35b2c00",
+      "manifest_sha256_match": true,
+      "manifest_candidate": "reference/technique-illustrations/set-01/production/candidates/quick-armbar-v1.webp",
+      "manifest_asset_version": 1,
+      "approved_asset_present": false,
+      "review_target": "latest asset.original, not approvedAsset",
+      "result": "PASS",
+      "result_ko": "PASS",
+      "requires_regeneration": false,
+      "reason": "원본의 가드 암바 진입 순간처럼 파랑이 흰 손목을 유지하고 머리 옆으로 다리를 높이며 골반을 돌립니다. 마무리나 속도는 이 정지 화면의 판정 범위에 포함하지 않습니다.",
+      "keyChecks": [
+        "Blue retains the same white wrist while turning the hips for a guard armbar entry.",
+        "One blue leg rises alongside the white head, before fully crossing the face.",
+        "The other blue leg remains high against the white upper body without an invented limb."
+      ],
+      "regenerationGuidanceEnglish": null,
+      "limbReview": "머리 옆 높은 다리와 반대쪽 굽힌 다리, 손목을 잡는 팔의 소속이 추적되며 명백한 추가 사지나 연결 단절은 보이지 않습니다.",
+      "characterReview": "검은 머리 흰 도복과 흰 머리 파란 도복의 전신 소속이 일관됩니다.",
+      "primaryReferencesReviewed": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/quick-armbar-mettler-00m31s.jpg",
+          "sha256": "51c8c7f093222d3b33a0817f13332f6889cc1effcc51f1723b8d520ccefe44c7",
+          "directly_opened_with_view_image": true
+        }
+      ],
+      "referenceCopyPerformed": false,
+      "actualPNGDirectlyInspected": true,
+      "hashStableAcrossReview": true,
+      "reviewedAt": "2026-11-10T10:11:50.819Z",
+      "renderedActor": "blue",
+      "promptRequestedActor": "blue",
+      "roleRemappingRecorded": false,
+      "staticEntryOnly": true,
+      "current_asset_matches_reviewed": true,
+      "current_manifest_asset_version": 1,
+      "v1ReviewPreserved": true
+    },
+    {
+      "slug": "peterson-roll",
+      "name": "피터슨 롤",
+      "availability": "GENERATED",
+      "observedAt": "2026-11-10T10:11:50.823Z",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/peterson-roll-v1.png",
+      "image_sha256": "5da8f3b2bf6ff05a5ff6d0f19cfae6a73cfc53c673915cd1bbe1ee564081b681",
+      "image_bytes": 1510522,
+      "complete_png": true,
+      "manifest_original_sha256": "5da8f3b2bf6ff05a5ff6d0f19cfae6a73cfc53c673915cd1bbe1ee564081b681",
+      "manifest_sha256_match": true,
+      "manifest_candidate": "reference/technique-illustrations/set-01/production/candidates/peterson-roll-v1.webp",
+      "manifest_asset_version": 1,
+      "approved_asset_present": false,
+      "review_target": "latest asset.original, not approvedAsset",
+      "result": "PASS",
+      "result_ko": "PASS",
+      "requires_regeneration": false,
+      "reason": "원본의 반전 후 앉은 고정 장면처럼 파랑이 무릎을 벌려 기반을 만들고 옆·뒤에 누운 흰 파트너의 팔과 모은 다리를 함께 유지합니다. 수집한 다리 아래를 지나는 팔의 일부는 자연스럽게 가려지지만 손목 제어와 같은 다리의 들어 올린 관계는 보입니다.",
+      "keyChecks": [
+        "Blue is seated with bent knees and a broad base after the demonstrated reversal.",
+        "The white controlled arm remains connected to the blue hand grip across the upper body.",
+        "The same white near leg is collected above the blue arm while white lies beside and behind."
+      ],
+      "regenerationGuidanceEnglish": null,
+      "limbReview": "파랑의 두 굽힌 다리와 흰색의 들어 올린 다리·뒤쪽 지지 다리를 구별할 수 있고, 겹침을 추가 팔이나 다리로 단정할 근거는 없습니다.",
+      "characterReview": "검은 머리 흰 도복과 흰 머리 파란 도복의 전신 소속이 일관됩니다.",
+      "primaryReferencesReviewed": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/peterson-roll-kolat-01m03s.jpg",
+          "sha256": "091174bee65dcc23d86d022d05511470ee1a6a658940294f034246b362dcf564",
+          "directly_opened_with_view_image": true
+        }
+      ],
+      "referenceCopyPerformed": false,
+      "actualPNGDirectlyInspected": true,
+      "hashStableAcrossReview": true,
+      "reviewedAt": "2026-11-10T10:11:50.859Z",
+      "renderedActor": "blue",
+      "promptRequestedActor": "blue",
+      "roleRemappingRecorded": false,
+      "staticFinishOnly": true,
+      "current_asset_matches_reviewed": true,
+      "current_manifest_asset_version": 1,
+      "v1ReviewPreserved": true
+    },
+    {
+      "slug": "sagi-oro-sweep",
+      "name": "사지오로",
+      "availability": "GENERATED",
+      "observedAt": "2026-11-10T10:13:04.140Z",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/sagi-oro-sweep-v1.png",
+      "image_sha256": "5109ed3beef0323e49441647376441033e13e66d1084bad3fd3310ab78ed784f",
+      "image_bytes": 1700614,
+      "complete_png": true,
+      "manifest_original_sha256": "5109ed3beef0323e49441647376441033e13e66d1084bad3fd3310ab78ed784f",
+      "manifest_sha256_match": true,
+      "manifest_candidate": "reference/technique-illustrations/set-01/production/candidates/sagi-oro-sweep-v1.webp",
+      "manifest_asset_version": 1,
+      "approved_asset_present": false,
+      "review_target": "latest asset.original, not approvedAsset",
+      "result": "PASS",
+      "result_ko": "PASS",
+      "requires_regeneration": false,
+      "reason": "지정 프레임처럼 파랑이 벌린 무릎으로 앉고 흰 파트너의 무게중심 아래에서 상체를 받치며, 흰 엉덩이가 높아지고 한 다리가 들린 몸 관계를 유지합니다. 드러난 의복 연결은 보이지만 원본도 가린 반대편 손잡이와 전체 스윕의 종료 방향까지 확정하는 판정은 아닙니다.",
+      "keyChecks": [
+        "Blue remains seated beneath the folded white partner with the head close to the white hip.",
+        "White hips are elevated with one leg lifting and blue knees separated as in the designated frame.",
+        "The visible cloth connection is retained; keep the far-side grip naturally occluded rather than inventing a named lock."
+      ],
+      "regenerationGuidanceEnglish": null,
+      "limbReview": "파랑의 앉은 두 다리와 흰색의 뻗고 내려오는 두 다리 소속이 구분되며, 겹쳐 보이는 반대편 팔을 추가 사지로 판정할 근거는 없습니다.",
+      "characterReview": "검은 머리 흰 도복과 흰 머리 파란 도복의 전신 소속이 일관됩니다.",
+      "primaryReferencesReviewed": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/private-pose-evidence/sagi-oro-10.jpg",
+          "sha256": "ed7b5a20ddab44ab34a06a945e33c6d2f79d77941ba91253221e422d4233dd7d",
+          "directly_opened_with_view_image": true,
+          "reference_scope": "designated public educational video frame; local comparison only; no copy"
+        }
+      ],
+      "referenceCopyPerformed": false,
+      "actualPNGDirectlyInspected": true,
+      "hashStableAcrossReview": true,
+      "reviewedAt": "2026-11-10T10:13:04.198Z",
+      "renderedActor": "blue",
+      "promptRequestedActor": "blue",
+      "roleRemappingRecorded": false,
+      "sourceLimit": "Visible frame relationship only. Exact far-side hand grip, named leg-entanglement and complete finishing direction remain unverified in the source.",
+      "representative": true,
+      "current_asset_matches_reviewed": true,
+      "current_manifest_asset_version": 1,
+      "v1ReviewPreserved": true
+    },
+    {
+      "slug": "hugo-lock",
+      "name": "휴고락",
+      "availability": "GENERATED",
+      "observedAt": "2026-11-10T10:13:04.199Z",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/hugo-lock-v1.png",
+      "image_sha256": "6fbeb0e58b2a30524db8260429eb85ab4621e61941fe5db2e730a2919c115e4b",
+      "image_bytes": 1919329,
+      "complete_png": true,
+      "manifest_original_sha256": "6fbeb0e58b2a30524db8260429eb85ab4621e61941fe5db2e730a2919c115e4b",
+      "manifest_sha256_match": true,
+      "manifest_candidate": "reference/technique-illustrations/set-01/production/candidates/hugo-lock-v1.webp",
+      "manifest_asset_version": 1,
+      "approved_asset_present": false,
+      "review_target": "latest asset.original, not approvedAsset",
+      "result": "PASS",
+      "result_ko": "PASS",
+      "requires_regeneration": false,
+      "reason": "흰색이 파랑 등 뒤에 밀착해 옆으로 누운 백 컨트롤을 유지하고, 파랑의 올린 팔꿈치와 가슴 쪽으로 접힌 전완을 분리해 잡는 장면이 보입니다. 원본의 팔 겹침을 보존해 완성 초크나 확인되지 않은 극단적 어깨 회전으로 바꾸지 않았습니다.",
+      "keyChecks": [
+        "White stays behind blue with chest-to-back alignment and visible leg control around the hips.",
+        "The blue near elbow remains raised beside the head with its forearm folded toward the chest.",
+        "White retains plausible wrist and upper-arm-line connections without substituting a completed neck choke."
+      ],
+      "regenerationGuidanceEnglish": null,
+      "limbReview": "두 명의 팔과 다리 소속이 이어지고 명백한 추가 사지나 접합 단절은 보이지 않습니다. 겹친 손가락의 세부 압박 방향과 최종 숄더락 힘선은 이 정지 화면에서 판정하지 않습니다.",
+      "characterReview": "흰색 후방 주체와 파랑 전방 수비의 머리·도복·다리 소속이 일관됩니다.",
+      "primaryReferencesReviewed": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/private-pose-evidence/hugo-lock-4.jpg",
+          "sha256": "a639aba8c631f086beb7a94207cc9f2f8523cd92e71d4dd24c0aeaac341dc215",
+          "directly_opened_with_view_image": true,
+          "reference_scope": "designated public educational video frame; local comparison only; no copy"
+        }
+      ],
+      "referenceCopyPerformed": false,
+      "actualPNGDirectlyInspected": true,
+      "hashStableAcrossReview": true,
+      "reviewedAt": "2026-11-10T10:13:04.229Z",
+      "renderedActor": "white",
+      "promptRequestedActor": "white",
+      "roleRemappingRecorded": false,
+      "sourceLimit": "Source frame establishes back control and bent raised arm isolation, not the complete final shoulder-lock mechanism or a fixed hidden second-hand route.",
+      "current_asset_matches_reviewed": true,
+      "current_manifest_asset_version": 1,
+      "v1ReviewPreserved": true
+    }
+  ],
+  "limits": [
+    "This is a candidate pose review only; no registry/UI/database/history was modified and no approval action was performed.",
+    "For sagi-oro/hugo, only authorized source-frame paths and SHA hashes will be recorded; the source images are not copied into the project.",
+    "A PASS is tied to the recorded original image SHA, not to future files with the same slug."
+  ],
+  "revisionReviews": [
+    {
+      "slug": "waiter-guard",
+      "name": "웨이터 가드",
+      "availability": "GENERATED",
+      "observedAt": "2026-11-10T09:54:27.205Z",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/waiter-guard-v2.png",
+      "image_sha256": "3df981884187fcf336b9bfeacf558f43ff18b6d80790bf0a185dd705133f0c2f",
+      "image_bytes": 1603380,
+      "complete_png": true,
+      "manifest_original_sha256": "3df981884187fcf336b9bfeacf558f43ff18b6d80790bf0a185dd705133f0c2f",
+      "manifest_sha256_match": true,
+      "manifest_candidate": "reference/technique-illustrations/set-01/production/candidates/waiter-guard-v2.webp",
+      "manifest_asset_version": 2,
+      "approved_asset_present": false,
+      "review_target": "latest asset.original, not approvedAsset",
+      "result": "PASS",
+      "result_ko": "PASS",
+      "requires_regeneration": false,
+      "technicalPoseResult": "PASS",
+      "characterStyleResult": "PASS",
+      "reason": "원본과 같은 흰 바텀/파란 탑 배치로 몸통·양 다리·소매의 전신 소속이 일치한다. 흰 바텀의 어깨·힙이 파란 힙 아래 밀착하고, 흰 양 다리의 리프트와 별도 포획 파란 다리·소매 제어가 웨이터 로딩 자세로 읽힌다.",
+      "keyChecks": [
+        "The white bottom shoulders/hips stay close under the blue partner hips.",
+        "Both raised legs belong continuously to the WHITE bottom athlete; the captured BLUE leg remains separately supported at the shoulder/arm.",
+        "The white sleeve-control connection and the blue partner posting base match the selected static loading frame."
+      ],
+      "regenerationGuidanceEnglish": null,
+      "limbReview": "원본의 겹침과 가림을 유지하면서 보이는 골반·다리·소매가 각 캐릭터에 일관되게 이어진다. 명백한 추가 사지나 관절 단절을 관찰하지 못했다.",
+      "characterReview": "중립 초상의 검은 머리/흰 도복·흰 머리/파란 도복 캐릭터와 중립 표정·2.5D 렌더링이 보존된다. 실제 흰 주체/파란 상대의 전신 의상 소속이 일관된다.",
+      "primaryReferencesReviewed": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/waiter-guard-lucasvalle-01m17s-confirmed.jpg",
+          "sha256": "7a700370002b54bfa58889cf343dd08e40a8431204d49f1a9381f6d747b5a2b1",
+          "directly_opened_with_view_image": true
+        }
+      ],
+      "styleReferenceReviewed": {
+        "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/style-guides/neutral-portraits-v1.png",
+        "sha256": "861ad8775f2697dc451d5f764a49655e5c78ddb2ada79d3f44a6f2905fa1ba16",
+        "directly_opened_with_view_image": true
+      },
+      "promptRequestedActor": "blue",
+      "renderedActor": "white",
+      "renderedPartner": "blue",
+      "roleRemappingRecorded": true,
+      "roleRemappingReason": "The actual source pose assigns the technical actor to the white character. The parent explicitly allows this complete consistent role remapping; it is recorded instead of claiming the prompt blue-actor assignment was followed.",
+      "improvementsFromV1": [
+        "The v1 blue-torso/white-raised-legs mismatch is resolved by rendering the whole bottom athlete white.",
+        "The source camera and loaded waiter geometry replace the generic base-style arrangement."
+      ],
+      "v1ReviewPreservedAt": "waiter-guard / asset version 1 in items",
+      "actualPNGDirectlyInspected": true,
+      "hashStableAcrossReview": true,
+      "is_user_approval": false,
+      "referenceCopyPerformed": false,
+      "reviewedAt": "2026-11-10T09:54:27.228Z"
+    },
+    {
+      "slug": "honey-hole",
+      "name": "허니 홀",
+      "availability": "GENERATED",
+      "observedAt": "2026-11-10T09:54:27.230Z",
+      "image_path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/honey-hole-v2.png",
+      "image_sha256": "40866e7def94d951dabda8c0847fbe30741f58719e7efc5052b9e1266820f9a1",
+      "image_bytes": 1600656,
+      "complete_png": true,
+      "manifest_original_sha256": "40866e7def94d951dabda8c0847fbe30741f58719e7efc5052b9e1266820f9a1",
+      "manifest_sha256_match": true,
+      "manifest_candidate": "reference/technique-illustrations/set-01/production/candidates/honey-hole-v2.webp",
+      "manifest_asset_version": 2,
+      "approved_asset_present": false,
+      "review_target": "latest asset.original, not approvedAsset",
+      "result": "PASS",
+      "result_ko": "PASS",
+      "requires_regeneration": false,
+      "technicalPoseResult": "PASS",
+      "characterStyleResult": "PASS",
+      "reason": "양 선수가 누운 상태의 안쪽 다리 얽힘과 포획 다리·분리된 반대 다리 관계가 실제 기준 프레임처럼 보존된다. v1 니컷/상위 패스 구도는 사라졌고 흰 주체의 inside control과 파란 상대의 다리 소속이 정착된 허니홀 대표 자세로 읽힌다.",
+      "keyChecks": [
+        "Both athletes remain reclined in the source inside-leg configuration rather than a kneeling top pass.",
+        "The WHITE actor inside leg control contains the captured BLUE thigh/knee line.",
+        "The second blue leg remains separately collected across the upper-body area, before heel rotation."
+      ],
+      "regenerationGuidanceEnglish": null,
+      "limbReview": "원본의 압축된 다리·팔 겹침을 자연스러운 가림으로 처리했다. 보이는 관절·옷색 연결에서 명백한 추가 사지나 단절은 확인하지 못했다.",
+      "characterReview": "중립 초상의 검은 머리/흰 도복·흰 머리/파란 도복 캐릭터와 중립 표정·2.5D 렌더링이 보존된다. 실제 흰 주체/파란 상대의 전신 의상 소속이 일관된다.",
+      "primaryReferencesReviewed": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/saddle-craig-02m35s.jpg",
+          "sha256": "ab2ba6e866258a7d01f9b3d850e50b6e7ae13d6c050fbe065ebff2d3d7114759",
+          "directly_opened_with_view_image": true
+        }
+      ],
+      "styleReferenceReviewed": {
+        "path": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/style-guides/neutral-portraits-v1.png",
+        "sha256": "861ad8775f2697dc451d5f764a49655e5c78ddb2ada79d3f44a6f2905fa1ba16",
+        "directly_opened_with_view_image": true
+      },
+      "promptRequestedActor": "blue",
+      "renderedActor": "white",
+      "renderedPartner": "blue",
+      "roleRemappingRecorded": true,
+      "roleRemappingReason": "The actual source pose assigns the technical actor to the white character. The parent explicitly allows this complete consistent role remapping; it is recorded instead of claiming the prompt blue-actor assignment was followed.",
+      "improvementsFromV1": [
+        "The knee-cut composition of v1 is removed.",
+        "The actual two-reclined-athlete leg relationships and camera are retained with the white character as controller."
+      ],
+      "v1ReviewPreservedAt": "honey-hole / asset version 1 in items",
+      "actualPNGDirectlyInspected": true,
+      "hashStableAcrossReview": true,
+      "is_user_approval": false,
+      "referenceCopyPerformed": false,
+      "reviewedAt": "2026-11-10T09:54:27.244Z"
+    }
+  ],
+  "generationBoundary": "The original v1 evidence and verdicts are preserved. New v2 candidates are reviewed separately. The remaining ungenerated original queue items have no pose verdict.",
+  "rolePolicy": "A complete consistent rendered actor-role remapping is allowed by the parent and recorded explicitly. Character hair/gi identity and the technical pose must remain coherent."
+}

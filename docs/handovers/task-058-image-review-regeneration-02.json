@@ -1,0 +1,714 @@
+{
+  "schemaVersion": 1,
+  "task": "task-058",
+  "batch": "regeneration-02",
+  "status": "complete",
+  "reviewedAt": "2026-11-10T12:09:32.994Z",
+  "scope": {
+    "queuePaths": [
+      "neutral-style-correction-queue-01.json",
+      "neutral-style-correction-queue-02.json"
+    ],
+    "total": 17,
+    "versions": "rubber-guard v3; remaining sixteen v2",
+    "scopeFrozen": true
+  },
+  "reviewMethod": "모든 최신 원본 PNG를 view_image로 직접 열고 저장된 실제 생성 prompt 및 기록한 공개 시범/카탈로그 참고 프레임을 직접 비교했다. 전신 역할의 일관된 색 교환과 자연스러운 비핵심 가림은 허용한다. 핵심 그립·훅·사지 소속이 잘못되거나 확인되지 않으면 PASS하지 않는다. 알파 프린지는 자세 판정과 분리한다.",
+  "reviewedCount": 17,
+  "items": [
+    {
+      "slug": "buggy-choke",
+      "name": "버기 초크",
+      "inputVersion": 2,
+      "sourceQueue": "neutral-style-correction-queue-01.json",
+      "inputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/buggy-choke-v2.png",
+      "inputSHA256": "7ce3715dd11819302eb5a8470e904881258642f219c42b539fb7bd754df09205",
+      "manifestAssetOriginal": "reference/technique-illustrations/set-01/production/raw/buggy-choke-v2.png",
+      "manifestAssetSHA256": "7ce3715dd11819302eb5a8470e904881258642f219c42b539fb7bd754df09205",
+      "shaMatchesManifestAsset": true,
+      "promptPath": "reference/technique-illustrations/set-01/production/prompts/buggy-choke-v2.txt",
+      "promptSHA256": "26ea14acdff37d35ea2117e039cb8d75e3804edfe3f878f971ff7019cd7a0757",
+      "promptMatchesManifestAsset": true,
+      "actualPromptRead": true,
+      "referenceFrames": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/buggy-choke-ruotolo-00m25s.jpg",
+          "sha256": "6a795195f55665877f3ca8ae8025c35b527b5074d4ab2bcca16deb625fd0a35a",
+          "directImageViewed": true,
+          "role": "cached public instructor demonstration still"
+        }
+      ],
+      "result": "MODIFICATION_REQUIRED",
+      "reason": "위 흰 인물·아래 파란 인물의 사이드 배치는 있으나, 아래 공격자의 올라온 두 무릎·다리 부분이 흰 바지로 남고 파란 팔이 자기 다리를 통과하는 닫힌 루프도 읽히지 않는다. 하체 소속과 버기 핵심 연결이 교정되지 않았다.",
+      "keyChecks": [
+        "위 흰 사이드·아래 파란 인물",
+        "아래 공격자 쪽 흰 바지 다리 혼재",
+        "파란 자기 다리-팔 폐쇄 루프 없음"
+      ],
+      "regenerationGuidance": "Rebuild the Ruotolo pose with the bottom blue player's raised knees, thighs, cuffs and feet all continuously BLUE-owned. Thread one blue arm through that same bent BLUE leg loop around the white head-and-upper-arm region. Keep white's separate two WHITE legs as the top base. Do not draw the bottom leg loop in white or replace the closure with a hand gripping blue's own collar.",
+      "requires_regeneration": true,
+      "directRawImageViewed": true,
+      "verificationLimit": "선택된 공개 교육 정지 프레임 또는 기존 카탈로그 이미지와 최신 실제 prompt만 대조했다. 전체 동영상·실제 피니시 효과·가린 말단의 모든 앞뒤 깊이는 검증하지 않았다.",
+      "characterAndLimbReview": "두 성인 캐릭터·흰/파란 전신 도복·브라운벨트·사지 소속을 실제 PNG에서 함께 확인했다. 일관된 전신 배역 교환은 허용했고, 발견된 혼합 소속 또는 불명확한 핵심 접점은 reason/keyChecks에 명시했다.",
+      "approvalApplied": false
+    },
+    {
+      "slug": "inside-heel-hook",
+      "name": "인사이드 힐훅",
+      "inputVersion": 2,
+      "sourceQueue": "neutral-style-correction-queue-01.json",
+      "inputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/inside-heel-hook-v2.png",
+      "inputSHA256": "c815ff0b37464d64e036d759b801d08f9df0e81c7dd7c9501dd647fdf186a67a",
+      "manifestAssetOriginal": "reference/technique-illustrations/set-01/production/raw/inside-heel-hook-v2.png",
+      "manifestAssetSHA256": "c815ff0b37464d64e036d759b801d08f9df0e81c7dd7c9501dd647fdf186a67a",
+      "shaMatchesManifestAsset": true,
+      "promptPath": "reference/technique-illustrations/set-01/production/prompts/inside-heel-hook-v2.txt",
+      "promptSHA256": "cb3327f6a61bba654eb474033bb91a7da3f4135be2210529a0a0f7ed4be1cd09",
+      "promptMatchesManifestAsset": true,
+      "actualPromptRead": true,
+      "referenceFrames": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/inside-heel-hook-lachlan-03m06s.jpg",
+          "sha256": "5d43d7ede24e12ac6b4d213134ab2fc50b1afb9e95a220023e42929bc5c970cb",
+          "directImageViewed": true,
+          "role": "cached public instructor demonstration still"
+        }
+      ],
+      "result": "KEY_CONTACT_UNCONFIRMED",
+      "reason": "전신 역할은 아래 흰 공격자·위 파란 파트너로 일관되게 교환됐다. 다리 얽힘과 연결된 손은 개선됐지만, 잡힌 파란 뒤꿈치가 흰 전완/손목 능선 위에 걸려 노출되는 접점은 발·손 덩어리에 묻혀 일반 발목 제어와 구별이 부족하다.",
+      "keyChecks": [
+        "일관된 전신 색 역할 교환",
+        "파란 무릎선 통제·손 연결",
+        "파란 뒤꿈치→흰 전완 접점 미확인"
+      ],
+      "regenerationGuidance": "Keep the consistent white-attacker/blue-partner assignment. Tuck the captured BLUE toes by white's armpit and expose the BLUE heel as a distinct rounded contact resting ABOVE the hooking WHITE forearm or wrist ridge. Join white's other hand to white's own hand or wrist. Open the grip-side silhouette enough to distinguish heel capture from two hands simply enclosing the ankle, without changing the source foot direction.",
+      "requires_regeneration": true,
+      "directRawImageViewed": true,
+      "verificationLimit": "선택된 공개 교육 정지 프레임 또는 기존 카탈로그 이미지와 최신 실제 prompt만 대조했다. 전체 동영상·실제 피니시 효과·가린 말단의 모든 앞뒤 깊이는 검증하지 않았다.",
+      "characterAndLimbReview": "두 성인 캐릭터·흰/파란 전신 도복·브라운벨트·사지 소속을 실제 PNG에서 함께 확인했다. 일관된 전신 배역 교환은 허용했고, 발견된 혼합 소속 또는 불명확한 핵심 접점은 reason/keyChecks에 명시했다.",
+      "approvalApplied": false
+    },
+    {
+      "slug": "lapel-pass",
+      "name": "라펠 패스",
+      "inputVersion": 2,
+      "sourceQueue": "neutral-style-correction-queue-01.json",
+      "inputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/lapel-pass-v2.png",
+      "inputSHA256": "10b0108338ec90ba521cb2117c7fc48965d3499f752157f2cfb7d055fe29559d",
+      "manifestAssetOriginal": "reference/technique-illustrations/set-01/production/raw/lapel-pass-v2.png",
+      "manifestAssetSHA256": "10b0108338ec90ba521cb2117c7fc48965d3499f752157f2cfb7d055fe29559d",
+      "shaMatchesManifestAsset": true,
+      "promptPath": "reference/technique-illustrations/set-01/production/prompts/lapel-pass-v2.txt",
+      "promptSHA256": "db26d4b2d5bfe99696cf02fd7635843f6503e6182610bca74b497e2c20c2d27e",
+      "promptMatchesManifestAsset": true,
+      "actualPromptRead": true,
+      "referenceFrames": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/lapel-pass-keenan-02m53s.jpg",
+          "sha256": "8ff17773b093c0c295f72f4b4f727eb5fefa112c47fcec8f51200dd2006c980e",
+          "directImageViewed": true,
+          "role": "cached public instructor demonstration still"
+        },
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/lapel-pass-keenan-04m02s.jpg",
+          "sha256": "2dbad7b3f241dbc1ea7688d03fa7e3af13b11be318d2a79c2527268179f8a70d",
+          "directImageViewed": true,
+          "role": "cached public instructor demonstration still"
+        }
+      ],
+      "result": "KEY_CONTACT_UNCONFIRMED",
+      "reason": "흰 인물이 접힌 파란 하체 위에서 파란 띠형 옷감을 잡지만, 그 옷감이 파란 재킷에서 나와 다리 밑·둘레를 돌아 되돌아오는 라펠 루트는 분명하지 않다. 전면 허리·깃 부분을 잡는 동작과 구별이 부족해 기존 핵심 보완을 유지한다.",
+      "keyChecks": [
+        "접힌 파란 하체·흰 상위 베이스",
+        "실제 파란 옷감 그립",
+        "다리 밑·둘레의 연속 라펠 반환 경로 미확인"
+      ],
+      "regenerationGuidance": "Show a released BLUE lapel originating at blue's jacket, traveling UNDER the elevated blue leg line and around the folded thighs before returning to ONE white receiving hand. Keep the other white hand visibly posted. Expose the receiving forearm beneath the legs and the cloth return in a single coherent post-hand-off pose. Do not substitute a front waist pinch or add another receiving hand.",
+      "requires_regeneration": true,
+      "directRawImageViewed": true,
+      "verificationLimit": "선택된 공개 교육 정지 프레임 또는 기존 카탈로그 이미지와 최신 실제 prompt만 대조했다. 전체 동영상·실제 피니시 효과·가린 말단의 모든 앞뒤 깊이는 검증하지 않았다.",
+      "characterAndLimbReview": "두 성인 캐릭터·흰/파란 전신 도복·브라운벨트·사지 소속을 실제 PNG에서 함께 확인했다. 일관된 전신 배역 교환은 허용했고, 발견된 혼합 소속 또는 불명확한 핵심 접점은 reason/keyChecks에 명시했다.",
+      "approvalApplied": false
+    },
+    {
+      "slug": "matrix",
+      "name": "매트릭스",
+      "inputVersion": 2,
+      "sourceQueue": "neutral-style-correction-queue-01.json",
+      "inputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/matrix-v2.png",
+      "inputSHA256": "31525141dd5e7c1b75bbf94b93b51b513d7597e6c9e9c88ddf23ec656136835e",
+      "manifestAssetOriginal": "reference/technique-illustrations/set-01/production/raw/matrix-v2.png",
+      "manifestAssetSHA256": "31525141dd5e7c1b75bbf94b93b51b513d7597e6c9e9c88ddf23ec656136835e",
+      "shaMatchesManifestAsset": true,
+      "promptPath": "reference/technique-illustrations/set-01/production/prompts/matrix-v2.txt",
+      "promptSHA256": "097ad562f073901ab13205a5ad31a7ab0e9bc76ee11b135257e3fb2319e2c257",
+      "promptMatchesManifestAsset": true,
+      "actualPromptRead": true,
+      "referenceFrames": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/matrix-espen-01m34s.jpg",
+          "sha256": "bcc7fb7ada4fa41a609c2240192c01e5465b80e50d12ff70e804e1fb44c62f5c",
+          "directImageViewed": true,
+          "role": "cached public instructor demonstration still"
+        },
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/matrix-espen-foot-hip-frame.jpg",
+          "sha256": "1f59813f9e8c92b0da580f8fc70e16513461def2de778a3bae656a8461302859",
+          "directImageViewed": true,
+          "role": "cached public instructor demonstration still"
+        }
+      ],
+      "result": "PASS",
+      "reason": "파란 인물이 선 흰 다리를 아래에서 수집하고, 같은 무릎 뒤에 훅 발꿈치를 두며 반대 발은 힙에 놓는다. 높은 무릎·힙과 뒤로 도는 각도가 Espen의 선택된 고각 매트릭스 구조에 부합한다.",
+      "keyChecks": [
+        "수집한 선 흰 다리",
+        "같은 무릎 뒤의 파란 훅 발꿈치",
+        "반대 발의 힙 프레임·높은 힙"
+      ],
+      "regenerationGuidance": null,
+      "requires_regeneration": false,
+      "directRawImageViewed": true,
+      "verificationLimit": "선택된 공개 교육 정지 프레임 또는 기존 카탈로그 이미지와 최신 실제 prompt만 대조했다. 전체 동영상·실제 피니시 효과·가린 말단의 모든 앞뒤 깊이는 검증하지 않았다.",
+      "characterAndLimbReview": "두 성인 캐릭터·흰/파란 전신 도복·브라운벨트·사지 소속을 실제 PNG에서 함께 확인했다. 일관된 전신 배역 교환은 허용했고, 발견된 혼합 소속 또는 불명확한 핵심 접점은 reason/keyChecks에 명시했다.",
+      "approvalApplied": false
+    },
+    {
+      "slug": "saddle-position",
+      "name": "새들 포지션",
+      "inputVersion": 2,
+      "sourceQueue": "neutral-style-correction-queue-01.json",
+      "inputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/saddle-position-v2.png",
+      "inputSHA256": "b47cb468e996e54964b8399a8a4ee27f2474993c942fec9c5dc4f91006b10e85",
+      "manifestAssetOriginal": "reference/technique-illustrations/set-01/production/raw/saddle-position-v2.png",
+      "manifestAssetSHA256": "b47cb468e996e54964b8399a8a4ee27f2474993c942fec9c5dc4f91006b10e85",
+      "shaMatchesManifestAsset": true,
+      "promptPath": "reference/technique-illustrations/set-01/production/prompts/saddle-position-v2.txt",
+      "promptSHA256": "f93100e3165c3331ea1b8f7ba2b64d473b00c2316675c51954173eec5cea0135",
+      "promptMatchesManifestAsset": true,
+      "actualPromptRead": true,
+      "referenceFrames": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/saddle-craig-02m35s.jpg",
+          "sha256": "ab2ba6e866258a7d01f9b3d850e50b6e7ae13d6c050fbe065ebff2d3d7114759",
+          "directImageViewed": true,
+          "role": "cached public instructor demonstration still"
+        }
+      ],
+      "result": "MODIFICATION_REQUIRED",
+      "reason": "두 인물은 기대어 있지만 중앙을 가로지른 하체에서 파란 바짓단이 흰 바지형 다리 부분과 맞물려 한 선수의 힙→무릎→발 경로를 추적하기 어렵다. 이 소속 혼합 때문에 어느 두 다리가 한 허벅지에 안쪽 트라이앵글을 닫는지도 확정되지 않는다.",
+      "keyChecks": [
+        "기댄 두 인물의 기본 배치",
+        "중앙 파란 커프·흰 다리 부분의 소속 혼재",
+        "한 허벅지에 닫힌 안쪽 트라이앵글 미확인"
+      ],
+      "regenerationGuidance": "Trace the two complete athletes separately before redrawing the inside saddle. A BLUE trouser cuff must continue from a BLUE hip and knee to that same person's bare foot; no segment may become WHITE trousers mid-leg. Then show the attacker's two same-colored legs closing one inside triangle around ONE opponent thigh and knee line. Keep the opponent's second leg separate across the upper-body area and expose the heel-to-own-knee closure.",
+      "requires_regeneration": true,
+      "directRawImageViewed": true,
+      "verificationLimit": "선택된 공개 교육 정지 프레임 또는 기존 카탈로그 이미지와 최신 실제 prompt만 대조했다. 전체 동영상·실제 피니시 효과·가린 말단의 모든 앞뒤 깊이는 검증하지 않았다.",
+      "characterAndLimbReview": "두 성인 캐릭터·흰/파란 전신 도복·브라운벨트·사지 소속을 실제 PNG에서 함께 확인했다. 일관된 전신 배역 교환은 허용했고, 발견된 혼합 소속 또는 불명확한 핵심 접점은 reason/keyChecks에 명시했다.",
+      "approvalApplied": false
+    },
+    {
+      "slug": "squid-guard",
+      "name": "스퀴드 가드",
+      "inputVersion": 2,
+      "sourceQueue": "neutral-style-correction-queue-01.json",
+      "inputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/squid-guard-v2.png",
+      "inputSHA256": "cbb24d6ccf9375e3d650aede231a3dd6c108012ebd01f09a6be13d4a795d5ae4",
+      "manifestAssetOriginal": "reference/technique-illustrations/set-01/production/raw/squid-guard-v2.png",
+      "manifestAssetSHA256": "cbb24d6ccf9375e3d650aede231a3dd6c108012ebd01f09a6be13d4a795d5ae4",
+      "shaMatchesManifestAsset": true,
+      "promptPath": "reference/technique-illustrations/set-01/production/prompts/squid-guard-v2.txt",
+      "promptSHA256": "5fed4e45a1ca70e30a3138e857a0cf831c7ee59b592f17ddb7f7fbfe16e55b66",
+      "promptMatchesManifestAsset": true,
+      "actualPromptRead": true,
+      "referenceFrames": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/squid-guard-keenan-02m29s.jpg",
+          "sha256": "de28495302e899ea2e383ee18b52d8343b07b421140f3e48633fd7086688aca1",
+          "directImageViewed": true,
+          "role": "cached public instructor demonstration still"
+        },
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/squid-guard-keenan-02m44s.jpg",
+          "sha256": "a394da64c0672d0eca5639553fed77c47f26d3aa8dcbcd2eb84c35d7a68c4005",
+          "directImageViewed": true,
+          "role": "cached public instructor demonstration still"
+        }
+      ],
+      "result": "KEY_CONTACT_UNCONFIRMED",
+      "reason": "파란 인물이 흰 선 다리 아래로 회전하고 흰 라펠을 잡은 배치는 있으나, 통제 발목이 팽팽한 라펠에 걸리는 지점과 선 다리를 모은 언더훅의 연결이 두 무릎·옷감 사이에 묻혀 있다. 일반 오픈 가드와 구별되는 스퀴드의 라펠-발목 지지점을 확정하기 어렵다.",
+      "keyChecks": [
+        "흰 선 다리 아래 파란 인물의 회전",
+        "흰 재킷으로 이어진 라펠 그립",
+        "파란 통제 발목→긴장된 라펠 접점 미확인"
+      ],
+      "regenerationGuidance": "Retain the regular-squid rotated position, but open the junction at the standing WHITE leg. Trace one BLUE underhook arm around that leg to the lapel receiving hand. Expose the continuous released WHITE lapel from the jacket, through the hand, and beneath the controlling BLUE ankle, with that ankle visibly resting on the tensioned cloth. Keep the other BLUE leg separate and do not substitute a generic foot-on-hip pose.",
+      "requires_regeneration": true,
+      "directRawImageViewed": true,
+      "verificationLimit": "선택된 공개 교육 정지 프레임 또는 기존 카탈로그 이미지와 최신 실제 prompt만 대조했다. 전체 동영상·실제 피니시 효과·가린 말단의 모든 앞뒤 깊이는 검증하지 않았다.",
+      "characterAndLimbReview": "두 성인 캐릭터·흰/파란 전신 도복·브라운벨트·사지 소속을 실제 PNG에서 함께 확인했다. 일관된 전신 배역 교환은 허용했고, 발견된 혼합 소속 또는 불명확한 핵심 접점은 reason/keyChecks에 명시했다.",
+      "approvalApplied": false
+    },
+    {
+      "slug": "waiter-sweep",
+      "name": "웨이터 스윕",
+      "inputVersion": 2,
+      "sourceQueue": "neutral-style-correction-queue-01.json",
+      "inputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/waiter-sweep-v2.png",
+      "inputSHA256": "4e9e17b3e05c144c2fcb649fc67abe6f90c92171a2659166eb9964c628796c07",
+      "manifestAssetOriginal": "reference/technique-illustrations/set-01/production/raw/waiter-sweep-v2.png",
+      "manifestAssetSHA256": "4e9e17b3e05c144c2fcb649fc67abe6f90c92171a2659166eb9964c628796c07",
+      "shaMatchesManifestAsset": true,
+      "promptPath": "reference/technique-illustrations/set-01/production/prompts/waiter-sweep-v2.txt",
+      "promptSHA256": "45aca83a6bde40174626df06095991dbe75c62538536b8e8ad0017f1ed6275fa",
+      "promptMatchesManifestAsset": true,
+      "actualPromptRead": true,
+      "referenceFrames": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/waiter-sweep-lucasvalle-01m22s.jpg",
+          "sha256": "4c72a074d0c013169e2d03a949d26be7148fef6f4c62feea069577147a54c930",
+          "directImageViewed": true,
+          "role": "cached public instructor demonstration still"
+        }
+      ],
+      "result": "MODIFICATION_REQUIRED",
+      "reason": "아래 인물의 파란 재킷·골반과 달리 수직으로 올라온 다리가 흰 바지로 남아 있고, 위 흰 인물의 두 지지 다리와도 분리되지 않는다. 원본의 아래 흰 바지 색이 유지된 것으로 보여 소유권 교정 지침을 충족하지 못했다.",
+      "keyChecks": [
+        "위 흰 인물·아래 파란 인물",
+        "아래에서 올라온 흰 바지 다리 혼재",
+        "포착된 흰 다리와 파란 리프팅 다리 구분 실패"
+      ],
+      "regenerationGuidance": "Rebuild limb ownership before rendering. The bottom BLUE jacket must join one BLUE pelvis and exactly TWO BLUE trouser legs, including the vertically raised lifting leg. Give the upper WHITE athlete exactly TWO WHITE legs, with ONE captured white leg loaded over the blue shoulder/supporting arm and the other serving as the base. Do not recolor the captured white leg blue; identify all four hip-knee-foot chains first. Preserve the sleeve block and beginning tilt.",
+      "requires_regeneration": true,
+      "directRawImageViewed": true,
+      "verificationLimit": "선택된 공개 교육 정지 프레임 또는 기존 카탈로그 이미지와 최신 실제 prompt만 대조했다. 전체 동영상·실제 피니시 효과·가린 말단의 모든 앞뒤 깊이는 검증하지 않았다.",
+      "characterAndLimbReview": "두 성인 캐릭터·흰/파란 전신 도복·브라운벨트·사지 소속을 실제 PNG에서 함께 확인했다. 일관된 전신 배역 교환은 허용했고, 발견된 혼합 소속 또는 불명확한 핵심 접점은 reason/keyChecks에 명시했다.",
+      "approvalApplied": false
+    },
+    {
+      "slug": "wiper",
+      "name": "와이퍼",
+      "inputVersion": 2,
+      "sourceQueue": "neutral-style-correction-queue-01.json",
+      "inputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/wiper-v2.png",
+      "inputSHA256": "c6fad81ce6fe2c1f8a1f9580180f3ee5d4b5650beeeab4c648db437f27d5442a",
+      "manifestAssetOriginal": "reference/technique-illustrations/set-01/production/raw/wiper-v2.png",
+      "manifestAssetSHA256": "c6fad81ce6fe2c1f8a1f9580180f3ee5d4b5650beeeab4c648db437f27d5442a",
+      "shaMatchesManifestAsset": true,
+      "promptPath": "reference/technique-illustrations/set-01/production/prompts/wiper-v2.txt",
+      "promptSHA256": "ffc9192c104e173c56a795dbc6ec6a6aeb236236c727cd880ea0e2c617b1cb80",
+      "promptMatchesManifestAsset": true,
+      "actualPromptRead": true,
+      "referenceFrames": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/wiper-lachlan-03m41s.jpg",
+          "sha256": "491e202621918f9d019fcebcd00fb2aa70b62bb12ed79d8d7358783adcf2c592",
+          "directImageViewed": true,
+          "role": "cached public instructor demonstration still"
+        }
+      ],
+      "result": "MODIFICATION_REQUIRED",
+      "reason": "위 흰 인물의 등을 감싼 소매는 파란색으로 바뀌었지만, 아래 파란 인물의 전면 굽힌 팔 끝에는 흰 소매·커프가 남아 있다. 상단 등 위의 파란 소매도 어깨 연결이 흰 재킷 부분과 섞여 있어 두 인물의 팔 소속 교정이 완료되지 않았다.",
+      "keyChecks": [
+        "접힌 하체 위 흰 와이퍼 패스 배치",
+        "등 위의 파란 소매 일부 교정",
+        "아래 파란 전면 팔의 흰 커프·혼합 소매 잔존"
+      ],
+      "regenerationGuidance": "Trace both BLUE arms from the bottom BLUE shoulders through BLUE sleeves and BLUE cuffs to their own hands. In particular, recolor the visible bent foreground sleeve/cuff that is still WHITE to BLUE. Make the over-back BLUE sleeve join the bottom player's BLUE shoulder, not the top WHITE jacket. Keep both top-player arms entirely WHITE. Preserve the separate white clearing shin and white base leg from the source.",
+      "requires_regeneration": true,
+      "directRawImageViewed": true,
+      "verificationLimit": "선택된 공개 교육 정지 프레임 또는 기존 카탈로그 이미지와 최신 실제 prompt만 대조했다. 전체 동영상·실제 피니시 효과·가린 말단의 모든 앞뒤 깊이는 검증하지 않았다.",
+      "characterAndLimbReview": "두 성인 캐릭터·흰/파란 전신 도복·브라운벨트·사지 소속을 실제 PNG에서 함께 확인했다. 일관된 전신 배역 교환은 허용했고, 발견된 혼합 소속 또는 불명확한 핵심 접점은 reason/keyChecks에 명시했다.",
+      "approvalApplied": false
+    },
+    {
+      "slug": "rubber-guard",
+      "name": "러버 가드",
+      "inputVersion": 3,
+      "sourceQueue": "neutral-style-correction-queue-01.json",
+      "inputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/rubber-guard-v3.png",
+      "inputSHA256": "6166e86bd3de9d385ed8a9cc5d8f8f7d04955a1e79491ce7826c4268b9397372",
+      "manifestAssetOriginal": "reference/technique-illustrations/set-01/production/raw/rubber-guard-v3.png",
+      "manifestAssetSHA256": "6166e86bd3de9d385ed8a9cc5d8f8f7d04955a1e79491ce7826c4268b9397372",
+      "shaMatchesManifestAsset": true,
+      "promptPath": "reference/technique-illustrations/set-01/production/prompts/rubber-guard-v3.txt",
+      "promptSHA256": "513051886e2526bddc0b2c0776a330d053d49defee0ef32909fe4b2a80d64cdf",
+      "promptMatchesManifestAsset": true,
+      "actualPromptRead": true,
+      "referenceFrames": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/regen-rubber-guard-knight-01m10s.jpg",
+          "sha256": "2d1cb549962f5a7b0c6f1970dc98c769eb98e8f8d50e30f3645bfaee85559e0e",
+          "directImageViewed": true,
+          "role": "cached public instructor demonstration still"
+        },
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/regen-rubber-guard-eddie-01m38s.jpg",
+          "sha256": "20e5d2b18a8fca0d2fb26622f24548460174c24dc04b112d8108bfed82993d38",
+          "directImageViewed": true,
+          "role": "cached public instructor demonstration still"
+        }
+      ],
+      "result": "MODIFICATION_REQUIRED",
+      "reason": "아래 흰 공격자·위 파란 파트너로 전신 역할을 바꾼 구도인데, 위 파란 머리를 뒤에서 두른 통제 정강이·무릎은 파란 바지로 남아 있다. 아래 흰 인물의 손이 그 파란 발목을 받치므로 자기 발목 지지가 아니라 상대 다리를 잡는 소속 오류가 된다.",
+      "keyChecks": [
+        "아래 흰 공격자·위 파란 파트너 배치",
+        "목 뒤로 이동한 정강이 방향 개선",
+        "통제 정강이 파란색 잔존·아래 흰 자기 다리 연결 실패"
+      ],
+      "regenerationGuidance": "Keep the consistent WHITE-bottom attacker and BLUE-top partner assignment seen in this camera. The bent controlling leg across the BACK of the blue neck must therefore be WHITE from the bottom white pelvis, through its WHITE thigh, knee and shin cuff, to its bare foot. Have the WHITE cross-body hand support that OWN white ankle from underneath and the other WHITE arm hug the SAME white knee. Keep both BLUE legs behind the top blue pelvis. Do not place a blue player's own blue shin around their own neck.",
+      "requires_regeneration": true,
+      "directRawImageViewed": true,
+      "verificationLimit": "선택된 공개 교육 정지 프레임 또는 기존 카탈로그 이미지와 최신 실제 prompt만 대조했다. 전체 동영상·실제 피니시 효과·가린 말단의 모든 앞뒤 깊이는 검증하지 않았다.",
+      "characterAndLimbReview": "두 성인 캐릭터·흰/파란 전신 도복·브라운벨트·사지 소속을 실제 PNG에서 함께 확인했다. 일관된 전신 배역 교환은 허용했고, 발견된 혼합 소속 또는 불명확한 핵심 접점은 reason/keyChecks에 명시했다.",
+      "approvalApplied": false
+    },
+    {
+      "slug": "deep-de-riva-guard",
+      "name": "딥 델라히바 가드",
+      "inputVersion": 2,
+      "sourceQueue": "neutral-style-correction-queue-02.json",
+      "inputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/deep-de-riva-guard-v2.png",
+      "inputSHA256": "334e5eae7c91582ad07956e4bab5c6381fd051db950eb50cf5d88caf07114235",
+      "manifestAssetOriginal": "reference/technique-illustrations/set-01/production/raw/deep-de-riva-guard-v2.png",
+      "manifestAssetSHA256": "334e5eae7c91582ad07956e4bab5c6381fd051db950eb50cf5d88caf07114235",
+      "shaMatchesManifestAsset": true,
+      "promptPath": "reference/technique-illustrations/set-01/production/prompts/deep-de-riva-guard-v2.txt",
+      "promptSHA256": "c00484ade64e93ff017f1c1d7ccca408dc927f269d53a3c265e6cbeb1acee82c",
+      "promptMatchesManifestAsset": true,
+      "actualPromptRead": true,
+      "referenceFrames": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/regen02-deep-de-riva-guard-55s.jpg",
+          "sha256": "d4f219dca23ed7449595327a16389c67052b2f262c25f1d5fd0cea4122fd8108",
+          "directImageViewed": true,
+          "role": "cached public instructor demonstration still"
+        },
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/regen02-deep-de-riva-guard-64s.jpg",
+          "sha256": "eb6ebe17f197538e52edb395460459ce3f4d408bfbef9a68c0ee961d631a0c5b",
+          "directImageViewed": true,
+          "role": "cached public instructor demonstration still"
+        }
+      ],
+      "result": "PASS",
+      "reason": "전신 역할은 아래 흰 인물·위 파란 인물로 일관되게 바뀌었다. 흰 힙이 파란 베이스 가까이 들리고 바깥 훅이 수집한 다리 뒤로 깊게 이어지며 끝이 반대 실루엣 밖에 드러난다. 같은 선 다리의 발목 제어와 반대 깃 연결이 선택된 Aaron 정지 자세와 대응한다.",
+      "keyChecks": [
+        "흰 힙이 파란 선 베이스에 근접",
+        "깊은 바깥 훅 끝이 베이스 바깥으로 노출",
+        "같은 선 다리 발목 제어·반대 깃 연결"
+      ],
+      "regenerationGuidance": null,
+      "requires_regeneration": false,
+      "directRawImageViewed": true,
+      "verificationLimit": "선택된 공개 교육 정지 프레임 또는 기존 카탈로그 이미지와 최신 실제 prompt만 대조했다. 전체 동영상·실제 피니시 효과·가린 말단의 모든 앞뒤 깊이는 검증하지 않았다.",
+      "characterAndLimbReview": "두 성인 캐릭터·흰/파란 전신 도복·브라운벨트·사지 소속을 실제 PNG에서 함께 확인했다. 일관된 전신 배역 교환은 허용했고, 발견된 혼합 소속 또는 불명확한 핵심 접점은 reason/keyChecks에 명시했다.",
+      "approvalApplied": false
+    },
+    {
+      "slug": "inverted-guard",
+      "name": "인버티드 가드",
+      "inputVersion": 2,
+      "sourceQueue": "neutral-style-correction-queue-02.json",
+      "inputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/inverted-guard-v2.png",
+      "inputSHA256": "ce7bed79d2e701b6c95bd60e95eeb031487e17895d05367ae2a4b730b0076274",
+      "manifestAssetOriginal": "reference/technique-illustrations/set-01/production/raw/inverted-guard-v2.png",
+      "manifestAssetSHA256": "ce7bed79d2e701b6c95bd60e95eeb031487e17895d05367ae2a4b730b0076274",
+      "shaMatchesManifestAsset": true,
+      "promptPath": "reference/technique-illustrations/set-01/production/prompts/inverted-guard-v2.txt",
+      "promptSHA256": "aef2874984df90fa7c3f3a75ca2c876f5f7034557627b88353ad927f647ca021",
+      "promptMatchesManifestAsset": true,
+      "actualPromptRead": true,
+      "referenceFrames": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/references/inverted-guard.webp",
+          "sha256": "c74893837c0a1c53d797968f2267bdb5076108a6e078c706bc53bc7478cee98f",
+          "directImageViewed": true,
+          "role": "existing public catalog pose"
+        }
+      ],
+      "result": "PASS",
+      "reason": "파란 골반이 어깨선보다 뚜렷하게 높고 어깨·상부 등에 말려 있으며, 접힌 두 파란 다리가 파트너 앞 가드 장벽으로 이어진다. 기존 일반 오픈 가드 회귀가 교정됐고 머리가 주 지지점으로 그려지지 않는다.",
+      "keyChecks": [
+        "어깨선 위의 파란 골반",
+        "어깨·상부 등 지지와 낮은 머리",
+        "접힌 두 다리의 가드 프레임"
+      ],
+      "regenerationGuidance": null,
+      "requires_regeneration": false,
+      "directRawImageViewed": true,
+      "verificationLimit": "선택된 공개 교육 정지 프레임 또는 기존 카탈로그 이미지와 최신 실제 prompt만 대조했다. 전체 동영상·실제 피니시 효과·가린 말단의 모든 앞뒤 깊이는 검증하지 않았다.",
+      "characterAndLimbReview": "두 성인 캐릭터·흰/파란 전신 도복·브라운벨트·사지 소속을 실제 PNG에서 함께 확인했다. 일관된 전신 배역 교환은 허용했고, 발견된 혼합 소속 또는 불명확한 핵심 접점은 reason/keyChecks에 명시했다.",
+      "approvalApplied": false
+    },
+    {
+      "slug": "pendulum-sweep",
+      "name": "펜듈럼 스윕",
+      "inputVersion": 2,
+      "sourceQueue": "neutral-style-correction-queue-02.json",
+      "inputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/pendulum-sweep-v2.png",
+      "inputSHA256": "29271144e3d11f6af05e6c1a643926f6ae09387556ad070d1c40291fa1071380",
+      "manifestAssetOriginal": "reference/technique-illustrations/set-01/production/raw/pendulum-sweep-v2.png",
+      "manifestAssetSHA256": "29271144e3d11f6af05e6c1a643926f6ae09387556ad070d1c40291fa1071380",
+      "shaMatchesManifestAsset": true,
+      "promptPath": "reference/technique-illustrations/set-01/production/prompts/pendulum-sweep-v2.txt",
+      "promptSHA256": "8a69d48a2bf7e82e3be22e012f4c0bf90f9fe3edcb09a1b700c9ed95ba2c35df",
+      "promptMatchesManifestAsset": true,
+      "actualPromptRead": true,
+      "referenceFrames": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/regen02-pendulum-sweep-chewjitsu-03m28s.jpg",
+          "sha256": "2b142441c035db7a79ce0f561cf73eb4c9d34bb6839c0cbe2907afcd6f45639f",
+          "directImageViewed": true,
+          "role": "cached public instructor demonstration still"
+        },
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/regen02-pendulum-sweep-235s.jpg",
+          "sha256": "404da05a5bdeae0accfbd0aadf3ad5bcddd7e72d6993e54843dee1fbe9de0060",
+          "directImageViewed": true,
+          "role": "cached public instructor demonstration still"
+        }
+      ],
+      "result": "MODIFICATION_REQUIRED",
+      "reason": "두 파란 다리의 열린 배치는 개선됐지만, 파란 두 손은 흰 팔뚝과 팔꿈치를 잡고 있다. 원본의 한 팔이 흰 햄스트링 밑을 받는 언더훅이 빠져 있어 펜듈럼 스윕의 수집 기반이 여전히 일반 오픈 가드 형태다.",
+      "keyChecks": [
+        "열린 두 파란 다리·일관된 소속",
+        "앞쪽 흰 포스팅 팔 제어",
+        "뒤 허벅지 언더훅 대신 두 흰 팔 제어"
+      ],
+      "regenerationGuidance": "Keep the near BLUE hand controlling the WHITE posting sleeve or wrist. Move the OTHER BLUE arm away from the white elbow and scoop it underneath the near WHITE HAMSTRING, exposing its BLUE cuff and hand behind that thigh as in Chewjitsu's source. Keep the two blue legs opened along separate pendulum/counterweight paths and angle the blue hips beneath the loaded thigh. Do not use two blue hands on two white arms.",
+      "requires_regeneration": true,
+      "directRawImageViewed": true,
+      "verificationLimit": "선택된 공개 교육 정지 프레임 또는 기존 카탈로그 이미지와 최신 실제 prompt만 대조했다. 전체 동영상·실제 피니시 효과·가린 말단의 모든 앞뒤 깊이는 검증하지 않았다.",
+      "characterAndLimbReview": "두 성인 캐릭터·흰/파란 전신 도복·브라운벨트·사지 소속을 실제 PNG에서 함께 확인했다. 일관된 전신 배역 교환은 허용했고, 발견된 혼합 소속 또는 불명확한 핵심 접점은 reason/keyChecks에 명시했다.",
+      "approvalApplied": false
+    },
+    {
+      "slug": "leg-weave",
+      "name": "레그 위브",
+      "inputVersion": 2,
+      "sourceQueue": "neutral-style-correction-queue-02.json",
+      "inputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/leg-weave-v2.png",
+      "inputSHA256": "aff786cedd975f3ed1a96838db060cfe0d32d2c52a3d46eae50e83df90c8b1b1",
+      "manifestAssetOriginal": "reference/technique-illustrations/set-01/production/raw/leg-weave-v2.png",
+      "manifestAssetSHA256": "aff786cedd975f3ed1a96838db060cfe0d32d2c52a3d46eae50e83df90c8b1b1",
+      "shaMatchesManifestAsset": true,
+      "promptPath": "reference/technique-illustrations/set-01/production/prompts/leg-weave-v2.txt",
+      "promptSHA256": "27f08df387dcef049a5050d8ff4fbda5d8264b22f0543dadd3581625c1563f1c",
+      "promptMatchesManifestAsset": true,
+      "actualPromptRead": true,
+      "referenceFrames": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/regen02-leg-weave-135s.jpg",
+          "sha256": "03947401cdc23ec51f572a8f6fc0da8b6e4b07409586d5f3e713fe2e0de94bb2",
+          "directImageViewed": true,
+          "role": "cached public instructor demonstration still"
+        },
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/regen02-leg-weave-lachlan-01m33s.jpg",
+          "sha256": "f5b44a034a0fd786ad1d4e50398b65dac36105897ae7db9e5e5354e11e2e250e",
+          "directImageViewed": true,
+          "role": "cached public instructor demonstration still"
+        }
+      ],
+      "result": "PASS",
+      "reason": "한 흰 팔이 파란 상단 니쉴드 위를 지나 두 다리 사이로 내려가 하단 파란 바지를 잡고 있다. 같은 팔을 뻗어 하단 정강이를 낮게 유지하고 반대손은 깃에 연결돼, 바깥 무릎을 단순히 껴안던 형태가 교정됐다.",
+      "keyChecks": [
+        "상단 파란 니쉴드 위→두 다리 사이의 한 흰 팔",
+        "같은 손의 하단 바지 그립·낮은 하단 발",
+        "전방 체중과 뻗은 위브 팔"
+      ],
+      "regenerationGuidance": null,
+      "requires_regeneration": false,
+      "directRawImageViewed": true,
+      "verificationLimit": "선택된 공개 교육 정지 프레임 또는 기존 카탈로그 이미지와 최신 실제 prompt만 대조했다. 전체 동영상·실제 피니시 효과·가린 말단의 모든 앞뒤 깊이는 검증하지 않았다.",
+      "characterAndLimbReview": "두 성인 캐릭터·흰/파란 전신 도복·브라운벨트·사지 소속을 실제 PNG에서 함께 확인했다. 일관된 전신 배역 교환은 허용했고, 발견된 혼합 소속 또는 불명확한 핵심 접점은 reason/keyChecks에 명시했다.",
+      "approvalApplied": false
+    },
+    {
+      "slug": "gator-roll",
+      "name": "게이터 롤",
+      "inputVersion": 2,
+      "sourceQueue": "neutral-style-correction-queue-02.json",
+      "inputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/gator-roll-v2.png",
+      "inputSHA256": "1c89ccf4f7f123b14971be1f176adcf8815fe5b4f765e9d742babd43af0c0238",
+      "manifestAssetOriginal": "reference/technique-illustrations/set-01/production/raw/gator-roll-v2.png",
+      "manifestAssetSHA256": "1c89ccf4f7f123b14971be1f176adcf8815fe5b4f765e9d742babd43af0c0238",
+      "shaMatchesManifestAsset": true,
+      "promptPath": "reference/technique-illustrations/set-01/production/prompts/gator-roll-v2.txt",
+      "promptSHA256": "df9d487894b671bdcc86cf68501ce172f39f23f1998dd7e31d8c769f91c5855f",
+      "promptMatchesManifestAsset": true,
+      "actualPromptRead": true,
+      "referenceFrames": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/regen02-gator-roll-94s.jpg",
+          "sha256": "e9838ec574fdd18273c49972c007da1a3c88ed1b6322840a355b6d5219c484f1",
+          "directImageViewed": true,
+          "role": "cached public instructor demonstration still"
+        },
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/regen02-gator-roll-44s.jpg",
+          "sha256": "37f486885e6379e2447d90b77f6bafcd9eb61a931861614e5358664203744629",
+          "directImageViewed": true,
+          "role": "cached public instructor demonstration still"
+        },
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/regen02-gator-roll-104s-full.jpg",
+          "sha256": "cd6b67f1ca140ac0aa8514fca430992e590e42c977f7d67623cda28fe956c91d",
+          "directImageViewed": true,
+          "role": "cached public instructor demonstration still"
+        }
+      ],
+      "result": "KEY_CONTACT_UNCONFIRMED",
+      "reason": "옆으로 함께 누운 연결은 구현됐지만, 흰 루프가 파란 머리와 한 상완을 함께 감싼 앞 헤드앤암 구조인지 분명하지 않다. 파란 상완이 루프 안에 갇힌 경계와 흰 두 팔의 결속이 머리 앞의 소매·손 겹침에 묻혀 뒤에서 목만 감싼 형태와 구별하기 어렵다.",
+      "keyChecks": [
+        "두 몸통의 옆으로 회전한 밀착",
+        "파란 자유 팔은 바깥으로 분리",
+        "같은 루프 안의 파란 머리·한 상완 접점 미확인"
+      ],
+      "regenerationGuidance": "Open the front head-and-arm side of the post-roll anaconda-family configuration. Draw ONE BLUE upper arm clearly folded up beside the BLUE head, with BOTH that head and upper arm enclosed inside the SAME continuous WHITE arm loop. Expose the WHITE hand-to-own-arm closure and keep the captured BLUE elbow tucked; place the other BLUE arm outside. Preserve side-lying shoulder/trunk support. Do not replace the front head-and-arm loop with a rear head-only neck clasp.",
+      "requires_regeneration": true,
+      "directRawImageViewed": true,
+      "verificationLimit": "선택된 공개 교육 정지 프레임 또는 기존 카탈로그 이미지와 최신 실제 prompt만 대조했다. 전체 동영상·실제 피니시 효과·가린 말단의 모든 앞뒤 깊이는 검증하지 않았다.",
+      "characterAndLimbReview": "두 성인 캐릭터·흰/파란 전신 도복·브라운벨트·사지 소속을 실제 PNG에서 함께 확인했다. 일관된 전신 배역 교환은 허용했고, 발견된 혼합 소속 또는 불명확한 핵심 접점은 reason/keyChecks에 명시했다.",
+      "approvalApplied": false
+    },
+    {
+      "slug": "back-step",
+      "name": "백 스텝",
+      "inputVersion": 2,
+      "sourceQueue": "neutral-style-correction-queue-02.json",
+      "inputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/back-step-v2.png",
+      "inputSHA256": "a4495b33c4506697eb0079e43ef4d3f72608fa0f1b82910bb67aadf7512c95d7",
+      "manifestAssetOriginal": "reference/technique-illustrations/set-01/production/raw/back-step-v2.png",
+      "manifestAssetSHA256": "a4495b33c4506697eb0079e43ef4d3f72608fa0f1b82910bb67aadf7512c95d7",
+      "shaMatchesManifestAsset": true,
+      "promptPath": "reference/technique-illustrations/set-01/production/prompts/back-step-v2.txt",
+      "promptSHA256": "2a7d47f86f5a22da209900abd639a8fc86eeb84b595b3b17c06f57716c1d417b",
+      "promptMatchesManifestAsset": true,
+      "actualPromptRead": true,
+      "referenceFrames": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/references/back-step.webp",
+          "sha256": "f2da0989ce975e2f1cc156440607e07bf2f275a3a2716655ec24153147f508e5",
+          "directImageViewed": true,
+          "role": "existing public catalog pose"
+        }
+      ],
+      "result": "PASS",
+      "reason": "위 파란 인물·아래 흰 인물로 전신 역할이 일관되게 교환됐다. 위 인물의 등과 벨트가 아래 인물에서 돌아서고 자유 다리가 뒤로 넘어가며, 지지 손과 힙 연결이 유지돼 단순 뒤차기 형태가 교정됐다.",
+      "keyChecks": [
+        "상위 가슴·골반이 상대에서 돌아선 방향",
+        "뒤로 넘어간 자유 다리",
+        "지지 손·힙 연결"
+      ],
+      "regenerationGuidance": null,
+      "requires_regeneration": false,
+      "directRawImageViewed": true,
+      "verificationLimit": "선택된 공개 교육 정지 프레임 또는 기존 카탈로그 이미지와 최신 실제 prompt만 대조했다. 전체 동영상·실제 피니시 효과·가린 말단의 모든 앞뒤 깊이는 검증하지 않았다.",
+      "characterAndLimbReview": "두 성인 캐릭터·흰/파란 전신 도복·브라운벨트·사지 소속을 실제 PNG에서 함께 확인했다. 일관된 전신 배역 교환은 허용했고, 발견된 혼합 소속 또는 불명확한 핵심 접점은 reason/keyChecks에 명시했다.",
+      "approvalApplied": false
+    },
+    {
+      "slug": "berimbolo",
+      "name": "베림볼로",
+      "inputVersion": 2,
+      "sourceQueue": "neutral-style-correction-queue-02.json",
+      "inputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/berimbolo-v2.png",
+      "inputSHA256": "95fddc29a23a55c28001634f53527a21ed4ad2dafc2e813a95ea026cc3d2ba81",
+      "manifestAssetOriginal": "reference/technique-illustrations/set-01/production/raw/berimbolo-v2.png",
+      "manifestAssetSHA256": "95fddc29a23a55c28001634f53527a21ed4ad2dafc2e813a95ea026cc3d2ba81",
+      "shaMatchesManifestAsset": true,
+      "promptPath": "reference/technique-illustrations/set-01/production/prompts/berimbolo-v2.txt",
+      "promptSHA256": "6a50af841a9aa8247a61fd4ff03474436f53b26af34ab49081a902529623704e",
+      "promptMatchesManifestAsset": true,
+      "actualPromptRead": true,
+      "referenceFrames": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/references/berimbolo.webp",
+          "sha256": "990de5090ad0d0239ccbde171bebde289bc6dd5606c7ea87e0b12211fdadede1",
+          "directImageViewed": true,
+          "role": "existing public catalog pose"
+        }
+      ],
+      "result": "PASS",
+      "reason": "파란 인물이 어깨·상부 등에 말려 흰 벨트·힙 가까이 붙고, 흰 힙이 돌아서는 방향으로 두 다리 연결을 유지한다. 상완을 밀던 얼굴 대 얼굴 오픈 가드가 제거돼 기존 카탈로그의 힙 연결 인버전 형태로 바뀌었다.",
+      "keyChecks": [
+        "흰 벨트·힙 가까운 파란 골반",
+        "힙·허벅지선의 연속 다리 연결",
+        "어깨·상부 등 회전·상완 프레임 제거"
+      ],
+      "regenerationGuidance": null,
+      "requires_regeneration": false,
+      "directRawImageViewed": true,
+      "verificationLimit": "선택된 공개 교육 정지 프레임 또는 기존 카탈로그 이미지와 최신 실제 prompt만 대조했다. 전체 동영상·실제 피니시 효과·가린 말단의 모든 앞뒤 깊이는 검증하지 않았다.",
+      "characterAndLimbReview": "두 성인 캐릭터·흰/파란 전신 도복·브라운벨트·사지 소속을 실제 PNG에서 함께 확인했다. 일관된 전신 배역 교환은 허용했고, 발견된 혼합 소속 또는 불명확한 핵심 접점은 reason/keyChecks에 명시했다.",
+      "approvalApplied": false
+    },
+    {
+      "slug": "100-percent-sweep",
+      "name": "100퍼스윕",
+      "inputVersion": 2,
+      "sourceQueue": "neutral-style-correction-queue-02.json",
+      "inputPath": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning/reference/technique-illustrations/set-01/production/raw/100-percent-sweep-v2.png",
+      "inputSHA256": "5b1d7f4765a89c54880482a00fe6fc5cf8c9faab0a60270576fc4435efbf04a0",
+      "manifestAssetOriginal": "reference/technique-illustrations/set-01/production/raw/100-percent-sweep-v2.png",
+      "manifestAssetSHA256": "5b1d7f4765a89c54880482a00fe6fc5cf8c9faab0a60270576fc4435efbf04a0",
+      "shaMatchesManifestAsset": true,
+      "promptPath": "reference/technique-illustrations/set-01/production/prompts/100-percent-sweep-v2.txt",
+      "promptSHA256": "7c966f88042bf69b6e265b4217d2985bf30724f99d21c726e1116d69abec670e",
+      "promptMatchesManifestAsset": true,
+      "actualPromptRead": true,
+      "referenceFrames": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/candidate-100-percent-americana-official.jpg",
+          "sha256": "2f8c884a7a9affdc42f43f71727fffcfc0692a12119a994501f71ba0e9661c8f",
+          "directImageViewed": true,
+          "role": "cached public instructor demonstration still"
+        },
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/100-percent-sweep-americana-00m13s.jpg",
+          "sha256": "9a95f3ad45acf167bfd358d56829a2e38b096ddb3ee7c7902baaaca56aa434ed",
+          "directImageViewed": true,
+          "role": "cached public instructor demonstration still"
+        }
+      ],
+      "result": "KEY_CONTACT_UNCONFIRMED",
+      "reason": "앉은 흰 인물이 무릎 꿇은 파란 머리를 겨드랑이에 둔 로딩 자세와 가까운 하체는 구현됐다. 다만 어깨 앞의 손 결속과 머리 위 굽힌 소매가 겹쳐, 반대 흰 팔이 파란 상완 밑을 지나 자기 팔에 연결됐는지 추적하기 어렵다. 머리 고정에 더한 연결된 헤드앤암 통제를 확정하지 않는다.",
+      "keyChecks": [
+        "앉은 흰 인물·무릎 꿇은 파란 인물의 일관된 전신 배역",
+        "겨드랑이에 든 파란 머리·가까운 힙",
+        "파란 상완 밑의 반대 흰 팔과 자기 팔 결속 경로 미확인"
+      ],
+      "regenerationGuidance": "Keep the consistent seated WHITE attacker and kneeling BLUE partner. Expose the attacker's second WHITE forearm passing UNDER the trapped BLUE upper arm and joining the attacker's own head-wrapping WHITE arm at the actual source closure. Separate the BLUE captured arm and BLUE cuff from the WHITE sleeves at the front shoulder junction. Show exactly two white hands and two blue hands, allowing unrelated far contacts to remain hidden. Do not create two independent biceps holds or a disconnected head-only hug.",
+      "requires_regeneration": true,
+      "directRawImageViewed": true,
+      "verificationLimit": "선택된 공개 교육 정지 프레임 또는 기존 카탈로그 이미지와 최신 실제 prompt만 대조했다. 전체 동영상·실제 피니시 효과·가린 말단의 모든 앞뒤 깊이는 검증하지 않았다.",
+      "characterAndLimbReview": "두 성인 캐릭터·흰/파란 전신 도복·브라운벨트·사지 소속을 실제 PNG에서 함께 확인했다. 일관된 전신 배역 교환은 허용했고, 발견된 혼합 소속 또는 불명확한 핵심 접점은 reason/keyChecks에 명시했다.",
+      "approvalApplied": false
+    }
+  ],
+  "resultCounts": {
+    "MODIFICATION_REQUIRED": 6,
+    "KEY_CONTACT_UNCONFIRMED": 5,
+    "PASS": 6
+  },
+  "requiresRegeneration": [
+    "buggy-choke",
+    "inside-heel-hook",
+    "lapel-pass",
+    "saddle-position",
+    "squid-guard",
+    "waiter-sweep",
+    "wiper",
+    "rubber-guard",
+    "pendulum-sweep",
+    "gator-roll",
+    "100-percent-sweep"
+  ],
+  "registryModified": false,
+  "publicAssetsModified": false,
+  "priorReviewsModified": false,
+  "uiOrTaskHistoryModified": false
+}

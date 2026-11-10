@@ -1,0 +1,304 @@
+{
+  "schemaVersion": 1,
+  "task": "task-058",
+  "batch": "regeneration-01",
+  "status": "complete",
+  "reviewedCount": 6,
+  "method": "최신 raw PNG 6개와 공식 교육자 근거의 주 프레임 6개·손 접점 보조 프레임 2개를 모두 view_image로 직접 읽고 비교했다. 원본 SHA256은 등록부 asset.originalSHA256과 대조하고 근거 프레임 SHA256도 검증했다. 자연스러운 가림을 추가 사지/결손과 혼동하지 않았다. 전체 동영상이나 실제 스윕 성공은 검증하지 않았다.",
+  "referenceScope": "로컬에 캐시된 공식 공개 교육 프레임과 지정 시점의 정지 접점 비교. 원본 인물·자막은 생성물에 복사하지 않는다.",
+  "publicationDecisionTaken": false,
+  "registryModified": false,
+  "batch01ResultsModified": false,
+  "batch02Prior34ResultsModified": false,
+  "items": [
+    {
+      "slug": "kimura-sweep",
+      "result": "PASS",
+      "reason": "v3의 위쪽 파란 손이 아래쪽 파란 소매 끝의 자기 손목을 잡고, 아래 파란 손은 흰 손목을 잡는다. 흰 팔꿈치를 굽힌 닫힌 figure-four가 읽혀, 두 손이 모두 흰 팔을 잡던 이전 결함이 교정됐다. established-control 정지 장면에 대한 판정이며 실제 스윕 성공을 주장하지 않는다.",
+      "keyChecks": [
+        "흰 손목을 잡은 파란 한 손",
+        "반대 파란 손목을 잡은 파란 손",
+        "굽힌 흰 팔꿈치를 포함한 닫힌 figure-four"
+      ],
+      "requires_regeneration": false,
+      "regenerationGuidance": null,
+      "characterReview": "검은 머리·흰 도복과 흰 머리·파란 도복 두 성인, 각 브라운벨트를 유지한다.",
+      "limbReview": "명백한 추가 사지·관절 단절은 관찰하지 못했다. 자연스러운 가림은 허용했다.",
+      "directRawImageViewed": true,
+      "inputVersion": 3,
+      "inputPath": "reference/technique-illustrations/set-01/production/raw/kimura-sweep-v3.png",
+      "inputSHA256": "b9dcfc0d80974ec228a61883b1cd184f643ad3df228020d4208952c174619acf",
+      "manifestAssetSHA256": "b9dcfc0d80974ec228a61883b1cd184f643ad3df228020d4208952c174619acf",
+      "shaMatchesManifestAsset": true,
+      "promptPath": "reference/technique-illustrations/set-01/production/prompts/kimura-sweep-v3.txt",
+      "promptSHA256": "54d4a5d7b518dda03fa58b24374821ef765a4411453bb2b234f892823a4249ef",
+      "referenceRecordPath": "docs/handovers/task-058-regeneration-pose-references.json",
+      "selectedVariant": "The Grappling Academy closed-guard Kimura/hip-bump combination, established figure-four branch",
+      "officialKeyChecks": [
+        "One blue hand holds the white wrist; the second blue hand unmistakably holds BLUE OWN opposite wrist after that arm wraps over the white upper arm.",
+        "The connected forearms form one closed figure-four with the white elbow bent; two blue hands separately grabbing white do not pass.",
+        "Blue remains in bottom guard control and the established hand loop is large enough to distinguish at 224px."
+      ],
+      "referenceFrames": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/regen-kimura-sweep-grapplingacademy-02m12s.jpg",
+          "inputSHA256": "d21fdb47275bbd0bcc36e0ae8fa89f2810ee6e421fac799e0c747664519b963c",
+          "expectedSHA256": "d21fdb47275bbd0bcc36e0ae8fa89f2810ee6e421fac799e0c747664519b963c",
+          "shaMatchesRecordedReference": true,
+          "sourceURL": "https://www.youtube.com/watch?v=CCos35cv5T8",
+          "sourceTitle": "The Kimura Hip Bump Sweep - Kimura Combo",
+          "sourceAuthor": "The Grappling Academy",
+          "timestamp": "02:12",
+          "role": "primary_pose",
+          "directImageViewed": true
+        }
+      ]
+    },
+    {
+      "slug": "rubber-guard",
+      "result": "MODIFICATION_REQUIRED",
+      "reason": "깊게 굽힌 파란 무릎, 발목을 받친 교차 손, 무릎을 안은 반대 팔은 개선됐다. 그러나 흰 턱이 파란 정강이 위에 얹히고 정강이가 목 앞·가슴 앞을 가로지른다. 공식 프레임의 목 뒤·상부 등 접점과 달라 Mission Control 고정의 핵심 위치가 뒤바뀌었다.",
+      "keyChecks": [
+        "굽힌 무릎·자기 발목 제어는 확인",
+        "교차 발목 지지와 무릎 안기 역할은 구별됨",
+        "정강이 뒤에 놓여야 할 흰 머리가 정강이 위로 올라와 목 앞 장벽이 됨"
+      ],
+      "requires_regeneration": true,
+      "regenerationGuidance": "Place the bent blue shin BEHIND white's neck across the upper back, not under white's chin or across the front of the throat and chest. Lower white's head in front of and below the shin so the back of the neck is visibly captured by the blue leg. Preserve the current cross-body own-ankle support and separate knee-hugging arm, with exactly two blue legs.",
+      "characterReview": "검은 머리·흰 도복과 흰 머리·파란 도복 두 성인, 각 브라운벨트를 유지한다.",
+      "limbReview": "명백한 추가 사지·관절 단절은 관찰하지 못했다. 자연스러운 가림은 허용했다.",
+      "directRawImageViewed": true,
+      "inputVersion": 2,
+      "inputPath": "reference/technique-illustrations/set-01/production/raw/rubber-guard-v2.png",
+      "inputSHA256": "75bc7fc23941dc5555a3db9a8a87fc9e8da6c904d99907aac657c8d6eba4e86e",
+      "manifestAssetSHA256": "75bc7fc23941dc5555a3db9a8a87fc9e8da6c904d99907aac657c8d6eba4e86e",
+      "shaMatchesManifestAsset": true,
+      "promptPath": "reference/technique-illustrations/set-01/production/prompts/rubber-guard-v2.txt",
+      "promptSHA256": "669103dde3b1db04937d92ed562774f64d708db0456ca3feac3c7d2b87493920",
+      "referenceRecordPath": "docs/handovers/task-058-regeneration-pose-references.json",
+      "selectedVariant": "Mission-control representative with bent-knee upper-back shin control",
+      "officialKeyChecks": [
+        "The bent blue shin crosses the back of the white neck and upper back; a vertical elevated leg without that contact does not pass.",
+        "The cross-body blue hand supports the own ankle from underneath, while the other arm hugs the raised knee; these are different contacts.",
+        "White posture remains broken inside the blue guard and the two blue legs remain anatomically continuous."
+      ],
+      "referenceFrames": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/regen-rubber-guard-knight-01m10s.jpg",
+          "inputSHA256": "2d1cb549962f5a7b0c6f1970dc98c769eb98e8f8d50e30f3645bfaee85559e0e",
+          "expectedSHA256": "2d1cb549962f5a7b0c6f1970dc98c769eb98e8f8d50e30f3645bfaee85559e0e",
+          "shaMatchesRecordedReference": true,
+          "sourceURL": "https://www.youtube.com/watch?v=7ukIp8aQu4M",
+          "sourceTitle": "Rubber Guard Fundamentals | Basics and Not-So Basics",
+          "sourceAuthor": "Knight Jiu-Jitsu",
+          "timestamp": "01:10",
+          "role": "primary_pose",
+          "directImageViewed": true
+        },
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/regen-rubber-guard-eddie-01m38s.jpg",
+          "inputSHA256": "20e5d2b18a8fca0d2fb26622f24548460174c24dc04b112d8108bfed82993d38",
+          "expectedSHA256": "20e5d2b18a8fca0d2fb26622f24548460174c24dc04b112d8108bfed82993d38",
+          "shaMatchesRecordedReference": true,
+          "sourceURL": "https://www.youtube.com/watch?v=RJ7Iutti8cY",
+          "sourceTitle": "Mastering The Rubber Guard by Eddie Bravo",
+          "sourceAuthor": "Bernardo Faria BJJ Fanatics",
+          "timestamp": "01:38",
+          "role": "hand_contact_support",
+          "directImageViewed": true
+        }
+      ]
+    },
+    {
+      "slug": "x-guard",
+      "result": "PASS",
+      "reason": "흰 한 다리는 파란 어깨 옆에 수집되고 파란 손이 그 다리를 붙잡는다. 파란 두 발은 다른 흰 다리의 힙·사타구니 부근과 무릎 뒤에 높낮이를 달리해 걸려 X 구조를 만든다. 어깨 지지 다리와 훅 대상 다리가 분리됐다.",
+      "keyChecks": [
+        "파란 어깨 옆의 별도 흰 다리",
+        "반대 흰 다리의 상부 힙 훅",
+        "같은 반대 다리의 낮은 무릎 뒤 훅"
+      ],
+      "requires_regeneration": false,
+      "regenerationGuidance": null,
+      "characterReview": "검은 머리·흰 도복과 흰 머리·파란 도복 두 성인, 각 브라운벨트를 유지한다.",
+      "limbReview": "명백한 추가 사지·관절 단절은 관찰하지 못했다. 자연스러운 가림은 허용했다.",
+      "directRawImageViewed": true,
+      "inputVersion": 2,
+      "inputPath": "reference/technique-illustrations/set-01/production/raw/x-guard-v2.png",
+      "inputSHA256": "9bcfe7ebed0da20d34f210acc1f9c0805bd2f89c19e11412bf2355ba4281719c",
+      "manifestAssetSHA256": "9bcfe7ebed0da20d34f210acc1f9c0805bd2f89c19e11412bf2355ba4281719c",
+      "shaMatchesManifestAsset": true,
+      "promptPath": "reference/technique-illustrations/set-01/production/prompts/x-guard-v2.txt",
+      "promptSHA256": "56ea70512849677fa6b8b3d348d81cec23c0534129f2b4534fc7c4d154561dfe",
+      "referenceRecordPath": "docs/handovers/task-058-regeneration-pose-references.json",
+      "selectedVariant": "Chewjitsu conventional X guard, shoulder-supported leg and two opposed hooks",
+      "officialKeyChecks": [
+        "One white leg is collected at the blue shoulder and upper-body connection.",
+        "Both blue feet hook the OTHER white leg at different heights: upper hook near the hip/groin and lower hook behind the knee, with opposing directions.",
+        "The shoulder-supported leg remains separate from the hooked leg; a single-leg-X or two soles pushing one hip does not pass."
+      ],
+      "referenceFrames": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/regen-x-guard-chewjitsu-00m58s.jpg",
+          "inputSHA256": "371c30901270fac1ac12bfb2c626065871fb3276730787ab126a2bb0e508edd8",
+          "expectedSHA256": "371c30901270fac1ac12bfb2c626065871fb3276730787ab126a2bb0e508edd8",
+          "shaMatchesRecordedReference": true,
+          "sourceURL": "https://www.youtube.com/watch?v=503YYSO8tM0",
+          "sourceTitle": "New to X Guard in BJJ? ( Start with this Fundamental Sweep )",
+          "sourceAuthor": "Chewjitsu",
+          "timestamp": "00:58",
+          "role": "primary_pose",
+          "directImageViewed": true
+        }
+      ]
+    },
+    {
+      "slug": "reverse-de-riva-guard",
+      "result": "PASS",
+      "reason": "파란 훅 다리가 흰 두 다리 안쪽에서 들어가 앞 무릎 뒤를 돌아 바깥으로 발등이 드러난다. 파란 손은 바로 그 흰 앞다리 발목을 잡는다. 이전 그림보다 안쪽 진입 경로와 되감긴 발이 분명하다.",
+      "keyChecks": [
+        "흰 다리 안쪽에서 진입한 파란 훅",
+        "앞 무릎 뒤·바깥으로 드러난 발등",
+        "같은 흰 다리의 발목 그립"
+      ],
+      "requires_regeneration": false,
+      "regenerationGuidance": null,
+      "characterReview": "검은 머리·흰 도복과 흰 머리·파란 도복 두 성인, 각 브라운벨트를 유지한다.",
+      "limbReview": "명백한 추가 사지·관절 단절은 관찰하지 못했다. 자연스러운 가림은 허용했다.",
+      "directRawImageViewed": true,
+      "inputVersion": 2,
+      "inputPath": "reference/technique-illustrations/set-01/production/raw/reverse-de-riva-guard-v2.png",
+      "inputSHA256": "93c764a76faf0ca63f2d263d35082154d9b955e5bdad5827208f18a8361442d2",
+      "manifestAssetSHA256": "93c764a76faf0ca63f2d263d35082154d9b955e5bdad5827208f18a8361442d2",
+      "shaMatchesManifestAsset": true,
+      "promptPath": "reference/technique-illustrations/set-01/production/prompts/reverse-de-riva-guard-v2.txt",
+      "promptSHA256": "6cffa167d01bb5bf9dee4697e6fda0df5b325f032d4694b3104ad67af881d2cf",
+      "referenceRecordPath": "docs/handovers/task-058-regeneration-pose-references.json",
+      "selectedVariant": "Giancarlo Bodoni reverse-DLR control before the inversion",
+      "officialKeyChecks": [
+        "The blue hook enters between the white legs from INSIDE and the instep wraps behind the leading white knee toward its outer side.",
+        "The blue ankle-control hand belongs to that same leading white leg.",
+        "The non-hooking leg retains the source distance frame; the inside shin-to-instep route must remain distinct from ordinary outside De La Riva."
+      ],
+      "referenceFrames": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/regen-reverse-de-riva-guard-bodoni-01m55s.jpg",
+          "inputSHA256": "32ee8b7d2c17bb38d071c120660ffaed458d115bca40a77a6702f6f3ebd43408",
+          "expectedSHA256": "32ee8b7d2c17bb38d071c120660ffaed458d115bca40a77a6702f6f3ebd43408",
+          "shaMatchesRecordedReference": true,
+          "sourceURL": "https://www.youtube.com/watch?v=vkT6Mpn5uLY",
+          "sourceTitle": "How to Invert from Reverse De La Riva in BJJ with Giancarlo Bodoni",
+          "sourceAuthor": "Bernardo Faria BJJ Fanatics",
+          "timestamp": "01:55",
+          "role": "primary_pose",
+          "directImageViewed": true
+        }
+      ]
+    },
+    {
+      "slug": "lasso-guard",
+      "result": "PASS",
+      "reason": "파란 소매 그립과 같은 흰 팔을 감아 겨드랑이 뒤로 들어간 파란 발이 연결된다. 반대 파란 다리는 별도 어깨 프레임이다. 파란 두 하체 경로로 정리되어 이전의 추가 파란 바짓단·발 결함이 보이지 않는다.",
+      "keyChecks": [
+        "소매 그립과 같은 흰 팔의 라쏘 루프",
+        "별도 반대 어깨 프레임",
+        "정확히 두 파란 다리 경로·추가 파란 발 없음"
+      ],
+      "requires_regeneration": false,
+      "regenerationGuidance": null,
+      "characterReview": "검은 머리·흰 도복과 흰 머리·파란 도복 두 성인, 각 브라운벨트를 유지한다.",
+      "limbReview": "명백한 추가 사지·관절 단절은 관찰하지 못했다. 자연스러운 가림은 허용했다.",
+      "directRawImageViewed": true,
+      "inputVersion": 2,
+      "inputPath": "reference/technique-illustrations/set-01/production/raw/lasso-guard-v2.png",
+      "inputSHA256": "b47d5a6250d6f97a549ab27febf2296331fd1d0fb7be91735031fd2aeb781ebe",
+      "manifestAssetSHA256": "b47d5a6250d6f97a549ab27febf2296331fd1d0fb7be91735031fd2aeb781ebe",
+      "shaMatchesManifestAsset": true,
+      "promptPath": "reference/technique-illustrations/set-01/production/prompts/lasso-guard-v2.txt",
+      "promptSHA256": "0af8bcf37aaaccaf48c76b010da0db0c74acfa0ef6e1e137b8a16339fdf3661c",
+      "referenceRecordPath": "docs/handovers/task-058-regeneration-pose-references.json",
+      "selectedVariant": "Nicholas Meregali deep-lasso representative with a separate opposite-shoulder frame",
+      "officialKeyChecks": [
+        "Blue retains the white sleeve while one blue leg loops around that same white arm and its foot reaches behind the upper-arm/armpit line.",
+        "Blue has exactly TWO leg routes: the lasso leg and the separate opposite-shoulder frame selected from this source.",
+        "White owns two WHITE trouser legs continuing from the white hips; no extra blue cuff or third blue foot is introduced."
+      ],
+      "referenceFrames": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/regen-lasso-guard-meregali-01m00s.jpg",
+          "inputSHA256": "d7aa31fbd7fa6db05149316588544cf65e4204d50b33fb78af7aa491589e1ce2",
+          "expectedSHA256": "d7aa31fbd7fa6db05149316588544cf65e4204d50b33fb78af7aa491589e1ce2",
+          "shaMatchesRecordedReference": true,
+          "sourceURL": "https://www.youtube.com/watch?v=5oBfjCxqe3Y",
+          "sourceTitle": "How To Lasso Hook Sweep Everyone with Nicholas Meregali",
+          "sourceAuthor": "Bernardo Faria BJJ Fanatics",
+          "timestamp": "01:00",
+          "role": "primary_pose",
+          "directImageViewed": true
+        }
+      ]
+    },
+    {
+      "slug": "scissors-sweep",
+      "result": "PASS",
+      "reason": "상부 파란 정강이가 높은 무릎에서 흰 몸통을 대각선으로 가로지르고, 다른 파란 다리는 매트 높이로 낮게 뻗는다. 깃·소매 그립도 보조 공식 프레임과 맞으며 이전의 발바닥만 힙을 미는 장면에서 개선됐다.",
+      "keyChecks": [
+        "흰 몸통을 가르는 높은 정강이",
+        "낮고 평평하게 뻗은 반대 다리",
+        "깃·소매의 별도 상체 제어"
+      ],
+      "requires_regeneration": false,
+      "regenerationGuidance": null,
+      "characterReview": "검은 머리·흰 도복과 흰 머리·파란 도복 두 성인, 각 브라운벨트를 유지한다.",
+      "limbReview": "명백한 추가 사지·관절 단절은 관찰하지 못했다. 자연스러운 가림은 허용했다.",
+      "directRawImageViewed": true,
+      "inputVersion": 2,
+      "inputPath": "reference/technique-illustrations/set-01/production/raw/scissors-sweep-v2.png",
+      "inputSHA256": "e118c7127d899292cd6261a39c08715d8ebd9dd55a21bcf29f159e98b0d77cfc",
+      "manifestAssetSHA256": "e118c7127d899292cd6261a39c08715d8ebd9dd55a21bcf29f159e98b0d77cfc",
+      "shaMatchesManifestAsset": true,
+      "promptPath": "reference/technique-illustrations/set-01/production/prompts/scissors-sweep-v2.txt",
+      "promptSHA256": "97e6bd1f9c02a8f3c1bc47584ef13025b8e58dcfbf509205103a17a2a0e6c311",
+      "referenceRecordPath": "docs/handovers/task-058-regeneration-pose-references.json",
+      "selectedVariant": "Chewjitsu classical diagonal-shin scissors setup with the low leg flat",
+      "officialKeyChecks": [
+        "The upper blue shin crosses the white torso diagonally from hip toward chest, with the blue knee high; a sole-only hip frame does not pass.",
+        "The other blue leg stays low and flat along the mat to obstruct the white posting knee.",
+        "The collar and sleeve connections follow the 2:15 hand-support frame; the main-frame explanatory free-hand gesture is not copied."
+      ],
+      "referenceFrames": [
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/regen-scissors-sweep-chewjitsu-02m42s.jpg",
+          "inputSHA256": "1994211b55fed823e458e035e3a99615d8ed5c605c720f1e484d22c74b2b343d",
+          "expectedSHA256": "1994211b55fed823e458e035e3a99615d8ed5c605c720f1e484d22c74b2b343d",
+          "shaMatchesRecordedReference": true,
+          "sourceURL": "https://www.youtube.com/watch?v=UBf7uF5x8GQ",
+          "sourceTitle": "Scissor Sweep for BJJ White Belts (Try These Adjustments)",
+          "sourceAuthor": "Chewjitsu",
+          "timestamp": "02:42",
+          "role": "primary_pose",
+          "directImageViewed": true
+        },
+        {
+          "path": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/verified-references/regen-scissors-sweep-chewjitsu-hands-02m15s.jpg",
+          "inputSHA256": "3deffc93681f269d58255b0557493e483730329fae20057c63ed80a45edb505e",
+          "expectedSHA256": "3deffc93681f269d58255b0557493e483730329fae20057c63ed80a45edb505e",
+          "shaMatchesRecordedReference": true,
+          "sourceURL": "https://www.youtube.com/watch?v=UBf7uF5x8GQ",
+          "sourceTitle": "Scissor Sweep for BJJ White Belts (Try These Adjustments)",
+          "sourceAuthor": "Chewjitsu",
+          "timestamp": "02:15",
+          "role": "hand_contact_support",
+          "directImageViewed": true
+        }
+      ]
+    }
+  ],
+  "resultCounts": {
+    "PASS": 5,
+    "MODIFICATION_REQUIRED": 1
+  },
+  "requiresRegeneration": [
+    "rubber-guard"
+  ]
+}
