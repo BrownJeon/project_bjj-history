@@ -2,8 +2,8 @@
 task_id: task-058
 title: 승인 캐릭터 기술 이미지 전체 생성 및 기술트리 적용
 status: done
-phase: production_deployed
-waiting: user_device_confirmation
+phase: closed
+waiting: none
 created: 2026-11-10
 updated: 2026-11-11
 related_tasks:
@@ -184,3 +184,17 @@ QA가 회귀32건·171/172완전성·실제Chrome 360/390/412/1280 목록/상세
 근거: `docs/handovers/task-058-release-result.json`, `task-058-production-verification.json`, `task-058-release-qa.json`, `task-058-release-readiness.json`. 최종문서commit/SHA상세영수증은 외부 release-prep/final-release-verification.json에 보관한다.
 
 [최종 문서배포 SHA·릴리스·헬스·동일자산 검증 영수증](/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/release-prep/final-release-verification.json)은 이번 완료기록commit을 식별하며, 동일버전 문서배포 검증 뒤 작성한다. 이후 이력서/ACTIVE의 배포완료·기기확인대기 상태는 유지한다. 이 기록이 인용하는 014423 릴리스는 기능배포 관측이며 최종 current와 혼동하지 않는다.
+
+## 사용자 앱 확인 및 작업 종료 (2026-11-11 08:48)
+
+사용자 원문: “앱에서 확인했어. 기술 이미지가 정상적으로 잘 나와. 이번 작업은 완료로 처리해줘.”
+
+사용자가 앱에서 기술 이미지 정상 표시를 확인하고 이번 작업 완료 처리를 요청했다. task-058은 `status: done / phase: closed / waiting: none`으로 종료하며 사용자 확인 대기를 해제한다. 확인 범위는 사용자 보고에 따른 앱의 기술 이미지 표시이며, 기기·OS·정확한 빌드 번호 및 개별 조작은 명시되지 않았다. 이를 에이전트가 실행한 Android/인증 운영화면 시험으로 바꾸어 기록하지 않는다. 직전 배포 기록은 앱1.2.0, 기능commit21900f5, 최종문서commit24d68ce/릴리스20261111-015020-24d68cec이며 기존 기능·문서배포 검증 이력은 보존한다.
+
+작업 이력과 ACTIVE·보드·오늘 로그·배포 결과의 사용자 확인 상태를 함께 갱신했다. 이번 완료 처리에는 코드·DB·버전 변경이나 추가 커밋/push/배포가 포함되지 않는다. 참고영상 수집 보류 및 다른 작업 상태는 유지한다.
+
+## 완료 이력 커밋·푸시 요청 (2026-11-11 09:09)
+
+사용자 “완료 처리한 작업 이력도 커밋하고 푸시한 후에 작업 마무리 해줘”를 받아 task-058의 사용자 확인·종료 기록만 선택 커밋하고 origin/main으로 push한다. task는 done/closed/waiting:none을 유지한다. 다른 작업의 미커밋 변경은 보존하고, 공용 ACTIVE/보드는 task-058 항목만 index에 반영한다. 이번 변경은 이력·사용자 확인 상태 문서 5개이며 런타임 코드/이미지/DB/APK 변경은 없다. 동일1.2.0 문서 배포 단위로 버전은 유지한다.
+
+사전 공식 --status에서 사용자 앱 확인 전 최종기록 릴리스20261111-015020-24d68cec/PM2 online을 확인했다. root package1.2.0·기존JS/CSS/map해시·171공개이미지 수를 보존한다. push가 유발하는 webhook의 이번 SHA START/RELEASE_RESULT/END, current·health·동일번들/이미지 해시를 확인한 [완료 이력 푸시 최종 영수증](/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/release-prep/closure-push-verification.json)을 별도로 보관한다. 이 문서배포는 사용자가 새로 앱을 확인한 기록으로 취급하지 않는다.

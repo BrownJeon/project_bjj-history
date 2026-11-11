@@ -1,6 +1,6 @@
 {
   "task": "task-058",
-  "status": "deployed_verified_device_confirmation_pending",
+  "status": "completed_user_confirmed",
   "authorizedBy": "user: 커밋 및 푸시하여 운영에 배포해줘",
   "appVersion": "1.2.0",
   "previousVersion": "1.1.0",
@@ -17,10 +17,10 @@
   "deploymentPath": "bluegreen release.sh via existing webhook or workspace scripts/deploy.sh",
   "manualRollback": false,
   "authenticatedProductionUI": "NOT_VERIFIED: browser has no authenticated session; login screen renders",
-  "physicalDevice": "NOT_VERIFIED",
+  "physicalDevice": "User confirmed app image display; device/OS unspecified; no additional agent-run physical-device test",
   "createdAt": "2026-11-11T01:10:51.374072+09:00",
   "readinessEvidence": "task-058-release-readiness.json",
-  "updatedAt": "2026-11-11T01:48:48.263321+09:00",
+  "updatedAt": "2026-11-11T09:09:42.318063+09:00",
   "pushedAt": "2026-11-11T01:44:19.125697+09:00",
   "releaseResult": {
     "status": "ok",
@@ -66,5 +66,24 @@
   "productionBundleUI": "PASS exact public production HTML/JS/CSS on local GET-only fixture at 390/1280; list48/detail224/charcoal/navigation/overflow/console",
   "deployedSourceSHA": "15/15 match tested index",
   "finalDocumentationReceipt": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/release-prep/final-release-verification.json",
-  "releaseMeaning": "Feature deployment observed at 20261111-014423-21900f58; final documentation deployment is tracked by finalDocumentationReceipt"
+  "releaseMeaning": "Feature deployment observed at 20261111-014423-21900f58; final documentation deployment is tracked by finalDocumentationReceipt",
+  "waiting": "none",
+  "userConfirmation": {
+    "at": "2026-11-11T08:48:50.398475+09:00",
+    "source": "user message",
+    "quote": "앱에서 확인했어. 기술 이미지가 정상적으로 잘 나와. 이번 작업은 완료로 처리해줘.",
+    "scope": "기술 이미지가 앱에서 정상 표시됨; 사용자 완료 처리 요청",
+    "deviceAndOS": "not specified",
+    "appVersionContext": "1.2.0 previous delivered release; user did not state a version number",
+    "agentRunAuthenticatedOrAndroidTest": false
+  },
+  "closurePublication": {
+    "authorizedBy": "user: 완료 처리한 작업 이력도 커밋하고 푸시한 후에 작업 마무리 해줘",
+    "requestedAt": "2026-11-11T09:09:42.318063+09:00",
+    "scope": "task-058 closure/user confirmation records only; 5 documentation files",
+    "appVersion": "1.2.0",
+    "runtimeChanges": false,
+    "finalReceipt": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-058-production-art/release-prep/closure-push-verification.json",
+    "verification": "SHA-correlated webhook/current/health and unchanged frontend/image artifacts tracked in finalReceipt; not a new device confirmation"
+  }
 }

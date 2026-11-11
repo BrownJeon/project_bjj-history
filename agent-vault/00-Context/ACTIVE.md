@@ -8,7 +8,7 @@ tags:
 
 ## 지금 상태
 
-✅ **task-058(캐릭터 기술 이미지) — 운영1.2.0 배포·검증완료,사용자실기기확인대기 (2026-11-11).** 기능commit21900f5/release20261111-014423-21900f58·RELEASE_RESULT ok·current/pm2/health/HTML/JS/CSS200·171이미지200/승인SHA일치/172행·검사코드15SHA일치. 실제배포번들390/1280합성읽기화면48·224/차콜/이동·복귀/넘침0 PASS. 인증운영UI·실기기미확인,변경없는backend전체CRUD미실행. DB마이그레이션/새APK없음·타작업보존. 완료기록문서push도동일1.2.0/동일런타임,최종current/SHA근거는task연결영수증으로구분. 상세 [[task-058-technique-image-samples]].
+✅ **task-058(캐릭터 기술 이미지) — 사용자 앱 정상 표시 확인·작업 종료 (2026-11-11).** 사용자 “앱에서 확인했어. 기술 이미지가 정상적으로 잘 나와” 확인, done/closed/waiting:none. 확인전배포1.2.0·기능21900f5/문서24d68ce·릴리스20261111-015020-24d68cec,171종/172행·차콜48/224. 완료이력도commit/push하라는추가요청반영·동일1.2.0문서배포의최종SHA/current는task연결영수증으로구분. 기기/OS/정확빌드미명시·기존검증보존·타작업미커밋보존. 상세 [[task-058-technique-image-samples]].
 
 ✅ **task-056(수업·캘린더 관련 영상 상세 진입) — 앱 1.1.0 운영배포·검증 완료 (2026-11-09).** commit0f8c8e9,수동/기술연계 영상 공용상세·다운로드0·부모수업동시열림0·복귀/키보드/360·390·412/기존상세회귀PASS. root/lock1.1.0·RELEASE_RESULT ok·pm2online·health/HTML/asset200·테스트source/서빙JS일치·미인증401. minor1회·동일릴리스재빌드유지,DB/APK변경없음·실기기미확인. 참고영상 수집 보류 유지. 상세 [[task-056-class-related-video-detail]].
 
