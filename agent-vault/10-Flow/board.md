@@ -69,9 +69,9 @@ tags:
 
 
 ## Review
-- 수업 상세 AI 영상 생성 영역만 제거 · 1.3.0 · Reviewer/지정변경 QA PASS·선택push/운영반영준비 [[task-066-remove-class-ai-video]] (2026-11-12)
 
 ## Done
+- [[task-066-remove-class-ai-video]] — 수업 상세 AI 영역·전용호출만제거,1.3.0/기능c185328·운영반영검증완료·일반영상/다른영역보존(2026-11-12).
 - [[task-058-technique-image-samples]] — 사용자 앱 기술 이미지 정상표시 확인·완료종료(done/closed/waiting:none),확인전1.2.0/24d68ce·171종/172행·차콜48/224. 추가요청에따른완료이력선택commit/push·최종문서배포근거는task연결영수증 (2026-11-11).
 - [[task-056-class-related-video-detail]] — 완료: 앱1.1.0/commit0f8c8e9,수업상세·캘린더관련영상→공용상세 직접검증/다운로드0·복귀·기술연계PASS,운영source/asset/health검증. DB/APK변경없음·실기기미확인 (2026-11-09).
 

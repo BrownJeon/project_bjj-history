@@ -1,8 +1,8 @@
 ---
 task_id: task-066
 title: 수업 상세 AI 영상 생성 영역 제거
-status: doing
-stage: release_ready
+status: done
+stage: deployed_verified
 waiting: none
 created: 2026-11-11
 updated: 2026-11-12
@@ -16,7 +16,7 @@ execution_context:
   current_tool: codex
   current_procedure: codex_scoped
   current_scope: "사용자 지정 수업 상세 AI 생성 영역만 Codex 직접 제거·검증·선택 commit/push·운영 반영"
-  last_event_id: exec-002
+  last_event_id: exec-004
 demo_gate:
   required: true
   level: "delta"
@@ -33,7 +33,7 @@ demo_gate:
   waived_by: ""
   waived_at: ""
   waiver_quote: ""
-  active: true
+  active: false
   approval_source: "codex_contextual"
 ---
 
@@ -69,6 +69,10 @@ Codex 직접 구현·검증·커밋·푸시·운영 반영을 명시 지정했�
 | exec-001 | 2026-11-11 | start | codex / codex_scoped | 현재 사용자 직접 제거·commit/push·운영 반영 지시. 일반 Claude 인계 절차보다 이번 명시 지정 범위 우선. 독립 Reviewer/QA/Deployer는 유지. |
 
 | exec-002 | 2026-11-12 10:40 | resume | codex / codex_scoped | 실제 사용자 v1 그대로 진행·추가 데모 없이 구현/commit/push/배포 지시. 정식 사용자 문맥 증거 승인, 최신운영/원격3949e897/1.2.0 재확인·관리worktree 정상이용. |
+
+| exec-003 | 2026-11-12 | publish | codex / codex_scoped | 선택commit c1853284600e02b41e9d8be4809b40eecf440a67·origin/main push 성공. 정식webhook1회 관측/운영검증중, DB/APK변경없음. |
+
+| exec-004 | 2026-11-12 | complete | codex / codex_scoped | 기능c185328 정식webhook RELEASE_RESULT ok·운영1.3.0/source일치·공개HTTP/서빙자산/실배포번들15case PASS 확인. 원형/데이터보존, 사용자실기기확인은미실행. 완료기록선택push는동일1.3.0으로관측. |
 
 ## 판단 기록 (judge)
 
@@ -131,9 +135,22 @@ Codex 직접 구현·검증·커밋·푸시·운영 반영을 명시 지정했�
 
 ## 배포 기록
 
+| 시각 | 릴리스 | 커밋 | 포함 작업 | 결과 | 비고 |
+|------|--------|------|-----------|------|------|
+| 2026-11-12 10:59 | 20261112-105852-c1853284 | c185328 | task-066 (수업 상세 AI 영상 생성 영역 제거) | ✅ ok | push webhook 배포, 마이그레이션 없음. current/pm2/health 확인. 운영 URL은 로그인 화면까지만 확인; 인증 수업 상세는 미확인. |
+
+RELEASE_RESULT: `{"ts":"2026-11-12T10:59:09+0900","name":"bjj","cmd":"deploy","ref":"main","invoker":"deploy-bjj.sh","trigger":"","status":"ok","release":"20261112-105852-c1853284","sha":"c1853284600e02b41e9d8be4809b40eecf440a67","previous":"/home/brownjeon/apps/bjj/releases/20261111-091132-3949e897","migrated":false}`
+배포 후 `--status`: current `20261112-105852-c1853284`, pm2 `bjj` online/cwd 일치, `GET /health` 200. 인앱 브라우저에서 운영 URL 로그인 화면 렌더링 확인; 인증된 수업 상세의 변경 시각 확인은 미수행.
+
 ## 최종 요약
 
-2026-11-12 사용자 그대로 진행·추가데모없이 구현/commit/push/배포 지시 수신·정식v1승인 확인. 지정AI섹션/전용API제거·앱1.3.0구현완료, production build/독립Reviewer PASS. root최종실제앱15case·기존Modal8PASS, 독립QA change_verdict PASS/새회귀0 확인완료. 기존31px접근성제약은신규회귀와분리·스타일미변경. commit/push/새운영배포준비중, 아직미실행.
+2026-11-12 **구현·검증·선택commit/push·운영반영 완료**. 앱 **1.3.0**, 기능 commit `c1853284600e02b41e9d8be4809b40eecf440a67`, 기능릴리스 `20261112-105852-c1853284`, 정식 webhook `RELEASE_RESULT status=ok`/SHA일치·PM2online·health200·migrated=false.
+
+수업 상세 AI 영상 제목/생성버튼/상태·오류/생성영상/다운로드·재생성·전용HTTP/폴링만 제거했다. 전용API모듈삭제 외 백엔드/DB/체인/기술이미지/스타일/모바일/기존생성물/M4환경은 보존했다. 일반관련영상·수업본문/스파링·수정/닫기 원형 일치. root minor1회 1.2.0→1.3.0, APK 재빌드/재설치 없음.
+
+production build·Reviewer 이슈0·독립QA 지정변경15/15 및기존Modal8/8 PASS. 운영ClassDetail SHA256 `006aa942703f0df05a1ef666e3edde698e53f144d08e3d7ae98cdb8944a7058e`로검증소스일치·전용API파일없음·root/lock1.3.0일치. 공개health/HTML/JS/CSS200, 서버release자산과공개JS해시동일. 실배포 JS `index-DKLp6ZTJ.js`/SHA256 `7eee0252c41fbd8d7879a0a466464c6a434f675121f4685627478231982fb76a`를내려받아격리합성API브라우저15case추가PASS. 로컬과운영JS빌드는해시가달라동일물로추정하지않고실배포bytes로재검증했다.
+
+기존하단31px버튼은baseline접근성제약으로기록·사용자범위밖수정없이보존하며전체화면접근성PASS를주장하지않는다. 실기기Android/실운영인증계정수업상세E2E·사용자육안확인은미실행. 인증정보주입·운영API쓰기·DB migration·유료영상생성·중복수동배포없음. 타작업 미커밋/미push 변경은 게시하지 않았다. 완료문서의 후속선택push도동일1.3.0으로관측해별도영수증에보존한다.
 
 ## 데모 검토 (demo gate)
 
