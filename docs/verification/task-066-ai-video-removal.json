@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "task_id": "task-066",
+  "state": "verified_release_ready",
+  "updated": "2026-11-12",
+  "base_ref": "3949e897e3bbce76d669c3c960d6ffc3eb295d96",
+  "app_version": "1.3.0",
+  "user_scope": "수업 상세 AI 영상 생성 부분만 제거, 다른 영역 보존, Codex 직접 구현/commit/push/운영배포",
+  "user_followup": "이대로 진행헤주고 별도의 데모화면없이 구현 후 커밋 및 푸시해서 배포까지 진행해줘",
+  "new_demo_created_after_followup": false,
+  "approved_implementation": "task-066-v1",
+  "manifest": [
+    {
+      "path": "web/src/components/ClassDetailModal.jsx",
+      "before_sha256": "eb5a28ccca5f6d231105bd495960569748e7826be38785243e9851db38d3b6b3",
+      "after_sha256": "006aa942703f0df05a1ef666e3edde698e53f144d08e3d7ae98cdb8944a7058e",
+      "change": "modified"
+    },
+    {
+      "path": "web/src/api/classVideo.js",
+      "before_sha256": "593cd500ad583d34b083b708e3a58eec4ed2b1b26d7398cd0a2e0741644ee409",
+      "after_sha256": null,
+      "change": "deleted"
+    },
+    {
+      "path": "package.json",
+      "before_sha256": "3f898f7a6ccd2e9305d2802d3de8b1d8d592ab486f5c69e52ed3c0973c211340",
+      "after_sha256": "7c74a3ee4a0c283426ebfc91a9ebf91cbfef094e938e3e5d52cea8e6ad277920",
+      "change": "modified"
+    },
+    {
+      "path": "package-lock.json",
+      "before_sha256": "0ef63dc82a93ad158b5fe52b463192d49052bc97c07bb5efa4ec6a0c1245fd49",
+      "after_sha256": "8f65deedfb419323d17f5c9e0e92e49e82cb4a4a8a383c3d2e557c0fda41ed59",
+      "change": "modified"
+    }
+  ],
+  "preserved": [
+    "수업 본문/수련일/스파링/수정/닫기",
+    "일반 관련 영상 ClipDetailModal 진입·복귀",
+    "체인 화면/기술 이미지",
+    "백엔드/API/DB/기존 생성물/M4환경",
+    "스타일/토큰/모바일 셸"
+  ],
+  "checks": {
+    "build": {
+      "status": "PASS",
+      "vite": "5.4.21",
+      "modules": 229,
+      "warning": "existing chunk size warning"
+    },
+    "impeccable_changed_target": [],
+    "diff_check": "PASS",
+    "unrelated_component_content_byte_identical": true,
+    "browser_11_cases": "PASS",
+    "modal_regression_8_tests": "PASS",
+    "reviewer": "REV-066 PASS issues 0",
+    "qa": {
+      "status": "DONE",
+      "change_verdict": "PASS",
+      "new_regressions": 0,
+      "browser_cases": 15,
+      "modal_tests": 8,
+      "baseline_accessibility": "FAIL (existing footer buttons 31px, unchanged)"
+    },
+    "baseline_accessibility": {
+      "status": "FAIL",
+      "finding": "existing footer edit/close button height 31px, below 44px; CSS/component styles unchanged; out of requested edit scope",
+      "new_regression": false
+    },
+    "browser_final_15_cases": "PASS"
+  },
+  "not_verified": [
+    "실기기Android",
+    "실운영인증계정의수업상세E2E"
+  ],
+  "db_migration": false,
+  "production_api_writes": false,
+  "paid_video_generation_calls": 0,
+  "deployment": null,
+  "local_bundle": [
+    {
+      "path": "web/dist/assets/index-BpmKz8Zg.css",
+      "sha256": "619ef17bf403dd9b47c03889c49a5c751b1533891ceb03b6e8dd402a925d6fd6"
+    },
+    {
+      "path": "web/dist/assets/index-CH2caWcu.js",
+      "sha256": "173f64ef954b333a9717933e340d817c1f2b70acaa1d9f4c92b086485e2ed248"
+    }
+  ]
+}

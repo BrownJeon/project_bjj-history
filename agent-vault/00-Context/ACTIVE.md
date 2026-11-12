@@ -1,12 +1,14 @@
 ---
 project: bjj-trainning
-updated: 2026-11-11
+updated: 2026-11-12
 tags:
   - type/context
 ---
 # 현재 상태
 
 ## 지금 상태
+
+🔧 **task-066 수업 상세 AI 영상 생성 영역 제거 — QA완료·배포준비(2026-11-12).** 사용자v1그대로·추가데모없이직접구현/commit/push/배포승인. AI섹션/전용API만제거·1.3.0 minor1회. build/실제앱15case/Modal8/Reviewer/독립QA change_verdict PASS·새회귀0. 기존31px접근성제약은원형보존·전체접근성PASS주장안함. 일반관련영상/체인/기술이미지/DB/APK/M4환경보존. 선택commit/push준비중. 상세 [[task-066-remove-class-ai-video]].
 
 ✅ **task-058(캐릭터 기술 이미지) — 사용자 앱 정상 표시 확인·작업 종료 (2026-11-11).** 사용자 “앱에서 확인했어. 기술 이미지가 정상적으로 잘 나와” 확인, done/closed/waiting:none. 확인전배포1.2.0·기능21900f5/문서24d68ce·릴리스20261111-015020-24d68cec,171종/172행·차콜48/224. 완료이력도commit/push하라는추가요청반영·동일1.2.0문서배포의최종SHA/current는task연결영수증으로구분. 기기/OS/정확빌드미명시·기존검증보존·타작업미커밋보존. 상세 [[task-058-technique-image-samples]].
 

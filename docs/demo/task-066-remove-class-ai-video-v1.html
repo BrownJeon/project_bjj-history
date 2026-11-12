@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="demo-version" content="task-066-v1">
+<meta name="demo-token-source" content="web/src/styles/tokens.css@sha256:ad70437353d5">
+<title>task-066 · 수업 상세 AI 영상 영역 제거 v1</title>
+<style>
+:root {
+  /* 배경 계층 */
+  --bg:           #0C0D12;
+  --surface:      #15171E;
+  --surface-up:   #1C1F28;
+  --surface-hi:   #242836;
+
+  /* 테두리 */
+  --border:       rgba(255,255,255,0.06);
+  --border-med:   rgba(255,255,255,0.10);
+
+  /* 텍스트 */
+  --text:         #EEEEF2;
+  --text2:        #7C8098;
+  --text3:        #4A4E64;
+
+  /* 포인트 컬러 (그린) */
+  --accent:       #1D9E75;
+  --accent-lt:    #25C490;
+  --accent-dim:   rgba(29,158,117,0.12);
+  --accent-glow:  rgba(29,158,117,0.25);
+
+  /* 시맨틱 */
+  --red:          #E05A47;
+  --red-dim:      rgba(224,90,71,0.12);
+  --blue:         #4B8FE2;
+  --blue-dim:     rgba(75,143,226,0.12);
+  --amber:        #F0A830;
+  --amber-dim:    rgba(240,168,48,0.12);
+  --purple:       #8B6CE7;
+  --purple-dim:   rgba(139,108,231,0.12);
+
+  /* 라운딩 */
+  --radius:       10px;
+  --radius-lg:    14px;
+  --radius-xl:    16px;
+
+  /* 벨트 */
+  --belt-white:   #E0E0E0;
+  --belt-blue:    #1565C0;
+  --belt-purple:  #7B1FA2;
+  --belt-brown:   #795548;
+  --belt-black:   #212121;
+
+  --safe-bottom:  env(safe-area-inset-bottom, 0px);
+
+  /* 안드로이드 앱 상단 상태바 여백(task-039 A-6). 웹은 0 — 아래 [data-native] 에서만 값이 생긴다. */
+  --native-top:   0px;
+}
+
+/* 안드로이드 앱(Capacitor, targetSdk 35)은 Android 15 edge-to-edge 로 WebView 가 시스템 바 밑까지 그려지는데
+   이 WebView 는 `env(safe-area-inset-*)` 를 0 으로 준다 — 상단 24px 바닥값만으로는 **하단 탭바가 내비게이션 버튼과
+   겹쳤다**(2026-09-14 실기기). 그래서 앱 설정 `android.adjustMarginsForEdgeToEdge: 'auto'`(mobile/capacitor.config.ts)로
+   WebView 자체를 시스템 바 바깥에 배치한다 → 웹은 상하단 여백을 따로 줄 필요가 없다. 24px 바닥값을 남기면 상단이
+   이중 여백이 되므로 뺀다(env 가 실제 값을 주는 기기에서만 그만큼). `<html data-native>` 는 main.jsx 가 앱에서만 붙인다.
+   🔴 이 값을 되돌리려면 capacitor.config 의 margin 설정도 함께 봐야 한다(둘 중 하나만 바꾸면 겹치거나 이중 여백). */
+[data-native] {
+  --native-top: env(safe-area-inset-top, 0px);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body { font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif; color: var(--text); background: var(--bg); font-size: 14px; word-break: keep-all; overflow-wrap: break-word; }
+button, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
+button:focus-visible, select:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--accent-lt); outline-offset: 3px; }
+button:disabled { cursor: default; }
+::selection { background: var(--accent); color: var(--text); }
+.demo { height: 100dvh; display: grid; grid-template-rows: auto auto minmax(0,1fr) auto; }
+.demo-header { padding: 14px 18px 6px; max-width: 850px; width: 100%; margin: auto; }
+h1 { font-size: 18px; margin: 0 0 6px; }
+.demo-header p { font-size: 12px; line-height: 1.6; margin: 0; color: var(--text); }
+.controls { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; padding: 8px 12px 10px; }
+.view-switch { display: flex; gap: 4px; }
+.demo-control, .controls select { min-height: 44px; padding: 8px 12px; background: var(--surface-up); border: 1px solid var(--border-med); border-radius: 8px; font-size: 12px; }
+.demo-control[aria-pressed="true"] { background: var(--surface-hi); border-color: var(--accent-lt); color: var(--text); font-weight: 700; }
+.controls label { font-size: 12px; }
+.stage { min-width: 0; min-height: 0; display: flex; justify-content: center; }
+.phone { width: 390px; max-width: 100%; height: 100%; position: relative; background: var(--bg); overflow: hidden; }
+.screen-context { position: absolute; inset: 0; display: flex; align-items: flex-start; justify-content: center; padding: 12px; font-size: 12px; color: var(--text); }
+.overlay { position: absolute; inset: 0; background: rgba(0,0,0,.6); display: flex; align-items: flex-end; justify-content: center; }
+.sheet { background: var(--surface-up); border-radius: 20px 20px 0 0; width: 100%; max-width: 460px; max-height: 88%; overflow-y: auto; padding: 20px 20px 30px; overscroll-behavior: contain; border: 1px solid var(--border-med); border-bottom: none; scrollbar-color: var(--surface-hi) var(--surface-up); }
+.sheet-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
+.sheet-title { font-size:18px; font-weight:700; }
+.icon-close { min-width:44px; min-height:44px; display:grid; place-items:center; background:transparent; border:0; padding: 0; color:var(--text2); }
+.icon { width:20px; height:20px; display:block; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+.class-heading { display:flex; align-items:center; gap:8px; margin-bottom:4px; }
+.class-heading strong { font-size:17px; font-weight:800; flex:1; }
+.tag { display:inline-flex; align-items:center; gap:4px; padding:3px 9px; border-radius:6px; font-size:11px; font-weight:600; white-space:nowrap; flex-shrink:0; color:var(--accent); background:var(--accent-dim); }
+.tag.blue { color:var(--blue); background:var(--blue-dim); }
+.date-range { font-size:12px; color:var(--text2); margin-bottom:16px; }
+.field { margin-bottom:14px; }
+.field-label { display:block; font-size:12px; color:var(--text2); margin-bottom:6px; font-weight:500; }
+.field p { font-size:13px; line-height:1.6; margin:0; }
+.date-row { display:flex; align-items:center; gap:8px; padding:8px 12px; background:var(--surface); border:1px solid var(--border); border-radius:10px; font-size:13px; font-weight:600; }
+.date-row .icon { width:15px; height:15px; color:var(--accent); }
+.techs { display:flex; gap:6px; flex-wrap:wrap; }
+.tech { padding:3px 9px; border-radius:6px; background:var(--surface-hi); color:var(--text2); font-size:12px; font-weight:500; }
+.stars { display:flex; gap:4px; color:var(--amber); }
+.stars .icon { width:20px; height:20px; fill:currentColor; }
+.clip-row { display:flex; align-items:center; gap:8px; width:100%; text-align:left; font:inherit; cursor:pointer; padding:6px 8px; background:var(--surface-up); border:1px solid var(--border); border-radius:10px; }
+.thumb { width:56px; height:36px; border-radius:6px; flex-shrink:0; background:var(--surface-hi); display:flex; align-items:center; justify-content:center; color:var(--text2); }
+.clip-text { flex:1; min-width:0; }
+.clip-title { font-size:12px; font-weight:600; color:var(--text); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.clip-tech { font-size:11px; color:var(--accent); margin-top:1px; }
+.chevron { width:16px; height:16px; color:var(--text3); }
+.spar { padding:10px 12px; background:var(--surface); border:1px solid var(--border); border-radius:10px; }
+.spar-heading { font-size:12px; font-weight:700; color:var(--red); margin-bottom:6px; }
+.spar-line { font-size:12px; color:var(--text2); }
+.spar-line strong { color:var(--text); font-weight:600; }
+.ai-stack { display:flex; flex-direction:column; gap:8px; }
+.ai-description { font-size:12px; color:var(--text3); line-height:1.5; }
+.app-button { display:inline-flex; align-items:center; justify-content:center; padding:7px 12px; border-radius:8px; font-size:12px; font-weight:600; border:0; background:var(--accent); color:#fff; text-decoration:none; line-height:normal; }
+.app-button.outline { background:transparent; color:var(--text); border:1px solid var(--border-med); }
+.app-actions { display:flex; gap:8px; margin-top:12px; }
+.ai-pending { padding:14px 16px; background:var(--surface); border:1px solid var(--border); border-radius:12px; display:flex; flex-direction:column; gap:8px; }
+.ai-pending strong { font-size:13px; }
+.ai-pending p { font-size:12px; color:var(--text2); }
+.ai-pending small { font-size:11px; color:var(--text3); }
+.ai-error { padding:10px 14px; background:var(--surface); border:1px solid var(--red); border-radius:10px; font-size:12px; color:var(--red); }
+.ai-loading { text-align:center; padding:12px 0; color:var(--text3); font-size:13px; }
+.video-placeholder { height:165px; background:#000; border-radius:12px; display:grid; place-content:center; gap:8px; justify-items:center; color:var(--text); font-size:12px; }
+.demo-footer { max-width:850px; width:100%; margin:auto; padding:10px 16px 12px; font-size:12px; line-height:1.6; }
+.demo-footer p { margin:0; }
+#message { min-height:19px; color:var(--accent-lt); }
+#clip-dialog { width:min(350px, calc(100% - 32px)); color:var(--text); background:var(--surface-up); border:1px solid var(--border-med); border-radius:16px; padding:20px; }
+#clip-dialog::backdrop { background:rgba(0,0,0,.6); }
+#clip-dialog h2 { font-size:18px; margin:0 0 16px; }
+#clip-dialog p { font-size:13px; line-height:1.6; margin:0 0 16px; }
+#clip-dialog .demo-control { width:100%; }
+[hidden] { display:none !important; }
+@media(max-height:700px) { .demo-header { padding-top:8px; } .demo-footer { padding-top:6px; padding-bottom:6px; } }
+</style>
+</head>
+<body>
+<main class="demo">
+  <header class="demo-header">
+    <h1>수업 상세 · AI 영상 영역 제거</h1>
+    <p>v1 · 합성 샘플 데이터 · 최신 origin/main 기준. 관련 영상·수업 내용·수정·닫기는 그대로 유지합니다.</p>
+  </header>
+  <section class="controls" aria-label="데모 비교 설정">
+    <div class="view-switch" role="group" aria-label="현재와 제안 비교">
+      <button id="current" class="demo-control" type="button" aria-pressed="false">현재</button>
+      <button id="proposed" class="demo-control" type="button" aria-pressed="true">제안 · AI 영역 제거</button>
+    </div>
+    <label for="ai-state">기존 AI 상태</label>
+    <select id="ai-state">
+      <option value="none">미생성</option>
+      <option value="loading">상태 조회 중</option>
+      <option value="pending">생성 중</option>
+      <option value="error">오류</option>
+      <option value="done">생성 완료</option>
+    </select>
+    <label for="width">폭</label>
+    <select id="width"><option value="360">360</option><option value="390" selected>390</option><option value="412">412</option></select>
+  </section>
+  <section class="stage" aria-label="수업 상세 화면 비교">
+    <div class="phone" id="phone">
+      <div class="screen-context" id="screen-context">제안 · 기존 AI 상태와 무관하게 생성 영역 전체 제거</div>
+      <div class="overlay" id="class-overlay">
+        <section class="sheet" id="class-sheet" role="region" aria-label="합성 수업 상세 화면" tabindex="0">
+          <div class="sheet-header"><span class="sheet-title">수업 상세</span><button type="button" class="icon-close close-class" aria-label="수업 상세 닫기"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+          <div class="class-heading"><span class="tag">Gi</span><strong>가드 기본 수업</strong></div>
+          <div class="date-range">2026.11.11 (수)</div>
+          <section class="field"><span class="field-label">수련 날짜</span><div class="date-row"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l4 4 10-10"/></svg><span>2026.11.11 (수)</span></div></section>
+          <section class="field"><span class="field-label">전체 메모</span><p>그립과 발 위치를 유지하며 균형을 무너뜨리는 흐름을 연습했다.</p></section>
+          <section class="field"><span class="field-label">코치 피드백</span><p>상대의 체중 이동을 확인하고 다음 동작으로 연결하기.</p></section>
+          <section class="field"><span class="field-label">주요 포지션</span><span class="tag blue">오픈 가드</span></section>
+          <section class="field"><span class="field-label">주요 기술</span><div class="techs"><span class="tech">트라이포드 스윕</span></div></section>
+          <section class="field"><span class="field-label">난이도/만족도</span><div class="stars" aria-label="5점 중 4점">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3 6.4 20.2l1.1-6.2L3 9.6l6.2-.9Z"/></svg>
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3 6.4 20.2l1.1-6.2L3 9.6l6.2-.9Z"/></svg>
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3 6.4 20.2l1.1-6.2L3 9.6l6.2-.9Z"/></svg>
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3 6.4 20.2l1.1-6.2L3 9.6l6.2-.9Z"/></svg>
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" style="color:var(--text3);fill:none"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3 6.4 20.2l1.1-6.2L3 9.6l6.2-.9Z"/></svg>
+          </div></section>
+          <section class="field" id="related-section"><span class="field-label">관련 영상 (1)</span><button id="open-clip" type="button" class="clip-row" aria-label="트라이포드 스윕 연습 참고 상세 보기"><span class="thumb"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 9 6-9 6Z"/></svg></span><span class="clip-text"><span class="clip-title" style="display:block">트라이포드 스윕 연습 참고</span><span class="clip-tech" style="display:block">트라이포드 스윕</span></span><svg class="icon chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button></section>
+          <section class="field"><span class="field-label">스파링 (1)</span><div class="spar"><div class="spar-heading">2026.11.11 (수) · 1세션</div><div class="spar-line"><strong>파트너 A</strong><span style="margin-left:6px">탭 0/0</span><span style="margin-left:6px">· 5분</span></div></div></section>
+          <section class="field" id="ai-section" hidden><span class="field-label">AI 영상</span><div id="ai-content"></div></section>
+          <div class="app-actions" id="class-actions"><button type="button" class="app-button" id="edit-class">수정</button><button type="button" class="app-button outline close-class">닫기</button></div>
+        </section>
+      </div>
+      <button id="reopen" class="demo-control" type="button" hidden style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)">수업 상세 다시 열기</button>
+    </div>
+  </section>
+  <footer class="demo-footer">
+    <p id="change-summary">제안: AI 제목·설명·버튼·진행·오류·재생·다운로드·재생성이 전부 사라집니다.</p>
+    <p>현재 AI 조작은 비교용 표시입니다. 관련 영상 상세는 축약 시연이며, 실제 화면 구성은 유지합니다. 기존 생성물·DB 삭제는 없습니다.</p>
+    <p id="message" aria-live="polite">하단 변경 영역부터 표시합니다. 위로 스크롤하면 기존 수업 내용을 볼 수 있습니다.</p>
+  </footer>
+</main>
+<dialog id="clip-dialog" aria-labelledby="clip-title"><h2 id="clip-title">트라이포드 스윕 연습 참고</h2><p>관련 영상 상세 진입 유지 · 합성 데이터 시연</p><p>이 창은 진입·복귀 확인용 축약 표시입니다. 구현에서는 기존 ClipDetailModal을 그대로 사용합니다.</p><button class="demo-control" type="button" id="close-clip">수업 상세로 돌아가기</button></dialog>
+<script>
+'use strict';
+const $ = id => document.getElementById(id);
+let view = 'proposed';
+const stateViews = {
+  none: '<div class="ai-stack"><div class="ai-description">수업 내용을 바탕으로 AI가 BJJ 장면 영상을 자동 생성합니다.<br>(예상 시간: 20~40분)</div><span class="app-button" aria-disabled="true">AI 영상 생성</span></div>',
+  loading: '<div class="ai-loading">영상 상태 확인 중...</div>',
+  pending: '<div class="ai-pending"><strong>AI 영상 생성 중...</strong><p>영상 생성 준비 중...</p><small>약 20~40분 소요됩니다. 페이지를 닫아도 생성이 계속됩니다.</small></div>',
+  error: '<div class="ai-stack"><div class="ai-error">오류: 영상 생성에 실패했습니다.</div><span class="app-button outline" aria-disabled="true">다시 시도</span></div>',
+  done: '<div class="ai-stack"><div class="video-placeholder"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 9 6-9 6Z"/></svg><span>합성 영상 자리표시자</span></div><div style="display:flex;gap:8px"><span class="app-button outline" style="flex:1" aria-disabled="true">다운로드</span><span class="app-button outline" aria-disabled="true">삭제 후 재생성</span></div></div>'
+};
+function showBottom() { requestAnimationFrame(() => { $('class-sheet').scrollTop = $('class-sheet').scrollHeight; }); }
+function render() {
+  $('current').setAttribute('aria-pressed', String(view === 'current'));
+  $('proposed').setAttribute('aria-pressed', String(view === 'proposed'));
+  $('ai-section').hidden = view !== 'current';
+  $('ai-content').innerHTML = view === 'current' ? stateViews[$('ai-state').value] : '';
+  $('screen-context').textContent = view === 'current' ? '현재 · 기존 AI 영상 영역 표시' : '제안 · 기존 AI 상태와 무관하게 생성 영역 전체 제거';
+  $('change-summary').textContent = view === 'current' ? '현재: 스파링 아래에 AI 영상 영역이 있고, 그 아래에 수정·닫기가 있습니다.' : '제안: AI 제목·설명·버튼·진행·오류·재생·다운로드·재생성이 전부 사라집니다.';
+  showBottom();
+}
+$('current').addEventListener('click', () => { view = 'current'; render(); });
+$('proposed').addEventListener('click', () => { view = 'proposed'; render(); });
+$('ai-state').addEventListener('change', render);
+$('width').addEventListener('change', () => { $('phone').style.width = $('width').value + 'px'; showBottom(); });
+$('open-clip').addEventListener('click', () => $('clip-dialog').showModal());
+$('close-clip').addEventListener('click', () => $('clip-dialog').close());
+$('clip-dialog').addEventListener('close', () => { $('open-clip').focus(); $('message').textContent = '관련 영상 상세에서 수업 상세로 복귀했습니다. 기존 기능 유지 범위입니다.'; });
+$('edit-class').addEventListener('click', () => { $('message').textContent = '수정은 기존 수업 수정 흐름으로 연결합니다. 이 데모에서는 화면을 바꾸지 않습니다.'; });
+document.querySelectorAll('.close-class').forEach(button => button.addEventListener('click', () => { $('class-overlay').hidden = true; $('reopen').hidden = false; $('reopen').focus(); $('message').textContent = '수업 상세를 닫았습니다. 다시 열 수 있습니다.'; }));
+$('reopen').addEventListener('click', () => { $('class-overlay').hidden = false; $('reopen').hidden = true; render(); $('class-sheet').focus(); });
+window.addEventListener('resize', showBottom);
+render();
+</script>
+</body>
+</html>
