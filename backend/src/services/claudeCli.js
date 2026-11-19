@@ -89,6 +89,43 @@ function buildArgs(prompt, opts) {
   return args;
 }
 
+// ── 실행 파일 결정 (task-004 S-C1, cliclaude 이전) ─────────────────────────
+// env CLAUDE_CLI_PATH 가 비어 있으면 항상 기존 'claude'(위 cleanEnv 의 PATH 앞붙임 포함) — 지금과 같다.
+// 값이 있어도 아래 둘은 기존 'claude' 로 남긴다. 호출부 목록이 아니라 **인자**로 판정하는 이유는
+// 새로 생기거나 목록에서 빠진 호출부(예: chapterPlanner 의 프레임 분석)도 같은 규칙에 걸리게 하기 위해서다.
+//  ① 도구가 WebSearch·WebFetch 밖의 것을 하나라도 포함(Read 프레임·사진 분석 등) — cliclaude 계정은
+//     앱 저장소 파일을 읽을 수 없고, Read 실패는 종료 코드가 아니라 모델 응답으로 돌아와 조용히 저장된다.
+//  ② MCP 서버가 비어 있지 않음(관장 채팅) — 앱 MCP 스크립트·DB 자격을 cliclaude 쪽에 넘길 수 없다.
+// 판정이 애매하면(파싱 불가 등) 기존 경로를 택한다. 실패 시 기존 CLI 로 되돌아가는 폴백은 두지 않는다.
+const SHIM_SAFE_TOOLS = new Set(['WebSearch', 'WebFetch']);
+
+function toolNames(tools) {
+  const list = Array.isArray(tools) ? tools : [tools];
+  return list
+    .flatMap(t => String(t).split(/[\s,]+/))
+    .filter(Boolean)
+    .map(t => t.replace(/\(.*$/, ''));
+}
+
+function hasMcpServers(mcpConfig) {
+  if (!mcpConfig) return false;
+  let cfg = mcpConfig;
+  if (typeof cfg === 'string') {
+    try { cfg = JSON.parse(cfg); } catch { return true; }
+  }
+  const servers = cfg && cfg.mcpServers;
+  if (!servers || typeof servers !== 'object' || Array.isArray(servers)) return true;
+  return Object.keys(servers).length > 0;
+}
+
+function resolveClaudeExecutable(opts = {}) {
+  const shimPath = (process.env.CLAUDE_CLI_PATH || '').trim();
+  if (!shimPath) return 'claude';
+  if (opts.tools != null && opts.tools !== '' && toolNames(opts.tools).some(t => !SHIM_SAFE_TOOLS.has(t))) return 'claude';
+  if (hasMcpServers(opts.mcpConfig)) return 'claude';
+  return shimPath;
+}
+
 // stdinPrompt:false(기본값) → 기존과 100% 동일하게 프롬프트를 argv로 전달.
 // stdinPrompt:true          → argv에 프롬프트를 넣지 않고 stdin에 write(ARG_MAX 회피, `--print`가 공식 지원).
 function runClaudeOnce(prompt, opts) {
@@ -96,7 +133,7 @@ function runClaudeOnce(prompt, opts) {
   return new Promise((resolve, reject) => {
     const args = buildArgs(prompt, opts);
 
-    const proc = spawn('claude', args, {
+    const proc = spawn(resolveClaudeExecutable(opts), args, {
       timeout: timeoutMs,
       cwd: '/tmp',
       env: cleanEnv(),
@@ -239,4 +276,4 @@ async function runClaude(prompt, opts = {}) {
 // buildArgs 를 export 하는 것은 편의가 아니라 **검증 요건**이다(task-030).
 // 기존 16개 호출부의 argv 가 변경 전후로 바이트 동일한지 QA 가 claude 를 실제로 띄우지 않고
 // 잴 수 있어야 한다. spawn 을 스텁하는 방식은 큐·재시도까지 얽혀 재현이 어렵다.
-module.exports = { runClaude, buildArgs };
+module.exports = { runClaude, buildArgs, resolveClaudeExecutable };
