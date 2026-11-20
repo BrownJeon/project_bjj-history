@@ -1,6 +1,7 @@
 const { spawn } = require('child_process');
 const fs = require('fs');
 const os = require('os');
+const path = require('path');
 
 const REMOVE_ENV_KEYS = [
   'CLAUDECODE',
@@ -66,12 +67,15 @@ function buildArgs(prompt, opts) {
   const {
     tools, stdinPrompt,
     model = 'sonnet',
-    agents, agent, mcpConfig, strictMcp, maxTurns, outputFormat, jsonSchema,
+    agents, agent, mcpConfig, strictMcp, maxTurns, outputFormat, jsonSchema, inputs,
   } = opts;
 
   const args = ['--print'];
   if (!stdinPrompt) args.push(prompt);
-  args.push('--permission-mode', 'bypassPermissions', '--model', model);
+  // 입력 파일을 보내는 호출(cliclaude 1.2.0)은 dontAsk 가 필수다 — runner 가 bypassPermissions 와
+  // 입력을 함께 받으면 125(input_requires_dontask)로 거절하고, bypass 는 cwd 밖 Read 를 막지 않는다.
+  const permissionMode = hasInputs(inputs) ? 'dontAsk' : 'bypassPermissions';
+  args.push('--permission-mode', permissionMode, '--model', model);
   // 배열이면 가변 인자로 펼친다(`--tools WebSearch`). 문자열이면 기존과 완전히 동일한 한 인자.
   if (tools === '') args.push('--tools', '');
   else if (tools) {
@@ -97,7 +101,22 @@ function buildArgs(prompt, opts) {
 //     앱 저장소 파일을 읽을 수 없고, Read 실패는 종료 코드가 아니라 모델 응답으로 돌아와 조용히 저장된다.
 //  ② MCP 서버가 비어 있지 않음(관장 채팅) — 앱 MCP 스크립트·DB 자격을 cliclaude 쪽에 넘길 수 없다.
 // 판정이 애매하면(파싱 불가 등) 기존 경로를 택한다. 실패 시 기존 CLI 로 되돌아가는 폴백은 두지 않는다.
+// (task-004 S-C2b) ①의 예외: 도구가 Read·Grep·Glob 뿐이고 **입력 파일을 선언한**(inputs) 호출은 shim 으로 간다.
+// 파일 내용은 fd 3 manifest 로 shim 이 앱 UID 로 읽어 job 폴더에 놓고, 프롬프트는 상대 이름만 쓴다.
+// 입력을 선언하지 않은 Read 호출은 여전히 기존 'claude' 다.
 const SHIM_SAFE_TOOLS = new Set(['WebSearch', 'WebFetch']);
+const SHIM_FILE_TOOLS = new Set(['Read', 'Grep', 'Glob']);
+
+// cliclaude 1.2.0 policy.py 상한(protocol.md §10-4). 넘으면 runner/shim 이 125 로 거절하므로 spawn 전에 막는다.
+const INPUT_FILES_MAX = 5000;
+const INPUT_FILE_MAX = 16 * 1024 * 1024;
+const INPUT_TOTAL_MAX = 64 * 1024 * 1024;
+// runner 이름 규칙(상대·ASCII·`.` 조각 없음)보다 좁게, 이 앱이 만드는 모양만 받는다.
+const INPUT_NAME_RE = /^inputs\/[0-9]{2,}\.[a-z0-9]{1,8}$/;
+
+function hasInputs(inputs) {
+  return Array.isArray(inputs) && inputs.length > 0;
+}
 
 function toolNames(tools) {
   const list = Array.isArray(tools) ? tools : [tools];
@@ -121,24 +140,146 @@ function hasMcpServers(mcpConfig) {
 function resolveClaudeExecutable(opts = {}) {
   const shimPath = (process.env.CLAUDE_CLI_PATH || '').trim();
   if (!shimPath) return 'claude';
-  if (opts.tools != null && opts.tools !== '' && toolNames(opts.tools).some(t => !SHIM_SAFE_TOOLS.has(t))) return 'claude';
   if (hasMcpServers(opts.mcpConfig)) return 'claude';
+  const names = (opts.tools != null && opts.tools !== '') ? toolNames(opts.tools) : [];
+  if (hasInputs(opts.inputs)) {
+    return names.length && names.every(t => SHIM_FILE_TOOLS.has(t)) ? shimPath : 'claude';
+  }
+  if (names.some(t => !SHIM_SAFE_TOOLS.has(t))) return 'claude';
   return shimPath;
+}
+
+function mib(n) {
+  return `${(n / (1024 * 1024)).toFixed(1)}MiB`;
+}
+
+// runClaude 의 inputs 를 검사·정규화한다. 빈 배열은 "입력 없음"(지금과 같은 spawn)이다.
+// 오류 문구에 호스트 경로를 싣지 않는다 — 작업 오류로 화면·로그에 남는다.
+function normalizeInputs(inputs) {
+  if (inputs == null) return undefined;
+  if (!Array.isArray(inputs)) throw new Error('AI 입력 파일 목록 형식이 올바르지 않습니다');
+  if (!inputs.length) return undefined;
+  if (inputs.length > INPUT_FILES_MAX) {
+    throw new Error(`AI 분석 입력 파일이 너무 많습니다 (${inputs.length}개, 최대 ${INPUT_FILES_MAX}개)`);
+  }
+  const seen = new Set();
+  let total = 0;
+  return inputs.map((x, i) => {
+    const n = i + 1;
+    if (!x || typeof x.src !== 'string' || !path.isAbsolute(x.src) || x.src.includes('\0')) {
+      throw new Error(`AI 입력 파일 ${n}번의 원본 경로가 올바르지 않습니다`);
+    }
+    if (typeof x.path !== 'string' || !INPUT_NAME_RE.test(x.path)) {
+      throw new Error(`AI 입력 파일 ${n}번의 이름이 올바르지 않습니다`);
+    }
+    if (seen.has(x.path)) throw new Error(`AI 입력 파일 ${n}번의 이름이 중복됩니다`);
+    seen.add(x.path);
+    const out = { src: x.src, path: x.path };
+    if (x.size != null) {
+      if (!Number.isSafeInteger(x.size) || x.size < 0) throw new Error(`AI 입력 파일 ${n}번의 크기 값이 올바르지 않습니다`);
+      if (x.size > INPUT_FILE_MAX) {
+        throw new Error(`AI 분석 이미지 용량 한도 초과 — ${n}번째 ${mib(x.size)} (장당 최대 ${mib(INPUT_FILE_MAX)})`);
+      }
+      total += x.size;
+      out.size = x.size;
+    }
+    if (x.sha256 != null) {
+      if (typeof x.sha256 !== 'string' || !/^[0-9a-f]{64}$/.test(x.sha256)) {
+        throw new Error(`AI 입력 파일 ${n}번의 sha256 값이 올바르지 않습니다`);
+      }
+      out.sha256 = x.sha256;
+    }
+    if (total > INPUT_TOTAL_MAX) {
+      throw new Error(`AI 분석 이미지 용량 한도 초과 — 합계 ${mib(total)} 이상 (최대 ${mib(INPUT_TOTAL_MAX)})`);
+    }
+    return out;
+  });
+}
+
+/**
+ * 파일을 읽히는 호출부(B2)용 준비. 실행 경로를 **한 번** 정하고 그에 맞는 프롬프트 참조를 돌려준다.
+ *  - shim 경로(env 설정 + Read 계열 도구 + MCP 없음): refs = `inputs/01.jpg`…(순서 보존), inputs = fd 3 manifest 항목,
+ *    hint = 프롬프트 머리에 붙일 "(현재 작업 폴더 기준)". 크기 상한을 넘으면 spawn 전에 던진다.
+ *  - 그 밖(env 비어 있음 등): refs = 기존 절대 경로, inputs 없음, hint '' — 프롬프트·argv 가 S-C1(1.4.0)과 바이트 동일.
+ *    env 만 지우는 롤백이 곧 지금 동작으로의 복귀가 되게 하려는 것이다.
+ * @param {string[]} files 호출부가 이미 만든(검증한) 절대 경로, 프롬프트에 나열할 순서 그대로
+ * @param {{tools?:string|string[], mcpConfig?:any}} opts runClaude 에 넘길 것과 같은 도구·MCP 옵션
+ */
+async function prepareFileInputs(files, opts = {}) {
+  const list = Array.isArray(files) ? files.map(String) : [];
+  const legacy = { refs: list, inputs: undefined, hint: '' };
+  if (!list.length) return legacy;
+  const viaShim = resolveClaudeExecutable({ tools: opts.tools, mcpConfig: opts.mcpConfig, inputs: list }) !== 'claude';
+  if (!viaShim) return legacy;
+
+  if (list.length > INPUT_FILES_MAX) {
+    throw new Error(`AI 분석 입력 파일이 너무 많습니다 (${list.length}개, 최대 ${INPUT_FILES_MAX}개)`);
+  }
+  const width = Math.max(2, String(list.length).length);
+  const inputs = [];
+  let total = 0;
+  for (let i = 0; i < list.length; i++) {
+    const n = i + 1;
+    const src = list[i];
+    if (!path.isAbsolute(src)) throw new Error(`AI 입력 파일 ${n}번의 원본 경로가 올바르지 않습니다`);
+    let st;
+    try {
+      st = await fs.promises.lstat(src);
+    } catch {
+      throw new Error(`AI 입력 파일 ${n}번을 읽을 수 없습니다`);
+    }
+    // shim 은 마지막 조각을 O_NOFOLLOW 로 연다 — symlink·폴더는 거기서 125 가 되므로 여기서 먼저 알린다.
+    if (!st.isFile()) throw new Error(`AI 입력 파일 ${n}번이 일반 파일이 아닙니다`);
+    if (st.size > INPUT_FILE_MAX) {
+      throw new Error(`AI 분석 이미지 용량 한도 초과 — ${n}번째 ${mib(st.size)} (장당 최대 ${mib(INPUT_FILE_MAX)})`);
+    }
+    total += st.size;
+    const ext = path.extname(src).toLowerCase();
+    if (!/^\.[a-z0-9]{1,8}$/.test(ext)) throw new Error(`AI 입력 파일 ${n}번의 확장자를 알 수 없습니다`);
+    inputs.push({ src, path: `inputs/${String(n).padStart(width, '0')}${ext}`, size: st.size });
+  }
+  if (total > INPUT_TOTAL_MAX) {
+    throw new Error(`AI 분석 이미지 용량 한도 초과 — 합계 ${mib(total)}, ${list.length}장 (최대 ${mib(INPUT_TOTAL_MAX)})`);
+  }
+  return { refs: inputs.map(x => x.path), inputs, hint: '(현재 작업 폴더 기준)' };
 }
 
 // stdinPrompt:false(기본값) → 기존과 100% 동일하게 프롬프트를 argv로 전달.
 // stdinPrompt:true          → argv에 프롬프트를 넣지 않고 stdin에 write(ARG_MAX 회피, `--print`가 공식 지원).
 function runClaudeOnce(prompt, opts) {
-  const { timeoutMs, stdinPrompt, outputFormat, onEvent } = opts;
+  const { timeoutMs, stdinPrompt, outputFormat, onEvent, inputs } = opts;
   return new Promise((resolve, reject) => {
     const args = buildArgs(prompt, opts);
+    const file = resolveClaudeExecutable(opts);
+    const withInputs = hasInputs(inputs);
+    // 상대 이름 프롬프트를 기존 claude 로 보내면 Read 가 조용히 실패한 응답이 저장된다 — 대신 실패시킨다.
+    if (withInputs && file === 'claude') {
+      return reject(new Error('AI 입력 파일은 cliclaude 실행 경로(CLAUDE_CLI_PATH)에서 Read 계열 도구로만 보낼 수 있습니다'));
+    }
 
-    const proc = spawn(resolveClaudeExecutable(opts), args, {
+    const stdio = stdinPrompt ? ['pipe', 'pipe', 'pipe'] : ['ignore', 'pipe', 'pipe'];
+    // fd 3 은 입력이 있을 때만 연다 — 입력 없는 호출의 spawn 옵션은 S-C1 과 같다.
+    if (withInputs) stdio.push('pipe');
+    const proc = spawn(file, args, {
       timeout: timeoutMs,
       cwd: '/tmp',
       env: cleanEnv(),
-      stdio: stdinPrompt ? ['pipe', 'pipe', 'pipe'] : ['ignore', 'pipe', 'pipe'],
+      stdio,
     });
+
+    if (withInputs) {
+      const manifestPipe = proc.stdio && proc.stdio[3];
+      if (!manifestPipe) {
+        // manifest 없이 돌면 shim 은 입력 없는 요청으로 보고, 모델은 없는 파일을 읽으려다 엉뚱한 답을 낸다.
+        proc.on('error', () => {});
+        try { proc.kill('SIGTERM'); } catch { /* 이미 끝남 */ }
+        return reject(new Error('AI 입력 파일 전달 통로(fd 3)를 열지 못했습니다'));
+      }
+      // shim 이 manifest 를 다 읽기 전에 끝나면(롤백·기동 실패 등) EPIPE 가 난다. 처리기가 없으면
+      // 프로세스 전체가 죽는다. 결과 판정은 close 의 종료 코드가 맡는다.
+      manifestPipe.on('error', e => { console.error('[claudeCli] 입력 manifest 전달 실패:', (e && e.code) || 'error'); });
+      manifestPipe.end(JSON.stringify({ cliclaude_inputs: 1, files: inputs }));
+    }
 
     if (stdinPrompt) {
       proc.stdin.write(prompt);
@@ -239,6 +380,14 @@ async function runClaude(prompt, opts = {}) {
     mcpConfig: opts.mcpConfig, strictMcp: opts.strictMcp, maxTurns: opts.maxTurns,
     outputFormat: opts.outputFormat, jsonSchema: opts.jsonSchema, onEvent: opts.onEvent,
   };
+  // 입력이 있을 때만 키를 둔다 — 입력 없는 호출의 옵션 모양은 그대로다.
+  const inputs = normalizeInputs(opts.inputs);
+  if (inputs) {
+    if (resolveClaudeExecutable({ tools, mcpConfig: opts.mcpConfig, inputs }) === 'claude') {
+      throw new Error('AI 입력 파일은 cliclaude 실행 경로(CLAUDE_CLI_PATH)에서 Read 계열 도구로만 보낼 수 있습니다');
+    }
+    once.inputs = inputs;
+  }
   // 🔴 model 미지정이면 buildArgs 의 기본값 'sonnet' 이 그대로 쓰인다 — undefined 를 넘겨도
   //    기본 매개변수가 동작하도록 키를 지우지 않고 그대로 둔다(구조분해 기본값은 undefined 에만 적용).
   // maxRetries 기본값: interactive=3(기존과 동일한 총 시도 횟수), batch=1(배치가 인터랙티브를
@@ -276,4 +425,4 @@ async function runClaude(prompt, opts = {}) {
 // buildArgs 를 export 하는 것은 편의가 아니라 **검증 요건**이다(task-030).
 // 기존 16개 호출부의 argv 가 변경 전후로 바이트 동일한지 QA 가 claude 를 실제로 띄우지 않고
 // 잴 수 있어야 한다. spawn 을 스텁하는 방식은 큐·재시도까지 얽혀 재현이 어렵다.
-module.exports = { runClaude, buildArgs, resolveClaudeExecutable };
+module.exports = { runClaude, buildArgs, resolveClaudeExecutable, prepareFileInputs };

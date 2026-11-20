@@ -2,7 +2,7 @@ const { spawn } = require('child_process');
 const fs   = require('fs/promises');
 const fsSync = require('fs');
 const path = require('path');
-const { runClaude } = require('./claudeCli');
+const { runClaude, prepareFileInputs } = require('./claudeCli');
 const { getFramesDir, getVideoDir, frameWebPath, videoWebPath, ensureDir } = require('./storage');
 // 🔴 yt-dlp 는 PATH 가 아니라 해석된 절대경로로 부른다 — 이유는 services/ytdlp.js 상단 주석 참고
 //   (pm2 프로세스가 ecosystem 없이 재생성되면 PATH 에서 ~/.local/bin 이 빠져 전부 죽는다).
@@ -443,7 +443,9 @@ async function getWhisperTranscript(videoPath, audioPath, txtPath) {
 
 async function runCombinedAnalysis(videoPath, framePrefix, url, transcript) {
   const frames = await extractFrames(videoPath, framePrefix);
-  const frameList = frames.map((f, i) => `${i + 1}. ${f}`).join('\n');
+  // task-004 S-C2b: cliclaude 경로면 프레임은 fd 3 으로 보내고 프롬프트에는 job 안 상대 이름(inputs/01.jpg…)만 쓴다.
+  const fileIn = await prepareFileInputs(frames, { tools: 'Read' });
+  const frameList = fileIn.refs.map((f, i) => `${i + 1}. ${f}`).join('\n');
   const snippet = transcript
     ? (transcript.length > 3500 ? transcript.slice(0, 3500) + '...' : transcript)
     : '';
@@ -470,11 +472,11 @@ async function runCombinedAnalysis(videoPath, framePrefix, url, transcript) {
 [영상 URL]
 ${url}
 
-[프레임 이미지 파일 경로 — Read 툴로 각 파일을 순서대로 읽어 시각 분석해주세요]
+[프레임 이미지 파일 경로${fileIn.hint} — Read 툴로 각 파일을 순서대로 읽어 시각 분석해주세요]
 ${frameList}
 ${transcriptBlock}`;
 
-  const out = (await runClaude(prompt, { tools: 'Read' })).trim();
+  const out = (await runClaude(prompt, { tools: 'Read', inputs: fileIn.inputs })).trim();
   return { description: out, frames };
 }
 
@@ -625,7 +627,7 @@ async function downloadPhotos(entries, basePrefix, opts = {}) {
  * 🔴 "영상"이 아니라 "사진 N장으로 이루어진 게시물"임을 명시한다 — 그러지 않으면 모델이
  *    없는 동작·전환을 지어낸다(정지 사진이라 시간축이 없다).
  */
-function buildPhotoPrompt(photoPaths, url, caption) {
+function buildPhotoPrompt(photoPaths, url, caption, pathHint = '') {
   const list = photoPaths.map((f, i) => `${i + 1}. ${f}`).join('\n');
   const cap = String(caption || '').trim();
   const capBlock = cap
@@ -653,7 +655,7 @@ function buildPhotoPrompt(photoPaths, url, caption) {
 [게시물 URL]
 ${url}
 
-[사진 파일 경로 — Read 툴로 각 파일을 순서대로 읽어 시각 분석해주세요]
+[사진 파일 경로${pathHint} — Read 툴로 각 파일을 순서대로 읽어 시각 분석해주세요]
 ${list}
 ${capBlock}`;
 }
@@ -697,9 +699,13 @@ async function analyzePhotoPost(url, clipId, onProgress, ctx) {
   const caption = (targets.find(e => String(e && e.description || '').trim()) || {}).description || '';
 
   onProgress?.(65, `사진 ${files.length}장 분석 중`);
-  const prompt = buildPhotoPrompt(files, url, caption);
+  // task-004 S-C2b: cliclaude 경로면 사진을 fd 3 으로 보낸다. 장당 16MiB·합계 64MiB 를 넘으면 사진을 빼지 않고
+  // spawn 전에 던진다(사용자 지시 "모든 캐러셀 사진" — 일부만 보고 요약하지 않는다).
+  const fileIn = await prepareFileInputs(files, { tools: 'Read' });
+  const prompt = buildPhotoPrompt(fileIn.refs, url, caption, fileIn.hint);
   const description = (await runClaude(prompt, {
     tools: 'Read',
+    inputs: fileIn.inputs,
     timeoutMs: photoAnalysisTimeoutMs(files.length),
   })).trim();
 

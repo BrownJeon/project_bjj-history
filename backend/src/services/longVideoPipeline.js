@@ -9,7 +9,7 @@ const crypto = require('crypto');
 const { spawn } = require('child_process');
 
 const { sequelize, LongVideo, LongVideoChapter } = require('../models');
-const { runClaude } = require('./claudeCli');
+const { runClaude, prepareFileInputs } = require('./claudeCli');
 const ytdlp = require('./ytdlp');
 const chapterPlanner = require('./chapterPlanner');
 const vttParser = require('./vttParser');
@@ -522,7 +522,7 @@ async function extractChapterFrames(videoPath, framesDir, chapter) {
 // S8: 구간분석(map) 프롬프트 — 설계서 §3-D 출력 스키마 그대로.
 // title 필드는 응답에 포함되지만 챕터 제목은 S1~S6에서 이미 확정된 것을 유지하고 여기서는
 // 덮어쓰지 않는다(사용자가 직접 수정한 제목이나 유튜브 원 제목을 잃지 않기 위함).
-function buildSegmentPrompt(videoTitle, chapter, frames, subtitleText) {
+function buildSegmentPrompt(videoTitle, chapter, frames, subtitleText, pathHint = '') {
   const frameList = frames.map((f, i) => `${i + 1}. ${f.path}`).join('\n');
   const subtitleBlock = subtitleText
     ? `\n[이 구간 자막 — 보조 단서. 자동 생성이라 BJJ 용어를 자주 틀립니다(예: 암바→안바). 화면과 상충하면 반드시 화면을 우선하세요]\n${subtitleText.slice(0, 2000)}\n`
@@ -536,7 +536,7 @@ function buildSegmentPrompt(videoTitle, chapter, frames, subtitleText) {
 - 자막은 보조 단서로만 사용. 화면과 자막이 상충하면 반드시 화면을 우선
 - BJJ 전문 용어 사용
 
-[프레임 이미지 파일 경로 — Read 툴로 순서대로 읽어주세요]
+[프레임 이미지 파일 경로${pathHint} — Read 툴로 순서대로 읽어주세요]
 ${frameList}
 ${subtitleBlock}
 다음 JSON 형식으로만 응답하세요 (다른 텍스트 없이):
@@ -876,11 +876,14 @@ async function runPipeline(job) {
               .join(' ')
               .trim()
           : '';
-        const prompt = buildSegmentPrompt(video.title, chapterRow, frames, subtitleText);
+        // task-004 S-C2b: cliclaude 경로면 프레임을 fd 3 입력으로 보내고 프롬프트에는 상대 이름만 쓴다.
+        const fileIn = await prepareFileInputs(frames.map(f => f.path), { tools: 'Read' });
+        const promptFrames = frames.map((f, idx) => ({ ...f, path: fileIn.refs[idx] }));
+        const prompt = buildSegmentPrompt(video.title, chapterRow, promptFrames, subtitleText, fileIn.hint);
 
         let raw;
         try {
-          raw = await runClaude(prompt, { tools: 'Read', timeoutMs: 240000, priority: 'batch', maxRetries: 2 });
+          raw = await runClaude(prompt, { tools: 'Read', inputs: fileIn.inputs, timeoutMs: 240000, priority: 'batch', maxRetries: 2 });
         } finally {
           // 성공/실패 관계없이 시도 자체는 1회의 논리적 AI 호출로 집계한다(내부 재시도는
           // runClaude의 maxRetries가 흡수 — ai_calls는 "구간 분석 몇 건을 시도했는지" 집계용)

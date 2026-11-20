@@ -1,7 +1,7 @@
 // 챕터 판단 — task-007 Phase 1
 // 우선순위 1(유튜브 제작자 챕터) → 2(자막 의미 분할) → 3(15장 시각 분석) → 4(단일 챕터)
 // + 공통 보정(최소60초/최대12분/상한24챕터/gap·overlap 제거) + 저confidence 중립 라벨
-const { runClaude: defaultRunClaude } = require('./claudeCli');
+const { runClaude: defaultRunClaude, prepareFileInputs: defaultPrepareFileInputs } = require('./claudeCli');
 const { compressGaps } = require('./vttParser');
 const { extractJSONObject } = require('../utils/extractJson');
 
@@ -234,12 +234,12 @@ async function planFromSubtitleWindows(vttText, durationSec, opts = {}) {
   return { chapters: applyCommonCorrections(collected, durationSec), callsUsed };
 }
 
-function buildVisualPrompt(frameSet, durationSec) {
+function buildVisualPrompt(frameSet, durationSec, pathHint = '') {
   const frameList = frameSet.map((f, i) => `${i + 1}. ${f.path} (약 ${fmtMmSs(f.t)} 지점)`).join('\n');
   return `당신은 BJJ(브라질리언 주짓수) 전문가입니다. 아래는 한 영상(길이 약 ${fmtMmSs(durationSec)})에서 시간 순서대로 균등 추출한 프레임입니다.
 프레임을 보고 영상의 큰 흐름이 전환되는 지점(챕터 경계)만 찾아주세요. 세부 기술명이 아니라 큰 흐름의 전환점만 판단하면 됩니다.
 
-[프레임 이미지 파일 경로 — Read 툴로 순서대로 읽어 시각 분석해주세요]
+[프레임 이미지 파일 경로${pathHint} — Read 툴로 순서대로 읽어 시각 분석해주세요]
 ${frameList}
 
 다음 JSON 형식으로만 응답하세요 (다른 텍스트 없이):
@@ -256,10 +256,17 @@ ${frameList}
 // 호출측이 무조건 1로만 증가시켜 ai_calls가 부정확했다.
 async function planFromVisualFrames(framePaths, durationSec, opts = {}) {
   const runClaudeFn = opts.runClaudeFn || defaultRunClaude;
+  const prepareFn = opts.prepareFileInputsFn || defaultPrepareFileInputs;
   if (!framePaths?.length) return { chapters: null, callsUsed: 0 };
 
   // priority:'batch' — task-008 §3-A, 인터랙티브 AI 기능을 막지 않는 배치 레인
-  const attempt = (frameSet) => runClaudeFn(buildVisualPrompt(frameSet, durationSec), { tools: 'Read', timeoutMs: 300000, priority: 'batch' });
+  // task-004 S-C2b: cliclaude 경로면 시도마다(12장 축소 포함) 그 프레임 집합을 fd 3 입력으로 보내고 상대 이름을 쓴다.
+  const attempt = async (frameSet) => {
+    const fileIn = await prepareFn(frameSet.map(f => f.path), { tools: 'Read' });
+    const refs = frameSet.map((f, i) => ({ ...f, path: fileIn.refs[i] }));
+    return runClaudeFn(buildVisualPrompt(refs, durationSec, fileIn.hint),
+      { tools: 'Read', inputs: fileIn.inputs, timeoutMs: 300000, priority: 'batch' });
+  };
 
   let raw;
   let callsUsed = 0;
