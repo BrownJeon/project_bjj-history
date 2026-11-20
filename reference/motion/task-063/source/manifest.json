@@ -1,0 +1,18 @@
+{
+  "user_source": "/Users/brownjeon/Downloads/트라이팟스윕.png",
+  "local_copy": "/Volumes/homes/brownjeon/project/bjj-trainning/reference/motion/task-063/source/tripod-reference.png",
+  "sha256": "a6e99ea8eab51254a3d5f53127904d91c22733ef3f55a22d90752c4b9770435d",
+  "bytes": 1703597,
+  "roles": {
+    "blue": "guard / sweep initiator",
+    "white": "standing / sweep receiver"
+  },
+  "technique": "Tripod sweep",
+  "approved_constraints": [
+    "M4 local",
+    "No extra paid services",
+    "No app/DB/deployment changes"
+  ],
+  "prior_feedback": "User reported unnatural motion in task-062 and requested remake from this technique/photo",
+  "created_at": "2026-11-10T09:20:22.332354+00:00"
+}

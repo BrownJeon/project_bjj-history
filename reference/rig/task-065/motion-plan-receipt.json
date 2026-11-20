@@ -1,0 +1,79 @@
+{
+  "source_generated": true,
+  "frames": 289,
+  "fps": 24,
+  "seconds": 12,
+  "max_active_contact_error_px": 1.6077746776921858e-13,
+  "max_adjacent_joint_step_deg": 3.0816008085128037,
+  "joint_ranges_deg": {
+    "pelvis": [
+      0.0,
+      0.0
+    ],
+    "spine": [
+      -90.0,
+      -55.0
+    ],
+    "neck": [
+      0.0,
+      12.0
+    ],
+    "head": [
+      0.0,
+      0.0
+    ],
+    "upper_arm_far": [
+      105.0,
+      190.0
+    ],
+    "forearm_far": [
+      -130.0,
+      -59.99999999999999
+    ],
+    "hand_far": [
+      0.0,
+      0.0
+    ],
+    "upper_arm_near": [
+      119.99999999999999,
+      205.48283084644325
+    ],
+    "forearm_near": [
+      -100.0,
+      -36.43552273531867
+    ],
+    "hand_near": [
+      0.0,
+      28.118865352838366
+    ],
+    "thigh_far": [
+      -19.672755639095787,
+      81.04752292029197
+    ],
+    "shin_far": [
+      55.06016684236564,
+      141.15779350573257
+    ],
+    "foot_far": [
+      -144.9887061282447,
+      -91.48503786663676
+    ],
+    "thigh_near": [
+      -20.000000000000004,
+      67.572530123729
+    ],
+    "shin_near": [
+      9.176832403208618,
+      125.00000000000001
+    ],
+    "foot_near": [
+      -104.37235950839644,
+      -65.44374505540497
+    ]
+  },
+  "contact_release_seconds": 5.25,
+  "ankle_grip_active_throughout": true,
+  "native_verified": false,
+  "visual_verified": false,
+  "user_quality": "pending"
+}

@@ -1,0 +1,4 @@
+name: bjj-dual-native-character-sample
+main: Clean
+output:
+  dir: build

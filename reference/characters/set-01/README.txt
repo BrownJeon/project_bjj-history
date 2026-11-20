@@ -25,4 +25,5 @@ approved-base-manifest.json — 승인 원본 6파일의 목록·크기·해시�
 DB 등록: 2026-11-09 B안 원본 BLOB 등록·검증 완료. bjj DB의 신규3테이블에 베이스8, 스킨16/17(v1), 자산11~16(6개).
 실제 구현·DB 적용은 사용자 최신 명시 지시로 Codex가 직접 수행했다. 6개 DB/파일복원 bytes·SHA256 일치, 동일 manifest 재실행 추가쓰기0.
 작업 범위/경과: docs/handovers/task-055-character-registry.md. 결과: docs/verification/task-055-character-registry.json.
-단위14·실DB13·독립읽기 검증 통과. 기존 NAS 원본과 과거파일 보존. 미커밋·미push·앱 미배포.
+단위14·실DB13·독립읽기 검증 통과. 기존 NAS 원본과 과거파일 보존. 2026-11-09 운영 배포 완료: commit 08a596e7, release 20261109-101020-08a596e7.
+운영 릴리스의 원본6/코드9 해시와 DB 읽기 재검증 통과. 앱 재설치 불필요.

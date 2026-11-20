@@ -1,0 +1,12 @@
+{
+  "status": "pass",
+  "download_archive_sha256": "1148d84113657677db916b75de23b9e2e0550719de7636989a078d9cb0df0be1",
+  "asset_hashes_checked": 10,
+  "artboards": 2,
+  "bones_per_artboard": 16,
+  "native_local_limits_per_artboard": 16,
+  "unchanged_baseline_keys_per_artboard": 6498,
+  "new_profile_applied": false,
+  "native_capture_exit": 0,
+  "visual_review": "four actual PNGs inspected; user approval pending"
+}

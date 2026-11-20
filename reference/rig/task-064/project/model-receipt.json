@@ -1,0 +1,403 @@
+{
+  "schema_version": 1,
+  "status": "source_generated",
+  "artboards": [
+    "Clean",
+    "Rig"
+  ],
+  "bones_per_artboard": 16,
+  "constraints_per_artboard": 16,
+  "fps": 24,
+  "duration_frames": 360,
+  "duration_seconds": 15,
+  "units": {
+    "angles": "radians",
+    "lengths": "artboard pixels"
+  },
+  "animated_properties": [
+    "rotation",
+    "pelvis.x",
+    "pelvis.y"
+  ],
+  "persistent_geometry": true,
+  "external_assets": false,
+  "rive_scripting": false,
+  "paid_api_calls": 0,
+  "limits_scope": "Conservative animation demonstration limits, not medical normal ranges",
+  "local_rotation_ranges_deg": {
+    "pelvis": [
+      0.0,
+      0.0
+    ],
+    "spine": [
+      -90.0,
+      -68.0
+    ],
+    "neck": [
+      -11.0,
+      -0.0
+    ],
+    "head": [
+      0.0,
+      0.0
+    ],
+    "upper_arm_far": [
+      125.00000000000001,
+      171.99999999999997
+    ],
+    "forearm_far": [
+      -25.0,
+      -5.0
+    ],
+    "hand_far": [
+      0.0,
+      0.0
+    ],
+    "upper_arm_near": [
+      133.00000000000003,
+      180.0
+    ],
+    "forearm_near": [
+      -80.0,
+      -0.0
+    ],
+    "hand_near": [
+      0.0,
+      0.0
+    ],
+    "thigh_far": [
+      64.64768583523278,
+      90.15774903100986
+    ],
+    "shin_far": [
+      6.3522032610535115,
+      43.9248967278986
+    ],
+    "foot_far": [
+      -108.57258256313138,
+      -96.50995229206336
+    ],
+    "thigh_near": [
+      60.440895548661565,
+      83.74454341124472
+    ],
+    "shin_near": [
+      8.062990696739814,
+      65.0
+    ],
+    "foot_near": [
+      -112.05809951717741,
+      -91.80753410798454
+    ]
+  },
+  "hierarchy": [
+    {
+      "name": "pelvis",
+      "parent": null,
+      "length": 0,
+      "local_bounds_deg": [
+        0,
+        0
+      ],
+      "bind_local_rotation_deg": 0,
+      "semantic_bend": "Root translation only",
+      "scale": [
+        1,
+        1
+      ],
+      "bind_offset": [
+        0,
+        0
+      ]
+    },
+    {
+      "name": "spine",
+      "parent": "pelvis",
+      "length": 190,
+      "local_bounds_deg": [
+        -95,
+        -60
+      ],
+      "bind_local_rotation_deg": -90,
+      "semantic_bend": "Increasing angle leans chest forward/right",
+      "scale": [
+        1,
+        1
+      ],
+      "bind_offset": [
+        0,
+        0
+      ]
+    },
+    {
+      "name": "neck",
+      "parent": "spine",
+      "length": 22,
+      "local_bounds_deg": [
+        -15,
+        15
+      ],
+      "bind_local_rotation_deg": 0,
+      "semantic_bend": "Counterbalances small torso lean",
+      "scale": [
+        1,
+        1
+      ],
+      "bind_offset": [
+        0,
+        0
+      ]
+    },
+    {
+      "name": "head",
+      "parent": "neck",
+      "length": 80,
+      "local_bounds_deg": [
+        -10,
+        10
+      ],
+      "bind_local_rotation_deg": 0,
+      "semantic_bend": "Small relative head tilt only",
+      "scale": [
+        1,
+        1
+      ],
+      "bind_offset": [
+        0,
+        0
+      ]
+    },
+    {
+      "name": "upper_arm_far",
+      "parent": "spine",
+      "length": 105,
+      "local_bounds_deg": [
+        120,
+        180
+      ],
+      "bind_local_rotation_deg": 172,
+      "semantic_bend": "Shoulder; decreases to reach forward",
+      "scale": [
+        1,
+        1
+      ],
+      "bind_offset": [
+        0,
+        0
+      ]
+    },
+    {
+      "name": "forearm_far",
+      "parent": "upper_arm_far",
+      "length": 95,
+      "local_bounds_deg": [
+        -90,
+        0
+      ],
+      "bind_local_rotation_deg": -5,
+      "semantic_bend": "Negative elbow flexion toward front/right",
+      "scale": [
+        1,
+        1
+      ],
+      "bind_offset": [
+        0,
+        0
+      ]
+    },
+    {
+      "name": "hand_far",
+      "parent": "forearm_far",
+      "length": 38,
+      "local_bounds_deg": [
+        -15,
+        15
+      ],
+      "bind_local_rotation_deg": 0,
+      "semantic_bend": "Small wrist flexion/extension only",
+      "scale": [
+        1,
+        1
+      ],
+      "bind_offset": [
+        0,
+        0
+      ]
+    },
+    {
+      "name": "upper_arm_near",
+      "parent": "spine",
+      "length": 105,
+      "local_bounds_deg": [
+        120,
+        180
+      ],
+      "bind_local_rotation_deg": 180,
+      "semantic_bend": "Shoulder; decreases to reach forward",
+      "scale": [
+        1,
+        1
+      ],
+      "bind_offset": [
+        0,
+        0
+      ]
+    },
+    {
+      "name": "forearm_near",
+      "parent": "upper_arm_near",
+      "length": 95,
+      "local_bounds_deg": [
+        -90,
+        0
+      ],
+      "bind_local_rotation_deg": 0,
+      "semantic_bend": "Negative elbow flexion toward front/right",
+      "scale": [
+        1,
+        1
+      ],
+      "bind_offset": [
+        0,
+        0
+      ]
+    },
+    {
+      "name": "hand_near",
+      "parent": "forearm_near",
+      "length": 38,
+      "local_bounds_deg": [
+        -15,
+        15
+      ],
+      "bind_local_rotation_deg": 0,
+      "semantic_bend": "Small wrist flexion/extension only",
+      "scale": [
+        1,
+        1
+      ],
+      "bind_offset": [
+        0,
+        0
+      ]
+    },
+    {
+      "name": "thigh_far",
+      "parent": "pelvis",
+      "length": 155,
+      "local_bounds_deg": [
+        45,
+        110
+      ],
+      "bind_local_rotation_deg": 90.15774903100986,
+      "semantic_bend": "Decreasing angle moves knee forward/right",
+      "scale": [
+        1,
+        1
+      ],
+      "bind_offset": [
+        0,
+        0
+      ]
+    },
+    {
+      "name": "shin_far",
+      "parent": "thigh_far",
+      "length": 155,
+      "local_bounds_deg": [
+        0,
+        80
+      ],
+      "bind_local_rotation_deg": 6.3522032610535115,
+      "semantic_bend": "Positive knee flexion; never hyperextends",
+      "scale": [
+        1,
+        1
+      ],
+      "bind_offset": [
+        0,
+        0
+      ]
+    },
+    {
+      "name": "foot_far",
+      "parent": "shin_far",
+      "length": 76,
+      "local_bounds_deg": [
+        -140,
+        -45
+      ],
+      "bind_local_rotation_deg": -96.50995229206336,
+      "semantic_bend": "Neutral sole horizontal; compensates shin world angle",
+      "scale": [
+        1,
+        1
+      ],
+      "bind_offset": [
+        0,
+        0
+      ]
+    },
+    {
+      "name": "thigh_near",
+      "parent": "pelvis",
+      "length": 155,
+      "local_bounds_deg": [
+        45,
+        110
+      ],
+      "bind_local_rotation_deg": 83.74454341124472,
+      "semantic_bend": "Decreasing angle moves knee forward/right",
+      "scale": [
+        1,
+        1
+      ],
+      "bind_offset": [
+        0,
+        0
+      ]
+    },
+    {
+      "name": "shin_near",
+      "parent": "thigh_near",
+      "length": 155,
+      "local_bounds_deg": [
+        0,
+        80
+      ],
+      "bind_local_rotation_deg": 8.062990696739814,
+      "semantic_bend": "Positive knee flexion; never hyperextends",
+      "scale": [
+        1,
+        1
+      ],
+      "bind_offset": [
+        0,
+        0
+      ]
+    },
+    {
+      "name": "foot_near",
+      "parent": "shin_near",
+      "length": 76,
+      "local_bounds_deg": [
+        -140,
+        -45
+      ],
+      "bind_local_rotation_deg": -91.80753410798454,
+      "semantic_bend": "Neutral sole horizontal; compensates shin world angle",
+      "scale": [
+        1,
+        1
+      ],
+      "bind_offset": [
+        0,
+        0
+      ]
+    }
+  ],
+  "max_stance_marker_drift_px": 5.684341886080801e-13,
+  "minimum_sole_clearance_px": -1.1368683772161603e-13,
+  "interpolation": "native linear between every 24fps pose; no scale/length keys",
+  "runtime_verification": "not_performed_by_generator"
+}

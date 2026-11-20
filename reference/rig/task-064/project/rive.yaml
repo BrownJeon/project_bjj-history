@@ -1,0 +1,4 @@
+name: bjj-basic-native-rig
+main: Clean
+output:
+  dir: build

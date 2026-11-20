@@ -1,0 +1,49 @@
+{
+  "technique": "Tripod sweep",
+  "roles": {
+    "blue": "guard / sweep initiator",
+    "white": "standing partner / controlled fall"
+  },
+  "reference": "source/tripod-reference.png",
+  "reference_sha256": "a6e99ea8eab51254a3d5f53127904d91c22733ef3f55a22d90752c4b9770435d",
+  "source": "https://www.grapplearts.com/the-bjj-self-defense-experiment/",
+  "technical_principle_ko": "가까운 발목을 손으로 제어하고, 한 발로 골반을 밀며, 다른 발등으로 반대 다리 뒤를 걸어 동시에 당긴다. 뒤쪽 지지가 무너져 상대 골반이 뒤로 내려가면 그립을 유지하며 상체를 따라 올린다.",
+  "key_phases": [
+    {
+      "phase": "setup",
+      "action": "Show the uploaded posture and all three contacts without inventing a second visible grip."
+    },
+    {
+      "phase": "load",
+      "action": "Small coordinated weight shift; the guard's knee compresses before extension."
+    },
+    {
+      "phase": "push_pull",
+      "action": "Extend the foot on the hip while pulling the controlled ankle and the opposite-leg hook together."
+    },
+    {
+      "phase": "controlled_fall",
+      "action": "Standing partner's hips move backward and down, knees bend, limbs follow rather than translating as one rigid object."
+    },
+    {
+      "phase": "follow",
+      "action": "Guard rises slightly with ankle control; release the hip foot and hook after landing, without twisting the knee."
+    }
+  ],
+  "quality_checks": [
+    "Stable faces, gi colors and limb count",
+    "Continuous cloth silhouettes and no detached islands",
+    "Ankle grip and hip contact follow their targets during the force phase",
+    "No limb length changes, knee flips, teleportation or cloth holes",
+    "Visible sweep result, not only camera panning or photo wobble",
+    "No claim of instructional accuracy from schema checks alone"
+  ],
+  "constraints": [
+    "M4 local execution",
+    "No extra paid generation services",
+    "No cloud image upload",
+    "Preserve user original",
+    "No app/DB/deployment changes"
+  ],
+  "current_result": "M4 isolated Wan Q4 trial produced three native clips; candidate-03 motion sample is ready, but exact contacts/anatomy and instructional accuracy are not passed. User quality approval pending."
+}

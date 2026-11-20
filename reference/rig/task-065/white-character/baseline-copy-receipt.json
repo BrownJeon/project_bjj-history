@@ -1,0 +1,10 @@
+{
+  "rig_profile.json": {
+    "source": "/Users/brownjeon/.local/share/bjj-rive/task-064/rig_profile.json",
+    "sha256": "ce9e93d2c1a2d637a59d3d20b8dafe57f42671ed103ccfae9ab99a24e6dd50f8"
+  },
+  "timeline.json": {
+    "source": "/Users/brownjeon/.local/share/bjj-rive/task-064/project/timeline.json",
+    "sha256": "72f1570e147a16954fbb8201b133f59589f21021cf6d64c2f167a0be408faa96"
+  }
+}

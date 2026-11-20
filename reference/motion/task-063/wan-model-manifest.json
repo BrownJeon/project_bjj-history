@@ -1,0 +1,53 @@
+{
+  "model_id": "SceneWorks/wan2.2-ti2v-5b-mlx",
+  "revision": "bb1b055249614cf9d7cf4373fbdbc184b77dee88",
+  "source_url": "https://huggingface.co/api/models/SceneWorks/wan2.2-ti2v-5b-mlx?blobs=true",
+  "files": [
+    {
+      "rfilename": "q4/config.json",
+      "blobId": "45ae8f33d9bec7ddc7e35f8e2ea350530a2556a5",
+      "size": 1283
+    },
+    {
+      "rfilename": "q4/model.safetensors",
+      "blobId": "1e49508a4eca809d74c1c9f5740ea3bc8d367dad",
+      "size": 2945426162,
+      "lfs": {
+        "sha256": "d6ab5c7d0b23a1c1416b7f0998e3510904ff44dbd4cf538bf3de31a592730e05",
+        "size": 2945426162,
+        "pointerSize": 135
+      }
+    },
+    {
+      "rfilename": "q4/t5_encoder.safetensors",
+      "blobId": "0350bedf2a59b1ec52c062970b8c3d9ad62110bf",
+      "size": 11361845587,
+      "lfs": {
+        "sha256": "e98427ef76a03343fd0e29519c4b26d29556bbb4a701f7080ec81fb5613a2ce4",
+        "size": 11361845587,
+        "pointerSize": 136
+      }
+    },
+    {
+      "rfilename": "q4/tokenizer.json",
+      "blobId": "7bd4ee3cf5633e49c0e06a3aac2a621559e6222a",
+      "size": 16837417,
+      "lfs": {
+        "sha256": "6e197b4d3dbd71da14b4eb255f4fa91c9c1f2068b20a2de2472967ca3d22602b",
+        "size": 16837417,
+        "pointerSize": 133
+      }
+    },
+    {
+      "rfilename": "q4/vae.safetensors",
+      "blobId": "59c426e164eb6c38314c3adf3af3648ccc373710",
+      "size": 2818778840,
+      "lfs": {
+        "sha256": "2ad7de4a9ab3f7879f039636a4afc8dcc78e60ec31fd27d31e28a10c49705c8b",
+        "size": 2818778840,
+        "pointerSize": 135
+      }
+    }
+  ],
+  "total_bytes": 17142889289
+}

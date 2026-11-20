@@ -182,9 +182,12 @@
     },
     "pending": [],
     "this_manifest_is_not_a_database_record": true,
-    "current_session_execution": "2026-11-09 사용자 명시 지시로 Codex가 직접 구현·검증·승인된3테이블 생성·1베이스/2스킨/6BLOB 초기등록. NAS 원본 보존. commit/push/배포 없음."
+    "current_session_execution": "2026-11-09 사용자 명시 지시로 Codex가 직접 구현·검증·승인된3테이블 생성·1베이스/2스킨/6BLOB 초기등록. NAS 원본 보존. commit/push/배포 없음.",
+    "deployed_commit": "08a596e7f1178dec7e8fa7973a6d5a2c23f55abe",
+    "deployed_release": "20261109-101020-08a596e7",
+    "post_deploy_independent_read": "pass: operating release CLI; 6/6 original bytes and hashes"
   },
-  "updated_at_kst": "2026-11-09T09:54:05+09:00",
+  "updated_at_kst": "2026-11-09T10:18:20+09:00",
   "storage_contract": {
     "option": "B",
     "status": "user_approved",

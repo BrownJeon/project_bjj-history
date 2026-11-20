@@ -1,0 +1,4 @@
+name: bjj-white-character-native-skin
+main: Clean
+output:
+  dir: build

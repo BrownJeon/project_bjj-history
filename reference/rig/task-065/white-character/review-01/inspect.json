@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "summary": true,
+  "problems": [],
+  "artboards": [
+    {"name": "Clean", "objects": 15456, "types": {"AnimationState": 1, "AnyState": 1, "Artboard": 1, "Bone": 15, "DrawRules": 12, "DrawTarget": 12, "Ellipse": 1, "EntryState": 1, "ExitState": 1, "Fill": 3, "Image": 10, "KeyFrameDouble": 6498, "KeyedObject": 16, "KeyedProperty": 18, "LayoutComponentStyle": 1, "LinearAnimation": 1, "Mesh": 10, "MeshVertex": 4399, "PointsPath": 1, "Rectangle": 1, "RootBone": 1, "RotationConstraint": 16, "Shape": 3, "Skin": 10, "SolidColor": 4, "StateMachine": 1, "StateMachineLayer": 1, "StateTransition": 1, "StraightVertex": 2, "Stroke": 1, "Tendon": 14, "Weight": 4399}},
+    {"name": "Rig", "objects": 15712, "types": {"AnimationState": 1, "AnyState": 1, "Artboard": 1, "Bone": 15, "DrawRules": 44, "DrawTarget": 44, "Ellipse": 17, "EntryState": 1, "ExitState": 1, "Fill": 19, "Image": 10, "KeyFrameDouble": 6498, "KeyedObject": 16, "KeyedProperty": 18, "LayoutComponentStyle": 1, "LinearAnimation": 1, "Mesh": 10, "MeshVertex": 4399, "PointsPath": 17, "Rectangle": 1, "RootBone": 1, "RotationConstraint": 16, "Shape": 35, "Skin": 10, "SolidColor": 52, "StateMachine": 1, "StateMachineLayer": 1, "StateTransition": 1, "StraightVertex": 34, "Stroke": 33, "Tendon": 14, "Weight": 4399}}
+  ],
+  "events": [],
+  "roots": {"objects": 11, "types": {"Backboard": 1, "ImageAsset": 10}}
+}

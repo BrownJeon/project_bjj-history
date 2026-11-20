@@ -1,0 +1,44 @@
+{
+  "engine": "Actual Rive CLI 1.9.2",
+  "location": "M4 Pro",
+  "motion": "unchanged task064 baseline",
+  "scene_sha256": "4e69c0832ab97cc11ca9092c1c5f65d87a5319af7f57f0420e2a8d411ebdaf22",
+  "verify_exit": 0,
+  "inspect_exit": 0,
+  "captures": [
+    {
+      "file": "clean-neutral.png",
+      "artboard": "Clean",
+      "sample_seconds": 0.5,
+      "bytes": 100577,
+      "sha256": "6f9b8a21f0e31b2284ac55c3f3dead6d4647667c816a879c767285efd4c0b76b"
+    },
+    {
+      "file": "clean-curl.png",
+      "artboard": "Clean",
+      "sample_seconds": 2.25,
+      "bytes": 162684,
+      "sha256": "fe7b6e0361a8acf8258cbc14c77d0bea33363bd6fddd0c4efab4932f4d14cae6"
+    },
+    {
+      "file": "clean-squat.png",
+      "artboard": "Clean",
+      "sample_seconds": 10.0,
+      "bytes": 178878,
+      "sha256": "4ba525eafde37b8ed165b922458101062c56059110f739024d3b998f6fc45668"
+    },
+    {
+      "file": "rig-knee.png",
+      "artboard": "Rig",
+      "sample_seconds": 6.0,
+      "bytes": 112233,
+      "sha256": "15b8922f63842359dedab27f5172b5865b71484ce977ab5e387966ce4045b414"
+    }
+  ],
+  "elapsed_seconds": 4.469,
+  "paid_api_calls": 0,
+  "cloud_upload": false,
+  "analytics": "off",
+  "profile_extended": false,
+  "visual_review": "pending"
+}

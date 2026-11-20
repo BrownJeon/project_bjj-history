@@ -1,0 +1,4585 @@
+{
+  "schema_version": 1,
+  "status": "source_generated",
+  "generic_writer_only": true,
+  "plan": {
+    "path": "/Volumes/homes/brownjeon/project/bjj-trainning/reference/rig/task-065/tripod-plan.json",
+    "sha256": "a9333e8b666b6a3e72836587f7f1a2813156d626948058bbbaf6c8f555dc30be"
+  },
+  "profile": {
+    "path": "/Volumes/homes/brownjeon/project/bjj-trainning/reference/rig/task-065/tripod-profile.json",
+    "sha256": "703b92932a2649c9954ccc631ed82b1fcb2fd3ff1b80670699578740d5c571b4",
+    "selection": "explicit plan path; no automatic expanded-profile selection"
+  },
+  "original_profile_sha256": "ce9e93d2c1a2d637a59d3d20b8dafe57f42671ed103ccfae9ab99a24e6dd50f8",
+  "bind_timeline": {
+    "path": "/Volumes/homes/brownjeon/project/bjj-trainning/reference/rig/task-064/project/timeline.json",
+    "sha256": "72f1570e147a16954fbb8201b133f59589f21021cf6d64c2f167a0be408faa96",
+    "frame": 0
+  },
+  "parent_source": {
+    "path": "/Volumes/homes/brownjeon/project/bjj-trainning/reference/rig/task-064/generate_character.py",
+    "sha256": "fab44924f186d33f455f6e90a5a8f94436f32f00e3d0d05d5f3302690c6e0a9e"
+  },
+  "skin_helper_source": {
+    "path": "/Volumes/homes/brownjeon/project/bjj-trainning/reference/rig/task-064/skin-v2/generate_skin.py",
+    "sha256": "7873116c7fee0d0f1ad57eb6bcd70b37f4ffcf18fd23c292a528c88d503c1b4c"
+  },
+  "writer_sha256": "d9e87d02b89515e4bd0d77d0d643afb1c282252ccb0373fbcc36e57017077d05",
+  "scene_sha256": "c4e6014f51f67a6dd5d8a26ee7cc0ffc88ffe1e96fcda5518df5903bbbcb7494",
+  "artboards": [
+    {
+      "name": "Clean",
+      "characters": [
+        {
+          "character": "white",
+          "bones": 16,
+          "constraints": 16,
+          "meshes": 10,
+          "bone_rotation_keys": 4624,
+          "parent_transform_keys": 867,
+          "cloth_animated_vertices": 85,
+          "cloth_vertex_keys": 49130,
+          "total_keys": 54621,
+          "mirror": -1,
+          "root_bone_local": {
+            "x": 0,
+            "y": 0,
+            "rotation": 0
+          },
+          "parent_transform_frame0": {
+            "root": [
+              760,
+              575
+            ],
+            "orientation_rad": 0.0,
+            "scaleX": -1,
+            "scaleY": 1
+          },
+          "layers": [
+            {
+              "name": "leg-far",
+              "vertices": 846,
+              "triangles": 1564,
+              "tendons": [
+                "thigh_far",
+                "shin_far"
+              ],
+              "max_influences": 2,
+              "cloth_animated_vertices": 35
+            },
+            {
+              "name": "foot-far",
+              "vertices": 200,
+              "triangles": 342,
+              "tendons": [
+                "foot_far"
+              ],
+              "max_influences": 1,
+              "cloth_animated_vertices": 0
+            },
+            {
+              "name": "leg-near",
+              "vertices": 846,
+              "triangles": 1564,
+              "tendons": [
+                "thigh_near",
+                "shin_near"
+              ],
+              "max_influences": 2,
+              "cloth_animated_vertices": 1
+            },
+            {
+              "name": "foot-near",
+              "vertices": 200,
+              "triangles": 342,
+              "tendons": [
+                "foot_near"
+              ],
+              "max_influences": 1,
+              "cloth_animated_vertices": 0
+            },
+            {
+              "name": "sleeve-far",
+              "vertices": 512,
+              "triangles": 930,
+              "tendons": [
+                "upper_arm_far",
+                "forearm_far"
+              ],
+              "max_influences": 2,
+              "cloth_animated_vertices": 0
+            },
+            {
+              "name": "hand-far",
+              "vertices": 112,
+              "triangles": 182,
+              "tendons": [
+                "hand_far"
+              ],
+              "max_influences": 1,
+              "cloth_animated_vertices": 0
+            },
+            {
+              "name": "jacket-belt",
+              "vertices": 903,
+              "triangles": 1680,
+              "tendons": [
+                "spine"
+              ],
+              "max_influences": 1,
+              "cloth_animated_vertices": 49
+            },
+            {
+              "name": "head-face-hair",
+              "vertices": 156,
+              "triangles": 264,
+              "tendons": [
+                "head"
+              ],
+              "max_influences": 1,
+              "cloth_animated_vertices": 0
+            },
+            {
+              "name": "sleeve-near",
+              "vertices": 512,
+              "triangles": 930,
+              "tendons": [
+                "upper_arm_near",
+                "forearm_near"
+              ],
+              "max_influences": 2,
+              "cloth_animated_vertices": 0
+            },
+            {
+              "name": "hand-near",
+              "vertices": 112,
+              "triangles": 182,
+              "tendons": [
+                "hand_near"
+              ],
+              "max_influences": 1,
+              "cloth_animated_vertices": 0
+            }
+          ]
+        },
+        {
+          "character": "blue",
+          "bones": 16,
+          "constraints": 16,
+          "meshes": 10,
+          "bone_rotation_keys": 4624,
+          "parent_transform_keys": 867,
+          "cloth_animated_vertices": 190,
+          "cloth_vertex_keys": 109820,
+          "total_keys": 115311,
+          "mirror": 1,
+          "root_bone_local": {
+            "x": 0,
+            "y": 0,
+            "rotation": 0
+          },
+          "parent_transform_frame0": {
+            "root": [
+              570,
+              810
+            ],
+            "orientation_rad": -1.5707963267948966,
+            "scaleX": 1,
+            "scaleY": 1
+          },
+          "layers": [
+            {
+              "name": "leg-far",
+              "vertices": 846,
+              "triangles": 1564,
+              "tendons": [
+                "thigh_far",
+                "shin_far"
+              ],
+              "max_influences": 2,
+              "cloth_animated_vertices": 4
+            },
+            {
+              "name": "foot-far",
+              "vertices": 200,
+              "triangles": 342,
+              "tendons": [
+                "foot_far"
+              ],
+              "max_influences": 1,
+              "cloth_animated_vertices": 0
+            },
+            {
+              "name": "leg-near",
+              "vertices": 846,
+              "triangles": 1564,
+              "tendons": [
+                "thigh_near",
+                "shin_near"
+              ],
+              "max_influences": 2,
+              "cloth_animated_vertices": 0
+            },
+            {
+              "name": "foot-near",
+              "vertices": 200,
+              "triangles": 342,
+              "tendons": [
+                "foot_near"
+              ],
+              "max_influences": 1,
+              "cloth_animated_vertices": 0
+            },
+            {
+              "name": "sleeve-far",
+              "vertices": 512,
+              "triangles": 930,
+              "tendons": [
+                "upper_arm_far",
+                "forearm_far"
+              ],
+              "max_influences": 2,
+              "cloth_animated_vertices": 0
+            },
+            {
+              "name": "hand-far",
+              "vertices": 112,
+              "triangles": 182,
+              "tendons": [
+                "hand_far"
+              ],
+              "max_influences": 1,
+              "cloth_animated_vertices": 0
+            },
+            {
+              "name": "jacket-belt",
+              "vertices": 903,
+              "triangles": 1680,
+              "tendons": [
+                "spine"
+              ],
+              "max_influences": 1,
+              "cloth_animated_vertices": 92
+            },
+            {
+              "name": "head-face-hair",
+              "vertices": 156,
+              "triangles": 264,
+              "tendons": [
+                "head"
+              ],
+              "max_influences": 1,
+              "cloth_animated_vertices": 0
+            },
+            {
+              "name": "sleeve-near",
+              "vertices": 512,
+              "triangles": 930,
+              "tendons": [
+                "upper_arm_near",
+                "forearm_near"
+              ],
+              "max_influences": 2,
+              "cloth_animated_vertices": 94
+            },
+            {
+              "name": "hand-near",
+              "vertices": 1248,
+              "triangles": 2356,
+              "tendons": [
+                "hand_near"
+              ],
+              "max_influences": 1,
+              "cloth_animated_vertices": 0
+            }
+          ]
+        }
+      ],
+      "bones": 32,
+      "constraints": 32,
+      "meshes": 20,
+      "total_keys": 169932,
+      "image_draw_order_back_to_front": [
+        "blue:foot-far",
+        "white:leg-far",
+        "white:foot-far",
+        "blue:leg-far",
+        "white:leg-near",
+        "white:sleeve-far",
+        "white:hand-far",
+        "white:jacket-belt",
+        "white:head-face-hair",
+        "white:sleeve-near",
+        "white:hand-near",
+        "blue:leg-near",
+        "blue:foot-near",
+        "blue:sleeve-far",
+        "blue:hand-far",
+        "blue:jacket-belt",
+        "white:foot-near",
+        "blue:head-face-hair",
+        "blue:sleeve-near",
+        "blue:hand-near"
+      ]
+    },
+    {
+      "name": "Rig",
+      "characters": [
+        {
+          "character": "white",
+          "bones": 16,
+          "constraints": 16,
+          "meshes": 10,
+          "bone_rotation_keys": 4624,
+          "parent_transform_keys": 867,
+          "cloth_animated_vertices": 85,
+          "cloth_vertex_keys": 49130,
+          "total_keys": 54621,
+          "mirror": -1,
+          "root_bone_local": {
+            "x": 0,
+            "y": 0,
+            "rotation": 0
+          },
+          "parent_transform_frame0": {
+            "root": [
+              760,
+              575
+            ],
+            "orientation_rad": 0.0,
+            "scaleX": -1,
+            "scaleY": 1
+          },
+          "layers": [
+            {
+              "name": "leg-far",
+              "vertices": 846,
+              "triangles": 1564,
+              "tendons": [
+                "thigh_far",
+                "shin_far"
+              ],
+              "max_influences": 2,
+              "cloth_animated_vertices": 35
+            },
+            {
+              "name": "foot-far",
+              "vertices": 200,
+              "triangles": 342,
+              "tendons": [
+                "foot_far"
+              ],
+              "max_influences": 1,
+              "cloth_animated_vertices": 0
+            },
+            {
+              "name": "leg-near",
+              "vertices": 846,
+              "triangles": 1564,
+              "tendons": [
+                "thigh_near",
+                "shin_near"
+              ],
+              "max_influences": 2,
+              "cloth_animated_vertices": 1
+            },
+            {
+              "name": "foot-near",
+              "vertices": 200,
+              "triangles": 342,
+              "tendons": [
+                "foot_near"
+              ],
+              "max_influences": 1,
+              "cloth_animated_vertices": 0
+            },
+            {
+              "name": "sleeve-far",
+              "vertices": 512,
+              "triangles": 930,
+              "tendons": [
+                "upper_arm_far",
+                "forearm_far"
+              ],
+              "max_influences": 2,
+              "cloth_animated_vertices": 0
+            },
+            {
+              "name": "hand-far",
+              "vertices": 112,
+              "triangles": 182,
+              "tendons": [
+                "hand_far"
+              ],
+              "max_influences": 1,
+              "cloth_animated_vertices": 0
+            },
+            {
+              "name": "jacket-belt",
+              "vertices": 903,
+              "triangles": 1680,
+              "tendons": [
+                "spine"
+              ],
+              "max_influences": 1,
+              "cloth_animated_vertices": 49
+            },
+            {
+              "name": "head-face-hair",
+              "vertices": 156,
+              "triangles": 264,
+              "tendons": [
+                "head"
+              ],
+              "max_influences": 1,
+              "cloth_animated_vertices": 0
+            },
+            {
+              "name": "sleeve-near",
+              "vertices": 512,
+              "triangles": 930,
+              "tendons": [
+                "upper_arm_near",
+                "forearm_near"
+              ],
+              "max_influences": 2,
+              "cloth_animated_vertices": 0
+            },
+            {
+              "name": "hand-near",
+              "vertices": 112,
+              "triangles": 182,
+              "tendons": [
+                "hand_near"
+              ],
+              "max_influences": 1,
+              "cloth_animated_vertices": 0
+            }
+          ]
+        },
+        {
+          "character": "blue",
+          "bones": 16,
+          "constraints": 16,
+          "meshes": 10,
+          "bone_rotation_keys": 4624,
+          "parent_transform_keys": 867,
+          "cloth_animated_vertices": 190,
+          "cloth_vertex_keys": 109820,
+          "total_keys": 115311,
+          "mirror": 1,
+          "root_bone_local": {
+            "x": 0,
+            "y": 0,
+            "rotation": 0
+          },
+          "parent_transform_frame0": {
+            "root": [
+              570,
+              810
+            ],
+            "orientation_rad": -1.5707963267948966,
+            "scaleX": 1,
+            "scaleY": 1
+          },
+          "layers": [
+            {
+              "name": "leg-far",
+              "vertices": 846,
+              "triangles": 1564,
+              "tendons": [
+                "thigh_far",
+                "shin_far"
+              ],
+              "max_influences": 2,
+              "cloth_animated_vertices": 4
+            },
+            {
+              "name": "foot-far",
+              "vertices": 200,
+              "triangles": 342,
+              "tendons": [
+                "foot_far"
+              ],
+              "max_influences": 1,
+              "cloth_animated_vertices": 0
+            },
+            {
+              "name": "leg-near",
+              "vertices": 846,
+              "triangles": 1564,
+              "tendons": [
+                "thigh_near",
+                "shin_near"
+              ],
+              "max_influences": 2,
+              "cloth_animated_vertices": 0
+            },
+            {
+              "name": "foot-near",
+              "vertices": 200,
+              "triangles": 342,
+              "tendons": [
+                "foot_near"
+              ],
+              "max_influences": 1,
+              "cloth_animated_vertices": 0
+            },
+            {
+              "name": "sleeve-far",
+              "vertices": 512,
+              "triangles": 930,
+              "tendons": [
+                "upper_arm_far",
+                "forearm_far"
+              ],
+              "max_influences": 2,
+              "cloth_animated_vertices": 0
+            },
+            {
+              "name": "hand-far",
+              "vertices": 112,
+              "triangles": 182,
+              "tendons": [
+                "hand_far"
+              ],
+              "max_influences": 1,
+              "cloth_animated_vertices": 0
+            },
+            {
+              "name": "jacket-belt",
+              "vertices": 903,
+              "triangles": 1680,
+              "tendons": [
+                "spine"
+              ],
+              "max_influences": 1,
+              "cloth_animated_vertices": 92
+            },
+            {
+              "name": "head-face-hair",
+              "vertices": 156,
+              "triangles": 264,
+              "tendons": [
+                "head"
+              ],
+              "max_influences": 1,
+              "cloth_animated_vertices": 0
+            },
+            {
+              "name": "sleeve-near",
+              "vertices": 512,
+              "triangles": 930,
+              "tendons": [
+                "upper_arm_near",
+                "forearm_near"
+              ],
+              "max_influences": 2,
+              "cloth_animated_vertices": 94
+            },
+            {
+              "name": "hand-near",
+              "vertices": 1248,
+              "triangles": 2356,
+              "tendons": [
+                "hand_near"
+              ],
+              "max_influences": 1,
+              "cloth_animated_vertices": 0
+            }
+          ]
+        }
+      ],
+      "bones": 32,
+      "constraints": 32,
+      "meshes": 20,
+      "total_keys": 169932,
+      "image_draw_order_back_to_front": [
+        "blue:foot-far",
+        "white:leg-far",
+        "white:foot-far",
+        "blue:leg-far",
+        "white:leg-near",
+        "white:sleeve-far",
+        "white:hand-far",
+        "white:jacket-belt",
+        "white:head-face-hair",
+        "white:sleeve-near",
+        "white:hand-near",
+        "blue:leg-near",
+        "blue:foot-near",
+        "blue:sleeve-far",
+        "blue:hand-far",
+        "blue:jacket-belt",
+        "white:foot-near",
+        "blue:head-face-hair",
+        "blue:sleeve-near",
+        "blue:hand-near"
+      ]
+    }
+  ],
+  "asset_inputs": {
+    "white": {
+      "manifest": "/Volumes/homes/brownjeon/project/bjj-trainning/reference/rig/task-065/white-tripod-skin/project/skin-assets.json",
+      "manifest_sha256": "51d6aa8234ad3a7b178561ea40765c38a2024c8faff27d97238446e1dcd24294",
+      "layers": [
+        {
+          "name": "leg-far",
+          "source": "/Volumes/homes/brownjeon/project/bjj-trainning/reference/rig/task-065/white-tripod-skin/project/assets/leg-far.png",
+          "sha256": "bda7ebe957dc45163fccddef0ea8b6febb9484e8fd42fbc5f2b3c99631edaa61",
+          "bytes": 53007,
+          "output_file": "assets/white-leg-far.png"
+        },
+        {
+          "name": "foot-far",
+          "source": "/Volumes/homes/brownjeon/project/bjj-trainning/reference/rig/task-065/white-tripod-skin/project/assets/foot-far.png",
+          "sha256": "e0e8935b10c7fb2dff8e1dea300ee66c32eaf0d18685ae67726d01a2e2330ea3",
+          "bytes": 14835,
+          "output_file": "assets/white-foot-far.png"
+        },
+        {
+          "name": "leg-near",
+          "source": "/Volumes/homes/brownjeon/project/bjj-trainning/reference/rig/task-065/white-tripod-skin/project/assets/leg-near.png",
+          "sha256": "bda7ebe957dc45163fccddef0ea8b6febb9484e8fd42fbc5f2b3c99631edaa61",
+          "bytes": 53007,
+          "output_file": "assets/white-leg-near.png"
+        },
+        {
+          "name": "foot-near",
+          "source": "/Volumes/homes/brownjeon/project/bjj-trainning/reference/rig/task-065/white-tripod-skin/project/assets/foot-near.png",
+          "sha256": "e0e8935b10c7fb2dff8e1dea300ee66c32eaf0d18685ae67726d01a2e2330ea3",
+          "bytes": 14835,
+          "output_file": "assets/white-foot-near.png"
+        },
+        {
+          "name": "sleeve-far",
+          "source": "/Volumes/homes/brownjeon/project/bjj-trainning/reference/rig/task-065/white-tripod-skin/project/assets/sleeve-far.png",
+          "sha256": "2e8c7ce31356e4eaefea043381f59fa32a02f1a2c75689728c3a9a0f2c68b8ea",
+          "bytes": 42264,
+          "output_file": "assets/white-sleeve-far.png"
+        },
+        {
+          "name": "hand-far",
+          "source": "/Volumes/homes/brownjeon/project/bjj-trainning/reference/rig/task-065/white-tripod-skin/project/assets/hand-far.png",
+          "sha256": "aba2fc0247b068479aa352acbe02787bcf3b3836654f9c456c58ca724d2a2725",
+          "bytes": 10843,
+          "output_file": "assets/white-hand-far.png"
+        },
+        {
+          "name": "jacket-belt",
+          "source": "/Volumes/homes/brownjeon/project/bjj-trainning/reference/rig/task-065/white-tripod-skin/project/assets/jacket-belt.png",
+          "sha256": "1f4206b59f92a9f3dc9f74df6a36c8ecce072eb93b24ef1042c4c7c3e1c69234",
+          "bytes": 61135,
+          "output_file": "assets/white-jacket-belt.png"
+        },
+        {
+          "name": "head-face-hair",
+          "source": "/Volumes/homes/brownjeon/project/bjj-trainning/reference/rig/task-065/white-tripod-skin/project/assets/head-face-hair.png",
+          "sha256": "c9bd27ece9ff450d0aedbb7ea4f8f2c739fcde73cf325acb5580c4da15fccb80",
+          "bytes": 44806,
+          "output_file": "assets/white-head-face-hair.png"
+        },
+        {
+          "name": "sleeve-near",
+          "source": "/Volumes/homes/brownjeon/project/bjj-trainning/reference/rig/task-065/white-tripod-skin/project/assets/sleeve-near.png",
+          "sha256": "2e8c7ce31356e4eaefea043381f59fa32a02f1a2c75689728c3a9a0f2c68b8ea",
+          "bytes": 42264,
+          "output_file": "assets/white-sleeve-near.png"
+        },
+        {
+          "name": "hand-near",
+          "source": "/Volumes/homes/brownjeon/project/bjj-trainning/reference/rig/task-065/white-tripod-skin/project/assets/hand-near.png",
+          "sha256": "aba2fc0247b068479aa352acbe02787bcf3b3836654f9c456c58ca724d2a2725",
+          "bytes": 10843,
+          "output_file": "assets/white-hand-near.png"
+        }
+      ]
+    },
+    "blue": {
+      "manifest": "/Volumes/homes/brownjeon/project/bjj-trainning/reference/rig/task-065/blue-character/project/skin-assets.json",
+      "manifest_sha256": "748648489e09da3be5a5fc1fc32ee1fac3d60738adfca528a88a59b11bbeb92c",
+      "layers": [
+        {
+          "name": "leg-far",
+          "source": "/Volumes/homes/brownjeon/project/bjj-trainning/reference/rig/task-065/blue-character/project/assets/leg-far.png",
+          "sha256": "39e22bfbea96e826c972117165ce2af532c90539f75931d9a6ce7284b19457df",
+          "bytes": 52359,
+          "output_file": "assets/blue-leg-far.png"
+        },
+        {
+          "name": "foot-far",
+          "source": "/Volumes/homes/brownjeon/project/bjj-trainning/reference/rig/task-065/blue-character/project/assets/foot-far.png",
+          "sha256": "d739bcceca354d6b81524d35fc77e0b5e68b6502d7a56785c6e6cf8999f17d8a",
+          "bytes": 14466,
+          "output_file": "assets/blue-foot-far.png"
+        },
+        {
+          "name": "leg-near",
+          "source": "/Volumes/homes/brownjeon/project/bjj-trainning/reference/rig/task-065/blue-character/project/assets/leg-near.png",
+          "sha256": "39e22bfbea96e826c972117165ce2af532c90539f75931d9a6ce7284b19457df",
+          "bytes": 52359,
+          "output_file": "assets/blue-leg-near.png"
+        },
+        {
+          "name": "foot-near",
+          "source": "/Volumes/homes/brownjeon/project/bjj-trainning/reference/rig/task-065/blue-character/project/assets/foot-near.png",
+          "sha256": "d739bcceca354d6b81524d35fc77e0b5e68b6502d7a56785c6e6cf8999f17d8a",
+          "bytes": 14466,
+          "output_file": "assets/blue-foot-near.png"
+        },
+        {
+          "name": "sleeve-far",
+          "source": "/Volumes/homes/brownjeon/project/bjj-trainning/reference/rig/task-065/blue-character/project/assets/sleeve-far.png",
+          "sha256": "c642a1955649488a47aaf387e982410cd84692b7f718e60954824d0ba1f8e151",
+          "bytes": 41979,
+          "output_file": "assets/blue-sleeve-far.png"
+        },
+        {
+          "name": "hand-far",
+          "source": "/Volumes/homes/brownjeon/project/bjj-trainning/reference/rig/task-065/blue-character/project/assets/hand-far.png",
+          "sha256": "a63dae4dd27d5319d8db89d62edac75c1b64bdaaa4928d8955589ea9a40a3ea5",
+          "bytes": 10542,
+          "output_file": "assets/blue-hand-far.png"
+        },
+        {
+          "name": "jacket-belt",
+          "source": "/Volumes/homes/brownjeon/project/bjj-trainning/reference/rig/task-065/blue-character/project/assets/jacket-belt.png",
+          "sha256": "b56b25ed55c99638fc2535ad075feeff86f1edb5aecee8ce9b96e2623f83a57f",
+          "bytes": 60391,
+          "output_file": "assets/blue-jacket-belt.png"
+        },
+        {
+          "name": "head-face-hair",
+          "source": "/Volumes/homes/brownjeon/project/bjj-trainning/reference/rig/task-065/blue-character/project/assets/head-face-hair.png",
+          "sha256": "8ca7719bdf08096c5545bbc92e21b31532f987022aa0b6dddc88aee761ed3019",
+          "bytes": 41880,
+          "output_file": "assets/blue-head-face-hair.png"
+        },
+        {
+          "name": "sleeve-near",
+          "source": "/Volumes/homes/brownjeon/project/bjj-trainning/reference/rig/task-065/blue-character/project/assets/sleeve-near.png",
+          "sha256": "c642a1955649488a47aaf387e982410cd84692b7f718e60954824d0ba1f8e151",
+          "bytes": 41979,
+          "output_file": "assets/blue-sleeve-near.png"
+        },
+        {
+          "name": "hand-near",
+          "source": "/Volumes/homes/brownjeon/project/bjj-trainning/reference/rig/task-065/blue-character/project/assets/hand-near.png",
+          "sha256": "b3008ec4b072d2bc6caafc541f2783a898e03adcbb53ddaee0658da9e483f125",
+          "bytes": 46813,
+          "output_file": "assets/blue-hand-near.png"
+        }
+      ]
+    }
+  },
+  "character_draw_order_back_to_front": [
+    "white",
+    "blue"
+  ],
+  "character_draw_order_scope": "Base character order before the explicit static hook-depth exceptions",
+  "static_contact_draw_order": {
+    "status": "source_applied_before_draw_chain",
+    "rules": [
+      {
+        "moving_image": "blue:foot-far",
+        "before_image_back_side": "white:leg-far",
+        "position_in_back_to_front_array": "before"
+      },
+      {
+        "moving_image": "blue:leg-far",
+        "before_image_back_side": "white:leg-near",
+        "position_in_back_to_front_array": "before"
+      },
+      {
+        "moving_image": "white:foot-near",
+        "after_image_front_side": "blue:jacket-belt",
+        "position_in_back_to_front_array": "after"
+      }
+    ],
+    "intended_back_to_front_prefix": [
+      "blue:foot-far",
+      "white:leg-far",
+      "white:foot-far",
+      "blue:leg-far",
+      "white:leg-near"
+    ],
+    "controlled_near_foot": "white:foot-near immediately after blue:jacket-belt (front side)",
+    "frontmost_image": "blue:hand-near",
+    "bone_geometry_profile_png_changed": false,
+    "native_visual_hook_depth_verified": false
+  },
+  "bone_geometry": "Original sixteen names/parents/lengths, unit scale, zero bind offset; local pelvis remains zero",
+  "mesh_coordinates": "Original task-064 global frame-0 vertices; artboard-identity Image and Skin",
+  "tendon_bind": "Original task-064 global frame-0 rest matrices including pelvis420,450; no mirror baked into bind",
+  "max_original_bind_identity_error_px": 1.2710574864626038e-13,
+  "cloth_floor_correction": {
+    "status": "source_computed",
+    "floor_y": 850,
+    "cloth_layer_allowlist": [
+      "jacket-belt",
+      "leg-far",
+      "leg-near",
+      "sleeve-far",
+      "sleeve-near"
+    ],
+    "method": "quantized LBS A=sum(w*worldPose*inverseOriginalBind); project world y to floor preserving world x; apply inverse(A) to rest xy",
+    "singular_fail_condition": "abs(det(A)) < 1e-6; negative determinants from mirror are valid",
+    "bone_pose_profile_png_uv_weights_changed": false,
+    "opaque_mask_or_floor_cover_added": false,
+    "native_mesh_vertex_xy_keys_verified": false,
+    "measurement_scope": "Mesh vertices including transparent image margins; not rendered alpha silhouettes",
+    "between_frame_floor_contact": "not_verified; linear vertex keys and nonlinear joint FK may leave small inter-key residuals",
+    "changed_vertices_total": 275,
+    "changed_vertex_frames_total": 44154,
+    "maximum_world_compression_px": 44.45314162457316,
+    "maximum_rest_delta_px": 44.453141624573185,
+    "maximum_abs_key_coordinate_px": 762.613941384302,
+    "projection_error_max_px": 2.2737367544323206e-13,
+    "minimum_abs_affine_determinant": 0.15458244563051926,
+    "characters": {
+      "white": {
+        "cloth_layers": [
+          {
+            "name": "leg-far",
+            "cloth_corrected": true,
+            "penetrating_vertex_frames": 3180,
+            "maximum_world_compression_px": 28.1678117674129,
+            "maximum_rest_delta_px": 28.167811767412942,
+            "maximum_abs_key_coordinate_px": 762.613941384302,
+            "projection_error_max_px": 2.2737367544323206e-13,
+            "affected_vertex_indices": [
+              719,
+              736,
+              737,
+              753,
+              754,
+              755,
+              770,
+              771,
+              772,
+              773,
+              787,
+              788,
+              789,
+              790,
+              791,
+              804,
+              805,
+              806,
+              807,
+              808,
+              809,
+              821,
+              822,
+              823,
+              824,
+              825,
+              826,
+              827,
+              839,
+              840,
+              841,
+              842,
+              843,
+              844,
+              845
+            ],
+            "affected_frame_ranges": [
+              [
+                0,
+                136
+              ]
+            ],
+            "changed_vertices": 35,
+            "vertex_property_keys_per_artboard": 20230,
+            "vertices": [
+              {
+                "index": 737,
+                "maximum_world_compression_px": 5.9110151141705956,
+                "maximum_rest_delta_px": 5.911015114170592,
+                "frame_ranges": [
+                  [
+                    0,
+                    94
+                  ]
+                ]
+              },
+              {
+                "index": 754,
+                "maximum_world_compression_px": 6.19696659985766,
+                "maximum_rest_delta_px": 6.1969665998576735,
+                "frame_ranges": [
+                  [
+                    0,
+                    94
+                  ]
+                ]
+              },
+              {
+                "index": 755,
+                "maximum_world_compression_px": 10.226390460813036,
+                "maximum_rest_delta_px": 10.226390460813025,
+                "frame_ranges": [
+                  [
+                    0,
+                    102
+                  ]
+                ]
+              },
+              {
+                "index": 771,
+                "maximum_world_compression_px": 5.730336192833079,
+                "maximum_rest_delta_px": 5.730336192833074,
+                "frame_ranges": [
+                  [
+                    0,
+                    93
+                  ]
+                ]
+              },
+              {
+                "index": 772,
+                "maximum_world_compression_px": 9.772076107544308,
+                "maximum_rest_delta_px": 9.772076107544294,
+                "frame_ranges": [
+                  [
+                    0,
+                    100
+                  ]
+                ]
+              },
+              {
+                "index": 773,
+                "maximum_world_compression_px": 13.813816022255764,
+                "maximum_rest_delta_px": 13.813816022255796,
+                "frame_ranges": [
+                  [
+                    0,
+                    108
+                  ]
+                ]
+              },
+              {
+                "index": 788,
+                "maximum_world_compression_px": 5.239503028234822,
+                "maximum_rest_delta_px": 5.239503028234833,
+                "frame_ranges": [
+                  [
+                    0,
+                    91
+                  ]
+                ]
+              },
+              {
+                "index": 789,
+                "maximum_world_compression_px": 9.293558996702359,
+                "maximum_rest_delta_px": 9.2935589967024,
+                "frame_ranges": [
+                  [
+                    0,
+                    99
+                  ]
+                ]
+              },
+              {
+                "index": 790,
+                "maximum_world_compression_px": 13.347614965169669,
+                "maximum_rest_delta_px": 13.347614965169685,
+                "frame_ranges": [
+                  [
+                    0,
+                    106
+                  ]
+                ]
+              },
+              {
+                "index": 791,
+                "maximum_world_compression_px": 17.401670933637206,
+                "maximum_rest_delta_px": 17.401670933637252,
+                "frame_ranges": [
+                  [
+                    0,
+                    117
+                  ]
+                ]
+              },
+              {
+                "index": 805,
+                "maximum_world_compression_px": 4.72446710606323,
+                "maximum_rest_delta_px": 4.7244671060632335,
+                "frame_ranges": [
+                  [
+                    0,
+                    90
+                  ]
+                ]
+              },
+              {
+                "index": 806,
+                "maximum_world_compression_px": 8.790839128286734,
+                "maximum_rest_delta_px": 8.790839128286743,
+                "frame_ranges": [
+                  [
+                    0,
+                    98
+                  ]
+                ]
+              },
+              {
+                "index": 807,
+                "maximum_world_compression_px": 12.857211150510125,
+                "maximum_rest_delta_px": 12.857211150510091,
+                "frame_ranges": [
+                  [
+                    0,
+                    105
+                  ]
+                ]
+              },
+              {
+                "index": 808,
+                "maximum_world_compression_px": 16.923583172733515,
+                "maximum_rest_delta_px": 16.923583172733565,
+                "frame_ranges": [
+                  [
+                    0,
+                    115
+                  ]
+                ]
+              },
+              {
+                "index": 809,
+                "maximum_world_compression_px": 20.98995519495702,
+                "maximum_rest_delta_px": 20.989955194957073,
+                "frame_ranges": [
+                  [
+                    0,
+                    130
+                  ]
+                ]
+              },
+              {
+                "index": 822,
+                "maximum_world_compression_px": 4.18522842631819,
+                "maximum_rest_delta_px": 4.185228426318152,
+                "frame_ranges": [
+                  [
+                    0,
+                    88
+                  ]
+                ]
+              },
+              {
+                "index": 823,
+                "maximum_world_compression_px": 8.263916502297889,
+                "maximum_rest_delta_px": 8.263916502297887,
+                "frame_ranges": [
+                  [
+                    0,
+                    96
+                  ]
+                ]
+              },
+              {
+                "index": 824,
+                "maximum_world_compression_px": 12.342604578277246,
+                "maximum_rest_delta_px": 12.342604578277264,
+                "frame_ranges": [
+                  [
+                    0,
+                    104
+                  ]
+                ]
+              },
+              {
+                "index": 825,
+                "maximum_world_compression_px": 16.421292654256717,
+                "maximum_rest_delta_px": 16.421292654256714,
+                "frame_ranges": [
+                  [
+                    0,
+                    113
+                  ]
+                ]
+              },
+              {
+                "index": 826,
+                "maximum_world_compression_px": 20.499980730236302,
+                "maximum_rest_delta_px": 20.499980730236288,
+                "frame_ranges": [
+                  [
+                    0,
+                    129
+                  ]
+                ]
+              },
+              {
+                "index": 827,
+                "maximum_world_compression_px": 24.578668806215774,
+                "maximum_rest_delta_px": 24.578668806215738,
+                "frame_ranges": [
+                  [
+                    0,
+                    134
+                  ]
+                ]
+              },
+              {
+                "index": 839,
+                "maximum_world_compression_px": 3.6217869889999292,
+                "maximum_rest_delta_px": 3.62178698899991,
+                "frame_ranges": [
+                  [
+                    0,
+                    86
+                  ]
+                ]
+              },
+              {
+                "index": 840,
+                "maximum_world_compression_px": 7.7127911187353675,
+                "maximum_rest_delta_px": 7.712791118735389,
+                "frame_ranges": [
+                  [
+                    0,
+                    95
+                  ]
+                ]
+              },
+              {
+                "index": 841,
+                "maximum_world_compression_px": 11.80379524847092,
+                "maximum_rest_delta_px": 11.803795248470905,
+                "frame_ranges": [
+                  [
+                    0,
+                    102
+                  ]
+                ]
+              },
+              {
+                "index": 842,
+                "maximum_world_compression_px": 15.894799378206471,
+                "maximum_rest_delta_px": 15.894799378206507,
+                "frame_ranges": [
+                  [
+                    0,
+                    111
+                  ]
+                ]
+              },
+              {
+                "index": 843,
+                "maximum_world_compression_px": 19.98580350794191,
+                "maximum_rest_delta_px": 19.985803507941863,
+                "frame_ranges": [
+                  [
+                    0,
+                    127
+                  ]
+                ]
+              },
+              {
+                "index": 844,
+                "maximum_world_compression_px": 24.076807637677348,
+                "maximum_rest_delta_px": 24.07680763767734,
+                "frame_ranges": [
+                  [
+                    0,
+                    133
+                  ]
+                ]
+              },
+              {
+                "index": 845,
+                "maximum_world_compression_px": 28.1678117674129,
+                "maximum_rest_delta_px": 28.167811767412942,
+                "frame_ranges": [
+                  [
+                    0,
+                    136
+                  ]
+                ]
+              },
+              {
+                "index": 753,
+                "maximum_world_compression_px": 2.1675427389022843,
+                "maximum_rest_delta_px": 2.1675427389022737,
+                "frame_ranges": [
+                  [
+                    55,
+                    85
+                  ]
+                ]
+              },
+              {
+                "index": 770,
+                "maximum_world_compression_px": 1.6885962781216222,
+                "maximum_rest_delta_px": 1.688596278121572,
+                "frame_ranges": [
+                  [
+                    56,
+                    83
+                  ]
+                ]
+              },
+              {
+                "index": 736,
+                "maximum_world_compression_px": 1.8939073069711867,
+                "maximum_rest_delta_px": 1.8939073069712191,
+                "frame_ranges": [
+                  [
+                    58,
+                    85
+                  ]
+                ]
+              },
+              {
+                "index": 787,
+                "maximum_world_compression_px": 1.1854470597672844,
+                "maximum_rest_delta_px": 1.185447059767266,
+                "frame_ranges": [
+                  [
+                    58,
+                    81
+                  ]
+                ]
+              },
+              {
+                "index": 804,
+                "maximum_world_compression_px": 0.6580950838397257,
+                "maximum_rest_delta_px": 0.6580950838397244,
+                "frame_ranges": [
+                  [
+                    61,
+                    78
+                  ]
+                ]
+              },
+              {
+                "index": 719,
+                "maximum_world_compression_px": 1.0912726245667272,
+                "maximum_rest_delta_px": 1.0912726245667215,
+                "frame_ranges": [
+                  [
+                    63,
+                    82
+                  ]
+                ]
+              },
+              {
+                "index": 821,
+                "maximum_world_compression_px": 0.10654035033883247,
+                "maximum_rest_delta_px": 0.10654035033886158,
+                "frame_ranges": [
+                  [
+                    68,
+                    74
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "name": "leg-near",
+            "cloth_corrected": true,
+            "penetrating_vertex_frames": 53,
+            "maximum_world_compression_px": 0.8490120431155219,
+            "maximum_rest_delta_px": 0.849012043115487,
+            "maximum_abs_key_coordinate_px": 754.935236442302,
+            "projection_error_max_px": 1.1368683772161603e-13,
+            "affected_vertex_indices": [
+              828
+            ],
+            "affected_frame_ranges": [
+              [
+                0,
+                52
+              ]
+            ],
+            "changed_vertices": 1,
+            "vertex_property_keys_per_artboard": 578,
+            "vertices": [
+              {
+                "index": 828,
+                "maximum_world_compression_px": 0.8490120431155219,
+                "maximum_rest_delta_px": 0.849012043115487,
+                "frame_ranges": [
+                  [
+                    0,
+                    52
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "name": "sleeve-far",
+            "cloth_corrected": true,
+            "penetrating_vertex_frames": 0,
+            "maximum_world_compression_px": 0.0,
+            "maximum_rest_delta_px": 0.0,
+            "maximum_abs_key_coordinate_px": 0.0,
+            "projection_error_max_px": 0.0,
+            "affected_vertex_indices": [],
+            "affected_frame_ranges": [],
+            "changed_vertices": 0,
+            "vertex_property_keys_per_artboard": 0,
+            "vertices": []
+          },
+          {
+            "name": "jacket-belt",
+            "cloth_corrected": true,
+            "penetrating_vertex_frames": 5554,
+            "maximum_world_compression_px": 9.936800000000062,
+            "maximum_rest_delta_px": 9.936800000000062,
+            "maximum_abs_key_coordinate_px": 496.4,
+            "projection_error_max_px": 2.2737367544323206e-13,
+            "affected_vertex_indices": [
+              126,
+              147,
+              168,
+              189,
+              210,
+              231,
+              252,
+              273,
+              294,
+              315,
+              336,
+              357,
+              378,
+              399,
+              420,
+              441,
+              462,
+              483,
+              504,
+              525,
+              546,
+              567,
+              588,
+              609,
+              630,
+              651,
+              652,
+              672,
+              673,
+              693,
+              694,
+              714,
+              715,
+              735,
+              736,
+              756,
+              757,
+              777,
+              778,
+              798,
+              799,
+              819,
+              820,
+              840,
+              841,
+              861,
+              862,
+              882,
+              883
+            ],
+            "affected_frame_ranges": [
+              [
+                170,
+                288
+              ]
+            ],
+            "changed_vertices": 49,
+            "vertex_property_keys_per_artboard": 28322,
+            "vertices": [
+              {
+                "index": 882,
+                "maximum_world_compression_px": 9.936800000000062,
+                "maximum_rest_delta_px": 9.936800000000062,
+                "frame_ranges": [
+                  [
+                    170,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 819,
+                "maximum_world_compression_px": 9.111542857142922,
+                "maximum_rest_delta_px": 9.111542857142922,
+                "frame_ranges": [
+                  [
+                    171,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 840,
+                "maximum_world_compression_px": 9.386628571428673,
+                "maximum_rest_delta_px": 9.386628571428673,
+                "frame_ranges": [
+                  [
+                    171,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 861,
+                "maximum_world_compression_px": 9.66171428571431,
+                "maximum_rest_delta_px": 9.66171428571431,
+                "frame_ranges": [
+                  [
+                    171,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 735,
+                "maximum_world_compression_px": 8.01120000000003,
+                "maximum_rest_delta_px": 8.01120000000003,
+                "frame_ranges": [
+                  [
+                    172,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 756,
+                "maximum_world_compression_px": 8.286285714285782,
+                "maximum_rest_delta_px": 8.286285714285782,
+                "frame_ranges": [
+                  [
+                    172,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 777,
+                "maximum_world_compression_px": 8.561371428571533,
+                "maximum_rest_delta_px": 8.561371428571533,
+                "frame_ranges": [
+                  [
+                    172,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 798,
+                "maximum_world_compression_px": 8.83645714285717,
+                "maximum_rest_delta_px": 8.83645714285717,
+                "frame_ranges": [
+                  [
+                    172,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 651,
+                "maximum_world_compression_px": 6.9108571428571395,
+                "maximum_rest_delta_px": 6.9108571428571395,
+                "frame_ranges": [
+                  [
+                    173,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 672,
+                "maximum_world_compression_px": 7.185942857142891,
+                "maximum_rest_delta_px": 7.185942857142891,
+                "frame_ranges": [
+                  [
+                    173,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 693,
+                "maximum_world_compression_px": 7.461028571428642,
+                "maximum_rest_delta_px": 7.461028571428642,
+                "frame_ranges": [
+                  [
+                    173,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 714,
+                "maximum_world_compression_px": 7.736114285714393,
+                "maximum_rest_delta_px": 7.736114285714393,
+                "frame_ranges": [
+                  [
+                    173,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 567,
+                "maximum_world_compression_px": 5.810514285714362,
+                "maximum_rest_delta_px": 5.810514285714362,
+                "frame_ranges": [
+                  [
+                    174,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 588,
+                "maximum_world_compression_px": 6.0855999999999995,
+                "maximum_rest_delta_px": 6.0855999999999995,
+                "frame_ranges": [
+                  [
+                    174,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 609,
+                "maximum_world_compression_px": 6.360685714285637,
+                "maximum_rest_delta_px": 6.360685714285637,
+                "frame_ranges": [
+                  [
+                    174,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 630,
+                "maximum_world_compression_px": 6.635771428571388,
+                "maximum_rest_delta_px": 6.635771428571388,
+                "frame_ranges": [
+                  [
+                    174,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 504,
+                "maximum_world_compression_px": 4.985257142857108,
+                "maximum_rest_delta_px": 4.985257142857108,
+                "frame_ranges": [
+                  [
+                    175,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 525,
+                "maximum_world_compression_px": 5.260342857142859,
+                "maximum_rest_delta_px": 5.260342857142859,
+                "frame_ranges": [
+                  [
+                    175,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 546,
+                "maximum_world_compression_px": 5.535428571428611,
+                "maximum_rest_delta_px": 5.535428571428611,
+                "frame_ranges": [
+                  [
+                    175,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 862,
+                "maximum_world_compression_px": 2.832214285714258,
+                "maximum_rest_delta_px": 2.832214285714258,
+                "frame_ranges": [
+                  [
+                    175,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 883,
+                "maximum_world_compression_px": 3.1073000000000093,
+                "maximum_rest_delta_px": 3.1073000000000093,
+                "frame_ranges": [
+                  [
+                    175,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 420,
+                "maximum_world_compression_px": 3.8849142857143306,
+                "maximum_rest_delta_px": 3.8849142857143306,
+                "frame_ranges": [
+                  [
+                    176,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 441,
+                "maximum_world_compression_px": 4.159999999999968,
+                "maximum_rest_delta_px": 4.159999999999968,
+                "frame_ranges": [
+                  [
+                    176,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 462,
+                "maximum_world_compression_px": 4.435085714285719,
+                "maximum_rest_delta_px": 4.435085714285719,
+                "frame_ranges": [
+                  [
+                    176,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 483,
+                "maximum_world_compression_px": 4.710171428571357,
+                "maximum_rest_delta_px": 4.710171428571357,
+                "frame_ranges": [
+                  [
+                    176,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 799,
+                "maximum_world_compression_px": 2.006957142857118,
+                "maximum_rest_delta_px": 2.006957142857118,
+                "frame_ranges": [
+                  [
+                    176,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 820,
+                "maximum_world_compression_px": 2.2820428571428693,
+                "maximum_rest_delta_px": 2.2820428571428693,
+                "frame_ranges": [
+                  [
+                    176,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 841,
+                "maximum_world_compression_px": 2.5571285714286205,
+                "maximum_rest_delta_px": 2.5571285714286205,
+                "frame_ranges": [
+                  [
+                    176,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 336,
+                "maximum_world_compression_px": 2.7845714285714394,
+                "maximum_rest_delta_px": 2.7845714285714394,
+                "frame_ranges": [
+                  [
+                    177,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 357,
+                "maximum_world_compression_px": 3.059657142857077,
+                "maximum_rest_delta_px": 3.059657142857077,
+                "frame_ranges": [
+                  [
+                    177,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 378,
+                "maximum_world_compression_px": 3.334742857142828,
+                "maximum_rest_delta_px": 3.334742857142828,
+                "frame_ranges": [
+                  [
+                    177,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 399,
+                "maximum_world_compression_px": 3.6098285714285794,
+                "maximum_rest_delta_px": 3.6098285714285794,
+                "frame_ranges": [
+                  [
+                    177,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 736,
+                "maximum_world_compression_px": 1.181699999999978,
+                "maximum_rest_delta_px": 1.181699999999978,
+                "frame_ranges": [
+                  [
+                    177,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 757,
+                "maximum_world_compression_px": 1.4567857142857292,
+                "maximum_rest_delta_px": 1.4567857142857292,
+                "frame_ranges": [
+                  [
+                    177,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 778,
+                "maximum_world_compression_px": 1.7318714285714805,
+                "maximum_rest_delta_px": 1.7318714285714805,
+                "frame_ranges": [
+                  [
+                    177,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 231,
+                "maximum_world_compression_px": 1.4091428571427969,
+                "maximum_rest_delta_px": 1.4091428571427969,
+                "frame_ranges": [
+                  [
+                    178,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 252,
+                "maximum_world_compression_px": 1.684228571428548,
+                "maximum_rest_delta_px": 1.684228571428548,
+                "frame_ranges": [
+                  [
+                    178,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 273,
+                "maximum_world_compression_px": 1.9593142857142993,
+                "maximum_rest_delta_px": 1.9593142857142993,
+                "frame_ranges": [
+                  [
+                    178,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 294,
+                "maximum_world_compression_px": 2.2344000000000506,
+                "maximum_rest_delta_px": 2.2344000000000506,
+                "frame_ranges": [
+                  [
+                    178,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 315,
+                "maximum_world_compression_px": 2.509485714285688,
+                "maximum_rest_delta_px": 2.509485714285688,
+                "frame_ranges": [
+                  [
+                    178,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 694,
+                "maximum_world_compression_px": 0.6315285714285892,
+                "maximum_rest_delta_px": 0.6315285714285892,
+                "frame_ranges": [
+                  [
+                    178,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 715,
+                "maximum_world_compression_px": 0.9066142857143404,
+                "maximum_rest_delta_px": 0.9066142857143404,
+                "frame_ranges": [
+                  [
+                    178,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 168,
+                "maximum_world_compression_px": 0.5838857142856568,
+                "maximum_rest_delta_px": 0.5838857142856568,
+                "frame_ranges": [
+                  [
+                    179,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 189,
+                "maximum_world_compression_px": 0.8589714285714081,
+                "maximum_rest_delta_px": 0.8589714285714081,
+                "frame_ranges": [
+                  [
+                    179,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 210,
+                "maximum_world_compression_px": 1.1340571428571593,
+                "maximum_rest_delta_px": 1.1340571428571593,
+                "frame_ranges": [
+                  [
+                    179,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 673,
+                "maximum_world_compression_px": 0.35644285714283797,
+                "maximum_rest_delta_px": 0.35644285714283797,
+                "frame_ranges": [
+                  [
+                    179,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 126,
+                "maximum_world_compression_px": 0.033714285714268044,
+                "maximum_rest_delta_px": 0.033714285714268044,
+                "frame_ranges": [
+                  [
+                    180,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 147,
+                "maximum_world_compression_px": 0.3088000000000193,
+                "maximum_rest_delta_px": 0.3088000000000193,
+                "frame_ranges": [
+                  [
+                    180,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 652,
+                "maximum_world_compression_px": 0.08135714285708673,
+                "maximum_rest_delta_px": 0.08135714285708673,
+                "frame_ranges": [
+                  [
+                    180,
+                    288
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "name": "sleeve-near",
+            "cloth_corrected": true,
+            "penetrating_vertex_frames": 0,
+            "maximum_world_compression_px": 0.0,
+            "maximum_rest_delta_px": 0.0,
+            "maximum_abs_key_coordinate_px": 0.0,
+            "projection_error_max_px": 0.0,
+            "affected_vertex_indices": [],
+            "affected_frame_ranges": [],
+            "changed_vertices": 0,
+            "vertex_property_keys_per_artboard": 0,
+            "vertices": []
+          }
+        ],
+        "protected_layers_report_only": [
+          {
+            "name": "foot-far",
+            "cloth_corrected": false,
+            "penetrating_vertex_frames": 1652,
+            "maximum_rest_delta_px": 0.0,
+            "maximum_abs_key_coordinate_px": 0.0,
+            "projection_error_max_px": 0.0,
+            "affected_vertex_indices": [
+              180,
+              181,
+              182,
+              183,
+              184,
+              185,
+              186,
+              187,
+              188,
+              189,
+              190,
+              191,
+              192,
+              193,
+              194,
+              195,
+              196,
+              197,
+              198,
+              199
+            ],
+            "affected_frame_ranges": [
+              [
+                0,
+                88
+              ]
+            ],
+            "maximum_world_penetration_px": 2.800000000000068,
+            "correction_applied": false
+          },
+          {
+            "name": "foot-near",
+            "cloth_corrected": false,
+            "penetrating_vertex_frames": 1634,
+            "maximum_rest_delta_px": 0.0,
+            "maximum_abs_key_coordinate_px": 0.0,
+            "projection_error_max_px": 0.0,
+            "affected_vertex_indices": [
+              180,
+              181,
+              182,
+              183,
+              184,
+              185,
+              186,
+              187,
+              188,
+              189,
+              190,
+              191,
+              192,
+              193,
+              194,
+              195,
+              196,
+              197,
+              198,
+              199
+            ],
+            "affected_frame_ranges": [
+              [
+                0,
+                86
+              ]
+            ],
+            "maximum_world_penetration_px": 2.800000000000182,
+            "correction_applied": false
+          },
+          {
+            "name": "hand-far",
+            "cloth_corrected": false,
+            "penetrating_vertex_frames": 0,
+            "maximum_rest_delta_px": 0.0,
+            "maximum_abs_key_coordinate_px": 0.0,
+            "projection_error_max_px": 0.0,
+            "affected_vertex_indices": [],
+            "affected_frame_ranges": [],
+            "maximum_world_penetration_px": 0.0,
+            "correction_applied": false
+          },
+          {
+            "name": "head-face-hair",
+            "cloth_corrected": false,
+            "penetrating_vertex_frames": 1421,
+            "maximum_rest_delta_px": 0.0,
+            "maximum_abs_key_coordinate_px": 0.0,
+            "projection_error_max_px": 0.0,
+            "affected_vertex_indices": [
+              0,
+              12,
+              24,
+              36,
+              48,
+              60,
+              72,
+              84,
+              96,
+              108,
+              120,
+              132,
+              144
+            ],
+            "affected_frame_ranges": [
+              [
+                179,
+                288
+              ]
+            ],
+            "maximum_world_penetration_px": 0.4800000000000182,
+            "correction_applied": false
+          },
+          {
+            "name": "hand-near",
+            "cloth_corrected": false,
+            "penetrating_vertex_frames": 0,
+            "maximum_rest_delta_px": 0.0,
+            "maximum_abs_key_coordinate_px": 0.0,
+            "projection_error_max_px": 0.0,
+            "affected_vertex_indices": [],
+            "affected_frame_ranges": [],
+            "maximum_world_penetration_px": 0.0,
+            "correction_applied": false
+          }
+        ]
+      },
+      "blue": {
+        "cloth_layers": [
+          {
+            "name": "leg-far",
+            "cloth_corrected": true,
+            "penetrating_vertex_frames": 403,
+            "maximum_world_compression_px": 5.569543197264693,
+            "maximum_rest_delta_px": 5.569543197264683,
+            "maximum_abs_key_coordinate_px": 761.6985937991512,
+            "projection_error_max_px": 2.2737367544323206e-13,
+            "affected_vertex_indices": [
+              0,
+              1,
+              18,
+              828
+            ],
+            "affected_frame_ranges": [
+              [
+                0,
+                133
+              ]
+            ],
+            "changed_vertices": 4,
+            "vertex_property_keys_per_artboard": 2312,
+            "vertices": [
+              {
+                "index": 0,
+                "maximum_world_compression_px": 5.569543197264693,
+                "maximum_rest_delta_px": 5.569543197264683,
+                "frame_ranges": [
+                  [
+                    0,
+                    133
+                  ]
+                ]
+              },
+              {
+                "index": 1,
+                "maximum_world_compression_px": 1.2457430530797637,
+                "maximum_rest_delta_px": 1.245743053079786,
+                "frame_ranges": [
+                  [
+                    0,
+                    97
+                  ]
+                ]
+              },
+              {
+                "index": 18,
+                "maximum_world_compression_px": 1.4824385866106695,
+                "maximum_rest_delta_px": 1.4824385866106846,
+                "frame_ranges": [
+                  [
+                    0,
+                    88
+                  ]
+                ]
+              },
+              {
+                "index": 828,
+                "maximum_world_compression_px": 1.7145222335886956,
+                "maximum_rest_delta_px": 1.7145222335887276,
+                "frame_ranges": [
+                  [
+                    0,
+                    81
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "name": "leg-near",
+            "cloth_corrected": true,
+            "penetrating_vertex_frames": 0,
+            "maximum_world_compression_px": 0.0,
+            "maximum_rest_delta_px": 0.0,
+            "maximum_abs_key_coordinate_px": 0.0,
+            "projection_error_max_px": 0.0,
+            "affected_vertex_indices": [],
+            "affected_frame_ranges": [],
+            "changed_vertices": 0,
+            "vertex_property_keys_per_artboard": 0,
+            "vertices": []
+          },
+          {
+            "name": "sleeve-far",
+            "cloth_corrected": true,
+            "penetrating_vertex_frames": 0,
+            "maximum_world_compression_px": 0.0,
+            "maximum_rest_delta_px": 0.0,
+            "maximum_abs_key_coordinate_px": 0.0,
+            "projection_error_max_px": 0.0,
+            "affected_vertex_indices": [],
+            "affected_frame_ranges": [],
+            "changed_vertices": 0,
+            "vertex_property_keys_per_artboard": 0,
+            "vertices": []
+          },
+          {
+            "name": "jacket-belt",
+            "cloth_corrected": true,
+            "penetrating_vertex_frames": 23594,
+            "maximum_world_compression_px": 39.80705911627388,
+            "maximum_rest_delta_px": 39.807059116273905,
+            "maximum_abs_key_coordinate_px": 496.4,
+            "projection_error_max_px": 2.2737367544323206e-13,
+            "affected_vertex_indices": [
+              441,
+              462,
+              483,
+              504,
+              505,
+              525,
+              526,
+              546,
+              547,
+              548,
+              567,
+              568,
+              569,
+              588,
+              589,
+              590,
+              609,
+              610,
+              611,
+              612,
+              630,
+              631,
+              632,
+              633,
+              651,
+              652,
+              653,
+              654,
+              672,
+              673,
+              674,
+              675,
+              693,
+              694,
+              695,
+              696,
+              714,
+              715,
+              716,
+              717,
+              718,
+              735,
+              736,
+              737,
+              738,
+              739,
+              756,
+              757,
+              758,
+              759,
+              760,
+              777,
+              778,
+              779,
+              780,
+              781,
+              782,
+              798,
+              799,
+              800,
+              801,
+              802,
+              803,
+              819,
+              820,
+              821,
+              822,
+              823,
+              824,
+              825,
+              840,
+              841,
+              842,
+              843,
+              844,
+              845,
+              846,
+              861,
+              862,
+              863,
+              864,
+              865,
+              866,
+              867,
+              882,
+              883,
+              884,
+              885,
+              886,
+              887,
+              888,
+              889
+            ],
+            "affected_frame_ranges": [
+              [
+                0,
+                288
+              ]
+            ],
+            "changed_vertices": 92,
+            "vertex_property_keys_per_artboard": 53176,
+            "vertices": [
+              {
+                "index": 462,
+                "maximum_world_compression_px": 3.720180740257888,
+                "maximum_rest_delta_px": 3.7201807402579066,
+                "frame_ranges": [
+                  [
+                    0,
+                    96
+                  ]
+                ]
+              },
+              {
+                "index": 483,
+                "maximum_world_compression_px": 6.3865390467639145,
+                "maximum_rest_delta_px": 6.386539046763936,
+                "frame_ranges": [
+                  [
+                    0,
+                    116
+                  ]
+                ]
+              },
+              {
+                "index": 504,
+                "maximum_world_compression_px": 9.052897353270168,
+                "maximum_rest_delta_px": 9.05289735327018,
+                "frame_ranges": [
+                  [
+                    0,
+                    155
+                  ]
+                ]
+              },
+              {
+                "index": 505,
+                "maximum_world_compression_px": 2.557656875232283,
+                "maximum_rest_delta_px": 2.55765687523229,
+                "frame_ranges": [
+                  [
+                    0,
+                    95
+                  ]
+                ]
+              },
+              {
+                "index": 525,
+                "maximum_world_compression_px": 11.719255659776195,
+                "maximum_rest_delta_px": 11.71925565977621,
+                "frame_ranges": [
+                  [
+                    0,
+                    185
+                  ]
+                ]
+              },
+              {
+                "index": 526,
+                "maximum_world_compression_px": 5.224015181738423,
+                "maximum_rest_delta_px": 5.224015181738427,
+                "frame_ranges": [
+                  [
+                    0,
+                    137
+                  ]
+                ]
+              },
+              {
+                "index": 546,
+                "maximum_world_compression_px": 14.385613966282335,
+                "maximum_rest_delta_px": 14.385613966282346,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 547,
+                "maximum_world_compression_px": 7.890373488244563,
+                "maximum_rest_delta_px": 7.890373488244563,
+                "frame_ranges": [
+                  [
+                    0,
+                    174
+                  ]
+                ]
+              },
+              {
+                "index": 548,
+                "maximum_world_compression_px": 1.3951330102067914,
+                "maximum_rest_delta_px": 1.3951330102067636,
+                "frame_ranges": [
+                  [
+                    0,
+                    94
+                  ]
+                ]
+              },
+              {
+                "index": 567,
+                "maximum_world_compression_px": 17.051972272788362,
+                "maximum_rest_delta_px": 17.05197227278836,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 568,
+                "maximum_world_compression_px": 10.556731794750704,
+                "maximum_rest_delta_px": 10.5567317947507,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 569,
+                "maximum_world_compression_px": 4.061491316712818,
+                "maximum_rest_delta_px": 4.061491316712846,
+                "frame_ranges": [
+                  [
+                    0,
+                    156
+                  ]
+                ]
+              },
+              {
+                "index": 588,
+                "maximum_world_compression_px": 18.755094186465726,
+                "maximum_rest_delta_px": 18.755094186465744,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 589,
+                "maximum_world_compression_px": 12.259853708427954,
+                "maximum_rest_delta_px": 12.25985370842796,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 590,
+                "maximum_world_compression_px": 5.764613230390182,
+                "maximum_rest_delta_px": 5.76461323039016,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 609,
+                "maximum_world_compression_px": 19.993798553600527,
+                "maximum_rest_delta_px": 19.99379855360052,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 610,
+                "maximum_world_compression_px": 13.498558075562642,
+                "maximum_rest_delta_px": 13.498558075562666,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 611,
+                "maximum_world_compression_px": 7.003317597524983,
+                "maximum_rest_delta_px": 7.003317597524992,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 612,
+                "maximum_world_compression_px": 0.5080771194872113,
+                "maximum_rest_delta_px": 0.5080771194872091,
+                "frame_ranges": [
+                  [
+                    0,
+                    95
+                  ]
+                ]
+              },
+              {
+                "index": 630,
+                "maximum_world_compression_px": 21.232502920735215,
+                "maximum_rest_delta_px": 21.232502920735225,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 631,
+                "maximum_world_compression_px": 14.737262442697443,
+                "maximum_rest_delta_px": 14.737262442697444,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 632,
+                "maximum_world_compression_px": 8.24202196465967,
+                "maximum_rest_delta_px": 8.242021964659662,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 633,
+                "maximum_world_compression_px": 1.7467814866220124,
+                "maximum_rest_delta_px": 1.746781486621987,
+                "frame_ranges": [
+                  [
+                    0,
+                    158
+                  ]
+                ]
+              },
+              {
+                "index": 651,
+                "maximum_world_compression_px": 22.471207287870016,
+                "maximum_rest_delta_px": 22.471207287870005,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 652,
+                "maximum_world_compression_px": 15.975966809832244,
+                "maximum_rest_delta_px": 15.975966809832222,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 653,
+                "maximum_world_compression_px": 9.480726331794585,
+                "maximum_rest_delta_px": 9.480726331794601,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 654,
+                "maximum_world_compression_px": 2.9854858537568134,
+                "maximum_rest_delta_px": 2.9854858537568187,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 672,
+                "maximum_world_compression_px": 23.709911655004817,
+                "maximum_rest_delta_px": 23.709911655004838,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 673,
+                "maximum_world_compression_px": 17.214671176967045,
+                "maximum_rest_delta_px": 17.214671176967055,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 674,
+                "maximum_world_compression_px": 10.719430698929273,
+                "maximum_rest_delta_px": 10.719430698929271,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 675,
+                "maximum_world_compression_px": 4.239716085009377,
+                "maximum_rest_delta_px": 4.23971608500937,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 693,
+                "maximum_world_compression_px": 24.948616022139618,
+                "maximum_rest_delta_px": 24.948616022139614,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 694,
+                "maximum_world_compression_px": 18.453375544101846,
+                "maximum_rest_delta_px": 18.45337554410183,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 695,
+                "maximum_world_compression_px": 11.995994711659705,
+                "maximum_rest_delta_px": 11.995994711659687,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 696,
+                "maximum_world_compression_px": 5.646887241244826,
+                "maximum_rest_delta_px": 5.6468872412448485,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 714,
+                "maximum_world_compression_px": 26.19085222204501,
+                "maximum_rest_delta_px": 26.190852222045013,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 715,
+                "maximum_world_compression_px": 19.757492787597812,
+                "maximum_rest_delta_px": 19.757492787597815,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 716,
+                "maximum_world_compression_px": 13.422541805510946,
+                "maximum_rest_delta_px": 13.422541805510921,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 717,
+                "maximum_world_compression_px": 7.225752137292716,
+                "maximum_rest_delta_px": 7.225752137292727,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 718,
+                "maximum_world_compression_px": 1.2292454785242626,
+                "maximum_rest_delta_px": 1.2292454785242617,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 735,
+                "maximum_world_compression_px": 27.52245874676646,
+                "maximum_rest_delta_px": 27.522458746766485,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 736,
+                "maximum_world_compression_px": 21.198482457293608,
+                "maximum_rest_delta_px": 21.198482457293608,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 737,
+                "maximum_world_compression_px": 14.995552082935092,
+                "maximum_rest_delta_px": 14.995552082935077,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 738,
+                "maximum_world_compression_px": 8.95965305990967,
+                "maximum_rest_delta_px": 8.95965305990969,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 739,
+                "maximum_world_compression_px": 3.1610274440283774,
+                "maximum_rest_delta_px": 3.1610274440283717,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 756,
+                "maximum_world_compression_px": 28.974459033805033,
+                "maximum_rest_delta_px": 28.97445903380504,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 757,
+                "maximum_world_compression_px": 22.766977239437438,
+                "maximum_rest_delta_px": 22.76697723943741,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 758,
+                "maximum_world_compression_px": 16.70268047055515,
+                "maximum_rest_delta_px": 16.702680470555162,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 759,
+                "maximum_world_compression_px": 10.832802467219835,
+                "maximum_rest_delta_px": 10.832802467219821,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 760,
+                "maximum_world_compression_px": 5.195877026627841,
+                "maximum_rest_delta_px": 5.195877026627837,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 777,
+                "maximum_world_compression_px": 30.539511598080708,
+                "maximum_rest_delta_px": 30.539511598080715,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 778,
+                "maximum_world_compression_px": 24.45365518875701,
+                "maximum_rest_delta_px": 24.453655188757015,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 779,
+                "maximum_world_compression_px": 18.532197945659618,
+                "maximum_rest_delta_px": 18.53219794565965,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 780,
+                "maximum_world_compression_px": 12.829207003726083,
+                "maximum_rest_delta_px": 12.82920700372607,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 781,
+                "maximum_world_compression_px": 7.234808117254488,
+                "maximum_rest_delta_px": 7.234808117254502,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 798,
+                "maximum_world_compression_px": 32.21019822396215,
+                "maximum_rest_delta_px": 32.21019822396216,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 799,
+                "maximum_world_compression_px": 26.24958172329923,
+                "maximum_rest_delta_px": 26.249581723299205,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 800,
+                "maximum_world_compression_px": 20.473137146791487,
+                "maximum_rest_delta_px": 20.4731371467915,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 801,
+                "maximum_world_compression_px": 14.868138094352616,
+                "maximum_rest_delta_px": 14.868138094352611,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 802,
+                "maximum_world_compression_px": 9.273739207881022,
+                "maximum_rest_delta_px": 9.273739207880995,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 819,
+                "maximum_world_compression_px": 33.97936764724329,
+                "maximum_rest_delta_px": 33.979367647243315,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 820,
+                "maximum_world_compression_px": 28.146091584749456,
+                "maximum_rest_delta_px": 28.14609158474948,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 821,
+                "maximum_world_compression_px": 22.50146807145086,
+                "maximum_rest_delta_px": 22.501468071450876,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 822,
+                "maximum_world_compression_px": 16.907069184979264,
+                "maximum_rest_delta_px": 16.90706918497926,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 823,
+                "maximum_world_compression_px": 11.312670298507555,
+                "maximum_rest_delta_px": 11.312670298507566,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 824,
+                "maximum_world_compression_px": 5.718271412035847,
+                "maximum_rest_delta_px": 5.718271412035839,
+                "frame_ranges": [
+                  [
+                    0,
+                    67
+                  ],
+                  [
+                    77,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 840,
+                "maximum_world_compression_px": 35.840215466583004,
+                "maximum_rest_delta_px": 35.840215466583,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 841,
+                "maximum_world_compression_px": 30.1350415303682,
+                "maximum_rest_delta_px": 30.135041530368195,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 842,
+                "maximum_world_compression_px": 24.540399162077392,
+                "maximum_rest_delta_px": 24.54039916207737,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 843,
+                "maximum_world_compression_px": 18.94600027560591,
+                "maximum_rest_delta_px": 18.94600027560588,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 844,
+                "maximum_world_compression_px": 13.351601389134203,
+                "maximum_rest_delta_px": 13.351601389134185,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 845,
+                "maximum_world_compression_px": 7.757202502662494,
+                "maximum_rest_delta_px": 7.75720250266249,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 861,
+                "maximum_world_compression_px": 37.786025028652034,
+                "maximum_rest_delta_px": 37.78602502865204,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 862,
+                "maximum_world_compression_px": 32.173729139175634,
+                "maximum_rest_delta_px": 32.173729139175634,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 863,
+                "maximum_world_compression_px": 26.57933025270404,
+                "maximum_rest_delta_px": 26.579330252704068,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 864,
+                "maximum_world_compression_px": 20.98493136623233,
+                "maximum_rest_delta_px": 20.984931366232374,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 865,
+                "maximum_world_compression_px": 15.390532479760623,
+                "maximum_rest_delta_px": 15.390532479760598,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 866,
+                "maximum_world_compression_px": 9.796133593288914,
+                "maximum_rest_delta_px": 9.796133593288904,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 882,
+                "maximum_world_compression_px": 39.80705911627388,
+                "maximum_rest_delta_px": 39.807059116273905,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 883,
+                "maximum_world_compression_px": 34.21266022980217,
+                "maximum_rest_delta_px": 34.212660229802175,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 884,
+                "maximum_world_compression_px": 28.618261343330573,
+                "maximum_rest_delta_px": 28.61826134333056,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 885,
+                "maximum_world_compression_px": 23.02386245685898,
+                "maximum_rest_delta_px": 23.02386245685899,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 886,
+                "maximum_world_compression_px": 17.42946357038727,
+                "maximum_rest_delta_px": 17.429463570387295,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 887,
+                "maximum_world_compression_px": 11.835064683915562,
+                "maximum_rest_delta_px": 11.835064683915569,
+                "frame_ranges": [
+                  [
+                    0,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 441,
+                "maximum_world_compression_px": 1.0538224337517477,
+                "maximum_rest_delta_px": 1.0538224337517696,
+                "frame_ranges": [
+                  [
+                    61,
+                    82
+                  ]
+                ]
+              },
+              {
+                "index": 803,
+                "maximum_world_compression_px": 3.6793403214091995,
+                "maximum_rest_delta_px": 3.6793403214092204,
+                "frame_ranges": [
+                  [
+                    97,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 888,
+                "maximum_world_compression_px": 6.240665797443853,
+                "maximum_rest_delta_px": 6.2406657974438735,
+                "frame_ranges": [
+                  [
+                    102,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 867,
+                "maximum_world_compression_px": 4.201734706817319,
+                "maximum_rest_delta_px": 4.201734706817334,
+                "frame_ranges": [
+                  [
+                    132,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 782,
+                "maximum_world_compression_px": 1.6404092307827796,
+                "maximum_rest_delta_px": 1.640409230782807,
+                "frame_ranges": [
+                  [
+                    142,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 846,
+                "maximum_world_compression_px": 2.1628036161907858,
+                "maximum_rest_delta_px": 2.1628036161907622,
+                "frame_ranges": [
+                  [
+                    158,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 889,
+                "maximum_world_compression_px": 0.6462669109721446,
+                "maximum_rest_delta_px": 0.6462669109721456,
+                "frame_ranges": [
+                  [
+                    186,
+                    288
+                  ]
+                ]
+              },
+              {
+                "index": 825,
+                "maximum_world_compression_px": 0.12387252556413841,
+                "maximum_rest_delta_px": 0.12387252556414399,
+                "frame_ranges": [
+                  [
+                    194,
+                    288
+                  ]
+                ]
+              }
+            ]
+          },
+          {
+            "name": "sleeve-near",
+            "cloth_corrected": true,
+            "penetrating_vertex_frames": 11370,
+            "maximum_world_compression_px": 44.45314162457316,
+            "maximum_rest_delta_px": 44.453141624573185,
+            "maximum_abs_key_coordinate_px": 479.4347927535726,
+            "projection_error_max_px": 2.2737367544323206e-13,
+            "affected_vertex_indices": [
+              240,
+              241,
+              256,
+              257,
+              258,
+              259,
+              272,
+              273,
+              274,
+              275,
+              288,
+              289,
+              290,
+              291,
+              292,
+              304,
+              305,
+              306,
+              307,
+              308,
+              320,
+              321,
+              322,
+              323,
+              324,
+              336,
+              337,
+              338,
+              339,
+              340,
+              352,
+              353,
+              354,
+              355,
+              356,
+              357,
+              368,
+              369,
+              370,
+              371,
+              372,
+              373,
+              384,
+              385,
+              386,
+              387,
+              388,
+              389,
+              400,
+              401,
+              402,
+              403,
+              404,
+              405,
+              416,
+              417,
+              418,
+              419,
+              420,
+              421,
+              432,
+              433,
+              434,
+              435,
+              436,
+              437,
+              448,
+              449,
+              450,
+              451,
+              452,
+              453,
+              454,
+              464,
+              465,
+              466,
+              467,
+              468,
+              469,
+              470,
+              480,
+              481,
+              482,
+              483,
+              484,
+              485,
+              486,
+              496,
+              497,
+              498,
+              499,
+              500,
+              501,
+              502
+            ],
+            "affected_frame_ranges": [
+              [
+                0,
+                192
+              ]
+            ],
+            "changed_vertices": 94,
+            "vertex_property_keys_per_artboard": 54332,
+            "vertices": [
+              {
+                "index": 240,
+                "maximum_world_compression_px": 8.844335501036994,
+                "maximum_rest_delta_px": 9.312652002476199,
+                "frame_ranges": [
+                  [
+                    0,
+                    96
+                  ]
+                ]
+              },
+              {
+                "index": 256,
+                "maximum_world_compression_px": 17.698363103877,
+                "maximum_rest_delta_px": 19.0695541367174,
+                "frame_ranges": [
+                  [
+                    0,
+                    133
+                  ]
+                ]
+              },
+              {
+                "index": 257,
+                "maximum_world_compression_px": 11.899210150136469,
+                "maximum_rest_delta_px": 12.821108416093983,
+                "frame_ranges": [
+                  [
+                    0,
+                    105
+                  ]
+                ]
+              },
+              {
+                "index": 272,
+                "maximum_world_compression_px": 24.37862339031176,
+                "maximum_rest_delta_px": 26.31124357108214,
+                "frame_ranges": [
+                  [
+                    0,
+                    151
+                  ]
+                ]
+              },
+              {
+                "index": 273,
+                "maximum_world_compression_px": 18.271584095091384,
+                "maximum_rest_delta_px": 19.720067530413274,
+                "frame_ranges": [
+                  [
+                    0,
+                    138
+                  ]
+                ]
+              },
+              {
+                "index": 274,
+                "maximum_world_compression_px": 12.16454479987101,
+                "maximum_rest_delta_px": 13.128891489744356,
+                "frame_ranges": [
+                  [
+                    0,
+                    108
+                  ]
+                ]
+              },
+              {
+                "index": 288,
+                "maximum_world_compression_px": 28.97282444964128,
+                "maximum_rest_delta_px": 30.653630769240763,
+                "frame_ranges": [
+                  [
+                    0,
+                    163
+                  ]
+                ]
+              },
+              {
+                "index": 289,
+                "maximum_world_compression_px": 22.557444874410294,
+                "maximum_rest_delta_px": 23.86607448229771,
+                "frame_ranges": [
+                  [
+                    0,
+                    149
+                  ]
+                ]
+              },
+              {
+                "index": 290,
+                "maximum_world_compression_px": 16.14206529917908,
+                "maximum_rest_delta_px": 17.078518195354476,
+                "frame_ranges": [
+                  [
+                    0,
+                    133
+                  ]
+                ]
+              },
+              {
+                "index": 291,
+                "maximum_world_compression_px": 9.726685723948094,
+                "maximum_rest_delta_px": 10.290961908411413,
+                "frame_ranges": [
+                  [
+                    0,
+                    102
+                  ]
+                ]
+              },
+              {
+                "index": 304,
+                "maximum_world_compression_px": 31.685999582557315,
+                "maximum_rest_delta_px": 32.24021496370558,
+                "frame_ranges": [
+                  [
+                    0,
+                    171
+                  ]
+                ]
+              },
+              {
+                "index": 305,
+                "maximum_world_compression_px": 24.964685658479766,
+                "maximum_rest_delta_px": 25.401339479086314,
+                "frame_ranges": [
+                  [
+                    0,
+                    155
+                  ]
+                ]
+              },
+              {
+                "index": 306,
+                "maximum_world_compression_px": 18.24337173440199,
+                "maximum_rest_delta_px": 18.562463994466814,
+                "frame_ranges": [
+                  [
+                    0,
+                    138
+                  ]
+                ]
+              },
+              {
+                "index": 307,
+                "maximum_world_compression_px": 11.52205781032444,
+                "maximum_rest_delta_px": 11.723588509847547,
+                "frame_ranges": [
+                  [
+                    0,
+                    106
+                  ]
+                ]
+              },
+              {
+                "index": 320,
+                "maximum_world_compression_px": 32.82603534620614,
+                "maximum_rest_delta_px": 32.82603534620612,
+                "frame_ranges": [
+                  [
+                    0,
+                    173
+                  ]
+                ]
+              },
+              {
+                "index": 321,
+                "maximum_world_compression_px": 26.015160233597044,
+                "maximum_rest_delta_px": 26.01516023359702,
+                "frame_ranges": [
+                  [
+                    0,
+                    156
+                  ]
+                ]
+              },
+              {
+                "index": 322,
+                "maximum_world_compression_px": 19.204285120987947,
+                "maximum_rest_delta_px": 19.20428512098798,
+                "frame_ranges": [
+                  [
+                    0,
+                    139
+                  ]
+                ]
+              },
+              {
+                "index": 323,
+                "maximum_world_compression_px": 12.39341000837885,
+                "maximum_rest_delta_px": 12.39341000837888,
+                "frame_ranges": [
+                  [
+                    0,
+                    106
+                  ]
+                ]
+              },
+              {
+                "index": 336,
+                "maximum_world_compression_px": 33.79480416940146,
+                "maximum_rest_delta_px": 33.79480416940148,
+                "frame_ranges": [
+                  [
+                    0,
+                    175
+                  ]
+                ]
+              },
+              {
+                "index": 337,
+                "maximum_world_compression_px": 27.00890214661922,
+                "maximum_rest_delta_px": 27.008902146619253,
+                "frame_ranges": [
+                  [
+                    0,
+                    157
+                  ]
+                ]
+              },
+              {
+                "index": 338,
+                "maximum_world_compression_px": 20.223000123836755,
+                "maximum_rest_delta_px": 20.223000123836737,
+                "frame_ranges": [
+                  [
+                    0,
+                    140
+                  ]
+                ]
+              },
+              {
+                "index": 339,
+                "maximum_world_compression_px": 13.437098101054517,
+                "maximum_rest_delta_px": 13.437098101054508,
+                "frame_ranges": [
+                  [
+                    0,
+                    107
+                  ]
+                ]
+              },
+              {
+                "index": 340,
+                "maximum_world_compression_px": 6.651196078272278,
+                "maximum_rest_delta_px": 6.651196078272277,
+                "frame_ranges": [
+                  [
+                    0,
+                    93
+                  ]
+                ]
+              },
+              {
+                "index": 352,
+                "maximum_world_compression_px": 34.75295705527776,
+                "maximum_rest_delta_px": 34.75295705527779,
+                "frame_ranges": [
+                  [
+                    0,
+                    177
+                  ]
+                ]
+              },
+              {
+                "index": 353,
+                "maximum_world_compression_px": 27.992028122322267,
+                "maximum_rest_delta_px": 27.992028122322257,
+                "frame_ranges": [
+                  [
+                    0,
+                    159
+                  ]
+                ]
+              },
+              {
+                "index": 354,
+                "maximum_world_compression_px": 21.23109918936666,
+                "maximum_rest_delta_px": 21.231099189366667,
+                "frame_ranges": [
+                  [
+                    0,
+                    141
+                  ]
+                ]
+              },
+              {
+                "index": 355,
+                "maximum_world_compression_px": 14.470170256411052,
+                "maximum_rest_delta_px": 14.470170256411077,
+                "frame_ranges": [
+                  [
+                    0,
+                    108
+                  ]
+                ]
+              },
+              {
+                "index": 356,
+                "maximum_world_compression_px": 7.709241323455558,
+                "maximum_rest_delta_px": 7.7092413234555455,
+                "frame_ranges": [
+                  [
+                    0,
+                    94
+                  ]
+                ]
+              },
+              {
+                "index": 368,
+                "maximum_world_compression_px": 35.7004940038355,
+                "maximum_rest_delta_px": 35.700494003835495,
+                "frame_ranges": [
+                  [
+                    0,
+                    178
+                  ]
+                ]
+              },
+              {
+                "index": 369,
+                "maximum_world_compression_px": 28.96453816070664,
+                "maximum_rest_delta_px": 28.96453816070666,
+                "frame_ranges": [
+                  [
+                    0,
+                    160
+                  ]
+                ]
+              },
+              {
+                "index": 370,
+                "maximum_world_compression_px": 22.228582317577775,
+                "maximum_rest_delta_px": 22.228582317577768,
+                "frame_ranges": [
+                  [
+                    0,
+                    142
+                  ]
+                ]
+              },
+              {
+                "index": 371,
+                "maximum_world_compression_px": 15.492626474449025,
+                "maximum_rest_delta_px": 15.492626474449047,
+                "frame_ranges": [
+                  [
+                    0,
+                    108
+                  ]
+                ]
+              },
+              {
+                "index": 372,
+                "maximum_world_compression_px": 8.756670631320162,
+                "maximum_rest_delta_px": 8.756670631320157,
+                "frame_ranges": [
+                  [
+                    0,
+                    95
+                  ]
+                ]
+              },
+              {
+                "index": 384,
+                "maximum_world_compression_px": 36.637415015074225,
+                "maximum_rest_delta_px": 36.637415015074254,
+                "frame_ranges": [
+                  [
+                    0,
+                    180
+                  ]
+                ]
+              },
+              {
+                "index": 385,
+                "maximum_world_compression_px": 29.92643226177222,
+                "maximum_rest_delta_px": 29.92643226177223,
+                "frame_ranges": [
+                  [
+                    0,
+                    161
+                  ]
+                ]
+              },
+              {
+                "index": 386,
+                "maximum_world_compression_px": 23.2154495084701,
+                "maximum_rest_delta_px": 23.215449508470098,
+                "frame_ranges": [
+                  [
+                    0,
+                    143
+                  ]
+                ]
+              },
+              {
+                "index": 387,
+                "maximum_world_compression_px": 16.504466755168096,
+                "maximum_rest_delta_px": 16.504466755168075,
+                "frame_ranges": [
+                  [
+                    0,
+                    109
+                  ]
+                ]
+              },
+              {
+                "index": 388,
+                "maximum_world_compression_px": 9.79348400186609,
+                "maximum_rest_delta_px": 9.79348400186611,
+                "frame_ranges": [
+                  [
+                    0,
+                    96
+                  ]
+                ]
+              },
+              {
+                "index": 400,
+                "maximum_world_compression_px": 37.56372008899416,
+                "maximum_rest_delta_px": 37.56372008899418,
+                "frame_ranges": [
+                  [
+                    0,
+                    182
+                  ]
+                ]
+              },
+              {
+                "index": 401,
+                "maximum_world_compression_px": 30.8777104255189,
+                "maximum_rest_delta_px": 30.87771042551892,
+                "frame_ranges": [
+                  [
+                    0,
+                    163
+                  ]
+                ]
+              },
+              {
+                "index": 402,
+                "maximum_world_compression_px": 24.191700762043638,
+                "maximum_rest_delta_px": 24.191700762043652,
+                "frame_ranges": [
+                  [
+                    0,
+                    144
+                  ]
+                ]
+              },
+              {
+                "index": 403,
+                "maximum_world_compression_px": 17.505691098568263,
+                "maximum_rest_delta_px": 17.50569109856827,
+                "frame_ranges": [
+                  [
+                    0,
+                    110
+                  ]
+                ]
+              },
+              {
+                "index": 404,
+                "maximum_world_compression_px": 10.819681435093116,
+                "maximum_rest_delta_px": 10.819681435093118,
+                "frame_ranges": [
+                  [
+                    0,
+                    97
+                  ]
+                ]
+              },
+              {
+                "index": 405,
+                "maximum_world_compression_px": 4.133671771617628,
+                "maximum_rest_delta_px": 4.133671771617623,
+                "frame_ranges": [
+                  [
+                    0,
+                    86
+                  ]
+                ]
+              },
+              {
+                "index": 416,
+                "maximum_world_compression_px": 38.47940922559542,
+                "maximum_rest_delta_px": 38.479409225595404,
+                "frame_ranges": [
+                  [
+                    0,
+                    183
+                  ]
+                ]
+              },
+              {
+                "index": 417,
+                "maximum_world_compression_px": 31.818372651946902,
+                "maximum_rest_delta_px": 31.81837265194689,
+                "frame_ranges": [
+                  [
+                    0,
+                    164
+                  ]
+                ]
+              },
+              {
+                "index": 418,
+                "maximum_world_compression_px": 25.157336078298385,
+                "maximum_rest_delta_px": 25.15733607829838,
+                "frame_ranges": [
+                  [
+                    0,
+                    145
+                  ]
+                ]
+              },
+              {
+                "index": 419,
+                "maximum_world_compression_px": 18.49629950464987,
+                "maximum_rest_delta_px": 18.496299504649865,
+                "frame_ranges": [
+                  [
+                    0,
+                    110
+                  ]
+                ]
+              },
+              {
+                "index": 420,
+                "maximum_world_compression_px": 11.835262931001353,
+                "maximum_rest_delta_px": 11.835262931001354,
+                "frame_ranges": [
+                  [
+                    0,
+                    98
+                  ]
+                ]
+              },
+              {
+                "index": 421,
+                "maximum_world_compression_px": 5.174226357352609,
+                "maximum_rest_delta_px": 5.174226357352614,
+                "frame_ranges": [
+                  [
+                    0,
+                    87
+                  ]
+                ]
+              },
+              {
+                "index": 432,
+                "maximum_world_compression_px": 39.38448242487766,
+                "maximum_rest_delta_px": 39.384482424877675,
+                "frame_ranges": [
+                  [
+                    0,
+                    185
+                  ]
+                ]
+              },
+              {
+                "index": 433,
+                "maximum_world_compression_px": 32.74841894105589,
+                "maximum_rest_delta_px": 32.74841894105592,
+                "frame_ranges": [
+                  [
+                    0,
+                    166
+                  ]
+                ]
+              },
+              {
+                "index": 434,
+                "maximum_world_compression_px": 26.112355457234116,
+                "maximum_rest_delta_px": 26.112355457234106,
+                "frame_ranges": [
+                  [
+                    0,
+                    146
+                  ]
+                ]
+              },
+              {
+                "index": 435,
+                "maximum_world_compression_px": 19.476291973412344,
+                "maximum_rest_delta_px": 19.476291973412348,
+                "frame_ranges": [
+                  [
+                    0,
+                    111
+                  ]
+                ]
+              },
+              {
+                "index": 436,
+                "maximum_world_compression_px": 12.840228489590572,
+                "maximum_rest_delta_px": 12.84022848959059,
+                "frame_ranges": [
+                  [
+                    0,
+                    99
+                  ]
+                ]
+              },
+              {
+                "index": 437,
+                "maximum_world_compression_px": 6.2041650057688,
+                "maximum_rest_delta_px": 6.204165005768777,
+                "frame_ranges": [
+                  [
+                    0,
+                    89
+                  ]
+                ]
+              },
+              {
+                "index": 448,
+                "maximum_world_compression_px": 40.27893968684123,
+                "maximum_rest_delta_px": 40.278939686841234,
+                "frame_ranges": [
+                  [
+                    0,
+                    187
+                  ]
+                ]
+              },
+              {
+                "index": 449,
+                "maximum_world_compression_px": 33.6678492928462,
+                "maximum_rest_delta_px": 33.66784929284623,
+                "frame_ranges": [
+                  [
+                    0,
+                    167
+                  ]
+                ]
+              },
+              {
+                "index": 450,
+                "maximum_world_compression_px": 27.056758898851058,
+                "maximum_rest_delta_px": 27.056758898851058,
+                "frame_ranges": [
+                  [
+                    0,
+                    147
+                  ]
+                ]
+              },
+              {
+                "index": 451,
+                "maximum_world_compression_px": 20.445668504856144,
+                "maximum_rest_delta_px": 20.445668504856172,
+                "frame_ranges": [
+                  [
+                    0,
+                    111
+                  ]
+                ]
+              },
+              {
+                "index": 452,
+                "maximum_world_compression_px": 13.83457811086123,
+                "maximum_rest_delta_px": 13.834578110861226,
+                "frame_ranges": [
+                  [
+                    0,
+                    99
+                  ]
+                ]
+              },
+              {
+                "index": 453,
+                "maximum_world_compression_px": 7.223487716866089,
+                "maximum_rest_delta_px": 7.223487716866112,
+                "frame_ranges": [
+                  [
+                    0,
+                    90
+                  ]
+                ]
+              },
+              {
+                "index": 464,
+                "maximum_world_compression_px": 41.24746872796618,
+                "maximum_rest_delta_px": 41.24746872796615,
+                "frame_ranges": [
+                  [
+                    0,
+                    188
+                  ]
+                ]
+              },
+              {
+                "index": 465,
+                "maximum_world_compression_px": 34.65887267793232,
+                "maximum_rest_delta_px": 34.65887267793231,
+                "frame_ranges": [
+                  [
+                    0,
+                    169
+                  ]
+                ]
+              },
+              {
+                "index": 466,
+                "maximum_world_compression_px": 28.070276627898238,
+                "maximum_rest_delta_px": 28.07027662789823,
+                "frame_ranges": [
+                  [
+                    0,
+                    148
+                  ]
+                ]
+              },
+              {
+                "index": 467,
+                "maximum_world_compression_px": 21.482434180544715,
+                "maximum_rest_delta_px": 21.482434180544708,
+                "frame_ranges": [
+                  [
+                    0,
+                    112
+                  ]
+                ]
+              },
+              {
+                "index": 468,
+                "maximum_world_compression_px": 14.894686637143423,
+                "maximum_rest_delta_px": 14.894686637143447,
+                "frame_ranges": [
+                  [
+                    0,
+                    100
+                  ]
+                ]
+              },
+              {
+                "index": 469,
+                "maximum_world_compression_px": 8.307831635074535,
+                "maximum_rest_delta_px": 8.307831635074523,
+                "frame_ranges": [
+                  [
+                    0,
+                    91
+                  ]
+                ]
+              },
+              {
+                "index": 470,
+                "maximum_world_compression_px": 1.7219116666799437,
+                "maximum_rest_delta_px": 1.7219116666799439,
+                "frame_ranges": [
+                  [
+                    0,
+                    79
+                  ]
+                ]
+              },
+              {
+                "index": 480,
+                "maximum_world_compression_px": 42.80509535488227,
+                "maximum_rest_delta_px": 42.80509535488226,
+                "frame_ranges": [
+                  [
+                    0,
+                    190
+                  ]
+                ]
+              },
+              {
+                "index": 481,
+                "maximum_world_compression_px": 36.256361109121826,
+                "maximum_rest_delta_px": 36.256361109121805,
+                "frame_ranges": [
+                  [
+                    0,
+                    170
+                  ]
+                ]
+              },
+              {
+                "index": 482,
+                "maximum_world_compression_px": 29.707626863361156,
+                "maximum_rest_delta_px": 29.707626863361178,
+                "frame_ranges": [
+                  [
+                    0,
+                    149
+                  ]
+                ]
+              },
+              {
+                "index": 483,
+                "maximum_world_compression_px": 23.158892617600713,
+                "maximum_rest_delta_px": 23.158892617600717,
+                "frame_ranges": [
+                  [
+                    0,
+                    112
+                  ]
+                ]
+              },
+              {
+                "index": 484,
+                "maximum_world_compression_px": 16.610158371840043,
+                "maximum_rest_delta_px": 16.610158371840036,
+                "frame_ranges": [
+                  [
+                    0,
+                    101
+                  ]
+                ]
+              },
+              {
+                "index": 485,
+                "maximum_world_compression_px": 10.061424126079487,
+                "maximum_rest_delta_px": 10.061424126079462,
+                "frame_ranges": [
+                  [
+                    0,
+                    92
+                  ]
+                ]
+              },
+              {
+                "index": 486,
+                "maximum_world_compression_px": 3.5126898803189306,
+                "maximum_rest_delta_px": 3.5126898803189484,
+                "frame_ranges": [
+                  [
+                    0,
+                    81
+                  ]
+                ]
+              },
+              {
+                "index": 496,
+                "maximum_world_compression_px": 44.45314162457316,
+                "maximum_rest_delta_px": 44.453141624573185,
+                "frame_ranges": [
+                  [
+                    0,
+                    192
+                  ]
+                ]
+              },
+              {
+                "index": 497,
+                "maximum_world_compression_px": 37.929333233698344,
+                "maximum_rest_delta_px": 37.92933323369835,
+                "frame_ranges": [
+                  [
+                    0,
+                    172
+                  ]
+                ]
+              },
+              {
+                "index": 498,
+                "maximum_world_compression_px": 31.405524842823525,
+                "maximum_rest_delta_px": 31.405524842823528,
+                "frame_ranges": [
+                  [
+                    0,
+                    151
+                  ]
+                ]
+              },
+              {
+                "index": 499,
+                "maximum_world_compression_px": 24.881716451948705,
+                "maximum_rest_delta_px": 24.881716451948698,
+                "frame_ranges": [
+                  [
+                    0,
+                    112
+                  ]
+                ]
+              },
+              {
+                "index": 500,
+                "maximum_world_compression_px": 18.357908061073886,
+                "maximum_rest_delta_px": 18.35790806107387,
+                "frame_ranges": [
+                  [
+                    0,
+                    101
+                  ]
+                ]
+              },
+              {
+                "index": 501,
+                "maximum_world_compression_px": 11.834099670198839,
+                "maximum_rest_delta_px": 11.834099670198812,
+                "frame_ranges": [
+                  [
+                    0,
+                    93
+                  ]
+                ]
+              },
+              {
+                "index": 502,
+                "maximum_world_compression_px": 5.310291279324133,
+                "maximum_rest_delta_px": 5.310291279324156,
+                "frame_ranges": [
+                  [
+                    0,
+                    83
+                  ]
+                ]
+              },
+              {
+                "index": 454,
+                "maximum_world_compression_px": 0.6123973228710611,
+                "maximum_rest_delta_px": 0.6123973228710521,
+                "frame_ranges": [
+                  [
+                    54,
+                    76
+                  ]
+                ]
+              },
+              {
+                "index": 324,
+                "maximum_world_compression_px": 5.582534895769868,
+                "maximum_rest_delta_px": 5.582534895769895,
+                "frame_ranges": [
+                  [
+                    55,
+                    91
+                  ]
+                ]
+              },
+              {
+                "index": 389,
+                "maximum_world_compression_px": 3.082501248563858,
+                "maximum_rest_delta_px": 3.08250124856386,
+                "frame_ranges": [
+                  [
+                    55,
+                    84
+                  ]
+                ]
+              },
+              {
+                "index": 258,
+                "maximum_world_compression_px": 6.100057196395937,
+                "maximum_rest_delta_px": 6.572662695470541,
+                "frame_ranges": [
+                  [
+                    57,
+                    93
+                  ]
+                ]
+              },
+              {
+                "index": 275,
+                "maximum_world_compression_px": 6.057505504650862,
+                "maximum_rest_delta_px": 6.537715449075741,
+                "frame_ranges": [
+                  [
+                    58,
+                    94
+                  ]
+                ]
+              },
+              {
+                "index": 308,
+                "maximum_world_compression_px": 4.800743886246892,
+                "maximum_rest_delta_px": 4.884713025228277,
+                "frame_ranges": [
+                  [
+                    58,
+                    90
+                  ]
+                ]
+              },
+              {
+                "index": 373,
+                "maximum_world_compression_px": 2.020714788191299,
+                "maximum_rest_delta_px": 2.0207147881913228,
+                "frame_ranges": [
+                  [
+                    61,
+                    82
+                  ]
+                ]
+              },
+              {
+                "index": 241,
+                "maximum_world_compression_px": 3.353815059095382,
+                "maximum_rest_delta_px": 3.5314029552991775,
+                "frame_ranges": [
+                  [
+                    62,
+                    86
+                  ]
+                ]
+              },
+              {
+                "index": 292,
+                "maximum_world_compression_px": 3.3113061487169944,
+                "maximum_rest_delta_px": 3.5034056214682936,
+                "frame_ranges": [
+                  [
+                    62,
+                    87
+                  ]
+                ]
+              },
+              {
+                "index": 357,
+                "maximum_world_compression_px": 0.9483123904999502,
+                "maximum_rest_delta_px": 0.9483123904999572,
+                "frame_ranges": [
+                  [
+                    66,
+                    78
+                  ]
+                ]
+              },
+              {
+                "index": 259,
+                "maximum_world_compression_px": 0.30090424265540605,
+                "maximum_rest_delta_px": 0.3242169748471229,
+                "frame_ranges": [
+                  [
+                    70,
+                    76
+                  ]
+                ]
+              }
+            ]
+          }
+        ],
+        "protected_layers_report_only": [
+          {
+            "name": "foot-far",
+            "cloth_corrected": false,
+            "penetrating_vertex_frames": 0,
+            "maximum_rest_delta_px": 0.0,
+            "maximum_abs_key_coordinate_px": 0.0,
+            "projection_error_max_px": 0.0,
+            "affected_vertex_indices": [],
+            "affected_frame_ranges": [],
+            "maximum_world_penetration_px": 0.0,
+            "correction_applied": false
+          },
+          {
+            "name": "foot-near",
+            "cloth_corrected": false,
+            "penetrating_vertex_frames": 0,
+            "maximum_rest_delta_px": 0.0,
+            "maximum_abs_key_coordinate_px": 0.0,
+            "projection_error_max_px": 0.0,
+            "affected_vertex_indices": [],
+            "affected_frame_ranges": [],
+            "maximum_world_penetration_px": 0.0,
+            "correction_applied": false
+          },
+          {
+            "name": "hand-far",
+            "cloth_corrected": false,
+            "penetrating_vertex_frames": 0,
+            "maximum_rest_delta_px": 0.0,
+            "maximum_abs_key_coordinate_px": 0.0,
+            "projection_error_max_px": 0.0,
+            "affected_vertex_indices": [],
+            "affected_frame_ranges": [],
+            "maximum_world_penetration_px": 0.0,
+            "correction_applied": false
+          },
+          {
+            "name": "head-face-hair",
+            "cloth_corrected": false,
+            "penetrating_vertex_frames": 0,
+            "maximum_rest_delta_px": 0.0,
+            "maximum_abs_key_coordinate_px": 0.0,
+            "projection_error_max_px": 0.0,
+            "affected_vertex_indices": [],
+            "affected_frame_ranges": [],
+            "maximum_world_penetration_px": 0.0,
+            "correction_applied": false
+          },
+          {
+            "name": "hand-near",
+            "cloth_corrected": false,
+            "penetrating_vertex_frames": 3139,
+            "maximum_rest_delta_px": 0.0,
+            "maximum_abs_key_coordinate_px": 0.0,
+            "projection_error_max_px": 0.0,
+            "affected_vertex_indices": [
+              1012,
+              1013,
+              1050,
+              1051,
+              1052,
+              1088,
+              1089,
+              1090,
+              1091,
+              1126,
+              1127,
+              1128,
+              1129,
+              1130,
+              1163,
+              1164,
+              1165,
+              1166,
+              1167,
+              1168,
+              1169,
+              1201,
+              1202,
+              1203,
+              1204,
+              1205,
+              1206,
+              1207,
+              1208,
+              1239,
+              1240,
+              1241,
+              1242,
+              1243,
+              1244,
+              1245,
+              1246,
+              1247
+            ],
+            "affected_frame_ranges": [
+              [
+                0,
+                90
+              ]
+            ],
+            "maximum_world_penetration_px": 7.8836259620983355,
+            "correction_applied": false
+          }
+        ]
+      }
+    }
+  },
+  "interpolation": "Explicit native linear for every supplied frame; no bone scale/length/mirror keys",
+  "contacts": "Plan metadata not interpreted or verified by this generic writer",
+  "new_tools_or_models": false,
+  "paid_api_calls": 0,
+  "cloud_upload": false,
+  "native_runtime_verified": false,
+  "native_mirror_skin_behavior": "not_verified",
+  "visual_quality": "not_reviewed",
+  "technique_accuracy": "not_reviewed"
+}

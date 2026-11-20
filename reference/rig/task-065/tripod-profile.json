@@ -1,0 +1,224 @@
+{
+  "schema_version": 1,
+  "purpose": "Shared tripod animation demonstration profile, fixed bone lengths and bend directions; not medical normal ranges",
+  "coordinate_system": "Artboard x right, y down; radians clockwise from local +X; Bone origin is parent tip",
+  "fps": 24,
+  "duration_frames": 288,
+  "artboard": {
+    "width": 1600,
+    "height": 950
+  },
+  "neutral_root": [
+    420,
+    450
+  ],
+  "floor_y": 850,
+  "stance_ankles": {
+    "near": [
+      432,
+      759
+    ],
+    "far": [
+      402,
+      759
+    ]
+  },
+  "foot_markers_local": {
+    "heel": [
+      -24,
+      12
+    ],
+    "toe": [
+      76,
+      12
+    ]
+  },
+  "bind_offset": [
+    0,
+    0
+  ],
+  "scale": [
+    1,
+    1
+  ],
+  "bones": [
+    {
+      "name": "pelvis",
+      "parent": null,
+      "length": 0,
+      "local_bounds_deg": [
+        0,
+        0
+      ],
+      "bind_local_rotation_deg": 0,
+      "semantic_bend": "Root translation only"
+    },
+    {
+      "name": "spine",
+      "parent": "pelvis",
+      "length": 190,
+      "local_bounds_deg": [
+        -105,
+        -50
+      ],
+      "bind_local_rotation_deg": -90,
+      "semantic_bend": "Increasing angle leans chest forward/right"
+    },
+    {
+      "name": "neck",
+      "parent": "spine",
+      "length": 22,
+      "local_bounds_deg": [
+        -25,
+        25
+      ],
+      "bind_local_rotation_deg": 0,
+      "semantic_bend": "Counterbalances small torso lean"
+    },
+    {
+      "name": "head",
+      "parent": "neck",
+      "length": 80,
+      "local_bounds_deg": [
+        -15,
+        15
+      ],
+      "bind_local_rotation_deg": 0,
+      "semantic_bend": "Small relative head tilt only"
+    },
+    {
+      "name": "upper_arm_far",
+      "parent": "spine",
+      "length": 105,
+      "local_bounds_deg": [
+        30,
+        210
+      ],
+      "bind_local_rotation_deg": 172,
+      "semantic_bend": "Shoulder; decreases to reach forward"
+    },
+    {
+      "name": "forearm_far",
+      "parent": "upper_arm_far",
+      "length": 95,
+      "local_bounds_deg": [
+        -140,
+        0
+      ],
+      "bind_local_rotation_deg": -5,
+      "semantic_bend": "Negative elbow flexion toward front/right"
+    },
+    {
+      "name": "hand_far",
+      "parent": "forearm_far",
+      "length": 38,
+      "local_bounds_deg": [
+        -30,
+        30
+      ],
+      "bind_local_rotation_deg": 0,
+      "semantic_bend": "Small wrist flexion/extension only"
+    },
+    {
+      "name": "upper_arm_near",
+      "parent": "spine",
+      "length": 105,
+      "local_bounds_deg": [
+        30,
+        210
+      ],
+      "bind_local_rotation_deg": 180,
+      "semantic_bend": "Shoulder; decreases to reach forward"
+    },
+    {
+      "name": "forearm_near",
+      "parent": "upper_arm_near",
+      "length": 95,
+      "local_bounds_deg": [
+        -140,
+        0
+      ],
+      "bind_local_rotation_deg": 0,
+      "semantic_bend": "Negative elbow flexion toward front/right"
+    },
+    {
+      "name": "hand_near",
+      "parent": "forearm_near",
+      "length": 38,
+      "local_bounds_deg": [
+        -30,
+        30
+      ],
+      "bind_local_rotation_deg": 0,
+      "semantic_bend": "Small wrist flexion/extension only"
+    },
+    {
+      "name": "thigh_far",
+      "parent": "pelvis",
+      "length": 155,
+      "local_bounds_deg": [
+        -30,
+        120
+      ],
+      "bind_local_rotation_deg": 90.15774903100986,
+      "semantic_bend": "Decreasing angle moves knee forward/right"
+    },
+    {
+      "name": "shin_far",
+      "parent": "thigh_far",
+      "length": 155,
+      "local_bounds_deg": [
+        0,
+        145
+      ],
+      "bind_local_rotation_deg": 6.3522032610535115,
+      "semantic_bend": "Positive knee flexion; never hyperextends"
+    },
+    {
+      "name": "foot_far",
+      "parent": "shin_far",
+      "length": 76,
+      "local_bounds_deg": [
+        -145,
+        -35
+      ],
+      "bind_local_rotation_deg": -96.50995229206336,
+      "semantic_bend": "Neutral sole horizontal; compensates shin world angle"
+    },
+    {
+      "name": "thigh_near",
+      "parent": "pelvis",
+      "length": 155,
+      "local_bounds_deg": [
+        -30,
+        120
+      ],
+      "bind_local_rotation_deg": 83.74454341124472,
+      "semantic_bend": "Decreasing angle moves knee forward/right"
+    },
+    {
+      "name": "shin_near",
+      "parent": "thigh_near",
+      "length": 155,
+      "local_bounds_deg": [
+        0,
+        145
+      ],
+      "bind_local_rotation_deg": 8.062990696739814,
+      "semantic_bend": "Positive knee flexion; never hyperextends"
+    },
+    {
+      "name": "foot_near",
+      "parent": "shin_near",
+      "length": 76,
+      "local_bounds_deg": [
+        -145,
+        -35
+      ],
+      "bind_local_rotation_deg": -91.80753410798454,
+      "semantic_bend": "Neutral sole horizontal; compensates shin world angle"
+    }
+  ],
+  "authorization": "User approved via async reply: 동작용 범위 추가 (권장), 2026-11-11",
+  "whole_character_transform": "Position/orientation of whole rig separate from anatomical joints; pelvis local rotation remains fixed"
+}

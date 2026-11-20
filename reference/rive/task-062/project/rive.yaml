@@ -1,0 +1,6 @@
+name: bjj-single-x-2d
+main: Clean
+output:
+  dir: build
+exclude:
+  - README.md

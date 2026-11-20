@@ -1,0 +1,22 @@
+Tool: built-in image_gen (CLI/API fallback not used)
+Reference: user-uploaded Gojo Satoru face image
+Output: bjj-human-character-concept-v1.png
+
+Use case: stylized-concept.
+Asset type: a character turnaround concept sheet for a Brazilian jiu-jitsu technique teaching application, serving as a future Blender modeling reference.
+Input image: the attached local image is a FACE AND HAIR REFERENCE ONLY, not a background or clothing reference. The user explicitly requests the facial type of Gojo Satoru from Jujutsu Kaisen as pictured: a slender youthful ADULT face, refined jaw, clear vivid light-blue eyes, pale eyebrows, short tousled spiky white hair with a light fringe, clean-shaven, composed approachable expression. Carry this recognizable facial type into a softly dimensional cartoon character. Keep the eyes visible.
+
+Primary request: Create ONE polished concept sheet showing the SAME adult humanoid character in EXACTLY SIX full-body views: FRONT, true 90-degree SIDE facing right, and true 180-degree BACK, for each of TWO gi colors, WHITE and BLUE. The blue-gi character must be identical to the white-gi character in facial identity, hair, skin, body proportions, height, pose, anatomy, and garment design; change only the gi jacket and pants color.
+
+Layout: high-resolution landscape board, three equally spaced columns and two rows. Top row = white gi, bottom row = blue gi. Each row has front, side, and back in that order. Align the head tops, shoulders, waist, knees and soles within each row. Every figure is fully visible from hair tip to bare toes, with generous margins and clear separation. No cropped limbs. Use orthographic-like model-sheet views, identical scale, no foreshortening or 3/4 substitutions. A clean pale neutral-gray background, faint alignment guides and a restrained divider between rows.
+
+Approved body and visual style: a readable three-dimensional cartoon with soft diffuse studio shading and clean simple surfaces; around SEVEN HEADS TALL, adult moderately athletic build, natural arm and leg lengths, ordinary shoulders and waist, not chibi and not hyper-muscular. A visually clear consistent body suitable for explaining joint positions and two-person grappling. Keep facial detail simple while honoring the supplied face reference.
+
+Pose: neutral relaxed modeling stance with straight but not locked legs and arms held slightly away from the torso, hands visible and relaxed with FIVE anatomically correct fingers each, barefoot with readable ankles and feet. Repeat the same stance in both clothing variants. Side and back must be genuine rotations of this same character, not different designs.
+
+Clothing: plain functional Brazilian jiu-jitsu gi, long sleeves and full-length pants, modest natural folds, clean wrapped jacket lapels, simple identical unmarked white belt tied at the waist in both variants, no logos, no patches, no lettering on clothing, no footwear or accessories. White gi is white with soft gray shading; blue gi is a clear medium royal blue, matching jacket and pants.
+
+Text: minimal clear Korean labels only. Across the three columns: "정면", "측면", "후면". Label the upper row "흰색 도복" and the lower row "파란색 도복". Optional small title "캐릭터 컨셉 시트". Keep typography away from the figures and use a quiet professional reference-sheet layout.
+
+Constraints: six full-body figures of one consistent character, complete feet, consistent hair silhouette and head/body ratio across rotations and colors, clean finger anatomy, no extra people, no action sequence, no cinematic scene, no exaggerated giant head, no weapons, no blindfold, no sunglasses, no black high-collar outfit from the source reference, no watermark. This is a visual design reference sheet, not a rendered screenshot of Blender.
+

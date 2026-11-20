@@ -1,0 +1,3697 @@
+{
+  "task": "task-058",
+  "kind": "immutable_source_backup_only",
+  "at": "2026-11-10T15:51:07.275337+00:00",
+  "workingTree": "/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning",
+  "files": [
+    {
+      "path": "raw/100-percent-sweep-v1.png",
+      "sha256": "9749407ec7dc1ccc08031d58836d461131adc2dad2097f536cc2609edd09b52d",
+      "bytes": 1888307
+    },
+    {
+      "path": "raw/100-percent-sweep-v2.png",
+      "sha256": "5b1d7f4765a89c54880482a00fe6fc5cf8c9faab0a60270576fc4435efbf04a0",
+      "bytes": 1514771
+    },
+    {
+      "path": "raw/100-percent-sweep-v3.png",
+      "sha256": "17597e621fd344fc076e922ee0a23c2d6618d9df657f15ddfae16994a62e4111",
+      "bytes": 1290770
+    },
+    {
+      "path": "raw/americana-v1.png",
+      "sha256": "74bb20ff0f46c3ac8ac25ba49ec98dcd7b4cd3378d16644e62cdcefda4607324",
+      "bytes": 1540942
+    },
+    {
+      "path": "raw/anaconda-choke-v1.png",
+      "sha256": "634940bb5a7a2f77755c036adedbbcb2cfa0f9de9485e4b28be3b39a0130f510",
+      "bytes": 2010333
+    },
+    {
+      "path": "raw/anaconda-choke-v2.png",
+      "sha256": "e85f917c74097784e12ed228fee20a9e54171ba59f21be66166f79d41fc02216",
+      "bytes": 2000469
+    },
+    {
+      "path": "raw/ankle-pick-v1.png",
+      "sha256": "48c5ddfe2bf995cd8d6e2f37594abc1ad962790f83eca66e45476ba01f12b730",
+      "bytes": 1407022
+    },
+    {
+      "path": "raw/aoki-lock-v1.png",
+      "sha256": "02bbc65d19c64c81015ecb9f7f603a36836f569ebc7c0d6b3e8ac7acc7bf8b2d",
+      "bytes": 1646589
+    },
+    {
+      "path": "raw/arm-drag-v1.png",
+      "sha256": "a6840ba3a3e19689ccce12e96b76a3b2d48ad608bf093d47150486ad1580a7a5",
+      "bytes": 1664218
+    },
+    {
+      "path": "raw/arm-triangle-v1.png",
+      "sha256": "2f860b6e03f94629da4bea94d687c600311076690009b0678c0cecc6e54c320f",
+      "bytes": 1134471
+    },
+    {
+      "path": "raw/arm-triangle-v2.png",
+      "sha256": "43ac71604eb91cfa3c1f4f364e3d05f589c0223d27983cca52c45d8f33fc9832",
+      "bytes": 1154660
+    },
+    {
+      "path": "raw/armbar-v1.png",
+      "sha256": "ce1a69da114318561bd1e91895023ab3a7c718986a527d81e995d62afe1b71ab",
+      "bytes": 1622419
+    },
+    {
+      "path": "raw/armbar-v2.png",
+      "sha256": "0b7dea53a0997f6425b0677ac0e5cfa6fcb350dc57e0f83d3f157592cceb3ff2",
+      "bytes": 1694094
+    },
+    {
+      "path": "raw/ashi-garami-v1.png",
+      "sha256": "ea9d86c7d1e8e52b3e87db8f184a3a6613b996e0271496564144cf95a1797748",
+      "bytes": 1346477
+    },
+    {
+      "path": "raw/back-control-v1.png",
+      "sha256": "2dd2df5e0571bf68f74c4380b7c499e5b67bd09285d7d0879ee3890b106c5639",
+      "bytes": 1761782
+    },
+    {
+      "path": "raw/back-mount-v1.png",
+      "sha256": "2fc99c6343ba9e250be002cf109a17f60aad579a5412ac32d8bf853e2cb30e95",
+      "bytes": 1241133
+    },
+    {
+      "path": "raw/back-mount-v2.png",
+      "sha256": "e093dbad6c0199f8665f82f6921a42a2d6a766b4ef4bd20ef0771c2c2e0394a4",
+      "bytes": 1370691
+    },
+    {
+      "path": "raw/back-mount-v3.png",
+      "sha256": "af715a23b64dac4f7f237617feae925bbafef585f8708dafff2ba9becc17ae41",
+      "bytes": 1107049
+    },
+    {
+      "path": "raw/back-step-v1.png",
+      "sha256": "1a358540166dfa790c16695c56db34db96d56d51e457219623a3b30109f389b1",
+      "bytes": 1411742
+    },
+    {
+      "path": "raw/back-step-v2.png",
+      "sha256": "a4495b33c4506697eb0079e43ef4d3f72608fa0f1b82910bb67aadf7512c95d7",
+      "bytes": 1157375
+    },
+    {
+      "path": "raw/back-take-v1.png",
+      "sha256": "a02d9fedc496602c255f68922273931c148759b5d45694ab5050d83517afa224",
+      "bytes": 1284859
+    },
+    {
+      "path": "raw/backside-fifty-fifty-v1.png",
+      "sha256": "d2dcbc0e63e7b4c5638d67a46ce86443de21e0c5d46419626c0cfeed54ad6170",
+      "bytes": 1911300
+    },
+    {
+      "path": "raw/balloon-sweep-v1.png",
+      "sha256": "946f05782134e61fbf1a0c3d4ef222e85377783cef5224138a97ac55f6c6428b",
+      "bytes": 1444613
+    },
+    {
+      "path": "raw/banana-split-v1.png",
+      "sha256": "45189a66492a7c542f75618a98d40cc8c51007ee48c089509847ee0d799ffecc",
+      "bytes": 1624109
+    },
+    {
+      "path": "raw/baratoplata-v1.png",
+      "sha256": "8f7407be34397111ecc3cbe552bd007e9acd53787cceb8af93d20853e1801350",
+      "bytes": 1506650
+    },
+    {
+      "path": "raw/baseball-bat-choke-v1.png",
+      "sha256": "93f1f10a8f86079f3a3b3e9b7904486ba5fb1bcc9514f32d9a87c251c342326e",
+      "bytes": 1543964
+    },
+    {
+      "path": "raw/belly-down-armbar-v1.png",
+      "sha256": "80ceca53631c0832e8441e78909c53578f9a1015eede2a9dec532d50b4bdfdd8",
+      "bytes": 1698130
+    },
+    {
+      "path": "raw/belly-down-armbar-v2.png",
+      "sha256": "ffc6bf891d4d6d49e7a32ccb8dc852041e66f28e3deb2ea51d7be298cb4ab05b",
+      "bytes": 1508951
+    },
+    {
+      "path": "raw/berimbolo-v1.png",
+      "sha256": "8421a60aca9a5fd0f85dad46887a02831354cd464824b162f2b9e9305fdc77cc",
+      "bytes": 1544560
+    },
+    {
+      "path": "raw/berimbolo-v2.png",
+      "sha256": "95fddc29a23a55c28001634f53527a21ed4ad2dafc2e813a95ea026cc3d2ba81",
+      "bytes": 1688953
+    },
+    {
+      "path": "raw/bicep-slicer-v1.png",
+      "sha256": "7b003918f19ada1721a74da02ed20ca4a82ea46a3e605aaa9d6e3fc35fccf8f7",
+      "bytes": 2021584
+    },
+    {
+      "path": "raw/bicep-slicer-v2.png",
+      "sha256": "2178ef3ae6b68024af8fbc1aa1ef52917ed53d5c87c090864f793a195921239e",
+      "bytes": 1871497
+    },
+    {
+      "path": "raw/body-lock-v1.png",
+      "sha256": "ee733ce88bfcc61ad5c6587fb02ba8faad48ae844a3ba81c2504acf9ec0c5da8",
+      "bytes": 1268488
+    },
+    {
+      "path": "raw/bow-and-arrow-choke-v1.png",
+      "sha256": "aac5afc44a187f6b9a42a89ea5a7debe86b3d2a2bd5fa061acd5ad9d1d63f276",
+      "bytes": 1886911
+    },
+    {
+      "path": "raw/brabo-choke-v1.png",
+      "sha256": "12d949f7370eec13f7c8d6779d72cb6fc6df46bb4427f95057be9701ffd67316",
+      "bytes": 1572370
+    },
+    {
+      "path": "raw/brabo-choke-v2.png",
+      "sha256": "b5d68e242f6c17497267b6cb86e5fd25bb1b8d108c00a8014d822e98b5bc6217",
+      "bytes": 1353323
+    },
+    {
+      "path": "raw/break-fall-v1.png",
+      "sha256": "1d5f24c1a84231cec4b303a520488e549c6444e84d956e947a4fcd58420abecc",
+      "bytes": 1268942
+    },
+    {
+      "path": "raw/buggy-choke-v1.png",
+      "sha256": "28bde95ad2bcb2b6f94e82971153cb53268a98cda7ac59a8e25c8292f22bddae",
+      "bytes": 1390534
+    },
+    {
+      "path": "raw/buggy-choke-v2.png",
+      "sha256": "7ce3715dd11819302eb5a8470e904881258642f219c42b539fb7bd754df09205",
+      "bytes": 1468269
+    },
+    {
+      "path": "raw/buggy-choke-v3.png",
+      "sha256": "301b8da24fe2b3c173832a14cb94fb3830ca7ccdf4ba2ab9ce2eb5aca7e9def4",
+      "bytes": 1255321
+    },
+    {
+      "path": "raw/buggy-choke-v4.png",
+      "sha256": "7a220f8ff3782342be3754e3c7966af844c443e021d7d373d5b8b393eb5d28b2",
+      "bytes": 1641273
+    },
+    {
+      "path": "raw/buggy-choke-v5.png",
+      "sha256": "0be04c3d4bba20f8750de350e5545cc598e215fe4c2e10bf6f410cffa0c973a9",
+      "bytes": 1531177
+    },
+    {
+      "path": "raw/buggy-choke-v6.png",
+      "sha256": "634022382e3a9989d0457b5a2ac37732752119bc3019ac2eb3cfbb2aa776d26b",
+      "bytes": 1661204
+    },
+    {
+      "path": "raw/butterfly-guard-v1.png",
+      "sha256": "ddf1455ca3386d48a837cea72438faebab81a59e3ca99852f3fc416f8a6de443",
+      "bytes": 1702586
+    },
+    {
+      "path": "raw/butterfly-sweep-v1.png",
+      "sha256": "eb64c96eac4fceb36699fbca58b0977f34c33b779c0c35cfd316db8c37ccad92",
+      "bytes": 1938555
+    },
+    {
+      "path": "raw/butterfly-sweep-v2.png",
+      "sha256": "52bd0f5f75cde3e7c2d9ebad5c06a0e1b10074c17dc7f2be985897bf0d63d515",
+      "bytes": 1818523
+    },
+    {
+      "path": "raw/calf-slicer-v1.png",
+      "sha256": "41bbf1b901e6659dd5c30a73a9d1401c4a73f21ee924d49325636f9454417ce5",
+      "bytes": 1761477
+    },
+    {
+      "path": "raw/canto-choke-v1.png",
+      "sha256": "7ad6cc3a5fdc8dd6e219457839a6127d56c6d44595019f18d938228a1876a53c",
+      "bytes": 1497909
+    },
+    {
+      "path": "raw/choi-bar-v1.png",
+      "sha256": "5087d682aa7456f8befd5bb7f368f5421e4d8aa4ad6b94a8b41f9573e5ddc777",
+      "bytes": 1349299
+    },
+    {
+      "path": "raw/choke-v1.png",
+      "sha256": "60e1951e219239c83400235dcf2929f38d8c53942f637161aacc9e86b10f9927",
+      "bytes": 1561680
+    },
+    {
+      "path": "raw/clock-choke-v1.png",
+      "sha256": "478a1f40c938ffa5984468671b730d8bd6eccc9d99ee03a27bfdd3e6b457a9e3",
+      "bytes": 1249480
+    },
+    {
+      "path": "raw/clock-choke-v2.png",
+      "sha256": "6827db5947ca5bbb45d04e9eb2e34f3576e2be0bd1b60d72d1c60aa2b813c0bc",
+      "bytes": 1199324
+    },
+    {
+      "path": "raw/closed-guard-v1.png",
+      "sha256": "7ff258f4477a74c348828629d70786ec25f4c3726d58d86119da171b5f398dab",
+      "bytes": 1591162
+    },
+    {
+      "path": "raw/collar-and-sleeve-guard-v1.png",
+      "sha256": "b1cf444e0d7299ab64efbc5729a07407aecf9e599f390324718badcb1ec9db4e",
+      "bytes": 1545085
+    },
+    {
+      "path": "raw/collar-drag-v1.png",
+      "sha256": "992504c93d63830ea7545f7dae88f883a75f6c64d1981573045f96bc97a12b64",
+      "bytes": 1482076
+    },
+    {
+      "path": "raw/combat-guard-v1.png",
+      "sha256": "84c1be951cce4b1f51b7686b40477547321ccb788e93bcbe14f141f7b0272239",
+      "bytes": 1774782
+    },
+    {
+      "path": "raw/counter-v1.png",
+      "sha256": "4f950e464dbe71c2d98799d1c3a06440eb4ae97d7f670fdb102e922abc50aa3d",
+      "bytes": 1649793
+    },
+    {
+      "path": "raw/coyote-armbar-v1.png",
+      "sha256": "68d277eec8d790aaf0ed926df131d76c8f98687d5c8f4028926ed1edc7b7d1f4",
+      "bytes": 1178434
+    },
+    {
+      "path": "raw/coyote-guard-v1.png",
+      "sha256": "f194df9ceb1fc39cdfac44bb94ae1e620489b0968e2924e60ef8e93da3efd6e3",
+      "bytes": 1589881
+    },
+    {
+      "path": "raw/crab-ride-v1.png",
+      "sha256": "2936cec976e54453cca023288cd6c8f339ec8569fdeb0333e3747c9e692ea118",
+      "bytes": 1654602
+    },
+    {
+      "path": "raw/crab-ride-v2.png",
+      "sha256": "4e5987efd1be173b17e1f43529b87151c59ef1826e562107f623b0e3899ff494",
+      "bytes": 1245595
+    },
+    {
+      "path": "raw/crazy-dog-pass-v1.png",
+      "sha256": "54ed6fe361d29014c201122dde576cce1415d91e0c6b21492273f349b3c19876",
+      "bytes": 1072887
+    },
+    {
+      "path": "raw/cross-collar-choke-v1.png",
+      "sha256": "387dda8cc3c25e5723173d52b4bea1e34f58205a253628348074c0309e5e87e0",
+      "bytes": 1785558
+    },
+    {
+      "path": "raw/cross-collar-control-v1.png",
+      "sha256": "3174d3536b5700ad96ce117fde1c180891becad9fdfca8e2e2bcd4e85825e8ad",
+      "bytes": 1586020
+    },
+    {
+      "path": "raw/crucifix-v1.png",
+      "sha256": "e08026534300af8478b67623a872867d2f2a30ecd9d0d3932189ab7d46e75a4a",
+      "bytes": 1687118
+    },
+    {
+      "path": "raw/darce-choke-v1.png",
+      "sha256": "e1b1c1d0a809ee7baad8e2258e60cce79863978d173c4f1c5e8f06e2ff7be27d",
+      "bytes": 1223213
+    },
+    {
+      "path": "raw/darce-choke-v2.png",
+      "sha256": "9657173e6efdf2df49753798616399512c82432308074c8a8bae0ff85eb1c698",
+      "bytes": 1450072
+    },
+    {
+      "path": "raw/de-la-riva-guard-v1.png",
+      "sha256": "abf347ddc931f59217d2b74d7b4afadfe91260b9193b9f3c3100a121e1513684",
+      "bytes": 1358215
+    },
+    {
+      "path": "raw/deep-de-riva-guard-v1.png",
+      "sha256": "392f8e5b0af0a247af8f3868fe8a80ca0b5141487b8cb92eb6e55e96682453d7",
+      "bytes": 1732996
+    },
+    {
+      "path": "raw/deep-de-riva-guard-v2.png",
+      "sha256": "334e5eae7c91582ad07956e4bab5c6381fd051db950eb50cf5d88caf07114235",
+      "bytes": 1871672
+    },
+    {
+      "path": "raw/deep-half-guard-v1.png",
+      "sha256": "06067e2992678c0e61e251ccb985b2a607468f56bab167a6f3286496889ac211",
+      "bytes": 1349300
+    },
+    {
+      "path": "raw/double-leg-takedown-v1.png",
+      "sha256": "4016b44ea3aac7eddcb52d8a3a65e17c656a85fc8e57c53b0a39a7ad2f162332",
+      "bytes": 1288216
+    },
+    {
+      "path": "raw/double-under-v1.png",
+      "sha256": "a9588fc87bba4fb681282449e6da0b2bf2f60b973f71e07eae4de4b3ac92be64",
+      "bytes": 1597742
+    },
+    {
+      "path": "raw/duck-under-v1.png",
+      "sha256": "58cfaef64176733c90b84ad552e25932ac6115cf244570f409241beb02a5c2ed",
+      "bytes": 1498533
+    },
+    {
+      "path": "raw/entry-v1.png",
+      "sha256": "c8876a88eedcb1875f906ba600de1f3e92715fcaa551380105c84ef1ebbc90ca",
+      "bytes": 1737436
+    },
+    {
+      "path": "raw/escape-v1.png",
+      "sha256": "95fc8b7da2e139b95353f3757185f6e8650d7259f6076ee598f58860008c15f5",
+      "bytes": 1727844
+    },
+    {
+      "path": "raw/estima-lock-v1.png",
+      "sha256": "f6475c97c953c607b373540530f09ef68e26e9864202fd3b67750a57fe8ce9f6",
+      "bytes": 1594305
+    },
+    {
+      "path": "raw/ezekiel-choke-v1.png",
+      "sha256": "c68279462a7a97bc5e0cbcf3d4ffce4da33bd4a3c6bee400f903f778d61d8af6",
+      "bytes": 1436312
+    },
+    {
+      "path": "raw/ezekiel-choke-v2.png",
+      "sha256": "5471f9fb6c3d4822df5a8413fe45e7b9118d366d95dbed7dccdd63f9a3ce6515",
+      "bytes": 1357284
+    },
+    {
+      "path": "raw/fifty-fifty-position-v1.png",
+      "sha256": "34b9ef19c81f0eb9f8fc38ecb7348550e58fe17af36a6cb6e708944271a70427",
+      "bytes": 1657253
+    },
+    {
+      "path": "raw/flower-sweep-v1.png",
+      "sha256": "fd2bb88b46fb5961a709a8e311f727af8a2dfd8affda919a0afa71a4e0cc828f",
+      "bytes": 1348395
+    },
+    {
+      "path": "raw/flying-armbar-v1.png",
+      "sha256": "843db45c0932fa41be43afdbd1c4514fdcbb340d378078f502cc5f280d34864c",
+      "bytes": 1230862
+    },
+    {
+      "path": "raw/flying-armbar-v2.png",
+      "sha256": "7bbab114b47c5011f44303e789b1b70b1e9fd01e96893d5bf784cd5335a9445f",
+      "bytes": 1142929
+    },
+    {
+      "path": "raw/foot-lock-v1.png",
+      "sha256": "28df420a85470d89ec04776c47cd11af8faf560012bc9fac878fbef9a15b84e7",
+      "bytes": 1569023
+    },
+    {
+      "path": "raw/foot-sweep-v1.png",
+      "sha256": "10a7d7da3190c4607a124d381a48eccf20da00a0491a81f5d11b75133c6441f7",
+      "bytes": 1487024
+    },
+    {
+      "path": "raw/foot-work-v1.png",
+      "sha256": "5946ab6ca02267379e70bfeff74254a290aaba8e15afed8b02bc710f11947ed3",
+      "bytes": 1542650
+    },
+    {
+      "path": "raw/front-headlock-v1.png",
+      "sha256": "2e80abb45f232c3aa4620788284bb729d41b02d1be49a880908f7cda3d4ecfd4",
+      "bytes": 1886827
+    },
+    {
+      "path": "raw/gator-roll-v1.png",
+      "sha256": "6094efdc18f4690b8350e1fb1ea82419cf5a975efea5119a1ab95409e3460ca5",
+      "bytes": 1186549
+    },
+    {
+      "path": "raw/gator-roll-v2.png",
+      "sha256": "1c89ccf4f7f123b14971be1f176adcf8815fe5b4f765e9d742babd43af0c0238",
+      "bytes": 1508602
+    },
+    {
+      "path": "raw/gator-roll-v3.png",
+      "sha256": "ebe541f92f7aeefe4f3703b6487a0028608161e5b3500ccbbcd188c390dd0a75",
+      "bytes": 1433092
+    },
+    {
+      "path": "raw/gogoplata-v1.png",
+      "sha256": "4f1e4f30f4a7c6f7a94112e83b950159f8054f2ff1636dfe20c6c9d9a226cf00",
+      "bytes": 1690047
+    },
+    {
+      "path": "raw/gogoplata-v2.png",
+      "sha256": "dd070f15a95417985c7b65fa5dcc00269caf5c13d7f52407bca7b4207765883a",
+      "bytes": 1617518
+    },
+    {
+      "path": "raw/gogoplata-v3.png",
+      "sha256": "3bdc0ddad251d7f0b3dd6a16fe8730cde5104f8ecc3c39a7446bb64824fe56a9",
+      "bytes": 1465079
+    },
+    {
+      "path": "raw/guard-pass-v1.png",
+      "sha256": "89e88ac7c4c2ef83fd7ecf1e96b185b714837a4e5917b33c135d8511f9964147",
+      "bytes": 1358656
+    },
+    {
+      "path": "raw/guard-recovery-v1.png",
+      "sha256": "d05001b72b6d7adc588ff599ccb0f937d16854129facd317d0b5b720da8859a4",
+      "bytes": 1626484
+    },
+    {
+      "path": "raw/guard-v1.png",
+      "sha256": "b7ffc7b1b504071eac42d3bda88d6bdfad40202edd7eeb6fbde40a26d82d1e5c",
+      "bytes": 1580748
+    },
+    {
+      "path": "raw/guillotine-choke-v1.png",
+      "sha256": "f562fcf9b0baf2e08bf49ac16923412f4601e1e40705b75440797f5382e3b7aa",
+      "bytes": 1817099
+    },
+    {
+      "path": "raw/half-guard-v1.png",
+      "sha256": "feaccedc219dd02dfa4155783292a694be52ee147c9079a546f02c251c2ee8fa",
+      "bytes": 1364100
+    },
+    {
+      "path": "raw/headquarters-position-v1.png",
+      "sha256": "65d4c7478a619c81b1334bc41466cc85cbb2b5ad94b246d2d22a586c5e1a0c39",
+      "bytes": 1786643
+    },
+    {
+      "path": "raw/heel-hook-v1.png",
+      "sha256": "31e083bb336377289bb39c4e1712681ebd08e74cd3c099f5d5d17ef73631bb32",
+      "bytes": 1711355
+    },
+    {
+      "path": "raw/heel-hook-v2.png",
+      "sha256": "b0341e6aff1cf9ca9c2c1ee7c0625a175952ec5fc6ea51c779442f46231e7830",
+      "bytes": 1607846
+    },
+    {
+      "path": "raw/high-mount-v1.png",
+      "sha256": "21fa70fa94607b75fde1238fd19c4c4ad43f4ec5835ff94d3e2685a02c5c8d10",
+      "bytes": 2405027
+    },
+    {
+      "path": "raw/hip-bump-sweep-v1.png",
+      "sha256": "8c89cd2f398034a663173a07b51a44430eda4104cb7b26536ad2f19d9d655fc5",
+      "bytes": 1204488
+    },
+    {
+      "path": "raw/honey-hole-v1.png",
+      "sha256": "25ac59b9dd0976f6c50437f1cf7f92a5f75eeba7fab8a475ac6fa0ebd8b0921f",
+      "bytes": 1518332
+    },
+    {
+      "path": "raw/honey-hole-v2.png",
+      "sha256": "40866e7def94d951dabda8c0847fbe30741f58719e7efc5052b9e1266820f9a1",
+      "bytes": 1600656
+    },
+    {
+      "path": "raw/hugo-lock-v1.png",
+      "sha256": "6fbeb0e58b2a30524db8260429eb85ab4621e61941fe5db2e730a2919c115e4b",
+      "bytes": 1919329
+    },
+    {
+      "path": "raw/inside-ashi-garami-v1.png",
+      "sha256": "cf00e01c8d24003f0892c013eb777a1f0aa8e86f11ca8b5f165dd42402676289",
+      "bytes": 1390670
+    },
+    {
+      "path": "raw/inside-heel-hook-v1.png",
+      "sha256": "f3e28848d47737f715b549138436ef41580fd54b0617d733a76e47f6980ef6e6",
+      "bytes": 1499869
+    },
+    {
+      "path": "raw/inside-heel-hook-v2.png",
+      "sha256": "c815ff0b37464d64e036d759b801d08f9df0e81c7dd7c9501dd647fdf186a67a",
+      "bytes": 1690160
+    },
+    {
+      "path": "raw/inside-heel-hook-v3.png",
+      "sha256": "5914313b6941773c451c903f1c197c18ef08b0f759c26f43cac66e039cc6b952",
+      "bytes": 1487492
+    },
+    {
+      "path": "raw/inside-trip-v1.png",
+      "sha256": "d1242e38ee230fdbe22c242e092dc8db4d7307917c60911cfd6170dcbb25358b",
+      "bytes": 1154903
+    },
+    {
+      "path": "raw/inverted-guard-v1.png",
+      "sha256": "06d051d4435a1dd4878c0bce93d1578ff8a75a9c915039547f28075cb2741327",
+      "bytes": 1463488
+    },
+    {
+      "path": "raw/inverted-guard-v2.png",
+      "sha256": "ce7bed79d2e701b6c95bd60e95eeb031487e17895d05367ae2a4b730b0076274",
+      "bytes": 1500007
+    },
+    {
+      "path": "raw/john-wayne-sweep-v1.png",
+      "sha256": "1b87f7ce4c24979e438a3222f5748a7dae79422196eabb184f9c9c5abf5f1128",
+      "bytes": 1354676
+    },
+    {
+      "path": "raw/k-guard-v1.png",
+      "sha256": "76fdad08a53ce239721819263ad1c0a9eaefec8b018064c5e724df7bed99900d",
+      "bytes": 1466203
+    },
+    {
+      "path": "raw/keymaster-guard-v1.png",
+      "sha256": "9f46f28df85fb927292e9fc3373152950e6fe440043586720249521c5aec4ba1",
+      "bytes": 1526132
+    },
+    {
+      "path": "raw/kimura-sweep-v1.png",
+      "sha256": "84728539642eeb83652857a85862b7b7a8b08a3c9d06a0b3a589180f74b5f518",
+      "bytes": 1426823
+    },
+    {
+      "path": "raw/kimura-sweep-v2.png",
+      "sha256": "061828ac66d508ca32df160630d2400948c7882be45d11b55c42c346bab17c31",
+      "bytes": 2126256
+    },
+    {
+      "path": "raw/kimura-sweep-v3.png",
+      "sha256": "b9dcfc0d80974ec228a61883b1cd184f643ad3df228020d4208952c174619acf",
+      "bytes": 1985519
+    },
+    {
+      "path": "raw/kimura-v1.png",
+      "sha256": "87f639c2f5fc1002a914d08bdb322db7593071fd8ac3b18f0c44aaf0a44e65c1",
+      "bytes": 1587389
+    },
+    {
+      "path": "raw/kiss-of-dragon-v1.png",
+      "sha256": "80d62ee8d6f2b61ec90575fafd21f3dbc5211a94c7fb248b405618f8840cad90",
+      "bytes": 1635488
+    },
+    {
+      "path": "raw/knee-bar-v1.png",
+      "sha256": "5aeb374294197d9daa257c370bcee4809154531d31d5b527c34fdda76eb1ab5c",
+      "bytes": 1101023
+    },
+    {
+      "path": "raw/knee-bar-v2.png",
+      "sha256": "a8ffff9050ecffd11f05ddbb2a406a982ff906d9420fada7efed37b7038672b9",
+      "bytes": 1294071
+    },
+    {
+      "path": "raw/knee-cut-v1.png",
+      "sha256": "4791173047b79e06e96a967f9550fa5dc7998c6996efaa40739da9f3c122d776",
+      "bytes": 1220916
+    },
+    {
+      "path": "raw/knee-on-belly-v1.png",
+      "sha256": "eb74f3f99cde2fdb416bfe1c8fcc17343d916134516cfdcdf9e23a440838622c",
+      "bytes": 1554703
+    },
+    {
+      "path": "raw/knee-shield-v1.png",
+      "sha256": "720902da14de13f7f87bc364e031ba1d00d765081f574d05b74c86b6c4930cbd",
+      "bytes": 1546243
+    },
+    {
+      "path": "raw/knee-slide-v1.png",
+      "sha256": "e471d03b24e43bc7159bb59b648ceaa3ab08ce20b12461e73c45b4dc08fbe3c4",
+      "bytes": 1403253
+    },
+    {
+      "path": "raw/lapel-guard-v1.png",
+      "sha256": "fd66595fb1a46fccf76b340c68e34122bbc0760b4790d2eebbee79e8b5ab933d",
+      "bytes": 1547855
+    },
+    {
+      "path": "raw/lapel-pass-v1.png",
+      "sha256": "a24ddd4dbc9d190f2b66a3078056341ba87b1e41b0cefef40aa1ab17bc44d15f",
+      "bytes": 1626440
+    },
+    {
+      "path": "raw/lapel-pass-v2.png",
+      "sha256": "10b0108338ec90ba521cb2117c7fc48965d3499f752157f2cfb7d055fe29559d",
+      "bytes": 1347102
+    },
+    {
+      "path": "raw/lapel-pass-v3.png",
+      "sha256": "43def692516d15f7f18e997cd92d053767201ecea95f1e061c4a563cc27070bb",
+      "bytes": 1289418
+    },
+    {
+      "path": "raw/lasso-guard-v1.png",
+      "sha256": "7dd77bb446291e4de831110c4a75e0ce4c7f23c90aa002b37dd76d9c5d27cbc1",
+      "bytes": 1465690
+    },
+    {
+      "path": "raw/lasso-guard-v2.png",
+      "sha256": "b47d5a6250d6f97a549ab27febf2296331fd1d0fb7be91735031fd2aeb781ebe",
+      "bytes": 1618823
+    },
+    {
+      "path": "raw/leg-drag-v1.png",
+      "sha256": "0b0ec4a83254417fe8c8088619843bcddef178b7b01ed051fcd309239a1bab92",
+      "bytes": 1361838
+    },
+    {
+      "path": "raw/leg-weave-v1.png",
+      "sha256": "c1022964c5cb51fb4604992b014bf799718ec7809506afbafab584cf8b30cdee",
+      "bytes": 1457033
+    },
+    {
+      "path": "raw/leg-weave-v2.png",
+      "sha256": "aff786cedd975f3ed1a96838db060cfe0d32d2c52a3d46eae50e83df90c8b1b1",
+      "bytes": 1474210
+    },
+    {
+      "path": "raw/lockdown-v1.png",
+      "sha256": "8cd668558d49bc9de3006796f84de39925c102a2a947cef29ce0bb502d0b48b4",
+      "bytes": 1249593
+    },
+    {
+      "path": "raw/lockdown-v2.png",
+      "sha256": "57cb18309e2ffa73f4be233f56f6ecf85f9d38339862df85450fa3f2a6c5c3b9",
+      "bytes": 1158563
+    },
+    {
+      "path": "raw/long-step-v1.png",
+      "sha256": "6818804103111cb8406671eaa5687d227393ba053c87082f70d4b062d40f30a3",
+      "bytes": 1095681
+    },
+    {
+      "path": "raw/loop-choke-v1.png",
+      "sha256": "4cefbc19e0eb0a0d0cdcbfaa83c513663908cdce401ed448ef687b5eae84fcc5",
+      "bytes": 1417545
+    },
+    {
+      "path": "raw/loop-choke-v2.png",
+      "sha256": "e34dc78481429a616dab1f56d4b76a387f662ef3510ae61e26b837f544e5ffff",
+      "bytes": 1312409
+    },
+    {
+      "path": "raw/loop-choke-v3.png",
+      "sha256": "2c7f43cdda5d576f56d468cb63e089e30b529a8c8826add8e3db600360511bad",
+      "bytes": 1341859
+    },
+    {
+      "path": "raw/loop-choke-v4.png",
+      "sha256": "faafe5ffd7db00e170ddc56c7deea1405a9826de04da5dd8029b72d4df7c1183",
+      "bytes": 1213862
+    },
+    {
+      "path": "raw/lumberjack-sweep-v1.png",
+      "sha256": "4c849660611b44eaa6bce4337cf65c1b416c840c007177516dcf840f122b094f",
+      "bytes": 1362406
+    },
+    {
+      "path": "raw/matrix-v1.png",
+      "sha256": "ad72458d3d9248198f5f1c44eafd866633126e465499c9e97960ce5158fc82fc",
+      "bytes": 1625423
+    },
+    {
+      "path": "raw/matrix-v2.png",
+      "sha256": "31525141dd5e7c1b75bbf94b93b51b513d7597e6c9e9c88ddf23ec656136835e",
+      "bytes": 1570625
+    },
+    {
+      "path": "raw/mount-v1.png",
+      "sha256": "24a85769dcf137d8ff8e8af8f294417497f60246f00266a660819a0bdf0426e3",
+      "bytes": 1487902
+    },
+    {
+      "path": "raw/north-south-choke-v1.png",
+      "sha256": "c91faf884d2af388b5c07a000d3801d8bf9ad7a69998872cf0b67d971fdbc3c8",
+      "bytes": 991061
+    },
+    {
+      "path": "raw/north-south-choke-v2.png",
+      "sha256": "5498468e472d8f5a24ce1595310d427c5c298d0b19b846cfce643ec577ce24e9",
+      "bytes": 944688
+    },
+    {
+      "path": "raw/north-south-position-v1.png",
+      "sha256": "23c33306cb999f08bf1a2d9fc41f0094c2abda7ce7229561b90a720fe92b8e37",
+      "bytes": 1234943
+    },
+    {
+      "path": "raw/octopus-guard-v1.png",
+      "sha256": "da63418c21dd9850bdc113300fd987fd17e4d33ec4427e7f5c6aeed7f4ab2b71",
+      "bytes": 1658780
+    },
+    {
+      "path": "raw/omoplata-v1.png",
+      "sha256": "2fbea63950e8c13251368d3fce6d5728a444f8219488ef2ca837b121ae48b1b7",
+      "bytes": 1700976
+    },
+    {
+      "path": "raw/open-guard-v1.png",
+      "sha256": "6ce4886ae6c73664ae74221bbf0200df3b609bc8489af01b16e8689cbcf22af5",
+      "bytes": 1439800
+    },
+    {
+      "path": "raw/outside-ashi-garami-v1.png",
+      "sha256": "4546c1d0ebd8e4b259436c6321183f2321877ce2d97e205a35d5fc9b81583431",
+      "bytes": 1511935
+    },
+    {
+      "path": "raw/outside-ashi-garami-v2.png",
+      "sha256": "3c9df3eb8ec9fa91da64e2e9c1ba49d3ff234f4bf517503878ed1dfb9dc0efc0",
+      "bytes": 1545317
+    },
+    {
+      "path": "raw/outside-heel-hook-v1.png",
+      "sha256": "79651b954c87df13e7163439009b6bf84f29d33019a319bb44a7fd1e93616cfb",
+      "bytes": 1750739
+    },
+    {
+      "path": "raw/outside-trip-v1.png",
+      "sha256": "0a621fd3dc9886fb84aa85cf2c1468562e80a38ede4bf666602dd5e186f4b871",
+      "bytes": 1208279
+    },
+    {
+      "path": "raw/over-under-v1.png",
+      "sha256": "36214f945c77818dc3630c7475035ecae9fd89b55db7df366b570e7e766e9017",
+      "bytes": 1435385
+    },
+    {
+      "path": "raw/paper-cutter-choke-v1.png",
+      "sha256": "242429e0fed98062a2be226404990b0f9220d85620ef2630359817500a6318c7",
+      "bytes": 1409329
+    },
+    {
+      "path": "raw/pendulum-sweep-v1.png",
+      "sha256": "056cf7af2f38f2b79a989333a7f921118c64649175f50877efc52b30b147f574",
+      "bytes": 1389119
+    },
+    {
+      "path": "raw/pendulum-sweep-v2.png",
+      "sha256": "29271144e3d11f6af05e6c1a643926f6ae09387556ad070d1c40291fa1071380",
+      "bytes": 1856245
+    },
+    {
+      "path": "raw/pendulum-sweep-v3.png",
+      "sha256": "a46ecf90ba2fdf6c9f4a496e9b32b714677d5e557ef05448cdb1d662efbf4f61",
+      "bytes": 1696212
+    },
+    {
+      "path": "raw/peruvian-necktie-v1.png",
+      "sha256": "1878322f91eb79449b74788707b1f56609634df72b8bfb097f9fdaa90cededab",
+      "bytes": 1885547
+    },
+    {
+      "path": "raw/peruvian-necktie-v2.png",
+      "sha256": "2bf6e5d334d44b4cc84760905426c98ddae3b7500eda3d096ac21242e1ae1ce6",
+      "bytes": 1756035
+    },
+    {
+      "path": "raw/peruvian-necktie-v3.png",
+      "sha256": "a63e823bf26dc3ecf047a75b4ca3521f612c38eb94e52f24281161ee5f083bf0",
+      "bytes": 1713212
+    },
+    {
+      "path": "raw/peterson-roll-v1.png",
+      "sha256": "5da8f3b2bf6ff05a5ff6d0f19cfae6a73cfc53c673915cd1bbe1ee564081b681",
+      "bytes": 1510522
+    },
+    {
+      "path": "raw/pressure-pass-v1.png",
+      "sha256": "083790407a8b5f5fbb082c1828da6398e24291926db4d8e2ed09e29e70785f45",
+      "bytes": 1277646
+    },
+    {
+      "path": "raw/quick-armbar-v1.png",
+      "sha256": "a25ab5dd55b2ae14ee0a00a3ea2c9d054216040ac3b8e98c6516f674e35b2c00",
+      "bytes": 1779241
+    },
+    {
+      "path": "raw/rear-naked-choke-v1.png",
+      "sha256": "e2fbe145fcdef2451b4ee62cb2009ea13932a37c08ed3c458e5b73d908487288",
+      "bytes": 1813214
+    },
+    {
+      "path": "raw/reverse-de-riva-guard-v1.png",
+      "sha256": "1e83a57be0591205649f6c86c39372714d0c9092965999231597d1b8d5ce7ef8",
+      "bytes": 1602894
+    },
+    {
+      "path": "raw/reverse-de-riva-guard-v2.png",
+      "sha256": "93c764a76faf0ca63f2d263d35082154d9b955e5bdad5827208f18a8361442d2",
+      "bytes": 1756646
+    },
+    {
+      "path": "raw/reverse-x-guard-v1.png",
+      "sha256": "83dbe09c6b223c4b2f80b8305f9d6d4e26692e424c8dddbd27af926046fb8315",
+      "bytes": 1259107
+    },
+    {
+      "path": "raw/rubber-guard-v1.png",
+      "sha256": "f0cf017039494c25d9282dfb860fe9f1e41c9b0c8e6a7021a849a4fd491628dd",
+      "bytes": 1531483
+    },
+    {
+      "path": "raw/rubber-guard-v2.png",
+      "sha256": "75bc7fc23941dc5555a3db9a8a87fc9e8da6c904d99907aac657c8d6eba4e86e",
+      "bytes": 1710942
+    },
+    {
+      "path": "raw/rubber-guard-v3.png",
+      "sha256": "6166e86bd3de9d385ed8a9cc5d8f8f7d04955a1e79491ce7826c4268b9397372",
+      "bytes": 1862085
+    },
+    {
+      "path": "raw/rubber-guard-v4.png",
+      "sha256": "15ac461888fe09f83a83a5af93052cd2c2f88e46a74b0d59e4c246096df057a2",
+      "bytes": 1819349
+    },
+    {
+      "path": "raw/s-mount-v1.png",
+      "sha256": "5d96409f5d4d3999b52868ae063a927571abe8dd9550cfd199810360ea4c5ac9",
+      "bytes": 1818779
+    },
+    {
+      "path": "raw/s-mount-v2.png",
+      "sha256": "f03fffe6e771db89d2613854a5889f51ae2bbaed74dfa58f9a5dadbcfebdf895",
+      "bytes": 1698450
+    },
+    {
+      "path": "raw/saddle-position-v1.png",
+      "sha256": "aef7728d116d83f4ebd0ed40f9d7e415088fef1c6d06e5eb63b6d60b93a44f04",
+      "bytes": 1549718
+    },
+    {
+      "path": "raw/saddle-position-v2.png",
+      "sha256": "b47cb468e996e54964b8399a8a4ee27f2474993c942fec9c5dc4f91006b10e85",
+      "bytes": 1800928
+    },
+    {
+      "path": "raw/saddle-position-v3.png",
+      "sha256": "b7db2a2137848e22581ed2937fc74dd4713c4e5a11736e080afb12048c529f4d",
+      "bytes": 1493551
+    },
+    {
+      "path": "raw/saddle-position-v4.png",
+      "sha256": "1179809bbfc3ae2dad92b6eba9ca2907c24d9ba8b927e7ca5d7f38bb7737eb91",
+      "bytes": 1419409
+    },
+    {
+      "path": "raw/sagi-oro-sweep-v1.png",
+      "sha256": "5109ed3beef0323e49441647376441033e13e66d1084bad3fd3310ab78ed784f",
+      "bytes": 1700614
+    },
+    {
+      "path": "raw/scarf-hold-v1.png",
+      "sha256": "23f0abfd9e954652ffe079c6c3f89bc8a9a5eabd3331d00ad903ee0dee0d1c65",
+      "bytes": 1648440
+    },
+    {
+      "path": "raw/scissors-sweep-v1.png",
+      "sha256": "047dc138a582a55241c802af6d996e8f9d3d314501746589868524eac92afaf4",
+      "bytes": 1411629
+    },
+    {
+      "path": "raw/scissors-sweep-v2.png",
+      "sha256": "e118c7127d899292cd6261a39c08715d8ebd9dd55a21bcf29f159e98b0d77cfc",
+      "bytes": 1829316
+    },
+    {
+      "path": "raw/seat-belt-grip-v1.png",
+      "sha256": "7db3bfd31622782671abab4d5ad784dcb5e9e536987650a0c50c03913afc850d",
+      "bytes": 2012883
+    },
+    {
+      "path": "raw/shin-to-shin-guard-v1.png",
+      "sha256": "dc0b99af509c5d1035e7284e8011f33e004abe6d49c6fc871272aca89b271348",
+      "bytes": 1493171
+    },
+    {
+      "path": "raw/shin-trap-v1.png",
+      "sha256": "456646ea309869bd6f63a4dcebe07a26bd30d490239caf96fff086524b386ef3",
+      "bytes": 1514961
+    },
+    {
+      "path": "raw/side-control-v1.png",
+      "sha256": "907fca06744d8ed386af74fed2ec1ddb31c679ad31275018703a4d3326450409",
+      "bytes": 1100207
+    },
+    {
+      "path": "raw/single-leg-takedown-v1.png",
+      "sha256": "d1f25efbbcf9528e0fb1479770bd051b1db22a7d56b4ab60fe95bd4a04c43ba8",
+      "bytes": 1291565
+    },
+    {
+      "path": "raw/single-leg-x-guard-v1.png",
+      "sha256": "cd6b8085fff60552b6fd43ffd0c67b601ed18b548f59b76e316a628e60f5e12b",
+      "bytes": 1427836
+    },
+    {
+      "path": "raw/sit-up-guard-v1.png",
+      "sha256": "77ecbc448b389553168678b5280cdc2ec158c3df7831331925cd260056b4a9b4",
+      "bytes": 1728591
+    },
+    {
+      "path": "raw/smash-pass-v1.png",
+      "sha256": "2e496da4cd738025873ee7d1daeb2bc33bf1f4b6b560b0913f84ed32a5a9adb9",
+      "bytes": 1094942
+    },
+    {
+      "path": "raw/snap-down-v1.png",
+      "sha256": "405466c318d64f1a9560c722e72d6043e9ceda3bb58062fb64798fc63f44a58c",
+      "bytes": 1440468
+    },
+    {
+      "path": "raw/spider-guard-v1.png",
+      "sha256": "ee2a2aa30647c50419a572280d3da1d8e4a9631eb14ac0a8e77bdd3ba00ca962",
+      "bytes": 1581860
+    },
+    {
+      "path": "raw/sprawl-v1.png",
+      "sha256": "0c4d9fe622ad2856b203fb2eee648c2b9e4765cd1450492ba34fd99d26991f47",
+      "bytes": 905405
+    },
+    {
+      "path": "raw/squid-guard-v1.png",
+      "sha256": "f03e560eb597fc9d81174a4af0aa4a289c11b22427f4b49afd2f5bea1cf96607",
+      "bytes": 1557595
+    },
+    {
+      "path": "raw/squid-guard-v2.png",
+      "sha256": "cbb24d6ccf9375e3d650aede231a3dd6c108012ebd01f09a6be13d4a795d5ae4",
+      "bytes": 1808346
+    },
+    {
+      "path": "raw/squid-guard-v3.png",
+      "sha256": "b6d987eb79d54b72a9f9b1382db25e4d6c9353159d9d5d794a2d978b6d6152c1",
+      "bytes": 1738617
+    },
+    {
+      "path": "raw/stack-pass-v1.png",
+      "sha256": "a29e38d60b45998b11f7faaade3c5b93f50232e81899de41bd9444536d20d389",
+      "bytes": 1442052
+    },
+    {
+      "path": "raw/standing-v1.png",
+      "sha256": "5bde2b4242a138619c70fb6bd563002b96f78a79def7c9b4d1dabe442df18bd7",
+      "bytes": 1492029
+    },
+    {
+      "path": "raw/straight-ankle-lock-v1.png",
+      "sha256": "8f7fdcb3b50b1a6f56d6f972de7773e31b63f9b81cfeb088c8277a6fc840472a",
+      "bytes": 1754288
+    },
+    {
+      "path": "raw/straight-collar-control-v1.png",
+      "sha256": "11b5c0920c19f11d5864b0b4a820d7dc13d60f1aa5c33396d19ed2519735efca",
+      "bytes": 1387546
+    },
+    {
+      "path": "raw/submission-v1.png",
+      "sha256": "bfaa48ce1740132ae71c10befd311a5c60128eda5e5b70624e443507108f8b9a",
+      "bytes": 1337072
+    },
+    {
+      "path": "raw/surfer-pass-v1.png",
+      "sha256": "3abb682a561094d4b72275e64f85e7f69cef5407d50e7587759507a5b17bf466",
+      "bytes": 1493650
+    },
+    {
+      "path": "raw/sweep-v1.png",
+      "sha256": "91114caa456fc937b73e90047bc36c1afba61f165481aa0e7175ecbd81d97483",
+      "bytes": 1713085
+    },
+    {
+      "path": "raw/takedown-v1.png",
+      "sha256": "48f10e73e3b90e980efd942307f263133eb9325ce60a462dbb5c1a6633296877",
+      "bytes": 1421161
+    },
+    {
+      "path": "raw/tarikoplata-v1.png",
+      "sha256": "decb29cf273b582b6974f848cd5f0bb6a8954d944c90d7dc66e90ad1f40ed851",
+      "bytes": 1604199
+    },
+    {
+      "path": "raw/technical-stand-up-v1.png",
+      "sha256": "be518f00f2849674ac47945636839c91190a663fe9eab6c5dba735d58a49736b",
+      "bytes": 1340376
+    },
+    {
+      "path": "raw/three-quarter-mount-v1.png",
+      "sha256": "3804261d199e2252c6ebfa333eb0b11fbd88073a214df5d1a40501903e769c8f",
+      "bytes": 1184448
+    },
+    {
+      "path": "raw/toe-hold-v1.png",
+      "sha256": "08c04f151ba5a36bfb23ad3c392ec4322a40c0f719fc4470d0e986b333da1c80",
+      "bytes": 2102114
+    },
+    {
+      "path": "raw/toreando-pass-v1.png",
+      "sha256": "79067d4a993afee0ac6fd41e3b184b2093b2e3b25fcc58d4c0252c15ee9b79ca",
+      "bytes": 1453045
+    },
+    {
+      "path": "raw/triangle-choke-v1.png",
+      "sha256": "6a1724a7732cbc7273d741c348cbc57483613a350b56ca97d91bb5de14a58600",
+      "bytes": 1448750
+    },
+    {
+      "path": "raw/triangle-choke-v2.png",
+      "sha256": "bc7ef5b7912c7c2ed71d17e1484f65e80e4fe3d4fe16b5dbea34999c8f1dcf7e",
+      "bytes": 1357790
+    },
+    {
+      "path": "raw/tripod-sweep-v1.png",
+      "sha256": "a6e99ea8eab51254a3d5f53127904d91c22733ef3f55a22d90752c4b9770435d",
+      "bytes": 1703597
+    },
+    {
+      "path": "raw/truck-v1.png",
+      "sha256": "02acca9705e635265dc7fa7262bd565e0902e9ba40139426f3d7d20d13f230d9",
+      "bytes": 1655446
+    },
+    {
+      "path": "raw/truck-v2.png",
+      "sha256": "c87508f37b675345b731dad37e1f18d4b2b5aedbd2b443e4b6be8ef41935b777",
+      "bytes": 1712715
+    },
+    {
+      "path": "raw/turtle-v1.png",
+      "sha256": "ac73db21f7b9e949759b5be43befbc4baca87f15fc79684f312ec08344c3037c",
+      "bytes": 1490880
+    },
+    {
+      "path": "raw/twister-v1.png",
+      "sha256": "64b2742b6596e54d19202bb3032c0cf1b9346b1d7b19137d525c964c9ddb2de2",
+      "bytes": 1942652
+    },
+    {
+      "path": "raw/twister-v2.png",
+      "sha256": "6374163c4210bb960646f42c56fe02acf73d8f2ef9ff38c26ff2103a4088f22e",
+      "bytes": 1797010
+    },
+    {
+      "path": "raw/two-on-one-v1.png",
+      "sha256": "0e2294496db823ab7fc51a271cff8fb17ae42d98151bded6d158a453158d5fc1",
+      "bytes": 1639879
+    },
+    {
+      "path": "raw/under-hook-v1.png",
+      "sha256": "1a62f0b44c7a2587b530788f6b40921e1014a77313c78b2083dcd634c3ad8994",
+      "bytes": 1703484
+    },
+    {
+      "path": "raw/von-flue-choke-v1.png",
+      "sha256": "7965cb51a7e2e5116f7a016f530d39bb371d41db061d056a72e294a532853c7d",
+      "bytes": 1265053
+    },
+    {
+      "path": "raw/waiter-guard-v1.png",
+      "sha256": "627c06e49fef708bc21add8aa70833de69dc6ba0009ac3734816503e4e032429",
+      "bytes": 1497653
+    },
+    {
+      "path": "raw/waiter-guard-v2.png",
+      "sha256": "3df981884187fcf336b9bfeacf558f43ff18b6d80790bf0a185dd705133f0c2f",
+      "bytes": 1603380
+    },
+    {
+      "path": "raw/waiter-sweep-v1.png",
+      "sha256": "bd5974f1fe960c65b511c578ed1beda303e7db14967d14c8bc54b8de1b8635ef",
+      "bytes": 1525987
+    },
+    {
+      "path": "raw/waiter-sweep-v2.png",
+      "sha256": "4e9e17b3e05c144c2fcb649fc67abe6f90c92171a2659166eb9964c628796c07",
+      "bytes": 1498132
+    },
+    {
+      "path": "raw/waiter-sweep-v3.png",
+      "sha256": "c9aa858cf8a1a135ea19412a537ce23d586e267576a382a2c2d68c6835d8f4b0",
+      "bytes": 1286215
+    },
+    {
+      "path": "raw/williams-guard-v1.png",
+      "sha256": "8f4af93e0cd24038b608342f7a9a860cfbdc94aee323f0193c75b9da5fdad9fd",
+      "bytes": 1624647
+    },
+    {
+      "path": "raw/wiper-v1.png",
+      "sha256": "68727aff2ecd3f2a3859000076d577cc1542a73d4cd8c4dcb66d1ffebf98e66c",
+      "bytes": 1217404
+    },
+    {
+      "path": "raw/wiper-v2.png",
+      "sha256": "c6fad81ce6fe2c1f8a1f9580180f3ee5d4b5650beeeab4c648db437f27d5442a",
+      "bytes": 1321346
+    },
+    {
+      "path": "raw/wiper-v3.png",
+      "sha256": "676c27ecdbbe1309c42e162dc8b292627916aa1c6789ef0ca8fa6cb4a19307e7",
+      "bytes": 1076285
+    },
+    {
+      "path": "raw/wiper-v4.png",
+      "sha256": "f0274fa3cd42dc6dd6b73b5f107213a066ebbaec68600da88395b1cf597d528c",
+      "bytes": 1019921
+    },
+    {
+      "path": "raw/worm-guard-v1.png",
+      "sha256": "216c1f8ac1596a185df0fd16e098c1cd46eb1b836eeaad25a95ffda4bcd0b2a3",
+      "bytes": 1627895
+    },
+    {
+      "path": "raw/wrestle-up-v1.png",
+      "sha256": "8c3729c51ab6eb332955ac9a74871f21eb3041f9009ee4e522e6639e3a4feacb",
+      "bytes": 1249216
+    },
+    {
+      "path": "raw/wrist-lock-v1.png",
+      "sha256": "d0ddb20d53708e1f2959f4641e95762af76a8ed77e42c0814540dbc214ba93cc",
+      "bytes": 2232835
+    },
+    {
+      "path": "raw/x-guard-sweep-v1.png",
+      "sha256": "21f578cb868ae586b49bfc014e6ec2a4fa5fcf0b5f336b965f2f18168981f556",
+      "bytes": 1809818
+    },
+    {
+      "path": "raw/x-guard-sweep-v2.png",
+      "sha256": "cab1a3b6b8a3b93a9b84d0f98a415f2572b204f0536e7150853d4b0a45def43f",
+      "bytes": 1622515
+    },
+    {
+      "path": "raw/x-guard-sweep-v3.png",
+      "sha256": "1fecdc4706419a6c349d749709cf0200a17d039db8fde0d21cb4482b92c10466",
+      "bytes": 1690968
+    },
+    {
+      "path": "raw/x-guard-v1.png",
+      "sha256": "dfb78f72639167e678a49ed167f4160619fdc371c2a9800d23a561f3be4ec84f",
+      "bytes": 1465896
+    },
+    {
+      "path": "raw/x-guard-v2.png",
+      "sha256": "9bcfe7ebed0da20d34f210acc1f9c0805bd2f89c19e11412bf2355ba4281719c",
+      "bytes": 1757309
+    },
+    {
+      "path": "raw/x-pass-v1.png",
+      "sha256": "83f022690d4748c75ed0f11d7988ce9caf538d0e01c2a4e9fca59c5cc65ca9fd",
+      "bytes": 1136712
+    },
+    {
+      "path": "raw/z-guard-v1.png",
+      "sha256": "45847ba79d972117aa4e69cb9cba7f7aee87279414db4a357006ee71b50a1f41",
+      "bytes": 1383386
+    },
+    {
+      "path": "raw/z-lock-v1.png",
+      "sha256": "4407860c8f50f4e7ef2dc974163c12bd0345855e3aef358e8e3a06493c6f4089",
+      "bytes": 1186900
+    },
+    {
+      "path": "prompts/100-percent-sweep-v1.txt",
+      "sha256": "329685bba2b2cf29619fc196535d9dc1fb12aa8c869a902db754993bfe34b381",
+      "bytes": 2920
+    },
+    {
+      "path": "prompts/100-percent-sweep-v2.txt",
+      "sha256": "7c966f88042bf69b6e265b4217d2985bf30724f99d21c726e1116d69abec670e",
+      "bytes": 2237
+    },
+    {
+      "path": "prompts/100-percent-sweep-v3.txt",
+      "sha256": "002c4d93f3dfbade5f7bca22c4cb3b9207f34c9e782c9d7203d57d62cf04626b",
+      "bytes": 1554
+    },
+    {
+      "path": "prompts/americana-v1.txt",
+      "sha256": "75cb6ef3ba344517b66e63179cfd329b3e87fab676b8454b3a88bb6646661584",
+      "bytes": 2415
+    },
+    {
+      "path": "prompts/anaconda-choke-v1.txt",
+      "sha256": "39ec5356a8a86d726c7216e6dacd5240d418846cbd43a433b4456602b0dcdf1a",
+      "bytes": 2315
+    },
+    {
+      "path": "prompts/anaconda-choke-v2.txt",
+      "sha256": "f1e64fcdec1a78f1795ae9acb0c29086489aedebfd682e0b83763d7d44c20dd2",
+      "bytes": 1431
+    },
+    {
+      "path": "prompts/ankle-pick-v1.txt",
+      "sha256": "2ff0a5ca2a7a34124833c926e791111a344e91c502f75ecfbe235e17508c623c",
+      "bytes": 1781
+    },
+    {
+      "path": "prompts/aoki-lock-v1.txt",
+      "sha256": "f52a04f9350e433c666fb32e8182f9354b0713f8be2469473250f918c0916878",
+      "bytes": 2952
+    },
+    {
+      "path": "prompts/arm-drag-v1.txt",
+      "sha256": "db387fa0262a6920902ed9547616f1a5106795897a879211932d88b3ea76093d",
+      "bytes": 2269
+    },
+    {
+      "path": "prompts/arm-triangle-v1.txt",
+      "sha256": "a10aad399528cb7cd44c2f497c365f0042398e840c45e00cec0aa0c4f309e6b4",
+      "bytes": 2428
+    },
+    {
+      "path": "prompts/arm-triangle-v2.txt",
+      "sha256": "81a799c5d4e99771fa9a189694a10d1f38a273d8f4a110549fbc76da45e58d3e",
+      "bytes": 1482
+    },
+    {
+      "path": "prompts/armbar-v1.txt",
+      "sha256": "0730e93923fed2c90a9624abb8dcf82ba9969ddf09f88e2d951702bc830c7042",
+      "bytes": 2447
+    },
+    {
+      "path": "prompts/armbar-v2.txt",
+      "sha256": "3caf31d3bee39469db5dd767fa8bbdd0f1a8011c0e1fb4d55e58aa91d7a79261",
+      "bytes": 2031
+    },
+    {
+      "path": "prompts/ashi-garami-v1.txt",
+      "sha256": "c8001f4c77f123e02815d895035becdfefbc9b8a9e7c1cdc6f21570d815bcdad",
+      "bytes": 2388
+    },
+    {
+      "path": "prompts/back-control-v1.txt",
+      "sha256": "172a350a8d56004b8d0a851747c60518ea1a2f8ea7fb307d331a7ebba3bb4bdc",
+      "bytes": 1888
+    },
+    {
+      "path": "prompts/back-mount-v1.txt",
+      "sha256": "f39cae32740ad6f1adb86db6a81f23a2ad1fa17de0cba1b189790063f11ac04d",
+      "bytes": 2445
+    },
+    {
+      "path": "prompts/back-mount-v2.txt",
+      "sha256": "d43f9a309b4469617767cbadd625a7db774cf366eba72d23aa662715cd868730",
+      "bytes": 1780
+    },
+    {
+      "path": "prompts/back-mount-v3.txt",
+      "sha256": "6a9b2238f6d6fab17f0ac43eae6efdc42878335d385ed26f2154992ee3d7153c",
+      "bytes": 1065
+    },
+    {
+      "path": "prompts/back-step-v1.txt",
+      "sha256": "82657a9119e6c9356319c1d8f6b68ad78d2f332b93003aecd408143c0f5b1204",
+      "bytes": 1884
+    },
+    {
+      "path": "prompts/back-step-v2.txt",
+      "sha256": "2a7d47f86f5a22da209900abd639a8fc86eeb84b595b3b17c06f57716c1d417b",
+      "bytes": 2681
+    },
+    {
+      "path": "prompts/back-take-v1.txt",
+      "sha256": "e13d5086a72266d97fb5b646250241098a21ad7049b642e49062e1154ec5c7bf",
+      "bytes": 1854
+    },
+    {
+      "path": "prompts/backside-fifty-fifty-v1.txt",
+      "sha256": "33948acbee504b04f1ee5abce2d26bd5cd24aede17fdf58b249a7443346ddf54",
+      "bytes": 2356
+    },
+    {
+      "path": "prompts/balloon-sweep-v1.txt",
+      "sha256": "1996167c986a50fe1dd16d0e94ddeaeadd10bd9d74ab300ee8a523a33c3967df",
+      "bytes": 1876
+    },
+    {
+      "path": "prompts/banana-split-v1.txt",
+      "sha256": "232dc6d1c2540818a51ad8c0939c43000e28916f0f1cd524f3152831675a1808",
+      "bytes": 2319
+    },
+    {
+      "path": "prompts/baratoplata-v1.txt",
+      "sha256": "e9860794c1c2c5840acdce7db83f1b0b94ef8baf8dbe4b75c991c4a96271a22e",
+      "bytes": 3136
+    },
+    {
+      "path": "prompts/baseball-bat-choke-v1.txt",
+      "sha256": "45e9e4ffdc6b09401593e6036abbb855d350dd3d2f2d61e764b09b26559850e0",
+      "bytes": 2443
+    },
+    {
+      "path": "prompts/belly-down-armbar-v1.txt",
+      "sha256": "5ac5b313232576185508643a12f3d3acc77eae58d467a48908953e7a70aa0a08",
+      "bytes": 2331
+    },
+    {
+      "path": "prompts/belly-down-armbar-v2.txt",
+      "sha256": "a05f967a451b534bb6c4077e81ed7cc236c9ac8e0cf0757d4bf6821352d6d303",
+      "bytes": 1470
+    },
+    {
+      "path": "prompts/berimbolo-v1.txt",
+      "sha256": "787a3bcd0a90a441aabce3e0920df23fef9d893cd426b65d780fdff0d6771cc3",
+      "bytes": 1923
+    },
+    {
+      "path": "prompts/berimbolo-v2.txt",
+      "sha256": "6a50af841a9aa8247a61fd4ff03474436f53b26af34ab49081a902529623704e",
+      "bytes": 2727
+    },
+    {
+      "path": "prompts/bicep-slicer-v1.txt",
+      "sha256": "3162c1ab36fa581e43b1326137f3edcddfff7ad7719653fe0a25edf19635a81c",
+      "bytes": 2312
+    },
+    {
+      "path": "prompts/bicep-slicer-v2.txt",
+      "sha256": "3b0ba57ab7cb7fd53f80d9d1bc68a1f7c649c17767576655f5d873059a869257",
+      "bytes": 1183
+    },
+    {
+      "path": "prompts/body-lock-v1.txt",
+      "sha256": "f237eb748c0f88106dbfbf40c5359df60c51248de98c5d2934cb98192ac588da",
+      "bytes": 2256
+    },
+    {
+      "path": "prompts/bow-and-arrow-choke-v1.txt",
+      "sha256": "5854c054feb278efeacd78e1964d75ec2cd75d2c4bef498133d9653463df2649",
+      "bytes": 2345
+    },
+    {
+      "path": "prompts/brabo-choke-v1.txt",
+      "sha256": "f96d9d1ac53f174b84b5e48dd46e531e79af81442c33e450fb9bb5c0f9be3682",
+      "bytes": 2455
+    },
+    {
+      "path": "prompts/brabo-choke-v2.txt",
+      "sha256": "ac99a27070e003a86dacfe9b8d701e7bee2c66ce1a8dd00ad70467cd2b011e0d",
+      "bytes": 1052
+    },
+    {
+      "path": "prompts/break-fall-v1.txt",
+      "sha256": "7eedd13ae4d7e3489631504d2161859d8314d334850a6ef47f5a961a1dbd9691",
+      "bytes": 1570
+    },
+    {
+      "path": "prompts/buggy-choke-v1.txt",
+      "sha256": "ad6d8081ce740c67cc559d28458f05d9cd7ea90711aae9266f9d48edd2edcc15",
+      "bytes": 3065
+    },
+    {
+      "path": "prompts/buggy-choke-v2.txt",
+      "sha256": "26ea14acdff37d35ea2117e039cb8d75e3804edfe3f878f971ff7019cd7a0757",
+      "bytes": 2575
+    },
+    {
+      "path": "prompts/buggy-choke-v3.txt",
+      "sha256": "23b1b9b991e61cc92125c139cdc8d0b63d3a4779df6eb646dbfb6900c1ca8906",
+      "bytes": 1239
+    },
+    {
+      "path": "prompts/buggy-choke-v4.txt",
+      "sha256": "1aea10679c651a0ea4fedba3a1f5b3c7824e2a90769b55a8098607c349dd8b72",
+      "bytes": 1554
+    },
+    {
+      "path": "prompts/buggy-choke-v5.txt",
+      "sha256": "60e278f99e7511578469031e43ccb0c6306dea807a28fcaef2717bbba48c258a",
+      "bytes": 1643
+    },
+    {
+      "path": "prompts/buggy-choke-v6.txt",
+      "sha256": "136e896995234f55bb434c90ed6fff5589a99f89971a74c251312da01ae73278",
+      "bytes": 2076
+    },
+    {
+      "path": "prompts/butterfly-guard-v1.txt",
+      "sha256": "b979f1c6ede693dfbcfbd7ed8dab4a4e3fb0af07fe2d1d43703cb76d12b026ef",
+      "bytes": 1880
+    },
+    {
+      "path": "prompts/butterfly-sweep-v1.txt",
+      "sha256": "12faa3533dccdbd0b26c39143fcdb8e048db63bbf3e566db52887da7c6de88bb",
+      "bytes": 2337
+    },
+    {
+      "path": "prompts/butterfly-sweep-v2.txt",
+      "sha256": "2183248ecaa938276753a07fbf86fccf12cd0f2b438e0a5697d463b19f1dd1d6",
+      "bytes": 1457
+    },
+    {
+      "path": "prompts/calf-slicer-v1.txt",
+      "sha256": "82ba1c286f44b6a3a738daa949a8bbb30c1f840978d15601e02651e487b0d73a",
+      "bytes": 2421
+    },
+    {
+      "path": "prompts/canto-choke-v1.txt",
+      "sha256": "707482b757f47de28348690cfe3d1f86fa3f849b2e0b69196b09bd2a5649377b",
+      "bytes": 2898
+    },
+    {
+      "path": "prompts/choi-bar-v1.txt",
+      "sha256": "9481511908944a102c707b9cc2cc02a2db2f42286a6b5546366a7012b76aa010",
+      "bytes": 2440
+    },
+    {
+      "path": "prompts/choke-v1.txt",
+      "sha256": "e86a2e07982f3d5b868f6b78a1eae64a6ce8bb56a46660306eb4ac39c152d916",
+      "bytes": 2452
+    },
+    {
+      "path": "prompts/clock-choke-v1.txt",
+      "sha256": "ebaaed8a35007070f4e537d76b48aadf283836ee5cb47d4ec2bc4f9a2d083c80",
+      "bytes": 2453
+    },
+    {
+      "path": "prompts/clock-choke-v2.txt",
+      "sha256": "58db608077ed2db38e9ace1d5be52651004f6c2468e7f89827ec8f92df8892c2",
+      "bytes": 1393
+    },
+    {
+      "path": "prompts/closed-guard-v1.txt",
+      "sha256": "2daa1d3d216dd8cae3dad0966c840d753bcda98dccbf4ae97a14b8e32e726946",
+      "bytes": 1851
+    },
+    {
+      "path": "prompts/collar-and-sleeve-guard-v1.txt",
+      "sha256": "3f1d4a19513c74009f91ed37553c175f15c6903d26e3a70bd6ed47fb20bca212",
+      "bytes": 1896
+    },
+    {
+      "path": "prompts/collar-drag-v1.txt",
+      "sha256": "8bf1d2b2ef7bce8263ccb6ae89ccbcd8b34c84174457760bcac447438846f91c",
+      "bytes": 1818
+    },
+    {
+      "path": "prompts/combat-guard-v1.txt",
+      "sha256": "76a07a28383cf3b6e82377b0d1e99758d5dea1a75d7fbf911794265186cd9ad4",
+      "bytes": 2290
+    },
+    {
+      "path": "prompts/counter-v1.txt",
+      "sha256": "49035a22391f54646efb10403db2883c12d5e868d9bd06ee93d6a6d106fbc926",
+      "bytes": 2365
+    },
+    {
+      "path": "prompts/coyote-armbar-v1.txt",
+      "sha256": "edb78618e378258f5992b0ffb1bd24060665cb406846c1ee3d22959ba2c27d37",
+      "bytes": 2993
+    },
+    {
+      "path": "prompts/coyote-guard-v1.txt",
+      "sha256": "4e6eb7fd34e34579d6b2b52da7f64114210073ecd26d1a1c06dd742809617e1d",
+      "bytes": 1854
+    },
+    {
+      "path": "prompts/crab-ride-v1.txt",
+      "sha256": "907c81e95463feb927a75fa6faddf4b416480b70c816c634154365ca07c6f5d4",
+      "bytes": 2295
+    },
+    {
+      "path": "prompts/crab-ride-v2.txt",
+      "sha256": "3207e298e4d14326fcc8d6f66d56a99d15af1a4758113d9d292e22fc9c9f2f85",
+      "bytes": 1991
+    },
+    {
+      "path": "prompts/crazy-dog-pass-v1.txt",
+      "sha256": "62a8ca77e3e086e24c60bc5eebba9bc1a604cd9065fc59976fbcdf85cb9169fb",
+      "bytes": 2463
+    },
+    {
+      "path": "prompts/cross-collar-choke-v1.txt",
+      "sha256": "70857e85e9547984b87871f0525b380fa94206a918f92be5877fc8525ac9373d",
+      "bytes": 2304
+    },
+    {
+      "path": "prompts/cross-collar-control-v1.txt",
+      "sha256": "b361e175e41d490d3d1dd8ebb5f0a089df39cd535f2db1f31858a1f77d1d1268",
+      "bytes": 2333
+    },
+    {
+      "path": "prompts/crucifix-v1.txt",
+      "sha256": "36c9241eb04203244606de3cb47ac307b198ed43572890102e9102778a37dd98",
+      "bytes": 2436
+    },
+    {
+      "path": "prompts/darce-choke-v1.txt",
+      "sha256": "64bd9975b8abd1ed5d45308386a893394cfdb03d626c6d6ba1cde3eb519595a5",
+      "bytes": 2421
+    },
+    {
+      "path": "prompts/darce-choke-v2.txt",
+      "sha256": "3a10bb5120ae03c489b53920cdd44f93205a8d79717a8f6486769a3b062df6b3",
+      "bytes": 2007
+    },
+    {
+      "path": "prompts/de-la-riva-guard-v1.txt",
+      "sha256": "f54ad1976111b6957f3450dc58beeb7a20d593b42c8a2a4b05b4a1315b8da1d0",
+      "bytes": 1874
+    },
+    {
+      "path": "prompts/deep-de-riva-guard-v1.txt",
+      "sha256": "a3d37c8e43dec54c9c0d561cfb9c71178c0ce4cc644172e14c856447719ebdde",
+      "bytes": 1876
+    },
+    {
+      "path": "prompts/deep-de-riva-guard-v2.txt",
+      "sha256": "c00484ade64e93ff017f1c1d7ccca408dc927f269d53a3c265e6cbeb1acee82c",
+      "bytes": 2728
+    },
+    {
+      "path": "prompts/deep-half-guard-v1.txt",
+      "sha256": "b432583d68ea8e242b49a0cee6aab3bce67cca9d7f7bf5274f941c52cdf74d56",
+      "bytes": 1857
+    },
+    {
+      "path": "prompts/double-leg-takedown-v1.txt",
+      "sha256": "5b6ef707fbc96b70ea2e9cb189eb822c53436c097535c921eaa4e2fe06985bbc",
+      "bytes": 1595
+    },
+    {
+      "path": "prompts/double-under-v1.txt",
+      "sha256": "a9349c2fdb3bf20e1481501213908bda83cc27e8f4c41bfa7c0487568b20f7bb",
+      "bytes": 1902
+    },
+    {
+      "path": "prompts/duck-under-v1.txt",
+      "sha256": "77de1e82a812ff65c779bb6e1eb989d52f6bbcd7edbaa86b83db2f74eff98c3c",
+      "bytes": 1880
+    },
+    {
+      "path": "prompts/entry-v1.txt",
+      "sha256": "bbd01b574b19e31f007ba2dc8221093ec33d73e1379e1feae9c7a007418f6ae1",
+      "bytes": 2337
+    },
+    {
+      "path": "prompts/escape-v1.txt",
+      "sha256": "c92afd0d1b60b451af96314b9a2360626bcbaeb07c4fad179b5bd9f452a02b23",
+      "bytes": 2431
+    },
+    {
+      "path": "prompts/estima-lock-v1.txt",
+      "sha256": "67e5023c7f30cd7bbdf102ec944e1e9f2b85b053350c7d1e4e6b97e24b607073",
+      "bytes": 2826
+    },
+    {
+      "path": "prompts/ezekiel-choke-v1.txt",
+      "sha256": "f4f8577bb94d9fde7e65e5c4bb4f12fa25ca472493f95450e130eafe7617cafc",
+      "bytes": 2420
+    },
+    {
+      "path": "prompts/ezekiel-choke-v2.txt",
+      "sha256": "c79725f3f504e7f0da368315f18613bdb7e3595f0dfb3bd55249c08be69e7c87",
+      "bytes": 1388
+    },
+    {
+      "path": "prompts/fifty-fifty-position-v1.txt",
+      "sha256": "57c8b25f7e22e218861dc38d3fc6136a6f0ef32ffd1c939384a72dc2e1dfe593",
+      "bytes": 2470
+    },
+    {
+      "path": "prompts/flower-sweep-v1.txt",
+      "sha256": "dc1ffc8e2feb28afec5800fa9291885200400f1f03176d3b53c79e5315b58695",
+      "bytes": 1852
+    },
+    {
+      "path": "prompts/flying-armbar-v1.txt",
+      "sha256": "12a2d0376f1a4647749de7bcff50f168f0d5d02c50e5f2c0e43e18540d1ab8d5",
+      "bytes": 2470
+    },
+    {
+      "path": "prompts/flying-armbar-v2.txt",
+      "sha256": "45a5b58774825c3c15da79b19e91526f657a219754185d2fba1f08a7d1cdc53e",
+      "bytes": 1127
+    },
+    {
+      "path": "prompts/foot-lock-v1.txt",
+      "sha256": "2bda8e6e580d38ca3b6a795429a653fe645654407cf0b80b87100b838cdae452",
+      "bytes": 2307
+    },
+    {
+      "path": "prompts/foot-sweep-v1.txt",
+      "sha256": "dc2a594b81ed6233013b25d9c48e73822a286ac4ab04b0132c493a7135ce013f",
+      "bytes": 1876
+    },
+    {
+      "path": "prompts/foot-work-v1.txt",
+      "sha256": "66156ed60be6b6d6ac9cf1f14f94914b192a8b6ae07f3ba34c1c48e023952f9d",
+      "bytes": 2335
+    },
+    {
+      "path": "prompts/front-headlock-v1.txt",
+      "sha256": "44d75d5b413b311d1a78be70379305cc696ac1b9aafa52c6ff5c05d1b36f4e05",
+      "bytes": 2291
+    },
+    {
+      "path": "prompts/gator-roll-v1.txt",
+      "sha256": "2d83bc24b33be7f537b514d6a509aa3d94ea519d20ca1f41df02a4b434f2a4c0",
+      "bytes": 1917
+    },
+    {
+      "path": "prompts/gator-roll-v2.txt",
+      "sha256": "df9d487894b671bdcc86cf68501ce172f39f23f1998dd7e31d8c769f91c5855f",
+      "bytes": 2750
+    },
+    {
+      "path": "prompts/gator-roll-v3.txt",
+      "sha256": "cbdd128b5e4871207891df3dc5a45d425edf8143d9df6413cfcb79a0caab25a3",
+      "bytes": 1511
+    },
+    {
+      "path": "prompts/gogoplata-v1.txt",
+      "sha256": "1dcb02305e8ac83c13a581aad6d245bb55bf712715d03529907377b98a6d454c",
+      "bytes": 2343
+    },
+    {
+      "path": "prompts/gogoplata-v2.txt",
+      "sha256": "498d51c71f2207ec4b2dd9f8409a95dfa4eb29b65198339d859c98d01432a920",
+      "bytes": 1428
+    },
+    {
+      "path": "prompts/gogoplata-v3.txt",
+      "sha256": "2bf37bf9f47fca03bacf1291098046c163a1f0126543056dc9309f9d1297deb4",
+      "bytes": 1157
+    },
+    {
+      "path": "prompts/guard-pass-v1.txt",
+      "sha256": "dfec3ebdfb9a3674c0cbabf397c0a7a72acfd36dcc234238f3c1f1c4db510722",
+      "bytes": 1885
+    },
+    {
+      "path": "prompts/guard-recovery-v1.txt",
+      "sha256": "2d7da341fe16852f75dc10c30ba79522fcbec574f0668944ce55d36e6f741bc3",
+      "bytes": 1901
+    },
+    {
+      "path": "prompts/guard-v1.txt",
+      "sha256": "95717fda8a1633a801eaf28a3b8fa8417afc9c59e7143f8e2bb9889f9258094c",
+      "bytes": 1901
+    },
+    {
+      "path": "prompts/guillotine-choke-v1.txt",
+      "sha256": "6678679c1a30624cb0e256d049ea9485c3956109b4a8e1476d432e06680bbc03",
+      "bytes": 2296
+    },
+    {
+      "path": "prompts/half-guard-v1.txt",
+      "sha256": "91c258369eea6145f220d92ead3d8556d9eb8689d906cd01570331c6d646c82a",
+      "bytes": 1823
+    },
+    {
+      "path": "prompts/headquarters-position-v1.txt",
+      "sha256": "ce4e98a0d8bec5c52d3d0ac29f678a0333507f05d667df12de9b86c681ed5599",
+      "bytes": 2460
+    },
+    {
+      "path": "prompts/heel-hook-v1.txt",
+      "sha256": "84630fa63edfd5c33dc89241f7ac62616af6e6de9f7965fdaf703b5f803b9d3e",
+      "bytes": 2364
+    },
+    {
+      "path": "prompts/heel-hook-v2.txt",
+      "sha256": "8a581db0a27413770ae27850482ce939df487464052763bfa3dd52887064183a",
+      "bytes": 1390
+    },
+    {
+      "path": "prompts/high-mount-v1.txt",
+      "sha256": "5f4c64738e0a2162e6dfa4eb4d4063c0f71d1090f51dcfb36ca293ecaad24eed",
+      "bytes": 2406
+    },
+    {
+      "path": "prompts/hip-bump-sweep-v1.txt",
+      "sha256": "c1009c24c840c5d6581b9bf2e16a46329ada8d6ecf63ac21530aaf69c203cd72",
+      "bytes": 1840
+    },
+    {
+      "path": "prompts/honey-hole-v1.txt",
+      "sha256": "84b26e05abdbceff53a7c9b2f85ca385bcd67c1a252b533c7cbf099e4d84a2c7",
+      "bytes": 3127
+    },
+    {
+      "path": "prompts/honey-hole-v2.txt",
+      "sha256": "ce0bd482adf88d804b20c9232efd8ac36baea6cd960e51b7b2ab4cac309c51e2",
+      "bytes": 3464
+    },
+    {
+      "path": "prompts/hugo-lock-v1.txt",
+      "sha256": "f8d439ac85cb745e7e574f59f726a855053a073011902bed97b45924901acfbe",
+      "bytes": 3140
+    },
+    {
+      "path": "prompts/inside-ashi-garami-v1.txt",
+      "sha256": "5f8f09d4f77e2704b33c576624e2042ac30f38e8fd353cb53063bf261d702f00",
+      "bytes": 3426
+    },
+    {
+      "path": "prompts/inside-heel-hook-v1.txt",
+      "sha256": "019811727f24236008986ea28f22e3856436a77f9e54361ef4fb2f9db1051c31",
+      "bytes": 3037
+    },
+    {
+      "path": "prompts/inside-heel-hook-v2.txt",
+      "sha256": "cb3327f6a61bba654eb474033bb91a7da3f4135be2210529a0a0f7ed4be1cd09",
+      "bytes": 2557
+    },
+    {
+      "path": "prompts/inside-heel-hook-v3.txt",
+      "sha256": "3bb9ae7a5d6c19a48de3d38da8f7522699a8f7011305e7562069df85b1566a10",
+      "bytes": 1488
+    },
+    {
+      "path": "prompts/inside-trip-v1.txt",
+      "sha256": "15613d4d851c1963169da005891d8bf4c6fc49b32da9401610509436bc9aea57",
+      "bytes": 1596
+    },
+    {
+      "path": "prompts/inverted-guard-v1.txt",
+      "sha256": "2f9a9a3dd8b78e17185da396ba245392ead5aa581e89d9619433884c8484dc7c",
+      "bytes": 1872
+    },
+    {
+      "path": "prompts/inverted-guard-v2.txt",
+      "sha256": "aef2874984df90fa7c3f3a75ca2c876f5f7034557627b88353ad927f647ca021",
+      "bytes": 2647
+    },
+    {
+      "path": "prompts/john-wayne-sweep-v1.txt",
+      "sha256": "bb5006c8a30aacf54ec148caf74eba50f6554feae659ab9ae7a821da05fc5f87",
+      "bytes": 1864
+    },
+    {
+      "path": "prompts/k-guard-v1.txt",
+      "sha256": "1f02dda2cf91b0e904b22c99c75e888e5b182be280f333bd64d3414acd69b1c8",
+      "bytes": 1842
+    },
+    {
+      "path": "prompts/keymaster-guard-v1.txt",
+      "sha256": "2236e38d203deca367be93670d10f15514c87956a4aaf131c3dc2e56b63b7134",
+      "bytes": 2814
+    },
+    {
+      "path": "prompts/kimura-sweep-v1.txt",
+      "sha256": "09edd0fa8eeb12354eb910a41d80da20d596f1f9839c7ae6db76f4e229f6d548",
+      "bytes": 1870
+    },
+    {
+      "path": "prompts/kimura-sweep-v2.txt",
+      "sha256": "79d31120cfaf7666df256d2f20e7d07e6e7b7a0cff0a1208b1d0065491f39c8d",
+      "bytes": 2599
+    },
+    {
+      "path": "prompts/kimura-sweep-v3.txt",
+      "sha256": "54d4a5d7b518dda03fa58b24374821ef765a4411453bb2b234f892823a4249ef",
+      "bytes": 1260
+    },
+    {
+      "path": "prompts/kimura-v1.txt",
+      "sha256": "832534d25224aa5228a1d6d1786fe65b6d3c8995a773013f8aee465f9d4e622b",
+      "bytes": 2419
+    },
+    {
+      "path": "prompts/kiss-of-dragon-v1.txt",
+      "sha256": "9e164330f5b22d5b478a18a231a3555415546c2dcd64825e72c6d30df08d8ca3",
+      "bytes": 1927
+    },
+    {
+      "path": "prompts/knee-bar-v1.txt",
+      "sha256": "722a9397c8503a5a835fa67d02107102739cbad80a93e973a8766ff2bd8176fd",
+      "bytes": 2420
+    },
+    {
+      "path": "prompts/knee-bar-v2.txt",
+      "sha256": "4b2940eae5045b3bb03ac5a9b4f9c547613ffe3f71d32bc4e057c4c10e3b6704",
+      "bytes": 1993
+    },
+    {
+      "path": "prompts/knee-cut-v1.txt",
+      "sha256": "dbcb95f8da6c9d5f1a05ab049cc0cd4166aa687a8b1c77b855b1af6c082ef655",
+      "bytes": 1282
+    },
+    {
+      "path": "prompts/knee-on-belly-v1.txt",
+      "sha256": "48a52db9b17691730e28c156e2d5e947894d2a271abe3a61ded4218bc4e4005f",
+      "bytes": 1883
+    },
+    {
+      "path": "prompts/knee-shield-v1.txt",
+      "sha256": "93c863e2f71d4d7db92de07510089894998e9545cbc343b16a044b8fe94e93ec",
+      "bytes": 1854
+    },
+    {
+      "path": "prompts/knee-slide-v1.txt",
+      "sha256": "bec22847c54017a9f4176ba77abca2fbf39d5d8f9182415ee6f7df2aa1d317b0",
+      "bytes": 1920
+    },
+    {
+      "path": "prompts/lapel-guard-v1.txt",
+      "sha256": "6b909f6318a60d72b123b145c5c30db80488eb025f185d10cc182abd0ff81ec7",
+      "bytes": 1885
+    },
+    {
+      "path": "prompts/lapel-pass-v1.txt",
+      "sha256": "789250eda665aef15cfc3affbbcc0e79c1c8652355c5d30dc21e7d57ca1b0246",
+      "bytes": 2663
+    },
+    {
+      "path": "prompts/lapel-pass-v2.txt",
+      "sha256": "db26d4b2d5bfe99696cf02fd7635843f6503e6182610bca74b497e2c20c2d27e",
+      "bytes": 2550
+    },
+    {
+      "path": "prompts/lapel-pass-v3.txt",
+      "sha256": "e2590f683fc997ac123bf11479ccd98c63617b0402bbcd7d8105755903d6aae7",
+      "bytes": 1422
+    },
+    {
+      "path": "prompts/lasso-guard-v1.txt",
+      "sha256": "b12296709c54480ff2d76bd08f839cebebe776a6109b31d2289549d1b3b249b6",
+      "bytes": 1856
+    },
+    {
+      "path": "prompts/lasso-guard-v2.txt",
+      "sha256": "0af8bcf37aaaccaf48c76b010da0db0c74acfa0ef6e1e137b8a16339fdf3661c",
+      "bytes": 3139
+    },
+    {
+      "path": "prompts/leg-drag-v1.txt",
+      "sha256": "0a736f8e56cdea51cbd856b3505901939bb5b0ad676ea78d153358130fe72ad3",
+      "bytes": 1884
+    },
+    {
+      "path": "prompts/leg-weave-v1.txt",
+      "sha256": "67ead4a39ad65a2873debefc2b9751fe84088a34cb3da7e6fe5a2e10f22c7def",
+      "bytes": 1877
+    },
+    {
+      "path": "prompts/leg-weave-v2.txt",
+      "sha256": "27f08df387dcef049a5050d8ff4fbda5d8264b22f0543dadd3581625c1563f1c",
+      "bytes": 2688
+    },
+    {
+      "path": "prompts/lockdown-v1.txt",
+      "sha256": "9432ad4abbcecc43dfa7a4fc663a1eed41ee70bf54879caf64593d03e0c31e42",
+      "bytes": 2417
+    },
+    {
+      "path": "prompts/lockdown-v2.txt",
+      "sha256": "ab6896697f51866f77da49276acae4e29695270b4e1af078013655067557835b",
+      "bytes": 2108
+    },
+    {
+      "path": "prompts/long-step-v1.txt",
+      "sha256": "75c262cf42f0c64357e275cc74edecc35114328864aa10c9ec7f3a45a5e76cce",
+      "bytes": 1891
+    },
+    {
+      "path": "prompts/loop-choke-v1.txt",
+      "sha256": "fc4801a27138cf514bca4cc69809f518a8065e4b54334e76ac7962f8d428014b",
+      "bytes": 2446
+    },
+    {
+      "path": "prompts/loop-choke-v2.txt",
+      "sha256": "7c016b6976574a06aa06e0383fd0baf9e9bc0d571104dbc2ca14b85ecdd62f76",
+      "bytes": 1497
+    },
+    {
+      "path": "prompts/loop-choke-v3.txt",
+      "sha256": "398430c288429911a9573bc19aade7e4e52bd7d429d54d993aa077656fa5113c",
+      "bytes": 1400
+    },
+    {
+      "path": "prompts/loop-choke-v4.txt",
+      "sha256": "eed0b9d8b204a7b3512aaf381e3f7f093c423bc07d75af30d701713b1223158f",
+      "bytes": 1272
+    },
+    {
+      "path": "prompts/lumberjack-sweep-v1.txt",
+      "sha256": "4d40a542769252c63abbc2ef69b4080ade536f2524219d0253f234a31b2a89d1",
+      "bytes": 1867
+    },
+    {
+      "path": "prompts/matrix-v1.txt",
+      "sha256": "db3918a4be4b8fcef51d9a20a932b13c88ac4b85575c2059fc7ec860bf95801f",
+      "bytes": 2407
+    },
+    {
+      "path": "prompts/matrix-v2.txt",
+      "sha256": "097ad562f073901ab13205a5ad31a7ab0e9bc76ee11b135257e3fb2319e2c257",
+      "bytes": 2497
+    },
+    {
+      "path": "prompts/mount-v1.txt",
+      "sha256": "f282a8d80453edf6ec16b920d4517a0063b8e4119bbcf3110745c4430dc9444c",
+      "bytes": 1819
+    },
+    {
+      "path": "prompts/north-south-choke-v1.txt",
+      "sha256": "1e4e752d451d778e8b08c87e62da72b491ef9374cc3aaa53399a39b21901e551",
+      "bytes": 2452
+    },
+    {
+      "path": "prompts/north-south-choke-v2.txt",
+      "sha256": "c15bd4fb74de01b7074e9d254206017e43c6b2c4a2ee040bacea2dac98f6dae8",
+      "bytes": 1062
+    },
+    {
+      "path": "prompts/north-south-position-v1.txt",
+      "sha256": "b4e8a43b30a9f5ecf738203c956db5fee6d502f50c6affba6f042fc391459870",
+      "bytes": 2435
+    },
+    {
+      "path": "prompts/octopus-guard-v1.txt",
+      "sha256": "2046952f8de9973385e7e5d0f5edd9e357274fdb72af7fad998eac399c451aea",
+      "bytes": 1892
+    },
+    {
+      "path": "prompts/omoplata-v1.txt",
+      "sha256": "6488897235d1d2852f70444d41c1a6cd2b2692eb4eb3f16e641ebee0d81efb43",
+      "bytes": 2449
+    },
+    {
+      "path": "prompts/open-guard-v1.txt",
+      "sha256": "f70abd5adb28e40018c0415b4afee363279f71e3b155801ff7d6d7cb18aa5aa7",
+      "bytes": 1873
+    },
+    {
+      "path": "prompts/outside-ashi-garami-v1.txt",
+      "sha256": "40cbb18ecfdce29e801f2886c8bb501d25ad393ea016f6d2b97114e084eab984",
+      "bytes": 2346
+    },
+    {
+      "path": "prompts/outside-ashi-garami-v2.txt",
+      "sha256": "ed973d3061a56100dc0fb67ea59421aa0bd74b6c32a2e490176ec68d604ae9a9",
+      "bytes": 2026
+    },
+    {
+      "path": "prompts/outside-heel-hook-v1.txt",
+      "sha256": "7f5f81adfd460c710f216e628c68b8c1b73934043e5108cb34bdae8721b027dd",
+      "bytes": 2966
+    },
+    {
+      "path": "prompts/outside-trip-v1.txt",
+      "sha256": "2ece2e7886e3bacc2ccbe52135bf2cde5e9a748ec160e361573844e67968755f",
+      "bytes": 1591
+    },
+    {
+      "path": "prompts/over-under-v1.txt",
+      "sha256": "e34bfe1501174a4f5570359ca6bf64f8524b8b550bec951bb9f13dc14eea3b2e",
+      "bytes": 1872
+    },
+    {
+      "path": "prompts/paper-cutter-choke-v1.txt",
+      "sha256": "04eeedd267cc5aceb389132791a6e246823eb3052beae8465ffc102e984f1773",
+      "bytes": 2463
+    },
+    {
+      "path": "prompts/pendulum-sweep-v1.txt",
+      "sha256": "252ba2eaf3ddf7b2acd7d2ad6249c2b448d6203a0c683c58fb3dd047bf2b273f",
+      "bytes": 1879
+    },
+    {
+      "path": "prompts/pendulum-sweep-v2.txt",
+      "sha256": "8a69d48a2bf7e82e3be22e012f4c0bf90f9fe3edcb09a1b700c9ed95ba2c35df",
+      "bytes": 2702
+    },
+    {
+      "path": "prompts/pendulum-sweep-v3.txt",
+      "sha256": "29901b58a1cfeab66bee8f1a0e3de7527b70d836c288e6eb2fc6c2349b9a8c3b",
+      "bytes": 1470
+    },
+    {
+      "path": "prompts/peruvian-necktie-v1.txt",
+      "sha256": "60f2fa3cde9f98911381ae72dbf0ea6630852656c1a16f694db0366e8a886335",
+      "bytes": 2328
+    },
+    {
+      "path": "prompts/peruvian-necktie-v2.txt",
+      "sha256": "3445edec1e4b23d4a739c2fc03d84421ea572d4460b652f2dbe8dd612f42144a",
+      "bytes": 1422
+    },
+    {
+      "path": "prompts/peruvian-necktie-v3.txt",
+      "sha256": "092cd39dc51c7221f3bae2c97d4f4f9bebc30ef8a0c976b2607796a8edd08b87",
+      "bytes": 1267
+    },
+    {
+      "path": "prompts/peterson-roll-v1.txt",
+      "sha256": "d827b2720acdd8ccc028006196d9d1b1e64ef5bcfb05a0d91e9ff538ef252825",
+      "bytes": 2954
+    },
+    {
+      "path": "prompts/pressure-pass-v1.txt",
+      "sha256": "126ad7959a4d1cd5351a120e1e39e071cfc7eb3be1f70eea5c1c464720c20bda",
+      "bytes": 1921
+    },
+    {
+      "path": "prompts/quick-armbar-v1.txt",
+      "sha256": "ac77e2bf0a1d7f19adeba3385ea2ccbe7012352096c3b257007735a331bdf249",
+      "bytes": 2877
+    },
+    {
+      "path": "prompts/rear-naked-choke-v1.txt",
+      "sha256": "5862c3f99aaaf29ff812579fad326e45cdd9dbb31c561752f8d31a79141c6c10",
+      "bytes": 2431
+    },
+    {
+      "path": "prompts/reverse-de-riva-guard-v1.txt",
+      "sha256": "6ea17c6e7fae6269a17f0cb9416be1f5ccd8d471455018ff775e68f91f23e7a5",
+      "bytes": 1884
+    },
+    {
+      "path": "prompts/reverse-de-riva-guard-v2.txt",
+      "sha256": "6cffa167d01bb5bf9dee4697e6fda0df5b325f032d4694b3104ad67af881d2cf",
+      "bytes": 3104
+    },
+    {
+      "path": "prompts/reverse-x-guard-v1.txt",
+      "sha256": "8c5956bfec17d5e13f794cb849328f99f8f304381b32198ea96ceb07c06cc49d",
+      "bytes": 2789
+    },
+    {
+      "path": "prompts/rubber-guard-v1.txt",
+      "sha256": "b7b0fd9cdfd4fbb19cdb196e9620574c920bfcec131f7b6cd020af5e36ed602d",
+      "bytes": 1850
+    },
+    {
+      "path": "prompts/rubber-guard-v2.txt",
+      "sha256": "669103dde3b1db04937d92ed562774f64d708db0456ca3feac3c7d2b87493920",
+      "bytes": 3176
+    },
+    {
+      "path": "prompts/rubber-guard-v3.txt",
+      "sha256": "513051886e2526bddc0b2c0776a330d053d49defee0ef32909fe4b2a80d64cdf",
+      "bytes": 2140
+    },
+    {
+      "path": "prompts/rubber-guard-v4.txt",
+      "sha256": "80be60fe793769cd06b06209df1a1dab1c17b45b3422165027969f5d434885b2",
+      "bytes": 1163
+    },
+    {
+      "path": "prompts/s-mount-v1.txt",
+      "sha256": "78eada53db3b0883ff2063a1feb9ff6f432d1926a2cec503fd7eec85c58915ed",
+      "bytes": 2417
+    },
+    {
+      "path": "prompts/s-mount-v2.txt",
+      "sha256": "4edfca2201b8b733766f3185ce9409e2e1c3cc4854bc3669177b0ab4489637c0",
+      "bytes": 1802
+    },
+    {
+      "path": "prompts/saddle-position-v1.txt",
+      "sha256": "273fb41d2ed5fcbf8d12d409fcc4aa43d23f4eacf528ea07d6983f7a83626195",
+      "bytes": 3121
+    },
+    {
+      "path": "prompts/saddle-position-v2.txt",
+      "sha256": "f93100e3165c3331ea1b8f7ba2b64d473b00c2316675c51954173eec5cea0135",
+      "bytes": 2549
+    },
+    {
+      "path": "prompts/saddle-position-v3.txt",
+      "sha256": "479685a6b77f5f5069de928b0bbba6b733625b98d0efed5184fb2c33ae5648c7",
+      "bytes": 1255
+    },
+    {
+      "path": "prompts/saddle-position-v4.txt",
+      "sha256": "0fd99982f2c535b7f5c74644631629c37437cc48959eda2fe308a997c57c3be1",
+      "bytes": 1118
+    },
+    {
+      "path": "prompts/sagi-oro-sweep-v1.txt",
+      "sha256": "96734995b342176e0e2b1f2182dc00433b6e554e95597439abcd07455d70cd57",
+      "bytes": 3093
+    },
+    {
+      "path": "prompts/scarf-hold-v1.txt",
+      "sha256": "551fe3d15296f8e1d4b72f0ca9542ca26a929d71561002d6a2d3dfdd159c5f9c",
+      "bytes": 2294
+    },
+    {
+      "path": "prompts/scissors-sweep-v1.txt",
+      "sha256": "195644f0ccaa628c9e8c18a67e45fbcf00c2b25136cca44e971e8e40b5c12a8c",
+      "bytes": 1855
+    },
+    {
+      "path": "prompts/scissors-sweep-v2.txt",
+      "sha256": "97e6bd1f9c02a8f3c1bc47584ef13025b8e58dcfbf509205103a17a2a0e6c311",
+      "bytes": 3174
+    },
+    {
+      "path": "prompts/seat-belt-grip-v1.txt",
+      "sha256": "5df1d63d6491afaeff54f167a6fcd1253baea70017a919645ab5aeb8533676d1",
+      "bytes": 2421
+    },
+    {
+      "path": "prompts/shin-to-shin-guard-v1.txt",
+      "sha256": "647eee8aa1670d6bcd279bee736bff65510a2b602937c72416726cce076d0809",
+      "bytes": 1859
+    },
+    {
+      "path": "prompts/shin-trap-v1.txt",
+      "sha256": "8cb1e696fece39ec69aa89388bc3f1b62169acfe6a0fd509460dc19ff08d3413",
+      "bytes": 1862
+    },
+    {
+      "path": "prompts/side-control-v1.txt",
+      "sha256": "d1598afb43465c53c97d73f6d8dc47ebff0cebab8bce617e09a4210ed6f60cb4",
+      "bytes": 1878
+    },
+    {
+      "path": "prompts/single-leg-takedown-v1.txt",
+      "sha256": "845a4913b97dee61fd5836a2d4c2921204689a6257755a38ae5a5e1d404ff81e",
+      "bytes": 1788
+    },
+    {
+      "path": "prompts/single-leg-x-guard-v1.txt",
+      "sha256": "a9b059b1151d4316a23b453db044d2dd1b4962dd35b7bb4ccc794d71a6bca66b",
+      "bytes": 1858
+    },
+    {
+      "path": "prompts/sit-up-guard-v1.txt",
+      "sha256": "5165396149c4531af3648c414b643bbf64faf414e69a50dc2fa7752f236015f9",
+      "bytes": 1872
+    },
+    {
+      "path": "prompts/smash-pass-v1.txt",
+      "sha256": "c155cb0d52ccb83d3ccc658daa767c3457d7089801675a1a429df1a4f1a7f956",
+      "bytes": 1918
+    },
+    {
+      "path": "prompts/snap-down-v1.txt",
+      "sha256": "4758044e21403efde490831da33e85516f137096076ca65258afee65769a3a9d",
+      "bytes": 2421
+    },
+    {
+      "path": "prompts/spider-guard-v1.txt",
+      "sha256": "526b2826952024b1f9422610f8301560cacf034e224d2c957af20bb9c933821f",
+      "bytes": 1868
+    },
+    {
+      "path": "prompts/sprawl-v1.txt",
+      "sha256": "39f059fbdb76902f6eff3b35e2b63bc79ace4721f0894457c1b41f980f5bad2d",
+      "bytes": 2429
+    },
+    {
+      "path": "prompts/squid-guard-v1.txt",
+      "sha256": "d319c45cccd891c0f7083a61edd665e46842d92a02ee8057994b2a0534676d69",
+      "bytes": 2533
+    },
+    {
+      "path": "prompts/squid-guard-v2.txt",
+      "sha256": "5fed4e45a1ca70e30a3138e857a0cf831c7ee59b592f17ddb7f7fbfe16e55b66",
+      "bytes": 2572
+    },
+    {
+      "path": "prompts/squid-guard-v3.txt",
+      "sha256": "450cf040759854c81a434ddcf4feb934cd5c7c4f22d569965784c40eb1caedcc",
+      "bytes": 1473
+    },
+    {
+      "path": "prompts/stack-pass-v1.txt",
+      "sha256": "793634bcbc24f3dfd0728ebd145f66101dcc3c9103b87c1a029c3a03e767e513",
+      "bytes": 1878
+    },
+    {
+      "path": "prompts/standing-v1.txt",
+      "sha256": "3ee823a797d8306bd5b0948a8a55940a18bca554bb6932cb07ab6bf2812f67a6",
+      "bytes": 1795
+    },
+    {
+      "path": "prompts/straight-ankle-lock-v1.txt",
+      "sha256": "962fad15c2116898a1b3a297bc7ab99931ec1011876587b83bb9f45f2dbb7a61",
+      "bytes": 2340
+    },
+    {
+      "path": "prompts/straight-collar-control-v1.txt",
+      "sha256": "c223c778bccdd89ed686dc6f4bfdb5a550e03c63f54668468ed7d5724c84a176",
+      "bytes": 2305
+    },
+    {
+      "path": "prompts/submission-v1.txt",
+      "sha256": "cc54dcc886cb61997c0f692ad7bec29f8244f81630ca664cc724a420a726cabb",
+      "bytes": 2513
+    },
+    {
+      "path": "prompts/surfer-pass-v1.txt",
+      "sha256": "5f6a0f28dca88afff4fb17f9423579156210f4886f1c4d555d16e9d59dd3b597",
+      "bytes": 1924
+    },
+    {
+      "path": "prompts/sweep-v1.txt",
+      "sha256": "26213d6ba9fae5dcb23c1597b90d63529edc2e990ca543668c7fb1e51e22a659",
+      "bytes": 1860
+    },
+    {
+      "path": "prompts/takedown-v1.txt",
+      "sha256": "b4d15fbb4651b9da5cff41c529db64f34162b246023df007ad48cf4d25a1d42b",
+      "bytes": 1891
+    },
+    {
+      "path": "prompts/tarikoplata-v1.txt",
+      "sha256": "d5f985d1f91b483c4734db5388d2f8a343692070559413fad983a9a75abc70b1",
+      "bytes": 2474
+    },
+    {
+      "path": "prompts/technical-stand-up-v1.txt",
+      "sha256": "800df3b334f7fea8ebc11d689c2c7a117db7bb213b0a3cc28424cc2bb61f8b07",
+      "bytes": 1900
+    },
+    {
+      "path": "prompts/three-quarter-mount-v1.txt",
+      "sha256": "69ec3a9874d38e17ffb8686bd6d82db6288a61cccce66fcbd3dfc1c1bf505a8d",
+      "bytes": 2437
+    },
+    {
+      "path": "prompts/toe-hold-v1.txt",
+      "sha256": "dfc9224c0e6848b435201dd4264b46629240b2e00d39529a40d7ef2b4359a246",
+      "bytes": 2302
+    },
+    {
+      "path": "prompts/toreando-pass-v1.txt",
+      "sha256": "9deba5760613c39c2cafc2d942ba8db76062a64ed7108154519ff2c57ccd17fa",
+      "bytes": 1853
+    },
+    {
+      "path": "prompts/triangle-choke-v1.txt",
+      "sha256": "7d553faf17f57bde4ecb474029fcc5a15c4a7c78eb2050e530cc5ea14356dee8",
+      "bytes": 2478
+    },
+    {
+      "path": "prompts/triangle-choke-v2.txt",
+      "sha256": "d6949713c388290d004d357ef9329d4a252c637527a45caf18d4e5d1afec6eb9",
+      "bytes": 2025
+    },
+    {
+      "path": "prompts/tripod-sweep-v1.txt",
+      "sha256": "faafe870f4e60d801106cf134457bd5bd6970c69d247addbf1b16e1419a24837",
+      "bytes": 1839
+    },
+    {
+      "path": "prompts/truck-v1.txt",
+      "sha256": "107f5ac665555e3888a08169bbf1fd529e1fb6dd550d2ca52fe8f0402b8aeadf",
+      "bytes": 2296
+    },
+    {
+      "path": "prompts/truck-v2.txt",
+      "sha256": "f039310087cb315d8c973b082de2b437454be06e463c6fff325e9d36eccd9747",
+      "bytes": 1903
+    },
+    {
+      "path": "prompts/turtle-v1.txt",
+      "sha256": "74d7325df9353f546be3cf2a3965729ee20064772084ccd2a9f6ed3b6b27c3ca",
+      "bytes": 1850
+    },
+    {
+      "path": "prompts/twister-v1.txt",
+      "sha256": "f461a6b65e72b1e2b22ee53c3f84c21a82296caebf6d8edd831f47cbf14621af",
+      "bytes": 2300
+    },
+    {
+      "path": "prompts/twister-v2.txt",
+      "sha256": "ae8d094b10de6c5b3ae5ae432a29a3bd3edcd429568a2ac69a5c85045d3dc183",
+      "bytes": 1489
+    },
+    {
+      "path": "prompts/two-on-one-v1.txt",
+      "sha256": "721edf2215b407ebd3ac73504868bfa8c58dc5b96abc044efdfd7292095a4b6a",
+      "bytes": 2379
+    },
+    {
+      "path": "prompts/under-hook-v1.txt",
+      "sha256": "33af33f960266910bf7b37bccc9dd58f807c223f68559dcbb759420f3bddef95",
+      "bytes": 2393
+    },
+    {
+      "path": "prompts/von-flue-choke-v1.txt",
+      "sha256": "7a2c354676e147508d8d208cb0a265db194eb90395045abf37fe9022b1d2053e",
+      "bytes": 2328
+    },
+    {
+      "path": "prompts/waiter-guard-v1.txt",
+      "sha256": "da937f35ea748f050c782d86deb97edffca09595a1c37c5c52c200c2777dd532",
+      "bytes": 2636
+    },
+    {
+      "path": "prompts/waiter-guard-v2.txt",
+      "sha256": "77ccda8b8e761e8d37a73834358628f4ff49bc4388877582bf536f77bf2869f5",
+      "bytes": 3503
+    },
+    {
+      "path": "prompts/waiter-sweep-v1.txt",
+      "sha256": "1a46ee000e4d2da3b20c81650f96dd0331da2a89ba6bdd7bf61c409a3d5f146e",
+      "bytes": 2502
+    },
+    {
+      "path": "prompts/waiter-sweep-v2.txt",
+      "sha256": "45aca83a6bde40174626df06095991dbe75c62538536b8e8ad0017f1ed6275fa",
+      "bytes": 2540
+    },
+    {
+      "path": "prompts/waiter-sweep-v3.txt",
+      "sha256": "07ecc41c329b79347bb12692fa82a5b3ff1d839a8e7194b0639747732c31d505",
+      "bytes": 1109
+    },
+    {
+      "path": "prompts/williams-guard-v1.txt",
+      "sha256": "e4fe75bf4d2817dd19297328420662d27813037472e2fd063f0cc0c7ca067230",
+      "bytes": 2912
+    },
+    {
+      "path": "prompts/wiper-v1.txt",
+      "sha256": "ff8d9b6a738eb412237535f93c315ae81da8dd3157334365a12bbaf7417a50c0",
+      "bytes": 2506
+    },
+    {
+      "path": "prompts/wiper-v2.txt",
+      "sha256": "ffc9192c104e173c56a795dbc6ec6a6aeb236236c727cd880ea0e2c617b1cb80",
+      "bytes": 2533
+    },
+    {
+      "path": "prompts/wiper-v3.txt",
+      "sha256": "0adbc8c3615fc3807bd0c34a820f4ddb00309bdfc6f8a400b419ca1377ba80a3",
+      "bytes": 1110
+    },
+    {
+      "path": "prompts/wiper-v4.txt",
+      "sha256": "2ed56d90707b8195eb5b9d555e3ac847067cefcc4982f4d4e6549a48e42da5f9",
+      "bytes": 1173
+    },
+    {
+      "path": "prompts/worm-guard-v1.txt",
+      "sha256": "8a9d3bdf95a1a6d71aeddd0bc688af90a6b62ca0a16672d3bcf1b9caa0e8216e",
+      "bytes": 2458
+    },
+    {
+      "path": "prompts/wrestle-up-v1.txt",
+      "sha256": "6f96a68edb94f672384a48934d926bd56d6e84fa30fc6ecd5eb3608b0a3e0140",
+      "bytes": 1870
+    },
+    {
+      "path": "prompts/wrist-lock-v1.txt",
+      "sha256": "f02803b126d35f78053cb99a54bab11e5bbff48f9d14b46bc029dcc2b910876c",
+      "bytes": 2338
+    },
+    {
+      "path": "prompts/x-guard-sweep-v1.txt",
+      "sha256": "663b41bed04d275953d7fd093c848066874facc6f6dd2fa5dbfa870a5a679b31",
+      "bytes": 2352
+    },
+    {
+      "path": "prompts/x-guard-sweep-v2.txt",
+      "sha256": "364cbe5b2086f848a78a8b82ea8e6a319e7cfa800926831a6af5b38432ccdf96",
+      "bytes": 1151
+    },
+    {
+      "path": "prompts/x-guard-sweep-v3.txt",
+      "sha256": "1679657c73971993b4714411e45d895d8331a1a1bb265acf5b36b15be6e79ea4",
+      "bytes": 1413
+    },
+    {
+      "path": "prompts/x-guard-v1.txt",
+      "sha256": "d9ddded08af53aaf6e0f4fdc87b5be45dea219362457da12c055f4ca550d9a76",
+      "bytes": 1848
+    },
+    {
+      "path": "prompts/x-guard-v2.txt",
+      "sha256": "56ea70512849677fa6b8b3d348d81cec23c0534129f2b4534fc7c4d154561dfe",
+      "bytes": 3125
+    },
+    {
+      "path": "prompts/x-pass-v1.txt",
+      "sha256": "519273a69153ebfb15ff5f88b56b36c784c51aa0585b83fca338a29db626c75a",
+      "bytes": 1917
+    },
+    {
+      "path": "prompts/z-guard-v1.txt",
+      "sha256": "3d89940483e39935f7e9269022bfe187f0a2d211878b2cab26d1bcd150d6fc89",
+      "bytes": 1877
+    },
+    {
+      "path": "prompts/z-lock-v1.txt",
+      "sha256": "a73d8e2805281af3aa7fd85e22d2e7c1054ed0f9d8bef883112e704537dd5464",
+      "bytes": 2819
+    },
+    {
+      "path": "candidates/100-percent-sweep-v1.webp",
+      "sha256": "6560241f203032ed5b6c06657fec0b1ba2bdeba9af78678b05fda291d3780d6c",
+      "bytes": 57828
+    },
+    {
+      "path": "candidates/100-percent-sweep-v2.webp",
+      "sha256": "e7f03360da78d5da4d1b8ec6a5236d9938f3d659f23c142a3082aaf75dfb5662",
+      "bytes": 58800
+    },
+    {
+      "path": "candidates/100-percent-sweep-v3.webp",
+      "sha256": "dffd139f5198dbfeaaa03433693f2a5b1354462575f5e2b16ccbb6537a86a475",
+      "bytes": 43296
+    },
+    {
+      "path": "candidates/americana-v1.webp",
+      "sha256": "980442a32ed4d90c19e05535e7979bea5c27555670652c024eab7437a4ad5431",
+      "bytes": 51794
+    },
+    {
+      "path": "candidates/anaconda-choke-v1.webp",
+      "sha256": "6f47c8a7d28da2de0d3d84ab34b7bfac222935c2f8682e32a7075c69df7c98fc",
+      "bytes": 61420
+    },
+    {
+      "path": "candidates/anaconda-choke-v2.webp",
+      "sha256": "676e71a8c467bf77cc407da6d6914b1974be589251d8cdcf280e1dff90f10b16",
+      "bytes": 64108
+    },
+    {
+      "path": "candidates/ankle-pick-v1.webp",
+      "sha256": "1c4b224e9f5884c253f0d6902eb8d454f19392dcd4b1c76809a5e45fa36cd550",
+      "bytes": 61788
+    },
+    {
+      "path": "candidates/aoki-lock-v1.webp",
+      "sha256": "248fdf6ce3705ff4565bc2a34d11b4cfaea13609f51f58d0f26a52e760a714d3",
+      "bytes": 56018
+    },
+    {
+      "path": "candidates/arm-drag-v1.webp",
+      "sha256": "ada098d8eda9bfc7de61b0835c923177e4406db70d56bc4e5630382e0d61bf3c",
+      "bytes": 67124
+    },
+    {
+      "path": "candidates/arm-triangle-v1.webp",
+      "sha256": "268d12fd342ca48a99f6da362e4f8beddf5232f07f7dd6a10914857176e0c245",
+      "bytes": 39970
+    },
+    {
+      "path": "candidates/arm-triangle-v2.webp",
+      "sha256": "9d936892c22d75a919c186ea8f74b89bfe13e34cba8ea70f2cd48feedb67fc60",
+      "bytes": 40774
+    },
+    {
+      "path": "candidates/armbar-v1.webp",
+      "sha256": "f97f1f6ae492acb5a0489b69219843688d6a4242b006fa51f0fc910cd0f547ef",
+      "bytes": 60844
+    },
+    {
+      "path": "candidates/armbar-v2.webp",
+      "sha256": "fe8afcf162dcbdad8125aaa5e5d7820291b1fd82e308f807ba484aff6c2300f5",
+      "bytes": 62200
+    },
+    {
+      "path": "candidates/ashi-garami-v1.webp",
+      "sha256": "dff61cb584eda8f2202ab60eddf73bc93da27189b7c9babd0896395df5c9adc6",
+      "bytes": 45348
+    },
+    {
+      "path": "candidates/back-control-v1.webp",
+      "sha256": "d23682a2b94275f6e15076e50fa3de381b5e5d57ec37e045fcc9a534c0215cc0",
+      "bytes": 55460
+    },
+    {
+      "path": "candidates/back-mount-v1.webp",
+      "sha256": "e7fca5344f4b0b7b96eb74c1faaf87e163fe6be5ecf4f2664760cf1040ebcece",
+      "bytes": 43370
+    },
+    {
+      "path": "candidates/back-mount-v2.webp",
+      "sha256": "8527fa48a77e0293c8d787d2f9b3ffd81cccf3358f37f03195d0d8e683348e63",
+      "bytes": 48814
+    },
+    {
+      "path": "candidates/back-mount-v3.webp",
+      "sha256": "9d475c1e821a912a4be443cddaba39f2567d8558962103bb1aa2c6c13f7b4a5d",
+      "bytes": 41176
+    },
+    {
+      "path": "candidates/back-step-v1.webp",
+      "sha256": "c842799c36df758e9fc2eca06785fb44b5af0a26537cfdf1cf720d080f32bf43",
+      "bytes": 54732
+    },
+    {
+      "path": "candidates/back-step-v2.webp",
+      "sha256": "d7df62efb0c6ed42262b2c49d45a2c841a44a8c470a511dbfe13ce9acf183de9",
+      "bytes": 40078
+    },
+    {
+      "path": "candidates/back-take-v1.webp",
+      "sha256": "9fdb6df4b23d548db4af89cdc8a9edb61eae49f1b2f1e3d5341f6ef866cc1233",
+      "bytes": 48886
+    },
+    {
+      "path": "candidates/backside-fifty-fifty-v1.webp",
+      "sha256": "f2cf5995c5df2f8bc62f0c3eecae7cf5b8a1b39ea57d7ed151ab37f6de5b69b3",
+      "bytes": 65244
+    },
+    {
+      "path": "candidates/balloon-sweep-v1.webp",
+      "sha256": "90a3d9ce50f82b864d32a1cb41a3056ccebb25fec734018133ff9a2eb260d7c8",
+      "bytes": 55562
+    },
+    {
+      "path": "candidates/banana-split-v1.webp",
+      "sha256": "eda0d8bf416a64f9e9728709a12d741a9168ee26f3c2222398690cdb263177ec",
+      "bytes": 57048
+    },
+    {
+      "path": "candidates/baratoplata-v1.webp",
+      "sha256": "fb5c8212eede41a807094c4417c40c30e3daf20dfa2b5322f3c1e958aa0c4cad",
+      "bytes": 53574
+    },
+    {
+      "path": "candidates/baseball-bat-choke-v1.webp",
+      "sha256": "84faeac271e9034e7b845b263a5e05219e422e69cf1d720c504008a1b2888d52",
+      "bytes": 50712
+    },
+    {
+      "path": "candidates/belly-down-armbar-v1.webp",
+      "sha256": "93bccc3c32334d99ffb6f1734911f6a7f70cc4b85cfb07f2c33372a6ab00fee2",
+      "bytes": 60834
+    },
+    {
+      "path": "candidates/belly-down-armbar-v2.webp",
+      "sha256": "6a63815070af2b96d3e9a4b4759a3dcb817595f6955f5e63492b544a371e0337",
+      "bytes": 57404
+    },
+    {
+      "path": "candidates/berimbolo-v1.webp",
+      "sha256": "2c4d60043282b89e20e1aa0128cabb7f49cd57e9584403a9e090e8ec63afcbf7",
+      "bytes": 56200
+    },
+    {
+      "path": "candidates/berimbolo-v2.webp",
+      "sha256": "0f5b665c702027e41315cf655e0ea525325bc3961018d38261ecc196a1330414",
+      "bytes": 57550
+    },
+    {
+      "path": "candidates/bicep-slicer-v1.webp",
+      "sha256": "a4aef82cfa16ba1d876d3d12ee213f5e29607e87572504c36dc70acdc4e3d794",
+      "bytes": 68122
+    },
+    {
+      "path": "candidates/bicep-slicer-v2.webp",
+      "sha256": "3c803a6dd323130dd371ad1efe769d79d93263f5434d64def81363f23b2e78e9",
+      "bytes": 64234
+    },
+    {
+      "path": "candidates/body-lock-v1.webp",
+      "sha256": "6567eeba09e5b0fc06f779a6c6d6e764d3158fad0391e73f800bee681709ec24",
+      "bytes": 48992
+    },
+    {
+      "path": "candidates/bow-and-arrow-choke-v1.webp",
+      "sha256": "a9bf88d3227d5d980e0ffa0c5c933de45eee9eccdef8cad91cda4c6140d47099",
+      "bytes": 62248
+    },
+    {
+      "path": "candidates/brabo-choke-v1.webp",
+      "sha256": "7e06e2a43337dd27c0723fafa79beb5c3e692f5754c823412cd537f880317c52",
+      "bytes": 57030
+    },
+    {
+      "path": "candidates/brabo-choke-v2.webp",
+      "sha256": "473b9159a456113affe62de6d1c372abd35bdf7b461312416df2bdcbffbb2b84",
+      "bytes": 44518
+    },
+    {
+      "path": "candidates/break-fall-v1.webp",
+      "sha256": "a8059a9d7d9d9dba8822fdad2b6b6af6bf6a95b60be9e0f630d9d9ac0a4c82c4",
+      "bytes": 55986
+    },
+    {
+      "path": "candidates/buggy-choke-v1.webp",
+      "sha256": "f0aade4c898a2a41ee4cd0a85f8f74f45df73c2a277686dd13d0026585b4e565",
+      "bytes": 47480
+    },
+    {
+      "path": "candidates/buggy-choke-v2.webp",
+      "sha256": "a5f1a5481c186bf9a5007c3675240cc539430389109881e302a1a713f1f6cc28",
+      "bytes": 57052
+    },
+    {
+      "path": "candidates/buggy-choke-v3.webp",
+      "sha256": "2ea9e78251837900435ddd6ab1db7b1e292e5152a3e127de6e8e216874070961",
+      "bytes": 44178
+    },
+    {
+      "path": "candidates/buggy-choke-v4.webp",
+      "sha256": "a21f03759d6789875466c924bb34ac3fdc188e035e8dada3a272e1b2853751c7",
+      "bytes": 55958
+    },
+    {
+      "path": "candidates/buggy-choke-v5.webp",
+      "sha256": "0a562799a36f6d551ea70dd18ef93005ac0e91532039f66c16d916a59c6fa365",
+      "bytes": 53388
+    },
+    {
+      "path": "candidates/buggy-choke-v6.webp",
+      "sha256": "78b3295e640cb5792367b9bdd11632ab8fb05bd854846ff384d4ba8ad604cd24",
+      "bytes": 50876
+    },
+    {
+      "path": "candidates/butterfly-guard-v1.webp",
+      "sha256": "3aa25ed0e270b4a15bc494f40f9e2387147390ef5d011d8d8b6c382850abf7f2",
+      "bytes": 59832
+    },
+    {
+      "path": "candidates/butterfly-sweep-v1.webp",
+      "sha256": "5e457198314fe4c1a52dfbdbd31b8df308425a141d5beea1b715cd8382a331bc",
+      "bytes": 67548
+    },
+    {
+      "path": "candidates/butterfly-sweep-v2.webp",
+      "sha256": "fe914ef332c1d56e2a7775cd45a59be6a50dc710e3a51fa3f2b84cecbc6fb988",
+      "bytes": 60094
+    },
+    {
+      "path": "candidates/calf-slicer-v1.webp",
+      "sha256": "4ce04072bc368fc3d83759e4e817f9a66493221eccf267dac64d6bb19f7ad243",
+      "bytes": 59708
+    },
+    {
+      "path": "candidates/canto-choke-v1.webp",
+      "sha256": "607a142dd78a2f114568269edc025f572716339596165addf9640de841171cc3",
+      "bytes": 51540
+    },
+    {
+      "path": "candidates/choi-bar-v1.webp",
+      "sha256": "52a8531332cf087968f3ba5dfd35c13842997e321f8daedbf202a4474ce14bf0",
+      "bytes": 45026
+    },
+    {
+      "path": "candidates/choke-v1.webp",
+      "sha256": "536f4dea2d71deb0ef02cf4deec4c5dc86691557d9c22badfd966982d779bcb5",
+      "bytes": 55524
+    },
+    {
+      "path": "candidates/clock-choke-v1.webp",
+      "sha256": "c7d7794e2dc7a1415e8e8ca44ea7144094b16efc85dcde53dbd17cbf94117f65",
+      "bytes": 42254
+    },
+    {
+      "path": "candidates/clock-choke-v2.webp",
+      "sha256": "581ec8c1d768d775f2ea976769e55beafe9ef447c8f58ee6740932fb5de05f3f",
+      "bytes": 41184
+    },
+    {
+      "path": "candidates/closed-guard-v1.webp",
+      "sha256": "97d8c8acd03d065a606170d3933162bf4c2d5403e2e1cf4746411c603f256442",
+      "bytes": 55774
+    },
+    {
+      "path": "candidates/collar-and-sleeve-guard-v1.webp",
+      "sha256": "28a4984036d03bfa40ff609251ebe0ecbd0956a6aeddd003e5199e802ae842e8",
+      "bytes": 52424
+    },
+    {
+      "path": "candidates/collar-drag-v1.webp",
+      "sha256": "a1b2dd7c34764ef44ea2a179186361f597aebd2d1afde98d545197ba81590666",
+      "bytes": 65344
+    },
+    {
+      "path": "candidates/combat-guard-v1.webp",
+      "sha256": "cbaf4ea846184b26b10717dee931e35ae133078f2daa66f9836e02cce2bfb320",
+      "bytes": 58612
+    },
+    {
+      "path": "candidates/counter-v1.webp",
+      "sha256": "83406be6d31f15347a91bfccd3bab14fb9f31a026a43968e890ed97bd31dfe08",
+      "bytes": 67294
+    },
+    {
+      "path": "candidates/coyote-armbar-v1.webp",
+      "sha256": "558ae1bd001202b400a922f0ba272aaa7fe9f8ea21378afaf90cc1bbc87e2dd7",
+      "bytes": 46446
+    },
+    {
+      "path": "candidates/coyote-guard-v1.webp",
+      "sha256": "8d25f2a0f705ae0989fb8e4db0ce84bd240406f1a9898f80fa3821b0297acf93",
+      "bytes": 56278
+    },
+    {
+      "path": "candidates/crab-ride-v1.webp",
+      "sha256": "ea53e0c0bc8debc2c55ffd86c1678ea31a2549809e17d4e916c5ed0a29337a29",
+      "bytes": 56786
+    },
+    {
+      "path": "candidates/crab-ride-v2.webp",
+      "sha256": "9d9d231aed96e44695132fd156b93b58342d32592c010c02eebb16992158438f",
+      "bytes": 45848
+    },
+    {
+      "path": "candidates/crazy-dog-pass-v1.webp",
+      "sha256": "682bf34c968e6dee6dd0e2ce2811fd528e7f482a80a627d7f7a3c94ff4797f85",
+      "bytes": 41476
+    },
+    {
+      "path": "candidates/cross-collar-choke-v1.webp",
+      "sha256": "ee51e6b071ccf45a3e63f6d18d80ac35dd37bab151f7a119dccdc00549bad72a",
+      "bytes": 58590
+    },
+    {
+      "path": "candidates/cross-collar-control-v1.webp",
+      "sha256": "541354c430a159c783dacfac10fd13dd62f1010f8300f0463cce2e925bac5c53",
+      "bytes": 64520
+    },
+    {
+      "path": "candidates/crucifix-v1.webp",
+      "sha256": "c9061500d2fe6dbce98f7a5c761c428e47abcc941acab9fdee592696b6a168f8",
+      "bytes": 57510
+    },
+    {
+      "path": "candidates/darce-choke-v1.webp",
+      "sha256": "dcc2d15bc03ea226e79ddef5285967d6cb4cc25f3f904e9360eb7feed5bdc5d3",
+      "bytes": 42052
+    },
+    {
+      "path": "candidates/darce-choke-v2.webp",
+      "sha256": "7e38578f417d37047a265d164314bb32266982063a560581dbd8a09f1115e566",
+      "bytes": 47564
+    },
+    {
+      "path": "candidates/de-la-riva-guard-v1.webp",
+      "sha256": "ce65879cad4bdb2c0bd8216b037002045fa0cc8921b178faa587b2f37a15dbd8",
+      "bytes": 54022
+    },
+    {
+      "path": "candidates/deep-de-riva-guard-v1.webp",
+      "sha256": "19aa36014608ae437b88d4f7759e58cd9c7fd682db27c065faffc39f13a855af",
+      "bytes": 61828
+    },
+    {
+      "path": "candidates/deep-de-riva-guard-v2.webp",
+      "sha256": "7a54c32d386d746073d6fd55d44e47524026dd6365d331d019f48e569551ad83",
+      "bytes": 61310
+    },
+    {
+      "path": "candidates/deep-half-guard-v1.webp",
+      "sha256": "8d020875bf94f65ac1bb10ed860f701450ea4a51e9729c2d5a68580f9ebb1b1b",
+      "bytes": 49142
+    },
+    {
+      "path": "candidates/double-leg-takedown-v1.webp",
+      "sha256": "90a2bf132246d7aa17ea1243fd34163745cc48b47f1ebdf0aed6376f57711895",
+      "bytes": 55870
+    },
+    {
+      "path": "candidates/double-under-v1.webp",
+      "sha256": "4432f1dbe9df25480364e469a0ba79deb4d4dcce30fa6ae887549305a8165257",
+      "bytes": 54210
+    },
+    {
+      "path": "candidates/duck-under-v1.webp",
+      "sha256": "2ee091e4aae008b88c5483b31a27248722b5fe02740a7ac075640dd61b8b92ea",
+      "bytes": 59840
+    },
+    {
+      "path": "candidates/entry-v1.webp",
+      "sha256": "f08513a6e01ab394b0a05b2f0fd111ab70252bfd1c45649033ebae10f6c15241",
+      "bytes": 71628
+    },
+    {
+      "path": "candidates/escape-v1.webp",
+      "sha256": "5d2246ef850d8783fa53c911dcd7463079c6d3231ff4336684405f00cb56b227",
+      "bytes": 59882
+    },
+    {
+      "path": "candidates/estima-lock-v1.webp",
+      "sha256": "3be320021a848a52642ddeb9ca79714e8e144c73dc9bd77fac71d7630e34f437",
+      "bytes": 52810
+    },
+    {
+      "path": "candidates/ezekiel-choke-v1.webp",
+      "sha256": "26ab019cac6062296f7e3a3a4a0e9584a3997985fd0d05a51db59d1384c1b980",
+      "bytes": 44122
+    },
+    {
+      "path": "candidates/ezekiel-choke-v2.webp",
+      "sha256": "49bae46c7a492992a2d986e4ef4e50a1458a3b836a6541e472681f7ad02707be",
+      "bytes": 44100
+    },
+    {
+      "path": "candidates/fifty-fifty-position-v1.webp",
+      "sha256": "15aef97e553336796728b8202e8da03ef1ab33cf57e4fdc1bf4871ca28efe08c",
+      "bytes": 52780
+    },
+    {
+      "path": "candidates/flower-sweep-v1.webp",
+      "sha256": "6c463be243171b1939e79f7d2fa08837e68c094300f0dc7f2999d87b8fb9730d",
+      "bytes": 47286
+    },
+    {
+      "path": "candidates/flying-armbar-v1.webp",
+      "sha256": "eb8df40ddf91df5ad610cd6420b63f7a440d632dc3ce555e09604ca7568ba334",
+      "bytes": 43660
+    },
+    {
+      "path": "candidates/flying-armbar-v2.webp",
+      "sha256": "4a61b1d47404a95f3ae730977c18ad36c8d56b977c4ce7f981b2e6d480b2bbe7",
+      "bytes": 41846
+    },
+    {
+      "path": "candidates/foot-lock-v1.webp",
+      "sha256": "d29035a289af5055e0429d78fea2b215e34c4797d2ea3f5057b590afef80a315",
+      "bytes": 56772
+    },
+    {
+      "path": "candidates/foot-sweep-v1.webp",
+      "sha256": "68998a7d7e8c16d0197bcb2b996615f35b54ecf76fc28cc8642cb237c15b2bba",
+      "bytes": 64320
+    },
+    {
+      "path": "candidates/foot-work-v1.webp",
+      "sha256": "36ed424216c0854bf7b3c5796e58d453cc531fd00a7c87f97c5ef49b1ae73167",
+      "bytes": 67958
+    },
+    {
+      "path": "candidates/front-headlock-v1.webp",
+      "sha256": "162b6a30e3e8fe9adebd1e006d5a7c2ffe90b6552f406e00ca59fa4dced53968",
+      "bytes": 60136
+    },
+    {
+      "path": "candidates/gator-roll-v1.webp",
+      "sha256": "4a040192f812ed79d5e41fece3e46002225936e74a33df449b7ad1465c6a8fe1",
+      "bytes": 46362
+    },
+    {
+      "path": "candidates/gator-roll-v2.webp",
+      "sha256": "34e790c2337e827099344cfdee18f1b643c95ae17990c29391a76c2c74a1ba89",
+      "bytes": 51654
+    },
+    {
+      "path": "candidates/gator-roll-v3.webp",
+      "sha256": "60031b598401e869913c664aecc64112668f2ce2c647205020c3afb8dc053d36",
+      "bytes": 51518
+    },
+    {
+      "path": "candidates/gogoplata-v1.webp",
+      "sha256": "82b4d7c50c3c92347baa628ac7407d18b01c9e4bdba127ddd674580c8e50040e",
+      "bytes": 54758
+    },
+    {
+      "path": "candidates/gogoplata-v2.webp",
+      "sha256": "2f15fa96513d6aeb6b5d12a1da2c726e08113393396121ed11618c4dbd38e7e0",
+      "bytes": 56200
+    },
+    {
+      "path": "candidates/gogoplata-v3.webp",
+      "sha256": "179aff92487a697139a0c5f36f390a65bb6f386ce106273e9b303bf6fab2d6d1",
+      "bytes": 49496
+    },
+    {
+      "path": "candidates/guard-pass-v1.webp",
+      "sha256": "8e123ee068c1d52df88d8c2f03858ed46e7cf90fe36c0b8e975021432d149219",
+      "bytes": 48774
+    },
+    {
+      "path": "candidates/guard-recovery-v1.webp",
+      "sha256": "2aee77422592158b5ff73f7dd5d7a7b3c1d379cbadc01f51758ef42a9addb43e",
+      "bytes": 60702
+    },
+    {
+      "path": "candidates/guard-v1.webp",
+      "sha256": "d65bcca06dccfac60c40ca078831fae789640f638fa7116b535ef0ed9be843c7",
+      "bytes": 54916
+    },
+    {
+      "path": "candidates/guillotine-choke-v1.webp",
+      "sha256": "73807f0ebef6aeb93f9cb342778d26032727e1f3c94ff75a14cfadf2b9ce7f99",
+      "bytes": 61210
+    },
+    {
+      "path": "candidates/half-guard-v1.webp",
+      "sha256": "7ff899b4675154b3959983906c9749a173fff5c80776d2395149ba47fe2f0c1c",
+      "bytes": 46122
+    },
+    {
+      "path": "candidates/headquarters-position-v1.webp",
+      "sha256": "49d8ebaf0fd4ef8897c4a4e15ad188d5f7ff9905e3a5b7ce3ecbfd481555634b",
+      "bytes": 63322
+    },
+    {
+      "path": "candidates/heel-hook-v1.webp",
+      "sha256": "05beaa286d4717025e86e0877f2eb607d50ee7c1e868a71580af6a1f7dc681c0",
+      "bytes": 57004
+    },
+    {
+      "path": "candidates/heel-hook-v2.webp",
+      "sha256": "4cb73a4abff1c5ceec52f12e2a2ee32628389c94599ce6dc55f47562c90303cc",
+      "bytes": 56872
+    },
+    {
+      "path": "candidates/high-mount-v1.webp",
+      "sha256": "cbc6a76b38fb4e80ba7f06352c695eef943ad4f18ce42c212163882b8e150ba1",
+      "bytes": 95898
+    },
+    {
+      "path": "candidates/hip-bump-sweep-v1.webp",
+      "sha256": "95997c30240da401694a5ff666e15f716ee1f0d870a4eece3c99b6549090048e",
+      "bytes": 47736
+    },
+    {
+      "path": "candidates/honey-hole-v1.webp",
+      "sha256": "92165a10f3a6c17ad8e9fa38085b9868fd62ab64b2d87d5ed121bdfcfa19972f",
+      "bytes": 52042
+    },
+    {
+      "path": "candidates/honey-hole-v2.webp",
+      "sha256": "e8d153e7b51f7a8f63b18d42762404fecf6ca8a2ffb03e331fe11c5b1a470f0e",
+      "bytes": 54898
+    },
+    {
+      "path": "candidates/hugo-lock-v1.webp",
+      "sha256": "e56f2df2142f5cfdcc5fca6bbb026b8ba216ab0daac07efc5fd3c5491145b476",
+      "bytes": 58744
+    },
+    {
+      "path": "candidates/inside-ashi-garami-v1.webp",
+      "sha256": "828f1fa32624003f5e76e7c3fdba790bc7b3a9a1c6b53933a8aa3ced1bd39e10",
+      "bytes": 52538
+    },
+    {
+      "path": "candidates/inside-heel-hook-v1.webp",
+      "sha256": "1462e115d3b227ce2be4e34698670da9813b9b1d1a9f60cdb1a3aad00be8ecd5",
+      "bytes": 56334
+    },
+    {
+      "path": "candidates/inside-heel-hook-v2.webp",
+      "sha256": "5753623eaef433575d56e46b1d51556b27ff97acb6488359fab4f373b6c68a87",
+      "bytes": 65030
+    },
+    {
+      "path": "candidates/inside-heel-hook-v3.webp",
+      "sha256": "6539229ab4bc30585f53c3f1c59d40d3fd07f2098bea6dfc6e86bd270f11fce7",
+      "bytes": 54904
+    },
+    {
+      "path": "candidates/inside-trip-v1.webp",
+      "sha256": "92d57107768bc5ad8eafe52988a97f67f5cb23ddb9510ce313114bb92cf40570",
+      "bytes": 48862
+    },
+    {
+      "path": "candidates/inverted-guard-v1.webp",
+      "sha256": "2000bfe4cf73a282cf15549bfb8dfa2bfb9ff80a343ee252de9b74564dfd7179",
+      "bytes": 56256
+    },
+    {
+      "path": "candidates/inverted-guard-v2.webp",
+      "sha256": "56baba3cfcf7b8d2221f76a4222bbc50fd48fea85c4af5eefb6efc384d59d9cd",
+      "bytes": 52722
+    },
+    {
+      "path": "candidates/john-wayne-sweep-v1.webp",
+      "sha256": "07b4b72d1a9faba1eaac0cf287fa3832b6039c2fd30f983cb33c25dd5edc98e8",
+      "bytes": 48286
+    },
+    {
+      "path": "candidates/k-guard-v1.webp",
+      "sha256": "72225023c04c6972faaf5611606adf4f0e6fac0997e36ce89eeb77afeab9f666",
+      "bytes": 55784
+    },
+    {
+      "path": "candidates/keymaster-guard-v1.webp",
+      "sha256": "09114f631f1e800f885fee7f399ef7221afadab281d43ccba2bfe3efd4fc0bb1",
+      "bytes": 54326
+    },
+    {
+      "path": "candidates/kimura-sweep-v1.webp",
+      "sha256": "ef0663ef0fd60d393bef95143f7b08e95c3c82ee5a4003181bd9fa532785f962",
+      "bytes": 57048
+    },
+    {
+      "path": "candidates/kimura-sweep-v2.webp",
+      "sha256": "4e67d5d6e819b0ec44c28cae38d06a51320509f296709873d0d1eff15a0cf343",
+      "bytes": 61424
+    },
+    {
+      "path": "candidates/kimura-sweep-v3.webp",
+      "sha256": "a47f4d70122efa96bd7de23b4cf765dc772d48c56a61aa3caa61a501f4b527bd",
+      "bytes": 59832
+    },
+    {
+      "path": "candidates/kimura-v1.webp",
+      "sha256": "76e9c1ea9d3063a6d30a72d84211645c672ae9f44119e01975c9d23beab3743b",
+      "bytes": 50080
+    },
+    {
+      "path": "candidates/kiss-of-dragon-v1.webp",
+      "sha256": "39cdc73a02e9dda72440ffff9f198daad055d91c7c5d1dc482d0d7a81ca19aad",
+      "bytes": 64350
+    },
+    {
+      "path": "candidates/knee-bar-v1.webp",
+      "sha256": "5f53aee4fc9151b64d2ea34c4d00abcbc74167db2a020d28d3477d3924f68290",
+      "bytes": 41320
+    },
+    {
+      "path": "candidates/knee-bar-v2.webp",
+      "sha256": "7945fc8bfcb5656047e8c3eeb5c2bedd04ab668cfd4e41a5f2dc18779a7c7753",
+      "bytes": 45494
+    },
+    {
+      "path": "candidates/knee-cut-v1.webp",
+      "sha256": "c56b7371382b24c9e66d6fee93473edee81fddd61a7b3cae2c4ad312fcca3163",
+      "bytes": 44400
+    },
+    {
+      "path": "candidates/knee-on-belly-v1.webp",
+      "sha256": "868673d116b92bf25d8393ca5438de6b36f768ca32807d73cfb16de9f27b3989",
+      "bytes": 59006
+    },
+    {
+      "path": "candidates/knee-shield-v1.webp",
+      "sha256": "e5516920559bc9dfd4965b604d7c05fd1be5772c74f71147b048764f1d7b357c",
+      "bytes": 54666
+    },
+    {
+      "path": "candidates/knee-slide-v1.webp",
+      "sha256": "64b530ed8e3ac5b535ff69cebb42afcf7af10eeee580175fc8e5053a45fe3688",
+      "bytes": 50494
+    },
+    {
+      "path": "candidates/lapel-guard-v1.webp",
+      "sha256": "4ee982592051065b971af319ab99f9d2c69d70806bf7fb6b7b2b65ac063b3f5b",
+      "bytes": 59126
+    },
+    {
+      "path": "candidates/lapel-pass-v1.webp",
+      "sha256": "01e8d2e37a29fd157161655ca6d93f8e561dcfc10668813adf46de08c0c988a5",
+      "bytes": 58714
+    },
+    {
+      "path": "candidates/lapel-pass-v2.webp",
+      "sha256": "7216495d06b9efceacbe7d6eeabdb301f9639d694f0b63490c56961336b4bc4e",
+      "bytes": 48616
+    },
+    {
+      "path": "candidates/lapel-pass-v3.webp",
+      "sha256": "69afda67fd352b1d0457915c4e151bf3fc2d72eaab177a4d415fa8b9be51a62c",
+      "bytes": 45514
+    },
+    {
+      "path": "candidates/lasso-guard-v1.webp",
+      "sha256": "bfeaac18b32a087960b81f61a5ad97cc1963004125e031db9f294f8d90cbb92c",
+      "bytes": 57268
+    },
+    {
+      "path": "candidates/lasso-guard-v2.webp",
+      "sha256": "84b6afd373578f5fd58260dc6fd47d0440ad4268fe5b0f2f190c3016a295aa93",
+      "bytes": 60448
+    },
+    {
+      "path": "candidates/leg-drag-v1.webp",
+      "sha256": "54e9124c354dc7eca95fd66cc23eef322626510155fd71771cd3ed5ba4dd28e1",
+      "bytes": 48284
+    },
+    {
+      "path": "candidates/leg-weave-v1.webp",
+      "sha256": "cccfdeaaafe85b138754d77f922b8eca7182a64f6679727830fd9a62a8a15473",
+      "bytes": 52612
+    },
+    {
+      "path": "candidates/leg-weave-v2.webp",
+      "sha256": "4575c908270358222bca1f704b2e729632b78b166083ad7cdddaa6cd6b460848",
+      "bytes": 50468
+    },
+    {
+      "path": "candidates/lockdown-v1.webp",
+      "sha256": "67aa3d45b2d17eb6bf85906a014445a818a8bef4bb6c1bd3956baf8cfd7803ba",
+      "bytes": 39954
+    },
+    {
+      "path": "candidates/lockdown-v2.webp",
+      "sha256": "cf1a671886e1ea8fe3778015af0f9a50edd753db8909357a683742ed6a91cf74",
+      "bytes": 38758
+    },
+    {
+      "path": "candidates/long-step-v1.webp",
+      "sha256": "ac115433c1ca9c47da7f65d0b319df45c83865dc8f59724299b4fd38caf91cda",
+      "bytes": 41564
+    },
+    {
+      "path": "candidates/loop-choke-v1.webp",
+      "sha256": "8ed208d031bb71935f85b35b9831df1cb5f818f33468b039e56b8e83f33a6ddb",
+      "bytes": 44090
+    },
+    {
+      "path": "candidates/loop-choke-v2.webp",
+      "sha256": "3295f20f3cd1c3f647ad6c8a381128f3c5773045bc97caf47f9e9749d06ce182",
+      "bytes": 43060
+    },
+    {
+      "path": "candidates/loop-choke-v3.webp",
+      "sha256": "f54a599e007bdb4e11a8bc028f6753239611e1d70cf9859c38c7b2c368937e47",
+      "bytes": 40516
+    },
+    {
+      "path": "candidates/loop-choke-v4.webp",
+      "sha256": "94df5eb2ee94558bfe32102b8ddfa385448cf231508be258c0e7e22c7160d105",
+      "bytes": 38160
+    },
+    {
+      "path": "candidates/lumberjack-sweep-v1.webp",
+      "sha256": "7291eb30260093f31452536a71df37eca200ea0b17cddf2cc24143ddaad87733",
+      "bytes": 58884
+    },
+    {
+      "path": "candidates/matrix-v1.webp",
+      "sha256": "615956d887794f77cfb268e6f43331ea17728209f86df61480f533983244a03e",
+      "bytes": 60854
+    },
+    {
+      "path": "candidates/matrix-v2.webp",
+      "sha256": "48c125c9869d93d3e8712f3882306328eb744fc6c76abc143280ab7ce3fb71d7",
+      "bytes": 50362
+    },
+    {
+      "path": "candidates/mount-v1.webp",
+      "sha256": "b8ae55b16cf078322b5968ec0a28b35c13de9fc9ae1dbdc0e002de82ced02d5f",
+      "bytes": 52802
+    },
+    {
+      "path": "candidates/north-south-choke-v1.webp",
+      "sha256": "7da0fa8fa51fb0cf404a60e1af93df2cd711180c677533b914123456aee79714",
+      "bytes": 32706
+    },
+    {
+      "path": "candidates/north-south-choke-v2.webp",
+      "sha256": "d2e4349ae5dd9f24432cc1aef61d630ea0a5afdbd5d9d6da30584ce65ca65b47",
+      "bytes": 32216
+    },
+    {
+      "path": "candidates/north-south-position-v1.webp",
+      "sha256": "bb0ece8c77eea5392a63ddf1ae24c9a19050095510f3a2741fde016819d93745",
+      "bytes": 39752
+    },
+    {
+      "path": "candidates/octopus-guard-v1.webp",
+      "sha256": "152f5030702250efca9017aaf59fa6bc25e6648c985837e5f93b029bc2dae1ef",
+      "bytes": 61540
+    },
+    {
+      "path": "candidates/omoplata-v1.webp",
+      "sha256": "b15a2e8534a256c036de6352495be1a1ec6561b98b3b6c7c433311e9c4d661b2",
+      "bytes": 55940
+    },
+    {
+      "path": "candidates/open-guard-v1.webp",
+      "sha256": "f034ccf22c2699dfb2a4070c495561978758ee4dce6514e6de4f4ae712cc8cac",
+      "bytes": 53806
+    },
+    {
+      "path": "candidates/outside-ashi-garami-v1.webp",
+      "sha256": "817c809fd424c44f26333a39fdcead5b63eec100f3214baf096eca8e15809df5",
+      "bytes": 53566
+    },
+    {
+      "path": "candidates/outside-ashi-garami-v2.webp",
+      "sha256": "04eead725c613a30d6822b0a8b7a210784be98ab2339b0cd66ac6f81763c6200",
+      "bytes": 53190
+    },
+    {
+      "path": "candidates/outside-heel-hook-v1.webp",
+      "sha256": "508a760543a8c1f202df291dc3e9c0116c096ce4b92d90bf94aca7cbe4a83a61",
+      "bytes": 60660
+    },
+    {
+      "path": "candidates/outside-trip-v1.webp",
+      "sha256": "4155f8873fc167ed232063e21d0cef411eb449c2e92ac201a21a92dffea8dfc1",
+      "bytes": 49232
+    },
+    {
+      "path": "candidates/over-under-v1.webp",
+      "sha256": "a942f57511bded96d7c10500deb299774292f775a3a2e39dc0fe75e193d11d6e",
+      "bytes": 48966
+    },
+    {
+      "path": "candidates/paper-cutter-choke-v1.webp",
+      "sha256": "b2f8c0c5e2979bb5fa61b42a2f5b6496f8cfa0202199ed056b1c490de0cbb5d6",
+      "bytes": 45128
+    },
+    {
+      "path": "candidates/pendulum-sweep-v1.webp",
+      "sha256": "627f974045edfaba550b01d52b608b7713dc92e957470033eae8141b63830f4e",
+      "bytes": 53612
+    },
+    {
+      "path": "candidates/pendulum-sweep-v2.webp",
+      "sha256": "6f4b3a76682effb6042627c1a07d317885a75b7d7d7ccd5076c8e73fd1cc4f38",
+      "bytes": 65296
+    },
+    {
+      "path": "candidates/pendulum-sweep-v3.webp",
+      "sha256": "4af2a5d5e7d92ee5da616c6237732e0fa4bffddeee7f2b611dbfe7b7743b16cd",
+      "bytes": 60994
+    },
+    {
+      "path": "candidates/peruvian-necktie-v1.webp",
+      "sha256": "a2a66e357aa676dd4c6a0d07431923527f91ca47ce7d0d219c24386bd01e7191",
+      "bytes": 61380
+    },
+    {
+      "path": "candidates/peruvian-necktie-v2.webp",
+      "sha256": "1ec7ea4ce7e6ecf38c31b667d3db7409df1f33a61a8dc1e2c665e737a1c75c8d",
+      "bytes": 53678
+    },
+    {
+      "path": "candidates/peruvian-necktie-v3.webp",
+      "sha256": "098eac4bb1e5f35702018a949036b26b33ecae992700c5549f94826f6893ad93",
+      "bytes": 56310
+    },
+    {
+      "path": "candidates/peterson-roll-v1.webp",
+      "sha256": "c842e9f68d6780d6cd54a980ae27fcd611f975f0077f960b81f2763c584851ad",
+      "bytes": 57438
+    },
+    {
+      "path": "candidates/pressure-pass-v1.webp",
+      "sha256": "9e10e6c9a83e63a83a316dd742e7f75fcfbad3984d3aa8ef508de9e101c34f85",
+      "bytes": 43616
+    },
+    {
+      "path": "candidates/quick-armbar-v1.webp",
+      "sha256": "e8c3885fa11665ebab70ea6196f4169d2679f57814a0235300a1ba06e3deb05a",
+      "bytes": 53390
+    },
+    {
+      "path": "candidates/rear-naked-choke-v1.webp",
+      "sha256": "1152245587b5ca6e052f4d86e852951a29c0cba6d586b28fbe0c3894ccc61dd5",
+      "bytes": 61972
+    },
+    {
+      "path": "candidates/reverse-de-riva-guard-v1.webp",
+      "sha256": "77684a5c798cf0d21c36afbbb52ae5477ce57888a04b5363693d6bed05f9dd3f",
+      "bytes": 67868
+    },
+    {
+      "path": "candidates/reverse-de-riva-guard-v2.webp",
+      "sha256": "6fd47de27756e7b71f326b6b7788edbd40011cf1e3e2052fcf9218c058a1a86c",
+      "bytes": 61698
+    },
+    {
+      "path": "candidates/reverse-x-guard-v1.webp",
+      "sha256": "1b55cf624bb58616c7053c4371211957ad19483c07c44514e1ea18dc15c08a4a",
+      "bytes": 45872
+    },
+    {
+      "path": "candidates/rubber-guard-v1.webp",
+      "sha256": "fac720f022d3cab417dd9cc7780bc971a40d4139be35d7c4db5b18a5944ba6db",
+      "bytes": 56648
+    },
+    {
+      "path": "candidates/rubber-guard-v2.webp",
+      "sha256": "07154ecb14450d4352e4e1724ea5291fbe9e9bff1515780634aa7f67b6c11711",
+      "bytes": 53656
+    },
+    {
+      "path": "candidates/rubber-guard-v3.webp",
+      "sha256": "1352e60ae815a24cc5d83d5a6886c1171b55a5eddd8889053ce2268295965bd8",
+      "bytes": 57966
+    },
+    {
+      "path": "candidates/rubber-guard-v4.webp",
+      "sha256": "40723c6e2edf6cd0be4cd8a6494b9b9335b58720591c1a831fadf5f79df3603d",
+      "bytes": 58274
+    },
+    {
+      "path": "candidates/s-mount-v1.webp",
+      "sha256": "bc1fbd7174dfa01a3a07a8c4e5869541353fe96587ca7b93990ac2e97ca19203",
+      "bytes": 56338
+    },
+    {
+      "path": "candidates/s-mount-v2.webp",
+      "sha256": "f6ba5f48ec2b96000925c381ef03423efbf5c01ff794a61cb0d18571c5850adb",
+      "bytes": 51078
+    },
+    {
+      "path": "candidates/saddle-position-v1.webp",
+      "sha256": "fcc394600a0f7b029d39b271f436877c94f2330567bf8f33b25dc0035c8338a1",
+      "bytes": 52384
+    },
+    {
+      "path": "candidates/saddle-position-v2.webp",
+      "sha256": "03744c52e09bba3f3adc70a2ac831f55efd6f4efd0e4352dd48429970c9af04f",
+      "bytes": 67796
+    },
+    {
+      "path": "candidates/saddle-position-v3.webp",
+      "sha256": "1fa725295d78bb0a30df25e7409e038681dd60c35ff8547544bdbc2d1b622cb8",
+      "bytes": 50984
+    },
+    {
+      "path": "candidates/saddle-position-v4.webp",
+      "sha256": "3d9907f017c07850e86cb0dca61a56953461eef27dacbedc88a76b260bc302b5",
+      "bytes": 49218
+    },
+    {
+      "path": "candidates/sagi-oro-sweep-v1.webp",
+      "sha256": "d3b068a7df1df9954ecd7ed98a79aa092fe3a7022040471877b43fdca52453e7",
+      "bytes": 54428
+    },
+    {
+      "path": "candidates/scarf-hold-v1.webp",
+      "sha256": "e7ceef9ef634cd1782bf3d8db50e11c79e1d3fbe33f7e5898124917347bb0609",
+      "bytes": 59622
+    },
+    {
+      "path": "candidates/scissors-sweep-v1.webp",
+      "sha256": "7222b0c4d16546ce97c34cd46fab6b51198718e20b9c49c9cb7f4e35d9e50b69",
+      "bytes": 51664
+    },
+    {
+      "path": "candidates/scissors-sweep-v2.webp",
+      "sha256": "b236cf4809a1f319c3e4a6615cab471b5b913d3e3500f7c132762e96489150b4",
+      "bytes": 62838
+    },
+    {
+      "path": "candidates/seat-belt-grip-v1.webp",
+      "sha256": "073d55684aea4037b2b57f722524b606b40aa5a85fab63d00c7b1f7c3762087f",
+      "bytes": 62866
+    },
+    {
+      "path": "candidates/shin-to-shin-guard-v1.webp",
+      "sha256": "4c53e71fca7188afdcf729cfe39d37313aeb77596c28003adcef8c84fb6b382f",
+      "bytes": 61926
+    },
+    {
+      "path": "candidates/shin-trap-v1.webp",
+      "sha256": "1bf4639364d9611aca3437258482c2d282c997d22f10058b9e523872ca6dbf9d",
+      "bytes": 55766
+    },
+    {
+      "path": "candidates/side-control-v1.webp",
+      "sha256": "741ff78945bc81104b52ad42c7fbb814a8ff8022326bb60364194edfed2a3787",
+      "bytes": 40062
+    },
+    {
+      "path": "candidates/single-leg-takedown-v1.webp",
+      "sha256": "a76a4fa958459bf9dc2f1d5f26dd17b4bad728592052f88bf782de6b6bbc9c6b",
+      "bytes": 53168
+    },
+    {
+      "path": "candidates/single-leg-x-guard-v1.webp",
+      "sha256": "a012bb6a6211b14574a76121c689312621714ae2c6a9808f4fc8619cd7c8f043",
+      "bytes": 58640
+    },
+    {
+      "path": "candidates/sit-up-guard-v1.webp",
+      "sha256": "2203fd8437f6ee8c6540f37c1a331d1a1a339f659dc09dd7a1279b0887677e28",
+      "bytes": 70526
+    },
+    {
+      "path": "candidates/smash-pass-v1.webp",
+      "sha256": "51aefb3e09ac85a50033fb2f0026c291afc38c46391e1bbee3dd53e04b076fbd",
+      "bytes": 36956
+    },
+    {
+      "path": "candidates/snap-down-v1.webp",
+      "sha256": "a6b4be22a1f18265b0d4efb9238f2c627b719402d65f91e4a6ea6c1cfac67a9b",
+      "bytes": 58082
+    },
+    {
+      "path": "candidates/spider-guard-v1.webp",
+      "sha256": "6b68db2a38458c5763c6150478092e3eec1ac1145492ab73f2134f649be83fb1",
+      "bytes": 59246
+    },
+    {
+      "path": "candidates/sprawl-v1.webp",
+      "sha256": "ceb230913f22d34c3091364f5512deb48dbfe46e5dabbced8e056f1a1d542402",
+      "bytes": 38950
+    },
+    {
+      "path": "candidates/squid-guard-v1.webp",
+      "sha256": "2700674b70ec610ca8d3eed22e0fd5c2e61e49403850ce977fbe6f357ccac6e8",
+      "bytes": 57336
+    },
+    {
+      "path": "candidates/squid-guard-v2.webp",
+      "sha256": "dac192f7824f6184debad0b9b6945c7966e154d26bb15a3c043efe7a23d99966",
+      "bytes": 63952
+    },
+    {
+      "path": "candidates/squid-guard-v3.webp",
+      "sha256": "d355d5afab3330523a338b400d85d8da7723c35cbc81f193a658229e5f0f9c5f",
+      "bytes": 60850
+    },
+    {
+      "path": "candidates/stack-pass-v1.webp",
+      "sha256": "7f5c4de7d50110f9118bdfb63e0d44f7bcdb5399ad7adfd0cb091410aedb6caa",
+      "bytes": 52514
+    },
+    {
+      "path": "candidates/standing-v1.webp",
+      "sha256": "7c15595a157050da9f59dfd0a172dd41c56b0526b52cd546bb4f2a1404156233",
+      "bytes": 67934
+    },
+    {
+      "path": "candidates/straight-ankle-lock-v1.webp",
+      "sha256": "29dbcbf7134d046ef4081e60c74900d02de6849e70f8f8d04eff16197fbd5a06",
+      "bytes": 60390
+    },
+    {
+      "path": "candidates/straight-collar-control-v1.webp",
+      "sha256": "5cf9ddc73102ac6eaad4720cd2d1c445e65fd33522bc35f6d68049a7467b6a0b",
+      "bytes": 57922
+    },
+    {
+      "path": "candidates/submission-v1.webp",
+      "sha256": "ebfb3370007947ffaa916ca2fd05ebaebd5743d822f3c832c1c0a252679f4233",
+      "bytes": 47594
+    },
+    {
+      "path": "candidates/surfer-pass-v1.webp",
+      "sha256": "5599c7b6d1fc174ff44040340bdd50147cbbdc43324429005d715d26a7e37ca4",
+      "bytes": 64198
+    },
+    {
+      "path": "candidates/sweep-v1.webp",
+      "sha256": "18b397379e73987c3fbf61784fe560b5a587b3b0f926c67a5f090f168da94002",
+      "bytes": 67316
+    },
+    {
+      "path": "candidates/takedown-v1.webp",
+      "sha256": "83e96bb5f8e842c45d5b24bdc1ed80b2996773a76cb39f5199ee0379ec28ad1a",
+      "bytes": 61084
+    },
+    {
+      "path": "candidates/tarikoplata-v1.webp",
+      "sha256": "a5d2292f07c5f0b67b4d4ff18a38665a12463cf9631ea4fc8e988b3d6621b972",
+      "bytes": 51802
+    },
+    {
+      "path": "candidates/technical-stand-up-v1.webp",
+      "sha256": "ed535de60f3373bceafdd76befa6f8add0a826948132971ecc223f3e7111aa0e",
+      "bytes": 62854
+    },
+    {
+      "path": "candidates/three-quarter-mount-v1.webp",
+      "sha256": "0961618a1c1bc95043c28324e016a4e5b386cf8f3c831ac7ebdd6c81b88c0ba4",
+      "bytes": 43484
+    },
+    {
+      "path": "candidates/toe-hold-v1.webp",
+      "sha256": "2248540f86796f41e1a59e9e4f813013a733d25e22d51b1a6a3b06a9c59418f4",
+      "bytes": 68236
+    },
+    {
+      "path": "candidates/toreando-pass-v1.webp",
+      "sha256": "0423ed734978bb0969cce8251693a9d9f0be151680615a6f996e081819f99b72",
+      "bytes": 63908
+    },
+    {
+      "path": "candidates/triangle-choke-v1.webp",
+      "sha256": "0063768950672d05d2fca0c02f9246f0281fb4f58a818b9cb08b3d9ff65b4793",
+      "bytes": 44476
+    },
+    {
+      "path": "candidates/triangle-choke-v2.webp",
+      "sha256": "acdb5afa9f82e373701d69bdf0ea3f9645b262418dd9525439b692fa83590418",
+      "bytes": 42844
+    },
+    {
+      "path": "candidates/tripod-sweep-v1.webp",
+      "sha256": "3573e134c46eb31b5131a21d14d357519bfd19af9a23a81ed5504d24672833ff",
+      "bytes": 75566
+    },
+    {
+      "path": "candidates/truck-v1.webp",
+      "sha256": "7c10ece9f2ff92d27b9c4d93bae6135d108adcadd207f651d5f10688595dc45b",
+      "bytes": 57410
+    },
+    {
+      "path": "candidates/truck-v2.webp",
+      "sha256": "fe82940b7e2eba62720ca237648a1129e48533de4bd9ebd13d1d05b440eacbb5",
+      "bytes": 54326
+    },
+    {
+      "path": "candidates/turtle-v1.webp",
+      "sha256": "f2311fbe1d7ce3a8f53c111da7010d9e0c208bd4101215f62b1bc738ac863fd6",
+      "bytes": 49488
+    },
+    {
+      "path": "candidates/twister-v1.webp",
+      "sha256": "523fcc24ad64191e9a4e548fe61521b7f808792a635f4b9e54d48b0e0292cb90",
+      "bytes": 61372
+    },
+    {
+      "path": "candidates/twister-v2.webp",
+      "sha256": "b65372ab81806262d9cfb9d1af8b69c5508c690ee206c6cee1ccb123cb163fac",
+      "bytes": 56740
+    },
+    {
+      "path": "candidates/two-on-one-v1.webp",
+      "sha256": "c4feed98cdc50d21d94bc2b4cbe6be3e35dc1a7ad25e3f65beadaa8584294532",
+      "bytes": 68932
+    },
+    {
+      "path": "candidates/under-hook-v1.webp",
+      "sha256": "d75a3a6bda0ae6c5ab0cfa9de2392a0325e46afeb06c46e512acb9d06b3523d7",
+      "bytes": 67522
+    },
+    {
+      "path": "candidates/von-flue-choke-v1.webp",
+      "sha256": "80d6b1de7779176fc7f0aef493dff0c241000565accc9155d7e91a96f4c079bf",
+      "bytes": 44188
+    },
+    {
+      "path": "candidates/waiter-guard-v1.webp",
+      "sha256": "d5f23d8a0a906807c99e499e69de6ab2d09c76b3416ff1c22160bfd4301352ee",
+      "bytes": 52380
+    },
+    {
+      "path": "candidates/waiter-guard-v2.webp",
+      "sha256": "d4b249451f4820923494019c7706b9809b979240555f324140a63579fa3e3ae3",
+      "bytes": 57986
+    },
+    {
+      "path": "candidates/waiter-sweep-v1.webp",
+      "sha256": "20c11f69738356275b9f51e49bbbb9fb76f2e2db011db140669bb98b5dd1afb9",
+      "bytes": 58132
+    },
+    {
+      "path": "candidates/waiter-sweep-v2.webp",
+      "sha256": "5c67ceabf60f4742799652d893d0a631bff2c4fa19419b85466fc35547e3b9d8",
+      "bytes": 57556
+    },
+    {
+      "path": "candidates/waiter-sweep-v3.webp",
+      "sha256": "66088f9b82ae44770b4a275f455b477b4d05d30a7aecc4c3f176ecf256276271",
+      "bytes": 49966
+    },
+    {
+      "path": "candidates/williams-guard-v1.webp",
+      "sha256": "1fecd7cbb488a8bea8b6beddae6e3ade4fa18131a51c61726836dc69db89acc1",
+      "bytes": 52258
+    },
+    {
+      "path": "candidates/wiper-v1.webp",
+      "sha256": "5b18ec2b559ccfa72a0eb50f25937ef1ea257c8dcf20a7af3ee17de905d0e5ca",
+      "bytes": 44128
+    },
+    {
+      "path": "candidates/wiper-v2.webp",
+      "sha256": "24523380b96800ecd05ac4ce1018e2fec41c11928858478956cfa8fc81b3d702",
+      "bytes": 54518
+    },
+    {
+      "path": "candidates/wiper-v3.webp",
+      "sha256": "3d19c36e330bf2ea6cd15c770c50cd31813f6dee1df9ae719772b88e13108b9d",
+      "bytes": 40618
+    },
+    {
+      "path": "candidates/wiper-v4.webp",
+      "sha256": "5c8817e19793f3b35c8d728811681fa97f694669da7a5dea80f554f1de414293",
+      "bytes": 40112
+    },
+    {
+      "path": "candidates/worm-guard-v1.webp",
+      "sha256": "ae0b413f8ef7547ce45758df7e98ffa30d0f3561dee2b888060be20f15c78b89",
+      "bytes": 62196
+    },
+    {
+      "path": "candidates/wrestle-up-v1.webp",
+      "sha256": "c8e648581577c7ee56a3a8d3ea01cd62cd4cb7f076cec5c272590576d798afdd",
+      "bytes": 52232
+    },
+    {
+      "path": "candidates/wrist-lock-v1.webp",
+      "sha256": "c2b1c63ff579cb84965e7da3ba6e8c27cd595c1f44894d71b823a78ea871d1cd",
+      "bytes": 73000
+    },
+    {
+      "path": "candidates/x-guard-sweep-v1.webp",
+      "sha256": "874961f40c0caca37ecd68445e468992aa607e01b6c76f720cd4781337a372a5",
+      "bytes": 67072
+    },
+    {
+      "path": "candidates/x-guard-sweep-v2.webp",
+      "sha256": "48a5a70595c31133e63beaab71a5218149bda7dc4a3a39553958f53b4bea4f11",
+      "bytes": 60510
+    },
+    {
+      "path": "candidates/x-guard-sweep-v3.webp",
+      "sha256": "84e65833ea0be13b9d490ad37190fe2bb518c64192b17647456e91ada08905df",
+      "bytes": 63194
+    },
+    {
+      "path": "candidates/x-guard-v1.webp",
+      "sha256": "3a657c51a28d4ca47e87f1a573efeca52b9aa470fa79a388b71f4be906066f3e",
+      "bytes": 57760
+    },
+    {
+      "path": "candidates/x-guard-v2.webp",
+      "sha256": "95142dc4b52d159778a52059f6b14fcef61ac5e95769a0c4a2daf3623a9a51ef",
+      "bytes": 67534
+    },
+    {
+      "path": "candidates/x-pass-v1.webp",
+      "sha256": "cea1fbf5a8ffb86014a4c653ca31ad26acb580f3d3fc04c0531e2529f8e5d804",
+      "bytes": 46492
+    },
+    {
+      "path": "candidates/z-guard-v1.webp",
+      "sha256": "6ff007095c0c59992dbe3797b035b63e8230479daa16fcf1b5242a9cbe50ce93",
+      "bytes": 48870
+    },
+    {
+      "path": "candidates/z-lock-v1.webp",
+      "sha256": "b64524d354d7b99c71722efb7cea10ddf1bd13e5ba22e4b401f85c1835e7ac84",
+      "bytes": 42572
+    },
+    {
+      "path": "style-guides/neutral-portraits-v1.png",
+      "sha256": "861ad8775f2697dc451d5f764a49655e5c78ddb2ada79d3f44a6f2905fa1ba16",
+      "bytes": 2420782
+    },
+    {
+      "path": "style-guides/neutral-portraits-v1.prompt.txt",
+      "sha256": "eedb8123deb3f0982335706bec5fda93d797df56bb14f91a0177336d05381658",
+      "bytes": 1000
+    }
+  ],
+  "count": 737,
+  "newFilesThisPass": 3,
+  "previousFilesUsedVerifiedDigest": true,
+  "notPublishedRegistry": true
+}
