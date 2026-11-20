@@ -1,7 +1,8 @@
 ---
 id: task-050
 title: 영상분석 — 썸네일 서버 저장 + 기존 영상 파일·썸네일 백필 (바라토플라타 영상 제외)
-status: doing
+status: done
+waiting: device_verify
 created: 2026-10-08
 base_ref: 8613000955226d4fd7147b132dc60bf1db8415d0
 risk_level: R2
@@ -352,7 +353,22 @@ DRY-RUN — DB·NAS·/tmp 에 쓰지 않았습니다. 적용하려면 --apply �
 
 ## 운영 백필 기록
 
-(Leader — 배포 후)
+**배포 (2026-10-09 23:38 KST)**: 커밋 `cde60bf` push(`18ce9ef..cde60bf`, task-049 vault 기록 커밋 `8613000` 동반) → 릴리스 `20261009-233854-cde60bfc`, `RELEASE_RESULT status=ok`(migrated=false), pm2 `bjj` 새 릴리스 경로 online·restarts 0·`/health` 200. 배포 직후 새 릴리스 폴더에 `longVideoThumb.js`·`task-050-backfill-long-videos.js`·`saveThumbnailStep` 반영 확인.
+
+**사전 점검(Reviewer 지정 항목, apply 직전 Leader 직접)**: `users/3/long-videos` = `74` 하나뿐(폴더 안 `video.mp4` 만) · `env | grep BJJ_BACKFILL` 비어 있음 · `long_video_jobs` 활성 0건(done 10) · user 3 스냅샷 md5 `42864bc6…`(8행·서버 썸네일 0·저장본 id 74 하나) · 기본 백업 폴더에 task-047 백업뿐 · NAS 여유 2.5TB·/tmp 483GB · **id 74 `video.mp4` 기준값: inode 25155778 · 57,654,974바이트 · mtime 10-08 10:55 · sha256 `d4b645af640e7aa305d8db03fbc34126e89d34203ac74b4fb75c27962384af68`**.
+
+**dry-run (23:39:35, 배포된 릴리스에서 `systemd-run` 메모리 상한 4G 안, 로그 `task-050-20261009-233935-user3-dryrun.log`)**: DB `bjj@192.168.219.154`·user 3·8행. 영상 7건(29·30·37·38·39·40·73) 합계 61:10(3670초)·예상 382.1MB, 전부 H.264+AAC 720p(`136+140` 계열, 일부 원어 ko 트랙), 메타 길이가 DB 길이와 건마다 일치, 썸네일 8건 모두 HEAD 200(webp 5·jpg 3). 74 는 영상 '건너뜀(이미 video_path 있음)'·썸네일만. `기존:` 줄 — 74 만 `video.mp4 55.0MB`, 나머지 7건 `(폴더 없음)` = 설계·가설과 일치 → 적용.
+
+**apply (23:40:16 ~ 23:41:50, 1분 34초, 같은 메모리 상한 scope, 로그 `…-user3-apply.log`)**: `APPLY 끝 — 실패 0건`, exit 0. 백업 JSON `~/.local/share/bjj-backups/task-050-20261009-234016-user3.json`(0600, 8행의 이전 thumb_url/video_path/updated_at·만든 파일 기록). 되돌리기: `node …/backend/scripts/task-050-backfill-long-videos.js --user 3 --restore <백업.json>`(dry-run 먼저, `--apply`).
+
+**독립 검증(스크립트 자체 보고에 의존하지 않고 apply 직후 Leader 직접)**
+- DB: 8행 전부 `thumb_url=/uploads/users/3/long-videos/<id>/thumb.<ext>`(webp 4·jpg 4)·`video_path=…/video.mp4`, **`updated_at` 전 행 apply 전 값 그대로**, 제목·상태·길이 불변, 다른 사용자 행 0, 활성 잡 0.
+- NAS: 각 폴더에 `thumb.*` + `video.mp4`. ffprobe — 7건 모두 h264 1280×720 + aac, 길이가 DB 와 일치(600.4/912.5/764.6/505.4/309.8/446.2/131.5초), 7건 모두 `ftyp,moov,free,mdat`(moov 앞 = 스트리밍 유리).
+- **id 74 `video.mp4`: inode·크기·mtime·sha256 모두 기준값과 동일**(백필이 건드리지 않음).
+- 운영 포트 :3000 실제 응답: 썸네일 8건 `200`·`Content-Type: image/webp|image/jpeg`·`X-Content-Type-Options: nosniff`·본문 매직 바이트 정상(WebP `RIFF…WEBP`·JPEG `FFD8FF`), 영상 8건 `Range` → `206 Partial Content`·`video/mp4`·`Accept-Ranges: bytes`·올바른 `Content-Range`(예: 29번 `bytes 0-99/73114587`). `Cache-Control: public, max-age=0`(재검증).
+- 정리: `/tmp/bjj-bf050-*` 0 · 잠금 파일 없음 · 프로세스 0 · 백업 폴더에 백업/로그만 · pm2 `bjj` restarts 0(다른 pm2 앱 재시작 증가 없음) · apply 구간 OOM 0건.
+
+**부수 조치**: 검증 중 `git fetch` 가 `refs/remotes/origin/@eaDir/main@SynoEAStream` 때문에 실패(시놀로지/맥 확장 속성 메타데이터 파일 2개 — `.git/refs/remotes/origin/@eaDir`·`.git/logs/refs/remotes/origin/@eaDir`, 내용 'Mac OS X' 헤더 163바이트, 진짜 ref 아님)해 그 두 폴더만 삭제했다. 이후 `git fetch` 정상, `origin/main`=`HEAD`=`cde60bf`. NAS 가 같은 파일을 다시 만들면 같은 삭제가 필요하다.
 
 
 ## Codex 검토
@@ -371,7 +387,27 @@ DRY-RUN — DB·NAS·/tmp 에 쓰지 않았습니다. 적용하려면 --apply �
 
 ## 최종 요약
 
-(Leader — 완료 후)
+**요청:** 영상분석 썸네일을 서버에 저장하고, 바라토플라타(id 74)를 뺀 기존 영상 파일도 저장해서 연결.
+
+**결과 (2026-10-09 배포·운영 적용 완료)**
+- **영상 7건**(29·30·37·38·39·40·73, 합계 61분·약 380MB)을 받아 서버에 저장하고 `video_path` 로 연결했다. 이제 유튜브에서 지워져도 서버 영상으로 재생된다. 전부 H.264+AAC 720p 로 받았고 길이가 DB 와 일치했다.
+- **썸네일 8건 전부**(74 포함)를 서버에 저장하고 `thumb_url` 을 서버 경로로 바꿨다 → 영상이 유튜브에서 삭제돼도 **목록·플레이어 썸네일이 남는다**(task-049 의 '목록 썸네일이 사라지는' 한계 해소).
+- **새 분석부터**는 파이프라인이 자동으로 썸네일을 저장한다(S1 직후, 실패해도 분석은 계속). 재분석이 서버 썸네일을 유튜브 주소로 되돌리던 덮어쓰기를 막았고, 유튜브 영상이 사라져 S1 이 실패해도 서버 썸네일은 남는다.
+- **바라토플라타 영상 파일은 건드리지 않았다** — inode·크기·수정시각·sha256 이 apply 전과 완전히 같다(썸네일만 추가).
+- 화면·DB 스키마 변경 없음(웹 재설치 불필요).
+
+**안전장치(앞으로도 쓸 수 있는 도구)**: `backend/scripts/task-050-backfill-long-videos.js` — dry-run 기본·백업 JSON(0600)·`--restore`·행 단위 독립·길이 ±5%·H.264+AAC 검증·`updated_at` 보존·진행 중 분석 행 건너뜀·고정 위치 잠금. 이번 적용 백업: `~/.local/share/bjj-backups/task-050-20261009-234016-user3.json`(되돌리기 가능).
+
+**검증 이력**: judge R2/opus·C1 Codex 불필요·C2 Codex 필요(동시성) → Codex 2회 호출(2/4)·Reviewer 5회 감사/재확인(최종 PASS)·developer 수정 3라운드·Leader 직접 QA 79/0·부정 대조 20/20(메모리 상한 안) → push 승인(사용자) → 배포 → 운영 dry-run → apply(실패 0) → 독립 검증(DB·NAS·ffprobe·운영 포트 응답). Codex 3차 호출은 Reviewer 의 독립 재현 입증 근거로 생략(판단 기록에 override 사유). 수용한 위험: 백필과 웹 분석이 같은 영상에 **동시에** 쓰는 극단 상황의 동등 파일 덮어쓰기(Reviewer 가 id 74 보호·DB 정합을 실행으로 확인) — 이번 실행은 단일 운영자·대상 폴더 없음·분석 0건에서 수행.
+
+**사용자 확인이 필요한 것 (`waiting: device_verify`)**
+1. 폰·웹에서 영상분석 **목록 썸네일**이 그대로 보이고(이제 서버 이미지), 기존 영상 7건 중 하나를 열어 **서버 저장본으로 재생**(유튜브가 아니라 기본 영상 컨트롤)되는지, 챕터를 눌렀을 때 시점 이동이 되는지. 프론트는 변경하지 않았으므로 task-048·049 의 확인과 같은 화면이다. 안드로이드 WebView 실기기·3시간급 영상은 이 서버에서 검증하지 못했다.
+
+**사고·교훈 (기록)**
+- 개발 중 테스트 사본(크기 상한 제거)이 메모리를 15GB 까지 폭주시켜 OS 의 OOM 킬러가 테스트 프로세스를 두 번 종료했다(다른 서비스 영향 없음, pm2 15개 재시작 증가 0). 이후 **하네스는 `systemd-run --user --scope -p MemoryMax=… -p MemorySwapMax=0` 안에서만** 실행했다 — 이 서버에서 위험한 부정 대조를 돌릴 때의 표준 절차.
+- Leader 의 완화 가설 2개('rename 으로 잠금 회수', '파일 있으면 건너뛰기')가 Reviewer 프로토타입으로 **틀림**이 확인돼 폐기했다 — 지시서의 가설은 검증 대상이라는 기존 교훈의 재확인.
+- judge 에이전트가 출력 파일에 입력을 저장하는 사고(task-048)가 있어 이번에도 판정 도구를 Leader 가 직접 실행했다.
+- 시놀로지/맥 메타데이터 파일이 `.git/refs` 에 생겨 `git fetch` 가 깨질 수 있다 — 위 '부수 조치' 참고.
 
 ## 데모 검토 (demo gate)
 
