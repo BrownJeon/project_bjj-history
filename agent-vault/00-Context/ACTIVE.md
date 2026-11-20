@@ -8,17 +8,39 @@ tags:
 
 ## 지금 상태
 
-✅ **task-066 수업 상세 AI 영상 생성 영역 제거 — 작업·운영반영 완료(2026-11-12, done/deployed_verified/waiting:none).** 앱1.3.0·기능c185328/릴리스20261112-105852-c1853284·RELEASE_RESULT ok·pm2online·health/HTML/JS/CSS200·운영source일치. build/Reviewer/독립QA15+Modal8/실배포번들15 PASS. 수업AI섹션·전용호출만제거, 일반관련영상/체인/기술이미지·DB/APK/M4환경보존. 기존31px제약보존·실인증계정/실기기미확인·완료문서릴리스별도관측. 상세 [[task-066-remove-class-ai-video]].
+✅ **task-066 수업 상세 AI 영상 생성 영역 제거 — 작업 마감·팀 종료 완료(2026-11-12, done/closed/waiting:none).** 앱1.3.0·기능c185328/릴리스20261112-105852-c1853284·RELEASE_RESULT ok·pm2online·health/HTML/JS/CSS200·운영source일치. build/Reviewer/독립QA15+Modal8/실배포번들15 PASS. 수업AI섹션·전용호출만제거, 일반관련영상/체인/기술이미지·DB/APK/M4환경보존. 기존31px제약보존·실인증계정/실기기미확인·최종문서8da557c2/릴리스20261112-110449-8da557c2도정식ok·1.3.0/기능동일확인(추가배포없음). 사용자마감·팀정리요청반영·실행중하위팀원0,추가배포없음. 상세 [[task-066-remove-class-ai-video]].
+
+✅ **AI 영상 생성 도입·개선 폐기 및 작업 종료 (2026-11-11, 사용자 결정).** task-060~065 `done/closed/waiting:none`, Rive ADP-014·Wan ADP-015 `reject`/사례 `no-go`. 샘플 확인 후 사용자가 도입 폐기·종료 명시, 추가 생성/검토/통합 대기 없음. 기술검증 이력·원본/샘플·M4설치환경 보존·기존앱기능 삭제/서비스중지·DB/배포/commit/push 없음. 정지캐릭터/기술이미지 폐기 아님. 상세 [[task-065-constrained-tripod-two-characters]], 관련 [[task-060-rive-class-video-review]] · [[task-061-blender-single-x-sample]] · [[task-062-rive-2d-single-x-sample]] · [[task-063-tripod-motion-remake]] · [[task-064-constrained-character-basics]].
+
+
+
+
+
+
+
+✅ **task-059(Google Play 제출용 설정·AAB 빌드 검증) — 준비·검증 완료 (2026-11-10, done / prepared_verified).** 준비용1.2.0·code2, API36/AGP8.10.1·외부업로드키/백업·실제AAB생성, lint오류0/경고16·bundletool32검사/83기기별APK·서명누락차단/기존debug인증서보존·Android16설치/로그인렌더PASS. 최종AAB3,032,651bytes·해시fe0cf62f…cab0460·다운로드/영수증/인계준비. 스토어등록·트랙업로드/배포는 추후런칭버전으로 보류(미실행), 운영1.1.0/DB유지·실기기/인증후전체E2E미검증·미커밋/미push. 상세 [[task-059-play-aab-preparation]].
 
 ✅ **task-058(캐릭터 기술 이미지) — 사용자 앱 정상 표시 확인·작업 종료 (2026-11-11).** 사용자 “앱에서 확인했어. 기술 이미지가 정상적으로 잘 나와” 확인, done/closed/waiting:none. 확인전배포1.2.0·기능21900f5/문서24d68ce·릴리스20261111-015020-24d68cec,171종/172행·차콜48/224. 완료이력도commit/push하라는추가요청반영·동일1.2.0문서배포의최종SHA/current는task연결영수증으로구분. 기기/OS/정확빌드미명시·기존검증보존·타작업미커밋보존. 상세 [[task-058-technique-image-samples]].
 
-✅ **task-056(수업·캘린더 관련 영상 상세 진입) — 앱 1.1.0 운영배포·검증 완료 (2026-11-09).** commit0f8c8e9,수동/기술연계 영상 공용상세·다운로드0·부모수업동시열림0·복귀/키보드/360·390·412/기존상세회귀PASS. root/lock1.1.0·RELEASE_RESULT ok·pm2online·health/HTML/asset200·테스트source/서빙JS일치·미인증401. minor1회·동일릴리스재빌드유지,DB/APK변경없음·실기기미확인. 참고영상 수집 보류 유지. 상세 [[task-056-class-related-video-detail]].
+✅ **task-057(피드백 관장 보완 인증 복구·실제 재시도) — 복구·검증 완료 (2026-11-09, done / recovered_verified).** 공식CLI 기존Max구독 OAuth복구·loggedIn=true. 실패 피드백id2/user3 실제서비스재시도 revision9→11/idle·보완질문1개(81자)·오류해제, 별도DB읽기/CLI실응답 확인·원문122bytes/해시 및 기존필드보존·해당계정failed/pending0. 앱코드/버전·빌드/배포/재시작·과금방식변경없음, 웹/Android재표시E2E미실행. 상세 [[task-057-feedback-coach-auth-failure-investigation]].
 
-🟡 **task-055(캐릭터 베이스 DB 등록·스킨 교체 준비) — DB 등록 완료 후 사용자 추가 승인으로 커밋·push·운영배포 준비 (2026-11-09, doing / commit_ready).** 실제base8·skins16/17·assets11~16 BLOB1/2/6·해시/복원/멱등성·Reviewer/단위14/실DB13/독립읽기PASS 보존. 원본 체크아웃의 병행변경99건·origin/main분기를 보존하며 최신origin/main 기반에 T-55만 반영한다. T55 전용 DDL/DML 재실행 없음(기존 앱 기동 동작 유지). 상세 [[task-055-character-concept-sheet]].
+✅ **task-056(수업·캘린더 관련 영상 상세 진입) — 앱 1.1.0 캘린더 정상 동작 사용자 확인·종료 (2026-11-09).** 기능commit0f8c8e9·최종문서commita8476e1(앱1.1.0동일),수동/기술연계 영상 공용상세·다운로드0·부모수업동시열림0·복귀/키보드/360·390·412/기존상세회귀PASS. root/lock1.1.0·RELEASE_RESULT ok·pm2online·health/HTML/asset200·테스트source/서빙JS일치·미인증401. minor1회·동일릴리스재빌드유지,DB/APK변경없음·사용자 “캘린더에서도 영상 상세화면 정상적으로 열려” 확인(기기/OS미명시). 참고영상 수집 보류 유지. 상세 [[task-056-class-related-video-detail]].
 
-✅ **task-054(기술트리) — 보류21개 사용자 확정 반영까지 완료 (2026-11-09).** 기존19재사용·이름1건변경·신규2/연결21, 총172개/참고연결131. 기존170행은 승인명칭외보존, 영상177개는 기술명참조2건외보존, 과거훈련기록/숙련도집계동일. Reviewer/QA11+기존49PASS·600백업·실제상세21/타계정404. 후속 기능릴리스 `20261109-000243-78d3ac9c`/commit78d3ac9,RELEASE_RESULT ok·health200. 인증실상세/실기기미확인. 챔피언검토만유지. 상세 [[task-054-improve-technique-tree]].
+✅ **task-055(캐릭터 원본 DB 저장·스킨 버전 기반) — 작업·운영배포 완료, 본 세션 종료 및 후속 인계 준비 완료 (2026-11-09, done / closed).** commit08a596e7·릴리스20261109-101020-08a596e7(RELEASE_RESULT ok). base8/skins16·17/assets11~16 BLOB1/2/6·원본/DB/복원해시·단위14/실DB13·운영검증 완료 근거 보존. 앱 화면/API는 변경하지 않았으며 Blender/리깅/앱연결은 후속범위. 다음 작업의 구체 산출물은 미지정이고 새 task/구현은 시작하지 않음. 후속 인계 docs/handovers/task-055-follow-up.md, 배포 후 기록은 로컬 변경·primary 작업본 보관. 상세 [[task-055-character-concept-sheet]].
+
+✅ **task-054(기술트리) — 보류21개 사용자 확정 반영까지 완료 (2026-11-09).** 기존19재사용·이름1건변경·신규2/연결21, 총172개/참고연결131. 기존170행은 승인명칭외보존, 영상177개는 기술명참조2건외보존, 과거훈련기록/숙련도집계동일. Reviewer/QA11+기존49PASS·600백업·실제상세21/타계정404. 후속 기능릴리스 `20261109-000243-78d3ac9c`/commit78d3ac9,최종문서릴리스 `20261109-000550-0aef8e11`/commit0aef8e1,RELEASE_RESULT ok·health/HTML/asset200·pm2online. 인증실상세/실기기미확인. ⏸ 추가‘참고영상’기능·수집은 사용자보류. 작업절차서작성만완료,다른작업후사용자가실행여부결정. 기존개선완료유지. 상세 [[task-054-improve-technique-tree]].
+
+⛔ **task-053(공식 서비스·AI 비용 수익화 검토) — 사용자 지시로 계획 폐기·종료 (2026-11-08).** 사용자가 SNS 영상 다운로드 제한과 저작권 관련 법률 이슈 우려를 사유로 폐기했다. 비용 조사·사용 범위 및 과금 전략·스토어 등록 등 이번 계획의 후속 추진을 중단한다. 앱 코드·DB·운영 변경 없이 취소 기록만 정리했으며, 기존 SNS 분석 기능·서비스·저장 데이터를 삭제한 것은 아니다. 20:35 KST 사용자 종료 지시에 따라 이번 대화의 하위 조사팀 실행 중 0명을 확인하고 팀 정리·작업 종료를 기록했다. 상세 [[task-053-public-service-monetization-review]].
 
 ✅ **task-052(피드백 전체 목록·훈련 상태·입력 선택·결과 수정삭제) — 사용자 실기기 확인 및 작업 종료 (2026-11-06).** 사용자가 실기기에서 확인한 릴리스는 `20261106-113448-d690e6e3`이다. 2026-11-06 14:30에는 작업 이력과 `ACTIVE.md` 문서 커밋이 운영 릴리스 `20261106-143025-cdf167e7`로 자동 배포됐다. `RELEASE_RESULT ok`, 헬스체크 HTTP 200을 확인했으며, 피드백 화면 JS·CSS는 실기기 확인 버전과 일치한다. 상세 [[task-052-feedback-library-and-results]].
+
+✅ **task-051(v5 피드백·관장 보완·등록영상 카드·기간별 복기) — task-052와 함께 운영 배포 완료 (2026-11-05).** `feedback_records` 신규 생성과 스키마 검증 완료. 운영 릴리스 `20261105-150544-00d7a384`. 내부 독립 Reviewer/QA·격리 SQL/브라우저 확인 완료. 외부 C2는 내용 검사 단계에서 미완료로 기록됐다. 상세 [[task-051-feedback-recall-demo]].
+
+✅ **task-050(영상분석 썸네일 서버 저장 + 기존 영상 백필) — 배포 `cde60bf`(릴리스 `20261009-233854-cde60bfc`) + 운영 백필 적용 완료 (2026-10-09). 🟡 사용자 폰 확인 대기.** 영상 7건(29·30·37·38·39·40·73)을 NAS `users/3/long-videos/<id>/video.mp4` 로 받아 `video_path` 연결, 썸네일 8건(74 포함)은 `thumb.<webp|jpg>` 로 저장해 `thumb_url` 을 서버 경로로 바꿨다 → 유튜브에서 지워져도 재생·목록·플레이어 썸네일이 남는다. 새 분석은 S1 직후(S1.5) 썸네일을 자동 저장하고, S1 의 `thumb_url` 덮어쓰기는 서버 경로를 유지한다. **바라토플라타(74) `video.mp4` 는 sha256 까지 불변.** 운영 백필 apply 1분 34초·실패 0, 독립 검증(DB `updated_at` 보존·ffprobe h264/aac·운영 포트 206/200) 통과. 도구: `backend/scripts/task-050-backfill-long-videos.js`(dry-run 기본, 백업 `~/.local/share/bjj-backups/task-050-20261009-234016-user3.json` 0600, `--restore`로 되돌림). R2: judge/Codex 2회(3차는 근거 기록 후 생략)/Reviewer 5회/Leader QA 79/0.
+- 🔴 **기존 영상 백필(task-048 대기분)은 이것으로 해소.** 앞으로도 영상 파일 복구를 **재분석으로 대신하지 말 것**(재분석은 다운로드 전에 기존 챕터를 교체). 후속·수용 위험은 board Backlog 'task-050 후속'.
+- 🟡 미검증: 실제 폰(WebView)·웹 화면에서 목록 썸네일(서버 이미지)·서버 저장본 재생·챕터 이동, 3시간급 영상, 백필 동시 쓰기 극단 경합. 운영 규칙: 백필 apply/restore 중에는 해당 영상의 재분석·삭제 금지.
+- ⚠ 이 서버에서 위험한 부정 대조(상한 제거 등)를 돌릴 땐 `systemd-run --user --scope -p MemoryMax=… -p MemorySwapMax=0` 안에서만 — 개발 중 테스트 사본이 15GB 로 폭주해 OOM 킬이 두 번 났다(다른 서비스 영향 없음).
+- 🛠 `.git/refs/remotes/origin/@eaDir`(시놀로지/맥 메타데이터)가 `git fetch` 를 깨뜨려 삭제함 — 다시 생기면 같은 삭제.
 
 ✅ **task-049(영상분석 상세 플레이어 썸네일) — 배포 완료 `18ce9ef`(릴리스 `20261008-122836-18ce9ef0`, RELEASE_RESULT ok, 프론트 한 파일·DB 무변경) (2026-10-08). 🟡 사용자 폰 확인 대기.** task-048 의 서버 저장본 `<video>` 에 poster 가 없어 모바일에서 재생 전 검은 칸이던 것을, 목록과 같은 `thumb_url` 을 재생 전 poster 로(cover) 보여 주고 재생 시작·seek 완료 후엔 contain 으로 돌린다. **썸네일을 `new Image()` 로 먼저 불러 성공했을 때만 poster 를 붙인다** — 실측(데스크톱 Chrome 147): 깨진 poster 는 첫 프레임 대신 칸 전체를 검게 만들어, 유튜브에서 영상이 지워져 썸네일이 404 가 되는 상황에서 poster 없던 배포본보다 퇴보하기 때문. judge R1/sonnet·데모 불필요 · Codex 보류(한도 미확인 R1) · Reviewer 2회 · Leader QA 111/0. 이 push 에 task-048 vault 기록 커밋 2개도 함께 나갔다.
 - 💡 **제안(사용자 결정 대기): 썸네일도 서버에 저장** — `thumb_url` 은 유튜브 CDN 주소라 영상이 삭제되면 **목록 썸네일이 같이 사라진다**(기존 동작). 영상 백필(task-048, 승인 대기)과 한 번에 하는 것이 효율적. 상세 [[task-049-study-video-player-poster]].

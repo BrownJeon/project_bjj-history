@@ -1,9 +1,9 @@
 ---
 task_id: task-055
 title: 기술 설명용 캐릭터 베이스 DB 등록·스킨 교체 준비
-status: doing
-stage: commit_ready
-roles_involved: [main, reviewer, qa, judge]
+status: done
+stage: closed
+roles_involved: [main, reviewer, qa, judge, deployer]
 related_tasks: []
 tags:
   - type/task
@@ -17,8 +17,8 @@ execution_context:
   origin_tool: codex
   current_tool: codex
   current_procedure: codex_scoped
-  current_scope: "사용자 추가 승인으로 T-55 변경만 커밋·푸시하고 운영 배포·운영 확인까지 수행. 기존 DB 등록 보존·T55 전용 DDL/DML 재실행 없음. 기존 앱 기동 동작 유지·Blender/UI 변경 없음"
-  last_event_id: exec-011
+  current_scope: "T55 구현·검증·DB등록·배포 완료. 사용자 지시로 본 세션 종료·후속 인계 준비; 다음 작업 목표/구현 범위는 미지정"
+  last_event_id: exec-013
 base_ref: 2e3575d
 created: 2026-11-08
 updated: 2026-11-09
@@ -41,6 +41,8 @@ updated: 2026-11-09
 | exec-009 | 2026-11-09 09:27:59 | resume / direct_execution_authorized | codex → codex / codex_scoped | 사용자 지정 본 세션에서 구현·독립 검토·검증·승인된 DDL/DML을 직접 수행. 기존 Codex→Claude 인계 방향은 이번 명시 범위에 적용하지 않음; 실제 Claude 실행으로 표시하지 않음 | 사용자 “인계서의 범위와 원본해시 확인하고 구현,검증,DB 등록까지 너가 직접 진행해줘” |
 | exec-010 | 2026-11-09 09:54:05 | scoped_work_completed | codex → codex / codex_scoped | 사용자 지정 직접 구현·독립 Reviewer/QA·승인3DDL·1/2/6 영구등록·원본6 DB/파일복원·재실행0쓰기 완료. 배포/Blender는 이번범위 밖 | 실제 base8/skins16·17/assets11~16 및 결과JSON·독립QA읽기PASS |
 | exec-011 | 2026-11-09 09:59:29 | deployment_authorized / resume | codex → codex / codex_scoped | 사용자 추가 지시에 따라 T-55 선택 변경 커밋·push·운영배포 확인까지 인수. 이전 미배포 범위는 이 지시로 확장. DB 적용 재실행 없음 | 사용자 “커밋 및 푸시해서 운영에 배포해줘” |
+| exec-012 | 2026-11-09 10:18:20 | deployment_completed | codex → codex / codex_scoped | 격리 origin/main 기반 T55 24파일 commit08a596e·push·webhook릴리스20261109-101020-08a596e7·RELEASE_RESULT ok·운영코드/원본/DB/화면/기동검증 완료 | 실제 Git·공식릴리스JSON·Deployer ok·운영CLI/HTTP/CUA/프로세스 증거 |
+| exec-013 | 2026-11-09 11:43:43 | session_closed / follow_up_prepared | codex → codex / codex_scoped | T55 done 유지·세션종료, 완료범위/화면미변경·실제ID·배포·작업본/미커밋기록·후속판단 인계. 새 task/구현 미착수 | 사용자 “이 세션에서는 t55에 대한 작업 마무리하고 다음 작업 진행할 수있도록 준비해줘” |
 
 ## 최초 목표와 사용자 승인 범위 (v1)
 
@@ -305,7 +307,7 @@ updated: 2026-11-09
 - --verify --restore-dir /tmp/task-055-db-restored-aSzUOB exit0: DB Buffer6개를프로젝트밖 새파일(wx/0600)로복원, 원본bytes/SHA256전부일치, PNG MIME/signature 및 UTF8원문보존 확인. 합계5,175,998 bytes. 원본NAS6개무수정.
 - 실제결과/코드선택9파일hash는 docs/verification/task-055-character-registry.json. 최종독립읽기QA대기이며 전체완료판정은그결과후기록.
 
-## 최종 요약
+## DB 등록 완료 당시 요약 (운영 배포 추가 승인 전)
 
 ### [task-055] 캐릭터 원본 DB 저장·스킨 교체 기반
 
@@ -342,3 +344,39 @@ updated: 2026-11-09
 - Reviewer REV-055-05 PASS·issues0, 새격리본QA14/14 PASS·fail0/skip0 및 전용도구오프라인3종PASS. 코드9개SHA는기존검증과동일. DB초기등록/실DB13·복원/독립읽기는이전실제수행근거로보존.
 - 외부Claude C2: skipped/미호출. 새작업본은 공용Git디렉토리가NAS원본.git에놓인worktree이며정식브로커는외부공용Git/선택작업트리와HEAD불일치경계를거부한다. 원래workspace체크아웃HEAD는T55미커밋상태로보존. 임의reset/커밋전송우회없음. 내부Reviewer/QA를외부Claude로표시하지않는다.
 - 검증용 backend/node_modules symlink는 staging전에 메인소유링크만제거하고 선택24개명시staging을검사한다. source별도 의존성설치/자격증명복사없음.
+
+## 배포 기록
+
+| 시각 | 릴리스 | 커밋 | 포함 작업 | 결과 | 비고 |
+|------|--------|------|-----------|------|------|
+| 2026-11-09 10:10 | 20261109-101020-08a596e7 | 08a596e (main) | task-055 — 캐릭터 베이스·스킨·원본 BLOB 등록 기반 | ✅ ok | 이전 20261109-000550-0aef8e11. webhook `RELEASE_RESULT`: `migrated:false`; 수동 `--yes`/중복 배포 없음. |
+
+- 운영 current·pm2·health 재확인: `20261109-101020-08a596e7`, bjj online, `/health` 200 (`success:true`, `status:ok`). `RELEASE_RESULT`의 SHA는 `08a596e7f1178dec7e8fa7973a6d5a2c23f55abe`이며 이전 릴리스는 `20261109-000550-0aef8e11`.
+- 운영 전용 CLI 읽기전용 `--verify` exit 0: base 8, skins 16/17 v1, assets 11–16, 행수 1/2/6, 5,175,998 bytes; 6개 원본 BLOB의 bytes/SHA256 일치. 배포 코드 9개와 원본 파일 6개의 SHA256도 운영 파일과 일치.
+- 화면 확인: 운영 `/login` 페이지의 BJJ 훈련일지 제목과 Google/GitHub/이메일 로그인 폼 렌더링 정상. `/login` HTML 200, JS·CSS 각 200. 실제 로그인·토큰 주입은 하지 않음. 프론트 변경 없음. `/uploads/...` 이미지 및 yt-dlp 동작은 이번 변경 범위에서 확인하지 않음.
+- 프로세스 확인: startup의 DB 연결·기존 마이그레이션 체인 완료·worker 재개 로그 각 1회, migration 실패 0. pm2 PID 2051199 online, restart_time 0·unstable 0을 두 차례 확인. webhook 결과의 `migrated:false`는 별도 migrate 경로를 사용하지 않았다는 뜻이며, 기존 앱 startup migration 체인은 실행됨. 따라서 전체 DB 쓰기 0으로 표현하지 않음. T-55 전용 DDL/DML 재실행 없음.
+
+## 최종 요약
+
+### [task-055] 캐릭터 원본 DB 저장·스킨 버전 기반 운영 반영
+
+- **상태**: ✅ 구현·검증·DB등록·커밋·push·운영배포 완료 (2026-11-09 10:18:20 KST).
+- **무엇이 바뀌었나**: 베이스8·스킨16/17(v1)·원본6자산11~16의 BLOB 저장/복원·버전보존 도구와 승인원본을 운영릴리스에 반영했다. 3테이블 전체/데이터셋행수1/2/6,5,175,998 bytes 보존.
+- **배포**: ✅ commit `08a596e7f1178dec7e8fa7973a6d5a2c23f55abe` · 2026-11-09 10:10:29 KST · origin/main push→webhook blue/green · `20261109-101020-08a596e7` · RELEASE_RESULT ok. 이전20261109-000550-0aef8e11. 같은배포에포함된다른작업: 없음(task-055만). 수동중복배포0. 앱재설치불필요.
+- **AI가 검증한 것**: Reviewer REV-055-05 PASS issues0·격리본단위14PASS, 이전실DB13PASS/실제DB등록·복원·멱등성 근거보존. 운영실제코드9/원본6 SHA일치·운영CLI6BLOB원본bytes/hash일치·health/HTML/JS/CSS200·CUA로그인화면렌더·startup체인/worker기동완료·pm2 online/재시작0 확인. 검증못한것: 외부Claude(skipped:broker경계), 인증후실사용/실기기/Blender·리깅(별도범위).
+- **👉 사용자가 확인할 것**: 이번범위 없음. 운영 https://bjj.미라클펭귄.com 에 반영됐으며 새화면/API를 추가한 작업은 아니다.
+- **👉 사용자가 결정할 것**: 없음.
+- **남은 일**: 이번승인범위 없음. Blender/리깅·새스킨제작·앱선택연동은 별도후속.
+- **이슈·위험**: 원본병행작업/미푸시12커밋 보존, T55만최신origin/main기반에반영. 기존앱startup의기존ALTER/조건부UPDATE유지(전체DB쓰기0보장아님), 별도T55apply/--with-migrate없음. 배포후결과기록은로컬갱신이며코드/승인원본24파일커밋·push와구분한다. 상세 [운영증거](../../../docs/verification/task-055-release.json).
+
+## 메인 작업본 정리 기록
+
+- 배포/결과기록 동기화 후 managed archive_worktree를 호출했으나 앱이 이 작업본을 primary checkout으로 보호하여 제거를 거부했다. 수동삭제/우회하지 않고 `/Users/brownjeon/.codex/worktrees/bjj-t055-release/bjj-trainning`을 보관한다. 코드커밋/push/운영배포 완료 상태와 별개인 로컬정리 제한이다. 원본병행변경과 모든배포증거는 보존됐다.
+
+## 세션 종료 · 다음 작업 준비 (2026-11-09 11:43:43 KST)
+
+- 사용자 지시에 따라 T-55를 done/closed로 마무리한다. 구현·DB등록·커밋/push·배포 완료 사실은 그대로 유지한다.
+- 앱 화면에 보이는 변화가 없는 것은 T-55가 원본 DB 저장/스킨 버전 기반 범위였기 때문이다. 사용자 관찰과 설명을 기록하며, 미구현인 캐릭터 UI·기술 썸네일 연결·3D 모델/리깅의 검증 PASS로 확대하지 않는다.
+- [후속 작업 인계](../../../docs/handovers/task-055-follow-up.md)에 실제 ID·버전·자료/코드·배포 근거·미커밋 기록·현재 작업본 상태와 다음 요청에서 정할 범위를 정리했다. 기존 승인 재요구나 신규 task 번호/목표의 임의 확정 없음.
+- 이 세션 하위 작업은 모두 completed이며 실행 중인 하위 작업 0명을 확인했다. 이번 마무리는 문서/상태 정리만 수행했고 코드·원본·DB·운영을 변경하지 않았다. 재시험·추가 commit/push·재배포 없음.
+- 이후 배포 확인 기록과 이번 종료 기록은 로컬 변경으로 남아 있다. 다음 작업에서도 원본 병행변경과 함께 보존하며 전체 staging/reset/stash하지 않는다.

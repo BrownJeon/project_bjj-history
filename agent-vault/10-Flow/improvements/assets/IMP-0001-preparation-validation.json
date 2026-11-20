@@ -1,0 +1,20 @@
+{
+  "executor": "Codex",
+  "offlineOnly": true,
+  "dbConnection": false,
+  "plan_sha": "4c6666e729b50abe2b371e5c8d03984f6aa1a724dc31ad6f34e6bf8799e9d354",
+  "preparedCreates": 110,
+  "uniqueSlugs": 110,
+  "existingRowsToModify": 0,
+  "categories": {
+    "포지션": 26,
+    "테이크다운": 6,
+    "기타": 8,
+    "스윕": 9,
+    "탈출": 2,
+    "패스": 10,
+    "컨트롤": 19,
+    "서브미션": 30
+  },
+  "productionAuthorized": false
+}

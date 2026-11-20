@@ -1,0 +1,260 @@
+{
+  "task_id": "task-064",
+  "verified_at": "2026-11-11T01:25:54.541064+00:00",
+  "status": "sample_prepared",
+  "user_quality_approval": "pending",
+  "representation": "Persistent native Rive vector shapes attached to hierarchical fixed-length RootBone/Bone rig; single character in fixed side view",
+  "engine": "Actual Rive CLI 1.9.2",
+  "location": "M4 Pro",
+  "native_bones_per_artboard": 16,
+  "native_rotation_constraints_per_artboard": 16,
+  "artboards": [
+    "Clean",
+    "Rig"
+  ],
+  "native_verify_errors": 0,
+  "native_inspect_problems": [],
+  "capture_frames": {
+    "Clean": 360,
+    "Rig": 360
+  },
+  "capture_seconds": 16.116,
+  "source_rml_sha256": "f510f92ba11b23d2bceaa036dffa02b1378db55489d887183f8361bf7d1b0bd4",
+  "native_limit_enforcement": {
+    "engine": "Rive CLI 1.9.2 actual M4 render",
+    "parent_rotation_radians": 0.8,
+    "requested_local_rotation_radians": -2.5,
+    "lower_local_limit_radians": -1.4,
+    "upper_local_limit_radians": 0,
+    "native_constraint": "RotationConstraint, local min/max, strength 1, no target/copy",
+    "beyond_limit_pixels_equal_reference_limit": true,
+    "beyond_limit_pixels_differ_from_unconstrained": true,
+    "images": {
+      "RequestedBeyond": "b1fd007e80ab2045d911a0863d65b94256a1fbda87a83cf8e8a25ffd2eaa1bab",
+      "ReferenceLimit": "b1fd007e80ab2045d911a0863d65b94256a1fbda87a83cf8e8a25ffd2eaa1bab",
+      "NoLimit": "9feeed21b4c02b900fc7596503981e114c9ced32c903990d62aee0c19f703764"
+    }
+  },
+  "independent_json_kinematics": {
+    "status": "pass",
+    "metrics": {
+      "bone_count": 16,
+      "frame_count": 361,
+      "interpolated_pose_count": 2520,
+      "bone_length_error_max": 8.526512829121202e-14,
+      "reported_fk_position_error_max": 0.0,
+      "reported_fk_angle_error_rad_max": 0.0,
+      "reported_marker_error_max": 1.2710574864626038e-13,
+      "scale_error_max": 0.0,
+      "limit_violation_count": 0,
+      "limit_excess_deg_max": 0.0,
+      "planted_foot_drift_sampled_max": 5.684341886080801e-13,
+      "planted_foot_drift_continuous_upper_bound_max": 0.00881947980156049,
+      "single_support_drift_max": 1.7053025658242404e-13,
+      "double_support_drift_max": 5.684341886080801e-13,
+      "single_support_frame_count": 71,
+      "double_support_frame_count": 290,
+      "single_support_continuous_upper_bound_max": 1.7053025658242404e-13,
+      "double_support_continuous_upper_bound_max": 0.00881947980156049,
+      "plant_continuity_segments": 1296,
+      "angle_delta_rad_max": 0.08706445689925446,
+      "sole_clearance_sampled_min": -0.008682796646667157,
+      "sole_clearance_continuous_lower_bound_min": -0.008819439173239085,
+      "hierarchy_mismatch_count": 0
+    },
+    "per_stage": {
+      "neutral": {
+        "frames": 97,
+        "required_feet": [
+          "far",
+          "near"
+        ],
+        "required_frame_counts": {
+          "near": 97,
+          "far": 97
+        },
+        "drift_max": 5.684341886080801e-13
+      },
+      "elbow_curl": {
+        "frames": 72,
+        "required_feet": [
+          "far",
+          "near"
+        ],
+        "required_frame_counts": {
+          "near": 72,
+          "far": 72
+        },
+        "drift_max": 5.684341886080801e-13
+      },
+      "knee_flex": {
+        "frames": 72,
+        "required_feet": [
+          "far",
+          "near"
+        ],
+        "required_frame_counts": {
+          "near": 1,
+          "far": 72
+        },
+        "drift_max": 5.684341886080801e-13
+      },
+      "shallow_squat": {
+        "frames": 120,
+        "required_feet": [
+          "far",
+          "near"
+        ],
+        "required_frame_counts": {
+          "near": 120,
+          "far": 120
+        },
+        "drift_max": 5.684341886080801e-13
+      }
+    },
+    "issues": {
+      "counts": {},
+      "examples": {}
+    },
+    "interpolation_contract": "Declared linear unwrapped local rotation and root translation; angular bounds are convex endpoint bounds. Foot continuous upper bound uses a second-derivative interpolation remainder.",
+    "scope": "JSON-export kinematics only; native enforcement is a separate root-owned test. No medical safety or all-BJJ-motion claim.",
+    "inputs": {
+      "profile": {
+        "path": "/Volumes/homes/brownjeon/project/bjj-trainning/reference/rig/task-064/rig_profile.json",
+        "bytes": 3385,
+        "sha256": "ce9e93d2c1a2d637a59d3d20b8dafe57f42671ed103ccfae9ab99a24e6dd50f8"
+      },
+      "timeline": {
+        "path": "/Volumes/homes/brownjeon/project/bjj-trainning/reference/rig/task-064/project/timeline.json",
+        "bytes": 2746317,
+        "sha256": "72f1570e147a16954fbb8201b133f59589f21021cf6d64c2f167a0be408faa96"
+      },
+      "model_receipt": {
+        "path": "/Volumes/homes/brownjeon/project/bjj-trainning/reference/rig/task-064/project/model-receipt.json",
+        "bytes": 7557,
+        "sha256": "d03ca9d1d6c473e1fe83798d1f950b7315033656939e598d257e0612cce220aa"
+      }
+    },
+    "tolerances": {
+      "contact_drawing_units": 0.05,
+      "length_drawing_units": 1e-06,
+      "angle_deg": 1e-06,
+      "interpolation_subdivisions": 8
+    },
+    "verifier": {
+      "path": "/Volumes/homes/brownjeon/project/bjj-trainning/reference/rig/task-064/verify_kinematics.py",
+      "sha256": "511d043b0a11226de16c185ce684383e34b8b606d3353904bc0c8017a7e7fd5b"
+    }
+  },
+  "verifier_negative_controls": {
+    "all_six_faults_detected": true,
+    "self_test": {
+      "status": "pass",
+      "actual_output": {
+        "self_test": "pass",
+        "checks": [
+          "analytic_two_bone_fk",
+          "rotating_marker_curvature_bound",
+          "cycle_rejection"
+        ]
+      }
+    },
+    "receipt_path": "/Users/brownjeon/.codex/artifacts/bjj-t064/verifier-negative-controls.json",
+    "sha256": "a7f09b02e740cf423fbf0fac34dccfa9807b948aaaf5430d66ec48f985d94961"
+  },
+  "visual_review": {
+    "review02_static_poses": 4,
+    "reviewer": "existing single_x_motion agent",
+    "static_obvious_defects": "pass",
+    "checked": [
+      "joint bend direction",
+      "connected limbs",
+      "support foot",
+      "shallow squat support",
+      "viewport clipping"
+    ],
+    "main_final_contact_sheet": "viewed",
+    "whole_video_realtime_playback": "not independently observed",
+    "user_appearance_and_naturalness_approval": "pending"
+  },
+  "video": {
+    "codec": "h264",
+    "dimensions": [
+      1600,
+      1160
+    ],
+    "fps": 24,
+    "frames": 360,
+    "seconds": 15.0,
+    "decode_errors": 0,
+    "encode_seconds": 14.468
+  },
+  "source_package": {
+    "file_count": 14,
+    "includes_timeline_and_model_receipt": true,
+    "input_hashes_match_independent_verification": true,
+    "scene_hash_matches_captured_source": true,
+    "native_riv_binary": false,
+    "files": [
+      "constrained-character/project/model-receipt.json",
+      "constrained-character/project/rive.yaml",
+      "constrained-character/project/scene.rml",
+      "constrained-character/project/timeline.json",
+      "constrained-character/README.md",
+      "constrained-character/rig_profile.json",
+      "constrained-character/generate_character.py",
+      "constrained-character/verify_kinematics.py",
+      "constrained-character/kinematics-verification.json",
+      "constrained-character/test_native_clamp.py",
+      "constrained-character/native-clamp-proof.json",
+      "constrained-character/capture_m4.py",
+      "constrained-character/encode_m4.py",
+      "constrained-character/verifier-negative-controls.json"
+    ],
+    "packaged_at_utc": "2026-11-11T01:25:06.337653+00:00"
+  },
+  "files": {
+    "basic-motions.mp4": {
+      "bytes": 682315,
+      "sha256": "d1364a5644521f428b8dc66a0ad3ab98acd5d2fa144916335bf97e43988adbc0"
+    },
+    "preview.gif": {
+      "bytes": 1540273,
+      "sha256": "9e7378c9be875db3d97b9a8287d0f73d0bc2d473bae3006faa70fae4dcfb839c"
+    },
+    "character-rig.png": {
+      "bytes": 74524,
+      "sha256": "afe1881ada4155e8f37f0d6c0734ec0f9e70eaa81425fe7a93eb53c0f147b2bc"
+    },
+    "contact-sheet.png": {
+      "bytes": 156252,
+      "sha256": "e5b75ae0b363efd7034f4514f26732540f0bdc2d8a587c5684e0146e7f4fb21a"
+    },
+    "constrained-character-rml.zip": {
+      "bytes": 212775,
+      "sha256": "dff1e95ca65b45d00242ccf9da86faa717096e3bef001a0eb0df764153e4e834"
+    }
+  },
+  "local_delivery_hashes_match": true,
+  "source_package_core_files_match_local": true,
+  "artifact_directory": "/Users/brownjeon/.codex/artifacts/bjj-t064/final-01",
+  "execution_boundary": {
+    "new_model_or_tool_install": false,
+    "paid_generation_api_calls": 0,
+    "cloud_upload": false,
+    "rive_login": false,
+    "rive_cloud_publish": false,
+    "rive_analytics": "off",
+    "app_or_db_change": false,
+    "build_or_deployment": false,
+    "original_assets_replaced": false
+  },
+  "limits": [
+    "The angular profile is a conservative demonstration profile, not certified medical normal ranges.",
+    "The asset is simplified rig-ready 2D art retaining blue gi, white hair and brown belt; not a full reconstruction of the original illustration.",
+    "This verifies basic motions in a fixed side view. Two-character grips, body collision, whole-body dynamic balance, large rotations and all-BJJ instructional accuracy remain unimplemented/unverified.",
+    "Natural-language-to-validated-motion generation is not implemented.",
+    "Continuous foot drift upper bound is 0.00881948 drawing units at explicit 0.05 tolerance; not exactly zero.",
+    "RML native source project is delivered; .riv binary export and Editor import were not tested."
+  ]
+}

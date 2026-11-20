@@ -747,9 +747,9 @@
     "nas_originals_preserved": true,
     "blender_model": null,
     "rig": null,
-    "committed": false,
-    "pushed": false,
-    "deployed": false
+    "committed": true,
+    "pushed": true,
+    "deployed": true
   },
   "completed_at_kst": "2026-11-09T09:54:05+09:00",
   "post_recording_checks": {
@@ -766,7 +766,7 @@
     }
   },
   "deployment": {
-    "status": "prepared_for_commit",
+    "status": "deployed_and_verified",
     "authorized_by": "커밋 및 푸시해서 운영에 배포해줘",
     "base_ref": "0aef8e1159d0dd0b40ec30b6b5f14fdd81ba3da4",
     "branch": "codex/bjj-t055-release",
@@ -786,6 +786,42 @@
     },
     "external_claude": "skipped: shared-Git worktree boundary; original workspace checkout preserved",
     "webhook_deploy": true,
-    "manual_duplicate_deploy": false
+    "manual_duplicate_deploy": false,
+    "commit": "08a596e7f1178dec7e8fa7973a6d5a2c23f55abe",
+    "pushed_ref": "origin/main",
+    "release": "20261109-101020-08a596e7",
+    "completed_at_kst": "2026-11-09T10:18:20+09:00",
+    "release_result": {
+      "ts": "2026-11-09T10:10:29+0900",
+      "name": "bjj",
+      "cmd": "deploy",
+      "ref": "main",
+      "invoker": "deploy-bjj.sh",
+      "trigger": "",
+      "status": "ok",
+      "release": "20261109-101020-08a596e7",
+      "sha": "08a596e7f1178dec7e8fa7973a6d5a2c23f55abe",
+      "previous": "/home/brownjeon/apps/bjj/releases/20261109-000550-0aef8e11",
+      "migrated": false
+    },
+    "post_deploy_checks": {
+      "deployed_cli_verified": true,
+      "db_counts": {
+        "character_bases": 1,
+        "character_skins": 2,
+        "character_assets": 6
+      },
+      "code_hashes_matched": 9,
+      "original_hashes_matched": 6,
+      "health_status": 200,
+      "html_status": 200,
+      "js_css_status": 200,
+      "login_rendered": true,
+      "startup_chain_complete": true,
+      "restart_time": 0,
+      "unstable_restarts": 0
+    },
+    "post_deployment_record_is_local": true,
+    "evidence": "docs/verification/task-055-release.json"
   }
 }

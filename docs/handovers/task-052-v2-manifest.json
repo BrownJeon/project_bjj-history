@@ -1,0 +1,23 @@
+{
+  "task": "task-052",
+  "purpose": "implementation-handoff-prepared-only",
+  "head": "160bfb7172c2c53a166f93b3b3afedb9e53370bf",
+  "human_approval": "이제 수정했던 데모화면 구현작업 시작해줘",
+  "machine_demo_gate": "REFUSED",
+  "dispatch": "not_sent",
+  "claude_receipt": "not_received",
+  "files": [
+    {
+      "path": "docs/demo/task-052-feedback-library-v2.html",
+      "sha256": "b5ca80fb8c0864bd42e7d63722dc02dd6256802ae7bde3dc0771c3f511eb3fa5"
+    },
+    {
+      "path": "docs/task-052-feedback-implementation.md",
+      "sha256": "15902bb1505bb0344a89efb2d86d2fd1fc1a961ab0ca9488d9cf75260d85571c"
+    },
+    {
+      "path": "docs/handovers/task-052-v2-implementation.md",
+      "sha256": "f0b73c18c8574d1d171aa8f4989280eb8e2da95a9be97db0a98542fde0abc95a"
+    }
+  ]
+}

@@ -6,8 +6,10 @@ tags:
   - domain/profile
 related_tasks:
   - "[[task-003-profile-training-days-multi-affiliation]]"
-status: doing
+status: done
 created: 2026-08-18
+status_before_reconciliation: "doing"
+status_reconciled_at: 2026-11-18
 ---
 
 # task-004 — 프로필: 기본 정보 수정 화면에 프로필 사진 업로드 추가
@@ -78,3 +80,28 @@ Reviewer PASS 후:
 
 ## 최종 요약 (사용자용)
 
+
+
+## 상태·대기 현행화 (2026-11-18, Codex Main·조율)
+
+- **상태/종료 범위**: task-004의 프로필 사진 업로드·표시·삭제 요구가 후속 task-019에서 인수·복구·검증된 범위. 2026-08-18 당시 완료를 소급 인정하지 않는다.
+- **무엇이 바뀌었나**: 원문/후속 완료 근거를 대조한 문서 상태·현재 대기·범위 설명의 정정이다. 과거 역할 본문·판정·created/updated·원담당/최초 도구를 보존하며 실제 주 작업을 인수한 것이 아니다.
+- **배포**: 이번 정리에서 코드·서비스·실매매·토큰/키·DB·빌드·commit/push·배포를 실행하지 않았다. 원문에 기록된 과거 구현/배포와 오늘의 문서 정정을 구분한다.
+- **AI 검증**: 지정 문서의 원범위·최종 판정·후속 수령/관측을 대조했다. 과거 QA 생략·조건부/FAIL·미검증을 새 PASS로 바꾸거나 시험을 재실행한 결과가 아니다.
+- **사용자 확인/결정**: 원문과 활성 waiting의 사용자 확인/승인·관측·해제 판단은 해당 범위대로 유지한다. 현재 산출물 종료를 후속 제품 기능/운영 승인으로 확대하지 않는다.
+- **남은 일·대기·위험**:
+- 원래 task-004 기능 요구의 필수 잔여는 후속 task-019 완료 기록에서 확인되지 않는다.
+- 별도 권고: 업로드 공통 magic-byte 검사와 비정상 종료 임시파일 정리.
+
+### 종료 판단 근거(정정 전 문서 행 기준)
+- task-019-profile-avatar-full-path-recovery.md:28 — 옛 task-004/005 완료 기록은 사실이 아니며 당시 구현/역할 기록이 없었다고 정정한다.
+- task-019-profile-avatar-full-path-recovery.md:38 — task-004의 설계 의도를 후속 복구의 유효 입력으로 명시한다.
+- task-019-profile-avatar-full-path-recovery.md:735 — 독립 Reviewer Critical/High/Medium 0, 9개 감사 항목 PASS 기록.
+- task-019-profile-avatar-full-path-recovery.md:913 — 2차 QA 최종 모든 항목 PASS: 업로드·삭제·에러·XSS·캐시·회귀·원상복구.
+- task-019-profile-avatar-full-path-recovery.md:928 — 최종 요약이 사진 변경/삭제 UI·저장/서빙 경로·404·avatar 필드 복구를 명시한다.
+
+### 실행 도구·절차 이력 — 문서 현행화
+
+| 이벤트 | 시각 KST | 실제 도구·범위 | 담당/승인 경계 |
+|---|---|---|---|
+| reconcile-doing-20261118 | 2026-11-18 10:08 | Codex Main / codex_scoped 문서 상태·대기 정정 | 기존 origin/current 도구·절차 보존, 새 작업 인수/과거 승인·QA 수행 아님 |

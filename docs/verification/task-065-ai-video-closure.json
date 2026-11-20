@@ -1,0 +1,60 @@
+{
+  "task_id": "task-065",
+  "decision_date_kst": "2026-11-11",
+  "user_instruction": "샘플영상을 보니까 AI영상 생성에 대해서는 폐기하고 작업 완료해줘.",
+  "initiative": "BJJ AI video generation adoption and quality improvement",
+  "decision": "reject",
+  "status": "closed",
+  "waiting": "none",
+  "closed_tasks": [
+    "task-060",
+    "task-061",
+    "task-062",
+    "task-063",
+    "task-064",
+    "task-065"
+  ],
+  "adoption_states": {
+    "ADP-014": "reject",
+    "ADP-015": "reject"
+  },
+  "case_outcome": "no-go",
+  "source_of_decision": "Explicit current user message after viewing sample video",
+  "technical_results": "Prior generation/rig/contact/codec checks remain historical facts; no technical pass is relabeled as a failure or user approval",
+  "retained": [
+    "approved original character/static technique images",
+    "uploaded photo",
+    "all prior samples/source projects/verification receipts/ZIPs",
+    "M4 installed tools and model files"
+  ],
+  "existing_app_feature_removal": false,
+  "existing_service_stopped": false,
+  "m4_model_uninstalled": false,
+  "files_deleted": false,
+  "new_generation_or_installation": false,
+  "app_backend_or_db_changed": false,
+  "app_version_or_deployment_changed": false,
+  "commit_or_push": false,
+  "agent_inventory": "All three related subagents were completed when inspected; no new agent was spawned",
+  "m4_process_enumeration_or_stop": "Not performed; prior one-shot sample jobs had already completed. Existing shared services were not altered.",
+  "historical_verification_and_delivery_receipts": "Kept unchanged; this closure record supersedes their then-pending review status",
+  "out_of_scope": [
+    "static character and technique image work (task-055/058)",
+    "video analysis and reference videos",
+    "deleting or disabling existing class/chain video UI/API"
+  ],
+  "record_paths": [
+    "agent-vault/10-Flow/tasks/task-060-rive-class-video-review.md",
+    "agent-vault/10-Flow/tasks/task-061-blender-single-x-sample.md",
+    "agent-vault/10-Flow/tasks/task-062-rive-2d-single-x-sample.md",
+    "agent-vault/10-Flow/tasks/task-063-tripod-motion-remake.md",
+    "agent-vault/10-Flow/tasks/task-064-constrained-character-basics.md",
+    "agent-vault/10-Flow/tasks/task-065-constrained-tripod-two-characters.md",
+    "agent-vault/00-Context/ACTIVE.md",
+    "agent-vault/10-Flow/board.md",
+    "agent-vault/00-Context/roadmap.md",
+    "adoption/ADP-014-rive/20-결정.md",
+    "adoption/ADP-015-wan-mlx-local/20-결정.md",
+    "adoption/REGISTRY.md"
+  ]
+}

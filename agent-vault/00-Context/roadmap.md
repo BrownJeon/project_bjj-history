@@ -1,7 +1,7 @@
 ---
 type: roadmap
 project: bjj-trainning
-updated: 2026-10-08
+updated: 2026-11-20
 phases:
   - { id: 1, name: "기반 앱 (React 이전·기본 기능)", status: done }
   - { id: 2, name: "긴 영상 분석·참고영상",          status: done }
@@ -61,7 +61,7 @@ tags: [type/roadmap]
 - [x] (4) 문구·기본 기간 사용자 지적 8건 반영 [[task-029-recall-research-ux-fixes]]
 - [-] (4) 기존 스파링 기록 재분류 (사용자가 기록은 그대로 두기로 함)
 - [-] (4) `마운트 암바` 별칭 연결 (사용자가 미연결 유지로 결정)
-- [ ] (7) 포지션+기술 복합어 이름 매칭 개선
+- [-] (7) 포지션+기술 복합어 이름 매칭 개선 — 보류(2026-11-20 사용자 결정: 비집중 프로젝트의 미착수 계획)
 
 ### /research | 연구
 - [x] (4) 연구 프로젝트 목록·검색·페이징 [[task-026-research-screen]] [[task-029-recall-research-ux-fixes]]
@@ -80,7 +80,7 @@ tags: [type/roadmap]
 - [x] (2) 포지션 필터와 이어 뽑기 [[task-011-clip-tag-pin-pickmeup-spar-feedback]]
 - [x] (2) 스파링 픽 피드백 [[task-011-clip-tag-pin-pickmeup-spar-feedback]]
 - [x] (5) 상세를 참고영상 상세와 통합 (조회 미기록·픽하기 고정) [[task-036-pickmeup-shared-clip-detail]]
-- [ ] (7) 안 써본 영상 먼저 뽑기
+- [-] (7) 안 써본 영상 먼저 뽑기 — 보류(2026-11-20 사용자 결정: 비집중 프로젝트의 미착수 계획)
 
 ### /techplan | 기술
 - [x] (1) 기술트리 (기술 등록·편집)
@@ -93,14 +93,14 @@ tags: [type/roadmap]
 - [x] (1) 시뮬레이터 (게임 플랜 노드·엣지 편집)
 - [x] (6) 기술 관리 카테고리 칸 [[task-047-spar-tech-picker-apply]]
 - [x] (5) 기술 카드에 기술사용 횟수 [[task-035-clip-usage-count]]
-- [ ] (7) 카테고리 미정 4개 기술 분류 (사용자 입력 대기)
+- [-] (7) 카테고리 미정 4개 기술 분류 (사용자 입력 대기) — 보류(2026-11-20 사용자 결정: 비집중 프로젝트의 미착수 계획)
 
 ### /study | 영상분석
 - [x] (2) 긴 영상 등록 (강의·세미나·스파링)과 목차 만들기 [[task-007-long-video-study-phase1]]
 - [x] (2) 구간 캡처와 요약 [[task-008-long-video-study-phase2]]
 - [x] (2) 검색·필터와 제목 입력 [[task-010-study-ux-improvements]]
 - [x] (2) 진행 상태 자동 갱신 (실행 중일 때만 폴링) [[task-010-study-ux-improvements]]
-- [ ] (7) 긴 영상 전사 제한 시간 늘리기 (사용자 판단 대기)
+- [-] (7) 긴 영상 전사 제한 시간 늘리기 (사용자 판단 대기) — 보류(2026-11-20 사용자 결정: 비집중 프로젝트의 미착수 계획)
 
 ### /study/:id | 영상분석 상세
 - [x] (2) 기술 추출과 기술트리 연동 [[task-009-long-video-study-phase3]]
@@ -110,9 +110,9 @@ tags: [type/roadmap]
 - [x] (6) 영상분석 음성 전사가 PATH에 의존하지 않고 실패가 로그에 보임 [[task-044-video-whisper-path-and-visibility]]
 - [x] (6) 분석한 영상을 서버에 저장해 유튜브에서 지워져도 서버 영상으로 재생 (저장 실패 시 경고 카드) [[task-048-study-video-local-save]]
 - [x] (6) 서버 저장본 플레이어에 목록과 같은 썸네일 표시 (유튜브에서 지워져 썸네일이 사라지면 첫 프레임) [[task-049-study-video-player-poster]]
-- [ ] (7) 이미 분석한 영상 8건의 영상 파일 서버 저장 (사용자 승인 후 별도 작업)
-- [ ] (7) 썸네일도 서버에 저장 (유튜브에서 지워져도 목록·플레이어 썸네일 유지, 기존 영상 백필과 함께)
-- [ ] (7) 저장본으로 재분석 (유튜브가 사라진 뒤에도 재분석, 재분석이 기존 챕터를 먼저 지우는 문제)
+- [x] (6) 이미 분석한 영상 7건의 영상 파일을 서버에 저장해 연결 (바라토플라타 제외) [[task-050-study-thumb-local-and-backfill]]
+- [x] (6) 영상분석 썸네일을 서버에 저장 (유튜브에서 지워져도 목록·플레이어 썸네일 유지, 기존 8건 포함) [[task-050-study-thumb-local-and-backfill]]
+- [-] (7) 저장본으로 재분석 (유튜브가 사라진 뒤에도 재분석, 재분석이 기존 챕터를 먼저 지우는 문제) — 보류(2026-11-20 사용자 결정: 비집중 프로젝트의 미착수 계획)
 
 ### /clips | 참고영상
 - [x] (1) 참고영상 등록·목록·즐겨찾기
@@ -134,7 +134,7 @@ tags: [type/roadmap]
 ### /me | 프로필
 - [x] (1) 기본 정보 수정
 - [x] (3) 수련일수 표시와 소속 여러 곳 등록 [[task-003-profile-training-days-multi-affiliation]]
-- [x] (3) 프로필 사진 올리기·삭제 [[task-019-profile-avatar-full-path-recovery]]
+- [x] (3) 프로필 사진 올리기·삭제 [[task-019-profile-avatar-full-path-recovery]] [[task-004-profile-avatar-upload]]
 - [x] (1) 벨트 이력
 - [x] (1) 회원권 결제 이력
 - [x] (1) 파일 저장 위치 (서버·기기)
@@ -147,7 +147,7 @@ tags: [type/roadmap]
 - [x] (5) SNS 검색 [[task-030-gym-master-chat]]
 - [x] (5) 대화 목록·보관·복원 [[task-030-gym-master-chat]]
 - [x] (6) 하단 토글 탭 동작 (앞 화면 우선·위치 점·알림 배지) [[task-023-toggle-nav-generalization]] [[task-040-toggle-tab-front-first]] [[task-042-toggle-tab-position-dots]]
-- [ ] (7) 관장실 밖 화면 이모지 아이콘 통일
+- [-] (7) 관장실 밖 화면 이모지 아이콘 통일 — 보류(2026-11-20 사용자 결정: 비집중 프로젝트의 미착수 계획)
 
 ## API · api
 ### /api/auth | 인증
@@ -256,3 +256,8 @@ tags: [type/roadmap]
 - [x] (6) 앱 아이콘과 웹 아이콘·og-image [[task-038-app-icon]]
 - [x] (6) 파일을 기기 Download 폴더에 저장 [[task-039-android-apk]]
 - [x] (6) 뒤로가기·키보드 가림·내비게이션 버튼 겹침 해소 [[task-039-android-apk]]
+
+
+## 사용자 결정으로 종료한 검토·시범
+- [-] (7) AI 영상 생성 도입·품질 개선(Rive/Wan/Blender) — 2026-11-11 사용자 샘플 확인 후 폐기·task-060~065 종료, 추가 생성/시범/품질 검토/제품 통합 대기 없음. [[task-065-constrained-tripod-two-characters]]
+- 원본 캐릭터/정지 기술 이미지·영상 분석·참고영상 작업과 구분한다. 기존 앱의 영상 생성 UI/API 삭제·M4 설치환경 정리는 이번 종료 기록에서 수행하지 않았다.

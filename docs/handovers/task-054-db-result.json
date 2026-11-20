@@ -1,13 +1,115 @@
 {
-  "task_id": "task-054",
-  "ddl": "created-and-verified",
-  "new_techniques": 110,
-  "new_links": 110,
-  "total_techniques": 170,
-  "existing_rows_preserved": 60,
-  "video_rows_preserved": 177,
-  "other_account_counts_unchanged": true,
-  "private_backup_modes": "0600",
-  "actual_sql_reference_checks": "PASS; zero/single/multiple relations and other-account404",
-  "restore_executed": false
+  "schema": {
+    "result": "created-and-verified",
+    "verified": {
+      "exists": true,
+      "errors": []
+    },
+    "at": "2026-11-08T13:34:33.293Z"
+  },
+  "apply": {
+    "status": "committed",
+    "run_id": "2026-11-08T133538137Z-b5ffa2bc",
+    "techniques_inserted": 110,
+    "links_inserted": 110,
+    "preserved_rows_checked": 60,
+    "skipped": 0,
+    "new_ids_range": [
+      384,
+      493
+    ],
+    "sample_new_ids": [
+      {
+        "id": 385,
+        "name": "싱글 레그 테이크다운"
+      },
+      {
+        "id": 386,
+        "name": "칼라 드래그"
+      }
+    ]
+  },
+  "verification": {
+    "mode": "verify",
+    "user_id": 3,
+    "total_techniques": 170,
+    "new_techniques": 110,
+    "new_links": 110,
+    "original_rows_preserved": true,
+    "original_count": 60,
+    "other_user_counts_unchanged": true,
+    "video_rows_unchanged": true,
+    "video_count": 177,
+    "links_have_owner_and_name": true,
+    "backup_modes": [
+      {
+        "file": "apply-backup.json",
+        "mode": "600"
+      },
+      {
+        "file": "apply-backup.json.pre-write",
+        "mode": "600"
+      },
+      {
+        "file": "apply-log.json",
+        "mode": "600"
+      }
+    ],
+    "schema": {
+      "exists": true,
+      "errors": []
+    },
+    "pass": true
+  },
+  "reference": {
+    "personalTechniques": 170,
+    "descriptionsResolved": 138,
+    "catalog": 159,
+    "confirmedLinks": 110,
+    "samples": [
+      {
+        "name": "기무라",
+        "description": true,
+        "incoming": 5,
+        "outgoing": 5,
+        "related": 2,
+        "linkStore": "available"
+      },
+      {
+        "name": "니컷",
+        "description": true,
+        "incoming": 2,
+        "outgoing": 1,
+        "related": 5,
+        "linkStore": "available"
+      },
+      {
+        "name": "싱글 레그 테이크다운",
+        "description": true,
+        "incoming": 3,
+        "outgoing": 2,
+        "related": 5,
+        "linkStore": "available"
+      },
+      {
+        "name": "칼라 드래그",
+        "description": true,
+        "incoming": 1,
+        "outgoing": 1,
+        "related": 3,
+        "linkStore": "available"
+      },
+      {
+        "name": "가드",
+        "description": true,
+        "incoming": 0,
+        "outgoing": 0,
+        "related": 0,
+        "linkStore": "available"
+      }
+    ],
+    "foreign404": true,
+    "actualSql": true
+  },
+  "private_backup_directory": "/home/brownjeon/.local/share/bjj-ops/task-054-bf0bc2fa46"
 }

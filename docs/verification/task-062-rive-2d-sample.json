@@ -1,0 +1,87 @@
+{
+  "task_id": "task-062",
+  "verified_at": "2026-11-10T09:05:58.931317+00:00",
+  "status": "sample_prepared",
+  "user_quality_approval": "pending",
+  "engine": "Actual native Rive CLI 1.9.2 on Apple M4 Pro",
+  "representation": "Original artwork, rigid cutout image attachment to native RootBone/Bone chains",
+  "artboards": [
+    "Clean",
+    "Rig"
+  ],
+  "native_bones_per_artboard": 28,
+  "original_image_parts": 28,
+  "capture_frames_per_artboard": 288,
+  "capture_elapsed_seconds": 32.153,
+  "encode_elapsed_seconds": 14.285,
+  "verify_errors": 0,
+  "inspect_problems": 0,
+  "max_adjacent_rotation_step_radians": 0.056066300000000346,
+  "max_adjacent_rotation_step_degrees": 3.212362362914347,
+  "video": {
+    "codec": "h264",
+    "dimensions": [
+      1600,
+      1000
+    ],
+    "fps": 24,
+    "frames": 288,
+    "seconds": 12,
+    "decode_errors": 0
+  },
+  "local_delivery_hashes_match": true,
+  "source_rml_sha256": "72003f96f16a832b29321ef41b467e92e04a609c989db062ba126e2d56b79dae",
+  "project_package": {
+    "format": "RML source + rive.yaml + asset-manifest.json + 28 original-derived PNG parts",
+    "native_riv_in_package": false,
+    "published": false,
+    "script_assets": 0
+  },
+  "execution_boundary": {
+    "paid_generation_api_calls": 0,
+    "account_login": false,
+    "cloud_publish": false,
+    "asset_upload_to_rive_cloud": false,
+    "analytics": "off",
+    "app_or_db_change": false,
+    "deployment": false
+  },
+  "originals": {
+    "blue": {
+      "sha256": "b53b8055020ae83c23e8926fcf42dc9dddb48ad05d13893bfc5933f34635ce8a",
+      "bytes": 1434974
+    },
+    "white": {
+      "sha256": "ab83010155438952c6a9bb211f35bb283880201553b2f52f090d5e62d0b2d271",
+      "bytes": 1733575
+    }
+  },
+  "files": {
+    "rive-2d-single-x-comparison.mp4": {
+      "bytes": 1046015,
+      "sha256": "a3bab632734343003c919cb76b6111a22fbf986676e62c0a8d99da311edf9e64"
+    },
+    "preview.gif": {
+      "bytes": 2175217,
+      "sha256": "cd8c67a55f49033c7c8197d65aa105a97c6fe314a6262dc8e7f1d567b418d9b4"
+    },
+    "poster.png": {
+      "bytes": 474500,
+      "sha256": "7cf6eb0bd62484e93bc5226cd55fda8dd1f185e048c5fcaf07d5b267a5c98c89"
+    },
+    "contact-sheet.png": {
+      "bytes": 387299,
+      "sha256": "ae037c9074a387616055243dbbd8e1fb27d31fa37b4df56e2cd1d7d045687e8a"
+    },
+    "rive-2d-project.zip": {
+      "bytes": 596253,
+      "sha256": "61a90ef639da5a0eb1bf748e7edc0a338b23043f479f79b2199e7c650f6a56c9"
+    }
+  },
+  "artifact_directory": "/Users/brownjeon/.codex/artifacts/bjj-t062/final-01",
+  "limits": [
+    "Rigid cutout attachment; no weighted mesh or cloth deformation.",
+    "Cut seams, near/far occlusion and grip contact need further authoring.",
+    "Instructional accuracy, product integration and user quality approval remain unverified."
+  ]
+}

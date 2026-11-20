@@ -1,0 +1,63 @@
+filters:
+  and:
+    - file.hasTag("type/improvement")
+
+properties:
+  note.imp_id:
+    displayName: 번호
+  note.title:
+    displayName: 제목
+  note.status:
+    displayName: 상태
+  note.screen:
+    displayName: 화면
+  note.area:
+    displayName: 영역
+  note.priority:
+    displayName: 우선순위
+  note.planned_task:
+    displayName: 배정 task
+  note.created:
+    displayName: 등록일
+
+views:
+  - type: table
+    name: "전체 (상태별)"
+    groupBy:
+      property: note.status
+    order:
+      - note.imp_id
+      - note.title
+      - note.screen
+      - note.area
+      - note.priority
+      - note.planned_task
+      - note.created
+
+  - type: table
+    name: "화면별"
+    groupBy:
+      property: note.screen
+    filters:
+      and:
+        - 'note.status != "done"'
+        - 'note.status != "dropped"'
+        - 'note.status != "obsolete"'
+    order:
+      - note.imp_id
+      - note.title
+      - note.area
+      - note.priority
+      - note.status
+
+  - type: table
+    name: "접수함 (inbox)"
+    filters:
+      and:
+        - 'note.status == "inbox"'
+    order:
+      - note.imp_id
+      - note.title
+      - note.screen
+      - note.area
+      - note.created

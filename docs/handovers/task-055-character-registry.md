@@ -1,6 +1,6 @@
 # task-055 작업인계서 — B안 캐릭터 원본 DB 저장·스킨 버전 등록
 
-- 최종 갱신: 2026-11-09T09:54:05+09:00.
+- 최종 갱신: 2026-11-09T11:43:43+09:00.
 - **B안 확정. 신규 테이블 3개 생성과 초기 등록까지 사용자 승인 완료.**
 - **2026-11-08 인계 작성 세션은 문서만 완료했다. 2026-11-09 본 Codex 세션이 사용자 명시 지시로 직접 구현·검증·DB 등록을 완료했다(§8).**
 - 인계 자동 발송·새 채팅 생성·Claude 호출 없음. 실제 인수·실행 도구는 Codex이며 최신 직접 실행 승인과 결과는 §8에 기록한다.
@@ -169,3 +169,21 @@ node backend/scripts/task-055-character-check.js --run --confirm-database bjj
 # 프로젝트 밖 새 디렉터리로만 복원하며 기존 파일을 덮어쓰지 않는다.
 node backend/scripts/task-055-character-register.js --verify --restore-dir /tmp/새로운-복원-디렉터리
 ```
+
+## 9. 사용자 추가 승인·커밋·운영 배포 완료 (2026-11-09 10:18:20 KST)
+
+- 사용자 “커밋 및 푸시해서 운영에 배포해줘” 승인으로 기존 배포 제외 범위를 확장했다.
+- 원본 체크아웃의 병행99변경·분기12커밋은 보존하고 origin/main0aef8e1 기반 격리 작업본에서 T55 선택24파일만 커밋했다. 코드9/원본6 SHA는 승인·검증본과 동일.
+- **커밋 08a596e7f1178dec7e8fa7973a6d5a2c23f55abe**, origin/main push 완료. 포함작업은 task-055만, 부모0aef8e1159d0dd0b40ec30b6b5f14fdd81ba3da4.
+- push webhook 단일 blue/green 배포: **20261109-101020-08a596e7**, RELEASE_RESULT status=ok, 이전20261109-000550-0aef8e11. 수동 deploy 재호출0·--with-migrate 없음.
+- 배포 전 Reviewer REV-055-05 PASS issues0·격리본 단위14 PASS·기본오프라인3도구PASS. 실제 운영 코드9/원본6 파일hash 일치, 전용 CLI --verify의1/2/6·6BLOB원본bytes/hash 일치.
+- 운영 health/HTML/JS/CSS200, CUA 인앱 reload 후 로그인화면AX/스크린샷 정상, startup 체인완료/worker재개완료·실패0·기동후 error log 갱신없음, pm2 online·동일PID·restart0/unstable0 확인. 인증후실사용/실기기/3D는 별도범위이며 미검증.
+- 기존 startup의 ALTER/조건부UPDATE는 현재운영과 동일 코드로 유지되므로 전체DB쓰기0은 주장하지 않는다. T55 전용 스키마/초기등록 apply는 배포때 재실행하지 않았다.
+- 외부Claude는 정식 broker의 shared-Git/worktree 경계로 skipped/미호출, 내부 Reviewer/QA와 구분한다.
+- 상세 운영 증거: docs/verification/task-055-release.json. 배포 이후 결과기록은 로컬 갱신이며 코드/승인원본24파일 커밋·push와 구분한다.
+
+## 10. 본 세션 종료·후속 시작점
+
+T-55는 완료·세션종료(done/closed)다. 화면/API 변경 없이 캐릭터 원본 저장·스킨 버전 기반까지 구현/DB등록/배포했고, Blender 모델·리깅·앱 화면 연결은 후속 범위다.
+
+다음 세션은 `docs/handovers/task-055-follow-up.md`를 먼저 읽는다. 완료된 DB등록/외형 승인을 반복하지 않고 새 요청의 구체 산출물·범위부터 정한다. 다음 task나 구현은 이번 종료 지시로 자동 시작하지 않았다. 배포 후 및 종료 기록은 로컬 변경으로 보존한다.

@@ -2,37 +2,103 @@
   "task_id": "task-054",
   "status": "complete_approved_scope",
   "task_complete": true,
+  "execution": {
+    "origin_tool": "codex",
+    "current_tool": "codex",
+    "procedure": "codex_scoped",
+    "claude_session": "6c10309b-e3b7-47ad-81c2-b540b125b7c6",
+    "handoff_accepted": true,
+    "claude_initial_implementation": true,
+    "claude_continuation": "session_limit_before_execution",
+    "codex_exception_quote": "이번 작업의 남은 보완·검증을 Codex에 허용 (권고)",
+    "operating_codex_approval_quote": "Codex로 DB 반영·커밋/push·웹 배포까지 진행"
+  },
   "scope": {
-    "catalog": 159,
+    "source_catalog": 159,
     "coach_descriptions": 159,
-    "reuse": 28,
-    "new": 110,
-    "deferred": 21,
-    "champions": "structure review only"
+    "existing_techniques_preserved": 60,
+    "exact_or_known_alias_reuse": 28,
+    "new_prepared": 110,
+    "ambiguous_deferred": 21,
+    "expected_personal_techniques_after_approved_apply": 170,
+    "champions": "data-structure review only"
   },
   "verification": {
-    "reviewer": "PASS",
-    "independent_qa": {
-      "backend_passed": 49,
-      "web_passed": 15
+    "reviewer": "PASS, static + post-fix re-review; low2 future limitations",
+    "independent_qa": "PASS isolated scope",
+    "backend_tests": {
+      "passed": 49,
+      "failed": 0,
+      "fixture": "selected same-hash source, synthetic empty candidates, non-DB route stubs"
+    },
+    "frontend_model_tests": {
+      "passed": 15,
+      "failed": 0
+    },
+    "catalog_check": "159/159 current",
+    "demo_gate": "approved v1 / official hash check PASS",
+    "source_hashes": {
+      "task_files": 19,
+      "context_files": 22,
+      "all_match": true
+    },
+    "working_tree_build": "PASS224modules",
+    "working_tree_browser": "0/1/N, widths360/390/412/1280, XSS text/img0, focus/retry/back/disabled/stale-response, screenshot",
+    "release_candidate": {
+      "base_ref": "2e3575de773927471bdda9b9b03e3dd7be0e9842",
+      "overlay_frontend_files": 6,
+      "unrelated_dirty_sources_included": false,
+      "build": "PASS index-XCyKDvfd.js 1.20s",
+      "browser": "PASS 1/N navigation, retry and dialogfocus, widths360/390/412; zero state verified on same unchanged feature code in broader fixture",
+      "screenshot": "/Users/brownjeon/.codex/visualizations/2026/11/08/01a1ba5b-a790-7d40-9736-71d169ab396a/task-054-release-candidate/technique-detail-390.jpg"
     },
     "official_c2": {
-      "status": "done",
-      "findings": 0
+      "attempt1": "incomplete snapshot_modified: measured NAS execute-bit mismatch; parsed medium finding corrected",
+      "attempt2": {
+        "status": "done",
+        "findings": [],
+        "snapshot_modified": false,
+        "snapshot": "1f5725a38f8f3bc15897002fcb7254033a2ff5fb",
+        "duration_s": 179,
+        "scope": "incremental3files; unchanged41selected-source/context hashes compared to prior contentanalysis",
+        "not_reviewed": [
+          "실제 MariaDB의 트랜잭션·DATETIME 왕복·FK 및 적용·복구 동작",
+          "파일 쓰기가 필요한 백업·CLI 테스트 5개: 최초 실행 시 EPERM으로 차단됐으며 최종 검증에서 제외",
+          "실제 브라우저·물리 Android·인증된 운영 환경 통합: 재시도 초점 처리는 정적 검토만 수행",
+          "제외된 개인 스냅샷·21개 미확정 의미 대응 및 변경 없는 159개 설명의 재전수 검토"
+        ]
+      }
     },
     "latest_origin_build": {
       "base_ref": "55f8ad4e73db44377b5c60abccbcb988b66179b2",
-      "modules": 224,
-      "status": "PASS",
-      "js": "index-C6IJ6MBR.js"
+      "source19_matches_reviewed": true,
+      "build": "PASS index-C6IJ6MBR.js 224modules1.19s"
     }
   },
-  "data_preservation": {
-    "existing_rows_unchanged": 60,
-    "video_rows_unchanged": 177,
-    "other_account_counts_unchanged": true
+  "prepared_data": {
+    "plan_sha": "4c6666e729b50abe2b371e5c8d03984f6aa1a724dc31ad6f34e6bf8799e9d354",
+    "decision_file": "agent-vault/10-Flow/improvements/assets/IMP-0001-decisions-prepared.json",
+    "category_proposal": "agent-vault/10-Flow/improvements/assets/IMP-0001-new-category-proposal.json",
+    "operating_plan": "docs/handovers/task-054-operating-plan.md",
+    "category_adoption_and_live_execution_approved": true,
+    "live_applied": true
   },
-  "private_inputs": "not committed; operator supplies private snapshot/candidates/decisions explicitly",
+  "operating_changes": {
+    "db_connection_for_implementation": true,
+    "ddl": true,
+    "apply": true,
+    "restore": false,
+    "main_repo_commit": true,
+    "push": true,
+    "deployment": true
+  },
+  "restore_semantics": "mapping rollback only; newly inserted techniques and their links retained to protect later records",
+  "unverified": [
+    "authenticated production UI",
+    "physical Android",
+    "formal pixel screenshot replay conditions",
+    "restore execution (not requested/performed)"
+  ],
   "source_hashes": {
     "backend/src/routes/techniques.js": "a3e8c64b898147e12b2605f4fae90b5118f161b189b72a391ff59f2b4e4e282e",
     "web/src/api/techniques.js": "59b32ddee8c4fbc08427d858f04cf95dfabb754b704f5d7c9427849797a93c05",
@@ -54,6 +120,14 @@
     "backend/test/task-054-backup.test.js": "e84342cc0547bb38b7ad7e9d13c5f606cb8068d39ca579d6eae6cf4873371fc3",
     "backend/test/task-054-db-adapter.test.js": "78b0987235daeb56385c83fab9133783703b61646194743227fcc8d7415e021a"
   },
+  "db_result": "docs/handovers/task-054-db-result.json",
+  "selected_commit": "09b82c2fef81d6d9a354354af01a57abd0bc58a6",
+  "publication": {
+    "public_paths": 45,
+    "private_original_paths_excluded": 16,
+    "default_coach_candidate": "empty public default; actual private mapping retained off-Git",
+    "unrelated_local_commits_excluded": 12
+  },
   "code_commit": "09b82c2fef81d6d9a354354af01a57abd0bc58a6",
   "code_release": "20261108-225820-09b82c2f",
   "postdeploy": {
@@ -74,6 +148,5 @@
   "documentation_commit": "completion records only; subsequent same-code release recorded separately",
   "final_documentation_commit": "a4c100e417539e041175a14dc7aa5d002c367b1d",
   "final_documentation_release": "20261108-231510-a4c100e4",
-  "final_operating_status": "verified_ok",
-  "confirmed_mapping_followup": "docs/handovers/task-054-followup-result.json"
+  "final_operating_status": "verified_ok"
 }

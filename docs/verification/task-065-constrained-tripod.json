@@ -1,0 +1,1279 @@
+{
+  "task_id": "task-065",
+  "verified_at": "2026-11-11T04:38:39.789589+00:00",
+  "status": "sample_prepared",
+  "user_quality_approval": "pending",
+  "authorization": {
+    "requested": "흰 도복에 같은 골격/제약, 사진 참고 두 캐릭터 트라이포드, M4 추가 과금 없이",
+    "profile_extension_answer": "동작용 범위 추가 (권장)",
+    "new_model_or_paid_service_authorized": false
+  },
+  "representation": "Persistent original 2D raster skins, hierarchical fixed-length native Rive bones/limits, deterministic contact IK and cloth-only inverse-skin floor correctives",
+  "runtime": {
+    "cpu_brand": "Apple M4 Pro",
+    "memory_bytes": 25769803776,
+    "architecture": "arm64",
+    "platform": "macOS-26.3-arm64-arm-64bit",
+    "paid_api_calls": 0,
+    "new_model_install": false
+  },
+  "engine": "Actual Rive CLI 1.9.2",
+  "artboards": [
+    "Clean",
+    "Rig"
+  ],
+  "bones_per_character": 16,
+  "constraints_per_character": 16,
+  "bones_per_artboard": 32,
+  "constraints_per_artboard": 32,
+  "mesh_count_per_artboard": 20,
+  "image_layer_count_per_character": 10,
+  "shared_profile_sha256": "703b92932a2649c9954ccc631ed82b1fcb2fd3ff1b80670699578740d5c571b4",
+  "scene_rml_sha256": "c4e6014f51f67a6dd5d8a26ee7cc0ffc88ffe1e96fcda5518df5903bbbcb7494",
+  "writer_sha256": "d9e87d02b89515e4bd0d77d0d643afb1c282252ccb0373fbcc36e57017077d05",
+  "independent_verification": {
+    "schema_version": 1,
+    "status": "pass",
+    "plan_sha256": "a9333e8b666b6a3e72836587f7f1a2813156d626948058bbbaf6c8f555dc30be",
+    "profile_sha256": "703b92932a2649c9954ccc631ed82b1fcb2fd3ff1b80670699578740d5c571b4",
+    "original_profile_sha256": "ce9e93d2c1a2d637a59d3d20b8dafe57f42671ed103ccfae9ab99a24e6dd50f8",
+    "tolerances": {
+      "length_px": 1e-06,
+      "angle_radians": 1e-06,
+      "active_contact_px": 1.5
+    },
+    "independent_fk": "2x3 affine matrix composition; root orientation * mirror * parent-tip * local rotation; no planner import",
+    "sampled_keyframes": 289,
+    "interpolation_subdivisions": 8,
+    "total_samples": 2305,
+    "bone_instances_per_sample": 32,
+    "interpolation": "Native linear on root x/y, orientation and local bone rotations; constant mirror",
+    "maxima": {
+      "length_error_px": 1.5631940186722204e-13,
+      "hierarchy_origin_error_px": 0.0,
+      "local_limit_excess_rad": 0.0,
+      "mirrored_bend_error_rad": 4.440892098500626e-16,
+      "metadata_world_point_error_px": 1.6077746776921858e-13,
+      "metadata_contact_error_error_px": 2.5421149729252077e-13
+    },
+    "contacts": {
+      "ankle_grip": {
+        "keyframe_max_px": 2.5421149729252077e-13,
+        "interpolated_max_px": 0.015902878599020977,
+        "worst_sample_frame": 140.5,
+        "keyframe_worst_frame": 82.0,
+        "interpolated_worst_frame": 140.5
+      },
+      "hip_sole": {
+        "keyframe_max_px": 1.6077746776921858e-13,
+        "interpolated_max_px": 0.003219967950205963,
+        "worst_sample_frame": 98.5,
+        "interpolated_worst_frame": 98.5,
+        "keyframe_worst_frame": 4.0
+      },
+      "far_leg_hook": {
+        "keyframe_max_px": 2.5421149729252077e-13,
+        "interpolated_max_px": 0.005846682023785441,
+        "worst_sample_frame": 125.5,
+        "keyframe_worst_frame": 55.0,
+        "interpolated_worst_frame": 125.5
+      }
+    },
+    "contact_release_seconds": 5.25,
+    "contact_schedule": "ankle_grip throughout; hip_sole/far_leg_hook only through 5.25 seconds",
+    "local_joint_ranges_deg": {
+      "white": {
+        "pelvis": [
+          0.0,
+          0.0
+        ],
+        "spine": [
+          -90.0,
+          -65.0
+        ],
+        "neck": [
+          0.0,
+          0.0
+        ],
+        "head": [
+          0.0,
+          0.0
+        ],
+        "upper_arm_far": [
+          105.00000000000001,
+          130.0
+        ],
+        "forearm_far": [
+          -100.0,
+          -59.99999999999999
+        ],
+        "hand_far": [
+          0.0,
+          0.0
+        ],
+        "upper_arm_near": [
+          119.99999999999999,
+          150.0
+        ],
+        "forearm_near": [
+          -100.0,
+          -40.0
+        ],
+        "hand_near": [
+          0.0,
+          0.0
+        ],
+        "thigh_far": [
+          -19.672755639095787,
+          81.04752292029197
+        ],
+        "shin_far": [
+          55.06016684236564,
+          141.15779350573257
+        ],
+        "foot_far": [
+          -144.9887061282447,
+          -91.48503786663677
+        ],
+        "thigh_near": [
+          42.11699013591594,
+          67.572530123729
+        ],
+        "shin_near": [
+          9.176832403208618,
+          52.86822024245158
+        ],
+        "foot_near": [
+          -104.37235950839644,
+          -65.44374505540499
+        ]
+      },
+      "blue": {
+        "pelvis": [
+          0.0,
+          0.0
+        ],
+        "spine": [
+          -72.0,
+          -55.0
+        ],
+        "neck": [
+          12.000000000000002,
+          12.000000000000002
+        ],
+        "head": [
+          0.0,
+          0.0
+        ],
+        "upper_arm_far": [
+          190.0,
+          190.0
+        ],
+        "forearm_far": [
+          -130.0,
+          -130.0
+        ],
+        "hand_far": [
+          0.0,
+          0.0
+        ],
+        "upper_arm_near": [
+          198.07334243181438,
+          205.48283084644325
+        ],
+        "forearm_near": [
+          -58.58355121748533,
+          -36.43552273531867
+        ],
+        "hand_near": [
+          16.01899406199208,
+          28.118865352838366
+        ],
+        "thigh_far": [
+          -10.000000000000002,
+          59.95346300398941
+        ],
+        "shin_far": [
+          62.95895509949456,
+          100.0
+        ],
+        "foot_far": [
+          -126.05869601840934,
+          -100.0
+        ],
+        "thigh_near": [
+          -20.000000000000004,
+          19.343426274735794
+        ],
+        "shin_near": [
+          55.84716453774882,
+          125.00000000000001
+        ],
+        "foot_near": [
+          -100.0,
+          -88.53789519915956
+        ]
+      }
+    },
+    "max_adjacent_local_rotation_step_deg": 3.0816008085128037,
+    "initial_white_soles": {
+      "near/heel": {
+        "point": [
+          624.0000000000002,
+          850.0000000000002
+        ],
+        "floor_error_px": 2.2737367544323206e-13
+      },
+      "near/toe": {
+        "point": [
+          524.0000000000002,
+          850.0000000000002
+        ],
+        "floor_error_px": 2.2737367544323206e-13
+      },
+      "far/heel": {
+        "point": [
+          864.0000000000001,
+          850.0
+        ],
+        "floor_error_px": 0.0
+      },
+      "far/toe": {
+        "point": [
+          764.0000000000001,
+          850.0
+        ],
+        "floor_error_px": 0.0
+      }
+    },
+    "white_ankle_motion": {
+      "near": {
+        "max_from_initial_px": 52.000000000000334,
+        "final_from_initial_px": 52.000000000000334,
+        "post_release_travel_px": 38.28287890910274
+      },
+      "far": {
+        "max_from_initial_px": 122.42957159118069,
+        "final_from_initial_px": 109.83624174196787,
+        "post_release_travel_px": 95.50977523453115
+      }
+    },
+    "rig_sole_markers": {
+      "white/near": {
+        "max_y": 850.0032917773049,
+        "max_penetration_px": 0.0032917773048666277,
+        "worst_sample_frame": 56.5,
+        "marker": "heel"
+      },
+      "white/far": {
+        "max_y": 850.0002027079015,
+        "max_penetration_px": 0.00020270790150789253,
+        "worst_sample_frame": 59.5,
+        "marker": "heel"
+      },
+      "blue/near": {
+        "max_y": 729.4191374362487,
+        "max_penetration_px": 0.0,
+        "worst_sample_frame": 162.0,
+        "marker": "heel"
+      },
+      "blue/far": {
+        "max_y": 841.3809404226255,
+        "max_penetration_px": 0.0,
+        "worst_sample_frame": 72.0,
+        "marker": "heel"
+      }
+    },
+    "max_skeleton_endpoint_y": {
+      "y": 838.0032917773049,
+      "character": "white",
+      "bone": "shin_near",
+      "marker": "tip",
+      "frame": 56.5
+    },
+    "last_skeletal_head_points": {
+      "white": {
+        "origin": [
+          1112.0,
+          795.0
+        ],
+        "tip": [
+          1192.0,
+          795.0
+        ]
+      },
+      "blue": {
+        "origin": [
+          419.35714766371655,
+          684.9306956576795
+        ],
+        "tip": [
+          364.79727885871665,
+          626.4223995281459
+        ]
+      }
+    },
+    "opaque_rigid_layer_ground": {
+      "white/foot-far": {
+        "max_y": 849.4402027079017,
+        "max_penetration_px": 0.0,
+        "worst_sample_frame": 59.5,
+        "last_frame_max_y": 750.6402121082047,
+        "image_sha256": "e0e8935b10c7fb2dff8e1dea300ee66c32eaf0d18685ae67726d01a2e2330ea3"
+      },
+      "white/foot-near": {
+        "max_y": 849.443291777305,
+        "max_penetration_px": 0.0,
+        "worst_sample_frame": 56.5,
+        "last_frame_max_y": 811.1647870730552,
+        "image_sha256": "e0e8935b10c7fb2dff8e1dea300ee66c32eaf0d18685ae67726d01a2e2330ea3"
+      },
+      "white/hand-near": {
+        "max_y": 678.7536968997445,
+        "max_penetration_px": 0.0,
+        "worst_sample_frame": 180.0,
+        "last_frame_max_y": 678.7536968997445,
+        "image_sha256": "aba2fc0247b068479aa352acbe02787bcf3b3836654f9c456c58ca724d2a2725"
+      },
+      "white/head-face-hair": {
+        "max_y": 848.29,
+        "max_penetration_px": 0.0,
+        "worst_sample_frame": 180.0,
+        "last_frame_max_y": 848.29,
+        "image_sha256": "c9bd27ece9ff450d0aedbb7ea4f8f2c739fcde73cf325acb5580c4da15fccb80"
+      },
+      "blue/foot-far": {
+        "max_y": 837.8424788841639,
+        "max_penetration_px": 0.0,
+        "worst_sample_frame": 72.0,
+        "last_frame_max_y": 677.1720754974679,
+        "image_sha256": "d739bcceca354d6b81524d35fc77e0b5e68b6502d7a56785c6e6cf8999f17d8a"
+      },
+      "blue/foot-near": {
+        "max_y": 725.1620325731514,
+        "max_penetration_px": 0.0,
+        "worst_sample_frame": 162.0,
+        "last_frame_max_y": 725.1620325731514,
+        "image_sha256": "d739bcceca354d6b81524d35fc77e0b5e68b6502d7a56785c6e6cf8999f17d8a"
+      },
+      "blue/hand-near": {
+        "max_y": 843.9571469952439,
+        "max_penetration_px": 0.0,
+        "worst_sample_frame": 56.5,
+        "last_frame_max_y": 800.9152133555548,
+        "image_sha256": "b3008ec4b072d2bc6caafc541f2783a898e03adcbb53ddaee0658da9e483f125"
+      },
+      "blue/head-face-hair": {
+        "max_y": 761.0327004810993,
+        "max_penetration_px": 0.0,
+        "worst_sample_frame": 72.0,
+        "last_frame_max_y": 703.6918193462872,
+        "image_sha256": "8ca7719bdf08096c5545bbc92e21b31532f987022aa0b6dddc88aee761ed3019"
+      }
+    },
+    "alpha_ground_method": "alpha>=128 pixel-support convex hull mapped through mesh UV and original global bind; rigid foot/head/hand-near layers only; cloth pose-correctives excluded; raster filtering can shift edge about one source pixel",
+    "ground_observations": [],
+    "rml_source": {
+      "status": "pass",
+      "scene_sha256": "c4e6014f51f67a6dd5d8a26ee7cc0ffc88ffe1e96fcda5518df5903bbbcb7494",
+      "errors": [],
+      "error_count": 0,
+      "artboards": [
+        {
+          "artboard": "Clean",
+          "bones": 32,
+          "rig_keys": 10982
+        },
+        {
+          "artboard": "Rig",
+          "bones": 32,
+          "rig_keys": 10982
+        }
+      ],
+      "mesh_corrective_xy_keys_reported_separately": 317900,
+      "mesh_corrective_geometry_effect": "not assessed by skeletal FK"
+    },
+    "native_overlay_raster": {
+      "status": "sampled",
+      "characters": {
+        "white": {
+          "points": [
+            {
+              "expected": [
+                1192.0,
+                795.0
+              ],
+              "nearest_color_distance_px": 0.7071067811865476
+            },
+            {
+              "expected": [
+                761.1868407688142,
+                726.0369169464018
+              ],
+              "nearest_color_distance_px": 0.5590300695013588
+            },
+            {
+              "expected": [
+                1112.0,
+                795.0
+              ],
+              "nearest_color_distance_px": 0.7071067811865476
+            },
+            {
+              "expected": [
+                1162.4791185645258,
+                658.57865354032
+              ],
+              "nearest_color_distance_px": 0.08137821423659321
+            },
+            {
+              "expected": [
+                606.8027384973133,
+                715.1546107710719
+              ],
+              "nearest_color_distance_px": 0.459286748355561
+            },
+            {
+              "expected": [
+                1195.3178951104376,
+                681.9860744542093
+              ],
+              "nearest_color_distance_px": 0.5452354146777427
+            },
+            {
+              "expected": [
+                820.0,
+                730.0
+              ],
+              "nearest_color_distance_px": 0.7071067811865476
+            },
+            {
+              "expected": [
+                1062.8240002642353,
+                693.5777882396478
+              ],
+              "nearest_color_distance_px": 0.33320741506166185
+            },
+            {
+              "expected": [
+                620.0,
+                789.9999999999998
+              ],
+              "nearest_color_distance_px": 0.7071067811863867
+            },
+            {
+              "expected": [
+                1157.4624965829512,
+                685.2979926786203
+              ],
+              "nearest_color_distance_px": 0.20545915453282348
+            },
+            {
+              "expected": [
+                1126.7707989746614,
+                671.5754189866955
+              ],
+              "nearest_color_distance_px": 0.2811051551142793
+            },
+            {
+              "expected": [
+                782.0,
+                664.1820693123827
+              ],
+              "nearest_color_distance_px": 0.59251997614324
+            },
+            {
+              "expected": [
+                1037.5,
+                704.067332602634
+              ],
+              "nearest_color_distance_px": 0.43266739736600357
+            },
+            {
+              "expected": [
+                900.0,
+                795.0
+              ],
+              "nearest_color_distance_px": 0.7071067811865476
+            },
+            {
+              "expected": [
+                952.1803698638452,
+                649.0472370906521
+              ],
+              "nearest_color_distance_px": 0.5542180762295407
+            },
+            {
+              "expected": [
+                1090.0,
+                795.0
+              ],
+              "nearest_color_distance_px": 0.7071067811865476
+            }
+          ],
+          "unmatched_points": 0,
+          "max_matched_distance_px": 0.7071067811865476
+        },
+        "blue": {
+          "points": [
+            {
+              "expected": [
+                563.0845324616258,
+                657.3547982831078
+              ],
+              "nearest_color_distance_px": 0.4401100021939224
+            },
+            {
+              "expected": [
+                536.9868777845213,
+                664.3476437781842
+              ],
+              "nearest_color_distance_px": 0.5101591863196903
+            },
+            {
+              "expected": [
+                592.0799121697805,
+                776.6453857742742
+              ],
+              "nearest_color_distance_px": 0.4445343726415609
+            },
+            {
+              "expected": [
+                718.0845324616258,
+                657.3547982831078
+              ],
+              "nearest_color_distance_px": 0.4401100021939224
+            },
+            {
+              "expected": [
+                364.79727885871665,
+                626.4223995281459
+              ],
+              "nearest_color_distance_px": 0.7069928115890232
+            },
+            {
+              "expected": [
+                693.3292173081489,
+                628.7537987141022
+              ],
+              "nearest_color_distance_px": 0.7654953212864056
+            },
+            {
+              "expected": [
+                516.8871191707066,
+                680.6281927991729
+              ],
+              "nearest_color_distance_px": 0.40779240562855457
+            },
+            {
+              "expected": [
+                497.4442950502888,
+                784.9580250911804
+              ],
+              "nearest_color_distance_px": 0.4614000710588686
+            },
+            {
+              "expected": [
+                520.1990373951176,
+                642.7727942716865
+              ],
+              "nearest_color_distance_px": 0.7870239264657606
+            },
+            {
+              "expected": [
+                590.0,
+                810.0
+              ],
+              "nearest_color_distance_px": 0.7071067811865476
+            },
+            {
+              "expected": [
+                508.607323609679,
+                775.2666891178887
+              ],
+              "nearest_color_distance_px": 0.25681184728524303
+            },
+            {
+              "expected": [
+                686.7053808593269,
+                704.4645957690749
+              ],
+              "nearest_color_distance_px": 0.20841006920308436
+            },
+            {
+              "expected": [
+                704.8872709589391,
+                582.50940905418
+              ],
+              "nearest_color_distance_px": 0.6128012794209671
+            },
+            {
+              "expected": [
+                434.3611115850915,
+                701.0204770933012
+              ],
+              "nearest_color_distance_px": 0.4992316194359414
+            },
+            {
+              "expected": [
+                419.35714766371655,
+                684.9306956576795
+              ],
+              "nearest_color_distance_px": 0.4537681561388199
+            },
+            {
+              "expected": [
+                627.788231759645,
+                789.6421512206497
+              ],
+              "nearest_color_distance_px": 0.32137908581648456
+            }
+          ],
+          "unmatched_points": 0,
+          "max_matched_distance_px": 0.7870239264657606
+        }
+      },
+      "time_seconds": 10.5,
+      "viewport": [
+        1600,
+        950
+      ],
+      "expected_artboard": [
+        1600,
+        950
+      ],
+      "resize_or_fit_correction_applied": false,
+      "color_tolerance_per_channel": 12,
+      "scope": "Nearby cyan/orange raster support, not extraction of native numeric bone transforms",
+      "png_sha256": "ed68d53fe6ee480e521bb8af3ec61ea5f9a81429fce09af57caf296280220e51"
+    },
+    "failures": [],
+    "failure_count_reported": 0,
+    "scope_limits": [
+      "No physics/medical/technique/naturalness approval",
+      "No cloth-alpha ground verdict",
+      "Native clamp numerical behavior is separate from plan FK"
+    ],
+    "source_or_profile_modified": false,
+    "installation_or_model_inference": false
+  },
+  "native_limit_enforcement": {
+    "engine": "Rive CLI1.9.2 actual M4 positive-angle/mirrored-parent limit proof",
+    "parent_rotation_radians": 0.8,
+    "parent_scale_x": -1,
+    "requested_local_degrees": 230,
+    "range_local_degrees": [
+      30,
+      210
+    ],
+    "over_limit_equals_boundary": true,
+    "over_limit_differs_unbounded": true,
+    "valid190_equals_unbounded190": true,
+    "images": {
+      "RequestedBeyond": "f74286c34e6c86234859bbda81bb6c07fb2857a5e1a1330c6cd568954cb4589e",
+      "ReferenceLimit": "f74286c34e6c86234859bbda81bb6c07fb2857a5e1a1330c6cd568954cb4589e",
+      "NoLimit": "1a2d9e2346a2ac01728bda2a3ce07f8c7508ed4efaa7e64b63765a3d1a1c9620",
+      "Valid190": "4245b858b6647e626696fb7a52317a93c083041658568ae5d93ed3263c88e536",
+      "Reference190": "4245b858b6647e626696fb7a52317a93c083041658568ae5d93ed3263c88e536"
+    }
+  },
+  "native_verify_exit_code": 0,
+  "native_inspect": {
+    "errors": 0,
+    "warnings": 56,
+    "kinds": {
+      "interpolated-step": 56
+    },
+    "disposition": "56 interpolated-step advisories on dense linear cloth correction keys entering a held pose. Continuous interpolation is intended; no hold-mode substitution or warning suppression. These are not reported as zero problems.",
+    "full_problem_list": [
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 56925,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 126\" x goes from 364.966 to 365 between frames 179 and 180 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 179 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 57509,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 147\" x goes from 364.691 to 365 between frames 179 and 180 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 179 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 58383,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 168\" y goes from 299.613 to 299.612 between frames 178 and 179 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 178 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 58384,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 168\" y goes from 299.612 to 299.613 between frames 179 and 180 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 179 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 58967,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 189\" y goes from 307.395 to 307.394 between frames 178 and 179 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 178 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 58968,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 189\" y goes from 307.394 to 307.395 between frames 179 and 180 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 179 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 59551,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 210\" y goes from 315.176 to 315.175 between frames 178 and 179 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 178 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 59552,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 210\" y goes from 315.175 to 315.176 between frames 179 and 180 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 179 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 60136,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 231\" y goes from 322.957 to 322.958 between frames 179 and 180 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 179 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 60718,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 252\" y goes from 330.74 to 330.738 between frames 177 and 178 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 177 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 60720,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 252\" y goes from 330.738 to 330.74 between frames 179 and 180 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 179 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 61302,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 273\" y goes from 338.522 to 338.518 between frames 177 and 178 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 177 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 61886,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 294\" y goes from 346.304 to 346.299 between frames 177 and 178 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 177 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 62470,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 315\" y goes from 354.086 to 354.079 between frames 177 and 178 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 177 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 64221,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 378\" y goes from 377.432 to 377.419 between frames 176 and 177 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 176 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 64805,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 399\" y goes from 385.213 to 385.197 between frames 176 and 177 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 176 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 65389,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 420\" y goes from 392.992 to 392.975 between frames 176 and 177 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 176 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 67140,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 483\" y goes from 416.341 to 416.311 between frames 175 and 176 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 175 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 67724,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 504\" y goes from 424.116 to 424.084 between frames 175 and 176 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 175 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 69475,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 567\" y goes from 447.466 to 447.412 between frames 174 and 175 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 174 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 72109,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 652\" x goes from 364.919 to 365 between frames 179 and 180 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 179 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 73567,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 673\" y goes from 464.781 to 464.781 between frames 178 and 179 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 178 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 73568,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 673\" y goes from 464.781 to 464.781 between frames 179 and 180 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 179 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 74736,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 694\" y goes from 467.942 to 467.943 between frames 179 and 180 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 179 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 75902,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 715\" y goes from 471.105 to 471.103 between frames 177 and 178 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 177 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 77070,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 736\" y goes from 474.266 to 474.263 between frames 177 and 178 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 177 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 79405,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 778\" y goes from 480.59 to 480.583 between frames 176 and 177 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 176 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 82908,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 841\" y goes from 490.076 to 490.059 between frames 175 and 176 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 175 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 259469,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 126\" x goes from 364.966 to 365 between frames 179 and 180 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 179 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 260053,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 147\" x goes from 364.691 to 365 between frames 179 and 180 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 179 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 260927,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 168\" y goes from 299.613 to 299.612 between frames 178 and 179 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 178 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 260928,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 168\" y goes from 299.612 to 299.613 between frames 179 and 180 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 179 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 261511,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 189\" y goes from 307.395 to 307.394 between frames 178 and 179 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 178 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 261512,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 189\" y goes from 307.394 to 307.395 between frames 179 and 180 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 179 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 262095,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 210\" y goes from 315.176 to 315.175 between frames 178 and 179 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 178 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 262096,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 210\" y goes from 315.175 to 315.176 between frames 179 and 180 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 179 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 262680,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 231\" y goes from 322.957 to 322.958 between frames 179 and 180 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 179 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 263262,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 252\" y goes from 330.74 to 330.738 between frames 177 and 178 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 177 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 263264,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 252\" y goes from 330.738 to 330.74 between frames 179 and 180 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 179 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 263846,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 273\" y goes from 338.522 to 338.518 between frames 177 and 178 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 177 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 264430,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 294\" y goes from 346.304 to 346.299 between frames 177 and 178 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 177 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 265014,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 315\" y goes from 354.086 to 354.079 between frames 177 and 178 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 177 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 266765,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 378\" y goes from 377.432 to 377.419 between frames 176 and 177 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 176 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 267349,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 399\" y goes from 385.213 to 385.197 between frames 176 and 177 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 176 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 267933,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 420\" y goes from 392.992 to 392.975 between frames 176 and 177 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 176 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 269684,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 483\" y goes from 416.341 to 416.311 between frames 175 and 176 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 175 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 270268,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 504\" y goes from 424.116 to 424.084 between frames 175 and 176 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 175 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 272019,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 567\" y goes from 447.466 to 447.412 between frames 174 and 175 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 174 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 274653,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 652\" x goes from 364.919 to 365 between frames 179 and 180 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 179 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 276111,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 673\" y goes from 464.781 to 464.781 between frames 178 and 179 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 178 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 276112,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 673\" y goes from 464.781 to 464.781 between frames 179 and 180 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 179 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 277280,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 694\" y goes from 467.942 to 467.943 between frames 179 and 180 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 179 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 278446,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 715\" y goes from 471.105 to 471.103 between frames 177 and 178 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 177 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 279614,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 736\" y goes from 474.266 to 474.263 between frames 177 and 178 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 177 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 281949,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 778\" y goes from 480.59 to 480.583 between frames 176 and 177 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 176 a hold key: interpolationType=\"hold\""
+      },
+      {
+        "severity": "warning",
+        "kind": "interpolated-step",
+        "file": "scene.rml",
+        "line": 285452,
+        "message": "\"Dual character sample\": MeshVertex \"Vertex 841\" y goes from 490.076 to 490.059 between frames 175 and 176 (linear). A host drawing between frames shows the value halfway; for a step, make the key at frame 175 a hold key: interpolationType=\"hold\""
+      }
+    ]
+  },
+  "cloth_floor_correction": {
+    "changed_vertices_total": 275,
+    "maximum_world_compression_px": 44.45314162457316,
+    "measurement_includes_transparent_margins": true,
+    "projection_error_max_px": 2.2737367544323206e-13,
+    "native_mesh_vertex_xy_behavior": "Actual review02/03 show the former below-mat hems resting on the mat; native keyed geometry rendered without overlay floor masks.",
+    "whole_cloth_alpha_or_physics_certification": false
+  },
+  "visual_review": {
+    "main_native_review01": 4,
+    "independent_native_review01": 4,
+    "independent_final_review03": 4,
+    "main_final_encoded_contact_sheet": "viewed, six chronological poses",
+    "defects_fixed": [
+      "Open control hand replaced with uploaded-photo closed grip",
+      "Deep cloth-only floor projection instead of hiding below-mat hems",
+      "White final root raised to protect head",
+      "Static near/far depth exceptions",
+      "Retracted legs and far white foot separated after landing",
+      "White cloth hems fitted8px to expose ankle"
+    ],
+    "final_static_pose_verdict": "No additional critical limb duplication/separation/reverse bend/large cloth hole in the reviewed stills; four feet distinguishable.",
+    "remaining_limit": "Far leg instep hook partly occluded in fixed side view; exact contact is clearer in Rig annotations.",
+    "whole_video_realtime_independent_playback": "not observed",
+    "medical_instructional_or_user_quality_approval": false
+  },
+  "capture": {
+    "frames_per_artboard": 288,
+    "total_png": 576,
+    "elapsed_seconds": 76.919,
+    "scene_size": [
+      1600,
+      950
+    ]
+  },
+  "video": {
+    "codec": "h264",
+    "dimensions": [
+      1280,
+      1010
+    ],
+    "fps": 24,
+    "frames": 288,
+    "seconds": 12.0,
+    "decode_errors_both_movies": 0,
+    "encode_seconds": 15.709,
+    "fixed_crop": [
+      180,
+      160,
+      1380,
+      930
+    ],
+    "presentation": "hollow contact rings/captions and a brief fade at the loop boundary; native character poses unchanged"
+  },
+  "files": {
+    "tripod-sweep.mp4": {
+      "bytes": 1158223,
+      "sha256": "96fe29ca29162b2a466dfab144618d511b44a07976331beb1badacc22d04492e"
+    },
+    "tripod-rig.mp4": {
+      "bytes": 1433041,
+      "sha256": "1f39bf58a58e29d59a4604debb7c485914dc4882de1f3f70fb368584b9566037"
+    },
+    "preview.gif": {
+      "bytes": 5007180,
+      "sha256": "e10043de1c627e1c8499e31356d9f92f44ffb97fe5f99b26be7adb280361db06"
+    },
+    "poster.png": {
+      "bytes": 288503,
+      "sha256": "43f1591a93ed192b367fb1d790547720a43d24a4901bd0c99a93dea16cee7180"
+    },
+    "rig-poster.png": {
+      "bytes": 295237,
+      "sha256": "741678de745d7ce89cb34d3b34c3ec0797b5248ef7876e752e9b422b05051ec6"
+    },
+    "contact-sheet.png": {
+      "bytes": 447879,
+      "sha256": "a4d38f40a47e3bf9cf0fa4b35d7ae2ca7c4daa72fa81f53d344a2a4416f8bd27"
+    },
+    "tripod-rml-source.zip": {
+      "bytes": 9119254,
+      "sha256": "13fabe5b8e15406faa2819da51e87d5b44f13e8e6929cdd3cd4aca2393dc0d46"
+    }
+  },
+  "source_package": {
+    "file_count": 68,
+    "files": [
+      "bjj-tripod/task-064/generate_character.py",
+      "bjj-tripod/task-064/rig_profile.json",
+      "bjj-tripod/task-064/project/timeline.json",
+      "bjj-tripod/task-064/skin-v2/generate_skin.py",
+      "bjj-tripod/task-065/README.md",
+      "bjj-tripod/task-065/plan_tripod.py",
+      "bjj-tripod/task-065/generate_dual_rive.py",
+      "bjj-tripod/task-065/tripod-profile.json",
+      "bjj-tripod/task-065/verify_tripod.py",
+      "bjj-tripod/task-065/kinematics-verification.json",
+      "bjj-tripod/task-065/native-clamp-proof.json",
+      "bjj-tripod/task-065/test_native_clamp_m4.py",
+      "bjj-tripod/task-065/prepare_grip_m4.py",
+      "bjj-tripod/task-065/fit_white_hem_m4.py",
+      "bjj-tripod/task-065/capture_tripod_m4.py",
+      "bjj-tripod/task-065/encode_tripod_m4.py",
+      "bjj-tripod/task-065/package_tripod_m4.py",
+      "bjj-tripod/task-065/motion-plan-receipt.json",
+      "bjj-tripod/task-065/tripod-plan.json",
+      "bjj-tripod/task-065/tripod-plan.m4.json",
+      "bjj-tripod/task-065/project/assets/blue-foot-far.png",
+      "bjj-tripod/task-065/project/assets/blue-foot-near.png",
+      "bjj-tripod/task-065/project/assets/blue-hand-far.png",
+      "bjj-tripod/task-065/project/assets/blue-hand-near.png",
+      "bjj-tripod/task-065/project/assets/blue-head-face-hair.png",
+      "bjj-tripod/task-065/project/assets/blue-jacket-belt.png",
+      "bjj-tripod/task-065/project/assets/blue-leg-far.png",
+      "bjj-tripod/task-065/project/assets/blue-leg-near.png",
+      "bjj-tripod/task-065/project/assets/blue-sleeve-far.png",
+      "bjj-tripod/task-065/project/assets/blue-sleeve-near.png",
+      "bjj-tripod/task-065/project/assets/white-foot-far.png",
+      "bjj-tripod/task-065/project/assets/white-foot-near.png",
+      "bjj-tripod/task-065/project/assets/white-hand-far.png",
+      "bjj-tripod/task-065/project/assets/white-hand-near.png",
+      "bjj-tripod/task-065/project/assets/white-head-face-hair.png",
+      "bjj-tripod/task-065/project/assets/white-jacket-belt.png",
+      "bjj-tripod/task-065/project/assets/white-leg-far.png",
+      "bjj-tripod/task-065/project/assets/white-leg-near.png",
+      "bjj-tripod/task-065/project/assets/white-sleeve-far.png",
+      "bjj-tripod/task-065/project/assets/white-sleeve-near.png",
+      "bjj-tripod/task-065/project/dual-build-receipt.json",
+      "bjj-tripod/task-065/project/rive.yaml",
+      "bjj-tripod/task-065/project/scene.rml",
+      "bjj-tripod/task-065/blue-character/project/assets/foot-far.png",
+      "bjj-tripod/task-065/blue-character/project/assets/foot-near.png",
+      "bjj-tripod/task-065/blue-character/project/assets/hand-far.png",
+      "bjj-tripod/task-065/blue-character/project/assets/hand-near.png",
+      "bjj-tripod/task-065/blue-character/project/assets/head-face-hair.png",
+      "bjj-tripod/task-065/blue-character/project/assets/jacket-belt.png",
+      "bjj-tripod/task-065/blue-character/project/assets/leg-far.png",
+      "bjj-tripod/task-065/blue-character/project/assets/leg-near.png",
+      "bjj-tripod/task-065/blue-character/project/assets/sleeve-far.png",
+      "bjj-tripod/task-065/blue-character/project/assets/sleeve-near.png",
+      "bjj-tripod/task-065/blue-character/project/skin-assets.json",
+      "bjj-tripod/task-065/white-tripod-skin/project/assets/foot-far.png",
+      "bjj-tripod/task-065/white-tripod-skin/project/assets/foot-near.png",
+      "bjj-tripod/task-065/white-tripod-skin/project/assets/hand-far.png",
+      "bjj-tripod/task-065/white-tripod-skin/project/assets/hand-near.png",
+      "bjj-tripod/task-065/white-tripod-skin/project/assets/head-face-hair.png",
+      "bjj-tripod/task-065/white-tripod-skin/project/assets/jacket-belt.png",
+      "bjj-tripod/task-065/white-tripod-skin/project/assets/leg-far.png",
+      "bjj-tripod/task-065/white-tripod-skin/project/assets/leg-near.png",
+      "bjj-tripod/task-065/white-tripod-skin/project/assets/sleeve-far.png",
+      "bjj-tripod/task-065/white-tripod-skin/project/assets/sleeve-near.png",
+      "bjj-tripod/task-065/white-tripod-skin/project/skin-assets.json",
+      "bjj-tripod/task-065/reference/tripod-reference.png",
+      "bjj-tripod/task-065/reference/approved-blue-gi.png",
+      "bjj-tripod/task-065/reference/approved-white-gi.png"
+    ],
+    "verified_local_plan_included": true,
+    "m4_execution_plan_included": true,
+    "plan_difference": "absolute input paths only; numeric poses, contacts, mirrors and all other fields identical",
+    "core_hashes_match_independent_verification": true,
+    "native_riv_export": false,
+    "packaged_at_utc": "2026-11-11T04:32:25.945904+00:00"
+  },
+  "local_delivery_hashes_match": true,
+  "zip_integrity_and_core_bytes_match": true,
+  "zip_core_validation": "six core files,20nativePNG and3original-image SHA compared",
+  "artifact_directory": "/Users/brownjeon/.codex/artifacts/bjj-t065/final-01",
+  "sources": [
+    {
+      "url": "https://www.grapplearts.com/the-bjj-self-defense-experiment/",
+      "section": "Sweep #1 the Tripod Sweep; four steps",
+      "accessed": "2026-11-11",
+      "usage": "Technical principle read only; no external video download/reuse"
+    }
+  ],
+  "execution_boundary": {
+    "paid_generation_api_calls": 0,
+    "new_model_or_tool_install": false,
+    "rive_account_login": false,
+    "cloud_image_upload": false,
+    "rive_cloud_publish": false,
+    "analytics": "off",
+    "app_or_db_change": false,
+    "build_or_deployment": false,
+    "app_version_change": false,
+    "originals_or_old_samples_replaced": false,
+    "commit_or_push": false
+  },
+  "limits": [
+    "Fixed side-view 2D sample; photo-inspired pose and technique, not exact 3D reconstruction.",
+    "Far instep hook partially occluded; individual finger articulation and exact all-surface grips are approximate.",
+    "No dynamic whole-body physics/collision or medical normal-range certification.",
+    "Sample includes unbalancing, controlled fall and upper-body follow, not complete technical standup/pass.",
+    "Natural-language-to-any-technique generation and product UI integration are not implemented.",
+    "RML source delivered; native .riv binary export and Editor import not tested."
+  ]
+}

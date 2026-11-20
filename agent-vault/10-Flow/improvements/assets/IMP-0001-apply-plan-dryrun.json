@@ -1,0 +1,2388 @@
+{
+  "kind": "task-054-reference-apply-plan",
+  "version": 1,
+  "mode": "dry-run",
+  "user_id": 3,
+  "snapshot_fingerprint": "a8d2dbec081ffe844482f67c47c36ec198e597aaa4ab76e52a25da789cd2ef06",
+  "inputs": {
+    "catalog": {
+      "path": "backend/src/data/techniqueReference/catalog.json",
+      "sha256": "18062834faaa09e477accb6d11f72225afe10743530bd7da8f3de620a2e8ddca"
+    },
+    "snapshot": {
+      "path": "agent-vault/10-Flow/improvements/assets/IMP-0001-existing-techniques.json",
+      "sha256": "9ae158a9ced3aaf13f87188f634e703ea9eb93b431bee2b9e078c84ae2932ba4"
+    },
+    "coach_candidates": {
+      "path": "agent-vault/10-Flow/improvements/assets/IMP-0001-coach-candidates.json",
+      "sha256": "e0d78bf84780544101367835160e0f6f71ccb78aa38c72f816ee6e2e667a7c7d"
+    }
+  },
+  "summary": {
+    "total": 159,
+    "existing_techniques": 60,
+    "by_tool_match": {
+      "none": 131,
+      "exact": 24,
+      "alias": 4
+    },
+    "by_match": {
+      "none": 110,
+      "coach_candidate": 21,
+      "exact": 24,
+      "alias": 4
+    },
+    "by_action": {
+      "review_new": 100,
+      "review_link_existing": 25,
+      "keep_existing": 24,
+      "hold": 10
+    },
+    "none_breakdown": {
+      "tool_none": 131,
+      "coach_candidate": 21,
+      "remaining_none": 110,
+      "remaining_none_by_action": {
+        "review_new": 100,
+        "hold": 10
+      },
+      "note": "tool_none 은 신규 개수가 아니다. 신규 검토 대상은 review_new 뿐이며 그것도 사용자 결정 전이다."
+    },
+    "new_rows_planned": 0,
+    "links_planned": 0
+  },
+  "items": [
+    {
+      "slug": "standing",
+      "name": "스탠딩",
+      "source_category": "스탠딩",
+      "kind": "position",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · position — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "single-leg-takedown",
+      "name": "싱글 레그 테이크다운",
+      "source_category": "스탠딩",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "collar-drag",
+      "name": "칼라 드래그",
+      "source_category": "스탠딩",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "ankle-pick",
+      "name": "앵클 픽",
+      "source_category": "스탠딩",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "double-leg-takedown",
+      "name": "더블 레그 테이크다운",
+      "source_category": "스탠딩",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "coach_candidate",
+        "technique_id": 30,
+        "technique_name": "더블렉",
+        "coach": {
+          "confidence": "high",
+          "confidence_text": "높음(가설)",
+          "needs_check": "필요 — 기존 상세가 양다리 테이크다운을 뜻하는지 확인"
+        }
+      },
+      "action": "review_link_existing",
+      "basis": "관장 후보(id 30, 높음(가설)) — 사용자 결정 전, 자동 확정 금지"
+    },
+    {
+      "slug": "inside-trip",
+      "name": "인사이드 트립",
+      "source_category": "스탠딩",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "outside-trip",
+      "name": "아웃사이드 트립",
+      "source_category": "스탠딩",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "break-fall",
+      "name": "낙법",
+      "source_category": "스탠딩",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "takedown",
+      "name": "테이크다운",
+      "source_category": "스탠딩",
+      "kind": "concept",
+      "tool_match": "exact",
+      "match": {
+        "type": "exact",
+        "technique_id": 33,
+        "technique_name": "테이크다운"
+      },
+      "action": "keep_existing",
+      "basis": "exact 대응 — 기존 행(id 33) 그대로 유지"
+    },
+    {
+      "slug": "open-guard",
+      "name": "오픈 가드",
+      "source_category": "가드 · 스윕",
+      "kind": "position",
+      "tool_match": "exact",
+      "match": {
+        "type": "exact",
+        "technique_id": 39,
+        "technique_name": "오픈가드"
+      },
+      "action": "keep_existing",
+      "basis": "exact 대응 — 기존 행(id 39) 그대로 유지"
+    },
+    {
+      "slug": "closed-guard",
+      "name": "클로즈 가드",
+      "source_category": "가드 · 스윕",
+      "kind": "position",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · position — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "half-guard",
+      "name": "하프 가드",
+      "source_category": "가드 · 스윕",
+      "kind": "position",
+      "tool_match": "exact",
+      "match": {
+        "type": "exact",
+        "technique_id": 40,
+        "technique_name": "하프가드"
+      },
+      "action": "keep_existing",
+      "basis": "exact 대응 — 기존 행(id 40) 그대로 유지"
+    },
+    {
+      "slug": "de-la-riva-guard",
+      "name": "델라히바 가드",
+      "source_category": "가드 · 스윕",
+      "kind": "position",
+      "tool_match": "none",
+      "match": {
+        "type": "coach_candidate",
+        "technique_id": 3,
+        "technique_name": "델라리바",
+        "coach": {
+          "confidence": "high",
+          "confidence_text": "높음(가설)",
+          "needs_check": "필요 — 기존 기본형 의미 확인. 리버스·딥 변형까지 포함하지 않음"
+        }
+      },
+      "action": "review_link_existing",
+      "basis": "관장 후보(id 3, 높음(가설)) — 사용자 결정 전, 자동 확정 금지"
+    },
+    {
+      "slug": "single-leg-x-guard",
+      "name": "싱글 레그 X 가드",
+      "source_category": "가드 · 스윕",
+      "kind": "position",
+      "tool_match": "none",
+      "match": {
+        "type": "coach_candidate",
+        "technique_id": 28,
+        "technique_name": "싱글엑스",
+        "coach": {
+          "confidence": "high",
+          "confidence_text": "높음(가설)",
+          "needs_check": "필요 — 기존 포지션이 SLX 기본형인지 확인"
+        }
+      },
+      "action": "review_link_existing",
+      "basis": "관장 후보(id 28, 높음(가설)) — 사용자 결정 전, 자동 확정 금지"
+    },
+    {
+      "slug": "sweep",
+      "name": "스윕",
+      "source_category": "가드 · 스윕",
+      "kind": "concept",
+      "tool_match": "exact",
+      "match": {
+        "type": "exact",
+        "technique_id": 32,
+        "technique_name": "스윕"
+      },
+      "action": "keep_existing",
+      "basis": "exact 대응 — 기존 행(id 32) 그대로 유지"
+    },
+    {
+      "slug": "knee-shield",
+      "name": "니실드",
+      "source_category": "가드 · 스윕",
+      "kind": "position",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · position — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "butterfly-guard",
+      "name": "버터플라이 가드",
+      "source_category": "가드 · 스윕",
+      "kind": "position",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · position — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "lasso-guard",
+      "name": "라쏘 가드",
+      "source_category": "가드 · 스윕",
+      "kind": "position",
+      "tool_match": "alias",
+      "match": {
+        "type": "alias",
+        "technique_id": 6,
+        "technique_name": "라쏘"
+      },
+      "action": "review_link_existing",
+      "basis": "별칭 사전 대응(id 6) — 자동 확정 금지, 연결 여부 사용자 검토"
+    },
+    {
+      "slug": "k-guard",
+      "name": "K 가드",
+      "source_category": "가드 · 스윕",
+      "kind": "position",
+      "tool_match": "exact",
+      "match": {
+        "type": "exact",
+        "technique_id": 34,
+        "technique_name": "k가드"
+      },
+      "action": "keep_existing",
+      "basis": "exact 대응 — 기존 행(id 34) 그대로 유지"
+    },
+    {
+      "slug": "x-guard",
+      "name": "X 가드",
+      "source_category": "가드 · 스윕",
+      "kind": "position",
+      "tool_match": "alias",
+      "match": {
+        "type": "alias",
+        "technique_id": 18,
+        "technique_name": "엑스가드"
+      },
+      "action": "review_link_existing",
+      "basis": "별칭 사전 대응(id 18) — 자동 확정 금지, 연결 여부 사용자 검토"
+    },
+    {
+      "slug": "tripod-sweep",
+      "name": "트라이팟 스윕",
+      "source_category": "가드 · 스윕",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "coach_candidate",
+        "technique_id": 2,
+        "technique_name": "트라이포드",
+        "coach": {
+          "confidence": "high",
+          "confidence_text": "높음(가설)",
+          "needs_check": "필요 — 기존 스윕 동작 확인"
+        }
+      },
+      "action": "review_link_existing",
+      "basis": "관장 후보(id 2, 높음(가설)) — 사용자 결정 전, 자동 확정 금지"
+    },
+    {
+      "slug": "deep-half-guard",
+      "name": "딥 하프 가드",
+      "source_category": "가드 · 스윕",
+      "kind": "position",
+      "tool_match": "exact",
+      "match": {
+        "type": "exact",
+        "technique_id": 38,
+        "technique_name": "딥 하프가드"
+      },
+      "action": "keep_existing",
+      "basis": "exact 대응 — 기존 행(id 38) 그대로 유지"
+    },
+    {
+      "slug": "reverse-de-riva-guard",
+      "name": "리버스 델라히바 가드",
+      "source_category": "가드 · 스윕",
+      "kind": "position",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · position — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "spider-guard",
+      "name": "스파이더 가드",
+      "source_category": "가드 · 스윕",
+      "kind": "position",
+      "tool_match": "none",
+      "match": {
+        "type": "coach_candidate",
+        "technique_id": 7,
+        "technique_name": "스파이더",
+        "coach": {
+          "confidence": "high",
+          "confidence_text": "높음(가설)",
+          "needs_check": "필요 — 소매와 다리 프레임을 사용하는 가드 의미인지 확인"
+        }
+      },
+      "action": "review_link_existing",
+      "basis": "관장 후보(id 7, 높음(가설)) — 사용자 결정 전, 자동 확정 금지"
+    },
+    {
+      "slug": "worm-guard",
+      "name": "웜 가드",
+      "source_category": "가드 · 스윕",
+      "kind": "position",
+      "tool_match": "exact",
+      "match": {
+        "type": "exact",
+        "technique_id": 103,
+        "technique_name": "웜가드"
+      },
+      "action": "keep_existing",
+      "basis": "exact 대응 — 기존 행(id 103) 그대로 유지"
+    },
+    {
+      "slug": "balloon-sweep",
+      "name": "벌룬 스윕",
+      "source_category": "가드 · 스윕",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "coyote-guard",
+      "name": "코요테 가드",
+      "source_category": "가드 · 스윕",
+      "kind": "position",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · position — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "kimura-sweep",
+      "name": "기무라 스윕",
+      "source_category": "가드 · 스윕",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "kiss-of-dragon",
+      "name": "키스 오브 드래곤",
+      "source_category": "가드 · 스윕",
+      "kind": "technique",
+      "tool_match": "exact",
+      "match": {
+        "type": "exact",
+        "technique_id": 382,
+        "technique_name": "키스 오브 드래곤"
+      },
+      "action": "keep_existing",
+      "basis": "exact 대응 — 기존 행(id 382) 그대로 유지"
+    },
+    {
+      "slug": "scissors-sweep",
+      "name": "시저스 스윕",
+      "source_category": "가드 · 스윕",
+      "kind": "technique",
+      "tool_match": "exact",
+      "match": {
+        "type": "exact",
+        "technique_id": 26,
+        "technique_name": "시저스 스윕"
+      },
+      "action": "keep_existing",
+      "basis": "exact 대응 — 기존 행(id 26) 그대로 유지"
+    },
+    {
+      "slug": "sit-up-guard",
+      "name": "싯업 가드",
+      "source_category": "가드 · 스윕",
+      "kind": "position",
+      "tool_match": "none",
+      "match": {
+        "type": "coach_candidate",
+        "technique_id": 46,
+        "technique_name": "싯팅 가드",
+        "coach": {
+          "confidence": "medium",
+          "confidence_text": "중간(맥락 필요)",
+          "needs_check": "필요 — 동일 기본 포지션인지 싯팅 가드 하위 변형인지 기존 설명·그립 확인"
+        }
+      },
+      "action": "review_link_existing",
+      "basis": "관장 후보(id 46, 중간(맥락 필요)) — 사용자 결정 전, 자동 확정 금지"
+    },
+    {
+      "slug": "flower-sweep",
+      "name": "플라워 스윕",
+      "source_category": "가드 · 스윕",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "matrix",
+      "name": "매트릭스",
+      "source_category": "가드 · 스윕",
+      "kind": "technique",
+      "tool_match": "exact",
+      "match": {
+        "type": "exact",
+        "technique_id": 58,
+        "technique_name": "매트릭스"
+      },
+      "action": "keep_existing",
+      "basis": "exact 대응 — 기존 행(id 58) 그대로 유지"
+    },
+    {
+      "slug": "rubber-guard",
+      "name": "러버 가드",
+      "source_category": "가드 · 스윕",
+      "kind": "position",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · position — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "foot-sweep",
+      "name": "풋 스윕",
+      "source_category": "가드 · 스윕",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "z-guard",
+      "name": "Z 가드",
+      "source_category": "가드 · 스윕",
+      "kind": "position",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · position — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "collar-and-sleeve-guard",
+      "name": "칼라 앤 슬리브 가드",
+      "source_category": "가드 · 스윕",
+      "kind": "position",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · position — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "deep-de-riva-guard",
+      "name": "딥 델라히바 가드",
+      "source_category": "가드 · 스윕",
+      "kind": "position",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · position — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "lapel-guard",
+      "name": "라펠 가드",
+      "source_category": "가드 · 스윕",
+      "kind": "position",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · position — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "octopus-guard",
+      "name": "옥토퍼스 가드",
+      "source_category": "가드 · 스윕",
+      "kind": "position",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · position — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "waiter-guard",
+      "name": "웨이터 가드",
+      "source_category": "가드 · 스윕",
+      "kind": "position",
+      "tool_match": "exact",
+      "match": {
+        "type": "exact",
+        "technique_id": 44,
+        "technique_name": "웨이터 가드"
+      },
+      "action": "keep_existing",
+      "basis": "exact 대응 — 기존 행(id 44) 그대로 유지"
+    },
+    {
+      "slug": "wrestle-up",
+      "name": "레슬업",
+      "source_category": "가드 · 스윕",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "inverted-guard",
+      "name": "인버티드 가드",
+      "source_category": "가드 · 스윕",
+      "kind": "position",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · position — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "john-wayne-sweep",
+      "name": "존 웨인 스윕",
+      "source_category": "가드 · 스윕",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "lumberjack-sweep",
+      "name": "럼버잭스윕",
+      "source_category": "가드 · 스윕",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "guard-recovery",
+      "name": "가드 리커버리",
+      "source_category": "가드 · 스윕",
+      "kind": "concept",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "hold",
+      "basis": "대응 없음 · 일반 개념(concept) — 개별 기술로 추가하지 않고 보류"
+    },
+    {
+      "slug": "hip-bump-sweep",
+      "name": "힙 범프 스윕",
+      "source_category": "가드 · 스윕",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "pendulum-sweep",
+      "name": "펜듈럼 스윕",
+      "source_category": "가드 · 스윕",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "technical-stand-up",
+      "name": "테크니컬 스탠드업",
+      "source_category": "가드 · 스윕",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "waiter-sweep",
+      "name": "웨이터 스윕",
+      "source_category": "가드 · 스윕",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "shin-to-shin-guard",
+      "name": "신투신 가드",
+      "source_category": "가드 · 스윕",
+      "kind": "position",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · position — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "squid-guard",
+      "name": "스퀴드 가드",
+      "source_category": "가드 · 스윕",
+      "kind": "position",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · position — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "guard",
+      "name": "가드",
+      "source_category": "가드 · 스윕",
+      "kind": "concept",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "hold",
+      "basis": "대응 없음 · 일반 개념(concept) — 개별 기술로 추가하지 않고 보류"
+    },
+    {
+      "slug": "knee-cut",
+      "name": "니컷",
+      "source_category": "가드 패스",
+      "kind": "technique",
+      "tool_match": "exact",
+      "match": {
+        "type": "exact",
+        "technique_id": 86,
+        "technique_name": "니컷"
+      },
+      "action": "keep_existing",
+      "basis": "exact 대응 — 기존 행(id 86) 그대로 유지"
+    },
+    {
+      "slug": "leg-drag",
+      "name": "레그 드래그",
+      "source_category": "가드 패스",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "toreando-pass",
+      "name": "토레안도 패스",
+      "source_category": "가드 패스",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "coach_candidate",
+        "technique_id": 5,
+        "technique_name": "토레안도",
+        "coach": {
+          "confidence": "high",
+          "confidence_text": "높음(가설)",
+          "needs_check": "필요 — 기존 토레안도 동작 확인"
+        }
+      },
+      "action": "review_link_existing",
+      "basis": "관장 후보(id 5, 높음(가설)) — 사용자 결정 전, 자동 확정 금지"
+    },
+    {
+      "slug": "long-step",
+      "name": "롱스텝",
+      "source_category": "가드 패스",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "coach_candidate",
+        "technique_id": 155,
+        "technique_name": "롱스탭",
+        "coach": {
+          "confidence": "high",
+          "confidence_text": "높음(가설)",
+          "needs_check": "필요 — 기존 롱스탭이 해당 패스인지 확인"
+        }
+      },
+      "action": "review_link_existing",
+      "basis": "관장 후보(id 155, 높음(가설)) — 사용자 결정 전, 자동 확정 금지"
+    },
+    {
+      "slug": "pressure-pass",
+      "name": "압박 패스",
+      "source_category": "가드 패스",
+      "kind": "concept",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "hold",
+      "basis": "대응 없음 · 일반 개념(concept) — 개별 기술로 추가하지 않고 보류"
+    },
+    {
+      "slug": "stack-pass",
+      "name": "스택 패스",
+      "source_category": "가드 패스",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "leg-weave",
+      "name": "레그 위브",
+      "source_category": "가드 패스",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "over-under",
+      "name": "오버 언더",
+      "source_category": "가드 패스",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "coach_candidate",
+        "technique_id": 55,
+        "technique_name": "싱글언더 패스",
+        "coach": {
+          "confidence": "medium",
+          "confidence_text": "중간(맥락 필요)",
+          "needs_check": "필요 — 기존 싱글언더가 오버언더인지 다른 언더훅 패스인지 그립·통과 경로 확인"
+        }
+      },
+      "action": "review_link_existing",
+      "basis": "관장 후보(id 55, 중간(맥락 필요)) — 사용자 결정 전, 자동 확정 금지"
+    },
+    {
+      "slug": "smash-pass",
+      "name": "스매시 패스",
+      "source_category": "가드 패스",
+      "kind": "concept",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "hold",
+      "basis": "대응 없음 · 일반 개념(concept) — 개별 기술로 추가하지 않고 보류"
+    },
+    {
+      "slug": "double-under",
+      "name": "더블 언더",
+      "source_category": "가드 패스",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "crazy-dog-pass",
+      "name": "크레이지 독 패스",
+      "source_category": "가드 패스",
+      "kind": "technique",
+      "tool_match": "exact",
+      "match": {
+        "type": "exact",
+        "technique_id": 85,
+        "technique_name": "크레이지독 패스"
+      },
+      "action": "keep_existing",
+      "basis": "exact 대응 — 기존 행(id 85) 그대로 유지"
+    },
+    {
+      "slug": "gator-roll",
+      "name": "게이터 롤",
+      "source_category": "가드 패스",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "knee-slide",
+      "name": "니슬라이드",
+      "source_category": "가드 패스",
+      "kind": "technique",
+      "tool_match": "exact",
+      "match": {
+        "type": "exact",
+        "technique_id": 4,
+        "technique_name": "니슬라이드"
+      },
+      "action": "keep_existing",
+      "basis": "exact 대응 — 기존 행(id 4) 그대로 유지"
+    },
+    {
+      "slug": "back-step",
+      "name": "백 스텝",
+      "source_category": "가드 패스",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "lapel-pass",
+      "name": "라펠 패스",
+      "source_category": "가드 패스",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "shin-trap",
+      "name": "신 트랩",
+      "source_category": "가드 패스",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "surfer-pass",
+      "name": "서퍼 패스",
+      "source_category": "가드 패스",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "duck-under",
+      "name": "덕 언더",
+      "source_category": "가드 패스",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "wiper",
+      "name": "와이퍼",
+      "source_category": "가드 패스",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "x-pass",
+      "name": "엑스 패스",
+      "source_category": "가드 패스",
+      "kind": "technique",
+      "tool_match": "exact",
+      "match": {
+        "type": "exact",
+        "technique_id": 84,
+        "technique_name": "엑스패스"
+      },
+      "action": "keep_existing",
+      "basis": "exact 대응 — 기존 행(id 84) 그대로 유지"
+    },
+    {
+      "slug": "guard-pass",
+      "name": "가드 패스",
+      "source_category": "가드 패스",
+      "kind": "concept",
+      "tool_match": "exact",
+      "match": {
+        "type": "exact",
+        "technique_id": 37,
+        "technique_name": "가드패스"
+      },
+      "action": "keep_existing",
+      "basis": "exact 대응 — 기존 행(id 37) 그대로 유지"
+    },
+    {
+      "slug": "side-control",
+      "name": "사이드 컨트롤",
+      "source_category": "포지션 · 컨트롤",
+      "kind": "position",
+      "tool_match": "none",
+      "match": {
+        "type": "coach_candidate",
+        "technique_id": 53,
+        "technique_name": "사이드",
+        "coach": {
+          "confidence": "high",
+          "confidence_text": "높음(가설)",
+          "needs_check": "필요 — 기존 사이드의 정의 확인"
+        }
+      },
+      "action": "review_link_existing",
+      "basis": "관장 후보(id 53, 높음(가설)) — 사용자 결정 전, 자동 확정 금지"
+    },
+    {
+      "slug": "mount",
+      "name": "마운트",
+      "source_category": "포지션 · 컨트롤",
+      "kind": "position",
+      "tool_match": "exact",
+      "match": {
+        "type": "exact",
+        "technique_id": 43,
+        "technique_name": "마운트"
+      },
+      "action": "keep_existing",
+      "basis": "exact 대응 — 기존 행(id 43) 그대로 유지"
+    },
+    {
+      "slug": "back-take",
+      "name": "백 테이크",
+      "source_category": "포지션 · 컨트롤",
+      "kind": "technique",
+      "tool_match": "exact",
+      "match": {
+        "type": "exact",
+        "technique_id": 25,
+        "technique_name": "백테이크"
+      },
+      "action": "keep_existing",
+      "basis": "exact 대응 — 기존 행(id 25) 그대로 유지"
+    },
+    {
+      "slug": "back-control",
+      "name": "백 컨트롤",
+      "source_category": "포지션 · 컨트롤",
+      "kind": "position",
+      "tool_match": "none",
+      "match": {
+        "type": "coach_candidate",
+        "technique_id": 36,
+        "technique_name": "백포지션",
+        "coach": {
+          "confidence": "medium",
+          "confidence_text": "중간(맥락 필요)",
+          "needs_check": "필요 — 기존 백포지션의 범위와 훅·싯벨트 조건 확인"
+        }
+      },
+      "action": "review_link_existing",
+      "basis": "관장 후보(id 36, 중간(맥락 필요)) — 사용자 결정 전, 자동 확정 금지"
+    },
+    {
+      "slug": "turtle",
+      "name": "터틀",
+      "source_category": "포지션 · 컨트롤",
+      "kind": "position",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · position — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "knee-on-belly",
+      "name": "니온밸리",
+      "source_category": "포지션 · 컨트롤",
+      "kind": "position",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · position — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "berimbolo",
+      "name": "베림볼로",
+      "source_category": "포지션 · 컨트롤",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "coach_candidate",
+        "technique_id": 57,
+        "technique_name": "베림보로",
+        "coach": {
+          "confidence": "high",
+          "confidence_text": "높음(가설)",
+          "needs_check": "필요 — 기존 동작이 베림볼로인지 확인"
+        }
+      },
+      "action": "review_link_existing",
+      "basis": "관장 후보(id 57, 높음(가설)) — 사용자 결정 전, 자동 확정 금지"
+    },
+    {
+      "slug": "headquarters-position",
+      "name": "헤드쿼터 포지션",
+      "source_category": "포지션 · 컨트롤",
+      "kind": "position",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · position — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "arm-drag",
+      "name": "암 드래그",
+      "source_category": "포지션 · 컨트롤",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "under-hook",
+      "name": "언더훅",
+      "source_category": "포지션 · 컨트롤",
+      "kind": "position",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · position — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "front-headlock",
+      "name": "프론트 헤드락",
+      "source_category": "포지션 · 컨트롤",
+      "kind": "position",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · position — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "fifty-fifty-position",
+      "name": "50 대 50 포지션",
+      "source_category": "포지션 · 컨트롤",
+      "kind": "position",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · position — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "ashi-garami",
+      "name": "아시 가라미",
+      "source_category": "포지션 · 컨트롤",
+      "kind": "position",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · position — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "north-south-position",
+      "name": "남북 포지션",
+      "source_category": "포지션 · 컨트롤",
+      "kind": "position",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · position — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "saddle-position",
+      "name": "새들 포지션",
+      "source_category": "포지션 · 컨트롤",
+      "kind": "position",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · position — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "s-mount",
+      "name": "S 마운트",
+      "source_category": "포지션 · 컨트롤",
+      "kind": "position",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · position — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "truck",
+      "name": "트럭",
+      "source_category": "포지션 · 컨트롤",
+      "kind": "position",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · position — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "crucifix",
+      "name": "크루시픽스",
+      "source_category": "포지션 · 컨트롤",
+      "kind": "position",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · position — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "body-lock",
+      "name": "바디락",
+      "source_category": "포지션 · 컨트롤",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "cross-collar-control",
+      "name": "크로스 칼라 컨트롤",
+      "source_category": "포지션 · 컨트롤",
+      "kind": "position",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · position — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "outside-ashi-garami",
+      "name": "아웃사이드 아시 가라미",
+      "source_category": "포지션 · 컨트롤",
+      "kind": "position",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · position — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "two-on-one",
+      "name": "투 온 원",
+      "source_category": "포지션 · 컨트롤",
+      "kind": "position",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · position — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "snap-down",
+      "name": "스냅 다운",
+      "source_category": "포지션 · 컨트롤",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "straight-collar-control",
+      "name": "스트레이트 칼라 컨트롤",
+      "source_category": "포지션 · 컨트롤",
+      "kind": "position",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · position — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "crab-ride",
+      "name": "크랩 라이드",
+      "source_category": "포지션 · 컨트롤",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "sprawl",
+      "name": "스프롤",
+      "source_category": "포지션 · 컨트롤",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "high-mount",
+      "name": "하이 마운트",
+      "source_category": "포지션 · 컨트롤",
+      "kind": "position",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · position — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "back-mount",
+      "name": "백 마운트",
+      "source_category": "포지션 · 컨트롤",
+      "kind": "position",
+      "tool_match": "none",
+      "match": {
+        "type": "coach_candidate",
+        "technique_id": 36,
+        "technique_name": "백포지션",
+        "coach": {
+          "confidence": "medium",
+          "confidence_text": "중간(맥락 필요)",
+          "needs_check": "필요 — 별칭인지 훅을 건 하위 포지션인지 확인. 두 source 자동 동일시 금지"
+        }
+      },
+      "action": "review_link_existing",
+      "basis": "관장 후보(id 36, 중간(맥락 필요)) — 사용자 결정 전, 자동 확정 금지"
+    },
+    {
+      "slug": "honey-hole",
+      "name": "허니 홀",
+      "source_category": "포지션 · 컨트롤",
+      "kind": "position",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · position — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "backside-fifty-fifty",
+      "name": "백사이드 50/50",
+      "source_category": "포지션 · 컨트롤",
+      "kind": "position",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · position — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "inside-ashi-garami",
+      "name": "인사이드 아시 가라미",
+      "source_category": "포지션 · 컨트롤",
+      "kind": "position",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · position — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "lockdown",
+      "name": "락다운",
+      "source_category": "포지션 · 컨트롤",
+      "kind": "position",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · position — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "seat-belt-grip",
+      "name": "싯벨트 그립",
+      "source_category": "포지션 · 컨트롤",
+      "kind": "position",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · position — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "three-quarter-mount",
+      "name": "3/4 마운트",
+      "source_category": "포지션 · 컨트롤",
+      "kind": "position",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · position — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "escape",
+      "name": "이스케이프",
+      "source_category": "포지션 · 컨트롤",
+      "kind": "concept",
+      "tool_match": "alias",
+      "match": {
+        "type": "alias",
+        "technique_id": 47,
+        "technique_name": "탈출"
+      },
+      "action": "review_link_existing",
+      "basis": "별칭 사전 대응(id 47) — 자동 확정 금지, 연결 여부 사용자 검토"
+    },
+    {
+      "slug": "foot-work",
+      "name": "풋 워크",
+      "source_category": "포지션 · 컨트롤",
+      "kind": "concept",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "hold",
+      "basis": "대응 없음 · 일반 개념(concept) — 개별 기술로 추가하지 않고 보류"
+    },
+    {
+      "slug": "entry",
+      "name": "엔트리",
+      "source_category": "포지션 · 컨트롤",
+      "kind": "concept",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "hold",
+      "basis": "대응 없음 · 일반 개념(concept) — 개별 기술로 추가하지 않고 보류"
+    },
+    {
+      "slug": "kimura",
+      "name": "기무라",
+      "source_category": "서브미션",
+      "kind": "technique",
+      "tool_match": "exact",
+      "match": {
+        "type": "exact",
+        "technique_id": 51,
+        "technique_name": "기무라"
+      },
+      "action": "keep_existing",
+      "basis": "exact 대응 — 기존 행(id 51) 그대로 유지"
+    },
+    {
+      "slug": "omoplata",
+      "name": "오모플라타",
+      "source_category": "서브미션",
+      "kind": "technique",
+      "tool_match": "exact",
+      "match": {
+        "type": "exact",
+        "technique_id": 63,
+        "technique_name": "오모플라타"
+      },
+      "action": "keep_existing",
+      "basis": "exact 대응 — 기존 행(id 63) 그대로 유지"
+    },
+    {
+      "slug": "armbar",
+      "name": "암바",
+      "source_category": "서브미션",
+      "kind": "technique",
+      "tool_match": "exact",
+      "match": {
+        "type": "exact",
+        "technique_id": 42,
+        "technique_name": "암바"
+      },
+      "action": "keep_existing",
+      "basis": "exact 대응 — 기존 행(id 42) 그대로 유지"
+    },
+    {
+      "slug": "triangle-choke",
+      "name": "트라이앵글 초크",
+      "source_category": "서브미션",
+      "kind": "technique",
+      "tool_match": "alias",
+      "match": {
+        "type": "alias",
+        "technique_id": 27,
+        "technique_name": "트라이앵글 쵸크"
+      },
+      "action": "review_link_existing",
+      "basis": "별칭 사전 대응(id 27) — 자동 확정 금지, 연결 여부 사용자 검토"
+    },
+    {
+      "slug": "darce-choke",
+      "name": "다스 초크",
+      "source_category": "서브미션",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "knee-bar",
+      "name": "니바",
+      "source_category": "서브미션",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "guillotine-choke",
+      "name": "길로틴 초크",
+      "source_category": "서브미션",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "straight-ankle-lock",
+      "name": "스트레이트 앵클락",
+      "source_category": "서브미션",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "coach_candidate",
+        "technique_id": 19,
+        "technique_name": "앵클락",
+        "coach": {
+          "confidence": "high",
+          "confidence_text": "높음(가설·조건 있음)",
+          "needs_check": "필요 — 기존 값이 직선형인지 확인. 회전형·상위 묶음이면 동일 매칭 금지"
+        }
+      },
+      "action": "review_link_existing",
+      "basis": "관장 후보(id 19, 높음(가설·조건 있음)) — 사용자 결정 전, 자동 확정 금지"
+    },
+    {
+      "slug": "bow-and-arrow-choke",
+      "name": "보우앤로우 초크",
+      "source_category": "서브미션",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "coach_candidate",
+        "technique_id": 83,
+        "technique_name": "보우 앤 애로우",
+        "coach": {
+          "confidence": "high",
+          "confidence_text": "높음(가설)",
+          "needs_check": "필요 — 기존 도복 백 초크의 동작 확인"
+        }
+      },
+      "action": "review_link_existing",
+      "basis": "관장 후보(id 83, 높음(가설)) — 사용자 결정 전, 자동 확정 금지"
+    },
+    {
+      "slug": "heel-hook",
+      "name": "힐훅",
+      "source_category": "서브미션",
+      "kind": "concept",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "hold",
+      "basis": "대응 없음 · 일반 개념(concept) — 개별 기술로 추가하지 않고 보류"
+    },
+    {
+      "slug": "rear-naked-choke",
+      "name": "리어 네이키드 초크",
+      "source_category": "서브미션",
+      "kind": "technique",
+      "tool_match": "exact",
+      "match": {
+        "type": "exact",
+        "technique_id": 9,
+        "technique_name": "리어네이키드 초크"
+      },
+      "action": "keep_existing",
+      "basis": "exact 대응 — 기존 행(id 9) 그대로 유지"
+    },
+    {
+      "slug": "toe-hold",
+      "name": "토홀드",
+      "source_category": "서브미션",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "loop-choke",
+      "name": "루프 초크",
+      "source_category": "서브미션",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "coach_candidate",
+        "technique_id": 45,
+        "technique_name": "루프 쵸크",
+        "coach": {
+          "confidence": "high",
+          "confidence_text": "높음(가설)",
+          "needs_check": "필요 — 기존 도복 루프 초크 의미 확인"
+        }
+      },
+      "action": "review_link_existing",
+      "basis": "관장 후보(id 45, 높음(가설)) — 사용자 결정 전, 자동 확정 금지"
+    },
+    {
+      "slug": "inside-heel-hook",
+      "name": "인사이드 힐훅",
+      "source_category": "서브미션",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "arm-triangle",
+      "name": "암 트라이앵글",
+      "source_category": "서브미션",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "cross-collar-choke",
+      "name": "크로스 칼라 초크",
+      "source_category": "서브미션",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "coach_candidate",
+        "technique_id": 49,
+        "technique_name": "깃 쵸크",
+        "coach": {
+          "confidence": "hold",
+          "confidence_text": "보류(낮음·포함 관계)",
+          "needs_check": "필요 — 교차 양깃 조르기인지 다른 라펠 초크인지 확인 전 동일 매칭 금지"
+        }
+      },
+      "action": "review_link_existing",
+      "basis": "관장 후보(id 49, 보류(낮음·포함 관계)) — 사용자 결정 전, 자동 확정 금지"
+    },
+    {
+      "slug": "foot-lock",
+      "name": "풋락",
+      "source_category": "서브미션",
+      "kind": "concept",
+      "tool_match": "none",
+      "match": {
+        "type": "coach_candidate",
+        "technique_id": 19,
+        "technique_name": "앵클락",
+        "coach": {
+          "confidence": "hold",
+          "confidence_text": "보류(낮음·포함 관계)",
+          "needs_check": "필요 — 양쪽 포괄 범위 확인 전 동일 매칭 금지"
+        }
+      },
+      "action": "review_link_existing",
+      "basis": "관장 후보(id 19, 보류(낮음·포함 관계)) — 사용자 결정 전, 자동 확정 금지"
+    },
+    {
+      "slug": "wrist-lock",
+      "name": "리스트 락",
+      "source_category": "서브미션",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "ezekiel-choke",
+      "name": "이제키엘 초크",
+      "source_category": "서브미션",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "banana-split",
+      "name": "바나나 스플릿",
+      "source_category": "서브미션",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "baseball-bat-choke",
+      "name": "베이스볼 초크",
+      "source_category": "서브미션",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "calf-slicer",
+      "name": "카프 슬라이서",
+      "source_category": "서브미션",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "americana",
+      "name": "아메리카나",
+      "source_category": "서브미션",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "coach_candidate",
+        "technique_id": 383,
+        "technique_name": "키락",
+        "coach": {
+          "confidence": "high",
+          "confidence_text": "높음(가설)",
+          "needs_check": "필요 — 기존 키락 의미 확인. source key-lock도 이미 같은 id에 exact 연결되어 있어 두 source를 한 기존 ID에 대응시킬지는 사용자 결정"
+        }
+      },
+      "action": "review_link_existing",
+      "basis": "관장 후보(id 383, 높음(가설)) — 사용자 결정 전, 자동 확정 금지"
+    },
+    {
+      "slug": "flying-armbar",
+      "name": "플라잉 암바",
+      "source_category": "서브미션",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "tarikoplata",
+      "name": "타리코플라타",
+      "source_category": "서브미션",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "anaconda-choke",
+      "name": "아나콘다 초크",
+      "source_category": "서브미션",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "baratoplata",
+      "name": "바라토플라타",
+      "source_category": "서브미션",
+      "kind": "technique",
+      "tool_match": "exact",
+      "match": {
+        "type": "exact",
+        "technique_id": 54,
+        "technique_name": "바라토플라타"
+      },
+      "action": "keep_existing",
+      "basis": "exact 대응 — 기존 행(id 54) 그대로 유지"
+    },
+    {
+      "slug": "brabo-choke",
+      "name": "브라보 초크",
+      "source_category": "서브미션",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "clock-choke",
+      "name": "클락 초크",
+      "source_category": "서브미션",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "gogoplata",
+      "name": "고고플라타",
+      "source_category": "서브미션",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "north-south-choke",
+      "name": "노스 사우스 초크",
+      "source_category": "서브미션",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "buggy-choke",
+      "name": "버기 초크",
+      "source_category": "서브미션",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "canto-choke",
+      "name": "칸토 초크",
+      "source_category": "서브미션",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "coach_candidate",
+        "technique_id": 48,
+        "technique_name": "칸토 쵸크",
+        "coach": {
+          "confidence": "high",
+          "confidence_text": "높음(가설)",
+          "needs_check": "필요 — 기존 칸토 초크 동작 확인"
+        }
+      },
+      "action": "review_link_existing",
+      "basis": "관장 후보(id 48, 높음(가설)) — 사용자 결정 전, 자동 확정 금지"
+    },
+    {
+      "slug": "key-lock",
+      "name": "키락",
+      "source_category": "서브미션",
+      "kind": "technique",
+      "tool_match": "exact",
+      "match": {
+        "type": "exact",
+        "technique_id": 383,
+        "technique_name": "키락"
+      },
+      "action": "keep_existing",
+      "basis": "exact 대응 — 기존 행(id 383) 그대로 유지"
+    },
+    {
+      "slug": "twister",
+      "name": "트위스터",
+      "source_category": "서브미션",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "aoki-lock",
+      "name": "아오키 락",
+      "source_category": "서브미션",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "estima-lock",
+      "name": "에스티마 락",
+      "source_category": "서브미션",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "paper-cutter-choke",
+      "name": "페이퍼 커터 초크",
+      "source_category": "서브미션",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "peruvian-necktie",
+      "name": "페루비안 넥타이",
+      "source_category": "서브미션",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "z-lock",
+      "name": "Z 락",
+      "source_category": "서브미션",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "bicep-slicer",
+      "name": "바이셉 슬라이서",
+      "source_category": "서브미션",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "choi-bar",
+      "name": "초이바",
+      "source_category": "서브미션",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "coach_candidate",
+        "technique_id": 35,
+        "technique_name": "초이(choi) 바",
+        "coach": {
+          "confidence": "high",
+          "confidence_text": "높음(가설)",
+          "needs_check": "필요 — 기존 Choi bar 동작 확인"
+        }
+      },
+      "action": "review_link_existing",
+      "basis": "관장 후보(id 35, 높음(가설)) — 사용자 결정 전, 자동 확정 금지"
+    },
+    {
+      "slug": "outside-heel-hook",
+      "name": "아웃사이드 힐훅",
+      "source_category": "서브미션",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "von-flue-choke",
+      "name": "폰 플루 초크",
+      "source_category": "서브미션",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "coyote-armbar",
+      "name": "코요테 암바",
+      "source_category": "서브미션",
+      "kind": "technique",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "review_new",
+      "basis": "대응 없음 · technique — 신규 추가 여부 사용자 검토(자동 생성 아님)"
+    },
+    {
+      "slug": "choke",
+      "name": "초크",
+      "source_category": "서브미션",
+      "kind": "concept",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "hold",
+      "basis": "대응 없음 · 일반 개념(concept) — 개별 기술로 추가하지 않고 보류"
+    },
+    {
+      "slug": "counter",
+      "name": "카운터",
+      "source_category": "서브미션",
+      "kind": "concept",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "hold",
+      "basis": "대응 없음 · 일반 개념(concept) — 개별 기술로 추가하지 않고 보류"
+    },
+    {
+      "slug": "submission",
+      "name": "서브미션",
+      "source_category": "서브미션",
+      "kind": "concept",
+      "tool_match": "none",
+      "match": {
+        "type": "none",
+        "technique_id": null,
+        "technique_name": null
+      },
+      "action": "hold",
+      "basis": "대응 없음 · 일반 개념(concept) — 개별 기술로 추가하지 않고 보류"
+    }
+  ],
+  "plan_sha": "4c6666e729b50abe2b371e5c8d03984f6aa1a724dc31ad6f34e6bf8799e9d354"
+}

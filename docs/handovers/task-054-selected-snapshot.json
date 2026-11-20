@@ -1,0 +1,26 @@
+{
+  "task_id": "task-054",
+  "base_ref": "2e3575de773927471bdda9b9b03e3dd7be0e9842",
+  "state": "selected_current_worktree_not_a_clean_checkout",
+  "recorded_at": "2026-11-08T20:08:55+09:00",
+  "files": {
+    "backend/src/models/Technique.js": "46dea6870bb777274d1e8972a57d817b7d2c429a1e8e50e0e4369ca60f34e22c",
+    "backend/src/routes/techniques.js": "fb142d97ebf5f271de0d1cd532eaea3e720145c8aa42cfe433350dc70b0b6a99",
+    "backend/src/utils/techMatch.js": "123db65cc0291714328d8f6fd58dfa2bf583b6f18c5c986212be1f1625df5112",
+    "backend/src/utils/techAliases.js": "e503b0adbb16e6e966c18c07360f800c448a1a54d8326d8581cc14422a69c522",
+    "backend/src/utils/nfc.js": "4508603972b5a82299d5d5faa7a92168e58a81a545611c66d1d28a88987bb8d5",
+    "backend/src/utils/respond.js": "68755a57d2d611aeabb87b8e40b179002177e056b9bd91901c8c144ad5739099",
+    "web/src/pages/TechPlanPage.jsx": "3f66a41ad2181ff27f966c02e716a83bf494ed5509e1933c40f76d14c5066837",
+    "web/src/api/techniques.js": "d035264ad0733a54b9837957b0f021dfff2fef10bafadaeaecdc2cf20e4c8b6a",
+    "web/src/contexts/CacheContext.jsx": "a5820d644d3406c5c7fdb32dec4725d09fb83ff92494e67f11d970ed632bb7c6",
+    "web/src/components/Modal.jsx": "c607c311fbad52180e019013bdfc89c5257b33192130da2501566acf5b8bc8e5",
+    "web/src/components/Layout.jsx": "2e091a59b975bc85dca8cf1468b51d0d1cf55024ff88279cc16cc99f7cb55d75",
+    "web/src/styles/tokens.css": "ad70437353d579260848e5c0d4440221782e2242f1b84bb2c5cb7504cb4fef48",
+    "web/src/styles/app.css": "b9bd9be53899709144b622b7eccd7334d5caa0886b1b57ab8bdc30d1dd347198",
+    "docs/task-054-technique-tree-implementation.md": "7d68d3415bb07458cf6f8d048bf20daa9a534e8db098344d0143d02c49ab11ce",
+    "agent-vault/10-Flow/improvements/assets/IMP-0001-reference-index.json": "cddcf44ff15ca0833e2067477b65df0d631786ebab5c7643c83365062ceea260",
+    "agent-vault/10-Flow/improvements/assets/IMP-0001-existing-techniques.json": "9ae158a9ced3aaf13f87188f634e703ea9eb93b431bee2b9e078c84ae2932ba4",
+    "agent-vault/10-Flow/improvements/assets/IMP-0001-match-proposals.json": "e03e4d443d0754a54778f14e4d339b9805e80afcf7f3d3714308d6d563575392",
+    "agent-vault/10-Flow/improvements/assets/IMP-0002-reference-relations.json": "958f026e06f7634b4852221804c2ca540cc8db022c4dc0f6420bd808c92e5d8a"
+  }
+}

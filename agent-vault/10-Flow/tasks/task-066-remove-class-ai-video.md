@@ -2,7 +2,7 @@
 task_id: task-066
 title: 수업 상세 AI 영상 생성 영역 제거
 status: done
-stage: deployed_verified
+stage: closed
 waiting: none
 created: 2026-11-11
 updated: 2026-11-12
@@ -16,7 +16,7 @@ execution_context:
   current_tool: codex
   current_procedure: codex_scoped
   current_scope: "사용자 지정 수업 상세 AI 생성 영역만 Codex 직접 제거·검증·선택 commit/push·운영 반영"
-  last_event_id: exec-004
+  last_event_id: exec-006
 demo_gate:
   required: true
   level: "delta"
@@ -73,6 +73,10 @@ Codex 직접 구현·검증·커밋·푸시·운영 반영을 명시 지정했�
 | exec-003 | 2026-11-12 | publish | codex / codex_scoped | 선택commit c1853284600e02b41e9d8be4809b40eecf440a67·origin/main push 성공. 정식webhook1회 관측/운영검증중, DB/APK변경없음. |
 
 | exec-004 | 2026-11-12 | complete | codex / codex_scoped | 기능c185328 정식webhook RELEASE_RESULT ok·운영1.3.0/source일치·공개HTTP/서빙자산/실배포번들15case PASS 확인. 원형/데이터보존, 사용자실기기확인은미실행. 완료기록선택push는동일1.3.0으로관측. |
+
+| exec-005 | 2026-11-12 11:04 | release_verified | codex / codex_scoped | 완료문서5개선택commit/push 8da557c2·동일1.3.0·릴리스20261112-110449-8da557c2 RELEASE_RESULT ok/current/pm2/공개HTTP/기능source·JS동일확인. 추가push/배포없이별도영수증보존. |
+
+| exec-006 | 2026-11-12 | close | codex / codex_scoped | 사용자 “그럼 작업 마무리하고 팀 정리해줘” 수신. 작업done/closed/waiting:none, 조회된하위팀원모두completed·실행중0/전용검증서버·관련lock없음 확인. 추가기능수정/commit/push/배포없음. |
 
 ## 판단 기록 (judge)
 
@@ -161,3 +165,11 @@ production build·Reviewer 이슈0·독립QA 지정변경15/15 및기존Modal8/8
 | - | 작성중 | - | - | judge: delta (JV-ui_change) | 11-11 19:08 |
 | v1 | 검토요청 | docs/demo/task-066-remove-class-ai-video-v1.html | /Users/brownjeon/.codex/visualizations/2026/11/10/01a1c45e-9aee-70f0-87bb-409f67e41846/task-066/task-066-remove-class-ai-video-v1.html | 사용자 검토 요청 | 11-11 19:16 |
 | v1 | 승인 | docs/demo/task-066-remove-class-ai-video-v1.html | /Users/brownjeon/.codex/visualizations/2026/11/10/01a1c45e-9aee-70f0-87bb-409f67e41846/task-066/task-066-remove-class-ai-video-v1.html | "이대로 진행헤주고" | 11-12 10:40 |
+
+## 최종 문서 릴리스 관측(추가 push 없음)
+
+완료이력5문서 commit `8da557c2bdb1b1fa475d64e97e834aee7c42a8b7` push 후 최종 current `20261112-110449-8da557c2`, 정식RELEASE_RESULT `status:ok`(2026-11-12 11:04:59+09:00), migrated=false·PM2online/restart0·1.3.0유지. 기능source/실배포JS는기능릴리스와동일하고공개HTTP200을재확인했다. 순환문서배포를만들지않도록이최종관측은primary작업이력과별도영수증에만보존한다. 영수증 `/Users/brownjeon/.codex/artifacts/bjj-t066/final-deployment.json`, HTTP `final-http.json`, 실제서빙번들15case결과 `production-browser-evidence.json`. 실인증계정/실기기확인범위는변경없음.
+
+## 사용자 마감 지시·팀 정리
+
+2026-11-12 사용자 “그럼 작업 마무리하고 팀 정리해줘”에 따라 done/closed/waiting:none으로마감했다. 이번지시는실기기에서UI정상표시를확인했다는발화로확대하지않는다. collaboration실조회에서모든하위에이전트가completed·실행중팀원0임을확인했다. 작업전용검증서버9166/9167의LISTEN없음·task060~066관련lock없음확인. 원본/산출물·관리작업본·다른작업은보존하고런타임팀설정파일은수동편집하지않았다. 이번마감으로추가코드수정·빌드·commit/push·배포·운영서비스중단은하지않았다. 운영완료근거는기존앱1.3.0/최종8da557c2 릴리스영수증을유지한다.

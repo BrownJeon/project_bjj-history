@@ -2,10 +2,16 @@
 task_id: task-056
 title: 수업 상세·캘린더 관련 영상에서 공용 영상 상세 열기
 status: done
-phase: calendar_deployed_verified
+phase: calendar_user_confirmed
 waiting: ""
 app_version: "1.1.0"
 version_source: "package.json.version"
+user_confirmation:
+  status: confirmed
+  scope: calendar_video_detail_open
+  confirmed_at: "2026-11-09T22:33:28+09:00"
+  reported_version_context: "1.1.0"
+  device_os: unspecified
 created: 2026-11-09
 updated: 2026-11-09
 related_tasks:
@@ -55,7 +61,7 @@ Codex 직접 실제 앱 production build 및 합성 API 브라우저 검증 PASS
 
 2026-11-09 19:01 — 착수 당시 구현·테스트 중. 운영 배포 미실행(아래 최신 결과 참조).
 
-2026-11-09 19:08 — 사용자 지시 범위의 직접 수정·테스트 완료. 운영 배포·커밋/push는 이번 수정에서 실행하지 않았다. 구현은 선택 checkout에서 검증했고 다른 checkout의 기능코드를 덮어쓰지 않았다. 기존 참고영상 수집 보류와 다른 작업 변경은 보존했다.
+2026-11-09 19:08 — 사용자 지시 범위의 직접 수정·테스트 완료. 운영 배포·커밋/push는 이번 수정에서 실행하지 않았다. 현재 구현 checkout은 `/Users/brownjeon/.codex/worktrees/bjj-technique-tree-054/bjj-trainning`이며 원래 NAS checkout의 기능코드는 덮어쓰지 않았다. 기존 참고영상 수집 보류와 다른 작업 변경은 보존했다.
 
 ## 운영 배포 승인·착수
 
@@ -90,3 +96,9 @@ Codex 직접 실제 앱 production build 및 합성 API 브라우저 검증 PASS
 2026-11-09 22:17 — 사용자배포버전 **1.1.0**, 기능commit `0f8c8e995e08ae683f892cd5ad2180f24c2410a8`, 내부릴리스 `20261109-221605-0f8c8e99`. root package/lock1.1.0일치·RELEASE_RESULT ok/sha일치·공식status current/pm2online/health200,외부HTML/asset200·서빙asset와release파일동일·미인증classes401 확인. CalendarPage source가직접브라우저검증판과동일하고기존ClassDetailModal source도보존했다. JS `index-BWICSII6.js` SHA256 `d8b69d2f052df77b0a44b92dcbc81b48b449e2c99439760b321ad5e964ce5c04`.
 
 버전은minor1회증가로고정했고완료문서배포도동일1.1.0릴리스단위다. APK생성/전달·versionCode변경·DB직접변경·마이그레이션없음. 실기기Android/인증후실수업UI는미확인. 합성API만사용한브라우저검증과실운영source/asset확인을구분한다. 보류한수집/절차서·첨부이미지·다른작업변경제외.
+
+캘린더 후속 완료문서의 내부릴리스 `20261109-221832-a8476e10` / commit `a8476e10a3c83aed8d13a0187972960e247065f1`도 앱버전1.1.0을유지한다. RELEASE_RESULT ok·공식current/pm2online·외부health/HTML/asset200·root/lock1.1.0·검증source/기능asset동일 확인. 같은릴리스단위의최종관측만보존하며추가push로중복빌드를만들지않는다.
+
+## 사용자 정상 동작 확인·종료
+
+2026-11-09 22:33 — 사용자 “확인했어. 캘린더에서도 영상 상세화면이 정상적으로 열려.” 수신. 캘린더 수업 카드에서 영상 상세화면이 정상적으로 열린다는 사용자 확인을 기록하고 작업056을 사용자 확인 완료로 종료한다. 마지막 안내한 배포버전1.1.0 맥락의 확인이며 사용자가 별도로 기기/OS나 버전번호를 명시한 것으로 확대하지 않는다. 기존 상세 진입의 모든 경로/기기별 동작까지 확인했다고 간주하지 않는다. 코드·버전·DB 변경이나 추가 빌드/push/배포는 수행하지 않는다. 참고영상 수집 보류 유지.

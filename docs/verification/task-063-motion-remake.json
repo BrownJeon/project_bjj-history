@@ -1,0 +1,833 @@
+{
+  "task_id": "task-063",
+  "updated_at": "2026-11-10T11:13:11.249601+00:00",
+  "status": "review",
+  "stage": "constrained_rig_feasibility_reviewed",
+  "user_requested_result": "Natural tripod sweep motion from uploaded reference image and technique explanation",
+  "source_sha256": "a6e99ea8eab51254a3d5f53127904d91c22733ef3f55a22d90752c4b9770435d",
+  "roles": {
+    "blue": "guard",
+    "white": "standing partner"
+  },
+  "native_rive_review": {
+    "engine": "Actual native Rive CLI 1.9.2 weighted-image mesh",
+    "frames_reviewed": 7,
+    "native_types": {
+      "AnimationState": 1,
+      "AnyState": 1,
+      "Artboard": 1,
+      "EntryState": 1,
+      "ExitState": 1,
+      "Fill": 1,
+      "Image": 8,
+      "KeyFrameDouble": 15906,
+      "KeyedObject": 22,
+      "KeyedProperty": 66,
+      "LayoutComponentStyle": 1,
+      "LinearAnimation": 1,
+      "Mesh": 8,
+      "MeshVertex": 4951,
+      "RootBone": 22,
+      "Skin": 8,
+      "SolidColor": 1,
+      "StateMachine": 1,
+      "StateMachineLayer": 1,
+      "StateTransition": 1,
+      "Tendon": 27,
+      "Weight": 4951
+    },
+    "inspect_problems": [],
+    "source_rml_sha256": "1f1dae4d79e416024428e1522ec41550fa6a4c9b40f0613da6e65bafbfae8134",
+    "visual_result": "fail",
+    "visible_defects": [
+      "Detached texture islands",
+      "Holes and cloth tears at waist and occluded legs during large projected rotations",
+      "Unnatural receiver fall silhouette"
+    ],
+    "natural_motion_achieved": false
+  },
+  "existing_svd_probe": {
+    "result": "failed MPS OOM at first denoise",
+    "elapsed_seconds": 33.306,
+    "completed_steps": 0,
+    "requested_steps": 12,
+    "generated_frames": 0,
+    "new_downloads": false,
+    "model_or_source_workaround": false,
+    "receipt_file": "/Users/brownjeon/.codex/artifacts/bjj-t063/svd-probe-receipt.json",
+    "receipt_sha256": "f5cc99b65c11ef9e1722577978531ce430edf3cf410666d4650c51d6217b6b25"
+  },
+  "proposed_next_step": {
+    "model": "Wan2.2-TI2V-5B, SceneWorks MLX q4 candidate",
+    "model_file_count": 5,
+    "model_file_metadata_sum_bytes": 17142889289,
+    "code_candidate": "Blaizzy/mlx-video",
+    "known_uncertainties": [
+      "tensor layout compatibility before full download",
+      "M4 24GiB peak memory / successful completion",
+      "generation speed and technique/identity quality"
+    ],
+    "separate_python": "Existing /opt/homebrew/bin/python3.12; isolated venv proposed",
+    "approval": "explicitly approved by user: M4에 별도 설치 후 재생성 (권장)",
+    "paid_generation_api": false,
+    "cloud_upload": false
+  },
+  "boundaries": {
+    "original_preserved": true,
+    "app_db_deployment_change": false,
+    "new_model_download": true,
+    "new_runtime_install": true,
+    "paid_generation_api_calls": 0,
+    "photo_upload_to_external_ai": false
+  },
+  "artifacts": {
+    "directory": "/Users/brownjeon/.codex/artifacts/bjj-t063",
+    "mesh_study_zip": {
+      "file": "mesh-study-source.zip",
+      "bytes": 10473084,
+      "sha256": "e57d43684ee665fbf9e0e4bcdfd125449c46bad6fe09a6a3e0ba19c045c8be13"
+    },
+    "finished_natural_video": null,
+    "motion_experiment_video": "/Users/brownjeon/.codex/artifacts/bjj-t063/final-03/tripod-sweep.mp4",
+    "delivery_directory": "/Users/brownjeon/.codex/artifacts/bjj-t063/final-03"
+  },
+  "wan_runtime": {
+    "install": {
+      "status": "installed",
+      "commit": "87db56a51758fefb748a359b90a5283bb8ba4837",
+      "source": "/Users/brownjeon/.local/share/bjj-rive/task-063/wan-local/mlx-video-87db56a51758fefb748a359b90a5283bb8ba4837",
+      "python": "/Users/brownjeon/.local/share/bjj-rive/task-063/wan-local/env/bin/python",
+      "archive_sha256": "174adddb7797125438adbf1996f5c344cfbc6187ac0b49d58615e302302a7a45",
+      "elapsed_seconds": 30.957,
+      "package_count": 85,
+      "pip_check": "No broken requirements found.\n",
+      "service_changes": false,
+      "model_loaded": false,
+      "photos_uploaded": false
+    },
+    "download": {
+      "model_id": "SceneWorks/wan2.2-ti2v-5b-mlx",
+      "revision": "bb1b055249614cf9d7cf4373fbdbc184b77dee88",
+      "total_bytes": 17142889289,
+      "files": [
+        {
+          "file": "config.json",
+          "bytes": 1283,
+          "sha256": "73e825390c40da49210a29d342b510ce16fb17a5869f480fab1b50546e63d2d8",
+          "cached": false
+        },
+        {
+          "file": "model.safetensors",
+          "bytes": 2945426162,
+          "sha256": "d6ab5c7d0b23a1c1416b7f0998e3510904ff44dbd4cf538bf3de31a592730e05",
+          "cached": false
+        },
+        {
+          "file": "t5_encoder.safetensors",
+          "bytes": 11361845587,
+          "sha256": "e98427ef76a03343fd0e29519c4b26d29556bbb4a701f7080ec81fb5613a2ce4",
+          "cached": false
+        },
+        {
+          "file": "tokenizer.json",
+          "bytes": 16837417,
+          "sha256": "6e197b4d3dbd71da14b4eb255f4fa91c9c1f2068b20a2de2472967ca3d22602b",
+          "cached": false
+        },
+        {
+          "file": "vae.safetensors",
+          "bytes": 2818778840,
+          "sha256": "2ad7de4a9ab3f7879f039636a4afc8dcc78e60ec31fd27d31e28a10c49705c8b",
+          "cached": false
+        }
+      ],
+      "elapsed_seconds": 341.187,
+      "paid_api_calls": 0,
+      "user_image_upload": false
+    },
+    "compatibility": {
+      "code_repo": "Blaizzy/mlx-video",
+      "code_commit": "87db56a51758fefb748a359b90a5283bb8ba4837",
+      "model_repo": "SceneWorks/wan2.2-ti2v-5b-mlx",
+      "model_commit": "bb1b055249614cf9d7cf4373fbdbc184b77dee88",
+      "model_subfolder": "q4",
+      "sources": [
+        {
+          "path": "pyproject.toml",
+          "url": "https://raw.githubusercontent.com/Blaizzy/mlx-video/87db56a51758fefb748a359b90a5283bb8ba4837/pyproject.toml",
+          "bytes": 1593,
+          "sha256": "7e4b41bdc9da9ec50725a18e9fe148cde7b2245578fb2226775e86903840a03a"
+        },
+        {
+          "path": "mlx_video/models/wan_2/config.py",
+          "url": "https://raw.githubusercontent.com/Blaizzy/mlx-video/87db56a51758fefb748a359b90a5283bb8ba4837/mlx_video/models/wan_2/config.py",
+          "bytes": 3914,
+          "sha256": "4da2f5b9cd8c5a8cdbb08945d00900522ea97a51321ce803dc0744a77f862b30"
+        },
+        {
+          "path": "mlx_video/models/wan_2/utils.py",
+          "url": "https://raw.githubusercontent.com/Blaizzy/mlx-video/87db56a51758fefb748a359b90a5283bb8ba4837/mlx_video/models/wan_2/utils.py",
+          "bytes": 5900,
+          "sha256": "b183b356726c3edb0d22b8eb494c945d5d81c2ccebdf4b9c1f8897d35fb43026"
+        },
+        {
+          "path": "mlx_video/models/wan_2/wan_2.py",
+          "url": "https://raw.githubusercontent.com/Blaizzy/mlx-video/87db56a51758fefb748a359b90a5283bb8ba4837/mlx_video/models/wan_2/wan_2.py",
+          "bytes": 14494,
+          "sha256": "3767db5fc687a5c6874c7a1ed6a6b45993564df40956b010b92fba3726acf68c"
+        },
+        {
+          "path": "mlx_video/models/wan_2/transformer.py",
+          "url": "https://raw.githubusercontent.com/Blaizzy/mlx-video/87db56a51758fefb748a359b90a5283bb8ba4837/mlx_video/models/wan_2/transformer.py",
+          "bytes": 3556,
+          "sha256": "41f6fa412bfe9f4f576d6967f453a1a4d157a8a17758f5e30bb0508a92d7b666"
+        },
+        {
+          "path": "mlx_video/models/wan_2/attention.py",
+          "url": "https://raw.githubusercontent.com/Blaizzy/mlx-video/87db56a51758fefb748a359b90a5283bb8ba4837/mlx_video/models/wan_2/attention.py",
+          "bytes": 7187,
+          "sha256": "4914c09e969510689eaa57bcddbb05ce8fcc5a881177ce9a2a5fc85200069d74"
+        },
+        {
+          "path": "mlx_video/models/wan_2/text_encoder.py",
+          "url": "https://raw.githubusercontent.com/Blaizzy/mlx-video/87db56a51758fefb748a359b90a5283bb8ba4837/mlx_video/models/wan_2/text_encoder.py",
+          "bytes": 7862,
+          "sha256": "ffb42d6f31aa0a84cb8de85129716f59d57aa69e2b60bc79ea2d312a84749dcd"
+        },
+        {
+          "path": "mlx_video/models/wan_2/vae22.py",
+          "url": "https://raw.githubusercontent.com/Blaizzy/mlx-video/87db56a51758fefb748a359b90a5283bb8ba4837/mlx_video/models/wan_2/vae22.py",
+          "bytes": 39979,
+          "sha256": "94c636e07d16a8977c5d4946d4fa0320f609bd380e4fff9aeb81651f2c978fa1"
+        },
+        {
+          "path": "mlx_video/models/wan_2/generate.py",
+          "url": "https://raw.githubusercontent.com/Blaizzy/mlx-video/87db56a51758fefb748a359b90a5283bb8ba4837/mlx_video/models/wan_2/generate.py",
+          "bytes": 36284,
+          "sha256": "41e47adf52920c9ac0c00e0e8687ce96ae88b1b6e9b99641237db79941947c5f"
+        },
+        {
+          "path": "mlx_video/models/wan_2/convert.py",
+          "url": "https://raw.githubusercontent.com/Blaizzy/mlx-video/87db56a51758fefb748a359b90a5283bb8ba4837/mlx_video/models/wan_2/convert.py",
+          "bytes": 27863,
+          "sha256": "426795b511ed1683174b112425208bbd99e062d1b05cc26a6fb1a29fabf2b1c1"
+        },
+        {
+          "path": "mlx_video/models/wan_2/README.md",
+          "url": "https://raw.githubusercontent.com/Blaizzy/mlx-video/87db56a51758fefb748a359b90a5283bb8ba4837/mlx_video/models/wan_2/README.md",
+          "bytes": 13407,
+          "sha256": "faa3e9acedb09d30dfe98679ad43e513b1bf9dbbbd8134a10e7305f2818127b9"
+        }
+      ],
+      "files": {
+        "model.safetensors": {
+          "tensor_count": 1425,
+          "header_bytes": 145770,
+          "total_file_bytes": 2945426162,
+          "responses": [
+            {
+              "range": "bytes 0-7/2945426162",
+              "status": 206,
+              "received_bytes": 8,
+              "final_host": "us.aws.cdn.hf.co"
+            },
+            {
+              "range": "bytes 8-145777/2945426162",
+              "status": 206,
+              "received_bytes": 145770,
+              "final_host": "us.aws.cdn.hf.co"
+            }
+          ],
+          "header_sha256": "071794c2748b095ea2b7d3414c27205cd998db63fae6f271775622aab646a6cd",
+          "tensor_payload_bytes": 2945280384,
+          "dtypes": {
+            "BF16": 1125,
+            "U32": 300
+          }
+        },
+        "t5_encoder.safetensors": {
+          "tensor_count": 242,
+          "header_bytes": 24907,
+          "total_file_bytes": 11361845587,
+          "responses": [
+            {
+              "range": "bytes 0-7/11361845587",
+              "status": 206,
+              "received_bytes": 8,
+              "final_host": "us.aws.cdn.hf.co"
+            },
+            {
+              "range": "bytes 8-24914/11361845587",
+              "status": 206,
+              "received_bytes": 24907,
+              "final_host": "us.aws.cdn.hf.co"
+            }
+          ],
+          "header_sha256": "d8a424963f5571deb1b5039400190292bb8fe072d37f6000b2f1ffcdff2520c5",
+          "tensor_payload_bytes": 11361820672,
+          "dtypes": {
+            "BF16": 242
+          }
+        },
+        "vae.safetensors": {
+          "tensor_count": 196,
+          "header_bytes": 24160,
+          "total_file_bytes": 2818778840,
+          "responses": [
+            {
+              "range": "bytes 0-7/2818778840",
+              "status": 206,
+              "received_bytes": 8,
+              "final_host": "us.aws.cdn.hf.co"
+            },
+            {
+              "range": "bytes 8-24167/2818778840",
+              "status": 206,
+              "received_bytes": 24160,
+              "final_host": "us.aws.cdn.hf.co"
+            }
+          ],
+          "header_sha256": "7b982aaa12ad20d2e8729876e577c5458e3369bc94fec63bb61b1cefeed6de38",
+          "tensor_payload_bytes": 2818754672,
+          "dtypes": {
+            "F32": 196
+          }
+        }
+      },
+      "comparisons": {
+        "model.safetensors": {
+          "pass": true,
+          "expected_tensors": 1425,
+          "actual_tensors": 1425,
+          "missing": [],
+          "unexpected": [],
+          "shape_or_dtype_mismatches": []
+        },
+        "t5_encoder.safetensors": {
+          "pass": true,
+          "expected_tensors": 242,
+          "actual_tensors": 242,
+          "missing": [],
+          "unexpected": [],
+          "shape_or_dtype_mismatches": []
+        },
+        "vae.safetensors": {
+          "pass": true,
+          "expected_tensors": 196,
+          "actual_tensors": 196,
+          "missing": [],
+          "unexpected": [],
+          "shape_or_dtype_mismatches": []
+        }
+      },
+      "q4_total_file_bytes": 17142889289,
+      "safetensors_header_bytes_received": 194861,
+      "weight_payload_bytes_read": 0,
+      "full_weight_download": false,
+      "conclusion": "headers_structurally_compatible",
+      "key_conversion_required": [],
+      "runtime_load_test": "not_performed",
+      "quantized_payload_packing_values": "not_sampled_or_verified",
+      "memory": {
+        "t5_bf16_tensor_bytes": 11361820672,
+        "default_loader_t5_fp32_tensor_bytes": 22723641344,
+        "physical_24GiB_bytes": 25769803776,
+        "default_fp32_t5_remaining_before_OS_or_activations": 3046162432,
+        "default_t5_float32_upcast": "utils.py:85",
+        "lifecycle": [
+          "T5 load/encode/delete+clear at generate.py:327-353",
+          "image VAE encoder load/delete+clear at generate.py:429-438",
+          "DiT load at generate.py:464; delete+clear at 701-718",
+          "VAE decoder load at generate.py:724"
+        ],
+        "bf16_wrapper": "Candidate: preserve incoming BF16 in isolated T5 loader; not implemented/tested here",
+        "bf16_attention_safety_evidence": "text_encoder.py:116-133 explicitly computes QK, bias, mask and softmax in FP32, casts back to q.dtype",
+        "bf16_quality_and_nan_status": "not_runtime_verified",
+        "device_memory_limit_override": "not_proposed_or_performed"
+      },
+      "tokenizer": "generate.py:336 downloads/caches google/umt5-xxl tokenizer; bundled tokenizer.json is not read by stock CLI",
+      "installation_or_inference": "not_performed",
+      "photo_upload": false
+    },
+    "text_preparation": {
+      "status": "text_ready",
+      "phase": "text",
+      "plan": {
+        "label": "candidate-01",
+        "width": 384,
+        "height": 384,
+        "frames": 81,
+        "steps": 12,
+        "guidance": 5.0,
+        "seed": 6311,
+        "prompt_file": "prompt.txt",
+        "negative_file": "negative.txt",
+        "no_compile": false
+      },
+      "runtime_commit": "87db56a51758fefb748a359b90a5283bb8ba4837",
+      "model_revision": "bb1b055249614cf9d7cf4373fbdbc184b77dee88",
+      "paid_api_calls": 0,
+      "image_upload": false,
+      "offline": true,
+      "t5_weight_dtype": "native_bfloat16",
+      "system_or_upstream_source_changed": false,
+      "stages": [
+        {
+          "stage": "local_runtime_ready",
+          "elapsed_seconds": 1.703,
+          "memory_limit_bytes": 17162698752,
+          "prompt_tokens": 199
+        },
+        {
+          "stage": "loading_native_bf16_t5",
+          "elapsed_seconds": 1.917
+        },
+        {
+          "stage": "t5_loaded",
+          "elapsed_seconds": 2.685,
+          "active_bytes": 11361821704,
+          "peak_bytes": 11361821704
+        },
+        {
+          "stage": "text_context_cached",
+          "elapsed_seconds": 4.586,
+          "shape": [
+            199,
+            4096
+          ],
+          "std": 0.087877556681633,
+          "file": "d8dbd0bcf00b6bd392422f9bb598af9718f771e1c8401a0adfca3f1d9051ef9c.safetensors"
+        },
+        {
+          "stage": "text_context_cached",
+          "elapsed_seconds": 5.508,
+          "shape": [
+            51,
+            4096
+          ],
+          "std": 0.0769696831703186,
+          "file": "1d2e26a168f0a5aa8f3179e6caadc47589a41d327bec5b42ff9bc754016c3c5e.safetensors"
+        }
+      ],
+      "memory_limit_bytes": 17162698752,
+      "device_info": {
+        "device_name": "Apple M4 Pro",
+        "max_recommended_working_set_size": 19069665280,
+        "memory_size": 25769803776,
+        "architecture": "applegpu_g16s",
+        "max_buffer_length": 14302248960,
+        "resource_limit": 499000
+      },
+      "prompt_token_count": 199,
+      "contexts": [
+        {
+          "shape": [
+            199,
+            4096
+          ],
+          "std": 0.087877556681633,
+          "file": "d8dbd0bcf00b6bd392422f9bb598af9718f771e1c8401a0adfca3f1d9051ef9c.safetensors"
+        },
+        {
+          "shape": [
+            51,
+            4096
+          ],
+          "std": 0.0769696831703186,
+          "file": "1d2e26a168f0a5aa8f3179e6caadc47589a41d327bec5b42ff9bc754016c3c5e.safetensors"
+        }
+      ],
+      "cache_files": [
+        "d8dbd0bcf00b6bd392422f9bb598af9718f771e1c8401a0adfca3f1d9051ef9c.safetensors",
+        "1d2e26a168f0a5aa8f3179e6caadc47589a41d327bec5b42ff9bc754016c3c5e.safetensors"
+      ],
+      "mlx_peak_bytes": 11921255538,
+      "elapsed_seconds": 5.535
+    },
+    "generation_result": "three local native candidates generated; candidate-03 motion experiment selected, quality partial"
+  },
+  "wan_candidates": [
+    {
+      "id": "candidate-01",
+      "receipt": {
+        "status": "generated",
+        "phase": "generate",
+        "plan": {
+          "label": "candidate-01",
+          "width": 384,
+          "height": 384,
+          "frames": 81,
+          "steps": 12,
+          "guidance": 5.0,
+          "seed": 6311,
+          "prompt_file": "prompt.txt",
+          "negative_file": "negative.txt",
+          "no_compile": false
+        },
+        "runtime_commit": "87db56a51758fefb748a359b90a5283bb8ba4837",
+        "model_revision": "bb1b055249614cf9d7cf4373fbdbc184b77dee88",
+        "paid_api_calls": 0,
+        "image_upload": false,
+        "offline": true,
+        "t5_weight_dtype": "native_bfloat16",
+        "system_or_upstream_source_changed": false,
+        "stages": [
+          {
+            "stage": "local_runtime_ready",
+            "elapsed_seconds": 1.168,
+            "memory_limit_bytes": 17162698752,
+            "prompt_tokens": 199
+          },
+          {
+            "stage": "generating_video",
+            "elapsed_seconds": 1.184,
+            "frames": 81,
+            "width": 384,
+            "height": 384,
+            "steps": 12
+          },
+          {
+            "stage": "encoding_native_frames",
+            "elapsed_seconds": 234.766,
+            "shape": [
+              81,
+              384,
+              384,
+              3
+            ],
+            "fps": 24
+          }
+        ],
+        "memory_limit_bytes": 17162698752,
+        "device_info": {
+          "device_name": "Apple M4 Pro",
+          "max_recommended_working_set_size": 19069665280,
+          "memory_size": 25769803776,
+          "architecture": "applegpu_g16s",
+          "max_buffer_length": 14302248960,
+          "resource_limit": 499000
+        },
+        "prompt_token_count": 199,
+        "output_shape": [
+          81,
+          384,
+          384,
+          3
+        ],
+        "frame_change_mean": 10.150613657633464,
+        "pixel_std": 60.49817242752056,
+        "movie": {
+          "bytes": 701687,
+          "sha256": "d64f478375b69cd920416c3fc2968eb1d57e74e404c44d7c28bdf9f3b68b9902"
+        },
+        "decode_errors": 0,
+        "mlx_peak_bytes": 11915158372,
+        "elapsed_seconds": 235.115
+      },
+      "visual_review": {
+        "result": "fail",
+        "identity": "extra white-gi head/body appears in middle frames",
+        "contact": "grip/contact not preserved consistently",
+        "action": "receiver does not settle into a clear controlled backwards seated fall",
+        "evidence": "/Users/brownjeon/.codex/artifacts/bjj-t063/wan/candidate-01/contact-sheet.png"
+      }
+    },
+    {
+      "id": "candidate-02",
+      "plan": {
+        "label": "candidate-02",
+        "width": 448,
+        "height": 448,
+        "frames": 97,
+        "steps": 40,
+        "guidance": 5.0,
+        "seed": 6315,
+        "prompt_file": "prompt-02.txt",
+        "negative_file": "negative-02.txt",
+        "no_compile": false
+      },
+      "result": "generated; visible identity continuity improved, but framing/support/landing still insufficient",
+      "receipt": {
+        "status": "generated",
+        "phase": "generate",
+        "plan": {
+          "label": "candidate-02",
+          "width": 448,
+          "height": 448,
+          "frames": 97,
+          "steps": 40,
+          "guidance": 5.0,
+          "seed": 6315,
+          "prompt_file": "prompt-02.txt",
+          "negative_file": "negative-02.txt",
+          "no_compile": false
+        },
+        "runtime_commit": "87db56a51758fefb748a359b90a5283bb8ba4837",
+        "model_revision": "bb1b055249614cf9d7cf4373fbdbc184b77dee88",
+        "paid_api_calls": 0,
+        "image_upload": false,
+        "offline": true,
+        "t5_weight_dtype": "native_bfloat16",
+        "system_or_upstream_source_changed": false,
+        "stages": [
+          {
+            "stage": "local_runtime_ready",
+            "elapsed_seconds": 1.064,
+            "memory_limit_bytes": 17162698752,
+            "prompt_tokens": 179
+          },
+          {
+            "stage": "generating_video",
+            "elapsed_seconds": 1.085,
+            "frames": 97,
+            "width": 448,
+            "height": 448,
+            "steps": 40
+          },
+          {
+            "stage": "encoding_native_frames",
+            "elapsed_seconds": 963.702,
+            "shape": [
+              97,
+              448,
+              448,
+              3
+            ],
+            "fps": 24
+          }
+        ],
+        "memory_limit_bytes": 17162698752,
+        "device_info": {
+          "device_name": "Apple M4 Pro",
+          "max_recommended_working_set_size": 19069665280,
+          "memory_size": 25769803776,
+          "architecture": "applegpu_g16s",
+          "max_buffer_length": 14302248960,
+          "resource_limit": 499000
+        },
+        "prompt_token_count": 179,
+        "output_shape": [
+          97,
+          448,
+          448,
+          3
+        ],
+        "frame_change_mean": 7.836621844579303,
+        "pixel_std": 62.32345748958888,
+        "movie": {
+          "bytes": 1020551,
+          "sha256": "a0c473f9cf9bc010c9bfff2bfcbfd578c4e3792d8b84e187d6c20400ca44d401"
+        },
+        "decode_errors": 0,
+        "mlx_peak_bytes": 12047680580,
+        "elapsed_seconds": 964.091
+      },
+      "visual_review": {
+        "large_character_duplication": "not seen in the sampled contact sheet",
+        "limits": [
+          "guard floats without clear mat support",
+          "receiver lowers to kneeling-like rather than a clear buttocks-first seated fall",
+          "near/far contacts and limbs become occluded",
+          "partial out-of-frame body late in clip"
+        ],
+        "technical_demo": "not validated",
+        "user_quality": "pending"
+      }
+    },
+    {
+      "id": "candidate-03",
+      "plan": {
+        "label": "candidate-03",
+        "width": 512,
+        "height": 384,
+        "frames": 97,
+        "steps": 40,
+        "guidance": 5.0,
+        "seed": 6315,
+        "prompt_file": "prompt-03.txt",
+        "negative_file": "negative-03.txt",
+        "image_file": "tripod-input-wide.png",
+        "no_compile": false
+      },
+      "result": "generated and packaged; motion experiment ready with explicit quality limitations",
+      "receipt": {
+        "status": "generated",
+        "phase": "generate",
+        "plan": {
+          "label": "candidate-03",
+          "width": 512,
+          "height": 384,
+          "frames": 97,
+          "steps": 40,
+          "guidance": 5.0,
+          "seed": 6315,
+          "prompt_file": "prompt-03.txt",
+          "negative_file": "negative-03.txt",
+          "image_file": "tripod-input-wide.png",
+          "no_compile": false
+        },
+        "runtime_commit": "87db56a51758fefb748a359b90a5283bb8ba4837",
+        "model_revision": "bb1b055249614cf9d7cf4373fbdbc184b77dee88",
+        "paid_api_calls": 0,
+        "image_upload": false,
+        "offline": true,
+        "t5_weight_dtype": "native_bfloat16",
+        "system_or_upstream_source_changed": false,
+        "stages": [
+          {
+            "stage": "local_runtime_ready",
+            "elapsed_seconds": 1.165,
+            "memory_limit_bytes": 17162698752,
+            "prompt_tokens": 229
+          },
+          {
+            "stage": "generating_video",
+            "elapsed_seconds": 1.183,
+            "frames": 97,
+            "width": 512,
+            "height": 384,
+            "steps": 40
+          },
+          {
+            "stage": "encoding_native_frames",
+            "elapsed_seconds": 975.382,
+            "shape": [
+              97,
+              384,
+              512,
+              3
+            ],
+            "fps": 24
+          }
+        ],
+        "memory_limit_bytes": 17162698752,
+        "device_info": {
+          "device_name": "Apple M4 Pro",
+          "max_recommended_working_set_size": 19069665280,
+          "memory_size": 25769803776,
+          "architecture": "applegpu_g16s",
+          "max_buffer_length": 14302248960,
+          "resource_limit": 499000
+        },
+        "prompt_token_count": 229,
+        "input_image_sha256": "cbaa4f292320aafdc9346346a3356e6f8872e64bee0f06748318f26658ab0d50",
+        "output_shape": [
+          97,
+          384,
+          512,
+          3
+        ],
+        "frame_change_mean": 6.004495320496736,
+        "pixel_std": 53.14571038135165,
+        "movie": {
+          "bytes": 719758,
+          "sha256": "f6f940457204d47093ca772f377e70833a683302be3bdc30cfa6aa04b65d86fc"
+        },
+        "decode_errors": 0,
+        "mlx_peak_bytes": 12040602692,
+        "elapsed_seconds": 975.753
+      },
+      "visual_review": {
+        "sample_count": 24,
+        "final_native_frame_checked": 96,
+        "reviewers": [
+          "Main/Codex",
+          "motion coach agent"
+        ],
+        "identity": "no large third-character/head duplication seen in the sampled frames",
+        "direction": "receiver lowers backward/right into sitting while guard follows up",
+        "limits": [
+          "exact hand/ankle grip and far-leg hook are not identifiable throughout",
+          "ambiguous skin-colored shape behind blue pelvis and overlapping extremities",
+          "all 97 frames not anatomically audited",
+          "final top control is not demonstrated"
+        ],
+        "instructional_accuracy_pass": false,
+        "user_quality": "pending"
+      }
+    }
+  ],
+  "memory_limit_scope": "MLX current-process Metal allocator, not OS/RSS or all host memory",
+  "user_quality_approval": "rejected",
+  "selected_candidate": "candidate-03",
+  "delivery": {
+    "schema_version": 1,
+    "status": "packaged",
+    "candidate": "candidate-03",
+    "quality_reviewed": true,
+    "user_quality": "pending",
+    "user_quality_pending": true,
+    "paid_api_calls": 0,
+    "external_upload": false,
+    "image_upload": false,
+    "native_video_modified": false,
+    "source_generate_receipt": "runs/candidate-03/generate-receipt.json",
+    "source_generate_receipt_sha256": "f1740f0b8e47848d24cc8263ad8a02dcdb14ca314e3f8f65ac20a322ddd33874",
+    "source_video": "runs/candidate-03/tripod-native.mp4",
+    "movie": {
+      "file": "tripod-sweep.mp4",
+      "bytes": 719758,
+      "sha256": "f6f940457204d47093ca772f377e70833a683302be3bdc30cfa6aa04b65d86fc",
+      "codec": "h264",
+      "fps": 24,
+      "fps_fraction": "24/1",
+      "frames": 97,
+      "duration_seconds": 4.041666666666667,
+      "width": 512,
+      "height": 384,
+      "reported_durations": {
+        "stream_timestamps": 4.041666666666667,
+        "stream_seconds": 4.041667,
+        "container_seconds": 4.041667
+      }
+    },
+    "preview_gif": {
+      "file": "preview.gif",
+      "bytes": 3761275,
+      "sha256": "c3d7481022cbadd350a9b8bc5e7dd4da5f39682817e4f36de70b4eb36d9bbd58",
+      "width": 512,
+      "height": 384,
+      "encoded_frames": 49,
+      "filter_fps": 12,
+      "loop": 0
+    },
+    "poster": {
+      "file": "poster.png",
+      "bytes": 122091,
+      "sha256": "f8c0b75523d4700125e6312339048ef19fd3507b1205a4ac10051c0156630aae",
+      "native_frame_index": 48,
+      "native_time_seconds": 2.0
+    },
+    "contact_sheet": {
+      "file": "contact-sheet.png",
+      "bytes": 683542,
+      "sha256": "9c9b4db8919d45ee7fb0b1ba09e8d0026f0131af7847a13d93a7f4739427d494"
+    },
+    "preview_processing": "ffmpeg fps/scale/palette only; native MP4 copied unchanged"
+  },
+  "verification": {
+    "downloaded_file_hashes_match": 4,
+    "local_full_decode_errors": 0,
+    "native_video_unchanged": true,
+    "native_frames": 97,
+    "native_fps": 24,
+    "native_duration_seconds": 4.041666666666667,
+    "codex_panel_open": "queued; playback not observed"
+  },
+  "remaining_quality_work": "Precise gripping/hooking, anatomy and instructional suitability remain unverified; user can review the generated motion sample.",
+  "user_feedback_2026_11_11": {
+    "reported": [
+      "human structure deforms",
+      "graphics break"
+    ],
+    "request": "Ask feasibility of a pre-authored bone/joint character driven by motion descriptions",
+    "review_result": "Feasible design: persistent rig + joint limits + IK/contact constraints + verified motion plans; not implemented yet",
+    "new_generation_performed": false,
+    "official_sources": [
+      "https://rive.app/docs/editor/manipulating-shapes/bones",
+      "https://rive.app/docs/editor/constraints/ik-constraint",
+      "https://rive.app/docs/editor/constraints/rotation-constraint",
+      "https://rive.app/docs/editor/data-binding/overview"
+    ]
+  }
+}

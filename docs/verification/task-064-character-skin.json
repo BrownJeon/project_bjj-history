@@ -1,0 +1,300 @@
+{
+  "task_id": "task-064",
+  "variant": "skin-v2",
+  "verified_at": "2026-11-11T02:51:37.464531+00:00",
+  "status": "sample_prepared",
+  "user_quality_approval": "pending",
+  "user_request": "생성한 골격에 디자인한 캐릭터를 입혀서 표현해서 보여줘.",
+  "representation": "approved side-view raster textures on unchanged hierarchical constrained rig; continuous sleeve/leg image meshes",
+  "source_character_sha256": "b53b8055020ae83c23e8926fcf42dc9dddb48ad05d13893bfc5933f34635ce8a",
+  "original_character_file": "reference/characters/set-01/blue-gi-brown-belt.png",
+  "existing_rig_and_motion_changed": false,
+  "native_engine": "Actual Rive CLI 1.9.2",
+  "location": "M4 Pro",
+  "native_bones_per_artboard": 16,
+  "native_rotation_constraints_per_artboard": 16,
+  "image_meshes_per_artboard": 10,
+  "mesh_vertices_per_artboard": 4399,
+  "mesh_triangles_per_artboard": 7980,
+  "native_inspect_problems": [],
+  "capture_frames": {
+    "Clean": 360,
+    "Rig": 360
+  },
+  "capture_elapsed_seconds": 24.785,
+  "source_rml_sha256": "4e69c0832ab97cc11ca9092c1c5f65d87a5319af7f57f0420e2a8d411ebdaf22",
+  "skin_assets_manifest_sha256": "62d8a763a697209c62b780db0d080ae05506906f8ef94a4e11b34d85d4a98224",
+  "skin_build_receipt_sha256": "b4148f950a412e1c5cdb509af57eeda6bcf32b0ea45749cd327ea9bff1183835",
+  "executed_base_generator_matches_local": true,
+  "independent_verification": {
+    "status": "pass",
+    "scope": "Independent XML/manifest/PNG metadata and numerical skin checks; no native playback, visual approval, medical safety, or all-BJJ-motion claim",
+    "artboards": {
+      "Clean": {
+        "bone_count": 16,
+        "constraint_count": 16,
+        "keyframe_count": 6498,
+        "LayoutComponentStyle_unchanged": true,
+        "LinearAnimation_unchanged": true,
+        "StateMachine_unchanged": true,
+        "animation_fingerprints": [
+          "9f952321f073a0ecbd8b50829ac4d5910e7ffdc133a8207bf93ccc127391ad70"
+        ]
+      },
+      "Rig": {
+        "bone_count": 16,
+        "constraint_count": 16,
+        "keyframe_count": 6498,
+        "LayoutComponentStyle_unchanged": true,
+        "LinearAnimation_unchanged": true,
+        "StateMachine_unchanged": true,
+        "animation_fingerprints": [
+          "0157c68615d3c053249bfcd1094d3d8f835d0be8b14dad933b68205773ba9756"
+        ]
+      }
+    },
+    "mesh_metrics": {
+      "mesh_count": 20,
+      "vertex_count": 8798,
+      "triangle_count": 15960,
+      "tendon_count": 28,
+      "max_influences": 2,
+      "weight_sum_error_max": 0.0,
+      "quantization_weight_error_max": 0.0019525870548880997,
+      "tendon_matrix_error_max": 0.0,
+      "frame0_bind_identity_error_max": 2.3437142008433856e-13,
+      "sampled_pose_bbox_error_max": 1.1368683772161603e-13,
+      "uv_out_of_range_count": 0,
+      "degenerate_xy_triangles": 0,
+      "degenerate_uv_triangles": 0
+    },
+    "image_assets": [
+      {
+        "name": "leg-far",
+        "file": "assets/leg-far.png",
+        "bytes": 52359,
+        "sha256": "39e22bfbea96e826c972117165ce2af532c90539f75931d9a6ce7284b19457df",
+        "size": [
+          129,
+          361
+        ]
+      },
+      {
+        "name": "foot-far",
+        "file": "assets/foot-far.png",
+        "bytes": 14466,
+        "sha256": "d739bcceca354d6b81524d35fc77e0b5e68b6502d7a56785c6e6cf8999f17d8a",
+        "size": [
+          145,
+          65
+        ]
+      },
+      {
+        "name": "sleeve-far",
+        "file": "assets/sleeve-far.png",
+        "bytes": 41979,
+        "sha256": "c642a1955649488a47aaf387e982410cd84692b7f718e60954824d0ba1f8e151",
+        "size": [
+          115,
+          245
+        ]
+      },
+      {
+        "name": "hand-far",
+        "file": "assets/hand-far.png",
+        "bytes": 10542,
+        "sha256": "a63dae4dd27d5319d8db89d62edac75c1b64bdaaa4928d8955589ea9a40a3ea5",
+        "size": [
+          52,
+          104
+        ]
+      },
+      {
+        "name": "leg-near",
+        "file": "assets/leg-near.png",
+        "bytes": 52359,
+        "sha256": "39e22bfbea96e826c972117165ce2af532c90539f75931d9a6ce7284b19457df",
+        "size": [
+          129,
+          361
+        ]
+      },
+      {
+        "name": "foot-near",
+        "file": "assets/foot-near.png",
+        "bytes": 14466,
+        "sha256": "d739bcceca354d6b81524d35fc77e0b5e68b6502d7a56785c6e6cf8999f17d8a",
+        "size": [
+          145,
+          65
+        ]
+      },
+      {
+        "name": "sleeve-near",
+        "file": "assets/sleeve-near.png",
+        "bytes": 41979,
+        "sha256": "c642a1955649488a47aaf387e982410cd84692b7f718e60954824d0ba1f8e151",
+        "size": [
+          115,
+          245
+        ]
+      },
+      {
+        "name": "hand-near",
+        "file": "assets/hand-near.png",
+        "bytes": 10542,
+        "sha256": "a63dae4dd27d5319d8db89d62edac75c1b64bdaaa4928d8955589ea9a40a3ea5",
+        "size": [
+          52,
+          104
+        ]
+      },
+      {
+        "name": "jacket-belt",
+        "file": "assets/jacket-belt.png",
+        "bytes": 60391,
+        "sha256": "b56b25ed55c99638fc2535ad075feeff86f1edb5aecee8ce9b96e2623f83a57f",
+        "size": [
+          157,
+          332
+        ]
+      },
+      {
+        "name": "head-face-hair",
+        "file": "assets/head-face-hair.png",
+        "bytes": 41880,
+        "sha256": "8ca7719bdf08096c5545bbc92e21b31532f987022aa0b6dddc88aee761ed3019",
+        "size": [
+          141,
+          165
+        ]
+      }
+    ],
+    "new_tags": [
+      "Image",
+      "ImageAsset",
+      "Mesh",
+      "MeshVertex",
+      "Skin",
+      "Tendon",
+      "Weight"
+    ],
+    "error_count": 0,
+    "errors": [],
+    "input_snapshots": {
+      "base_scene": {
+        "path": "/Volumes/homes/brownjeon/project/bjj-trainning/reference/rig/task-064/project/scene.rml",
+        "bytes": 1279355,
+        "sha256": "f510f92ba11b23d2bceaa036dffa02b1378db55489d887183f8361bf7d1b0bd4"
+      },
+      "scene": {
+        "path": "/Volumes/homes/brownjeon/project/bjj-trainning/reference/rig/task-064/skin-v2/project/scene.rml",
+        "bytes": 3115329,
+        "sha256": "4e69c0832ab97cc11ca9092c1c5f65d87a5319af7f57f0420e2a8d411ebdaf22"
+      },
+      "profile": {
+        "path": "/Volumes/homes/brownjeon/project/bjj-trainning/reference/rig/task-064/rig_profile.json",
+        "bytes": 3385,
+        "sha256": "ce9e93d2c1a2d637a59d3d20b8dafe57f42671ed103ccfae9ab99a24e6dd50f8"
+      },
+      "timeline": {
+        "path": "/Volumes/homes/brownjeon/project/bjj-trainning/reference/rig/task-064/project/timeline.json",
+        "bytes": 2746317,
+        "sha256": "72f1570e147a16954fbb8201b133f59589f21021cf6d64c2f167a0be408faa96"
+      },
+      "manifest": {
+        "path": "/Volumes/homes/brownjeon/project/bjj-trainning/reference/rig/task-064/skin-v2/project/skin-assets.json",
+        "bytes": 1496984,
+        "sha256": "62d8a763a697209c62b780db0d080ae05506906f8ef94a4e11b34d85d4a98224"
+      },
+      "build_receipt": {
+        "path": "/Volumes/homes/brownjeon/project/bjj-trainning/reference/rig/task-064/skin-v2/project/skin-build-receipt.json",
+        "bytes": 18527,
+        "sha256": "b4148f950a412e1c5cdb509af57eeda6bcf32b0ea45749cd327ea9bff1183835"
+      }
+    },
+    "original_input_hashes_unchanged": {
+      "profile": true,
+      "timeline": true,
+      "base_scene": true
+    },
+    "native_and_visual_verification": "outside this checker; build receipt is source_generated, parent performs native review",
+    "verifier_sha256": "8962c3c2fca0b663884a9f9ebe8fd579af15894f0f3475a6a60f546bc60287f4"
+  },
+  "visual_review": {
+    "review02_initial_static_poses": 4,
+    "defect_found": "Source hanging hand remained in trouser texture and looked like a third hand.",
+    "correction": "Reconstructed hand-occluded trouser from adjacent same-sheet cotton pixels; masked clothing and belt separately.",
+    "review03_corrected_static_poses": 3,
+    "corrected_defect_status": "resolved by main and independent single_x_motion review",
+    "large_new_holes_or_limb_separation": "not observed in reviewed still poses",
+    "final_contact_sheet_viewed": true,
+    "whole_video_realtime_independent_playback": "not observed",
+    "user_appearance_and_naturalness_approval": "pending"
+  },
+  "video": {
+    "codec": "h264",
+    "dimensions": [
+      1600,
+      1160
+    ],
+    "fps": 24,
+    "frames": 360,
+    "seconds": 15.0,
+    "encode_seconds": 15.208,
+    "decode_errors": 0
+  },
+  "files": {
+    "designed-character-motions.mp4": {
+      "bytes": 910611,
+      "sha256": "22e0cbd1f017e6fd0f0a091bf068393f3219c70f0a0b930f34f99d8e13330a71"
+    },
+    "preview.gif": {
+      "bytes": 1830598,
+      "sha256": "09c45963cb7df751258ecf4820b168762772a901eac2afd6ca3b7eca9344f797"
+    },
+    "character-rig.png": {
+      "bytes": 124044,
+      "sha256": "e6a80c2474a479062dc322873fcd1404854f15f64c8b8132c3a633e71c84abf7"
+    },
+    "designed-character.png": {
+      "bytes": 102150,
+      "sha256": "7c202e44836fb04fdeaab481fdf6625f631c272dc86448dc9dbdabb61c14aac7"
+    },
+    "contact-sheet.png": {
+      "bytes": 194163,
+      "sha256": "0097ff53852d966b44d25b12d020d42720159b88ea5ef848f08c46f5ac137675"
+    },
+    "designed-character-rml.zip": {
+      "bytes": 2343076,
+      "sha256": "fd92661801b343eea76d61bd5285f7edb57289fd5761ea8cc51b3855a56e1775"
+    }
+  },
+  "source_package_file_count": 29,
+  "local_delivery_hashes_match": true,
+  "zip_integrity_passed": true,
+  "core_source_and_readme_bytes_match_local": true,
+  "artifact_directory": "/Users/brownjeon/.codex/artifacts/bjj-t064/skin-v2/final-02",
+  "superseded": [
+    "skin-v2/review-01",
+    "skin-v2/review-02",
+    "skin-v2/final-01"
+  ],
+  "execution_boundary": {
+    "new_model_or_tool_install": false,
+    "paid_api_calls": 0,
+    "cloud_upload": false,
+    "rive_login": false,
+    "cloud_publish": false,
+    "app_or_db_changes": false,
+    "version_or_deployment_change": false,
+    "original_assets_or_v1_replaced": false
+  },
+  "limits": [
+    "Fixed side-view 2D sample with actual approved design pixels; not a complete 3D or multiview character.",
+    "Hidden torso/belt/trouser surfaces are reconstructed from approved same-sheet pixels; far limbs reuse the visible-side texture.",
+    "Same conservative basic-motion profile; not medical normal-range certification or all-BJJ instructional accuracy.",
+    "Two-character grip, collision, whole-body dynamics and natural-language motion generation remain outside this result.",
+    "Native RML project delivered; .riv binary export/Editor import not tested."
+  ]
+}

@@ -1,0 +1,673 @@
+{
+  "kind": "task-054-prepared-decisions",
+  "status": "applied",
+  "scope_approval_quote": "28개 재사용·110개 추가 준비·21개 후속 확정 (권고)",
+  "category_status": "coach_proposed_pending_user_adoption_at_operating_review",
+  "production_applied": true,
+  "plan_sha": "4c6666e729b50abe2b371e5c8d03984f6aa1a724dc31ad6f34e6bf8799e9d354",
+  "user_id": 3,
+  "decisions": [
+    {
+      "slug": "standing",
+      "decision": "create",
+      "name": "스탠딩",
+      "category": "포지션"
+    },
+    {
+      "slug": "single-leg-takedown",
+      "decision": "create",
+      "name": "싱글 레그 테이크다운",
+      "category": "테이크다운"
+    },
+    {
+      "slug": "collar-drag",
+      "decision": "create",
+      "name": "칼라 드래그",
+      "category": "테이크다운"
+    },
+    {
+      "slug": "ankle-pick",
+      "decision": "create",
+      "name": "앵클 픽",
+      "category": "테이크다운"
+    },
+    {
+      "slug": "inside-trip",
+      "decision": "create",
+      "name": "인사이드 트립",
+      "category": "테이크다운"
+    },
+    {
+      "slug": "outside-trip",
+      "decision": "create",
+      "name": "아웃사이드 트립",
+      "category": "테이크다운"
+    },
+    {
+      "slug": "break-fall",
+      "decision": "create",
+      "name": "낙법",
+      "category": "기타"
+    },
+    {
+      "slug": "closed-guard",
+      "decision": "create",
+      "name": "클로즈 가드",
+      "category": "포지션"
+    },
+    {
+      "slug": "knee-shield",
+      "decision": "create",
+      "name": "니실드",
+      "category": "포지션"
+    },
+    {
+      "slug": "butterfly-guard",
+      "decision": "create",
+      "name": "버터플라이 가드",
+      "category": "포지션"
+    },
+    {
+      "slug": "reverse-de-riva-guard",
+      "decision": "create",
+      "name": "리버스 델라히바 가드",
+      "category": "포지션"
+    },
+    {
+      "slug": "balloon-sweep",
+      "decision": "create",
+      "name": "벌룬 스윕",
+      "category": "스윕"
+    },
+    {
+      "slug": "coyote-guard",
+      "decision": "create",
+      "name": "코요테 가드",
+      "category": "포지션"
+    },
+    {
+      "slug": "kimura-sweep",
+      "decision": "create",
+      "name": "기무라 스윕",
+      "category": "스윕"
+    },
+    {
+      "slug": "flower-sweep",
+      "decision": "create",
+      "name": "플라워 스윕",
+      "category": "스윕"
+    },
+    {
+      "slug": "rubber-guard",
+      "decision": "create",
+      "name": "러버 가드",
+      "category": "포지션"
+    },
+    {
+      "slug": "foot-sweep",
+      "decision": "create",
+      "name": "풋 스윕",
+      "category": "테이크다운"
+    },
+    {
+      "slug": "z-guard",
+      "decision": "create",
+      "name": "Z 가드",
+      "category": "포지션"
+    },
+    {
+      "slug": "collar-and-sleeve-guard",
+      "decision": "create",
+      "name": "칼라 앤 슬리브 가드",
+      "category": "포지션"
+    },
+    {
+      "slug": "deep-de-riva-guard",
+      "decision": "create",
+      "name": "딥 델라히바 가드",
+      "category": "포지션"
+    },
+    {
+      "slug": "lapel-guard",
+      "decision": "create",
+      "name": "라펠 가드",
+      "category": "포지션"
+    },
+    {
+      "slug": "octopus-guard",
+      "decision": "create",
+      "name": "옥토퍼스 가드",
+      "category": "포지션"
+    },
+    {
+      "slug": "wrestle-up",
+      "decision": "create",
+      "name": "레슬업",
+      "category": "스윕"
+    },
+    {
+      "slug": "inverted-guard",
+      "decision": "create",
+      "name": "인버티드 가드",
+      "category": "포지션"
+    },
+    {
+      "slug": "john-wayne-sweep",
+      "decision": "create",
+      "name": "존 웨인 스윕",
+      "category": "스윕"
+    },
+    {
+      "slug": "lumberjack-sweep",
+      "decision": "create",
+      "name": "럼버잭스윕",
+      "category": "스윕"
+    },
+    {
+      "slug": "guard-recovery",
+      "decision": "create",
+      "name": "가드 리커버리",
+      "category": "탈출"
+    },
+    {
+      "slug": "hip-bump-sweep",
+      "decision": "create",
+      "name": "힙 범프 스윕",
+      "category": "스윕"
+    },
+    {
+      "slug": "pendulum-sweep",
+      "decision": "create",
+      "name": "펜듈럼 스윕",
+      "category": "스윕"
+    },
+    {
+      "slug": "technical-stand-up",
+      "decision": "create",
+      "name": "테크니컬 스탠드업",
+      "category": "기타"
+    },
+    {
+      "slug": "waiter-sweep",
+      "decision": "create",
+      "name": "웨이터 스윕",
+      "category": "스윕"
+    },
+    {
+      "slug": "shin-to-shin-guard",
+      "decision": "create",
+      "name": "신투신 가드",
+      "category": "포지션"
+    },
+    {
+      "slug": "squid-guard",
+      "decision": "create",
+      "name": "스퀴드 가드",
+      "category": "포지션"
+    },
+    {
+      "slug": "guard",
+      "decision": "create",
+      "name": "가드",
+      "category": "기타"
+    },
+    {
+      "slug": "leg-drag",
+      "decision": "create",
+      "name": "레그 드래그",
+      "category": "패스"
+    },
+    {
+      "slug": "pressure-pass",
+      "decision": "create",
+      "name": "압박 패스",
+      "category": "패스"
+    },
+    {
+      "slug": "stack-pass",
+      "decision": "create",
+      "name": "스택 패스",
+      "category": "패스"
+    },
+    {
+      "slug": "leg-weave",
+      "decision": "create",
+      "name": "레그 위브",
+      "category": "패스"
+    },
+    {
+      "slug": "smash-pass",
+      "decision": "create",
+      "name": "스매시 패스",
+      "category": "패스"
+    },
+    {
+      "slug": "double-under",
+      "decision": "create",
+      "name": "더블 언더",
+      "category": "패스"
+    },
+    {
+      "slug": "gator-roll",
+      "decision": "create",
+      "name": "게이터 롤",
+      "category": "컨트롤"
+    },
+    {
+      "slug": "back-step",
+      "decision": "create",
+      "name": "백 스텝",
+      "category": "패스"
+    },
+    {
+      "slug": "lapel-pass",
+      "decision": "create",
+      "name": "라펠 패스",
+      "category": "패스"
+    },
+    {
+      "slug": "shin-trap",
+      "decision": "create",
+      "name": "신 트랩",
+      "category": "컨트롤"
+    },
+    {
+      "slug": "surfer-pass",
+      "decision": "create",
+      "name": "서퍼 패스",
+      "category": "패스"
+    },
+    {
+      "slug": "duck-under",
+      "decision": "create",
+      "name": "덕 언더",
+      "category": "컨트롤"
+    },
+    {
+      "slug": "wiper",
+      "decision": "create",
+      "name": "와이퍼",
+      "category": "패스"
+    },
+    {
+      "slug": "turtle",
+      "decision": "create",
+      "name": "터틀",
+      "category": "포지션"
+    },
+    {
+      "slug": "knee-on-belly",
+      "decision": "create",
+      "name": "니온밸리",
+      "category": "컨트롤"
+    },
+    {
+      "slug": "headquarters-position",
+      "decision": "create",
+      "name": "헤드쿼터 포지션",
+      "category": "포지션"
+    },
+    {
+      "slug": "arm-drag",
+      "decision": "create",
+      "name": "암 드래그",
+      "category": "컨트롤"
+    },
+    {
+      "slug": "under-hook",
+      "decision": "create",
+      "name": "언더훅",
+      "category": "컨트롤"
+    },
+    {
+      "slug": "front-headlock",
+      "decision": "create",
+      "name": "프론트 헤드락",
+      "category": "컨트롤"
+    },
+    {
+      "slug": "fifty-fifty-position",
+      "decision": "create",
+      "name": "50 대 50 포지션",
+      "category": "포지션"
+    },
+    {
+      "slug": "ashi-garami",
+      "decision": "create",
+      "name": "아시 가라미",
+      "category": "포지션"
+    },
+    {
+      "slug": "north-south-position",
+      "decision": "create",
+      "name": "남북 포지션",
+      "category": "컨트롤"
+    },
+    {
+      "slug": "saddle-position",
+      "decision": "create",
+      "name": "새들 포지션",
+      "category": "포지션"
+    },
+    {
+      "slug": "s-mount",
+      "decision": "create",
+      "name": "S 마운트",
+      "category": "컨트롤"
+    },
+    {
+      "slug": "truck",
+      "decision": "create",
+      "name": "트럭",
+      "category": "컨트롤"
+    },
+    {
+      "slug": "crucifix",
+      "decision": "create",
+      "name": "크루시픽스",
+      "category": "컨트롤"
+    },
+    {
+      "slug": "body-lock",
+      "decision": "create",
+      "name": "바디락",
+      "category": "컨트롤"
+    },
+    {
+      "slug": "cross-collar-control",
+      "decision": "create",
+      "name": "크로스 칼라 컨트롤",
+      "category": "컨트롤"
+    },
+    {
+      "slug": "outside-ashi-garami",
+      "decision": "create",
+      "name": "아웃사이드 아시 가라미",
+      "category": "포지션"
+    },
+    {
+      "slug": "two-on-one",
+      "decision": "create",
+      "name": "투 온 원",
+      "category": "컨트롤"
+    },
+    {
+      "slug": "snap-down",
+      "decision": "create",
+      "name": "스냅 다운",
+      "category": "컨트롤"
+    },
+    {
+      "slug": "straight-collar-control",
+      "decision": "create",
+      "name": "스트레이트 칼라 컨트롤",
+      "category": "컨트롤"
+    },
+    {
+      "slug": "crab-ride",
+      "decision": "create",
+      "name": "크랩 라이드",
+      "category": "컨트롤"
+    },
+    {
+      "slug": "sprawl",
+      "decision": "create",
+      "name": "스프롤",
+      "category": "탈출"
+    },
+    {
+      "slug": "high-mount",
+      "decision": "create",
+      "name": "하이 마운트",
+      "category": "컨트롤"
+    },
+    {
+      "slug": "honey-hole",
+      "decision": "create",
+      "name": "허니 홀",
+      "category": "포지션"
+    },
+    {
+      "slug": "backside-fifty-fifty",
+      "decision": "create",
+      "name": "백사이드 50/50",
+      "category": "포지션"
+    },
+    {
+      "slug": "inside-ashi-garami",
+      "decision": "create",
+      "name": "인사이드 아시 가라미",
+      "category": "포지션"
+    },
+    {
+      "slug": "lockdown",
+      "decision": "create",
+      "name": "락다운",
+      "category": "포지션"
+    },
+    {
+      "slug": "seat-belt-grip",
+      "decision": "create",
+      "name": "싯벨트 그립",
+      "category": "컨트롤"
+    },
+    {
+      "slug": "three-quarter-mount",
+      "decision": "create",
+      "name": "3/4 마운트",
+      "category": "포지션"
+    },
+    {
+      "slug": "foot-work",
+      "decision": "create",
+      "name": "풋 워크",
+      "category": "기타"
+    },
+    {
+      "slug": "entry",
+      "decision": "create",
+      "name": "엔트리",
+      "category": "기타"
+    },
+    {
+      "slug": "darce-choke",
+      "decision": "create",
+      "name": "다스 초크",
+      "category": "서브미션"
+    },
+    {
+      "slug": "knee-bar",
+      "decision": "create",
+      "name": "니바",
+      "category": "서브미션"
+    },
+    {
+      "slug": "guillotine-choke",
+      "decision": "create",
+      "name": "길로틴 초크",
+      "category": "서브미션"
+    },
+    {
+      "slug": "heel-hook",
+      "decision": "create",
+      "name": "힐훅",
+      "category": "서브미션"
+    },
+    {
+      "slug": "toe-hold",
+      "decision": "create",
+      "name": "토홀드",
+      "category": "서브미션"
+    },
+    {
+      "slug": "inside-heel-hook",
+      "decision": "create",
+      "name": "인사이드 힐훅",
+      "category": "서브미션"
+    },
+    {
+      "slug": "arm-triangle",
+      "decision": "create",
+      "name": "암 트라이앵글",
+      "category": "서브미션"
+    },
+    {
+      "slug": "wrist-lock",
+      "decision": "create",
+      "name": "리스트 락",
+      "category": "서브미션"
+    },
+    {
+      "slug": "ezekiel-choke",
+      "decision": "create",
+      "name": "이제키엘 초크",
+      "category": "서브미션"
+    },
+    {
+      "slug": "banana-split",
+      "decision": "create",
+      "name": "바나나 스플릿",
+      "category": "서브미션"
+    },
+    {
+      "slug": "baseball-bat-choke",
+      "decision": "create",
+      "name": "베이스볼 초크",
+      "category": "서브미션"
+    },
+    {
+      "slug": "calf-slicer",
+      "decision": "create",
+      "name": "카프 슬라이서",
+      "category": "서브미션"
+    },
+    {
+      "slug": "flying-armbar",
+      "decision": "create",
+      "name": "플라잉 암바",
+      "category": "서브미션"
+    },
+    {
+      "slug": "tarikoplata",
+      "decision": "create",
+      "name": "타리코플라타",
+      "category": "서브미션"
+    },
+    {
+      "slug": "anaconda-choke",
+      "decision": "create",
+      "name": "아나콘다 초크",
+      "category": "서브미션"
+    },
+    {
+      "slug": "brabo-choke",
+      "decision": "create",
+      "name": "브라보 초크",
+      "category": "서브미션"
+    },
+    {
+      "slug": "clock-choke",
+      "decision": "create",
+      "name": "클락 초크",
+      "category": "서브미션"
+    },
+    {
+      "slug": "gogoplata",
+      "decision": "create",
+      "name": "고고플라타",
+      "category": "서브미션"
+    },
+    {
+      "slug": "north-south-choke",
+      "decision": "create",
+      "name": "노스 사우스 초크",
+      "category": "서브미션"
+    },
+    {
+      "slug": "buggy-choke",
+      "decision": "create",
+      "name": "버기 초크",
+      "category": "서브미션"
+    },
+    {
+      "slug": "twister",
+      "decision": "create",
+      "name": "트위스터",
+      "category": "서브미션"
+    },
+    {
+      "slug": "aoki-lock",
+      "decision": "create",
+      "name": "아오키 락",
+      "category": "서브미션"
+    },
+    {
+      "slug": "estima-lock",
+      "decision": "create",
+      "name": "에스티마 락",
+      "category": "서브미션"
+    },
+    {
+      "slug": "paper-cutter-choke",
+      "decision": "create",
+      "name": "페이퍼 커터 초크",
+      "category": "서브미션"
+    },
+    {
+      "slug": "peruvian-necktie",
+      "decision": "create",
+      "name": "페루비안 넥타이",
+      "category": "서브미션"
+    },
+    {
+      "slug": "z-lock",
+      "decision": "create",
+      "name": "Z 락",
+      "category": "서브미션"
+    },
+    {
+      "slug": "bicep-slicer",
+      "decision": "create",
+      "name": "바이셉 슬라이서",
+      "category": "서브미션"
+    },
+    {
+      "slug": "outside-heel-hook",
+      "decision": "create",
+      "name": "아웃사이드 힐훅",
+      "category": "서브미션"
+    },
+    {
+      "slug": "von-flue-choke",
+      "decision": "create",
+      "name": "폰 플루 초크",
+      "category": "서브미션"
+    },
+    {
+      "slug": "coyote-armbar",
+      "decision": "create",
+      "name": "코요테 암바",
+      "category": "서브미션"
+    },
+    {
+      "slug": "choke",
+      "decision": "create",
+      "name": "초크",
+      "category": "기타"
+    },
+    {
+      "slug": "counter",
+      "decision": "create",
+      "name": "카운터",
+      "category": "기타"
+    },
+    {
+      "slug": "submission",
+      "decision": "create",
+      "name": "서브미션",
+      "category": "기타"
+    }
+  ],
+  "operating_approval_quote": "Codex로 DB 반영·커밋/push·웹 배포까지 진행",
+  "applied_run_id": "2026-11-08T133538137Z-b5ffa2bc"
+}

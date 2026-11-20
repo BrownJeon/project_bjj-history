@@ -1,0 +1,309 @@
+{
+  "read_only": true,
+  "source": "current_release_database",
+  "scope_user": 3,
+  "techniques": [
+    {
+      "id": 2,
+      "name": "트라이포드",
+      "category": "스윕"
+    },
+    {
+      "id": 3,
+      "name": "델라리바",
+      "category": "포지션"
+    },
+    {
+      "id": 4,
+      "name": "니슬라이드",
+      "category": "패스"
+    },
+    {
+      "id": 5,
+      "name": "토레안도",
+      "category": "패스"
+    },
+    {
+      "id": 6,
+      "name": "라쏘",
+      "category": "포지션"
+    },
+    {
+      "id": 7,
+      "name": "스파이더",
+      "category": "포지션"
+    },
+    {
+      "id": 9,
+      "name": "리어네이키드 초크",
+      "category": "서브미션"
+    },
+    {
+      "id": 18,
+      "name": "엑스가드",
+      "category": "포지션"
+    },
+    {
+      "id": 19,
+      "name": "앵클락",
+      "category": "서브미션"
+    },
+    {
+      "id": 20,
+      "name": "리버스 엑스가드",
+      "category": "포지션"
+    },
+    {
+      "id": 24,
+      "name": "엑스가드 스윕",
+      "category": "스윕"
+    },
+    {
+      "id": 25,
+      "name": "백테이크",
+      "category": "컨트롤"
+    },
+    {
+      "id": 26,
+      "name": "시저스 스윕",
+      "category": "스윕"
+    },
+    {
+      "id": 27,
+      "name": "트라이앵글 쵸크",
+      "category": "서브미션"
+    },
+    {
+      "id": 28,
+      "name": "싱글엑스",
+      "category": "포지션"
+    },
+    {
+      "id": 30,
+      "name": "더블렉",
+      "category": "테이크다운"
+    },
+    {
+      "id": 32,
+      "name": "스윕",
+      "category": "기타"
+    },
+    {
+      "id": 33,
+      "name": "테이크다운",
+      "category": "기타"
+    },
+    {
+      "id": 34,
+      "name": "k가드",
+      "category": "포지션"
+    },
+    {
+      "id": 35,
+      "name": "초이(choi) 바",
+      "category": "서브미션"
+    },
+    {
+      "id": 36,
+      "name": "백포지션",
+      "category": "컨트롤"
+    },
+    {
+      "id": 37,
+      "name": "가드패스",
+      "category": "기타"
+    },
+    {
+      "id": 38,
+      "name": "딥 하프가드",
+      "category": "포지션"
+    },
+    {
+      "id": 39,
+      "name": "오픈가드",
+      "category": "포지션"
+    },
+    {
+      "id": 40,
+      "name": "하프가드",
+      "category": "포지션"
+    },
+    {
+      "id": 41,
+      "name": "컴뱃가드",
+      "category": "포지션"
+    },
+    {
+      "id": 42,
+      "name": "암바",
+      "category": "서브미션"
+    },
+    {
+      "id": 43,
+      "name": "마운트",
+      "category": "컨트롤"
+    },
+    {
+      "id": 44,
+      "name": "웨이터 가드",
+      "category": "포지션"
+    },
+    {
+      "id": 45,
+      "name": "루프 쵸크",
+      "category": "서브미션"
+    },
+    {
+      "id": 46,
+      "name": "싯팅 가드",
+      "category": "포지션"
+    },
+    {
+      "id": 47,
+      "name": "탈출",
+      "category": "기타"
+    },
+    {
+      "id": 48,
+      "name": "칸토 쵸크",
+      "category": "서브미션"
+    },
+    {
+      "id": 49,
+      "name": "깃 쵸크",
+      "category": "서브미션"
+    },
+    {
+      "id": 51,
+      "name": "기무라",
+      "category": "서브미션"
+    },
+    {
+      "id": 52,
+      "name": "스카프홀드",
+      "category": "컨트롤"
+    },
+    {
+      "id": 53,
+      "name": "사이드",
+      "category": "컨트롤"
+    },
+    {
+      "id": 54,
+      "name": "바라토플라타",
+      "category": "서브미션"
+    },
+    {
+      "id": 55,
+      "name": "싱글언더 패스",
+      "category": "패스"
+    },
+    {
+      "id": 56,
+      "name": "키마스터",
+      "category": ""
+    },
+    {
+      "id": 57,
+      "name": "베림보로",
+      "category": "컨트롤"
+    },
+    {
+      "id": 58,
+      "name": "매트릭스",
+      "category": ""
+    },
+    {
+      "id": 62,
+      "name": "버터플라이 스윕",
+      "category": "스윕"
+    },
+    {
+      "id": 63,
+      "name": "오모플라타",
+      "category": "서브미션"
+    },
+    {
+      "id": 64,
+      "name": "사지오로",
+      "category": ""
+    },
+    {
+      "id": 83,
+      "name": "보우 앤 애로우",
+      "category": "서브미션"
+    },
+    {
+      "id": 84,
+      "name": "엑스패스",
+      "category": "패스"
+    },
+    {
+      "id": 85,
+      "name": "크레이지독 패스",
+      "category": "패스"
+    },
+    {
+      "id": 86,
+      "name": "니컷",
+      "category": "패스"
+    },
+    {
+      "id": 87,
+      "name": "밸리다운",
+      "category": ""
+    },
+    {
+      "id": 88,
+      "name": "100퍼스윕",
+      "category": "스윕"
+    },
+    {
+      "id": 89,
+      "name": "윌리엄 가드",
+      "category": "포지션"
+    },
+    {
+      "id": 103,
+      "name": "웜가드",
+      "category": "포지션"
+    },
+    {
+      "id": 150,
+      "name": "니어네이키트 쵸크",
+      "category": "서브미션"
+    },
+    {
+      "id": 155,
+      "name": "롱스탭",
+      "category": "패스"
+    },
+    {
+      "id": 379,
+      "name": "휴고락",
+      "category": "서브미션"
+    },
+    {
+      "id": 380,
+      "name": "퀵암바",
+      "category": "서브미션"
+    },
+    {
+      "id": 381,
+      "name": "피터슨 롤",
+      "category": "포지션"
+    },
+    {
+      "id": 382,
+      "name": "키스 오브 드래곤",
+      "category": "포지션"
+    },
+    {
+      "id": 383,
+      "name": "키락",
+      "category": "서브미션"
+    }
+  ],
+  "observed_on": "2026-11-08",
+  "purpose": "Read-only ID/name/category snapshot for a reviewable matching proposal; no notes, clips, personal records, or credentials included; not an import or backup for apply."
+}

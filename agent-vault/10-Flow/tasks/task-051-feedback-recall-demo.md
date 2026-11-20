@@ -386,3 +386,7 @@ demo_gate:
 - fixture 작성 중 `backend/src/services/clipUsage.js` 1–145행의 사전 미허용 읽기가 있었으며 변경·실행·외부 전송은 없었다. 담당자가 사실/영향을 기록했고 이후 지원 범위를 확인했다.
 - 검증 보고: `docs/task-051-feedback-validation.md`. 화면·범위 매니페스트·서비스 수명 증거는 채팅 artifact 폴더에 보관했다. `task-051-preview-services.json`은 루프백 Vite PID 53302, SSH 터널 PID 33582, home_ubuntu 분리 실행 fixture PID 3662359 및 task 소유 MariaDB 컨테이너를 기록한다. 분리 재시작 후 피드백 4의 요약·활성 문답·이력·영상·결과 보존을 확인했다.
 - 로컬 미리보기 `http://127.0.0.1:63674/recall`은 테스트 데이터용이다. 운영 DB 마이그레이션·push·재기동·배포는 하지 않았다. 운영 반영은 별도 승인/배포 절차 대상이며 구현 완료와 구분한다. 원래 병행 중이던 역할·설정 파일 변경은 보존했다.
+
+## 운영 반영
+
+- 2026-11-05 15:07 KST 사용자 운영 승인에 따라 [[task-052-feedback-library-and-results]]와 함께 배포했다. 운영 스키마 051·052 적용과 검증 완료, `RELEASE_RESULT status=ok`, 릴리스 `20261105-150544-00d7a384`. 운영 헬스 200, 배포된 웹 자산과 로그인 렌더링 확인. 운영 인증 후 흐름·실제 운영 관장 CLI·Android 기기 동작은 미확인이다.

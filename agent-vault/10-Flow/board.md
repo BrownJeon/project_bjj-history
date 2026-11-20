@@ -5,7 +5,10 @@ tags:
 # 칸반 보드
 
 ## Backlog
-- 🔴 **영상분석 기존 8건 영상 파일 백필(영상만 받아 저장, 재분석 없이)** — task-048 배포 후 사용자 승인으로 진행(사용자 결정 2026-10-07). 운영 DB(`long_videos.video_path`)·NAS 를 쓰므로 백필 스크립트는 judge R2 영역(백업·dry-run·`--restore`). **재분석으로 대신하지 말 것**: 아래 항목처럼 재분석은 다운로드 전에 기존 챕터를 교체한다. 대상은 운영 user 3 의 long_videos 8건(id=74 '바라토플라타 세팅 강의' 포함, 합계 1.1시간). [[task-048-study-video-local-save]] (2026-10-07)
+> **2026-11-11 사용자 결정:** AI 영상 생성 도입·개선은 폐기/종료됐다. 아래 수업·체인 영상 생성 포트/매핑 관련 기존 진단은 과거 기록이며 이번 도입 후속 작업으로 진행하지 않는다. 기존 앱 기능 삭제·서비스 중지는 미실행, 영상 분석·참고영상·정지 기술 이미지와는 별개다. [[task-065-constrained-tripod-two-characters]]
+- ⏸ **참고영상 추가 기능·백데이터 수집 — 사용자 보류**: 절차서만 작성 완료. 다른 작업 후 사용자 실행 여부 결정. 기존 기술트리 개선 완료는 유지. [[task-054-improve-technique-tree]] · [[IMP-0003-champion-data-review]] · [절차서](../../docs/handovers/task-054-reference-video-procedure.md) (2026-11-09)
+- ~~**영상분석 기존 8건 영상 파일 백필(영상만 받아 저장, 재분석 없이)**~~ → **해소: [[task-050-study-thumb-local-and-backfill]]** (2026-10-09 운영 적용, 영상 7건 + 썸네일 8건, 실패 0, 백업 `~/.local/share/bjj-backups/task-050-20261009-234016-user3.json`). 앞으로도 **재분석으로 대신하지 말 것** — 재분석은 다운로드 전에 기존 챕터를 교체한다(아래 항목).
+- **task-050 후속·수용 위험** — ① 백필 스크립트: 백필과 웹 분석이 같은 영상에 **동시에** 쓸 때 동등 파일 덮어쓰기(Codex 2차 #2·#3, Reviewer 수용 — id 74 보호·DB 정합은 실행으로 확인), 잠금 회수 중 크래시 시 `.recover` 폴더가 남으면 다음 apply 거부(안내 메시지대로 rmdir) ② 확장자가 바뀐 썸네일의 옛 `thumb.<ext>` 는 영상 삭제 때까지 남음(M1 설계) ③ **yt-dlp 의 Python 3.10 deprecation 경고가 오류 문구 앞에 붙어 사용자에게 보이는 "메타데이터 조회 실패" 류 메시지가 진짜 원인을 가림** — 백필 스크립트는 자기 출력에서 우회했고 파이프라인은 그대로(기존, ytdlp.js 의 spawn 오류 문구 정제 후보) ④ 클립 생성(`routes/longVideos.js:361`)의 썸네일 폴백이 이제 서버 경로일 수 있음 — 긴 영상 삭제 시 그 클립 썸네일도 같이 깨짐(기존 `frames[0]` 경로와 동일). LOW [[task-050-study-thumb-local-and-backfill]] (2026-10-09)
 - **영상분석 재분석이 S3 다운로드 전에 챕터를 전량 교체한다(기존 동작, Reviewer M-2)** — S2.5 `saveChapters` 가 기존 챕터를 분석 결과 없는 `pending` 행으로 바꾼 뒤 다운로드한다. 메타 조회는 되는데 다운로드만 막히면(yt-dlp 고장·봇 검사) "목차만 제공"으로 끝나 기존 S7~S9 분석 결과가 사라진다. 후속: 저장본(`video_path`)이 있으면 S3 를 로컬 파일로 대체(= 유튜브 삭제 후 재분석도 가능), S1 실패를 DB 값으로 이어 가는 분기. MEDIUM [[task-048-study-video-local-save]] (2026-10-08)
 - **영상분석 분석 중 DELETE 가 잡을 멈추지 않는다(기존 동작, Reviewer L-6)** — 챕터 행(FK 없음)·프레임이 고아로 남는다. task-048 가드는 새 영상 저장소만 보호한다. LOW [[task-048-study-video-local-save]] (2026-10-08)
 - **task-048 수용한 위험(Reviewer L-2·3·4·7·9)** — ① avc1 우선 지정이 avc1 최대 480p·VP9 720p 영상에서 480p 를 고를 수 있다(분석 프레임은 640px 라 영향 작음, 재생 화질만) ② `/uploads` 는 인증 없는 정적 서빙·URL 이 순차 정수 — 강의 원본 전체가 이 방식으로 노출(기존 clip-videos 와 같은 종류) ③ 임시 파일 정리는 워커 1개 전제(blue/green 겹침 구간 예외) ④ `<video>` onError 한 번이면 재진입 전까지 iframe 고정 ⑤ 롤백하면 구버전 DELETE 가 `long-videos` 폴더를 안 지워 고아 발생, S3.5 에 전체 타임아웃 없음(NAS 정지 시 단일 워커 정체 — S7 도 동일). LOW [[task-048-study-video-local-save]] (2026-10-08)
@@ -65,17 +68,46 @@ tags:
 
 ## Doing
 
-- [[task-055-character-concept-sheet]] — DB1/2/6 등록·기술검증 완료 유지. 사용자 추가 승인으로 T-55 선택커밋/push/운영배포 준비(`commit_ready`), origin/main 기반 격리 반영·기존99변경 보존. T55 전용 DDL/DML재실행없음 (2026-11-09).
+
+
+
+
+
+
 
 
 ## Review
 
-## Done
-- [[task-066-remove-class-ai-video]] — 수업 상세 AI 영역·전용호출만제거,1.3.0/기능c185328·운영반영검증완료·일반영상/다른영역보존(2026-11-12).
-- [[task-058-technique-image-samples]] — 사용자 앱 기술 이미지 정상표시 확인·완료종료(done/closed/waiting:none),확인전1.2.0/24d68ce·171종/172행·차콜48/224. 추가요청에따른완료이력선택commit/push·최종문서배포근거는task연결영수증 (2026-11-11).
-- [[task-056-class-related-video-detail]] — 완료: 앱1.1.0/commit0f8c8e9,수업상세·캘린더관련영상→공용상세 직접검증/다운로드0·복귀·기술연계PASS,운영source/asset/health검증. DB/APK변경없음·실기기미확인 (2026-11-09).
 
-- [[task-054-improve-technique-tree]] — 완료: 코드릴리스20261108-225820-09b82c2f, 신규110+연결110/총170·기존60/영상177보존,QA64/C2done·실SQL/runtime/health/asset검증. 21후속·챔피언검토만, 인증후실상세/실기기미확인 (2026-11-08).
+
+
+## Done
+- [[task-066-remove-class-ai-video]] — 수업 상세 AI 영역·전용호출만제거,1.3.0/기능c185328·운영반영검증완료·일반영상/다른영역보존(2026-11-12). 사용자마감지시·팀정리완료(done/closed/waiting:none).
+- [[task-065-constrained-tripod-two-characters]] — 두 캐릭터 트라이포드 관련 AI 영상 생성 도입·개선 폐기 결정으로 종료. `done/closed/waiting:none`, 추가 생성/사용자 품질 확인 대기 없음·기술 기록/원본/샘플 보존 (2026-11-11).
+- [[task-064-constrained-character-basics]] — 영상용 고정 골격/캐릭터 스킨 관련 AI 영상 생성 도입·개선 폐기 결정으로 종료. `done/closed/waiting:none`, 추가 생성/사용자 품질 확인 대기 없음·기술 기록/원본/샘플 보존 (2026-11-11).
+- [[task-063-tripod-motion-remake]] — 사진 기반 로컬 모션 관련 AI 영상 생성 도입·개선 폐기 결정으로 종료. `done/closed/waiting:none`, 추가 생성/사용자 품질 확인 대기 없음·기술 기록/원본/샘플 보존 (2026-11-11).
+- [[task-062-rive-2d-single-x-sample]] — Rive 2D 싱글엑스 관련 AI 영상 생성 도입·개선 폐기 결정으로 종료. `done/closed/waiting:none`, 추가 생성/사용자 품질 확인 대기 없음·기술 기록/원본/샘플 보존 (2026-11-11).
+- [[task-061-blender-single-x-sample]] — Blender 싱글엑스 관련 AI 영상 생성 도입·개선 폐기 결정으로 종료. `done/closed/waiting:none`, 추가 생성/사용자 품질 확인 대기 없음·기술 기록/원본/샘플 보존 (2026-11-11).
+- [[task-060-rive-class-video-review]] — Rive·M4 영상 대안 조사 관련 AI 영상 생성 도입·개선 폐기 결정으로 종료. `done/closed/waiting:none`, 추가 생성/사용자 품질 확인 대기 없음·기술 기록/원본/샘플 보존 (2026-11-11).
+- [[task-058-technique-image-samples]] — 사용자 앱 기술 이미지 정상표시 확인·완료종료(done/closed/waiting:none),확인전1.2.0/24d68ce·171종/172행·차콜48/224. 추가요청에따른완료이력선택commit/push·최종문서배포근거는task연결영수증 (2026-11-11).
+
+
+
+- [[task-059-play-aab-preparation]] — 준비용1.2.0/code2·API36/서명/AAB32검사·Android16설치/로그인렌더검증완료. 스토어등록·배포는추후런칭버전, 운영1.1.0유지.
+
+- [[task-057-feedback-coach-auth-failure-investigation]] — 운영Claude기존구독OAuth복구·실패피드백id2 실제질문1개/idle·원문해시보존·독립DB/CLI응답검증완료, 코드/배포변경없음 (2026-11-09).
+- [[task-056-class-related-video-detail]] — 완료: 앱1.1.0/commit0f8c8e9,수업상세·캘린더관련영상→공용상세 직접검증/다운로드0·복귀·기술연계PASS,운영source/asset/health검증. DB/APK변경없음·캘린더정상동작사용자확인 (2026-11-09).
+
+
+- [[task-055-character-concept-sheet]] — 완료·세션 종료(done/closed). commit08a596e7·릴리스20261109-101020-08a596e7·DB1/2/6·원본/운영검증 근거 보존. 화면변경 없음. 후속 준비 docs/handovers/task-055-follow-up.md, 다음 범위 미지정 (2026-11-09).
+
+
+- [[task-054-improve-technique-tree]] — 기존 기술트리 및 후속21확정 운영완료: 총172/참고연결131, 기능릴리스20261109-000243-78d3ac9c·최종문서릴리스20261109-000550-0aef8e11. 추가 참고영상 기능·수집은 사용자 보류/절차서만 작성,다른작업후재결정 (2026-11-09).
+
+- [[task-053-public-service-monetization-review]] — **사용자 지시로 계획 폐기·종료**. SNS 영상 다운로드 제한·저작권 관련 우려를 사유로 공식 서비스·AI 비용 수익화 검토 후속 추진 중단. 앱 코드·DB·운영 변경 없이 취소 기록만 정리 (2026-11-08)
+- [[task-052-feedback-library-and-results]] — 승인 v2 기반 피드백 목록·훈련 상태·결과 편집, 정리 중 결과 잠금 및 작성 취소. 최종 독립 QA PASS/0, 운영 스키마 검증 및 배포 `20261105-150544-00d7a384` 완료 (2026-11-05)
+- [[task-051-feedback-recall-demo]] — 승인 v5 기준 피드백·관장 보완·등록영상 카드·기간별 복기. 내부 Reviewer/QA·격리 SQL/브라우저 검증 완료, task-052와 운영 DB 적용·배포 완료. 외부 C2는 내용 검사 단계에서 미완료 (2026-11-05)
+- [[task-050-study-thumb-local-and-backfill]] — 영상분석 썸네일 서버 저장(새 분석은 S1 직후 자동·재분석이 서버 경로를 유튜브 주소로 덮어쓰지 않음) + **기존 영상 7건(바라토플라타 제외) 영상 파일·8건 썸네일을 운영에 백필**(`task-050-backfill-long-videos.js`: dry-run 기본·백업 JSON·`--restore`). 배포 `cde60bf`(릴리스 `20261009-233854-cde60bfc`) → 운영 apply 실패 0·1분 34초, 독립 검증(DB·NAS·ffprobe·운영 포트 206/200) 통과, id 74 `video.mp4` sha256 불변. R2: Codex 2회·Reviewer 5회·Leader QA 79/0. 🟡 사용자 폰 확인 대기 (2026-10-09)
 - [[task-049-study-video-player-poster]] — 영상분석 저장본 플레이어에 목록과 같은 썸네일(poster) 표시: 재생 전 cover, 재생·seek 후 contain, 썸네일을 먼저 불러 성공했을 때만 붙임(유튜브에서 지워져 404 가 되면 깨진 poster 가 칸을 검게 만드는 실측 퇴보 방지). 프론트 한 파일. 배포 완료 `18ce9ef`(릴리스 `20261008-122836-18ce9ef0`, RELEASE_RESULT ok). 🟡 사용자 폰 확인 대기 · 💡 썸네일도 서버에 저장(목록 썸네일은 유튜브 삭제 시 사라짐)은 영상 백필과 함께 제안 (2026-10-08)
 - [[task-048-study-video-local-save]] — 영상분석: 분석용으로 받은 영상을 NAS 에 저장(S3.5, `users/<uid>/long-videos/<vid>/video.mp4`)하고 상세 화면이 저장본(`<video>`)으로 재생, 없거나 오류면 기존 YouTube iframe 폴백. 저장 실패 시 완료 카드에 경고. H.264+AAC 우선·다운로드 진행률 DB 풀 소진 결함 수정 포함. 배포 완료 `7d987fe`(릴리스 `20261008-104159-7d987fee`, RELEASE_RESULT ok, DB 변경 없음). 🟡 **사용자 폰 확인 대기**(새 영상 분석 후 서버 저장본 재생·챕터 시점 이동) · 🔴 **기존 8건 영상 백필은 별도 승인 대기** (2026-10-08)
 - [[task-047-spar-tech-picker-apply]] — 스파링 성공·실패 기술을 카테고리 → 검색+탭 목록(성공·실패 따로)으로 교체, `+` 이 기록에만/기술트리 등록 매번 선택, 기술 관리 화면 카테고리 칸, user 3 기술트리 category 51행 백필(백업 있음), 데모 제거 (2026-09-22)

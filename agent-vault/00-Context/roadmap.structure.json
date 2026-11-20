@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "generator": "theadmin/structure-updater",
+  "generator_version": 1,
+  "owner": "theadmin-structure-worker",
+  "project": "bjj-trainning",
+  "generated_at": "2026-11-09T00:19:40.291Z",
+  "source": "cron",
+  "adapter": {
+    "screens": "react-router",
+    "api": "express"
+  },
+  "completeness": {
+    "screens": "complete",
+    "api": "partial",
+    "notes": [
+      {
+        "code": "MOUNT_NO_PATH",
+        "scope": "api",
+        "detail": "6건 (예: / use)"
+      },
+      {
+        "code": "MOUNT_UNRESOLVED",
+        "scope": "api",
+        "detail": "3건 (예: /api, /uploads)"
+      },
+      {
+        "code": "NON_LITERAL",
+        "scope": "api",
+        "detail": "1건 (예: / get)"
+      }
+    ]
+  },
+  "pages": [
+    {
+      "path": "/",
+      "canonical": "/",
+      "file": "web/src/main.jsx"
+    },
+    {
+      "path": "/calendar",
+      "canonical": "/calendar",
+      "file": "web/src/main.jsx"
+    },
+    {
+      "path": "/clips",
+      "canonical": "/clips",
+      "file": "web/src/main.jsx"
+    },
+    {
+      "path": "/coach",
+      "canonical": "/coach",
+      "file": "web/src/main.jsx"
+    },
+    {
+      "path": "/feedback",
+      "canonical": "/feedback",
+      "file": "web/src/main.jsx"
+    },
+    {
+      "path": "/login",
+      "canonical": "/login",
+      "file": "web/src/main.jsx"
+    },
+    {
+      "path": "/me",
+      "canonical": "/me",
+      "file": "web/src/main.jsx"
+    },
+    {
+      "path": "/oauth/callback",
+      "canonical": "/oauth/callback",
+      "file": "web/src/main.jsx"
+    },
+    {
+      "path": "/pickmeup",
+      "canonical": "/pickmeup",
+      "file": "web/src/main.jsx"
+    },
+    {
+      "path": "/recall",
+      "canonical": "/recall",
+      "file": "web/src/main.jsx"
+    },
+    {
+      "path": "/research",
+      "canonical": "/research",
+      "file": "web/src/main.jsx"
+    },
+    {
+      "path": "/signup",
+      "canonical": "/signup",
+      "file": "web/src/main.jsx"
+    },
+    {
+      "path": "/study",
+      "canonical": "/study",
+      "file": "web/src/main.jsx"
+    },
+    {
+      "path": "/study/:id",
+      "canonical": "/study/*",
+      "file": "web/src/main.jsx"
+    },
+    {
+      "path": "/techplan",
+      "canonical": "/techplan",
+      "file": "web/src/main.jsx"
+    }
+  ],
+  "handlerGroups": [
+    {
+      "group": "/health",
+      "kind": "other",
+      "paths": [
+        {
+          "path": "/health",
+          "canonical": "/health",
+          "file": "backend/src/index.js"
+        }
+      ]
+    },
+    {
+      "group": "/login",
+      "kind": "other",
+      "paths": [
+        {
+          "path": "/login",
+          "canonical": "/login",
+          "file": "backend/src/index.js"
+        }
+      ]
+    },
+    {
+      "group": "/oauth",
+      "kind": "other",
+      "paths": [
+        {
+          "path": "/oauth/callback",
+          "canonical": "/oauth/callback",
+          "file": "backend/src/index.js"
+        }
+      ]
+    }
+  ],
+  "normalizationConflicts": [],
+  "counts": {
+    "pages": 15,
+    "handlers": 3,
+    "groups": 3
+  },
+  "content_digest": "dff7a319dd28c8ff715128ee294f7d4d1b716c1b18d220391a41c6ec168ae4d8"
+}

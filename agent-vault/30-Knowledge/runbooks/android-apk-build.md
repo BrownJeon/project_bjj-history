@@ -9,10 +9,15 @@ related_tasks:
   - "[[task-038-app-icon]]"
   - "[[task-039-android-apk]]"
 created: 2026-09-14
-updated: 2026-09-14
+updated: 2026-11-10
 ---
 
 # Android APK 빌드·업데이트 런북
+
+## 2026-11-10 AAB 준비 경로 (task-059)
+
+현재 준비용 네이티브 후보는 **1.2.0/code2 · compile/target36 · AGP8.10.1/Gradle8.11.1/JDK21**이다. 기존 디버그 APK 키는 유지하며 외부 보관 업로드 키를 사용하는 `mobile/scripts/build-aab.sh`와 `verify-aab.py`를 추가했다. 상세 명령·키 백업·검증 경계는 `docs/handovers/task-059-play-aab.md` 및 [[task-059-play-aab-preparation]]을 따른다. **Play 등록/업로드/배포는 미실행, 추후 런칭 버전에서 진행한다.** 아래 2026-09 절차의 target35/릴리스키없음은 당시 디버그APK 기준이며 현재 AAB 준비 상태와 구분한다.
+
 
 배경·결정 이력: [[task-039-android-apk]] · 아이콘: [[task-038-app-icon]] · 최초 작업절차서: [[app-icon-and-apk-procedure]]
 

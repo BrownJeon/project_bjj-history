@@ -1,0 +1,93 @@
+{
+  "task_id": "task-061",
+  "date_kst": "2026-11-10",
+  "status": "sample_prepared",
+  "user_quality_approval": "pending",
+  "generation_location": "Apple M4 Pro 24GiB, local Blender/FFmpeg/Pillow",
+  "paid_generation_api_calls": 0,
+  "app_or_db_deployment": false,
+  "render_elapsed_seconds": 93.62,
+  "encode_elapsed_seconds": 2.032,
+  "frame_count": 288,
+  "fps": 24,
+  "duration_seconds": 12,
+  "dimensions": [
+    960,
+    960
+  ],
+  "codec": "H.264/yuv420p",
+  "decode_errors": 0,
+  "local_copies_match_m4": true,
+  "source_sha256": "6bb9eb1fdf25565acb844f3c63980a3d7c052ccd43108fd4a3c410a9a5557478",
+  "blender_setup": {
+    "version": [
+      "Blender 4.5.15 LTS",
+      "\tbuild date: 2026-10-22",
+      "\tbuild time: 01:31:45"
+    ],
+    "binary": "/Users/brownjeon/.local/share/bjj-blender/tools/blender-4.5.15/Blender.app/Contents/MacOS/Blender",
+    "sha256": "bfbc0bda099d1ab7aef0992a584f872f58bed9bb491210ad45f9ca071aa2e688",
+    "archive_bytes": 311921946,
+    "ffmpeg": "/opt/homebrew/bin/ffmpeg",
+    "ffprobe": "/opt/homebrew/bin/ffprobe",
+    "setup_finished_epoch": 1794297470.5531158
+  },
+  "blend_reopen": {
+    "blender": "4.5.15 LTS",
+    "armatures": 8,
+    "frame_start": 1,
+    "frame_end": 288,
+    "fps": 24,
+    "white_pelvis_start": [
+      -0.11999999731779099,
+      -0.47999998927116394,
+      0.23999999463558197
+    ],
+    "white_pelvis_end": [
+      0.12999999523162842,
+      -0.20499999821186066,
+      0.1850000023841858
+    ],
+    "frame_change_handlers": 0,
+    "relative_render_path": "//frames/frame-"
+  },
+  "deliverables": {
+    "single-x-guard-sample.mp4": {
+      "bytes": 634415,
+      "sha256": "99156fa770e3b41747d17eed1ed919324a5022e29a2dc812ceee60021d5916f0"
+    },
+    "single-x-guard-sample.blend": {
+      "bytes": 8828821,
+      "sha256": "fa7bdf685ad84f9db6fea593eeb1748f1e48b43a29582e5bd0c08e7079b75745"
+    },
+    "poster.png": {
+      "bytes": 479827,
+      "sha256": "de3706bd568886ff9beb112f57f35c53b40c14a70f18bf009fa89d6736925ef3"
+    },
+    "preview.gif": {
+      "bytes": 1002857,
+      "sha256": "26d0e4dd8bfcf8f753030ee029e1c7a5b11755563e5436146bc48a327a3dd38e"
+    },
+    "pose-metadata.json": {
+      "bytes": 32815,
+      "sha256": "7dbb81dc42afacb207a61e1d49abeb3560770f73371f8e419d4c71a9a5781f1c"
+    },
+    "build-info.json": {
+      "bytes": 230,
+      "sha256": "4b6470b25efab5467262b535d8ef25fc02cd1b9d5653d78a2cba8279464b05f3"
+    }
+  },
+  "artifact_directory": "/Users/brownjeon/.codex/artifacts/bjj-t061/final-01",
+  "known_limits": [
+    "Reference-based simplified procedural 3D; not production conversion of approved 2D art",
+    "Hands/grips and two-person contact are simplified; educational technique accuracy not approved",
+    "No app integration or reusable production motion library verified"
+  ],
+  "checks": [
+    "All 288 frames produced on M4",
+    "Exact stage frames from final MP4 viewed by main",
+    "Final MP4 fully decoded without error",
+    "Standalone .blend reopened with autoexec disabled, 8 armatures and baked motion",
+    "6 copied deliverables match M4 bytes and SHA256"
+  ]
+}
