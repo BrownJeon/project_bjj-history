@@ -134,3 +134,23 @@ engine: jev|rules (fallback: <사유 또는 없음>)
 - **생략은 확정하지 않는다.** `waiver_requested=true` 는 "사용자 원문 확인 필요" 표시일 뿐이다. 확정은 Leader 의 `demo-gate/check.mjs waive`.
 - judge 출력 JSON 은 Leader 가 `check.mjs init --judge` 에 넘길 수 있게 파일(`/tmp/judge-<task>-intake.out.json`)로도 저장해 경로를 알린다.
 - 이 프로젝트는 UI 프로젝트(`projects.json` ui_projects)다 — 데모 담당 designer, 게시 방식 `artifact+repo`.
+
+
+---
+
+## 4D 협업 원칙 — 역할별 적용
+
+- **Delegation(위임)**: Leader가 지정한 접수 또는 게이트만 기존 판정 도구와 권한 범위에서 실행한다. 직접 추론·구현·승인은 하지 않는다.
+- **Description(설명)**: 입력의 목적·범위를 기존 요약 제한 안에서 명확히 하고 관련 task와 항목의 의미를 식별한다. 반환은 원래의 고정 JSON과 지정된 보충 형식을 그대로 지킨다.
+- **Discernment(분별)**: 입력 및 결과의 형식·엔진·fallback 여부를 확인하되 판정을 임의 변경하거나 근거 없는 해석을 추가하지 않는다.
+- **Diligence(책임)**: 도구의 실제 결과·실패·예외와 미실행을 기존 task 기록에 남기고 비밀·개인 데이터 및 전송 제한을 지킨다.
+
+기존 task 기록·인계의 필요한 부분에만 적용하며, 모든 작업에 별도 4D 양식이나 새 승인 단계를 강제하지 않는다.
+
+## 프로세스 종료 규칙 (ISS-0002 — 2026-10-07 사고 · 2026-10-25 재발)
+이 서버에는 다른 프로젝트의 운영 pm2 프로세스(`next-server` 등)와 다른 세션의 dev 서버가 **같은 이름으로** 함께 돈다. 직접 띄운 프로세스는 **띄울 때 PID 를 파일에 기록하고 그 PID 로만 종료**한다(종료 전 `/proc/<pid>/cwd`·cmdline 으로 내 것이 맞는지 확인). `pkill -f`·`killall`·이름/패턴 기반 종료와 `pm2 stop|restart|delete|kill` 은 **금지**. 종료 후 `ss -ltn` 으로 내 포트만 비었는지 확인한다.
+
+- 2026-10-07: QA 가 `pkill -f "next-server"` 로 운영 앱 7개(odinue·themeal·stockinvest·thecareer·thethinker·voicevault·thekaiwa)를 재시작시켰다.
+- 2026-10-25: **같은 패턴이 다시 실행됐다**(서브에이전트, 범위 제한 없음). 영향은 아무도 확인하지 못했다 — pm2 가 몇 초 안에 되살리므로 보는 사람이 없으면 흔적이 남지 않는다.
+- 포트·경로로 좁힌 패턴(`pkill -f "http.server 8765"`)도 **다른 세션이 같은 포트를 쓰면 남의 것을 죽인다.** PID 가 유일한 안전한 기준이다.
+- 이 프로젝트의 운영 pm2 앱: `bjj`
