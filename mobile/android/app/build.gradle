@@ -1,14 +1,29 @@
 apply plugin: 'com.android.application'
 
+def appVersion = new groovy.json.JsonSlurper().parse(rootProject.file('../version.json'))
+if (!(appVersion.versionName ==~ /\d+\.\d+\.\d+/) || !(appVersion.versionCode instanceof Integer) || appVersion.versionCode < 1) {
+    throw new GradleException('mobile/version.json must contain M.m.t and a positive versionCode')
+}
+// Private material stays outside the checkout. Passwords are read from owner-only files.
+def uploadFile = new File(System.getenv('BJJ_UPLOAD_PROPERTIES') ?: "${System.getProperty('user.home')}/.config/bjj-mobile/upload.properties")
+def upload = new Properties()
+if (uploadFile.isFile()) {
+    uploadFile.withInputStream { upload.load(it) }
+    ['storeFile', 'keyAlias', 'storePasswordFile', 'keyPasswordFile'].each { key ->
+        if (!upload.getProperty(key)) throw new GradleException("Upload signing property missing: ${key}")
+    }
+}
+
 android {
     namespace "com.miraclepenguin.bjj"
     compileSdk rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
     defaultConfig {
         applicationId "com.miraclepenguin.bjj"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode appVersion.versionCode
+        versionName appVersion.versionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -16,11 +31,35 @@ android {
             ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+    signingConfigs {
+        if (!upload.isEmpty()) {
+            release {
+                storeFile file(upload.getProperty('storeFile'))
+                keyAlias upload.getProperty('keyAlias')
+                storePassword file(upload.getProperty('storePasswordFile')).text.trim()
+                keyPassword file(upload.getProperty('keyPasswordFile')).text.trim()
+            }
+        }
+    }
     buildTypes {
         release {
+            debuggable false
+            if (!upload.isEmpty()) signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+}
+
+// Also catches release tasks reached indirectly through `build`; unsigned bundles fail closed.
+def requireUploadSigning = tasks.register('requireUploadSigning') {
+    doLast {
+        if (upload.isEmpty()) throw new GradleException('Release signing required: set BJJ_UPLOAD_PROPERTIES to an external upload.properties file')
+    }
+}
+tasks.configureEach { task ->
+    if (task.name in ['bundleRelease', 'assembleRelease', 'packageReleaseBundle', 'validateSigningRelease']) {
+        task.dependsOn(requireUploadSigning)
     }
 }
 

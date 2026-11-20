@@ -1,11 +1,13 @@
 {
   "name": "bjj-mobile",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "private": true,
   "description": "BJJ 훈련일지 Android 앱 껍데기 (Capacitor 7, 운영 웹을 원격 URL 로 로드)",
   "scripts": {
     "sync": "bash scripts/sync-local.sh",
-    "build:apk": "bash scripts/build-apk.sh"
+    "build:apk": "bash scripts/build-apk.sh",
+    "build:aab": "bash scripts/build-aab.sh",
+    "signing:prepare": "python3 scripts/prepare-upload-key.py"
   },
   "dependencies": {
     "@capacitor/app": "^7.1.2",

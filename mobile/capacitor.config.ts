@@ -20,8 +20,8 @@
  * Secure 쿠키·보안 컨텍스트 전용 API 가 웹 브라우저와 똑같이 동작하게 한다.
  *
  * ── 서명 ────────────────────────────────────────────────────────────────────
- * Play 스토어에 올리지 않고 디버그 서명 APK(`~/.android/debug.keystore`)를 사이드로드한다.
- * 릴리스 키스토어는 만들지 않는다.
+ * 개발용 APK는 기존 debug.keystore를 사용한다. 제출 준비용 AAB는 저장소 밖의
+ * 업로드키(BJJ_UPLOAD_PROPERTIES)로 서명한다. 실제 Play 등록/배포는 별도 런칭 작업이다.
  */
 import type { CapacitorConfig } from '@capacitor/cli';
 
@@ -41,6 +41,10 @@ const config: CapacitorConfig = {
     // (2026-09-14 실기기). 'auto' 는 API 35+ 에서 WebView 에 시스템 바·컷아웃 크기만큼 **네이티브 margin** 을 줘
     // 웹이 바를 아예 피하게 한다(Capacitor 7 `CapacitorWebView.edgeToEdgeHandler`). 바 뒤 배경은 styles.xml 창 배경색.
     adjustMarginsForEdgeToEdge: 'auto',
+  },
+  plugins: {
+    // The app is dark even when Android uses a light theme; preserve bright status icons.
+    StatusBar: { style: 'DARK' },
   },
 };
 

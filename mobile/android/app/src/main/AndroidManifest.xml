@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!-- Permissions -->
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!--
+        저장소 권한 — **Android 10(API 29) 이하에서만** 선언된다(maxSdkVersion="29").
+        근거(플러그인 소스 실측):
+          · @capacitor/file-transfer 1.0.12 `FileTransferPlugin.isStoragePermissionGranted()` —
+            SDK_INT >= R(30) 이면 권한 없이 진행, 그 아래는 READ+WRITE_EXTERNAL_STORAGE 를 요청한다.
+          · @capacitor/filesystem 7.1.8 `isStoragePermissionGranted()` — 30~32 는 앱 폴더 경로면 권한 불필요,
+            33+ 는 항상 불필요, 29 이하는 READ+WRITE 요청.
+        Android 11+ 기기(사용자 휴대폰)에서는 이 두 줄이 아예 무시되므로 권한 요청 창이 뜨지 않는다.
+    -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="29" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="29" />
+
     <!--
         android:requestLegacyExternalStorage — **Android 10(API 29) 한 버전만**을 위한 것이다.
         영상·캡처 저장(task-039 A-5)은 `Download/BJJ/` 공개 폴더에 파일 경로로 쓴다. Android 11+ 는
@@ -11,6 +27,9 @@
     <!-- allowBackup=false: WebView localStorage 의 로그인 JWT(bjj_token)가 Android 자동 백업으로 기기 밖에 복사되지 않게(task-039 Reviewer LOW) -->
     <application
         android:allowBackup="false"
+        android:fullBackupContent="false"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:usesCleartextTraffic="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -66,19 +85,4 @@
         </provider>
     </application>
 
-    <!-- Permissions -->
-
-    <uses-permission android:name="android.permission.INTERNET" />
-
-    <!--
-        저장소 권한 — **Android 10(API 29) 이하에서만** 선언된다(maxSdkVersion="29").
-        근거(플러그인 소스 실측):
-          · @capacitor/file-transfer 1.0.12 `FileTransferPlugin.isStoragePermissionGranted()` —
-            SDK_INT >= R(30) 이면 권한 없이 진행, 그 아래는 READ+WRITE_EXTERNAL_STORAGE 를 요청한다.
-          · @capacitor/filesystem 7.1.8 `isStoragePermissionGranted()` — 30~32 는 앱 폴더 경로면 권한 불필요,
-            33+ 는 항상 불필요, 29 이하는 READ+WRITE 요청.
-        Android 11+ 기기(사용자 휴대폰)에서는 이 두 줄이 아예 무시되므로 권한 요청 창이 뜨지 않는다.
-    -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="29" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="29" />
 </manifest>

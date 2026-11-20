@@ -14,8 +14,8 @@ LOCAL_ROOT="${BJJ_MOBILE_LOCAL:-$HOME/.node-local/bjj-mobile}"
 
 mkdir -p "$LOCAL_ROOT"
 
-rsync -a --delete "$PROJECT_ROOT/app-shell/" "$LOCAL_ROOT/app-shell/"
-rsync -a --delete "$PROJECT_ROOT/scripts/" "$LOCAL_ROOT/scripts/"
+rsync -a --delete --exclude '._*' --exclude '.DS_Store' --exclude '@eaDir' --exclude '__pycache__' "$PROJECT_ROOT/app-shell/" "$LOCAL_ROOT/app-shell/"
+rsync -a --delete --exclude '._*' --exclude '.DS_Store' --exclude '@eaDir' --exclude '__pycache__' "$PROJECT_ROOT/scripts/" "$LOCAL_ROOT/scripts/"
 
 # 안드로이드 프로젝트. NFS 가 소스이고 빌드는 미러에서만 돈다.
 #   · build/ · .gradle/ 은 산출물 — 보내지 않는다(매번 수백 MB).
@@ -25,12 +25,14 @@ rsync -a --delete "$PROJECT_ROOT/scripts/" "$LOCAL_ROOT/scripts/"
 #     파일도 NFS 에 있으면 그대로 보낸다(없으면 build-apk.sh 의 cap sync 가 만든다).
 if [ -d "$PROJECT_ROOT/android" ]; then
   rsync -a --delete \
+    --exclude '._*' --exclude '.DS_Store' --exclude '@eaDir' \
+    --exclude 'capacitor-cordova-android-plugins/' --filter 'P capacitor-cordova-android-plugins/' \
     --exclude 'build/' --exclude '.gradle/' --exclude 'local.properties' --exclude '.idea/' \
     --filter 'P build/' --filter 'P .gradle/' --filter 'P local.properties' --filter 'P .idea/' \
     "$PROJECT_ROOT/android/" "$LOCAL_ROOT/android/"
 fi
 
-for f in package.json package-lock.json capacitor.config.ts tsconfig.json; do
+for f in package.json package-lock.json version.json capacitor.config.ts tsconfig.json; do
   if [ -f "$PROJECT_ROOT/$f" ]; then
     cp "$PROJECT_ROOT/$f" "$LOCAL_ROOT/$f"
   fi
