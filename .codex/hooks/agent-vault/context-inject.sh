@@ -1,10 +1,13 @@
-﻿#!/usr/bin/env bash
+#!/usr/bin/env bash
 # Agent Vault: Codex SessionStart/SubagentStart 진입 시 프로젝트 이력 개요를 additionalContext로 주입한다.
 # 훅은 "지금 이 에이전트가 어떤 task를 맡았는지"는 알 수 없다 — 그건 Leader가 SendMessage로
 # task 파일 경로를 함께 전달해야 알 수 있는 정보다. 이 스크립트는 큰 그림(ACTIVE/board/최근 로그)만 띄운다.
 set -euo pipefail
 
-input="$(cat || true)"
+# 같은 이벤트의 이중 등록 호출(전역·프로젝트 설정 표기 차이)은 한 번만 처리한다 — ISS-0007, hook-dedupe.sh
+. "$(dirname "${BASH_SOURCE[0]}")/hook-dedupe.sh"
+hook_dedupe
+input="$HOOK_INPUT"
 project_dir="${CODEX_PROJECT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
 vault="$project_dir/agent-vault"
 

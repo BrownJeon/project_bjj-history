@@ -1,57 +1,92 @@
-﻿{
-    "description":  "Agent Vault lifecycle hooks for bjj-trainning.",
-    "hooks":  {
-                  "SessionStart":  [
-                                       {
-                                           "hooks":  [
-                                                         {
-                                                             "commandWindows":  "powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"$d = Get-Item (Get-Location).Path; while ($d -and -not (Test-Path (Join-Path $d.FullName \u0027.codex/hooks/agent-vault/context-inject.ps1\u0027))) { $d = $d.Parent }; if ($d) { \u0026 (Join-Path $d.FullName \u0027.codex/hooks/agent-vault/context-inject.ps1\u0027) }\"",
-                                                             "command":  "bash -lc \u0027d=\"$PWD\"; while [ \"$d\" != / ] \u0026\u0026 [ ! -f \"$d/.codex/hooks/agent-vault/context-inject.sh\" ]; do d=$(dirname \"$d\"); done; [ -f \"$d/.codex/hooks/agent-vault/context-inject.sh\" ] \u0026\u0026 exec bash \"$d/.codex/hooks/agent-vault/context-inject.sh\" || exit 0\u0027",
-                                                             "timeout":  15,
-                                                             "type":  "command"
-                                                         }
-                                                     ],
-                                           "matcher":  ""
-                                       }
-                                   ],
-                  "SubagentStart":  [
-                                        {
-                                            "hooks":  [
-                                                          {
-                                                              "commandWindows":  "powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"$d = Get-Item (Get-Location).Path; while ($d -and -not (Test-Path (Join-Path $d.FullName \u0027.codex/hooks/agent-vault/context-inject.ps1\u0027))) { $d = $d.Parent }; if ($d) { \u0026 (Join-Path $d.FullName \u0027.codex/hooks/agent-vault/context-inject.ps1\u0027) }\"",
-                                                              "command":  "bash -lc \u0027d=\"$PWD\"; while [ \"$d\" != / ] \u0026\u0026 [ ! -f \"$d/.codex/hooks/agent-vault/context-inject.sh\" ]; do d=$(dirname \"$d\"); done; [ -f \"$d/.codex/hooks/agent-vault/context-inject.sh\" ] \u0026\u0026 exec bash \"$d/.codex/hooks/agent-vault/context-inject.sh\" || exit 0\u0027",
-                                                              "timeout":  15,
-                                                              "type":  "command"
-                                                          }
-                                                      ],
-                                            "matcher":  ""
-                                        }
-                                    ],
-                  "SubagentStop":  [
-                                       {
-                                           "hooks":  [
-                                                         {
-                                                             "commandWindows":  "powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"$d = Get-Item (Get-Location).Path; while ($d -and -not (Test-Path (Join-Path $d.FullName \u0027.codex/hooks/agent-vault/log-gate.ps1\u0027))) { $d = $d.Parent }; if ($d) { \u0026 (Join-Path $d.FullName \u0027.codex/hooks/agent-vault/log-gate.ps1\u0027) }\"",
-                                                             "command":  "bash -lc \u0027d=\"$PWD\"; while [ \"$d\" != / ] \u0026\u0026 [ ! -f \"$d/.codex/hooks/agent-vault/log-gate.sh\" ]; do d=$(dirname \"$d\"); done; [ -f \"$d/.codex/hooks/agent-vault/log-gate.sh\" ] \u0026\u0026 exec bash \"$d/.codex/hooks/agent-vault/log-gate.sh\" || exit 0\u0027",
-                                                             "timeout":  15,
-                                                             "type":  "command"
-                                                         }
-                                                     ],
-                                           "matcher":  ""
-                                       }
-                                   ],
-                  "Stop":  [
-                               {
-                                   "hooks":  [
-                                                 {
-                                                     "commandWindows":  "powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"$d = Get-Item (Get-Location).Path; while ($d -and -not (Test-Path (Join-Path $d.FullName \u0027.codex/hooks/agent-vault/log-gate.ps1\u0027))) { $d = $d.Parent }; if ($d) { \u0026 (Join-Path $d.FullName \u0027.codex/hooks/agent-vault/log-gate.ps1\u0027) }\"",
-                                                     "command":  "bash -lc \u0027d=\"$PWD\"; while [ \"$d\" != / ] \u0026\u0026 [ ! -f \"$d/.codex/hooks/agent-vault/log-gate.sh\" ]; do d=$(dirname \"$d\"); done; [ -f \"$d/.codex/hooks/agent-vault/log-gate.sh\" ] \u0026\u0026 exec bash \"$d/.codex/hooks/agent-vault/log-gate.sh\" || exit 0\u0027",
-                                                     "timeout":  15,
-                                                     "type":  "command"
-                                                 }
-                                             ],
-                                   "matcher":  ""
-                               }
-                           ]
-              }
+{
+  "description": "Agent Vault lifecycle hooks for bjj-trainning.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "commandWindows": "powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"$d = Get-Item (Get-Location).Path; while ($d -and -not (Test-Path (Join-Path $d.FullName '.codex/hooks/agent-vault/context-inject.ps1'))) { $d = $d.Parent }; if ($d) { & (Join-Path $d.FullName '.codex/hooks/agent-vault/context-inject.ps1') }\"",
+            "command": "bash -lc 'd=\"$PWD\"; while [ \"$d\" != / ] && [ ! -f \"$d/.codex/hooks/agent-vault/context-inject.sh\" ]; do d=$(dirname \"$d\"); done; [ -f \"$d/.codex/hooks/agent-vault/context-inject.sh\" ] && exec bash \"$d/.codex/hooks/agent-vault/context-inject.sh\" || exit 0'",
+            "timeout": 15,
+            "type": "command"
+          }
+        ],
+        "matcher": ""
+      }
+    ],
+    "SubagentStart": [
+      {
+        "hooks": [
+          {
+            "commandWindows": "powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"$d = Get-Item (Get-Location).Path; while ($d -and -not (Test-Path (Join-Path $d.FullName '.codex/hooks/agent-vault/context-inject.ps1'))) { $d = $d.Parent }; if ($d) { & (Join-Path $d.FullName '.codex/hooks/agent-vault/context-inject.ps1') }\"",
+            "command": "bash -lc 'd=\"$PWD\"; while [ \"$d\" != / ] && [ ! -f \"$d/.codex/hooks/agent-vault/context-inject.sh\" ]; do d=$(dirname \"$d\"); done; [ -f \"$d/.codex/hooks/agent-vault/context-inject.sh\" ] && exec bash \"$d/.codex/hooks/agent-vault/context-inject.sh\" || exit 0'",
+            "timeout": 15,
+            "type": "command"
+          }
+        ],
+        "matcher": ""
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "commandWindows": "powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"$d = Get-Item (Get-Location).Path; while ($d -and -not (Test-Path (Join-Path $d.FullName '.codex/hooks/agent-vault/log-gate.ps1'))) { $d = $d.Parent }; if ($d) { & (Join-Path $d.FullName '.codex/hooks/agent-vault/log-gate.ps1') }\"",
+            "command": "bash -lc 'd=\"$PWD\"; while [ \"$d\" != / ] && [ ! -f \"$d/.codex/hooks/agent-vault/log-gate.sh\" ]; do d=$(dirname \"$d\"); done; [ -f \"$d/.codex/hooks/agent-vault/log-gate.sh\" ] && exec bash \"$d/.codex/hooks/agent-vault/log-gate.sh\" || exit 0'",
+            "timeout": 15,
+            "type": "command"
+          }
+        ],
+        "matcher": ""
+      },
+      {
+        "hooks": [
+          {
+            "timeout": 15,
+            "type": "command",
+            "command": "bash -lc 'd=\"$PWD\"; while [ \"$d\" != / ] && [ ! -d \"$d/agent-vault\" ]; do d=$(dirname \"$d\"); done; s=\"$(dirname \"$d\")/.claude/hooks/roadmap-gate/check.sh\"; [ -d \"$d/agent-vault\" ] && [ -f \"$s\" ] && exec bash \"$s\" --tool codex || exit 0'",
+            "commandWindows": "cmd.exe /D /C exit 0"
+          }
+        ],
+        "matcher": ""
+      }
+    
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "commandWindows": "powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"$d = Get-Item (Get-Location).Path; while ($d -and -not (Test-Path (Join-Path $d.FullName '.codex/hooks/agent-vault/log-gate.ps1'))) { $d = $d.Parent }; if ($d) { & (Join-Path $d.FullName '.codex/hooks/agent-vault/log-gate.ps1') }\"",
+            "command": "bash -lc 'd=\"$PWD\"; while [ \"$d\" != / ] && [ ! -f \"$d/.codex/hooks/agent-vault/log-gate.sh\" ]; do d=$(dirname \"$d\"); done; [ -f \"$d/.codex/hooks/agent-vault/log-gate.sh\" ] && exec bash \"$d/.codex/hooks/agent-vault/log-gate.sh\" || exit 0'",
+            "timeout": 15,
+            "type": "command"
+          }
+        ],
+        "matcher": ""
+      },
+      {
+        "hooks": [
+          {
+            "timeout": 15,
+            "type": "command",
+            "command": "bash -lc 'd=\"$PWD\"; while [ \"$d\" != / ] && [ ! -d \"$d/agent-vault\" ]; do d=$(dirname \"$d\"); done; s=\"$(dirname \"$d\")/.claude/hooks/roadmap-gate/check.sh\"; [ -d \"$d/agent-vault\" ] && [ -f \"$s\" ] && exec bash \"$s\" --tool codex || exit 0'",
+            "commandWindows": "cmd.exe /D /C exit 0"
+          }
+        ],
+        "matcher": ""
+      }
+    
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "command": "/Users/brownjeon/.nvm/versions/node/v25.6.1/bin/node -e 'const f=require(\"node:fs\"),u=require(\"node:url\"),p=\"/Volumes/homes/brownjeon/project/.claude/tools/demo-gate/hook.mjs\";try{if(f.realpathSync(p)!==p)process.exit(1)}catch{process.exit(1)};process.argv[1]=p;process.argv[2]=\"codex-prompt\";import(u.pathToFileURL(p))'",
+            "type": "command",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
 }

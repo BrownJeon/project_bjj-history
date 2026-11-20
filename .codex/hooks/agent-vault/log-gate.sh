@@ -1,8 +1,12 @@
-﻿#!/usr/bin/env bash
+#!/usr/bin/env bash
 # Agent Vault: Codex SubagentStop/Stop 시점의 가벼운 게이트.
 # 오늘 하루 동안 이 프로젝트의 agent-vault에 아무 기록도 없으면 완료 처리를 막고 기록을 요구한다.
 # 오늘 날짜의 로그가 하나라도 있으면(즉 하루 중 첫 완료 건을 통과시키면) 그 뒤로는 통과시킨다.
 set -euo pipefail
+
+# 같은 이벤트의 이중 등록 호출(전역·프로젝트 설정 표기 차이)은 한 번만 처리한다 — ISS-0007, hook-dedupe.sh
+. "$(dirname "${BASH_SOURCE[0]}")/hook-dedupe.sh"
+hook_dedupe
 
 project_dir="${CODEX_PROJECT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
 vault="$project_dir/agent-vault"
